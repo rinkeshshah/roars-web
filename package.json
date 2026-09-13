@@ -16,7 +16,8 @@
     "assert:urls": "node scripts/assert-urls.mjs",
     "nginx:redirects": "node scripts/generate-nginx-redirects.mjs",
     "verify": "npm run validate:redirects && npm run validate:content && npm run build && npm run nginx:redirects && npm run assert:urls",
-    "test:components": "node scripts/test-components.mjs"
+    "test:components": "node scripts/test-components.mjs",
+    "test:content": "node scripts/test-content-gate.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",
