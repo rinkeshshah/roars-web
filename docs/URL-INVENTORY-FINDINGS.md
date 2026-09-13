@@ -184,3 +184,66 @@ The CSV has empty `gsc_clicks`, `gsc_impressions`, `gsc_position`, `primary_inte
 - `next.config.js` with `trailingSlash`, the redirect map and the legacy `wp-content` rewrite
 
 Say which and I will start.
+
+---
+
+## 7. Industry coverage by case study
+
+**Phase 7 input. Not a build gate.** Decided 13 Sep 2026: every industry page
+ships whether or not a case study sits behind it. This section records the
+question so it is answered with evidence later, not so it holds anything up.
+
+### Why it is worth answering
+
+Section 2 of the SEO spec's programmatic rules calls an industry page with no
+case study, no named client and no sector-specific detail a noun swap, and that
+is the pattern scaled-content enforcement targets. That risk is real but it is
+a *content depth* problem, fixable by writing the page properly, not a reason to
+withhold a URL that already ranks. Withholding the URL is the worse trade: it
+costs the ranking immediately and certainly, against a penalty risk that is
+neither.
+
+So the useful output here is not a keep/drop list. It is knowing which industry
+pages have proof to draw on and which need their depth built some other way.
+
+### The mapping
+
+`src/lib/projects.ts` carries all 23 case studies as slug plus client name and
+nothing else. The design brief says they span the eight sectors in the site
+taxonomy plus legal and finance, but never says which project is which, and
+guessing would put a real client in the wrong sector on a public page.
+
+The mapping is being filled by hand from a CSV of the 23 in inventory order.
+When it lands it goes into `projects.ts` as an `industry` field, and this table
+gets filled in:
+
+| Industry page | Case studies | Notes |
+|---|---|---|
+| `food-restaurant-app-development` | | |
+| `on-demand-fitness-app-development` | | |
+| `retail-ecommerce-development` | | |
+| `concierge-app-development` | | |
+| `travel-and-hospitality-app-development` | | |
+| `logistics-transportation-app-development` | | |
+| `saas-application-development-services` | | |
+| `healthcare-app-development-company` | | |
+| `education-mobile-app-development` | | |
+| legal *(no industry page)* | | |
+| finance *(no industry page)* | | |
+
+### Two things to check when filling it
+
+`gisaid-health-tech` and `friendo-healthcare-mobile-app-development` both read
+as healthcare from the slug alone. If both land there, healthcare is the
+best-evidenced sector on the site and the page should say so.
+
+Nothing in the 23 obviously maps to `education-mobile-app-development`. If that
+holds, the education page needs its depth from somewhere other than a case
+study. That is a brief to write, not a page to pull.
+
+### It also feeds the /work/ index
+
+`docs/briefs/work-index-at-real-scale.md` needs this mapping as the filter
+taxonomy: eight sectors plus All, or ten if legal and finance become filter
+values with no industry page behind them. That last part is an open question in
+the brief.
