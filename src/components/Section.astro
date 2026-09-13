@@ -1,0 +1,38 @@
+---
+/**
+ * Section wrapper. The single place a ground colour is chosen.
+ *
+ * data-ground swaps --ground/--ink/--ink-muted/--rule/--ring in tokens.css,
+ * so children read semantic variables and never name a colour. That is what
+ * lets the same component sit on white, grey or black without a variant.
+ *
+ * `dark` also marks the section for the top bar's ink inversion, which is
+ * driven by IntersectionObserver over [data-ground="dark"] rather than the
+ * prototypes' hard-coded pixel bands.
+ */
+interface Props {
+  ground?: 'light' | 'surface' | 'dark'
+  /** Rendered element. Sections are <section>; the footer passes "footer". */
+  as?: 'section' | 'footer' | 'div'
+  /** Skip the inner .wrap when the section manages its own bleed. */
+  bleed?: boolean
+  class?: string
+  id?: string
+}
+const { ground = 'light', as: Tag = 'section', bleed = false, class: cls, id } = Astro.props
+---
+
+<Tag class:list={['sec', cls]} data-ground={ground} id={id}>
+  <slot name="bleed" />
+  {bleed ? <slot /> : <div class="wrap"><slot /></div>}
+</Tag>
+
+<style>
+  .sec {
+    position: relative;
+    background: var(--ground);
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .sec > .wrap { position: relative; z-index: 1; }
+</style>

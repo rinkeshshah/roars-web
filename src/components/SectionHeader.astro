@@ -1,0 +1,74 @@
+---
+/**
+ * The recurring page rhythm: a small label plus rule in the left rail, and
+ * the heading at the top of the inner column.
+ *
+ * Grid, not absolute positioning. The prototype's coordinates say a child at
+ * l:503 inside a section at l:39 means a 464px rail, so that is what this is.
+ */
+interface Props {
+  label: string
+  heading: string
+  /** One h1 per page. Section headers below the hero are h2. */
+  level?: 'h1' | 'h2'
+  /** 124px section header, or 84px display sub. */
+  size?: 'heading' | 'display'
+  intro?: string
+}
+const { label, heading, level: Tag = 'h2', size = 'heading', intro } = Astro.props
+---
+
+<div class="sh">
+  <div class="sh__rail">
+    <div class="sh__rule"></div>
+    <span class="sh__label">{label}</span>
+  </div>
+  <div class="sh__col">
+    <Tag class:list={['sh__heading', `sh__heading--${size}`]}>{heading}</Tag>
+    {intro && <p class="sh__intro">{intro}</p>}
+  </div>
+</div>
+
+<style>
+  .sh {
+    display: grid;
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    column-gap: var(--sp-5);
+  }
+  .sh__rule {
+    height: 1.5px;
+    width: 16px;
+    background: var(--rule);
+    margin-bottom: var(--sp-4);
+  }
+  .sh__label {
+    display: block;
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body);
+    color: var(--c-ink-label);
+  }
+  .sh__heading {
+    margin: 0;
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display);
+    line-height: var(--lh-tight);
+    color: var(--ink);
+  }
+  /* Clamped between the documented mobile value and the 1440 value, so the
+     124px header is exact at the design width and never overflows below it. */
+  .sh__heading--heading { font-size: clamp(var(--fs-heading-m), 8.6vw, var(--fs-heading)); }
+  .sh__heading--display { font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display)); }
+  .sh__intro {
+    margin-top: var(--sp-5);
+    max-width: 440px;
+    font-size: var(--fs-intro);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-item);
+    color: var(--ink-muted);
+  }
+
+  @media (max-width: 1040px) {
+    .sh { grid-template-columns: 1fr; row-gap: var(--sp-4); }
+  }
+</style>

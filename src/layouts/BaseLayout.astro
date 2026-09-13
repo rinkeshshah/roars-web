@@ -110,6 +110,25 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
     </main>
     <slot name="footer" />
 
+    <!--
+      One shared bundle. Each init returns immediately when its markup is
+      absent, so a page with no accordion pays only for the early return.
+      Astro ships nothing else unless a component asks for it.
+    -->
+    <script>
+      import { initReveal } from '../scripts/reveal'
+      import { initTopbar } from '../scripts/topbar'
+      import { initNav } from '../scripts/nav'
+      import { initAccordions } from '../scripts/accordion'
+      import { initFilters } from '../scripts/filters'
+
+      initReveal()
+      initTopbar()
+      initNav()
+      initAccordions()
+      initFilters()
+    </script>
+
     {!ALLOW_INDEXING && (
       <Fragment
         set:html={

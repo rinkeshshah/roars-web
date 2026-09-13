@@ -1,0 +1,56 @@
+---
+/**
+ * Ghost button. 195x42 or 243x42, r60, inset ring, 12px label.
+ * Borders are inset box-shadows throughout the system, never CSS borders,
+ * which is how the design was drawn and keeps the ring colour animatable.
+ */
+interface Props {
+  href: string
+  label: string
+  /** Ring and ink flip with the ground. */
+  on?: 'dark' | 'light'
+  width?: 195 | 243 | 'auto'
+  external?: boolean
+  class?: string
+}
+const { href, label, on = 'dark', width = 243, external = false, class: cls } = Astro.props
+---
+
+<a
+  class:list={['ghost', `ghost--${on}`, cls]}
+  href={href}
+  rel={external ? 'noopener' : undefined}
+  target={external ? '_blank' : undefined}
+  style={width === 'auto' ? undefined : `width:${width}px`}
+>
+  <span class="ghost__label">{label}</span>
+  <span class="ghost__dots" aria-hidden="true"><i></i><i></i></span>
+</a>
+
+<style>
+  .ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--btn-ghost-h);
+    padding-inline: 18px;
+    border-radius: var(--r-pill);
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-medium);
+    line-height: 20px;
+    letter-spacing: var(--ls-button);
+    white-space: nowrap;
+    transition: box-shadow var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+  .ghost__dots { display: flex; gap: 3px; margin-left: var(--sp-5); }
+  .ghost__dots i { width: 8px; height: 8px; border-radius: var(--r-circle); display: block; }
+  .ghost__dots i:first-child { background: var(--c-rule); }
+
+  .ghost--dark { color: var(--c-on-dark); box-shadow: inset 0 0 0 2px var(--c-ring-dark); }
+  .ghost--dark .ghost__dots i:last-child { background: var(--c-white); }
+
+  .ghost--light { color: var(--c-ink-body); box-shadow: inset 0 0 0 1.5px var(--c-ring-light); }
+  .ghost--light .ghost__dots i:last-child { background: var(--c-ink-body); }
+
+  .ghost:hover { box-shadow: inset 0 0 0 2px var(--c-accent); }
+</style>

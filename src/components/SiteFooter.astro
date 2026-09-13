@@ -1,0 +1,239 @@
+---
+/**
+ * Shared footer. Identical on every page.
+ *
+ * One four-column grid carries all three bands: 459 / 233 / 234 / 436 of the
+ * 1362 content width, taken from the measured x positions in the specs
+ * (contact 0, navigation 459, social 692, subscribe 926).
+ *
+ * The newsletter fields are rendered with real labels and post to the Phase 4
+ * PHP endpoint. That endpoint does not exist yet, so the form is marked
+ * data-pending and the submit button is disabled until Phase 4 wires it.
+ * Shipping a form that silently swallows submissions is worse than one that
+ * plainly is not ready.
+ */
+import { site } from '../lib/site'
+import { NAV, SOCIAL, LEGAL } from '../lib/nav'
+
+const year = new Date().getFullYear()
+---
+
+<footer class="ft" data-ground="dark">
+  <div class="wrap">
+    <div class="ft__grid ft__top">
+      <svg class="ft__mark" viewBox="0 0 21 21" width="21" height="21" aria-hidden="true">
+        <circle cx="10.5" cy="7.5" r="4.4" fill="none" stroke="currentColor" stroke-width="2.2" />
+        <circle cx="10.5" cy="17" r="2.2" fill="currentColor" />
+      </svg>
+      <div class="ft__blurb">
+        <p>
+          Find how we can help you get from A to B. Our love for innovation
+          design and technology is evident in all our work. No detail is too
+          small.
+        </p>
+      </div>
+      <p class="ft__tagline">Space of Product<br />Solutions<i>*</i></p>
+    </div>
+
+    <div class="ft__grid ft__mid">
+      <div class="ft__col">
+        <div class="ft__rule"></div>
+        <p class="ft__phone">USA {site.phones.US.display}</p>
+        <a class="ft__email" href={`mailto:${site.email.sales}`}>{site.email.sales}</a>
+      </div>
+
+      <div class="ft__col">
+        <span class="ft__label">Navigation</span>
+        <div class="ft__rule ft__rule--short"></div>
+        <nav aria-label="Footer">
+          <ul class="ft__nav">
+            {NAV.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+          </ul>
+        </nav>
+      </div>
+
+      <div class="ft__col ft__col--social">
+        <ul class="ft__social">
+          {SOCIAL.map((i) => (
+            <li><a href={i.href} rel="noopener me" target="_blank">{i.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="ft__col">
+        <span class="ft__label">Subscribe our News</span>
+        <div class="ft__rule ft__rule--short"></div>
+        <form class="ft__sub" data-pending action="/api/contact.php" method="post">
+          <input type="hidden" name="form" value="newsletter" />
+          <div class="ft__field">
+            <label for="ft-name">Your name *</label>
+            <input id="ft-name" name="name" type="text" required autocomplete="name" disabled />
+          </div>
+          <div class="ft__field">
+            <label for="ft-email">Email *</label>
+            <input id="ft-email" name="email" type="email" required autocomplete="email" disabled />
+          </div>
+          <button class="ft__submit" type="submit" disabled>
+            <span>Subscribe</span>
+            <span class="ft__dots" aria-hidden="true"><i></i><i></i></span>
+          </button>
+          <p class="ft__pending">Sign-up opens when the new site goes live.</p>
+        </form>
+      </div>
+    </div>
+
+    <div class="ft__grid ft__bottom">
+      <p class="ft__wordmark">
+        roars<span class="ft__badge" aria-hidden="true">&reg;</span>
+      </p>
+    </div>
+
+    <div class="ft__grid ft__legal">
+      <div class="ft__col">
+        <span>&copy; {year}</span>
+        <span>{site.name}</span>
+      </div>
+      <div class="ft__col ft__col--links">
+        {LEGAL.map((i) => <a href={i.href}>{i.label}</a>)}
+      </div>
+      <div class="ft__col">
+        <span class="ft__dim">Offices</span>
+        <span>{site.offices.map((o) => o.city).join(' · ')}</span>
+      </div>
+      <div class="ft__col">
+        <span class="ft__dim">Built by</span>
+        <span>{site.name}</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    position: relative;
+    background: var(--c-footer);
+    color: var(--c-on-dark);
+    padding-block: 61px;
+    overflow: hidden;
+  }
+  .ft__grid {
+    display: grid;
+    grid-template-columns: 459fr 233fr 234fr 436fr;
+  }
+  .ft__top { margin-bottom: 125px; }
+  .ft__mark { color: var(--c-white); }
+  .ft__blurb { grid-column: 2 / 4; max-width: 384px; }
+  .ft__blurb p {
+    font-size: var(--fs-intro);
+    line-height: 1.36;
+    letter-spacing: var(--ls-item);
+    color: rgb(147, 147, 147);
+  }
+  .ft__tagline {
+    max-width: 180px;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    color: var(--c-white);
+  }
+  .ft__tagline i { color: var(--c-accent); font-style: normal; }
+
+  .ft__mid { margin-bottom: 98px; }
+  .ft__col { display: flex; flex-direction: column; }
+  .ft__rule { height: 1.5px; background: rgba(180, 174, 174, 0.7); margin-bottom: var(--sp-5); }
+  .ft__rule--short { width: 16px; margin-block: var(--sp-4); }
+  .ft__label {
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body);
+    color: var(--c-ink-label);
+  }
+  .ft__phone { font-size: var(--fs-micro); line-height: 17px; letter-spacing: var(--ls-item); color: var(--c-on-dark-78); }
+  .ft__email {
+    margin-top: var(--sp-2);
+    font-size: 20px; font-weight: var(--fw-semi); line-height: 24px;
+    letter-spacing: -0.02em; color: rgba(255, 255, 255, 0.95);
+  }
+  .ft__email:hover { color: var(--c-accent); }
+
+  .ft__nav, .ft__social { list-style: none; margin: 0; padding: 0; }
+  .ft__nav a {
+    display: block;
+    font-size: var(--fs-item); font-weight: var(--fw-semi); line-height: 40px;
+    letter-spacing: var(--ls-body); color: var(--c-on-dark-90);
+  }
+  .ft__col--social { justify-content: flex-end; padding-bottom: 4px; }
+  .ft__social a {
+    display: block;
+    font-size: var(--fs-body); line-height: 30px;
+    letter-spacing: var(--ls-body); color: var(--c-on-dark-78);
+  }
+  .ft__nav a:hover, .ft__social a:hover, .ft__col--links a:hover { color: var(--c-accent); }
+
+  .ft__sub { display: flex; flex-direction: column; gap: var(--sp-4); max-width: 430px; }
+  .ft__field { display: flex; flex-direction: column; gap: var(--sp-2); }
+  .ft__field label {
+    font-size: var(--fs-body); font-weight: var(--fw-regular);
+    letter-spacing: var(--ls-body); color: var(--c-white);
+  }
+  .ft__field input {
+    padding: 0 0 12px;
+    border: 0;
+    border-bottom: 1px solid rgba(231, 231, 231, 0.3);
+    background: none;
+    font-family: inherit; font-size: var(--fs-body); color: var(--c-white);
+  }
+  .ft__field input:focus { outline: 0; border-bottom-color: var(--c-accent); }
+  .ft__submit {
+    display: inline-flex; align-items: center; justify-content: space-between;
+    width: 195px; height: var(--btn-ghost-h); padding-inline: 21px;
+    border: 0; background: none;
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 2px var(--c-ring-dark);
+    font-family: inherit; font-size: var(--fs-micro); font-weight: var(--fw-medium);
+    color: var(--c-white); cursor: pointer;
+  }
+  .ft__submit[disabled] { opacity: 0.45; cursor: not-allowed; }
+  .ft__dots { display: flex; gap: 3px; }
+  .ft__dots i { width: 8px; height: 8px; border-radius: var(--r-circle); display: block; }
+  .ft__dots i:first-child { background: var(--c-rule); }
+  .ft__dots i:last-child { background: var(--c-white); }
+  .ft__pending { font-size: var(--fs-micro); letter-spacing: var(--ls-item); color: var(--c-on-dark-50); }
+
+  .ft__bottom .ft__wordmark {
+    grid-column: 2 / 5;
+    display: flex; align-items: flex-start; gap: var(--sp-2);
+    font-size: clamp(var(--fs-wordmark-m), 12.6vw, var(--fs-wordmark));
+    font-weight: var(--fw-semi); line-height: 0.86;
+    letter-spacing: var(--ls-item); color: var(--c-white);
+  }
+  .ft__badge {
+    display: flex; align-items: center; justify-content: center;
+    width: 31px; height: 31px; margin-top: 28px;
+    background: var(--c-accent); border-radius: var(--r-pill);
+    font-size: 13px; font-weight: var(--fw-semi); line-height: 1;
+    letter-spacing: 0; color: rgb(31, 31, 31);
+  }
+
+  .ft__legal {
+    margin-top: 52px;
+    font-size: var(--fs-micro); line-height: 21px; letter-spacing: var(--ls-item);
+    color: var(--c-on-dark-78);
+  }
+  .ft__legal .ft__dim, .ft__legal .ft__col:first-child span { color: var(--c-on-dark-50); }
+  .ft__legal .ft__col--links { color: var(--c-on-dark-78); }
+  .ft__legal .ft__col--links span, .ft__legal .ft__col--links a { color: var(--c-on-dark-78); }
+
+  @media (max-width: 1040px) {
+    .ft__grid { grid-template-columns: 1fr 1fr; row-gap: var(--sp-6); }
+    .ft__blurb, .ft__bottom .ft__wordmark { grid-column: 1 / -1; }
+    .ft__top, .ft__mid { margin-bottom: var(--sp-6); }
+    .ft__col--social { justify-content: flex-start; }
+  }
+  @media (max-width: 760px) {
+    .ft { padding-block: 56px 40px; }
+    .ft__grid { grid-template-columns: 1fr; row-gap: var(--sp-5); }
+    .ft__nav a { font-size: 20px; line-height: 30px; }
+    .ft__legal .ft__grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>

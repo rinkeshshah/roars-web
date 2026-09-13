@@ -1,0 +1,69 @@
+---
+/**
+ * Overlapping avatars: 42px circles (60px on Agency), -9px overlap,
+ * 3px white ring, with a counter chip leading the row.
+ *
+ * People with no image render as a ringed circle carrying their initials
+ * rather than a stock photo. There is no placeholder portrait in this system
+ * and inventing one would ship a fake face.
+ */
+interface Person { name: string; image?: string }
+interface Props {
+  people: Person[]
+  size?: 42 | 60
+  /** Shown in the leading chip, e.g. "+8". Omit to hide the chip. */
+  count?: string
+}
+const { people, size = 42, count } = Astro.props
+const initials = (n: string) =>
+  n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase()
+---
+
+<div class="stack" style={`--av:${size}px`}>
+  {count && <span class="stack__count">{count}</span>}
+  <ul class="stack__list">
+    {people.map((p) => (
+      <li class="stack__item">
+        {p.image
+          ? <img class="stack__img" src={p.image} alt={p.name} width={size} height={size} loading="lazy" />
+          : <span class="stack__img stack__img--initials" role="img" aria-label={p.name}>{initials(p.name)}</span>}
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .stack { display: flex; align-items: center; gap: var(--sp-3); }
+  .stack__count {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding-inline: 12px;
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body);
+    color: var(--ink);
+  }
+  .stack__list { display: flex; list-style: none; margin: 0; padding: 0; }
+  .stack__item { margin-left: var(--avatar-overlap); }
+  .stack__item:first-child { margin-left: 0; }
+  .stack__img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--av);
+    height: var(--av);
+    border-radius: var(--r-circle);
+    object-fit: cover;
+    box-shadow: var(--shadow-ring);
+    background: var(--c-surface);
+  }
+  .stack__img--initials {
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-semi);
+    letter-spacing: 0;
+    color: var(--c-ink-body);
+  }
+</style>

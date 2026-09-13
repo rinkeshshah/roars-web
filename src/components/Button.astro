@@ -1,0 +1,64 @@
+---
+/**
+ * Primary button. 204x47, r60, black ground.
+ *
+ * The two dots are the brand's signature: 8px circles at x167 and x177 on the
+ * 204px width, the first #999895 at 0.6, the second white. Measured from the
+ * spec, expressed here as a flex row with the gap that reproduces them so the
+ * button can also grow for a longer label.
+ *
+ * Label is Helvetica Neue Medium, the one documented exception to Inter.
+ */
+interface Props {
+  href: string
+  label: string
+  /** Black on light grounds; white with black ink on dark ones. */
+  variant?: 'dark' | 'light'
+  external?: boolean
+  class?: string
+}
+const { href, label, variant = 'dark', external = false, class: cls } = Astro.props
+const rel = external ? 'noopener' : undefined
+const target = external ? '_blank' : undefined
+---
+
+<a class:list={['btn', `btn--${variant}`, cls]} href={href} rel={rel} target={target}>
+  <span class="btn__label">{label}</span>
+  <span class="btn__dots" aria-hidden="true"><i></i><i></i></span>
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: var(--btn-w);
+    height: var(--btn-h);
+    padding-inline: 25px 27px;
+    border-radius: var(--r-pill);
+    transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+  .btn__label {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    line-height: 20px;
+    letter-spacing: var(--ls-button);
+    white-space: nowrap;
+  }
+  .btn__dots { display: flex; gap: 2px; margin-left: var(--sp-4); }
+  .btn__dots i { width: 8px; height: 8px; border-radius: var(--r-circle); display: block; }
+
+  .btn--dark { background: var(--c-black); color: var(--c-white); }
+  .btn--dark .btn__dots i:first-child { background: rgba(153, 152, 149, 0.6); }
+  .btn--dark .btn__dots i:last-child { background: var(--c-white); }
+
+  .btn--light { background: var(--c-white); color: var(--c-footer); }
+  .btn--light .btn__dots i:first-child { background: rgba(11, 11, 11, 0.35); }
+  .btn--light .btn__dots i:last-child { background: var(--c-footer); }
+
+  /* The accent appears on hover only. Never as a resting ground. */
+  .btn:hover { background: var(--c-accent); color: var(--c-footer); }
+  .btn:hover .btn__dots i:first-child { background: rgba(11, 11, 11, 0.35); }
+  .btn:hover .btn__dots i:last-child { background: var(--c-footer); }
+</style>

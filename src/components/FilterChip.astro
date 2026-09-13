@@ -1,0 +1,54 @@
+---
+/**
+ * Filter chip. Pill, 1px inset ring, active state is a yellow fill.
+ * One of the two places yellow is allowed to be a ground, and only for the
+ * single active chip in a row.
+ *
+ * Rendered as a real <button>. The island in src/scripts/filters.ts wires the
+ * behaviour; without JS the chips are inert and every card stays visible,
+ * which is the correct no-JS state for a filter.
+ */
+interface Props {
+  value: string
+  label: string
+  active?: boolean
+  /** Shown on the "all" chip as "n / total". */
+  readout?: string
+}
+const { value, label, active = false, readout } = Astro.props
+---
+
+<button
+  class="chip"
+  type="button"
+  data-filter={value}
+  aria-pressed={active ? 'true' : 'false'}
+>
+  <span>{label}</span>
+  {readout && <span class="chip__readout" data-filter-readout>{readout}</span>}
+</button>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    height: 36px;
+    padding-inline: 14px;
+    border: 0;
+    background: transparent;
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.16);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: var(--fw-semi);
+    letter-spacing: -0.02em;
+    color: var(--c-ink-body);
+    cursor: pointer;
+    transition: background var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  }
+  .chip:hover { box-shadow: inset 0 0 0 1px var(--c-accent); background: rgba(255, 212, 0, 0.14); }
+  .chip[aria-pressed='true'] { background: var(--c-accent); box-shadow: inset 0 0 0 1px var(--c-accent); }
+  .chip__readout { color: var(--c-ink-label); font-weight: var(--fw-medium); }
+  .chip[aria-pressed='true'] .chip__readout { color: rgba(11, 11, 11, 0.55); }
+</style>

@@ -1,0 +1,45 @@
+---
+/**
+ * Stat block: name, 1.5px rule, 84px number, supporting line.
+ * The suffix rides the baseline of the number: "+" at 36/500, "%" at 26/700.
+ */
+interface Props {
+  value: string
+  suffix?: string
+  label: string
+  /** "%" is set smaller and heavier than "+". From the type spec. */
+  suffixStyle?: 'plus' | 'percent'
+}
+const { value, suffix, label, suffixStyle = 'plus' } = Astro.props
+---
+
+<div class="stat">
+  <div class="stat__rule"></div>
+  <p class="stat__value">
+    {value}{suffix && <span class:list={['stat__suffix', `stat__suffix--${suffixStyle}`]}>{suffix}</span>}
+  </p>
+  <p class="stat__label">{label}</p>
+</div>
+
+<style>
+  .stat { display: flex; flex-direction: column; }
+  .stat__rule { height: 1.5px; background: var(--rule); margin-bottom: var(--sp-5); }
+  .stat__value {
+    display: flex;
+    align-items: baseline;
+    font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display));
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display);
+    line-height: 1;
+    color: var(--ink);
+  }
+  .stat__suffix--plus { font-size: 0.43em; font-weight: var(--fw-medium); }
+  .stat__suffix--percent { font-size: 0.31em; font-weight: 700; }
+  .stat__label {
+    margin-top: var(--sp-5);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body);
+    color: var(--c-ink-label);
+  }
+</style>

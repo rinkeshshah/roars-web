@@ -1,0 +1,92 @@
+---
+/**
+ * Full-screen navigation overlay. One of the four approved islands.
+ *
+ * Real dialog semantics: the trigger in TopBar carries aria-expanded and
+ * aria-controls, the overlay traps focus while open, Escape closes it, and
+ * focus returns to the trigger. src/scripts/nav.ts wires it.
+ *
+ * Labels come from the design; URLs come from docs/URL-INVENTORY.csv. Where
+ * they disagree the CSV wins, which is why "Projects" serves /work/ and
+ * "Insights" serves /our-journal/. That is deliberate, per CLAUDE.md.
+ */
+import { site } from '../lib/site'
+import { NAV } from '../lib/nav'
+---
+
+<div class="nav" id="nav-overlay" data-nav-overlay hidden>
+  <div class="nav__panel" role="dialog" aria-modal="true" aria-label="Site navigation">
+    <div class="wrap nav__inner">
+      <div class="nav__head">
+        <span class="nav__label">Navigation</span>
+        <button class="nav__close" type="button" data-nav-close>
+          <span class="visually-hidden">Close menu</span>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <nav class="nav__nav" aria-label="Primary">
+        <ul class="nav__list">
+          {NAV.map((item) => (
+            <li><a class="nav__link" href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="nav__meta">
+        <a class="nav__email" href={`mailto:${site.email.sales}`}>{site.email.sales}</a>
+        <p class="nav__phones">
+          USA {site.phones.US.display}<br />UK {site.phones.UK.display}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .nav { position: fixed; inset: 0; z-index: 90; }
+  .nav[hidden] { display: none; }
+  .nav__panel {
+    position: absolute;
+    inset: 0;
+    background: var(--c-footer);
+    color: var(--c-on-dark);
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity var(--dur-fast) ease;
+  }
+  .nav.is-open .nav__panel { opacity: 1; }
+  .nav__inner { padding-block: var(--sp-5) var(--sp-7); }
+  .nav__head { display: flex; align-items: center; justify-content: space-between; }
+  .nav__label {
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body);
+    color: var(--c-ink-label);
+  }
+  .nav__close {
+    width: 44px; height: 44px;
+    border: 0; background: none; cursor: pointer;
+    font-size: 28px; line-height: 1; color: var(--c-on-dark);
+  }
+  .nav__close:hover { color: var(--c-accent); }
+  .nav__list { list-style: none; margin: var(--sp-7) 0 0; padding: 0; }
+  .nav__link {
+    display: block;
+    padding-block: var(--sp-2);
+    font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display));
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display);
+    line-height: 1.1;
+    color: var(--c-on-dark-90);
+  }
+  .nav__link:hover { color: var(--c-accent); }
+  .nav__meta { margin-top: var(--sp-7); display: flex; flex-direction: column; gap: var(--sp-3); }
+  .nav__email { font-size: var(--fs-item); font-weight: var(--fw-semi); letter-spacing: -0.02em; }
+  .nav__email:hover { color: var(--c-accent); }
+  .nav__phones { font-size: var(--fs-micro); line-height: 20px; color: var(--c-on-dark-50); }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+</style>

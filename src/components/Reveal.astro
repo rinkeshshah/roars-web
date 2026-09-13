@@ -1,0 +1,24 @@
+---
+/**
+ * Reveal-on-intersect wrapper. Zero JS of its own: the CSS lives in base.css
+ * and one shared observer (src/scripts/reveal.ts) adds .is-in.
+ *
+ * Not an island, by design. The four approved islands are the nav overlay,
+ * filter chips, accordion and the projects cross-fade.
+ */
+interface Props {
+  /** Stagger within a group. Applied as transition-delay. */
+  delay?: number
+  as?: string
+  class?: string
+}
+const { delay = 0, as: Tag = 'div', class: cls } = Astro.props
+---
+
+<Tag
+  class:list={['reveal', cls]}
+  data-reveal
+  style={delay ? `transition-delay:${delay}ms` : undefined}
+>
+  <slot />
+</Tag>

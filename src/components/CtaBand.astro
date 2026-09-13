@@ -1,0 +1,78 @@
+---
+/**
+ * Shared CTA band. 1440x540 dark, 42/52 headline, one primary button.
+ * Copy is verbatim from design/specs/CTA Band.md.
+ */
+import Section from './Section.astro'
+import Button from './Button.astro'
+import Reveal from './Reveal.astro'
+import { site } from '../lib/site'
+---
+
+<Section ground="dark" class="cta">
+  <div class="cta__grid">
+    <Reveal class="cta__left">
+      <div class="cta__rule"></div>
+      <span class="cta__label">A to B</span>
+      <p class="cta__head">Find how we can help you get from A to B</p>
+      <p class="cta__phones">
+        USA {site.phones.US.display} &middot; UK {site.phones.UK.display}
+      </p>
+    </Reveal>
+    <Reveal class="cta__right" delay={80}>
+      <p class="cta__body">
+        Our love for innovation design and technology is evident in all our
+        works. No detail is too small. Together, we&rsquo;ll make your business
+        grow, manifold.
+      </p>
+      <Button href={site.booking} label="Request a Callback" variant="light" external />
+    </Reveal>
+  </div>
+</Section>
+
+<style>
+  .cta { background: var(--c-footer); }
+  .cta__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 922fr) minmax(0, 440fr);
+    column-gap: var(--sp-5);
+    padding-block: 100px;
+  }
+  .cta__rule { height: 1.5px; background: rgba(180, 174, 174, 0.35); margin-bottom: var(--sp-4); }
+  .cta__label {
+    display: block;
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body);
+    color: var(--c-ink-label);
+  }
+  .cta__head {
+    margin-top: 42px;
+    max-width: 760px;
+    font-size: clamp(34px, 2.9vw, var(--fs-stat));
+    font-weight: var(--fw-semi);
+    line-height: 1.24;
+    letter-spacing: var(--ls-display);
+    color: var(--c-white);
+  }
+  .cta__phones {
+    margin-top: var(--sp-6);
+    font-size: var(--fs-label);
+    letter-spacing: var(--ls-item);
+    color: var(--c-on-dark-50);
+  }
+  .cta__right { display: flex; flex-direction: column; gap: 58px; align-items: flex-start; padding-top: 96px; }
+  .cta__body {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    letter-spacing: var(--ls-item);
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  @media (max-width: 1040px) {
+    .cta__grid { grid-template-columns: 1fr; row-gap: var(--sp-5); padding-block: var(--sp-7); }
+    .cta__right { padding-top: 0; gap: var(--sp-5); }
+    .cta__head { margin-top: var(--sp-4); }
+    .cta__phones { margin-top: var(--sp-4); }
+  }
+</style>
