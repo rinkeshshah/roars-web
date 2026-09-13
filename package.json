@@ -19,7 +19,8 @@
     "test:components": "node scripts/test-components.mjs",
     "test:content": "node scripts/test-content-gate.mjs",
     "test:homepage": "node scripts/test-homepage.mjs",
-    "test": "npm run test:content && npm run test:components && npm run test:homepage"
+    "test": "npm run test:content && npm run test:components && npm run test:homepage",
+    "migrate:dry": "node scripts/migrate-wordpress.mjs --dry-run"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",

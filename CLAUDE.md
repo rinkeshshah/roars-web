@@ -159,7 +159,14 @@ That last check is the important one. It is what makes it impossible to silently
 
 **Fake modified dates.** 37 posts share `2022-08-31`, 14 share `2025-08-26`, 10 share `2023-04-12`. Bulk operations, not edits. Carry real `date` values. **Never carry those `modified` values into `dateModified`.** Manufactured freshness is a spam signal.
 
-**Squirrly meta is not in `wp_postmeta`.** It lives in the `wp_qss` table as PHP-serialised arrays keyed on `url_hash`, with a handful of per-post overrides in postmeta (`_sq_title`, `_sq_description`) that take precedence. Export script and runbook are in the WordPress repo.
+**Squirrly meta is not in `wp_postmeta`.** It lives in the `wp_qss` table as PHP-serialised arrays keyed on `url_hash`. Exported and unserialised into `docs/migration/squirrly-meta.csv`, 280 rows covering 186 of the 194 inventory URLs.
+
+Two things the export settled, both previously open:
+
+- **The postmeta override query returned nothing.** `wp_qss` is the single source, so the old "postmeta wins where both hold a value" rule is moot. There is no precedence to resolve.
+- **`wp_qss` holds zero redirects**, which confirms the earlier finding that no legacy redirect map exists to collide with `src/lib/redirects.mjs`. Production `.htaccess` and Cloudflare rules are still the two places a stray 301 could hide.
+
+Port every value verbatim, over-length ones included. The build gate refusing an 88-character title is the correct outcome, not a problem to route around by truncating during migration.
 
 **Multi-category posts.** Up to four categories each, so `/category/our-journal/*/` archives overlap heavily. Page 1 indexable, `page/2+` noindex.
 
