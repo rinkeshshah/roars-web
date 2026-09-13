@@ -27,6 +27,7 @@
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
 import { join, dirname, relative, extname, isAbsolute } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { load as yamlLoad, JSON_SCHEMA } from 'js-yaml'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const args = process.argv.slice(2)
@@ -48,92 +49,46 @@ const warn = (file, rule, msg) => warnings.push({ file, rule, msg })
 /* --------------------------------------------------------- front matter */
 
 /**
- * Deliberately small YAML reader. Front matter here is flat scalars, lists of
- * scalars, and lists of {question, answer}. Pulling in a YAML parser for that
- * would be a dependency the stack does not need.
+ * Front matter is parsed with js-yaml, not by hand.
+ *
+ * An earlier version split lines on the first colon. That is the wrong shape
+ * of tool for the job: it silently mis-reads a description containing a colon,
+ * a title with an escaped quote, a folded scalar, or an anchor, and a gate that
+ * quietly mis-reads its input passes content it should have blocked. A parser
+ * that throws on malformed input is the only kind worth having here.
+ *
+ * The build itself reads these files through Astro's content layer, which uses
+ * the same YAML grammar and then applies the Zod schemas in
+ * src/content.config.ts. Those schemas remain the authority for per-entry
+ * rules. This script exists for the rules that need the whole set at once
+ * (duplicates, sibling uniqueness, link targets) and to fail fast in CI before
+ * `astro build` runs, which is why it cannot simply call getCollection():
+ * `astro:content` only resolves inside Astro's module graph, not in a plain
+ * node script.
  */
-function parseFrontMatter(raw) {
+function parseFrontMatter(file, raw) {
   if (!raw.startsWith('---')) return { data: {}, body: raw }
-  const end = raw.indexOf('\n---', 3)
-  if (end === -1) return { data: {}, body: raw }
-  const body = raw.slice(end + 4)
+  const close = raw.indexOf('\n---', 3)
+  if (close === -1) {
+    throw new Error(`${file}: front matter opens with --- but never closes.`)
+  }
+  const head = raw.slice(3, close)
+  const body = raw.slice(close + 4)
 
-  const lines = raw
-    .slice(3, end)
-    .split('\n')
-    .filter((l) => l.trim() && !l.trim().startsWith('#'))
-
-  const indentOf = (l) => l.length - l.trimStart().length
-
-  /** Parse the block of lines at `depth`, returning an object or an array. */
-  function block(from, to, depth) {
-    // A block is a list when its first line at this depth is a "- " item.
-    const isList = lines.slice(from, to).some(
-      (l) => indentOf(l) === depth && l.trim().startsWith('- '),
-    )
-    const out = isList ? [] : {}
-
-    let i = from
-    while (i < to) {
-      const line = lines[i]
-      if (indentOf(line) !== depth) { i++; continue }
-      const text = line.trim()
-
-      // Where does this entry's nested block end?
-      let j = i + 1
-      while (j < to && indentOf(lines[j]) > depth) j++
-
-      if (isList) {
-        const item = text.slice(2)
-        const colon = item.indexOf(':')
-        if (colon !== -1 && !item.startsWith('"') && !item.startsWith("'")) {
-          // "- question: ..." starts an inline map that may continue below.
-          const obj = {}
-          obj[item.slice(0, colon).trim()] = unquote(item.slice(colon + 1).trim())
-          for (let k = i + 1; k < j; k++) {
-            const t = lines[k].trim()
-            const c = t.indexOf(':')
-            if (c !== -1) obj[t.slice(0, c).trim()] = unquote(t.slice(c + 1).trim())
-          }
-          out.push(obj)
-        } else {
-          out.push(unquote(item))
-        }
-        i = j
-        continue
-      }
-
-      const colon = text.indexOf(':')
-      if (colon === -1) { i = j; continue }
-      const key = text.slice(0, colon).trim()
-      const value = text.slice(colon + 1).trim()
-
-      if (value === '') {
-        // Nested block on the following lines. Its shape is decided by
-        // looking at those lines, not guessed from this one.
-        out[key] = j > i + 1 ? block(i + 1, j, indentOf(lines[i + 1])) : {}
-      } else if (value.startsWith('[')) {
-        out[key] = value
-          .slice(1, -1)
-          .split(',')
-          .map((v) => unquote(v.trim()))
-          .filter(Boolean)
-      } else {
-        out[key] = unquote(value)
-      }
-      i = j
-    }
-    return out
+  let data
+  try {
+    data = yamlLoad(head, { filename: file, schema: JSON_SCHEMA })
+  } catch (err) {
+    // Loud, with the line number, rather than a silent empty object.
+    throw new Error(`${file}: invalid YAML front matter.\n    ${err.message}`)
   }
 
-  const data = lines.length ? block(0, lines.length, indentOf(lines[0])) : {}
+  if (data === null || data === undefined) return { data: {}, body }
+  if (typeof data !== 'object' || Array.isArray(data)) {
+    throw new Error(`${file}: front matter must be a mapping, got ${Array.isArray(data) ? 'a list' : typeof data}.`)
+  }
   return { data, body }
 }
-
-const unquote = (v) =>
-  (v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))
-    ? v.slice(1, -1)
-    : v
 
 /* -------------------------------------------------------------- helpers */
 
@@ -202,7 +157,7 @@ if (existsSync(CONTENT)) {
         if (statSync(full).isDirectory()) { walk(full); continue }
         if (!['.md', '.mdx'].includes(extname(name))) continue
         const raw = readFileSync(full, 'utf8')
-        const { data, body } = parseFrontMatter(raw)
+        const { data, body } = parseFrontMatter(relative(ROOT, full), raw)
         entries.push({ file: relative(ROOT, full), collection, data, body })
       }
     })(dir)
@@ -223,7 +178,7 @@ const descriptions = new Map()
 for (const e of entries) {
   const { file, data, body } = e
   const s = data.seo || {}
-  if (data.draft === 'true' || data.draft === true) continue
+  if (data.draft === true) continue
 
   // --- SEO fields ---
   if (!s.title) fail(file, 'seo.title', 'missing')

@@ -156,6 +156,114 @@ ok('duplicate seo.title is caught', /duplicate title/.test(dupOutput))
 ok('duplicate error names the other file', /valid-entry\.md/.test(dupOutput))
 ok('near-identical siblings are caught', /not unique enough|thin uniqueness/.test(dupOutput))
 
+/* ---------------------------------------------------------------------
+ * YAML the hand-rolled reader got wrong. Checked against the old
+ * implementation rather than assumed:
+ *
+ *   folded scalar (>)     old read the whole description as ">", one
+ *                         character, which would have produced a bogus
+ *                         "too short" failure on valid copy
+ *   single-quoted ''      old returned "Roars'' guide" instead of
+ *                         "Roars' guide" — wrong content, silently
+ *   malformed YAML        old returned {} and reported "field missing"
+ *                         instead of naming the syntax error
+ *
+ * A double-quoted value containing a colon it did handle correctly, so
+ * that one is kept below as a regression guard rather than a fix.
+ * ------------------------------------------------------------------- */
+
+rmSync(join(dir, 'posts'), { recursive: true, force: true })
+
+// A colon inside the description, and an apostrophe inside the title.
+write(
+  'posts',
+  'awkward-values',
+  `title: "Roars: a product agency"
+publishedAt: 2026-02-01
+author: "Fixture"
+categories: ["testing"]
+seo:
+  title: "Product strategy: what's actually included"
+  description: "Discovery, feasibility and a costed roadmap: the four things a product strategy engagement covers, and what it deliberately leaves out."
+  primaryIntent: "product strategy"`,
+  longBody,
+)
+
+let awkward = ''
+try {
+  awkward = execFileSync('node', [join(ROOT, 'scripts/validate-content.mjs'), '--dir', dir], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  })
+} catch (err) {
+  awkward = `${err.stdout || ''}${err.stderr || ''}`
+}
+
+// All legal YAML, so the gate must accept it rather than invent a failure.
+ok('colon inside a description is read whole', !/seo\.description/.test(awkward), awkward.trim().split('\n').pop())
+ok('apostrophe inside a title is read whole', !/seo\.title/.test(awkward))
+ok('awkward-but-valid entry passes', /PASS/.test(awkward))
+
+// The two the old reader actually mangled.
+rmSync(join(dir, 'posts'), { recursive: true, force: true })
+write(
+  'posts',
+  'folded-scalar',
+  `title: 'Roars'' own guide'
+publishedAt: 2026-02-03
+author: "Fixture"
+categories: ["testing"]
+seo:
+  title: "How the build-time content gate reads front matter"
+  description: >
+    A folded scalar spanning two source lines, which has to read as one
+    continuous sentence of well over a hundred and twenty characters.
+  primaryIntent: "front matter"`,
+  longBody,
+)
+
+let folded = ''
+try {
+  folded = execFileSync('node', [join(ROOT, 'scripts/validate-content.mjs'), '--dir', dir], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  })
+} catch (err) {
+  folded = `${err.stdout || ''}${err.stderr || ''}`
+}
+
+ok('folded scalar description is read whole, not as ">"',
+  !/seo\.description/.test(folded), folded.trim().split('\n').pop())
+ok("single-quoted '' is unescaped", /PASS/.test(folded))
+
+// Malformed YAML must fail loudly, not silently yield an empty object.
+write(
+  'posts',
+  'broken-yaml',
+  `title: "Unclosed
+publishedAt: 2026-02-02
+seo:
+    title: "wrong indent
+  description: nope`,
+  longBody,
+)
+
+let broken = ''
+let brokenCode = 0
+try {
+  execFileSync('node', [join(ROOT, 'scripts/validate-content.mjs'), '--dir', dir], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  })
+} catch (err) {
+  brokenCode = err.status ?? 1
+  broken = `${err.stdout || ''}${err.stderr || ''}`
+}
+
+ok('malformed YAML fails the run', brokenCode !== 0)
+ok('malformed YAML names the file and the reason',
+  /broken-yaml\.md/.test(broken) && /invalid YAML|front matter/i.test(broken))
+
 rmSync(dir, { recursive: true, force: true })
 
 console.log(results.join('\n'))

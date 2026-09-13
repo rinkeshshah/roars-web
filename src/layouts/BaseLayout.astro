@@ -121,12 +121,14 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
       import { initNav } from '../scripts/nav'
       import { initAccordions } from '../scripts/accordion'
       import { initFilters } from '../scripts/filters'
+      import { initCrossfade } from '../scripts/crossfade'
 
       initReveal()
       initTopbar()
       initNav()
       initAccordions()
       initFilters()
+      initCrossfade()
     </script>
 
     {!ALLOW_INDEXING && (
