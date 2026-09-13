@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; background:#FFFFFF; }
+  body { font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#FFD400; }
+  @keyframes swoosh { from { clip-path:inset(0 100% 0 0); } to { clip-path:inset(0 0 0 0); } }
+  @keyframes tick { 0%,100% { opacity:1; } 50% { opacity:.15; } }
+  @media (prefers-reduced-motion: reduce) { [data-swoosh], [data-blink] { animation:none !important; } }
+</style>
+</helmet>
+
+<div data-fit="1" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+
+<div data-topbar="1" style="position:fixed;left:0;top:0;width:1440px;height:150px;transform-origin:0 0;z-index:50;pointer-events:none">
+  <div style="pointer-events:auto">
+  <div style="position:absolute;left:39px;top:36px;width:1366px;height:111px;overflow:hidden">
+    <a href="Roars v2 - Main.dc.html" data-mark="1" style="position:absolute;left:-9px;top:-4px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:999px;transform-origin:50% 50%;transition:background .45s ease, box-shadow .45s ease"><span data-logo-ring="1" style="position:absolute;inset:0;border-radius:999px;background:conic-gradient(#FFD400 0turn,rgba(255,212,0,.14) 0turn);mask:radial-gradient(circle,rgba(0,0,0,0) 61%,#000 63%);-webkit-mask:radial-gradient(circle,rgba(0,0,0,0) 61%,#000 63%);opacity:0;transition:opacity .45s ease"></span><img data-logo-img="1" src="brand/roars-mark.png" alt="Roars" style="position:relative;width:26px;height:auto;display:block;transform-origin:50% 50%;transition:filter .5s ease, transform .6s cubic-bezier(.16,1,.3,1)" /></a>
+    <div data-contact="1" style="position:absolute;left:929px;top:0;width:285px;height:111px;overflow:hidden;transition:opacity .25s ease, transform .25s ease">
+      <span data-ink="1" style="position:absolute;left:0;top:71px;width:180px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgb(255,255,255);opacity:.75">We reply within 24 hours</span>
+      <div style="position:absolute;left:0;top:0;width:285px;height:42px">
+        <div style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;overflow:hidden;background:rgb(255,255,255)">
+          <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:5px;top:5px;width:32px;height:32px;border-radius:60px;object-fit:cover" />
+        </div>
+        <a href="https://meet.roarsinc.com/sales" data-ring="1" style="position:absolute;left:42px;top:0;width:243px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);display:block">
+          <span data-ink="1" style="position:absolute;left:18px;top:11px;font-size:12px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:rgb(255,255,255);white-space:nowrap">Setup a Meeting</span>
+          <span style="position:absolute;left:205px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span>
+          <span data-fill="1" style="position:absolute;left:216px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(255,255,255)"></span>
+        </a>
+      </div>
+    </div>
+    <div style="position:absolute;left:1340px;top:18px;width:26px;height:6px;display:flex;flex-direction:column;justify-content:space-between">
+      <span data-fill="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255)"></span>
+      <span data-fill="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255)"></span>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div data-topbar-m="1" style="display:none;position:fixed;left:0;top:0;right:0;height:60px;z-index:60;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(153,152,149,.25);transition:background .4s ease, border-color .4s ease">
+  <a href="Roars v2 - Main.dc.html" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-left:-10px"><img data-mbar-img="1" src="brand/roars-mark.png" alt="Roars" style="width:24px;height:auto;display:block;filter:brightness(0);transition:filter .4s ease" /></a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a href="Roars v2 - Contact.dc.html" data-mbar-pill="1" style="height:34px;padding:0 16px;border-radius:60px;display:flex;align-items:center;box-shadow:inset 0 0 0 1.5px rgba(15,15,15,.28);font-size:12px;font-weight:500;letter-spacing:-0.03em;color:rgb(15,15,15);transition:box-shadow .4s ease, color .4s ease">Contact</a>
+    <a href="Roars v2 - Menu.dc.html" style="width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:5px">
+      <span data-mbar-line="1" style="display:block;width:24px;height:2px;background:rgb(15,15,15);transition:background .4s ease"></span>
+      <span data-mbar-line="1" style="display:block;width:24px;height:2px;background:rgb(15,15,15);transition:background .4s ease"></span>
+    </a>
+  </div>
+</div>
+
+<div data-mobile="1" style="display:none;width:100%;overflow:hidden;background:#FFFFFF">
+  <!-- hero -->
+  <section data-mdark="1" style="position:relative;padding:96px 20px 48px;background:#000;overflow:hidden;display:flex;flex-direction:column;gap:30px">
+    <img data-mpar="0.05" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover" />
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,.66) 0%,rgba(0,0,0,.24) 44%,rgba(0,0,0,.6) 100%)"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:30px">
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:14px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.55)">SERVICES / AI AUTOMATION</span>
+        <div style="width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="font-size:19px;font-weight:500;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.94)">Your team shouldn&rsquo;t spend time on work a system can own.</span>
+        <span style="font-size:15px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.62)">AI automation that removes friction from real work.</span>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-wrap:wrap;gap:8px">
+        <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">80% FEWER MANUAL TASKS</span>
+        <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">3&ndash;6 WEEKS TO PILOT</span>
+        <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">HUMANS IN CONTROL</span>
+        <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">ZERO RETAINER</span>
+      </div>
+
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:18px;font-weight:600;letter-spacing:-0.04em;color:rgb(251,251,251)">roars</span><img src="assets/star-5.svg" alt="" style="width:10px;height:10px;filter:invert(1)" /></div>
+        <span style="font-size:40px;font-weight:600;line-height:42px;letter-spacing:-0.05em;color:rgba(255,255,255,.62)">AI</span>
+        <span style="font-size:54px;font-weight:600;line-height:56px;letter-spacing:-0.055em;color:rgb(251,251,251)">automation</span>
+        <span style="font-size:17px;font-weight:500;letter-spacing:-0.04em;color:rgba(255,255,255,.72)">Services &mdash; agents, workflows, plumbing</span>
+      </div>
+
+      <a data-mrev="1" href="#form-section" style="display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 22px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)">
+        <span style="font-size:13px;font-weight:500;color:rgb(255,255,255)">Shall we chat?</span>
+        <span style="display:flex;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span><span style="width:8px;height:8px;border-radius:50%;background:#FFD400"></span></span>
+      </a>
+
+      <!-- eval terminal -->
+      <div data-mrev="1" style="width:100%;background:rgba(8,8,8,.92);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16), 0 20px 44px rgba(0,0,0,.5);padding:18px;font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,.88);display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:11px;font-weight:600;letter-spacing:0.2em;color:rgba(255,255,255,.55)">EVAL RUN</span><span style="font-size:11px;font-weight:500;letter-spacing:0.06em;color:rgba(255,255,255,.55)">#0092</span></div>
+        <div style="margin:12px 0;border-top:1px dashed rgba(255,255,255,.22)"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:11px;font-weight:500;line-height:17px;letter-spacing:0.02em">
+          <div><span style="display:block;color:rgba(255,255,255,.92)">contract_triage</span><span style="display:block;color:rgba(255,255,255,.45)">PASS &middot; 0.97 &middot; 38 clauses</span></div>
+          <div><span style="display:block;color:rgba(255,255,255,.92)">first_response_draft</span><span style="display:block;color:rgba(255,255,255,.45)">PASS &middot; 0.94 &middot; human sends</span></div>
+          <div><span style="display:block;color:rgba(255,255,255,.92)">clause_extract</span><span style="display:block;color:rgba(255,255,255,.45)">HOLD &middot; 0.89 &middot; to paralegal</span></div>
+          <div><span style="display:block;color:rgba(255,255,255,.92)">invoice_to_erp</span><span style="display:block;color:rgba(255,255,255,.45)">PASS &middot; 0.96 &middot; 2 flagged</span></div>
+          <div><span style="display:block;color:rgba(255,255,255,.92)">kb_answer_cited</span><span style="display:block;color:rgba(255,255,255,.45)">PASS &middot; 0.99 &middot; source req.</span></div>
+        </div>
+        <div style="margin:14px 0 12px;border-top:1px dashed rgba(255,255,255,.22)"></div>
+        <span style="font-size:10px;font-weight:600;letter-spacing:0.22em;color:rgba(255,255,255,.5)">STATUS</span>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+          <span style="width:7px;height:7px;background:#FFD400;animation:tick 1.4s ease-in-out infinite"></span>
+          <span style="font-size:12px;font-weight:600;letter-spacing:0.04em;color:rgb(255,255,255)">RUNNING EVALS&hellip;</span>
+        </div>
+        <div style="position:relative;height:3px;background:rgba(255,255,255,.14);margin-top:16px"><div style="position:absolute;left:0;top:0;width:72%;height:3px;background:#FFD400"></div></div>
+        <span style="font-size:11px;font-weight:500;line-height:18px;letter-spacing:0.02em;color:rgba(255,255,255,.55);margin-top:16px">Baseline +38%. Nothing ships without proof it beats the status quo.</span>
+        <span style="font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.4);margin-top:16px">EVALS BEFORE PROMPTS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- six ways -->
+  <section style="padding:44px 20px 52px;background:rgb(245,245,245);display:flex;flex-direction:column;gap:24px">
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px">
+      <div style="height:1.5px;background:rgba(153,152,149,.7)"></div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgb(145,145,145)">WHAT WE BUILD</span>
+    </div>
+    <span data-mrev="1" style="font-size:44px;font-weight:600;line-height:48px;letter-spacing:-0.05em;color:rgb(36,36,36)">Six ways AI actually earns its place.</span>
+    <span data-mrev="1" style="font-size:17px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.8)">We don&rsquo;t sell <span style="font-weight:700;color:rgb(20,20,20)">&ldquo;AI transformation.&rdquo;</span> We ship small, specific systems that remove friction from the work your team already does then we measure whether they helped. If they didn&rsquo;t, we turn them off.</span>
+
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">01</span>
+      <span style="font-size:22px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgb(36,36,36)">Custom AI agents</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Goal-driven assistants that can read a ticket, query your CRM, draft a response, and route it for review. Built for one job, evaluated like software, not demoed like magic.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">02</span>
+      <span style="font-size:22px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgb(36,36,36)">Workflow automation</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">End-to-end automation across the apps you already pay for. Trigger from Slack, read from Salesforce, write to Notion, post to Linear with an LLM doing the thinking in between.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">03</span>
+      <span style="font-size:22px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgb(36,36,36)">RAG &amp; knowledge assistants</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Private retrieval systems trained on your contracts, docs, tickets, codebase. Answers cite their sources. No hallucinated policies. No &ldquo;based on my training data&rdquo; disclaimers.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">04</span>
+      <span style="font-size:22px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgb(36,36,36)">Document intelligence</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Pull structured data out of PDFs, invoices, contracts and emails. Validate against your schema. Hand only the edge cases to a human. The other 80% just&hellip; happens.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">05</span>
+      <span style="font-size:22px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgb(36,36,36)">LLM integration</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Bring AI into the products and tools your team already lives in. Private model routing, prompt management, telemetry, cost controls the unglamorous plumbing that makes it work in production.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">06</span>
+      <span style="font-size:22px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgb(36,36,36)">AI readiness audit</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Two weeks. We sit with your team, map the work, find the three highest-ROI automations and the three to never attempt. You get a build plan and a clear &ldquo;no.&rdquo; If you want.</span>
+    </div>
+  </section>
+
+  <!-- featured work -->
+  <section data-mdark="1" style="position:relative;padding:48px 20px 52px;background:#000;overflow:hidden;display:flex;flex-direction:column;gap:24px">
+    <img data-mpar="0.05" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover" />
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,.68) 0%,rgba(0,0,0,.36) 50%,rgba(0,0,0,.68) 100%)"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:24px">
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px">
+        <div style="width:16px;height:1.5px;background:rgba(180,174,174,.7)"></div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.55)">FEATURED WORK</span>
+      </div>
+      <span data-mrev="1" style="font-size:44px;font-weight:600;line-height:46px;letter-spacing:-0.05em;color:rgb(251,251,251)">GYMBAIT.AI</span>
+      <span data-mrev="1" style="font-size:17px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Unleash your potential with bespoke Artificial Intelligence Training. GymBAIT flipped the script by using AI to predict engagement gaps, adapt routines to individual goals, and offer encouragement when users lag.</span>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:16px;padding-top:20px;border-top:.5px solid rgba(255,255,255,.22)">
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">SYSTEM</span><span style="font-size:17px;font-weight:500;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Engagement prediction</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">HUMAN IN THE LOOP</span><span style="font-size:17px;font-weight:500;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Coach reviews every nudge</span></div>
+      </div>
+      <a data-mrev="1" href="https://www.roarsinc.com/work/gymbait/" style="display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 22px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)">
+        <span style="font-size:13px;font-weight:500;color:rgb(255,255,255)">View Project</span>
+        <span style="display:flex;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span><span style="width:8px;height:8px;border-radius:50%;background:#FFD400"></span></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- process -->
+  <section style="padding:44px 20px 52px;background:#fff;display:flex;flex-direction:column;gap:24px">
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px">
+      <div style="width:16px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgb(145,145,145)">HOW WE WORK</span>
+    </div>
+    <span data-mrev="1" style="font-size:46px;font-weight:600;line-height:48px;letter-spacing:-0.05em;color:rgb(36,36,36)">Ask first. Build second.</span>
+    <span data-mrev="1" style="font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.04em;color:rgba(20,20,20,.72)">Every Roars engagement starts with the same question: does this actually help someone? If it doesn&rsquo;t, we tell you before we take the brief. If it does, here&rsquo;s how we get from idea to in-production.</span>
+
+    <div style="display:flex;flex-direction:column;margin-top:6px">
+      <div data-mrev="1" style="position:relative;display:flex;flex-direction:column;gap:10px;padding:0 0 32px 26px;border-left:1px dashed rgba(20,20,20,.3)">
+        <span data-mdot="1" style="position:absolute;left:-7px;top:4px;width:13px;height:13px;background:#fff;box-shadow:inset 0 0 0 1.5px rgba(20,20,20,.5);transition:background .5s ease, box-shadow .5s ease"></span>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.16em;color:rgb(20,20,20)">WEEK 1</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgb(145,145,145)">DISCOVERY</span></div>
+        <span style="font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgb(36,36,36)">Ask the right question</span>
+        <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">We sit with your team and map the work. Not the org chart &mdash; the actual hour-by-hour. We&rsquo;re looking for friction, repetition, and the moments where a person is doing what a system should.</span>
+      </div>
+      <div data-mrev="1" style="position:relative;display:flex;flex-direction:column;gap:10px;padding:0 0 32px 26px;border-left:1px dashed rgba(20,20,20,.3)">
+        <span data-mdot="1" style="position:absolute;left:-7px;top:4px;width:13px;height:13px;background:#fff;box-shadow:inset 0 0 0 1.5px rgba(20,20,20,.5);transition:background .5s ease, box-shadow .5s ease"></span>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.16em;color:rgb(20,20,20)">WEEK 2</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgb(145,145,145)">ARCHITECTURE</span></div>
+        <span style="font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgb(36,36,36)">Map the system</span>
+        <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Data flows, decision points, edge cases, human-in-the-loop gates. We draw the whole thing before we touch a model. You sign off on a diagram, not a vibe.</span>
+      </div>
+      <div data-mrev="1" style="position:relative;display:flex;flex-direction:column;gap:10px;padding:0 0 32px 26px;border-left:1px dashed rgba(20,20,20,.3)">
+        <span data-mdot="1" style="position:absolute;left:-7px;top:4px;width:13px;height:13px;background:#fff;box-shadow:inset 0 0 0 1.5px rgba(20,20,20,.5);transition:background .5s ease, box-shadow .5s ease"></span>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.16em;color:rgb(20,20,20)">WEEKS 3&ndash;6</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgb(145,145,145)">PILOT</span></div>
+        <span style="font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgb(36,36,36)">Build &amp; evaluate</span>
+        <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Working pilot inside your stack. Real data, real users, real tests. We write evals before we write prompts. Nothing ships without measurable proof it&rsquo;s better than the status quo.</span>
+      </div>
+      <div data-mrev="1" style="position:relative;display:flex;flex-direction:column;gap:10px;padding:0 0 6px 26px">
+        <span data-mdot="1" style="position:absolute;left:-7px;top:4px;width:13px;height:13px;background:#fff;box-shadow:inset 0 0 0 1.5px rgba(20,20,20,.5);transition:background .5s ease, box-shadow .5s ease"></span>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.16em;color:rgb(20,20,20)">WEEKS 7+</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgb(145,145,145)">PRODUCTION</span></div>
+        <span style="font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgb(36,36,36)">Measure &amp; hand off</span>
+        <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">We instrument every decision the system makes. You see what it cost, what it saved, what it got wrong. We hand off runbooks and train your team to own it. Or we stay on retainer. Your call.</span>
+      </div>
+    </div>
+
+    <span data-mrev="1" style="font-size:26px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgb(36,36,36);padding-top:22px;border-top:.5px solid rgba(153,152,149,.5)">Twenty years of building software taught us one thing about new tools: <span style="font-style:italic">the question matters</span> more than the technology.</span>
+  </section>
+
+  <!-- six places -->
+  <section style="padding:44px 20px 52px;background:rgb(245,245,245);display:flex;flex-direction:column;gap:24px">
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px">
+      <div style="height:1.5px;background:rgba(153,152,149,.7)"></div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgb(145,145,145)">IN PRODUCTION</span>
+    </div>
+    <span data-mrev="1" style="font-size:44px;font-weight:600;line-height:48px;letter-spacing:-0.05em;color:rgb(36,36,36)">Six places AI earned its keep.</span>
+    <span data-mrev="1" style="font-size:17px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.8)">A few illustrative engagements named industries, real outcomes. Every number below comes from production telemetry, not a launch deck.</span>
+
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">01 / LEGAL</span>
+      <span style="font-size:22px;font-weight:600;line-height:29px;letter-spacing:-0.04em;color:rgb(36,36,36)">Contract triage &amp; clause extraction</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Vision-LLM pipeline extracts 38 clause types from inbound PDFs. Confidence-scored; anything under 0.92 routes to a paralegal. Audit log per decision, exportable for compliance.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">02 / SUPPORT</span>
+      <span style="font-size:22px;font-weight:600;line-height:29px;letter-spacing:-0.04em;color:rgb(36,36,36)">First-response draft agent</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Reads ticket, pulls customer context from CRM and product analytics. Drafts a reply with cited docs; agent edits and sends. Never auto-sends. The human is always the last keystroke.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">03 / RETAIL</span>
+      <span style="font-size:22px;font-weight:600;line-height:29px;letter-spacing:-0.04em;color:rgb(36,36,36)">Product copy at catalog scale</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Generates titles, descriptions and metadata for 60k SKUs. Tone-of-voice fine-tuning on the brand&rsquo;s top-100 sellers. Approval queue for new categories; auto-publish for refreshes.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">04 / HEALTHCARE</span>
+      <span style="font-size:22px;font-weight:600;line-height:29px;letter-spacing:-0.04em;color:rgb(36,36,36)">Private knowledge assistant</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">RAG over SOPs, clinical guidelines and 4 years of Slack archives. Every answer cites the source paragraph. No source no answer. Deployed inside the VPC. Zero data leaves the perimeter.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">05 / SUPPLY CHAIN</span>
+      <span style="font-size:22px;font-weight:600;line-height:29px;letter-spacing:-0.04em;color:rgb(36,36,36)">Inbox to system-of-record</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Reads supplier emails, extracts POs, reconciles against ERP. Flags discrepancies; auto-resolves the obvious ones. Replaces a spreadsheet, two macros and a Tuesday meeting.</span>
+    </div>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">06 / MEDIA</span>
+      <span style="font-size:22px;font-weight:600;line-height:29px;letter-spacing:-0.04em;color:rgb(36,36,36)">Research copilot for editors</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Searches archives, pulls quotes with provenance, drafts angles. Editor stays in control agent is a faster intern, not a byline. Plagiarism &amp; bias checks built into the pipeline.</span>
+    </div>
+  </section>
+
+  <!-- receipts -->
+  <section data-mdark="1" style="position:relative;padding:48px 20px 52px;background:#000;overflow:hidden;display:flex;flex-direction:column;gap:24px">
+    <img data-mpar="0.05" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover" />
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 45%,rgba(0,0,0,.72) 100%)"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:24px">
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px">
+        <div style="width:16px;height:1.5px;background:rgba(180,174,174,.7)"></div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.55)">TRACK RECORD</span>
+      </div>
+      <span data-mrev="1" style="font-size:38px;font-weight:600;line-height:44px;letter-spacing:-0.05em;color:rgb(251,251,251)">Twenty years.<br />Plenty of receipts.</span>
+      <span data-mrev="1" style="font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.04em;color:rgba(255,255,255,.75)">Roars has been shipping production software since 2005 long before large language models, but with the same question driving every decision. AI is the new tool. The discipline is older.</span>
+      <span data-mrev="1" style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;line-height:18px;letter-spacing:0.16em;color:rgba(255,255,255,.5);padding-top:20px;border-top:.5px solid rgba(255,255,255,.22)">BUILDING SOFTWARE WITH ONE STUBBORN QUESTION IN THE ROOM.</span>
+
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid rgba(255,255,255,.28)">
+        <span style="font-size:62px;font-weight:600;line-height:64px;letter-spacing:-0.05em;color:rgb(251,251,251)">20<span style="font-size:26px;font-weight:500">&ensp;Yrs</span></span>
+        <span style="font-size:15px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.7)">AI &amp; automation systems running for clients across 9 industries.</span>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid rgba(255,255,255,.28)">
+        <span style="font-size:62px;font-weight:600;line-height:64px;letter-spacing:-0.05em;color:rgb(251,251,251)">3<span style="font-size:26px;font-weight:500">+</span></span>
+        <span style="font-size:15px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.7)">Weeks. The shortest distance between &ldquo;what if&rdquo; and a working pilot.</span>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid rgba(255,255,255,.28)">
+        <span style="font-size:62px;font-weight:600;line-height:64px;letter-spacing:-0.05em;color:rgb(251,251,251)"><span style="font-size:26px;font-weight:500">$</span>0</span>
+        <span style="font-size:15px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.7)">No retainer, no engagement, no goodbye fee. We tell you before you sign.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- faq -->
+  <section style="padding:44px 20px 52px;background:#fff;display:flex;flex-direction:column;gap:22px">
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px">
+      <div style="height:1.5px;background:rgba(153,152,149,.7)"></div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgb(145,145,145)">FREQUENTLY ASKED</span>
+    </div>
+    <span data-mrev="1" style="font-size:44px;font-weight:600;line-height:48px;letter-spacing:-0.05em;color:rgb(36,36,36)">The honest answers.</span>
+    <span data-mrev="1" style="font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.04em;color:rgba(20,20,20,.72)">The questions we get most often, answered in fewer words than a sales call. If yours isn&rsquo;t here, ask it directly we&rsquo;d rather have the conversation than guess at it.</span>
+
+    <div data-mrev="1" style="display:flex;flex-direction:column">
+      <div data-macc="1" style="border-top:.5px solid rgba(153,152,149,.5)">
+        <div data-macc-head="1" style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145);padding-top:4px">01</span>
+          <span style="flex:1;font-size:18px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgb(36,36,36)">What is AI automation, and how is it different from regular automation?</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;color:rgba(20,20,20,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)"><div data-macc-inner="1" style="padding:0 0 18px 36px"><span style="font-size:16px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">Traditional automation follows fixed rules &mdash; if X, then Y. AI automation handles the messy, judgement-heavy work in between: reading unstructured documents, drafting responses, deciding which path to take, summarising context for a human. We use large language models, retrieval systems and orchestration tools to extend automation into work that used to require a person to think for thirty seconds.</span></div></div>
+      </div>
+      <div data-macc="1" style="border-top:.5px solid rgba(153,152,149,.5)">
+        <div data-macc-head="1" style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145);padding-top:4px">02</span>
+          <span style="flex:1;font-size:18px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgb(36,36,36)">Which AI automation services does Roars actually offer?</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;color:rgba(20,20,20,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)"><div data-macc-inner="1" style="padding:0 0 18px 36px"><span style="font-size:16px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">We design and build custom AI agents, workflow automation across your existing stack, RAG-powered internal assistants, document and email triage systems, AI-augmented support, and integrations between LLMs and the tools your team already uses (CRM, ERP, ticketing, data warehouses). We also run AI readiness audits for teams that aren&rsquo;t sure where to start.</span></div></div>
+      </div>
+      <div data-macc="1" style="border-top:.5px solid rgba(153,152,149,.5)">
+        <div data-macc-head="1" style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145);padding-top:4px">03</span>
+          <span style="flex:1;font-size:18px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgb(36,36,36)">How long does an AI automation project take?</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;color:rgba(20,20,20,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)"><div data-macc-inner="1" style="padding:0 0 18px 36px"><span style="font-size:16px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">A focused pilot ships in 3 to 6 weeks. A production-grade rollout with evaluations, guardrails and human-in-the-loop where it matters typically takes 8 to 14 weeks. We don&rsquo;t sell year-long engagements that hide the bill. You&rsquo;ll see value inside the first month, or we tell you to stop.</span></div></div>
+      </div>
+      <div data-macc="1" style="border-top:.5px solid rgba(153,152,149,.5)">
+        <div data-macc-head="1" style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145);padding-top:4px">04</span>
+          <span style="flex:1;font-size:18px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgb(36,36,36)">Do you work with our existing tools, or do we have to rebuild?</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;color:rgba(20,20,20,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)"><div data-macc-inner="1" style="padding:0 0 18px 36px"><span style="font-size:16px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">We work with what you have. Salesforce, HubSpot, Notion, Slack, Zendesk, Snowflake, custom internal tools we integrate, we don&rsquo;t replace. The whole point of automation is that the work happens where the work already lives.</span></div></div>
+      </div>
+      <div data-macc="1" style="border-top:.5px solid rgba(153,152,149,.5)">
+        <div data-macc-head="1" style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145);padding-top:4px">05</span>
+          <span style="flex:1;font-size:18px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgb(36,36,36)">How do you handle data privacy and security?</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;color:rgba(20,20,20,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)"><div data-macc-inner="1" style="padding:0 0 18px 36px"><span style="font-size:16px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">Your data stays your data. We default to private deployments (Azure OpenAI, AWS Bedrock, self-hosted models) and never train foundation models on your information. SOC 2-aligned practices, role-based access, full audit logs, and a clear data-flow diagram before a single line of code is written.</span></div></div>
+      </div>
+      <div data-macc="1" style="border-top:.5px solid rgba(153,152,149,.5)">
+        <div data-macc-head="1" style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145);padding-top:4px">06</span>
+          <span style="flex:1;font-size:18px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgb(36,36,36)">Will AI automation replace our team?</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;color:rgba(20,20,20,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)"><div data-macc-inner="1" style="padding:0 0 18px 36px"><span style="font-size:16px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">Not how we build it. Every Roars system has a clear seam between what the AI does and where a human owns the decision. Our best engagements give teams back their afternoons, not their jobs. If a client&rsquo;s goal is purely headcount reduction, we&rsquo;re probably not the right agency.</span></div></div>
+      </div>
+      <div data-macc="1" style="border-top:.5px solid rgba(153,152,149,.5);border-bottom:.5px solid rgba(153,152,149,.5)">
+        <div data-macc-head="1" style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145);padding-top:4px">07</span>
+          <span style="flex:1;font-size:18px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgb(36,36,36)">How do you know an automation is actually working?</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;color:rgba(20,20,20,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)"><div data-macc-inner="1" style="padding:0 0 18px 36px"><span style="font-size:16px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">We write evaluations before we write prompts. Every decision the system makes is logged, sampled, and graded. You get a dashboard with the metrics that matter to your business not vanity numbers like &ldquo;tasks completed.&rdquo; If quality drifts, we get paged. If it doesn&rsquo;t improve on the baseline, we turn it off.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- cta -->
+  <section id="form-section" style="padding:44px 20px 52px;background:rgb(245,245,245);display:flex;flex-direction:column;gap:20px">
+    <span data-mrev="1" style="font-size:40px;font-weight:600;line-height:44px;letter-spacing:-0.05em;color:rgb(36,36,36)">Bring us your least favourite part of the week.</span>
+    <span data-mrev="1" style="font-size:17px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.72)">A 30-minute call. We listen, ask questions, and tell you whether AI automation is the right answer or whether you&rsquo;d be better off fixing a process first. Either way, you leave with a clearer head and zero pressure to engage.</span>
+    <span data-mrev="1" style="font-size:20px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgb(20,20,20)">You get honest answers and a clear next step. No sales theater.</span>
+    <a data-mrev="1" href="https://meet.roarsinc.com/suzanne/" style="display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 24px;border-radius:60px;background:rgb(0,0,0)" style-hover="background:#FFD400">
+      <span style="font-size:14px;font-weight:500;letter-spacing:-0.03em;color:rgb(255,255,255)">Book a 30-Min Audit</span>
+      <span style="display:flex;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:rgba(153,152,149,.6)"></span><span style="width:8px;height:8px;border-radius:50%;background:#FFD400"></span></span>
+    </a>
+    <span data-mrev="1" style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(20,20,20,.5)">USA +1 (302) 505-1200 &nbsp;/&nbsp; SALES@ROARSINC.COM</span>
+  </section>
+
+  <section data-mdark="1" style="position:relative;padding:56px 20px 40px;background:rgb(11,11,11);overflow:hidden;display:flex;flex-direction:column;gap:34px">
+    <img data-mpar="0.06" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;transform:scaleY(-1);opacity:.55" />
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(11,11,11,.6) 0%,rgba(11,11,11,.9) 100%)"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:34px">
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:18px">
+        <img src="assets/mark.svg" alt="Roars" style="width:21px;height:21px;filter:invert(1)" />
+        <span style="font-size:18px;font-weight:500;line-height:26px;letter-spacing:-0.02em;color:rgb(255,255,255)">Space of Product<br />Solutions<span style="color:#FFD400">*</span></span>
+        <span style="font-size:17px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgb(147,147,147)">Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.</span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="" style="width:42px;height:42px;border-radius:60px;object-fit:cover" />
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:400;letter-spacing:-0.06em;color:rgba(255,255,255,.9)">Riinkesh A Sshah</span><span style="font-size:12px;font-weight:400;letter-spacing:-0.06em;color:rgba(255,255,255,.5)">CEO / Founder</span></div>
+        </div>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:8px;padding-top:18px;border-top:1px solid rgba(180,174,174,.35)">
+        <span style="font-size:12px;font-weight:500;letter-spacing:-0.04em;color:rgba(255,255,255,.8)">USA +1 (302) 505-1200</span>
+        <a href="mailto:sales@roarsinc.com" style="font-size:20px;font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.95)">sales@roarsinc.com</a>
+      </div>
+      <div data-mrev="1" style="display:flex;gap:40px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:600;letter-spacing:-0.06em;color:rgb(145,145,145)">Navigation</span>
+          <div style="width:16px;height:1.5px;background:rgba(153,152,149,.7);margin-bottom:4px"></div>
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:20px;font-weight:600;line-height:30px;letter-spacing:-0.06em;color:rgba(255,255,255,.9)">
+            <a href="Roars v2 - Main.dc.html">Home</a><a href="Roars v2 - Agency.dc.html">Agency</a><a href="Roars v2 - Projects.dc.html">Projects</a><a href="Roars v2 - Insights.dc.html">Insights</a><a href="Roars v2 - Contact.dc.html">Contact</a>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;padding-top:32px;font-size:15px;font-weight:500;line-height:26px;letter-spacing:-0.06em;color:rgba(255,255,255,.78)">
+          <a href="https://www.twitter.com/roarstech">Twitter</a><a href="https://www.instagram.com/roarstech">Instagram</a><a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./">LinkedIn</a>
+        </div>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:14px;padding-top:18px;border-top:1px solid rgba(180,174,174,.35)">
+        <span style="font-size:13px;font-weight:600;letter-spacing:-0.06em;color:rgb(145,145,145)">Subscribe our News</span>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:400;letter-spacing:-0.06em;color:rgb(255,255,255)">Your name *</span><div style="height:1px;background:rgba(231,231,231,.3)"></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:400;letter-spacing:-0.06em;color:rgb(255,255,255)">Email *</span><div style="height:1px;background:rgba(231,231,231,.3)"></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;height:46px;padding:0 20px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);cursor:pointer">
+          <span style="font-size:12px;font-weight:500;color:rgb(255,255,255)">Subscribe</span>
+          <span style="display:flex;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span><span style="width:8px;height:8px;border-radius:50%;background:#fff"></span></span>
+        </div>
+      </div>
+      <div data-mrev="1" style="display:flex;align-items:flex-start;gap:8px;padding-top:10px">
+        <span style="font-size:84px;font-weight:600;line-height:72px;letter-spacing:-0.04em;color:rgb(255,255,255)">roars</span>
+        <span style="width:24px;height:24px;border-radius:60px;background:#FFD400;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:rgb(31,31,31);margin-top:4px">&reg;</span>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-wrap:wrap;gap:22px 40px;padding-top:18px;border-top:1px solid rgba(180,174,174,.25);font-size:12px;font-weight:500;line-height:19px;letter-spacing:-0.04em">
+        <div style="display:flex;flex-direction:column"><span style="color:rgba(255,255,255,.5)">&copy; 2026</span><span style="color:rgba(255,255,255,.5)">Roars Technologies</span></div>
+        <div style="display:flex;flex-direction:column;color:rgba(255,255,255,.8)"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="https://link.roars.in/F39Mv">Company Profile</a></div>
+        <div style="display:flex;flex-direction:column"><span style="color:rgba(255,255,255,.5)">Offices</span><span style="color:rgba(255,255,255,.8)">USA &middot; UK &middot; India</span></div>
+        <div style="display:flex;flex-direction:column"><span style="color:rgba(255,255,255,.5)">Built by</span><span style="color:rgba(255,255,255,.8)">Roars Technologies</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div data-canvas="1" style="position:relative;width:1440px;height:7905px;transform-origin:0 0;background:#FFFFFF">
+
+<!-- ════════ HERO (0) ════════ -->
+<div data-screen-label="Hero" style="position:absolute;left:0;top:0;width:1440px;height:840px;overflow:hidden;background:rgb(0,0,0)">
+  <img data-par="-0.05" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-40px;width:1440px;height:920px;object-fit:cover" />
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.2) 44%,rgba(0,0,0,.55) 100%)"></div>
+
+  <div style="position:absolute;left:39px;top:168px;width:400px;height:420px">
+    <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;line-height:19px;letter-spacing:0.18em;color:rgba(255,255,255,.55);white-space:nowrap">SERVICES / AI AUTOMATION</span>
+    <div data-accent-bg="1" style="position:absolute;left:0;top:38px;width:16px;height:1.5px;background:#FFD400"></div>
+    <span style="position:absolute;left:0;top:64px;width:400px;height:96px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.94)">Your team shouldn&rsquo;t spend time on work a system can own.</span>
+    <span style="position:absolute;left:0;top:172px;width:380px;height:52px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.62)">AI automation that removes friction from real work.</span>
+    <div style="position:absolute;left:0;top:244px;width:400px;height:80px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start">
+      <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">80% FEWER MANUAL TASKS</span>
+      <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">3&ndash;6 WEEKS TO PILOT</span>
+      <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">HUMANS IN CONTROL</span>
+      <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">ZERO RETAINER</span>
+    </div>
+    <a href="#form-section" data-ring="1" style="position:absolute;left:0;top:364px;width:195px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);display:block;transition:box-shadow .3s ease" style-hover="box-shadow:inset 0 0 0 2px #FFD400">
+      <span style="position:absolute;left:21px;top:10px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:12px;font-weight:500;line-height:20px;color:rgb(255,255,255);white-space:nowrap">Shall we chat?</span>
+      <span style="position:absolute;left:158px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span>
+      <span data-accent-bg="1" style="position:absolute;left:169px;top:17px;width:8px;height:8px;border-radius:50%;background:#FFD400"></span>
+    </a>
+  </div>
+
+  <div style="position:absolute;left:420px;top:400px;width:700px;height:340px">
+    <div style="position:absolute;left:8px;top:0;width:62px;height:24px">
+      <span style="position:absolute;left:0;top:4px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">roars</span>
+      <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px;filter:invert(1)" />
+    </div>
+    <span style="position:absolute;left:2px;top:44px;width:300px;height:70px;font-size:66px;font-weight:600;line-height:70px;letter-spacing:-0.05em;color:rgba(255,255,255,.62);white-space:nowrap">AI</span>
+    <img data-swoosh="1" src="assets/union.svg" alt="" style="position:absolute;left:6px;top:112px;width:88px;height:10px;filter:invert(1);transform:rotate(5.4deg);transform-origin:0 0;animation:swoosh 1.1s cubic-bezier(.16,1,.3,1) .9s both" />
+    <span style="position:absolute;left:0;top:116px;width:900px;height:150px;font-size:132px;font-weight:600;line-height:140px;letter-spacing:-0.055em;color:rgb(251,251,251);white-space:nowrap">automation</span>
+    <span style="position:absolute;left:6px;top:270px;width:520px;height:30px;font-size:24px;font-weight:500;line-height:34px;letter-spacing:-0.04em;color:rgba(255,255,255,.72);white-space:nowrap">Services &mdash; agents, workflows, plumbing</span>
+  </div>
+
+  <div data-terminal="1" style="position:absolute;left:1130px;top:182px;width:272px;height:520px;background:rgba(8,8,8,.92);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16), 0 26px 60px rgba(0,0,0,.5);overflow:hidden">
+    <div style="position:absolute;left:18px;top:18px;width:236px;height:484px;font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,.88)">
+      <span style="position:absolute;left:0;top:0;font-size:11px;font-weight:600;letter-spacing:0.2em;color:rgba(255,255,255,.55)">EVAL RUN</span>
+      <span data-run="1" style="position:absolute;left:160px;top:0;width:76px;text-align:right;font-size:11px;font-weight:500;letter-spacing:0.06em;color:rgba(255,255,255,.55)">#0092</span>
+      <div style="position:absolute;left:0;top:24px;width:236px;height:1px;border-top:1px dashed rgba(255,255,255,.22)"></div>
+      <div style="position:absolute;left:0;top:40px;width:236px;height:230px;font-size:11px;font-weight:500;line-height:19px;letter-spacing:0.02em">
+        <div data-row="0" style="position:relative;height:38px;padding-top:4px;transition:opacity .3s ease">
+          <span style="display:block;color:rgba(255,255,255,.92)">contract_triage</span>
+          <span data-verdict="0" style="display:block;color:rgba(255,255,255,.45)">PASS &middot; 0.97 &middot; 38 clauses</span>
+        </div>
+        <div data-row="1" style="position:relative;height:38px;padding-top:4px;transition:opacity .3s ease">
+          <span style="display:block;color:rgba(255,255,255,.92)">first_response_draft</span>
+          <span data-verdict="1" style="display:block;color:rgba(255,255,255,.45)">PASS &middot; 0.94 &middot; human sends</span>
+        </div>
+        <div data-row="2" style="position:relative;height:38px;padding-top:4px;transition:opacity .3s ease">
+          <span style="display:block;color:rgba(255,255,255,.92)">clause_extract</span>
+          <span data-verdict="2" style="display:block;color:rgba(255,255,255,.45)">HOLD &middot; 0.89 &middot; to paralegal</span>
+        </div>
+        <div data-row="3" style="position:relative;height:38px;padding-top:4px;transition:opacity .3s ease">
+          <span style="display:block;color:rgba(255,255,255,.92)">invoice_to_erp</span>
+          <span data-verdict="3" style="display:block;color:rgba(255,255,255,.45)">PASS &middot; 0.96 &middot; 2 flagged</span>
+        </div>
+        <div data-row="4" style="position:relative;height:38px;padding-top:4px;transition:opacity .3s ease">
+          <span style="display:block;color:rgba(255,255,255,.92)">kb_answer_cited</span>
+          <span data-verdict="4" style="display:block;color:rgba(255,255,255,.45)">PASS &middot; 0.99 &middot; source req.</span>
+        </div>
+      </div>
+      <div style="position:absolute;left:0;top:290px;width:236px;height:1px;border-top:1px dashed rgba(255,255,255,.22)"></div>
+      <span style="position:absolute;left:0;top:306px;font-size:10px;font-weight:600;letter-spacing:0.22em;color:rgba(255,255,255,.5)">STATUS</span>
+      <div style="position:absolute;left:0;top:326px;width:236px;height:20px">
+        <span data-blink="1" data-accent-bg="1" style="position:absolute;left:0;top:5px;width:7px;height:7px;background:#FFD400;animation:tick 1.4s ease-in-out infinite"></span>
+        <span data-status="1" style="position:absolute;left:16px;top:0;width:220px;font-size:12px;font-weight:600;letter-spacing:0.04em;color:rgb(255,255,255);white-space:nowrap">RUNNING EVALS&hellip;</span>
+      </div>
+      <div style="position:absolute;left:0;top:366px;width:236px;height:3px;background:rgba(255,255,255,.14)">
+        <div data-progress="1" data-accent-bg="1" style="position:absolute;left:0;top:0;width:20%;height:3px;background:#FFD400;transition:width .5s cubic-bezier(.22,.68,.28,1)"></div>
+      </div>
+      <span style="position:absolute;left:0;top:404px;width:236px;font-size:11px;font-weight:500;line-height:18px;letter-spacing:0.02em;color:rgba(255,255,255,.55)">Baseline +38%. Nothing ships<br />without proof it beats the<br />status quo.</span>
+      <span style="position:absolute;left:0;top:466px;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.4)">EVALS BEFORE PROMPTS</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ SIX WAYS (840) ════════ -->
+<div data-screen-label="Services" style="position:absolute;left:0;top:840px;width:1440px;height:1060px;background:rgb(245,245,245);overflow:hidden">
+  <div style="position:absolute;left:40px;top:80px;width:1362px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+  <span style="position:absolute;left:40px;top:104px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;line-height:19px;letter-spacing:0.18em;color:rgb(145,145,145);white-space:nowrap">WHAT WE BUILD</span>
+
+  <span style="position:absolute;left:33px;top:148px;width:880px;height:210px;font-size:84px;font-weight:600;line-height:92px;letter-spacing:-0.05em;color:rgb(36,36,36)">Six ways AI actually earns its place.</span>
+
+  <div style="position:absolute;left:962px;top:158px;width:440px;height:220px">
+    <span style="position:absolute;left:0;top:0;width:440px;height:160px;font-size:18px;font-weight:500;line-height:27px;letter-spacing:-0.04em;color:rgba(20,20,20,.8)">We don&rsquo;t sell <span style="font-weight:700;color:rgb(20,20,20)">&ldquo;AI transformation.&rdquo;</span> We ship small, specific systems that remove friction from the work your team already does then we measure whether they helped. If they didn&rsquo;t, we turn them off.</span>
+  </div>
+
+  <div data-delay="0s" style="position:absolute;left:40px;top:440px;width:434px;height:280px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">01</span>
+    <span style="position:absolute;left:0;top:50px;width:400px;height:64px;font-size:24px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgb(36,36,36)">Custom AI agents</span>
+    <span style="position:absolute;left:0;top:124px;width:420px;height:150px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Goal-driven assistants that can read a ticket, query your CRM, draft a response, and route it for review. Built for one job, evaluated like software, not demoed like magic.</span>
+  </div>
+
+  <div data-delay=".06s" style="position:absolute;left:504px;top:440px;width:434px;height:280px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">02</span>
+    <span style="position:absolute;left:0;top:50px;width:400px;height:64px;font-size:24px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgb(36,36,36)">Workflow automation</span>
+    <span style="position:absolute;left:0;top:124px;width:420px;height:150px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">End-to-end automation across the apps you already pay for. Trigger from Slack, read from Salesforce, write to Notion, post to Linear with an LLM doing the thinking in between.</span>
+  </div>
+
+  <div data-delay=".12s" style="position:absolute;left:968px;top:440px;width:434px;height:280px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">03</span>
+    <span style="position:absolute;left:0;top:50px;width:400px;height:64px;font-size:24px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgb(36,36,36)">RAG &amp; knowledge assistants</span>
+    <span style="position:absolute;left:0;top:124px;width:420px;height:150px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Private retrieval systems trained on your contracts, docs, tickets, codebase. Answers cite their sources. No hallucinated policies. No &ldquo;based on my training data&rdquo; disclaimers.</span>
+  </div>
+
+  <div data-delay="0s" style="position:absolute;left:40px;top:760px;width:434px;height:280px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">04</span>
+    <span style="position:absolute;left:0;top:50px;width:400px;height:64px;font-size:24px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgb(36,36,36)">Document intelligence</span>
+    <span style="position:absolute;left:0;top:124px;width:420px;height:150px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Pull structured data out of PDFs, invoices, contracts and emails. Validate against your schema. Hand only the edge cases to a human. The other 80% just&hellip; happens.</span>
+  </div>
+
+  <div data-delay=".06s" style="position:absolute;left:504px;top:760px;width:434px;height:280px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">05</span>
+    <span style="position:absolute;left:0;top:50px;width:400px;height:64px;font-size:24px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgb(36,36,36)">LLM integration</span>
+    <span style="position:absolute;left:0;top:124px;width:420px;height:150px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Bring AI into the products and tools your team already lives in. Private model routing, prompt management, telemetry, cost controls the unglamorous plumbing that makes it work in production.</span>
+  </div>
+
+  <div data-delay=".12s" style="position:absolute;left:968px;top:760px;width:434px;height:280px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">06</span>
+    <span style="position:absolute;left:0;top:50px;width:400px;height:64px;font-size:24px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgb(36,36,36)">AI readiness audit</span>
+    <span style="position:absolute;left:0;top:124px;width:420px;height:150px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Two weeks. We sit with your team, map the work, find the three highest-ROI automations and the three to never attempt. You get a build plan and a clear &ldquo;no.&rdquo; If you want.</span>
+  </div>
+</div>
+
+<!-- ════════ GYMBAIT (1900) ════════ -->
+<div data-screen-label="Featured work" style="position:absolute;left:0;top:1900px;width:1440px;height:620px;background:rgb(0,0,0);overflow:hidden">
+  <img data-par="-0.04" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-60px;width:1440px;height:740px;object-fit:cover" />
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.64) 0%,rgba(0,0,0,.3) 50%,rgba(0,0,0,.64) 100%)"></div>
+
+  <div style="position:absolute;left:40px;top:90px;width:16px;height:1.5px;background:rgba(180,174,174,.7)"></div>
+  <span style="position:absolute;left:40px;top:110px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;line-height:19px;letter-spacing:0.18em;color:rgba(255,255,255,.55);white-space:nowrap">FEATURED WORK</span>
+
+  <span style="position:absolute;left:34px;top:186px;width:900px;height:100px;font-size:84px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:rgb(251,251,251);white-space:nowrap">GYMBAIT.AI</span>
+
+  <div style="position:absolute;left:962px;top:192px;width:440px;height:220px">
+    <span style="position:absolute;left:0;top:0;width:440px;height:200px;font-size:18px;font-weight:500;line-height:27px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Unleash your potential with bespoke Artificial Intelligence Training. GymBAIT flipped the script by using AI to predict engagement gaps, adapt routines to individual goals, and offer encouragement when users lag.</span>
+  </div>
+
+  <div style="position:absolute;left:40px;top:390px;width:1362px;height:0.5px;background:rgba(255,255,255,.22)"></div>
+
+  <div style="position:absolute;left:40px;top:428px;width:760px;height:80px;display:flex;gap:88px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">SYSTEM</span>
+      <span style="font-size:18px;font-weight:500;line-height:24px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Engagement prediction</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">HUMAN IN THE LOOP</span>
+      <span style="font-size:18px;font-weight:500;line-height:24px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Coach reviews every nudge</span>
+    </div>
+  </div>
+
+  <a href="https://www.roarsinc.com/work/gymbait/" data-ring="1" style="position:absolute;left:1207px;top:428px;width:195px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);display:block;transition:box-shadow .3s ease" style-hover="box-shadow:inset 0 0 0 2px #FFD400">
+    <span style="position:absolute;left:21px;top:10px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:12px;font-weight:500;line-height:20px;color:rgb(255,255,255);white-space:nowrap">View Project</span>
+    <span style="position:absolute;left:158px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span>
+    <span data-accent-bg="1" style="position:absolute;left:169px;top:17px;width:8px;height:8px;border-radius:50%;background:#FFD400"></span>
+  </a>
+</div>
+
+<!-- ════════ PROCESS (2520) ════════ -->
+<div data-screen-label="Process" style="position:absolute;left:0;top:2520px;width:1440px;height:1000px;background:rgb(255,255,255);overflow:hidden">
+  <div style="position:absolute;left:40px;top:80px;width:16px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+  <span style="position:absolute;left:40px;top:100px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;line-height:19px;letter-spacing:0.18em;color:rgb(145,145,145);white-space:nowrap">HOW WE WORK</span>
+  <span style="position:absolute;left:33px;top:136px;width:900px;height:100px;font-size:84px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:rgb(36,36,36);white-space:nowrap">Ask first. Build second.</span>
+  <span style="position:absolute;left:962px;top:146px;width:440px;height:170px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.04em;color:rgba(20,20,20,.72)">Every Roars engagement starts with the same question: does this actually help someone? If it doesn&rsquo;t, we tell you before we take the brief. If it does, here&rsquo;s how we get from idea to in-production.</span>
+
+  <div data-rail="1" style="position:absolute;left:40px;top:380px;width:1362px;height:2px">
+    <div style="position:absolute;left:0;top:0;width:1362px;height:0;border-top:1px dashed rgba(20,20,20,.3)"></div>
+    <div data-rail-fill="1" style="position:absolute;left:0;top:-0.5px;width:0;height:2px;background:#FFD400;transition:width .5s cubic-bezier(.22,.68,.28,1)"></div>
+    <span data-node="0" data-nx="0" style="position:absolute;left:-6px;top:-6px;width:13px;height:13px;background:rgb(255,255,255);box-shadow:inset 0 0 0 1.5px rgba(20,20,20,.5);transition:background .5s ease, box-shadow .5s ease, transform .6s cubic-bezier(.16,1,.3,1)"></span>
+    <span data-node="1" data-nx="340" style="position:absolute;left:334px;top:-6px;width:13px;height:13px;background:rgb(255,255,255);box-shadow:inset 0 0 0 1.5px rgba(20,20,20,.5);transition:background .5s ease, box-shadow .5s ease, transform .6s cubic-bezier(.16,1,.3,1)"></span>
+    <span data-node="2" data-nx="680" style="position:absolute;left:674px;top:-6px;width:13px;height:13px;background:rgb(255,255,255);box-shadow:inset 0 0 0 1.5px rgba(20,20,20,.5);transition:background .5s ease, box-shadow .5s ease, transform .6s cubic-bezier(.16,1,.3,1)"></span>
+    <span data-node="3" data-nx="1020" style="position:absolute;left:1014px;top:-6px;width:13px;height:13px;background:rgb(255,255,255);box-shadow:inset 0 0 0 1.5px rgba(20,20,20,.5);transition:background .5s ease, box-shadow .5s ease, transform .6s cubic-bezier(.16,1,.3,1)"></span>
+  </div>
+
+  <div data-delay="0s" style="position:absolute;left:40px;top:310px;width:310px;height:46px">
+    <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.16em;color:rgb(20,20,20)">WEEK 1</span>
+    <span style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgb(145,145,145)">DISCOVERY</span>
+  </div>
+  <div data-delay="0s" style="position:absolute;left:40px;top:412px;width:310px;height:290px">
+    <span style="position:absolute;left:0;top:0;width:300px;height:80px;font-size:32px;font-weight:600;line-height:38px;letter-spacing:-0.05em;color:rgb(36,36,36)">Ask the right question</span>
+    <span style="position:absolute;left:0;top:96px;width:300px;height:190px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">We sit with your team and map the work. Not the org chart &mdash; the actual hour-by-hour. We&rsquo;re looking for friction, repetition, and the moments where a person is doing what a system should.</span>
+  </div>
+
+  <div data-delay=".06s" style="position:absolute;left:380px;top:310px;width:310px;height:46px">
+    <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.16em;color:rgb(20,20,20)">WEEK 2</span>
+    <span style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgb(145,145,145)">ARCHITECTURE</span>
+  </div>
+  <div data-delay=".06s" style="position:absolute;left:380px;top:412px;width:310px;height:290px">
+    <span style="position:absolute;left:0;top:0;width:300px;height:80px;font-size:32px;font-weight:600;line-height:38px;letter-spacing:-0.05em;color:rgb(36,36,36)">Map the system</span>
+    <span style="position:absolute;left:0;top:96px;width:300px;height:190px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Data flows, decision points, edge cases, human-in-the-loop gates. We draw the whole thing before we touch a model. You sign off on a diagram, not a vibe.</span>
+  </div>
+
+  <div data-delay=".12s" style="position:absolute;left:720px;top:310px;width:310px;height:46px">
+    <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.16em;color:rgb(20,20,20)">WEEKS 3&ndash;6</span>
+    <span style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgb(145,145,145)">PILOT</span>
+  </div>
+  <div data-delay=".12s" style="position:absolute;left:720px;top:412px;width:310px;height:290px">
+    <span style="position:absolute;left:0;top:0;width:300px;height:80px;font-size:32px;font-weight:600;line-height:38px;letter-spacing:-0.05em;color:rgb(36,36,36)">Build &amp; evaluate</span>
+    <span style="position:absolute;left:0;top:96px;width:300px;height:190px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Working pilot inside your stack. Real data, real users, real tests. We write evals before we write prompts. Nothing ships without measurable proof it&rsquo;s better than the status quo.</span>
+  </div>
+
+  <div data-delay=".18s" style="position:absolute;left:1060px;top:310px;width:310px;height:46px">
+    <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.16em;color:rgb(20,20,20)">WEEKS 7+</span>
+    <span style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgb(145,145,145)">PRODUCTION</span>
+  </div>
+  <div data-delay=".18s" style="position:absolute;left:1060px;top:412px;width:342px;height:290px">
+    <span style="position:absolute;left:0;top:0;width:330px;height:80px;font-size:32px;font-weight:600;line-height:38px;letter-spacing:-0.05em;color:rgb(36,36,36)">Measure &amp; hand off</span>
+    <span style="position:absolute;left:0;top:96px;width:330px;height:190px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">We instrument every decision the system makes. You see what it cost, what it saved, what it got wrong. We hand off runbooks and train your team to own it. Or we stay on retainer. Your call.</span>
+  </div>
+
+  <div style="position:absolute;left:40px;top:760px;width:1362px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+  <span style="position:absolute;left:34px;top:816px;width:1100px;height:120px;font-size:38px;font-weight:600;line-height:50px;letter-spacing:-0.05em;color:rgb(36,36,36)">Twenty years of building software taught us one thing about new tools: <span style="font-style:italic">the question matters</span> more than the technology.</span>
+</div>
+
+<!-- ════════ SIX PLACES (3520) ════════ -->
+<div data-screen-label="Engagements" style="position:absolute;left:0;top:3520px;width:1440px;height:1120px;background:rgb(245,245,245);overflow:hidden">
+  <div style="position:absolute;left:40px;top:80px;width:1362px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+  <span style="position:absolute;left:40px;top:104px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;line-height:19px;letter-spacing:0.18em;color:rgb(145,145,145);white-space:nowrap">IN PRODUCTION</span>
+  <span style="position:absolute;left:33px;top:148px;width:880px;height:200px;font-size:84px;font-weight:600;line-height:92px;letter-spacing:-0.05em;color:rgb(36,36,36)">Six places AI earned its keep.</span>
+  <span style="position:absolute;left:962px;top:158px;width:440px;height:160px;font-size:18px;font-weight:500;line-height:27px;letter-spacing:-0.04em;color:rgba(20,20,20,.8)">A few illustrative engagements named industries, real outcomes. Every number below comes from production telemetry, not a launch deck.</span>
+
+  <div data-delay="0s" style="position:absolute;left:40px;top:420px;width:434px;height:300px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">01 / LEGAL</span>
+    <span style="position:absolute;left:0;top:50px;width:410px;height:70px;font-size:24px;font-weight:600;line-height:32px;letter-spacing:-0.04em;color:rgb(36,36,36)">Contract triage &amp; clause extraction</span>
+    <span style="position:absolute;left:0;top:132px;width:420px;height:160px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Vision-LLM pipeline extracts 38 clause types from inbound PDFs. Confidence-scored; anything under 0.92 routes to a paralegal. Audit log per decision, exportable for compliance.</span>
+  </div>
+
+  <div data-delay=".06s" style="position:absolute;left:504px;top:420px;width:434px;height:300px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">02 / SUPPORT</span>
+    <span style="position:absolute;left:0;top:50px;width:410px;height:70px;font-size:24px;font-weight:600;line-height:32px;letter-spacing:-0.04em;color:rgb(36,36,36)">First-response draft agent</span>
+    <span style="position:absolute;left:0;top:132px;width:420px;height:160px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Reads ticket, pulls customer context from CRM and product analytics. Drafts a reply with cited docs; agent edits and sends. Never auto-sends. The human is always the last keystroke.</span>
+  </div>
+
+  <div data-delay=".12s" style="position:absolute;left:968px;top:420px;width:434px;height:300px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">03 / RETAIL</span>
+    <span style="position:absolute;left:0;top:50px;width:410px;height:70px;font-size:24px;font-weight:600;line-height:32px;letter-spacing:-0.04em;color:rgb(36,36,36)">Product copy at catalog scale</span>
+    <span style="position:absolute;left:0;top:132px;width:420px;height:160px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Generates titles, descriptions and metadata for 60k SKUs. Tone-of-voice fine-tuning on the brand&rsquo;s top-100 sellers. Approval queue for new categories; auto-publish for refreshes.</span>
+  </div>
+
+  <div data-delay="0s" style="position:absolute;left:40px;top:780px;width:434px;height:300px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">04 / HEALTHCARE</span>
+    <span style="position:absolute;left:0;top:50px;width:410px;height:70px;font-size:24px;font-weight:600;line-height:32px;letter-spacing:-0.04em;color:rgb(36,36,36)">Private knowledge assistant</span>
+    <span style="position:absolute;left:0;top:132px;width:420px;height:160px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">RAG over SOPs, clinical guidelines and 4 years of Slack archives. Every answer cites the source paragraph. No source no answer. Deployed inside the VPC. Zero data leaves the perimeter.</span>
+  </div>
+
+  <div data-delay=".06s" style="position:absolute;left:504px;top:780px;width:434px;height:300px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">05 / SUPPLY CHAIN</span>
+    <span style="position:absolute;left:0;top:50px;width:410px;height:70px;font-size:24px;font-weight:600;line-height:32px;letter-spacing:-0.04em;color:rgb(36,36,36)">Inbox to system-of-record</span>
+    <span style="position:absolute;left:0;top:132px;width:420px;height:160px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Reads supplier emails, extracts POs, reconciles against ERP. Flags discrepancies; auto-resolves the obvious ones. Replaces a spreadsheet, two macros and a Tuesday meeting.</span>
+  </div>
+
+  <div data-delay=".12s" style="position:absolute;left:968px;top:780px;width:434px;height:300px">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">06 / MEDIA</span>
+    <span style="position:absolute;left:0;top:50px;width:410px;height:70px;font-size:24px;font-weight:600;line-height:32px;letter-spacing:-0.04em;color:rgb(36,36,36)">Research copilot for editors</span>
+    <span style="position:absolute;left:0;top:132px;width:420px;height:160px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.045em;color:rgba(20,20,20,.75)">Searches archives, pulls quotes with provenance, drafts angles. Editor stays in control agent is a faster intern, not a byline. Plagiarism &amp; bias checks built into the pipeline.</span>
+  </div>
+</div>
+
+<!-- ════════ RECEIPTS (4640) ════════ -->
+<div data-screen-label="Receipts" style="position:absolute;left:0;top:4640px;width:1440px;height:760px;background:rgb(0,0,0);overflow:hidden">
+  <img data-par="-0.04" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-80px;width:1440px;height:920px;object-fit:cover" />
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.66) 0%,rgba(0,0,0,.34) 45%,rgba(0,0,0,.68) 100%)"></div>
+
+  <div style="position:absolute;left:40px;top:90px;width:16px;height:1.5px;background:rgba(180,174,174,.7)"></div>
+  <span style="position:absolute;left:40px;top:110px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;line-height:19px;letter-spacing:0.18em;color:rgba(255,255,255,.55);white-space:nowrap">TRACK RECORD</span>
+
+  <span style="position:absolute;left:34px;top:156px;width:700px;height:120px;font-size:56px;font-weight:600;line-height:62px;letter-spacing:-0.05em;color:rgb(251,251,251)">Twenty years.<br />Plenty of receipts.</span>
+  <span style="position:absolute;left:962px;top:166px;width:440px;height:170px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.04em;color:rgba(255,255,255,.75)">Roars has been shipping production software since 2005 long before large language models, but with the same question driving every decision. AI is the new tool. The discipline is older.</span>
+
+  <div style="position:absolute;left:40px;top:360px;width:1362px;height:0.5px;background:rgba(255,255,255,.22)"></div>
+  <span style="position:absolute;left:40px;top:382px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.5);white-space:nowrap">BUILDING SOFTWARE WITH ONE STUBBORN QUESTION IN THE ROOM.</span>
+
+  <div data-delay="0s" style="position:absolute;left:40px;top:470px;width:420px;height:190px">
+    <div style="position:absolute;left:0;top:0;width:420px;height:1px;background:rgba(255,255,255,.28)"></div>
+    <div style="position:absolute;left:-3px;top:30px;height:90px;display:flex;align-items:baseline">
+      <span data-count="20" style="font-size:84px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:rgb(251,251,251)">20</span>
+      <span style="font-size:36px;font-weight:500;line-height:86px;letter-spacing:-0.05em;color:rgb(251,251,251)">&ensp;Yrs</span>
+    </div>
+    <span style="position:absolute;left:0;top:130px;width:400px;height:60px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.7)">AI &amp; automation systems running for clients across 9 industries.</span>
+  </div>
+
+  <div data-delay=".08s" style="position:absolute;left:501px;top:470px;width:420px;height:190px">
+    <div style="position:absolute;left:0;top:0;width:420px;height:1px;background:rgba(255,255,255,.28)"></div>
+    <div style="position:absolute;left:-3px;top:30px;height:90px;display:flex;align-items:baseline">
+      <span data-count="3" style="font-size:84px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:rgb(251,251,251)">3</span>
+      <span style="font-size:36px;font-weight:500;line-height:86px;letter-spacing:-0.05em;color:rgb(251,251,251)">+</span>
+    </div>
+    <span style="position:absolute;left:0;top:130px;width:400px;height:60px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.7)">Weeks. The shortest distance between &ldquo;what if&rdquo; and a working pilot.</span>
+  </div>
+
+  <div data-delay=".16s" style="position:absolute;left:962px;top:470px;width:440px;height:190px">
+    <div style="position:absolute;left:0;top:0;width:440px;height:1px;background:rgba(255,255,255,.28)"></div>
+    <div style="position:absolute;left:-3px;top:30px;height:90px;display:flex;align-items:baseline">
+      <span style="font-size:36px;font-weight:500;line-height:86px;letter-spacing:-0.05em;color:rgb(251,251,251)">$</span>
+      <span data-count="0" style="font-size:84px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:rgb(251,251,251)">0</span>
+    </div>
+    <span style="position:absolute;left:0;top:130px;width:420px;height:60px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.7)">No retainer, no engagement, no goodbye fee. We tell you before you sign.</span>
+  </div>
+</div>
+
+<!-- ════════ FAQ (5400) ════════ -->
+<div data-screen-label="FAQ" style="position:absolute;left:0;top:5400px;width:1440px;height:940px;background:rgb(255,255,255);overflow:hidden">
+  <div style="position:absolute;left:40px;top:80px;width:1362px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+  <span style="position:absolute;left:40px;top:104px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;line-height:19px;letter-spacing:0.18em;color:rgb(145,145,145);white-space:nowrap">FREQUENTLY ASKED</span>
+  <span style="position:absolute;left:33px;top:146px;width:900px;height:100px;font-size:84px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:rgb(36,36,36);white-space:nowrap">The honest answers.</span>
+  <span style="position:absolute;left:962px;top:156px;width:440px;height:120px;font-size:16px;font-weight:500;line-height:25px;letter-spacing:-0.04em;color:rgba(20,20,20,.72)">The questions we get most often, answered in fewer words than a sales call. If yours isn&rsquo;t here, ask it directly we&rsquo;d rather have the conversation than guess at it.</span>
+
+  <div style="position:absolute;left:40px;top:340px;width:620px;height:500px">
+    <div data-q="0" style="position:absolute;left:0;top:0;width:620px;height:70px;cursor:pointer">
+      <div style="position:absolute;left:0;top:0;width:620px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+      <span data-q-num="1" style="position:absolute;left:0;top:28px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">01</span>
+      <span data-q-name="1" style="position:absolute;left:44px;top:16px;width:540px;height:44px;font-size:19px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgba(36,36,36,.5);transition:color .3s ease, transform .4s cubic-bezier(.16,1,.3,1);transform-origin:0 50%">What is AI automation, and how is it different from regular automation?</span>
+      <span data-q-dot="1" style="position:absolute;left:604px;top:31px;width:8px;height:8px;border-radius:50%;background:rgba(20,20,20,.18);transition:background .3s ease"></span>
+    </div>
+    <div data-q="1" style="position:absolute;left:0;top:70px;width:620px;height:70px;cursor:pointer">
+      <div style="position:absolute;left:0;top:0;width:620px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+      <span data-q-num="1" style="position:absolute;left:0;top:28px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">02</span>
+      <span data-q-name="1" style="position:absolute;left:44px;top:22px;width:540px;height:30px;font-size:19px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgba(36,36,36,.5);transition:color .3s ease, transform .4s cubic-bezier(.16,1,.3,1);transform-origin:0 50%">Which AI automation services does Roars actually offer?</span>
+      <span data-q-dot="1" style="position:absolute;left:604px;top:31px;width:8px;height:8px;border-radius:50%;background:rgba(20,20,20,.18);transition:background .3s ease"></span>
+    </div>
+    <div data-q="2" style="position:absolute;left:0;top:140px;width:620px;height:70px;cursor:pointer">
+      <div style="position:absolute;left:0;top:0;width:620px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+      <span data-q-num="1" style="position:absolute;left:0;top:28px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">03</span>
+      <span data-q-name="1" style="position:absolute;left:44px;top:22px;width:540px;height:30px;font-size:19px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgba(36,36,36,.5);transition:color .3s ease, transform .4s cubic-bezier(.16,1,.3,1);transform-origin:0 50%">How long does an AI automation project take?</span>
+      <span data-q-dot="1" style="position:absolute;left:604px;top:31px;width:8px;height:8px;border-radius:50%;background:rgba(20,20,20,.18);transition:background .3s ease"></span>
+    </div>
+    <div data-q="3" style="position:absolute;left:0;top:210px;width:620px;height:70px;cursor:pointer">
+      <div style="position:absolute;left:0;top:0;width:620px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+      <span data-q-num="1" style="position:absolute;left:0;top:28px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">04</span>
+      <span data-q-name="1" style="position:absolute;left:44px;top:22px;width:540px;height:30px;font-size:19px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgba(36,36,36,.5);transition:color .3s ease, transform .4s cubic-bezier(.16,1,.3,1);transform-origin:0 50%">Do you work with our existing tools, or do we have to rebuild?</span>
+      <span data-q-dot="1" style="position:absolute;left:604px;top:31px;width:8px;height:8px;border-radius:50%;background:rgba(20,20,20,.18);transition:background .3s ease"></span>
+    </div>
+    <div data-q="4" style="position:absolute;left:0;top:280px;width:620px;height:70px;cursor:pointer">
+      <div style="position:absolute;left:0;top:0;width:620px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+      <span data-q-num="1" style="position:absolute;left:0;top:28px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">05</span>
+      <span data-q-name="1" style="position:absolute;left:44px;top:22px;width:540px;height:30px;font-size:19px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgba(36,36,36,.5);transition:color .3s ease, transform .4s cubic-bezier(.16,1,.3,1);transform-origin:0 50%">How do you handle data privacy and security?</span>
+      <span data-q-dot="1" style="position:absolute;left:604px;top:31px;width:8px;height:8px;border-radius:50%;background:rgba(20,20,20,.18);transition:background .3s ease"></span>
+    </div>
+    <div data-q="5" style="position:absolute;left:0;top:350px;width:620px;height:70px;cursor:pointer">
+      <div style="position:absolute;left:0;top:0;width:620px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+      <span data-q-num="1" style="position:absolute;left:0;top:28px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">06</span>
+      <span data-q-name="1" style="position:absolute;left:44px;top:22px;width:540px;height:30px;font-size:19px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgba(36,36,36,.5);transition:color .3s ease, transform .4s cubic-bezier(.16,1,.3,1);transform-origin:0 50%">Will AI automation replace our team?</span>
+      <span data-q-dot="1" style="position:absolute;left:604px;top:31px;width:8px;height:8px;border-radius:50%;background:rgba(20,20,20,.18);transition:background .3s ease"></span>
+    </div>
+    <div data-q="6" style="position:absolute;left:0;top:420px;width:620px;height:70px;cursor:pointer">
+      <div style="position:absolute;left:0;top:0;width:620px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+      <span data-q-num="1" style="position:absolute;left:0;top:28px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">07</span>
+      <span data-q-name="1" style="position:absolute;left:44px;top:22px;width:540px;height:30px;font-size:19px;font-weight:600;line-height:25px;letter-spacing:-0.04em;color:rgba(36,36,36,.5);transition:color .3s ease, transform .4s cubic-bezier(.16,1,.3,1);transform-origin:0 50%">How do you know an automation is actually working?</span>
+      <span data-q-dot="1" style="position:absolute;left:604px;top:31px;width:8px;height:8px;border-radius:50%;background:rgba(20,20,20,.18);transition:background .3s ease"></span>
+      <div style="position:absolute;left:0;top:69.5px;width:620px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:722px;top:340px;width:680px;height:500px">
+    <div data-a="0" style="position:absolute;left:0;top:0;width:680px;height:400px;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+      <span style="position:absolute;left:0;top:0;width:680px;height:280px;font-size:20px;font-weight:500;line-height:32px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">Traditional automation follows fixed rules &mdash; if X, then Y. AI automation handles the messy, judgement-heavy work in between: reading unstructured documents, drafting responses, deciding which path to take, summarising context for a human. We use large language models, retrieval systems and orchestration tools to extend automation into work that used to require a person to think for thirty seconds.</span>
+    </div>
+    <div data-a="1" style="position:absolute;left:0;top:0;width:680px;height:400px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+      <span style="position:absolute;left:0;top:0;width:680px;height:280px;font-size:20px;font-weight:500;line-height:32px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">We design and build custom AI agents, workflow automation across your existing stack, RAG-powered internal assistants, document and email triage systems, AI-augmented support, and integrations between LLMs and the tools your team already uses (CRM, ERP, ticketing, data warehouses). We also run AI readiness audits for teams that aren&rsquo;t sure where to start.</span>
+    </div>
+    <div data-a="2" style="position:absolute;left:0;top:0;width:680px;height:400px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+      <span style="position:absolute;left:0;top:0;width:680px;height:280px;font-size:20px;font-weight:500;line-height:32px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">A focused pilot ships in 3 to 6 weeks. A production-grade rollout with evaluations, guardrails and human-in-the-loop where it matters typically takes 8 to 14 weeks. We don&rsquo;t sell year-long engagements that hide the bill. You&rsquo;ll see value inside the first month, or we tell you to stop.</span>
+    </div>
+    <div data-a="3" style="position:absolute;left:0;top:0;width:680px;height:400px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+      <span style="position:absolute;left:0;top:0;width:680px;height:280px;font-size:20px;font-weight:500;line-height:32px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">We work with what you have. Salesforce, HubSpot, Notion, Slack, Zendesk, Snowflake, custom internal tools we integrate, we don&rsquo;t replace. The whole point of automation is that the work happens where the work already lives.</span>
+    </div>
+    <div data-a="4" style="position:absolute;left:0;top:0;width:680px;height:400px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+      <span style="position:absolute;left:0;top:0;width:680px;height:280px;font-size:20px;font-weight:500;line-height:32px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">Your data stays your data. We default to private deployments (Azure OpenAI, AWS Bedrock, self-hosted models) and never train foundation models on your information. SOC 2-aligned practices, role-based access, full audit logs, and a clear data-flow diagram before a single line of code is written.</span>
+    </div>
+    <div data-a="5" style="position:absolute;left:0;top:0;width:680px;height:400px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+      <span style="position:absolute;left:0;top:0;width:680px;height:280px;font-size:20px;font-weight:500;line-height:32px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">Not how we build it. Every Roars system has a clear seam between what the AI does and where a human owns the decision. Our best engagements give teams back their afternoons, not their jobs. If a client&rsquo;s goal is purely headcount reduction, we&rsquo;re probably not the right agency.</span>
+    </div>
+    <div data-a="6" style="position:absolute;left:0;top:0;width:680px;height:400px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+      <span style="position:absolute;left:0;top:0;width:680px;height:280px;font-size:20px;font-weight:500;line-height:32px;letter-spacing:-0.04em;color:rgba(20,20,20,.85)">We write evaluations before we write prompts. Every decision the system makes is logged, sampled, and graded. You get a dashboard with the metrics that matter to your business not vanity numbers like &ldquo;tasks completed.&rdquo; If quality drifts, we get paged. If it doesn&rsquo;t improve on the baseline, we turn it off.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ CTA (6340) ════════ -->
+<div data-screen-label="CTA" id="form-section" style="position:absolute;left:0;top:6340px;width:1440px;height:460px;background:rgb(245,245,245);overflow:hidden">
+  <span style="position:absolute;left:34px;top:96px;width:860px;height:160px;font-size:64px;font-weight:600;line-height:70px;letter-spacing:-0.05em;color:rgb(36,36,36)">Bring us your least favourite part of the week.</span>
+  <span style="position:absolute;left:38px;top:274px;width:820px;height:100px;font-size:18px;font-weight:500;line-height:27px;letter-spacing:-0.04em;color:rgba(20,20,20,.72)">A 30-minute call. We listen, ask questions, and tell you whether AI automation is the right answer or whether you&rsquo;d be better off fixing a process first. Either way, you leave with a clearer head and zero pressure to engage.</span>
+
+  <span style="position:absolute;left:962px;top:100px;width:440px;height:120px;font-size:22px;font-weight:500;line-height:32px;letter-spacing:-0.04em;color:rgb(20,20,20)">You get honest answers and a clear next step. No sales theater.</span>
+  <a href="https://meet.roarsinc.com/suzanne/" style="position:absolute;left:962px;top:250px;width:240px;height:47px;border-radius:60px;background:rgb(0,0,0);display:block;transition:transform .35s cubic-bezier(.16,1,.3,1)" style-hover="transform:translateY(-2px)">
+    <span style="position:absolute;left:25px;top:13px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:rgb(255,255,255);white-space:nowrap">Book a 30-Min Audit</span>
+    <span style="position:absolute;left:203px;top:19px;width:8px;height:8px;border-radius:50%;background:rgba(153,152,149,.6)"></span>
+    <span data-accent-bg="1" style="position:absolute;left:213px;top:19px;width:8px;height:8px;border-radius:50%;background:#FFD400"></span>
+  </a>
+  <span style="position:absolute;left:962px;top:324px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(20,20,20,.5);white-space:nowrap">USA +1 (302) 505-1200 &nbsp;/&nbsp; SALES@ROARSINC.COM</span>
+</div>
+
+<!-- ════════ FOOTER (6800) ════════ -->
+<div data-screen-label="Footer" style="position:absolute;left:0;top:6800px;width:1440px;height:1105px;background:rgb(11,11,11);overflow:hidden">
+  <img src="assets/space.jpg" alt="" style="position:absolute;left:-37px;top:-10px;width:1672.305px;height:1115.006px;object-fit:cover;transform:scaleY(-1)" />
+
+  <div style="position:absolute;left:44px;top:61px;width:1073px;height:192px;overflow:hidden">
+    <img src="assets/mark.svg" alt="Roars" style="position:absolute;left:0;top:0;width:21px;height:21px;filter:invert(1)" />
+    <div style="position:absolute;left:458px;top:5px;width:384px;height:187px;overflow:hidden">
+      <span style="position:absolute;left:0;top:0;width:384px;height:120px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgb(147,147,147)">Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.</span>
+      <div style="position:absolute;left:0;top:145px;width:170px;height:42px">
+        <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+        <span style="position:absolute;left:56px;top:3px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.95);white-space:nowrap">Riinkesh A Sshah</span>
+        <span style="position:absolute;left:56px;top:23px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.6);white-space:nowrap">CEO / Founder</span>
+      </div>
+    </div>
+    <span style="position:absolute;left:921px;top:11px;width:180px;height:48px;font-size:18px;font-weight:500;line-height:24px;letter-spacing:-0.02em;color:rgb(255,255,255)">Space of Product<br />Solutions<span data-accent-tx="1" style="color:#FFD400">*</span></span>
+  </div>
+
+  <div style="position:absolute;left:43px;top:378px;width:1356px;height:258px;overflow:hidden">
+    <div style="position:absolute;left:0;top:36px;width:249px;height:81px">
+      <div style="position:absolute;left:1px;top:0;width:16px;height:1.5px;background:rgba(180,174,174,.7)"></div>
+      <span style="position:absolute;left:0;top:34px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);white-space:nowrap">USA +1 (302) 505-1200</span>
+      <a href="mailto:sales@roarsinc.com" style="position:absolute;left:1px;top:57px;font-size:20px;font-weight:600;line-height:24px;letter-spacing:-0.02em;color:rgba(255,255,255,.95);white-space:nowrap">sales@roarsinc.com</a>
+    </div>
+
+    <span style="position:absolute;left:459px;top:0;font-size:14px;font-weight:600;line-height:19px;letter-spacing:-0.06em;color:rgb(145,145,145);white-space:nowrap">Navigation</span>
+    <div style="position:absolute;left:459px;top:39px;width:16px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+    <div style="position:absolute;left:459px;top:58px;width:200px;height:240px;font-size:24px;font-weight:600;line-height:40px;letter-spacing:-0.06em;color:rgba(255,255,255,.9);display:flex;flex-direction:column">
+      <a href="Roars v2 - Main.dc.html">Home</a>
+      <a href="Roars v2 - Agency.dc.html">Agency</a>
+      <a href="Roars v2 - Approach.dc.html">Approach</a>
+      <a href="Roars v2 - Projects.dc.html">Projects</a>
+      <a href="Roars v2 - Insights.dc.html">Insights</a>
+      <a href="Roars v2 - Contact.dc.html">Contact</a>
+    </div>
+
+    <div style="position:absolute;left:692px;top:64px;width:120px;height:90px;font-size:16px;font-weight:500;line-height:30px;letter-spacing:-0.06em;color:rgba(255,255,255,.78);display:flex;flex-direction:column">
+      <a href="https://www.twitter.com/roarstech">Twitter</a>
+      <a href="https://www.instagram.com/roarstech">Instagram</a>
+      <a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./">LinkedIn</a>
+    </div>
+
+    <span style="position:absolute;left:925px;top:0;font-size:14px;font-weight:600;line-height:19px;letter-spacing:-0.06em;color:rgb(145,145,145);white-space:nowrap">Subscribe our News</span>
+    <div style="position:absolute;left:926px;top:39px;width:16px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+    <div style="position:absolute;left:926px;top:70px;width:430px;height:182px;overflow:hidden">
+      <span style="position:absolute;left:0;top:0;font-size:16px;font-weight:400;line-height:19px;letter-spacing:-0.06em;color:rgb(255,255,255);white-space:nowrap">Your name *</span>
+      <div style="position:absolute;left:0;top:40px;width:430px;height:1px;background:rgba(231,231,231,.3)"></div>
+      <span style="position:absolute;left:0;top:66px;font-size:16px;font-weight:400;line-height:19px;letter-spacing:-0.06em;color:rgb(255,255,255);white-space:nowrap">Email *</span>
+      <div style="position:absolute;left:0;top:106px;width:430px;height:1px;background:rgba(231,231,231,.3)"></div>
+      <div style="position:absolute;left:0;top:140px;width:195px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);cursor:pointer">
+        <span style="position:absolute;left:21px;top:10px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:12px;font-weight:500;line-height:20px;color:rgb(255,255,255);white-space:nowrap">Subscribe</span>
+        <span style="position:absolute;left:158px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span>
+        <span style="position:absolute;left:169px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(255,255,255)"></span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:43px;top:734px;width:1053px;height:310px;overflow:hidden">
+    <div style="position:absolute;left:459px;top:0;width:594px;height:186px;overflow:hidden">
+      <img src="assets/asteroids.svg" alt="" style="position:absolute;left:5px;top:61px;width:58px;height:7px;filter:invert(1);transform:rotate(6.7deg);transform-origin:0 0" />
+      <span style="position:absolute;left:0;top:0;width:555px;height:186px;font-size:182px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:rgb(255,255,255);white-space:nowrap">roars</span>
+      <div data-accent-bg="1" style="position:absolute;left:443px;top:28px;width:31px;height:31px;border-radius:60px;background:#FFD400">
+        <span style="position:absolute;left:0;top:0;width:31px;height:31px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;line-height:1;letter-spacing:0;color:rgb(31,31,31)">&reg;</span>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;top:238px;width:1053px;height:72px;overflow:hidden">
+      <span style="position:absolute;left:0;top:5px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">&copy; 2026</span>
+      <span style="position:absolute;left:0;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Roars Technologies</span>
+      <div style="position:absolute;left:459px;top:0;width:247px;height:72px;font-size:12px;font-weight:500;line-height:21px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);display:flex;flex-direction:column">
+        <a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="https://link.roars.in/F39Mv">Company Profile</a>
+      </div>
+      <span style="position:absolute;left:692px;top:3px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Offices</span>
+      <span style="position:absolute;left:692px;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);white-space:nowrap">India &middot; USA &middot; UK &middot; Belgium &middot; Germany</span>
+      <span style="position:absolute;left:926px;top:3px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Built by</span>
+      <span style="position:absolute;left:926px;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);white-space:nowrap">Roars Technologies</span>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FFD400&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FFD400&quot;,&quot;#FF6A2B&quot;,&quot;#B9FF3D&quot;,&quot;#FFFFFF&quot;]},&quot;openQuestion&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:6,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;FAQ&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const H = 7905;
+    const DARK = [[0, 840], [1900, 2520], [4640, 5400], [6800, H]];
+    const accent = this.props.accent || '#FFD400';
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+      || this.props.motion === false;
+
+    this.paintAccent = () => {
+      document.querySelectorAll('[data-accent-bg]').forEach(el => { el.style.background = accent; });
+      document.querySelectorAll('[data-accent-tx]').forEach(el => { el.style.color = accent; });
+    };
+
+    // ── hero terminal: eval rows resolving one by one ─────────────────
+    this.terminal = () => {
+      const rows = [...document.querySelectorAll('[data-row]')];
+      const status = document.querySelector('[data-status]');
+      const bar = document.querySelector('[data-progress]');
+      const run = document.querySelector('[data-run]');
+      if (!rows.length) return;
+      let i = 0;
+      const paint = () => {
+        rows.forEach((r, k) => {
+          const done = k <= i;
+          r.style.opacity = done ? '1' : '.34';
+          const v = r.querySelector('[data-verdict]');
+          if (v) {
+            const hold = v.textContent.indexOf('HOLD') === 0;
+            v.style.color = done ? (hold ? accent : 'rgba(255,255,255,.62)') : 'rgba(255,255,255,.3)';
+          }
+        });
+        if (bar) bar.style.width = Math.round(((i + 1) / rows.length) * 100) + '%';
+        if (status) status.textContent = i >= rows.length - 1 ? 'BASELINE BEATEN \u00b7 SHIPPING' : 'RUNNING EVALS\u2026';
+      };
+      paint();
+      if (reduce) { i = rows.length - 1; paint(); return; }
+      let n = 92;
+      this.evalId = setInterval(() => {
+        i = (i + 1) % rows.length;
+        if (i === 0 && run) { n += 1; run.textContent = '#' + String(n).padStart(4, '0'); }
+        paint();
+      }, 1500);
+    };
+
+    // ── FAQ two-pane ─────────────────────────────────────────────────
+    this.faq = () => {
+      const qs = [...document.querySelectorAll('[data-q]')];
+      const as = [...document.querySelectorAll('[data-a]')];
+      if (!qs.length) return;
+      const select = n => {
+        qs.forEach(q => {
+          const on = +q.getAttribute('data-q') === n;
+          const name = q.querySelector('[data-q-name]');
+          const dot = q.querySelector('[data-q-dot]');
+          const num = q.querySelector('[data-q-num]');
+          if (name) {
+            name.style.color = on ? 'rgb(20,20,20)' : 'rgba(36,36,36,.5)';
+            name.style.transform = on ? 'translateX(8px)' : 'none';
+          }
+          if (dot) dot.style.background = on ? accent : 'rgba(20,20,20,.18)';
+          if (num) num.style.color = on ? 'rgb(20,20,20)' : 'rgb(145,145,145)';
+        });
+        as.forEach(a => {
+          const on = +a.getAttribute('data-a') === n;
+          a.style.opacity = on ? '1' : '0';
+          a.style.pointerEvents = on ? 'auto' : 'none';
+          a.style.transform = on ? 'none' : 'translateY(10px)';
+        });
+      };
+      qs.forEach(q => {
+        const n = +q.getAttribute('data-q');
+        q.addEventListener('mouseenter', () => select(n));
+        q.addEventListener('click', () => select(n));
+      });
+      select(this.props.openQuestion != null ? Math.min(6, Math.max(0, this.props.openQuestion | 0)) : 0);
+    };
+
+    this.mq = matchMedia('(max-width: 760px)');
+    this.fit = () => {
+      const wrap = document.querySelector('[data-fit]');
+      const canvas = document.querySelector('[data-canvas]');
+      if (!wrap || !canvas) return;
+      const m = this.mq.matches;
+      const mob = document.querySelector('[data-mobile]');
+      const barM = document.querySelector('[data-topbar-m]');
+      const barD = document.querySelector('[data-topbar]');
+      if (mob) mob.style.display = m ? 'block' : 'none';
+      if (barM) barM.style.display = m ? 'flex' : 'none';
+      if (barD) barD.style.display = m ? 'none' : 'block';
+      canvas.style.display = m ? 'none' : 'block';
+      if (m) { wrap.style.height = 'auto'; return; }
+      const s = wrap.clientWidth / 1440;
+      canvas.style.transform = 'scale(' + s + ')';
+      wrap.style.height = (H * s) + 'px';
+      const bar = document.querySelector('[data-topbar]');
+      if (bar) {
+        bar.style.transform = 'scale(' + s + ')';
+        bar.style.left = wrap.getBoundingClientRect().left + 'px';
+      }
+    };
+
+    this.tint = () => {
+      const wrap = document.querySelector('[data-fit]');
+      const bar = document.querySelector('[data-topbar]');
+      if (!wrap || !bar) return;
+      const s = wrap.clientWidth / 1440;
+      const yy = (scrollY + 60) / s;
+      const onDark = DARK.some(r => yy >= r[0] && yy < r[1]);
+      const ink = onDark ? 'rgb(255,255,255)' : 'rgb(15,15,15)';
+      const contact = bar.querySelector('[data-contact]');
+      if (contact) {
+        const gone = scrollY > 80;
+        contact.style.opacity = gone ? '0' : '1';
+        contact.style.transform = gone ? 'translateY(-12px)' : 'none';
+        contact.style.pointerEvents = gone ? 'none' : 'auto';
+      }
+      bar.querySelectorAll('[data-ink]').forEach(el => { el.style.color = ink; });
+      bar.querySelectorAll('[data-fill]').forEach(el => { el.style.background = ink; });
+      bar.querySelectorAll('[data-ring]').forEach(el => {
+        el.style.boxShadow = 'inset 0 0 0 2px ' + (onDark ? 'rgba(255,255,255,.25)' : 'rgba(15,15,15,.28)');
+      });
+      const mark = bar.querySelector('[data-mark]');
+      if (mark) {
+        const ring = mark.querySelector('[data-logo-ring]');
+        const img = mark.querySelector('[data-logo-img]');
+        const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+        const prog = Math.min(1, Math.max(0, scrollY / max));
+        const onLight = !onDark;
+        if (ring) {
+          ring.style.background = 'conic-gradient(' + accent + ' ' + prog.toFixed(4) + 'turn, rgba(255,212,0,.14) 0turn)';
+          ring.style.opacity = onLight ? '1' : '0';
+        }
+        mark.style.background = onLight ? '#FBFBF9' : 'transparent';
+        mark.style.boxShadow = onLight ? '0 1px 0 rgba(10,10,10,.06)' : 'none';
+        if (img) {
+          img.style.filter = onLight
+            ? 'brightness(0)'
+            : 'brightness(0) invert(84%) sepia(72%) saturate(1400%) hue-rotate(357deg) brightness(104%)';
+          img.style.transform = onLight ? 'rotate(45deg) scale(.92)' : 'rotate(0deg) scale(1)';
+        }
+      }
+    };
+
+    // horizontal process rail draws as the section crosses the viewport
+    this.motion = () => {
+      const rail = document.querySelector('[data-rail]');
+      if (rail) {
+        const r = rail.getBoundingClientRect();
+        let prog = (innerHeight * 0.78 - r.top) / (innerHeight * 0.55);
+        prog = Math.min(1, Math.max(0, prog));
+        const px = prog * 1362;
+        const fill = document.querySelector('[data-rail-fill]');
+        if (fill) fill.style.width = px.toFixed(1) + 'px';
+        const nodes = [...document.querySelectorAll('[data-node]')];
+        let last = -1;
+        nodes.forEach(n => { if (px >= +n.getAttribute('data-nx') - 2) last = +n.getAttribute('data-node'); });
+        nodes.forEach(n => {
+          const i = +n.getAttribute('data-node');
+          const on = px >= +n.getAttribute('data-nx') - 2;
+          n.style.background = on ? accent : 'rgb(255,255,255)';
+          n.style.boxShadow = 'inset 0 0 0 1.5px ' + (on ? accent : 'rgba(20,20,20,.5)');
+          n.style.transform = last === i ? 'scale(1.3) rotate(45deg)' : 'scale(1)';
+        });
+      }
+      if (reduce) return;
+      document.querySelectorAll('[data-par]').forEach(el => {
+        const f = parseFloat(el.getAttribute('data-par'));
+        const rr = el.getBoundingClientRect();
+        const off = ((rr.top + rr.height / 2) - innerHeight / 2) * f;
+        el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)';
+      });
+      const tm = document.querySelector('[data-terminal]');
+      if (tm) {
+        const rr = tm.getBoundingClientRect();
+        const k = ((rr.top + rr.height / 2) - innerHeight / 2) / innerHeight;
+        tm.style.transform = 'translate3d(0,' + (k * -40).toFixed(1) + 'px,0)';
+      }
+    };
+
+    this.counts = () => {
+      const els = [...document.querySelectorAll('[data-count]')];
+      if (!els.length) return;
+      const io2 = new IntersectionObserver(ents => {
+        ents.forEach(en => {
+          if (!en.isIntersecting) return;
+          const el = en.target;
+          io2.unobserve(el);
+          const target = +el.getAttribute('data-count');
+          if (reduce || target === 0) { el.textContent = target; return; }
+          const t0 = performance.now();
+          const step = now => {
+            const k = Math.min(1, (now - t0) / 1100);
+            el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3)));
+            if (k < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.4 });
+      els.forEach(el => io2.observe(el));
+      this.io2 = io2;
+    };
+
+    this.onScroll = () => {
+      if (this.raf) return;
+      this.raf = requestAnimationFrame(() => {
+        this.raf = null;
+        this.tint();
+        this.motion();
+      });
+    };
+
+    this.logoIntro = () => {
+      const img0 = document.querySelector('[data-logo-img]');
+      if (!img0 || reduce) return;
+      img0.animate(
+        [{ transform: 'scale(.2) rotate(-90deg)', opacity: 0.001 },
+         { transform: 'scale(1.12) rotate(8deg)', opacity: 1, offset: 0.62 },
+         { transform: 'scale(1) rotate(0deg)', opacity: 1 }],
+        { duration: 1100, delay: 300, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' }
+      );
+    };
+
+    this.reveal = () => {
+      const canvas = document.querySelector('[data-canvas]');
+      if (!canvas) return;
+      const items = [];
+      [...canvas.querySelectorAll('[data-screen-label]')].forEach(sec => {
+        [...sec.children].forEach(el => {
+          if (el.tagName === 'IMG' && el.parentElement === sec) return;
+          if (el.hasAttribute && (el.hasAttribute('data-par') || el.hasAttribute('data-rail') || el.hasAttribute('data-terminal'))) return;
+          if (!el.style || el.style.position !== 'absolute') return;
+          el.style.willChange = 'transform,opacity';
+          el.style.transition = 'transform .72s cubic-bezier(.22,.68,.28,1), opacity .62s ease';
+          const d = el.getAttribute('data-delay');
+          if (d) el.style.transitionDelay = d;
+          el.style.opacity = '0';
+          items.push(el);
+        });
+      });
+      const base = new Map();
+      items.forEach(el => base.set(el, el.style.transform || ''));
+      items.forEach(el => { el.style.transform = (base.get(el) + ' translateY(26px)').trim(); });
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (!en.isIntersecting) return;
+          const el = en.target;
+          el.style.transform = base.get(el);
+          el.style.opacity = '1';
+          io.unobserve(el);
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.04 });
+      items.forEach(el => io.observe(el));
+      this.io = io;
+    };
+
+    this.paintAccent();
+    this.terminal();
+    this.faq();
+    this.counts();
+    this.logoIntro();
+    this.tint();
+    if (!reduce) requestAnimationFrame(() => this.reveal());
+    addEventListener('scroll', this.onScroll, { passive: true });
+
+    this.fit();
+    this.motion();
+    this.mobileMotion = () => {
+      const mob = document.querySelector('[data-mobile]');
+      if (!mob || this.mio) return;
+      const soft = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const bar = document.querySelector('[data-topbar-m]');
+      if (bar && !bar.querySelector('[data-mprog]')) {
+        const p = document.createElement('span');
+        p.setAttribute('data-mprog', '1');
+        p.style.cssText = 'position:absolute;left:0;bottom:-1px;height:2px;width:0;background:#FFD400;transition:width .12s linear';
+        bar.appendChild(p);
+      }
+      if (!soft) {
+        [...mob.querySelectorAll('[data-mrev]')].forEach(el => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(24px) scale(.985)';
+          el.style.transition = 'transform .8s cubic-bezier(.22,.68,.28,1), opacity .6s ease';
+          [...el.children].forEach((c, i) => {
+            if (i > 7) return;
+            c.style.opacity = '0';
+            c.style.transform = 'translateY(12px)';
+            c.style.transition = 'transform .66s cubic-bezier(.22,.68,.28,1) ' + (60 + i * 70) + 'ms, opacity .5s ease ' + (60 + i * 70) + 'ms';
+          });
+        });
+        this.mio = new IntersectionObserver(ens => {
+          ens.forEach(en => {
+            if (!en.isIntersecting) return;
+            const el = en.target;
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            [...el.children].forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+            const dot = el.querySelector('[data-mdot]');
+            if (dot) { dot.style.background = '#FFD400'; dot.style.boxShadow = 'inset 0 0 0 1.5px rgba(20,20,20,.15)'; }
+            this.mio.unobserve(el);
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+        [...mob.querySelectorAll('[data-mrev]')].forEach(el => this.mio.observe(el));
+      }
+      const darks = [...mob.querySelectorAll('[data-mdark]')];
+      const pars = [...mob.querySelectorAll('[data-mpar]')];
+      this.mtint = () => {
+        if (!this.mq.matches) return;
+        const doc = document.documentElement;
+        const prog = Math.min(1, Math.max(0, scrollY / Math.max(1, doc.scrollHeight - innerHeight)));
+        const pb = bar && bar.querySelector('[data-mprog]');
+        if (pb) pb.style.width = (prog * 100).toFixed(2) + '%';
+        if (!soft) pars.forEach(el => {
+          const r = el.getBoundingClientRect();
+          const k = parseFloat(el.getAttribute('data-mpar')) || 0.06;
+          const off = (r.top + r.height / 2 - innerHeight / 2) * -k;
+          const flip = (el.style.transform || '').indexOf('scaleY(-1)') >= 0 ? ' scaleY(-1)' : '';
+          el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)' + flip;
+        });
+        if (!bar) return;
+        const onDark = darks.some(s => { const r = s.getBoundingClientRect(); return r.top <= 30 && r.bottom > 30; });
+        bar.style.background = onDark ? 'rgba(10,10,10,.55)' : 'rgba(255,255,255,.86)';
+        bar.style.borderBottomColor = onDark ? 'rgba(255,255,255,.16)' : 'rgba(153,152,149,.25)';
+        const ink = onDark ? 'rgb(255,255,255)' : 'rgb(15,15,15)';
+        bar.querySelectorAll('[data-mbar-line]').forEach(el => { el.style.background = ink; });
+        const pill = bar.querySelector('[data-mbar-pill]');
+        if (pill) { pill.style.color = ink; pill.style.boxShadow = 'inset 0 0 0 1.5px ' + (onDark ? 'rgba(255,255,255,.3)' : 'rgba(15,15,15,.28)'); }
+        const img = bar.querySelector('[data-mbar-img]');
+        if (img) img.style.filter = onDark ? 'brightness(0) invert(84%) sepia(72%) saturate(1400%) hue-rotate(357deg) brightness(104%)' : 'brightness(0)';
+      };
+      // ── mobile: tap-to-open accordions ──────────────────────────────
+      const maccs = [...mob.querySelectorAll('[data-macc]')];
+      maccs.forEach(acc => {
+        if (acc.dataset.wired) return;
+        acc.dataset.wired = '1';
+        const head = acc.querySelector('[data-macc-head]');
+        const body = acc.querySelector('[data-macc-body]');
+        const inner = acc.querySelector('[data-macc-inner]');
+        const ico = acc.querySelector('[data-macc-ico]');
+        if (!head || !body || !inner) return;
+        const set = on => {
+          acc.dataset.open = on ? '1' : '';
+          body.style.height = on ? inner.offsetHeight + 'px' : '0px';
+          if (ico) {
+            ico.style.transform = on ? 'rotate(45deg)' : 'none';
+            ico.style.color = on ? '#FFD400' : 'rgba(20,20,20,.5)';
+          }
+        };
+        acc.__set = set;
+        head.addEventListener('click', () => {
+          const on = acc.dataset.open !== '1';
+          maccs.forEach(o => { if (o !== acc && o.__set) o.__set(false); });
+          set(on);
+        });
+      });
+
+      // ── mobile: filter chips ────────────────────────────────────────
+      const mchips = [...mob.querySelectorAll('[data-mfilter]')];
+      const mcards = [...mob.querySelectorAll('[data-mcard]')];
+      if (mchips.length && mcards.length) {
+        const mcount = mob.querySelector('[data-mcount]');
+        const applyM = key => {
+          let n = 0;
+          mcards.forEach(c => {
+            const on = key === 'all' || (' ' + c.getAttribute('data-mcat') + ' ').indexOf(' ' + key + ' ') >= 0;
+            c.style.display = on ? 'flex' : 'none';
+            if (on) n += 1;
+          });
+          if (mcount) mcount.textContent = n + ' / ' + mcards.length;
+          mchips.forEach(ch => {
+            const on = ch.getAttribute('data-mfilter') === key;
+            ch.style.background = on ? '#FFD400' : 'transparent';
+            ch.style.boxShadow = 'inset 0 0 0 1px ' + (on ? '#FFD400' : 'rgba(20,20,20,.16)');
+          });
+        };
+        mchips.forEach(ch => ch.addEventListener('click', () => applyM(ch.getAttribute('data-mfilter'))));
+      }
+
+      // ── mobile: stagger children + reveal, progress bar, parallax ───
+      const soft2 = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (bar && !bar.querySelector('[data-mprog]')) {
+        const pb0 = document.createElement('span');
+        pb0.setAttribute('data-mprog', '1');
+        pb0.style.cssText = 'position:absolute;left:0;bottom:-1px;height:2px;width:0;background:#FFD400;transition:width .12s linear';
+        bar.appendChild(pb0);
+      }
+      if (!soft2) {
+        mob.querySelectorAll('section > img').forEach(im => {
+          if (!im.hasAttribute('data-mpar') && !im.hasAttribute('data-mpar2')) {
+            im.setAttribute('data-mpar2', '0.05');
+            im.style.willChange = 'transform';
+          }
+        });
+        const revs = [...mob.querySelectorAll('[data-mrev]')];
+        revs.forEach(el => {
+          el.style.willChange = 'transform,opacity';
+          if (!el.style.transition) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(24px) scale(.985)';
+            el.style.transition = 'transform .8s cubic-bezier(.22,.68,.28,1), opacity .6s ease';
+          }
+          [...el.children].forEach((c, i) => {
+            if (i > 7 || c.dataset.stag) return;
+            c.dataset.stag = '1';
+            c.style.opacity = '0';
+            c.style.transform = 'translateY(12px)';
+            c.style.transition = 'transform .66s cubic-bezier(.22,.68,.28,1) ' + (60 + i * 70) + 'ms, opacity .5s ease ' + (60 + i * 70) + 'ms';
+          });
+        });
+        this.mio2 = new IntersectionObserver(ens => {
+          ens.forEach(en => {
+            if (!en.isIntersecting) return;
+            const el = en.target;
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            [...el.children].forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+            const dot = el.querySelector('[data-mdot]');
+            if (dot) { dot.style.background = '#FFD400'; dot.style.boxShadow = 'inset 0 0 0 1.5px rgba(20,20,20,.15)'; }
+            this.mio2.unobserve(el);
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+        revs.forEach(el => this.mio2.observe(el));
+      }
+      const pars2 = [...mob.querySelectorAll('[data-mpar2]')];
+      this.mextra = () => {
+        if (!this.mq.matches) return;
+        const pb = bar && bar.querySelector('[data-mprog]');
+        if (pb) {
+          const prog = Math.min(1, Math.max(0, scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)));
+          pb.style.width = (prog * 100).toFixed(2) + '%';
+        }
+        if (soft2) return;
+        pars2.forEach(el => {
+          const r = el.getBoundingClientRect();
+          const k = parseFloat(el.getAttribute('data-mpar2')) || 0.05;
+          const off = (r.top + r.height / 2 - innerHeight / 2) * -k;
+          const flip = (el.getAttribute('style') || '').indexOf('scaleY(-1)') >= 0 ? ' scaleY(-1)' : '';
+          el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)' + flip;
+        });
+      };
+      this.mextra();
+      addEventListener('scroll', this.mextra, { passive: true });
+
+      this.mtint();
+      addEventListener('scroll', this.mtint, { passive: true });
+    };
+    this.mobileMotion();
+    this.onMq = () => this.fit();
+    if (this.mq.addEventListener) this.mq.addEventListener('change', this.onMq);
+
+    addEventListener('resize', this.fit);
+    const wrap = document.querySelector('[data-fit]');
+    if (wrap && window.ResizeObserver) {
+      this.ro = new ResizeObserver(() => { this.fit(); this.motion(); });
+      this.ro.observe(wrap);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.mtint) removeEventListener('scroll', this.mtint);
+    if (this.mio) this.mio.disconnect();
+    if (this.mio2) this.mio2.disconnect();
+    if (this.mextra) removeEventListener('scroll', this.mextra);
+    if (this.mq && this.mq.removeEventListener) this.mq.removeEventListener('change', this.onMq);
+    removeEventListener('resize', this.fit);
+    removeEventListener('scroll', this.onScroll);
+    if (this.io) this.io.disconnect();
+    if (this.io2) this.io2.disconnect();
+    if (this.ro) this.ro.disconnect();
+    if (this.raf) cancelAnimationFrame(this.raf);
+    if (this.evalId) clearInterval(this.evalId);
+  }
+}
+
+</script>
+</body>
+</html>

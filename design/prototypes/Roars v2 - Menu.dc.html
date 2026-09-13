@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; background:#050505; }
+  body { font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#FFD400; }
+</style>
+</helmet>
+
+<div data-fit="1" style="position:relative;width:100%;overflow:hidden;background:#000000">
+
+<div data-topbar="1" style="position:fixed;left:0;top:0;width:1440px;height:150px;transform-origin:0 0;z-index:90;pointer-events:none">
+  <div style="pointer-events:auto">
+  <div style="position:absolute;left:39px;top:36px;width:1366px;height:111px">
+    <a href="Roars v2 - Main.dc.html" data-mark="1" style="position:absolute;left:-9px;top:-4px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:999px"><img src="brand/roars-mark.png" alt="Roars" style="position:relative;width:26px;height:auto;display:block;filter:brightness(0) invert(84%) sepia(72%) saturate(1400%) hue-rotate(357deg) brightness(104%)" /></a>
+    <span data-bar-label="1" style="position:absolute;left:1246px;top:16px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.66);white-space:nowrap">CLOSE</span>
+    <div data-menu-btn="1" style="position:absolute;left:1330px;top:6px;width:46px;height:30px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:4px">
+      <span data-mline="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255);transform-origin:50% 50%;transition:transform .5s cubic-bezier(.16,1,.3,1)"></span>
+      <span data-mline="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255);transform-origin:50% 50%;transition:transform .5s cubic-bezier(.16,1,.3,1)"></span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div data-behind-m="1" style="display:none;position:fixed;left:0;top:0;right:0;bottom:0;overflow:hidden;background:#000">
+  <img src="assets/space.jpg" alt="" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform:scaleY(-1)" />
+  <div style="position:absolute;left:0;right:0;bottom:0;height:60%;background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.8) 70%,rgb(0,0,0) 100%)"></div>
+  <div style="position:absolute;left:20px;right:20px;bottom:48px;display:flex;flex-direction:column;gap:12px">
+    <span style="font-size:88px;font-weight:600;line-height:76px;letter-spacing:-0.05em;color:rgb(251,251,251)">roars</span>
+    <span style="font-size:15px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.8)">Product Development<br />for Startups &amp; SMEs</span>
+  </div>
+</div>
+
+<!-- ════════ PAGE UNDERNEATH (for context) ════════ -->
+<div data-canvas="1" style="position:relative;width:1440px;height:900px;transform-origin:0 0;background:#000000">
+  <div data-screen-label="Page behind" style="position:absolute;left:0;top:0;width:1440px;height:900px;overflow:hidden;background:rgb(255,255,255)">
+    <img src="assets/space.jpg" alt="" style="position:absolute;left:433px;top:-106px;width:1553.732px;height:1035.948px;object-fit:cover;transform:scaleY(-1)" />
+    <div style="position:absolute;left:330px;top:0;width:190px;height:900px;background:linear-gradient(90deg,rgb(255,255,255) 0%,rgba(255,255,255,.92) 32%,rgba(255,255,255,0) 100%)"></div>
+    <div style="position:absolute;left:395px;top:258px;width:89px;height:78px;overflow:hidden">
+      <div style="position:absolute;left:0;top:3px;width:75px;height:75px;border-radius:60px;background:radial-gradient(52.9% 52.9% at 90.36% 15.66%, rgb(78,73,72) 0%, rgb(0,0,0) 100%)"></div>
+      <div style="position:absolute;left:75px;top:0;width:14px;height:14px;border-radius:60px;background:rgb(6,6,6)"></div>
+    </div>
+    <div style="position:absolute;left:488.849px;top:477px;width:682.151px;height:323px;overflow:hidden">
+      <span style="position:absolute;left:13.151px;top:75px;width:555px;height:186px;font-size:212px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">roars</span>
+      <span style="position:absolute;left:246.151px;top:356px;width:220px;height:48px;font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.03em;color:rgb(255,255,255)">Product Development<br />for Startups &amp; SMEs</span>
+    </div>
+    <div style="position:absolute;left:39px;top:600px;width:249px;height:96px;overflow:hidden">
+      <div style="position:absolute;left:0;top:0;width:200px;height:96px;font-size:14px;font-weight:600;line-height:24px;letter-spacing:-0.05em;color:rgb(0,0,0);white-space:nowrap">Product Development<br />UI/UX and Product Design<br />Mobile App Development<br />AI Automation</div>
+    </div>
+  </div>
+</div>
+
+<div data-topbar-m="1" style="display:none;position:fixed;left:0;top:0;right:0;height:64px;z-index:95;align-items:center;justify-content:space-between;padding:0 16px">
+  <a href="Roars v2 - Main.dc.html" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-left:-10px"><img src="brand/roars-mark.png" alt="Roars" style="width:24px;height:auto;display:block;filter:brightness(0) invert(84%) sepia(72%) saturate(1400%) hue-rotate(357deg) brightness(104%)" /></a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span data-bar-label-m="1" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.66);white-space:nowrap">CLOSE</span>
+    <div data-menu-btn-m="1" style="width:44px;height:44px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:4px">
+      <span data-mline-m="1" style="display:block;width:24px;height:2px;background:rgb(255,255,255);transform-origin:50% 50%;transition:transform .5s cubic-bezier(.16,1,.3,1)"></span>
+      <span data-mline-m="1" style="display:block;width:24px;height:2px;background:rgb(255,255,255);transform-origin:50% 50%;transition:transform .5s cubic-bezier(.16,1,.3,1)"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ MENU OVERLAY ════════ -->
+<div data-menu="1" style="position:fixed;left:0;top:0;right:0;bottom:0;z-index:70;background:#050505;overflow:hidden">
+  <img data-menu-bg="1" src="assets/space.jpg" alt="" style="position:absolute;left:-2%;top:-2%;width:104%;height:104%;object-fit:cover;opacity:.3;transform:scale(1.04)" />
+  <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(5,5,5,.62) 0%,rgba(5,5,5,.86) 58%,rgba(5,5,5,.97) 100%)"></div>
+
+  <div data-menu-mobile="1" style="display:none;position:absolute;left:0;top:0;right:0;bottom:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:80px 20px 44px">
+    <span style="display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45)">NAVIGATION</span>
+    <div data-accent-bg="1" style="width:16px;height:1.5px;background:#FFD400;margin-top:10px"></div>
+
+    <div style="display:flex;flex-direction:column;margin-top:20px;border-top:1px solid rgba(255,255,255,.12)">
+      <div data-macc="1" style="border-bottom:1px solid rgba(255,255,255,.12)">
+        <div data-macc-head="1" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">01</span>
+          <span style="flex:1;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgba(255,255,255,.92)">home</span>
+          
+          <span data-macc-ico="1" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;line-height:1;color:rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)">
+          <div data-macc-inner="1" style="display:flex;flex-direction:column;padding-bottom:10px">
+          <a href="Roars v2 - Main.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Overview</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Approach.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>How we work</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Projects.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Selected work</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+      <div data-macc="1" style="border-bottom:1px solid rgba(255,255,255,.12)">
+        <div data-macc-head="1" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">02</span>
+          <span style="flex:1;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgba(255,255,255,.92)">about us</span>
+          
+          <span data-macc-ico="1" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;line-height:1;color:rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)">
+          <div data-macc-inner="1" style="display:flex;flex-direction:column;padding-bottom:10px">
+          <a href="Roars v2 - Agency.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>The agency</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Agency.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Leadership & team</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Brand Guidelines.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Brand guidelines</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+      <div data-macc="1" style="border-bottom:1px solid rgba(255,255,255,.12)">
+        <div data-macc-head="1" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">03</span>
+          <span style="flex:1;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgba(255,255,255,.92)">approach</span>
+          
+          <span data-macc-ico="1" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;line-height:1;color:rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)">
+          <div data-macc-inner="1" style="display:flex;flex-direction:column;padding-bottom:10px">
+          <a href="Roars v2 - Approach.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Discovery</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Approach.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Design</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Approach.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Build</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Approach.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Launch & scale</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+      <div data-macc="1" style="border-bottom:1px solid rgba(255,255,255,.12)">
+        <div data-macc-head="1" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">04</span>
+          <span style="flex:1;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgba(255,255,255,.92)">work</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.5);white-space:nowrap">10 PROJECTS</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;line-height:1;color:rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)">
+          <div data-macc-inner="1" style="display:flex;flex-direction:column;padding-bottom:10px">
+          <a href="Roars  v2 - Project Detail.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Snowman Logistics</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars  v2 - Project Detail.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>GymBait.AI</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars  v2 - Project Detail.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Parqly</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars  v2 - Project Detail.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Concierge Loyalty</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars  v2 - Project Detail.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>GISAID</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars  v2 - Project Detail.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Advisee</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Projects.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>All 10 projects</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+      <div data-macc="1" style="border-bottom:1px solid rgba(255,255,255,.12)">
+        <div data-macc-head="1" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">05</span>
+          <span style="flex:1;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgba(255,255,255,.92)">industries</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.5);white-space:nowrap">8 SECTORS</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;line-height:1;color:rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)">
+          <div data-macc-inner="1" style="display:flex;flex-direction:column;padding-bottom:10px">
+          <a href="Roars v2 - Industries.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Restaurant</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Industries.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Fitness</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Industries.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>eCommerce</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Industries.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Travel</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Industries.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Logistics</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Industries.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>SaaS</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Industries.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Healthcare</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Industries.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Concierge</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+      <div data-macc="1" style="border-bottom:1px solid rgba(255,255,255,.12)">
+        <div data-macc-head="1" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">06</span>
+          <span style="flex:1;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgba(255,255,255,.92)">services</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.5);white-space:nowrap">5 SERVICES</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;line-height:1;color:rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)">
+          <div data-macc-inner="1" style="display:flex;flex-direction:column;padding-bottom:10px">
+          <a href="Roars v2 - Main.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Product Development</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Main.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>User Experience Design</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Main.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Mobile App Development</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Main.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>MVP Development</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - AI Automation.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>AI Automation</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+      <div data-macc="1" style="border-bottom:1px solid rgba(255,255,255,.12)">
+        <div data-macc-head="1" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">07</span>
+          <span style="flex:1;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgba(255,255,255,.92)">resources</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.5);white-space:nowrap">3 KITS</span>
+          <span data-macc-ico="1" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;line-height:1;color:rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)">
+          <div data-macc-inner="1" style="display:flex;flex-direction:column;padding-bottom:10px">
+          <a href="Roars v2 - Guides.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Guides</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Insights.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Insights</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Brand Guidelines.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Brand guidelines</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+      <div data-macc="1" style="border-bottom:1px solid rgba(255,255,255,.12)">
+        <div data-macc-head="1" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">08</span>
+          <span style="flex:1;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgba(255,255,255,.92)">our journal</span>
+          
+          <span data-macc-ico="1" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;line-height:1;color:rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)">
+          <div data-macc-inner="1" style="display:flex;flex-direction:column;padding-bottom:10px">
+          <a href="Roars v2 - Insight-details.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>AI App Development vs Traditional App Development</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Insight-details.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>20 Years of Roars: Built on Purpose, Driven by Impact</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Insight-details.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>The Unexpected Insight — We built a meal planning app</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Insights.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>All insights</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+      <div data-macc="1" style="border-bottom:1px solid rgba(255,255,255,.12)">
+        <div data-macc-head="1" style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="width:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.55)">09</span>
+          <span style="flex:1;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.05em;color:rgba(255,255,255,.92)">contact us</span>
+          
+          <span data-macc-ico="1" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;line-height:1;color:rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.16,1,.3,1), color .3s ease">+</span>
+        </div>
+        <div data-macc-body="1" style="height:0;overflow:hidden;transition:height .45s cubic-bezier(.16,1,.3,1)">
+          <div data-macc-inner="1" style="display:flex;flex-direction:column;padding-bottom:10px">
+          <a href="Roars v2 - Contact.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Book a discovery call</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          <a href="Roars v2 - Contact.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0 12px 36px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.03em;color:rgba(255,255,255,.72)"><span>Contact details</span><span style="font-size:14px;color:rgba(255,255,255,.35)">&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px;margin-top:40px;padding-top:24px;border-top:1px solid rgba(153,152,149,.4)">
+      <div style="display:flex;flex-wrap:wrap;gap:24px 40px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.62)">USA</span>
+          <a href="tel:+13025051200" style="font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.92);white-space:nowrap">+1 (302) 505-1200</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.62)">UK</span>
+          <a href="tel:+447537183399" style="font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.92);white-space:nowrap">+44 (7537) 183399</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.62)">EMAIL</span>
+          <a href="mailto:sales@roarsinc.com" style="font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.92);white-space:nowrap">sales@roarsinc.com</a>
+        </div>
+      </div>
+      <a href="Roars v2 - Contact.dc.html" style="display:flex;align-items:center;justify-content:space-between;width:100%;height:52px;padding:0 22px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)">
+        <span style="font-family:'Helvetica Neue',Inter,sans-serif;font-size:13px;font-weight:500;letter-spacing:-0.03em;color:rgb(255,255,255)">Book a discovery call</span>
+        <span style="display:flex;gap:3px">
+          <span style="width:8px;height:8px;border-radius:50%;background:rgba(153,152,149,.7)"></span>
+          <span data-accent-bg="1" style="width:8px;height:8px;border-radius:50%;background:#FFD400"></span>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div data-menu-canvas="1" style="position:absolute;left:0;top:0;width:1440px;height:900px;transform-origin:0 0">
+
+    <!-- left: navigation -->
+    <div data-nav-col="1" style="position:absolute;left:39px;top:150px;width:400px;height:614px">
+      <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">NAVIGATION</span>
+      <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+
+      <a data-nav="0" href="Roars v2 - Main.dc.html" style="position:absolute;left:0;top:50px;width:400px;height:60px;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .5s ease">
+        <div style="position:absolute;left:0;top:0;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">01</span>
+        <span data-nav-dot="1" data-accent-bg="1" style="position:absolute;left:26px;top:30px;width:6px;height:6px;border-radius:50%;background:#FFD400;opacity:0;transition:opacity .3s ease"></span>
+        <span data-nav-label="1" style="position:absolute;left:44px;top:14px;font-size:32px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgba(255,255,255,.72);white-space:nowrap;transition:color .3s ease">home</span>
+        <span data-nav-arrow="1" style="position:absolute;left:372px;top:22px;font-size:16px;line-height:16px;color:rgba(255,255,255,.6);opacity:0;transition:opacity .3s ease, transform .45s cubic-bezier(.16,1,.3,1)">&rarr;</span>
+      </a>
+
+      <a data-nav="1" href="Roars v2 - Agency.dc.html" style="position:absolute;left:0;top:110px;width:400px;height:60px;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .5s ease">
+        <div style="position:absolute;left:0;top:0;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">02</span>
+        <span data-nav-dot="1" data-accent-bg="1" style="position:absolute;left:26px;top:30px;width:6px;height:6px;border-radius:50%;background:#FFD400;opacity:0;transition:opacity .3s ease"></span>
+        <span data-nav-label="1" style="position:absolute;left:44px;top:14px;font-size:32px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgba(255,255,255,.72);white-space:nowrap;transition:color .3s ease">about us</span>
+        <span data-nav-arrow="1" style="position:absolute;left:372px;top:22px;font-size:16px;line-height:16px;color:rgba(255,255,255,.6);opacity:0;transition:opacity .3s ease, transform .45s cubic-bezier(.16,1,.3,1)">&rarr;</span>
+      </a>
+
+      <a data-nav="2" href="Roars v2 - Approach.dc.html" style="position:absolute;left:0;top:170px;width:400px;height:60px;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .5s ease">
+        <div style="position:absolute;left:0;top:0;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">03</span>
+        <span data-nav-dot="1" data-accent-bg="1" style="position:absolute;left:26px;top:30px;width:6px;height:6px;border-radius:50%;background:#FFD400;opacity:0;transition:opacity .3s ease"></span>
+        <span data-nav-label="1" style="position:absolute;left:44px;top:14px;font-size:32px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgba(255,255,255,.72);white-space:nowrap;transition:color .3s ease">approach</span>
+        <span data-nav-arrow="1" style="position:absolute;left:372px;top:22px;font-size:16px;line-height:16px;color:rgba(255,255,255,.6);opacity:0;transition:opacity .3s ease, transform .45s cubic-bezier(.16,1,.3,1)">&rarr;</span>
+      </a>
+
+      <a data-nav="3" href="Roars v2 - Projects.dc.html" style="position:absolute;left:0;top:230px;width:400px;height:60px;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .5s ease">
+        <div style="position:absolute;left:0;top:0;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">04</span>
+        <span data-nav-dot="1" data-accent-bg="1" style="position:absolute;left:26px;top:30px;width:6px;height:6px;border-radius:50%;background:#FFD400;opacity:0;transition:opacity .3s ease"></span>
+        <span data-nav-label="1" style="position:absolute;left:44px;top:14px;font-size:32px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgba(255,255,255,.72);white-space:nowrap;transition:color .3s ease">work</span>
+        <span style="position:absolute;left:264px;top:27px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">10 PROJECTS</span>
+        <span data-nav-arrow="1" style="position:absolute;left:372px;top:22px;font-size:16px;line-height:16px;color:rgba(255,255,255,.6);opacity:0;transition:opacity .3s ease, transform .45s cubic-bezier(.16,1,.3,1)">&rarr;</span>
+      </a>
+
+      <a data-nav="4" href="Roars v2 - Industries.dc.html" style="position:absolute;left:0;top:290px;width:400px;height:60px;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .5s ease">
+        <div style="position:absolute;left:0;top:0;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">05</span>
+        <span data-nav-dot="1" data-accent-bg="1" style="position:absolute;left:26px;top:30px;width:6px;height:6px;border-radius:50%;background:#FFD400;opacity:0;transition:opacity .3s ease"></span>
+        <span data-nav-label="1" style="position:absolute;left:44px;top:14px;font-size:32px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgba(255,255,255,.72);white-space:nowrap;transition:color .3s ease">industries</span>
+        <span style="position:absolute;left:274px;top:27px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">8 SECTORS</span>
+        <span data-nav-arrow="1" style="position:absolute;left:372px;top:22px;font-size:16px;line-height:16px;color:rgba(255,255,255,.6);opacity:0;transition:opacity .3s ease, transform .45s cubic-bezier(.16,1,.3,1)">&rarr;</span>
+      </a>
+
+      <a data-nav="5" href="Roars v2 - AI Automation.dc.html" style="position:absolute;left:0;top:350px;width:400px;height:60px;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .5s ease">
+        <div style="position:absolute;left:0;top:0;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">06</span>
+        <span data-nav-dot="1" data-accent-bg="1" style="position:absolute;left:26px;top:30px;width:6px;height:6px;border-radius:50%;background:#FFD400;opacity:0;transition:opacity .3s ease"></span>
+        <span data-nav-label="1" style="position:absolute;left:44px;top:14px;font-size:32px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgba(255,255,255,.72);white-space:nowrap;transition:color .3s ease">services</span>
+        <span style="position:absolute;left:266px;top:27px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">5 SERVICES</span>
+        <span data-nav-arrow="1" style="position:absolute;left:372px;top:22px;font-size:16px;line-height:16px;color:rgba(255,255,255,.6);opacity:0;transition:opacity .3s ease, transform .45s cubic-bezier(.16,1,.3,1)">&rarr;</span>
+      </a>
+
+      <a data-nav="6" href="Roars v2 - Resources.dc.html" style="position:absolute;left:0;top:410px;width:400px;height:60px;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .5s ease">
+        <div style="position:absolute;left:0;top:0;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">07</span>
+        <span data-nav-dot="1" data-accent-bg="1" style="position:absolute;left:26px;top:30px;width:6px;height:6px;border-radius:50%;background:#FFD400;opacity:0;transition:opacity .3s ease"></span>
+        <span data-nav-label="1" style="position:absolute;left:44px;top:14px;font-size:32px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgba(255,255,255,.72);white-space:nowrap;transition:color .3s ease">resources</span>
+        <span style="position:absolute;left:286px;top:27px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">3 KITS</span>
+        <span data-nav-arrow="1" style="position:absolute;left:372px;top:22px;font-size:16px;line-height:16px;color:rgba(255,255,255,.6);opacity:0;transition:opacity .3s ease, transform .45s cubic-bezier(.16,1,.3,1)">&rarr;</span>
+      </a>
+
+      <a data-nav="7" href="Roars v2 - Insights.dc.html" style="position:absolute;left:0;top:470px;width:400px;height:60px;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .5s ease">
+        <div style="position:absolute;left:0;top:0;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">08</span>
+        <span data-nav-dot="1" data-accent-bg="1" style="position:absolute;left:26px;top:30px;width:6px;height:6px;border-radius:50%;background:#FFD400;opacity:0;transition:opacity .3s ease"></span>
+        <span data-nav-label="1" style="position:absolute;left:44px;top:14px;font-size:32px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgba(255,255,255,.72);white-space:nowrap;transition:color .3s ease">our journal</span>
+        <span data-nav-arrow="1" style="position:absolute;left:372px;top:22px;font-size:16px;line-height:16px;color:rgba(255,255,255,.6);opacity:0;transition:opacity .3s ease, transform .45s cubic-bezier(.16,1,.3,1)">&rarr;</span>
+      </a>
+
+      <a data-nav="8" href="Roars v2 - Contact.dc.html" style="position:absolute;left:0;top:530px;width:400px;height:60px;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1), opacity .5s ease">
+        <div style="position:absolute;left:0;top:0;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <div style="position:absolute;left:0;top:59px;width:400px;height:1px;background:rgba(255,255,255,.12)"></div>
+        <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">09</span>
+        <span data-nav-dot="1" data-accent-bg="1" style="position:absolute;left:26px;top:30px;width:6px;height:6px;border-radius:50%;background:#FFD400;opacity:0;transition:opacity .3s ease"></span>
+        <span data-nav-label="1" style="position:absolute;left:44px;top:14px;font-size:32px;font-weight:600;line-height:36px;letter-spacing:-0.05em;color:rgba(255,255,255,.72);white-space:nowrap;transition:color .3s ease">contact us</span>
+        <span data-nav-arrow="1" style="position:absolute;left:372px;top:22px;font-size:16px;line-height:16px;color:rgba(255,255,255,.6);opacity:0;transition:opacity .3s ease, transform .45s cubic-bezier(.16,1,.3,1)">&rarr;</span>
+      </a>
+    </div>
+
+    <div style="position:absolute;left:470px;top:150px;width:1px;height:614px;background:rgba(255,255,255,.14)"></div>
+
+    <!-- right: panels -->
+    <div data-panels="1" style="position:absolute;left:520px;top:150px;width:881px;height:614px">
+
+      <!-- resting state -->
+      <div data-panel="-1" style="position:absolute;left:0;top:0;width:881px;height:614px;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">ROARS &mdash; SINCE 2005</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:720px;height:200px;font-size:60px;font-weight:600;line-height:64px;letter-spacing:-0.05em;color:rgb(251,251,251)">We create delightful experiences that matters.</span>
+        <span style="position:absolute;left:0;top:270px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.5);white-space:nowrap">20 YEARS OF EXCELLENCE IN PRODUCT CONSULTING</span>
+
+        <div style="position:absolute;left:0;top:330px;width:860px;height:130px">
+          <div style="position:absolute;left:0;top:0;width:250px;height:130px">
+            <div style="position:absolute;left:0;top:0;width:250px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:22px;font-size:56px;font-weight:600;line-height:56px;letter-spacing:-0.05em;color:rgb(255,255,255);white-space:nowrap">20+</span>
+            <span style="position:absolute;left:0;top:96px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62);white-space:nowrap">YEARS IN PRODUCT</span>
+          </div>
+          <div style="position:absolute;left:290px;top:0;width:250px;height:130px">
+            <div style="position:absolute;left:0;top:0;width:250px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:22px;font-size:56px;font-weight:600;line-height:56px;letter-spacing:-0.05em;color:rgb(255,255,255);white-space:nowrap">250+</span>
+            <span style="position:absolute;left:0;top:96px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62);white-space:nowrap">PROJECTS DELIVERED</span>
+          </div>
+          <div style="position:absolute;left:580px;top:0;width:250px;height:130px">
+            <div style="position:absolute;left:0;top:0;width:250px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:22px;font-size:56px;font-weight:600;line-height:56px;letter-spacing:-0.05em;color:rgb(255,255,255);white-space:nowrap">96%</span>
+            <span style="position:absolute;left:0;top:96px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62);white-space:nowrap">RETURNING CUSTOMERS</span>
+          </div>
+        </div>
+
+        <span style="position:absolute;left:0;top:520px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6);white-space:nowrap">HOVER A SECTION TO EXPLORE</span>
+      </div>
+
+      <!-- 01 home -->
+      <div data-panel="0" style="position:absolute;left:0;top:0;width:881px;height:614px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">01 &mdash; HOME</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:700px;height:120px;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(251,251,251)">Space of Product Solutions</span>
+        <span style="position:absolute;left:0;top:190px;width:440px;height:92px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.66)">Product development for startups and SMEs. Strategy, design and engineering under one roof, run by the same team since 2005.</span>
+        <div style="position:absolute;left:0;top:310px;width:860px;height:200px">
+          <a href="Roars v2 - Main.dc.html" data-row="1" style="position:absolute;left:0;top:0;width:420px;height:58px;display:block">
+            <div style="position:absolute;left:0;top:0;width:420px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:20px;font-size:20px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Overview</span>
+            <span style="position:absolute;left:390px;top:22px;font-size:14px;color:rgba(255,255,255,.5)">&rarr;</span>
+          </a>
+          <a href="Roars v2 - Approach.dc.html" data-row="1" style="position:absolute;left:0;top:58px;width:420px;height:58px;display:block">
+            <div style="position:absolute;left:0;top:0;width:420px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:20px;font-size:20px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">How we work</span>
+            <span style="position:absolute;left:390px;top:22px;font-size:14px;color:rgba(255,255,255,.5)">&rarr;</span>
+          </a>
+          <a href="Roars v2 - Projects.dc.html" data-row="1" style="position:absolute;left:0;top:116px;width:420px;height:58px;display:block">
+            <div style="position:absolute;left:0;top:0;width:420px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <div style="position:absolute;left:0;top:57px;width:420px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:20px;font-size:20px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Selected work</span>
+            <span style="position:absolute;left:390px;top:22px;font-size:14px;color:rgba(255,255,255,.5)">&rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 02 about us -->
+      <div data-panel="1" style="position:absolute;left:0;top:0;width:881px;height:614px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">02 &mdash; ABOUT US</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:700px;height:120px;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(251,251,251)">The team behind 250 products</span>
+        <span style="position:absolute;left:0;top:190px;width:440px;height:92px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.66)">Founded in 2005 by Riinkesh A Sshah. Eight senior people, five ventures of our own, and clients who come back for the next build.</span>
+        <div style="position:absolute;left:0;top:310px;width:860px;height:230px">
+          <a href="Roars v2 - Agency.dc.html" data-row="1" style="position:absolute;left:0;top:0;width:420px;height:58px;display:block">
+            <div style="position:absolute;left:0;top:0;width:420px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:20px;font-size:20px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">The agency</span>
+            <span style="position:absolute;left:390px;top:22px;font-size:14px;color:rgba(255,255,255,.5)">&rarr;</span>
+          </a>
+          <a href="Roars v2 - Agency.dc.html" data-row="1" style="position:absolute;left:0;top:58px;width:420px;height:58px;display:block">
+            <div style="position:absolute;left:0;top:0;width:420px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:20px;font-size:20px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Leadership &amp; team</span>
+            <span style="position:absolute;left:390px;top:22px;font-size:14px;color:rgba(255,255,255,.5)">&rarr;</span>
+          </a>
+          <a href="Roars v2 - Brand Guidelines.dc.html" data-row="1" style="position:absolute;left:0;top:116px;width:420px;height:58px;display:block">
+            <div style="position:absolute;left:0;top:0;width:420px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <div style="position:absolute;left:0;top:57px;width:420px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:20px;font-size:20px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Brand guidelines</span>
+            <span style="position:absolute;left:390px;top:22px;font-size:14px;color:rgba(255,255,255,.5)">&rarr;</span>
+          </a>
+          <div style="position:absolute;left:490px;top:0;width:370px;height:174px">
+            <div style="position:absolute;left:0;top:0;width:370px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62);white-space:nowrap">OUR OWN VENTURES</span>
+            <span style="position:absolute;left:0;top:52px;width:370px;height:120px;font-size:18px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.82)">Produit &middot; Hostwala &middot; UX Audit Pro<br />Microkopy &middot; GetAutomation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 approach -->
+      <div data-panel="2" style="position:absolute;left:0;top:0;width:881px;height:614px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">03 &mdash; APPROACH</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:700px;height:120px;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(251,251,251)">How an engagement runs</span>
+        <span style="position:absolute;left:0;top:190px;width:440px;height:60px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.66)">Four stages, a named project manager, and a monthly cadence you can scale up or down.</span>
+        <div style="position:absolute;left:0;top:280px;width:860px;height:260px">
+          <a href="Roars v2 - Approach.dc.html" data-row="1" style="position:absolute;left:0;top:0;width:700px;height:62px;display:block">
+            <div style="position:absolute;left:0;top:0;width:700px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:24px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">01</span>
+            <span style="position:absolute;left:44px;top:18px;font-size:24px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">Discovery</span>
+            <span style="position:absolute;left:300px;top:24px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">Workshops, market review, product definition</span>
+          </a>
+          <a href="Roars v2 - Approach.dc.html" data-row="1" style="position:absolute;left:0;top:62px;width:700px;height:62px;display:block">
+            <div style="position:absolute;left:0;top:0;width:700px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:24px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">02</span>
+            <span style="position:absolute;left:44px;top:18px;font-size:24px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">Design</span>
+            <span style="position:absolute;left:300px;top:24px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">Flows, prototypes, a tested interface</span>
+          </a>
+          <a href="Roars v2 - Approach.dc.html" data-row="1" style="position:absolute;left:0;top:124px;width:700px;height:62px;display:block">
+            <div style="position:absolute;left:0;top:0;width:700px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:24px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">03</span>
+            <span style="position:absolute;left:44px;top:18px;font-size:24px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">Build</span>
+            <span style="position:absolute;left:300px;top:24px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">Two-week sprints, demo every Friday</span>
+          </a>
+          <a href="Roars v2 - Approach.dc.html" data-row="1" style="position:absolute;left:0;top:186px;width:700px;height:62px;display:block">
+            <div style="position:absolute;left:0;top:0;width:700px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <div style="position:absolute;left:0;top:61px;width:700px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:24px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">04</span>
+            <span style="position:absolute;left:44px;top:18px;font-size:24px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">Launch &amp; scale</span>
+            <span style="position:absolute;left:300px;top:24px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">Release, measure, iterate on real usage</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 04 work -->
+      <div data-panel="3" style="position:absolute;left:0;top:0;width:881px;height:614px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">04 &mdash; WORK</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:700px;height:60px;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(251,251,251)">Selected projects</span>
+        <div style="position:absolute;left:0;top:150px;width:860px;height:390px">
+          <a href="Roars  v2 - Project Detail.dc.html" data-row="1" style="position:absolute;left:0;top:0;width:280px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:250px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:22px;font-size:22px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Snowman Logistics</span>
+            <span style="position:absolute;left:0;top:60px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.62);white-space:nowrap">LOGISTICS</span>
+          </a>
+          <a href="Roars  v2 - Project Detail.dc.html" data-row="1" style="position:absolute;left:290px;top:0;width:280px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:250px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:22px;font-size:22px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">GymBait.AI</span>
+            <span style="position:absolute;left:0;top:60px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.62);white-space:nowrap">FITNESS</span>
+          </a>
+          <a href="Roars  v2 - Project Detail.dc.html" data-row="1" style="position:absolute;left:580px;top:0;width:280px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:250px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:22px;font-size:22px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Parqly</span>
+            <span style="position:absolute;left:0;top:60px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.62);white-space:nowrap">MOBILITY</span>
+          </a>
+          <a href="Roars  v2 - Project Detail.dc.html" data-row="1" style="position:absolute;left:0;top:130px;width:280px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:250px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:22px;font-size:22px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Concierge Loyalty</span>
+            <span style="position:absolute;left:0;top:60px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.62);white-space:nowrap">CONCIERGE</span>
+          </a>
+          <a href="Roars  v2 - Project Detail.dc.html" data-row="1" style="position:absolute;left:290px;top:130px;width:280px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:250px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:22px;font-size:22px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">GISAID</span>
+            <span style="position:absolute;left:0;top:60px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.62);white-space:nowrap">HEALTHCARE</span>
+          </a>
+          <a href="Roars  v2 - Project Detail.dc.html" data-row="1" style="position:absolute;left:580px;top:130px;width:280px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:250px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:22px;font-size:22px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Advisee</span>
+            <span style="position:absolute;left:0;top:60px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.62);white-space:nowrap">SAAS</span>
+          </a>
+          <a href="Roars v2 - Projects.dc.html" data-ghost="1" style="position:absolute;left:0;top:290px;width:243px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);display:block;transition:box-shadow .3s ease" style-hover="box-shadow:inset 0 0 0 2px #FFD400">
+            <span style="position:absolute;left:20px;top:11px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:12px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:rgb(255,255,255);white-space:nowrap">All 10 projects</span>
+            <span style="position:absolute;left:203px;top:17px;width:8px;height:8px;border-radius:50%;background:rgba(153,152,149,.7)"></span>
+            <span data-accent-bg="1" style="position:absolute;left:214px;top:17px;width:8px;height:8px;border-radius:50%;background:#FFD400"></span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 05 industries -->
+      <div data-panel="4" style="position:absolute;left:0;top:0;width:881px;height:614px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">05 &mdash; INDUSTRIES</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:700px;height:60px;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(251,251,251)">Sectors we already understand</span>
+        <div style="position:absolute;left:0;top:160px;width:860px;height:300px">
+          <a href="Roars v2 - Industries.dc.html" data-row="1" style="position:absolute;left:0;top:0;width:200px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:180px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">01</span>
+            <span style="position:absolute;left:0;top:44px;font-size:21px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Restaurant</span>
+            <span style="position:absolute;left:0;top:80px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">VIEW SECTOR</span>
+          </a>
+          <a href="Roars v2 - Industries.dc.html" data-row="1" style="position:absolute;left:216px;top:0;width:200px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:180px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">02</span>
+            <span style="position:absolute;left:0;top:44px;font-size:21px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Fitness</span>
+            <span style="position:absolute;left:0;top:80px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">VIEW SECTOR</span>
+          </a>
+          <a href="Roars v2 - Industries.dc.html" data-row="1" style="position:absolute;left:432px;top:0;width:200px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:180px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">03</span>
+            <span style="position:absolute;left:0;top:44px;font-size:21px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">eCommerce</span>
+            <span style="position:absolute;left:0;top:80px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">VIEW SECTOR</span>
+          </a>
+          <a href="Roars v2 - Industries.dc.html" data-row="1" style="position:absolute;left:648px;top:0;width:200px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:180px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">04</span>
+            <span style="position:absolute;left:0;top:44px;font-size:21px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Travel</span>
+            <span style="position:absolute;left:0;top:80px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">VIEW SECTOR</span>
+          </a>
+          <a href="Roars v2 - Industries.dc.html" data-row="1" style="position:absolute;left:0;top:150px;width:200px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:180px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">05</span>
+            <span style="position:absolute;left:0;top:44px;font-size:21px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Logistics</span>
+            <span style="position:absolute;left:0;top:80px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">VIEW SECTOR</span>
+          </a>
+          <a href="Roars v2 - Industries.dc.html" data-row="1" style="position:absolute;left:216px;top:150px;width:200px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:180px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">06</span>
+            <span style="position:absolute;left:0;top:44px;font-size:21px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">SaaS</span>
+            <span style="position:absolute;left:0;top:80px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">VIEW SECTOR</span>
+          </a>
+          <a href="Roars v2 - Industries.dc.html" data-row="1" style="position:absolute;left:432px;top:150px;width:200px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:180px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">07</span>
+            <span style="position:absolute;left:0;top:44px;font-size:21px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Healthcare</span>
+            <span style="position:absolute;left:0;top:80px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">VIEW SECTOR</span>
+          </a>
+          <a href="Roars v2 - Industries.dc.html" data-row="1" style="position:absolute;left:648px;top:150px;width:200px;height:120px;display:block">
+            <div style="position:absolute;left:0;top:0;width:180px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">08</span>
+            <span style="position:absolute;left:0;top:44px;font-size:21px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9)">Concierge</span>
+            <span style="position:absolute;left:0;top:80px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(255,255,255,.6);white-space:nowrap">VIEW SECTOR</span>
+          </a>
+        </div>
+        <span style="position:absolute;left:0;top:520px;width:520px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">We build in sectors we already know, so discovery starts from something, not nothing.</span>
+      </div>
+
+      <!-- 06 services -->
+      <div data-panel="5" style="position:absolute;left:0;top:0;width:881px;height:614px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">06 &mdash; SERVICES</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:700px;height:60px;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(251,251,251)">What we do</span>
+        <div style="position:absolute;left:0;top:150px;width:860px;height:340px">
+          <a href="Roars v2 - Main.dc.html" data-row="1" style="position:absolute;left:0;top:0;width:740px;height:64px;display:block">
+            <div style="position:absolute;left:0;top:0;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">01</span>
+            <span style="position:absolute;left:44px;top:18px;font-size:26px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">Product Development</span>
+            <span style="position:absolute;left:400px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">Strategy through engineering</span>
+          </a>
+          <a href="Roars v2 - Main.dc.html" data-row="1" style="position:absolute;left:0;top:64px;width:740px;height:64px;display:block">
+            <div style="position:absolute;left:0;top:0;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">02</span>
+            <span style="position:absolute;left:44px;top:18px;font-size:26px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">User Experience Design</span>
+            <span style="position:absolute;left:400px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">Research, flows, interface</span>
+          </a>
+          <a href="Roars v2 - Main.dc.html" data-row="1" style="position:absolute;left:0;top:128px;width:740px;height:64px;display:block">
+            <div style="position:absolute;left:0;top:0;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">03</span>
+            <span style="position:absolute;left:44px;top:18px;font-size:26px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">Mobile App Development</span>
+            <span style="position:absolute;left:400px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">iOS, Android, cross-platform</span>
+          </a>
+          <a href="Roars v2 - Main.dc.html" data-row="1" style="position:absolute;left:0;top:192px;width:740px;height:64px;display:block">
+            <div style="position:absolute;left:0;top:0;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">04</span>
+            <span style="position:absolute;left:44px;top:18px;font-size:26px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">MVP Development</span>
+            <span style="position:absolute;left:400px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">Eight to sixteen weeks to launch</span>
+          </a>
+          <a href="Roars v2 - AI Automation.dc.html" data-row="1" style="position:absolute;left:0;top:256px;width:740px;height:64px;display:block">
+            <div style="position:absolute;left:0;top:0;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <div style="position:absolute;left:0;top:63px;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.6)">05</span>
+            <span style="position:absolute;left:44px;top:18px;font-size:26px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">AI Automation</span>
+            <span style="position:absolute;left:400px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">Agents and workflow automation</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 07 resources -->
+      <div data-panel="6" style="position:absolute;left:0;top:0;width:881px;height:614px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">07 &mdash; RESOURCES</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:700px;height:60px;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(251,251,251)">Tools, guides and templates</span>
+        <span style="position:absolute;left:0;top:130px;width:460px;height:46px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.66)">Free downloads we use in our own discovery work.</span>
+        <div style="position:absolute;left:0;top:210px;width:860px;height:220px">
+          <a href="Roars v2 - Guides.dc.html" data-card="1" style="position:absolute;left:0;top:0;width:272px;height:200px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);display:block;transition:box-shadow .3s ease, transform .45s cubic-bezier(.16,1,.3,1)" style-hover="box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)">
+            <span style="position:absolute;left:22px;top:24px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">01 / DOWNLOADS</span>
+            <span style="position:absolute;left:22px;top:64px;font-size:26px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">Guides</span>
+            <span style="position:absolute;left:22px;top:110px;width:210px;height:44px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.55)">Canvases and one-pagers, free as PDF</span>
+            <span style="position:absolute;left:22px;top:160px;font-size:14px;color:rgba(255,255,255,.6)">&rarr;</span>
+          </a>
+          <a href="Roars v2 - Insights.dc.html" data-card="1" style="position:absolute;left:294px;top:0;width:272px;height:200px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);display:block;transition:box-shadow .3s ease, transform .45s cubic-bezier(.16,1,.3,1)" style-hover="box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)">
+            <span style="position:absolute;left:22px;top:24px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">02 / READING</span>
+            <span style="position:absolute;left:22px;top:64px;font-size:26px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">Insights</span>
+            <span style="position:absolute;left:22px;top:110px;width:210px;height:44px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.55)">What we learned building products</span>
+            <span style="position:absolute;left:22px;top:160px;font-size:14px;color:rgba(255,255,255,.6)">&rarr;</span>
+          </a>
+          <a href="Roars v2 - Brand Guidelines.dc.html" data-card="1" style="position:absolute;left:588px;top:0;width:272px;height:200px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);display:block;transition:box-shadow .3s ease, transform .45s cubic-bezier(.16,1,.3,1)" style-hover="box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)">
+            <span style="position:absolute;left:22px;top:24px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">03 / SYSTEM</span>
+            <span style="position:absolute;left:22px;top:64px;font-size:26px;font-weight:600;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">Brand guidelines</span>
+            <span style="position:absolute;left:22px;top:110px;width:210px;height:44px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.55)">How the Roars identity is used</span>
+            <span style="position:absolute;left:22px;top:160px;font-size:14px;color:rgba(255,255,255,.6)">&rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 08 our journal -->
+      <div data-panel="7" style="position:absolute;left:0;top:0;width:881px;height:614px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">08 &mdash; OUR JOURNAL</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:700px;height:60px;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(251,251,251)">Notes from the studio</span>
+        <div style="position:absolute;left:0;top:160px;width:860px;height:340px">
+          <a href="Roars v2 - Insight-details.dc.html" data-row="1" style="position:absolute;left:0;top:0;width:740px;height:96px;display:block">
+            <div style="position:absolute;left:0;top:0;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">15 MAY</span>
+            <span style="position:absolute;left:120px;top:24px;width:600px;height:56px;font-size:21px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.88)">AI App Development vs Traditional App Development</span>
+          </a>
+          <a href="Roars v2 - Insight-details.dc.html" data-row="1" style="position:absolute;left:0;top:96px;width:740px;height:96px;display:block">
+            <div style="position:absolute;left:0;top:0;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">04 MAY</span>
+            <span style="position:absolute;left:120px;top:24px;width:600px;height:56px;font-size:21px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.88)">20 Years of Roars: Built on Purpose, Driven by Impact</span>
+          </a>
+          <a href="Roars v2 - Insight-details.dc.html" data-row="1" style="position:absolute;left:0;top:192px;width:740px;height:96px;display:block">
+            <div style="position:absolute;left:0;top:0;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <div style="position:absolute;left:0;top:95px;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+            <span style="position:absolute;left:0;top:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">11 DEC</span>
+            <span style="position:absolute;left:120px;top:24px;width:600px;height:56px;font-size:21px;font-weight:600;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.88)">The Unexpected Insight &mdash; We built a meal planning app</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 09 contact us -->
+      <div data-panel="8" style="position:absolute;left:0;top:0;width:881px;height:614px;opacity:0;pointer-events:none;transition:opacity .4s ease, transform .5s cubic-bezier(.16,1,.3,1)">
+        <span style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.45);white-space:nowrap">09 &mdash; CONTACT US</span>
+        <div data-accent-bg="1" style="position:absolute;left:0;top:26px;width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="position:absolute;left:0;top:56px;width:700px;height:120px;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(251,251,251)">Tell us what you are building</span>
+        <span style="position:absolute;left:0;top:190px;width:440px;height:70px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.66)">A 30 minute call with Riinkesh, no pitch deck. We will tell you what the build takes and what it costs.</span>
+        <div style="position:absolute;left:0;top:300px;width:860px;height:180px">
+          <div style="position:absolute;left:0;top:0;width:740px;height:1px;background:rgba(255,255,255,.18)"></div>
+          <span style="position:absolute;left:0;top:24px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">USA</span>
+          <span style="position:absolute;left:0;top:48px;font-size:22px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">+1 (302) 505-1200</span>
+          <span style="position:absolute;left:300px;top:24px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">UK</span>
+          <span style="position:absolute;left:300px;top:48px;font-size:22px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">+44 (7537) 183399</span>
+          <span style="position:absolute;left:0;top:110px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.62)">EMAIL</span>
+          <span style="position:absolute;left:0;top:134px;font-size:22px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgba(255,255,255,.9);white-space:nowrap">sales@roarsinc.com</span>
+          <a href="Roars v2 - Contact.dc.html" style="position:absolute;left:536px;top:120px;width:204px;height:47px;border-radius:60px;background:rgb(255,255,255);display:block;transition:transform .35s cubic-bezier(.16,1,.3,1)" style-hover="transform:translateY(-2px)">
+            <span style="position:absolute;left:25px;top:14px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:rgb(10,10,10);white-space:nowrap">Book a call</span>
+            <span style="position:absolute;left:167px;top:20px;width:8px;height:8px;border-radius:50%;background:rgba(10,10,10,.3)"></span>
+            <span style="position:absolute;left:177px;top:20px;width:8px;height:8px;border-radius:50%;background:rgb(10,10,10)"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- bottom band -->
+    <div data-band="1" style="position:absolute;left:39px;top:796px;width:1362px;height:80px">
+      <div style="position:absolute;left:0;top:0;width:1362px;height:1px;background:rgba(153,152,149,.4)"></div>
+      <span style="position:absolute;left:0;top:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.62);white-space:nowrap">USA</span>
+      <span style="position:absolute;left:0;top:42px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.92);white-space:nowrap">+1 (302) 505-1200</span>
+      <span style="position:absolute;left:250px;top:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.62);white-space:nowrap">UK</span>
+      <span style="position:absolute;left:250px;top:42px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.92);white-space:nowrap">+44 (7537) 183399</span>
+      <span style="position:absolute;left:500px;top:22px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;color:rgba(255,255,255,.62);white-space:nowrap">EMAIL</span>
+      <span style="position:absolute;left:500px;top:42px;font-size:16px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(255,255,255,.92);white-space:nowrap">sales@roarsinc.com</span>
+      <a href="Roars v2 - Contact.dc.html" data-ghost="1" style="position:absolute;left:1119px;top:26px;width:243px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);display:block;transition:box-shadow .3s ease" style-hover="box-shadow:inset 0 0 0 2px #FFD400">
+        <span style="position:absolute;left:20px;top:11px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:12px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:rgb(255,255,255);white-space:nowrap">Book a discovery call</span>
+        <span style="position:absolute;left:203px;top:17px;width:8px;height:8px;border-radius:50%;background:rgba(153,152,149,.7)"></span>
+        <span data-accent-bg="1" style="position:absolute;left:214px;top:17px;width:8px;height:8px;border-radius:50%;background:#FFD400"></span>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FFD400&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FFD400&quot;,&quot;#FFFFFF&quot;,&quot;#FF7A00&quot;,&quot;#4ADE80&quot;]},&quot;openOnLoad&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behaviour&quot;},&quot;reveal&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;circle&quot;,&quot;curtain&quot;,&quot;fade&quot;],&quot;default&quot;:&quot;circle&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behaviour&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behaviour&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const accent = this.props.accent || '#FFD400';
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches || this.props.motion === false;
+    const reveal = this.props.reveal || 'circle';
+    const q = (s) => document.querySelector(s);
+    const qa = (s) => [...document.querySelectorAll(s)];
+
+    qa('[data-accent-bg]').forEach(el => { el.style.background = accent; });
+
+    // ---- fit: page canvas + fixed layers scale from the 1440 design width
+    //      below 760px the scaled canvas is swapped for a flowing mobile layout
+    this.mq = matchMedia('(max-width: 760px)');
+    this.fit = () => {
+      const wrap = q('[data-fit]');
+      const canvas = q('[data-canvas]');
+      if (!wrap || !canvas) return;
+      const m = this.mq.matches;
+      const barM = q('[data-topbar-m]');
+      const mm = q('[data-menu-mobile]');
+      const mcEl = q('[data-menu-canvas]');
+      const barEl = q('[data-topbar]');
+      if (barEl) barEl.style.display = m ? 'none' : 'block';
+      if (barM) barM.style.display = m ? 'flex' : 'none';
+      if (mcEl) mcEl.style.display = m ? 'none' : 'block';
+      if (mm) mm.style.display = m ? 'block' : 'none';
+      const behindM = q('[data-behind-m]');
+      if (behindM) behindM.style.display = m ? 'block' : 'none';
+      if (m) {
+        canvas.style.display = 'none';
+        wrap.style.height = innerHeight + 'px';
+        this.s = 1;
+        return;
+      }
+      canvas.style.display = 'block';
+      const s = wrap.clientWidth / 1440;
+      this.s = s;
+      canvas.style.transform = 'scale(' + s + ')' + (this.open ? ' scale(.985)' : '');
+      wrap.style.height = (900 * s) + 'px';
+      const bar = q('[data-topbar]');
+      const left = wrap.getBoundingClientRect().left;
+      if (bar) { bar.style.transform = 'scale(' + s + ')'; bar.style.left = left + 'px'; }
+      const mc = q('[data-menu-canvas]');
+      if (mc) {
+        // the whole menu always fits: scale down further on short viewports
+        const ms = Math.min(s, innerHeight / 900);
+        mc.style.transform = 'scale(' + ms + ')';
+        mc.style.left = (left + (wrap.clientWidth - 1440 * ms) / 2) + 'px';
+        mc.style.top = Math.max(0, (innerHeight - 900 * ms) / 2) + 'px';
+      }
+    };
+
+    // ---- panels: the right side answers whatever the cursor is on
+    const panels = qa('[data-panel]');
+    const items = qa('[data-nav]');
+    this.show = (key) => {
+      panels.forEach(p => {
+        const on = p.getAttribute('data-panel') === String(key);
+        p.style.opacity = on ? '1' : '0';
+        p.style.transform = on ? 'translateY(0)' : 'translateY(-10px)';
+        p.style.pointerEvents = on ? 'auto' : 'none';
+      });
+      items.forEach(a => {
+        const on = a.getAttribute('data-nav') === String(key);
+        const label = a.querySelector('[data-nav-label]');
+        const dot = a.querySelector('[data-nav-dot]');
+        const arrow = a.querySelector('[data-nav-arrow]');
+        a.style.transform = on ? 'translateX(10px)' : 'translateX(0)';
+        if (label) label.style.color = on ? 'rgb(255,255,255)' : 'rgba(255,255,255,.78)';
+        if (dot) dot.style.opacity = on ? '1' : '0';
+        if (arrow) { arrow.style.opacity = on ? '1' : '0'; arrow.style.transform = on ? 'translateX(0)' : 'translateX(-8px)'; }
+      });
+    };
+    items.forEach(a => {
+      const k = a.getAttribute('data-nav');
+      a.addEventListener('mouseenter', () => this.show(k));
+      a.addEventListener('focus', () => this.show(k));
+    });
+    // ---- mobile: tap a section to open its submenu (one at a time)
+    this.macc = qa('[data-macc]');
+    this.macc.forEach(acc => {
+      const head = acc.querySelector('[data-macc-head]');
+      const body = acc.querySelector('[data-macc-body]');
+      const inner = acc.querySelector('[data-macc-inner]');
+      const ico = acc.querySelector('[data-macc-ico]');
+      if (!head || !body || !inner) return;
+      const set = (on) => {
+        acc.dataset.open = on ? '1' : '';
+        body.style.height = on ? inner.offsetHeight + 'px' : '0px';
+        if (ico) { ico.style.transform = on ? 'rotate(45deg)' : 'none'; ico.style.color = on ? accent : 'rgba(255,255,255,.5)'; }
+      };
+      acc.__set = set;
+      head.addEventListener('click', () => {
+        const on = acc.dataset.open !== '1';
+        this.macc.forEach(o => { if (o !== acc && o.__set) o.__set(false); });
+        set(on);
+      });
+    });
+
+    const col = q('[data-nav-col]');
+    if (col) col.addEventListener('mouseleave', () => this.show(-1));
+
+    // ---- secondary rows: subtle lift on hover
+    qa('[data-row]').forEach(r => {
+      r.style.transition = 'transform .4s cubic-bezier(.16,1,.3,1)';
+      r.addEventListener('mouseenter', () => { r.style.transform = 'translateX(6px)'; });
+      r.addEventListener('mouseleave', () => { r.style.transform = 'translateX(0)'; });
+    });
+    qa('[data-card]').forEach(c => {
+      c.addEventListener('mouseenter', () => { c.style.transform = 'translateY(-4px)'; });
+      c.addEventListener('mouseleave', () => { c.style.transform = 'translateY(0)'; });
+    });
+
+    // ---- open / close
+    const menu = q('[data-menu]');
+    const btn = q('[data-menu-btn]');
+    const barLabel = q('[data-bar-label]');
+    const lines = qa('[data-mline]');
+    this.open = true;
+
+    const linesM = qa('[data-mline-m]');
+    const barLabelM = q('[data-bar-label-m]');
+
+    this.burger = () => {
+      [lines, linesM].forEach(set => {
+        if (set.length < 2) return;
+        set[0].style.transform = this.open ? 'translateY(3px) rotate(45deg)' : 'none';
+        set[1].style.transform = this.open ? 'translateY(-3px) rotate(-45deg)' : 'none';
+      });
+      [barLabel, barLabelM].forEach(el => {
+        if (!el) return;
+        el.textContent = this.open ? 'CLOSE' : 'MENU';
+        el.style.color = 'rgba(255,255,255,.66)';
+      });
+    };
+
+    this.origin = () => {
+      if (this.mq.matches) return [(innerWidth - 34).toFixed(0) + 'px', '32px'];
+      const wrap = q('[data-fit]');
+      const s = wrap ? wrap.clientWidth / 1440 : 1;
+      const left = wrap ? wrap.getBoundingClientRect().left : 0;
+      return [(left + 1392 * s).toFixed(0) + 'px', (57 * s).toFixed(0) + 'px'];
+    };
+
+    this.setOpen = (on, animate) => {
+      this.open = on;
+      if (!menu) return;
+      const [ox, oy] = this.origin();
+      const dur = animate && !reduce ? (on ? 820 : 520) : 0;
+      menu.style.transition = 'clip-path ' + dur + 'ms cubic-bezier(.16,1,.3,1), opacity ' + Math.round(dur * 0.5) + 'ms ease, transform ' + dur + 'ms cubic-bezier(.16,1,.3,1)';
+      if (reveal === 'curtain') {
+        menu.style.clipPath = on ? 'inset(0 0 0 0)' : 'inset(0 0 100% 0)';
+      } else if (reveal === 'fade') {
+        menu.style.clipPath = 'none';
+        menu.style.opacity = on ? '1' : '0';
+        menu.style.transform = on ? 'scale(1)' : 'scale(1.02)';
+      } else {
+        menu.style.clipPath = on ? 'circle(160% at ' + ox + ' ' + oy + ')' : 'circle(0px at ' + ox + ' ' + oy + ')';
+      }
+      menu.style.pointerEvents = on ? 'auto' : 'none';
+
+      // navigation rises in on open
+      if (on) {
+        const rising = this.mq.matches ? this.macc : items;
+        rising.forEach((a, i) => {
+          if (animate && !reduce) {
+            a.style.transition = 'none';
+            a.style.opacity = '0';
+            a.style.transform = 'translateY(22px)';
+            requestAnimationFrame(() => {
+              a.style.transition = 'transform .7s cubic-bezier(.16,1,.3,1) ' + (140 + i * 45) + 'ms, opacity .5s ease ' + (140 + i * 45) + 'ms';
+              a.style.opacity = '1';
+              a.style.transform = 'translateY(0)';
+            });
+          } else {
+            a.style.opacity = '1';
+            a.style.transform = 'translateY(0)';
+          }
+        });
+        this.show(-1);
+      }
+      const canvas = q('[data-canvas]');
+      if (canvas) {
+        const s = this.s || 1;
+        canvas.style.transition = 'transform .8s cubic-bezier(.16,1,.3,1), filter .8s ease';
+        canvas.style.transform = 'scale(' + s + ')' + (on ? ' scale(.985)' : '');
+        canvas.style.filter = on ? 'blur(3px) brightness(.5)' : 'none';
+      }
+      this.burger();
+    };
+
+    const toggle = (e) => { e.preventDefault(); this.setOpen(!this.open, true); };
+    if (btn) btn.addEventListener('click', toggle);
+    const btnM = q('[data-menu-btn-m]');
+    if (btnM) btnM.addEventListener('click', toggle);
+    this.onMq = () => { this.fit(); this.setOpen(this.open, false); };
+    if (this.mq.addEventListener) this.mq.addEventListener('change', this.onMq);
+    this.onKey = (e) => { if (e.key === 'Escape' && this.open) this.setOpen(false, true); };
+    addEventListener('keydown', this.onKey);
+
+    // ---- parallax on the starfield
+    const bg = q('[data-menu-bg]');
+    this.onMove = (e) => {
+      if (!bg || reduce || !this.open) return;
+      const x = (e.clientX / innerWidth - 0.5) * 18;
+      const y = (e.clientY / innerHeight - 0.5) * 14;
+      bg.style.transform = 'scale(1.06) translate(' + (-x).toFixed(1) + 'px,' + (-y).toFixed(1) + 'px)';
+    };
+    addEventListener('mousemove', this.onMove);
+
+    this.fit();
+    addEventListener('resize', this.fit);
+    const wrap = q('[data-fit]');
+    if (wrap && window.ResizeObserver) {
+      this.ro = new ResizeObserver(() => this.fit());
+      this.ro.observe(wrap);
+    }
+    this.setOpen(this.props.openOnLoad === false ? false : true, false);
+  }
+  componentWillUnmount() {
+    removeEventListener('resize', this.fit);
+    removeEventListener('keydown', this.onKey);
+    removeEventListener('mousemove', this.onMove);
+    if (this.ro) this.ro.disconnect();
+    if (this.mq && this.mq.removeEventListener) this.mq.removeEventListener('change', this.onMq);
+  }
+}
+</script>
+</body>
+</html>

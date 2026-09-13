@@ -1,0 +1,122 @@
+---
+/**
+ * The page shell. Everything that lands in <head> comes from here so there is
+ * one place to audit against docs/SEO-SPEC.md section 3.
+ *
+ * All of it is server-rendered into the static HTML. There is no runtime, so
+ * there is no way for a tag to be injected late and no gap between what a
+ * crawler sees and what a browser sees. Verify with `curl`, never DevTools.
+ */
+import { site, abs, robotsFor, ALLOW_INDEXING } from '../lib/site'
+import '../styles/tokens.css'
+import '../styles/fonts.css'
+import '../styles/base.css'
+
+interface Props {
+  /** 50-60 chars including the suffix. Zod enforces this on collections. */
+  title: string
+  /** 140-160 chars. Must carry the primary intent, must not open with the brand. */
+  description: string
+  /** Route path with leading and trailing slash, e.g. "/about-us/". */
+  path: string
+  ogType?: 'website' | 'article'
+  ogImage?: string
+  imageAlt?: string
+  /** Per-page override. Utility pages and page/2+ archives set this. */
+  noindex?: boolean
+  /** JSON-LD objects. Serialised into one script tag per object. */
+  schema?: unknown[]
+  /** Preload the LCP image. The hero photo on pages that have one. */
+  preloadImage?: string
+}
+
+const {
+  title,
+  description,
+  path,
+  ogType = 'website',
+  ogImage = site.defaultOgImage,
+  imageAlt = site.name,
+  noindex = false,
+  schema = [],
+  preloadImage,
+} = Astro.props
+
+const canonical = abs(path)
+const robots = robotsFor(noindex)
+const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
+---
+
+<!doctype html>
+<html lang={site.language}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFD400" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={robots} />
+
+    {/* Self-hosted, one variable file. Preloaded because it is on the
+        critical path for the hero wordmark. */}
+    <link
+      rel="preload"
+      href="/fonts/inter-var-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    {preloadImage && (
+      <link rel="preload" href={preloadImage} as="image" fetchpriority="high" />
+    )}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content={imageAlt} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={site.twitter} />
+    <meta name="twitter:creator" content={site.twitter} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbs} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    <slot name="head" />
+
+    {schema.map((s) => (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(s)}
+      />
+    ))}
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot name="topbar" />
+    <main id="main">
+      <slot />
+    </main>
+    <slot name="footer" />
+
+    {!ALLOW_INDEXING && (
+      <Fragment
+        set:html={
+          '<!-- PRE-LAUNCH BUILD: every page carries noindex,nofollow. ' +
+          'Switch on with PUBLIC_ALLOW_INDEXING=true. See docs/NOINDEX.md. -->'
+        }
+      />
+    )}
+  </body>
+</html>

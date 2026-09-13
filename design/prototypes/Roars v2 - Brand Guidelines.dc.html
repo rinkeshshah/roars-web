@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; }
+  * { box-sizing:border-box; }
+  doc-page:not(:defined) { visibility:hidden; }
+  a { color:#141414; text-decoration:none; }
+  a:hover { color:#B99A00; }
+</style>
+<script src="./doc-page.js"></script>
+</helmet>
+
+<doc-page margin="0.7in" style="font-family:Inter,'Helvetica Neue',Arial,sans-serif;color:#141414">
+
+  <div slot="footer" style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid #E6E5E2;font-size:10pt;letter-spacing:-0.02em;color:#6A6A67">
+    <span>Roars v2 — Brand &amp; Build Guidelines</span>
+    <span>Source: Figma &ldquo;Astra agency&rdquo; + roarsinc.com</span>
+  </div>
+
+  <!-- ── cover band ── -->
+  <div style="background:#0B0B0B;color:#FFFFFF;padding:34px 30px 30px;border-radius:10px;break-inside:avoid">
+    <div style="display:flex;align-items:center;gap:10px;font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#BFBFBC">
+      <span style="width:9px;height:9px;border-radius:50%;background:#FFD400;display:block"></span>
+      <span>Internal reference · v2 build system</span>
+    </div>
+    <div style="font-size:40pt;font-weight:600;letter-spacing:-0.045em;line-height:1.02;margin-top:26px">Brand &amp; build<br />guidelines</div>
+    <div style="font-size:13pt;font-weight:500;letter-spacing:-0.03em;line-height:1.5;color:#D4D4D1;max-width:430px;margin-top:20px">Everything established while building the Roars v2 pages — tokens, grid, components, page shell and content facts. Apply this to every new page so the set stays one design.</div>
+  </div>
+
+  <!-- ── 01 sources ── -->
+  <div style="margin-top:34px;break-inside:avoid">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">01 — Source of truth</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">Two sources, never mixed</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px">
+      <div style="border:1px solid #E6E5E2;border-radius:8px;padding:16px">
+        <div style="font-size:12pt;font-weight:600;letter-spacing:-0.03em">Figma — &ldquo;Astra agency&rdquo;</div>
+        <div style="font-size:12pt;font-weight:500;line-height:1.5;letter-spacing:-0.02em;color:#4A4A4A;margin-top:7px">Layout, type scale, spacing, colour neutrals, components. Values are copied verbatim from the file at its 1440 canvas — never rounded to a 4/8px grid.</div>
+      </div>
+      <div style="border:1px solid #E6E5E2;border-radius:8px;padding:16px">
+        <div style="font-size:12pt;font-weight:600;letter-spacing:-0.03em">roarsinc.com</div>
+        <div style="font-size:12pt;font-weight:500;line-height:1.5;letter-spacing:-0.02em;color:#4A4A4A;margin-top:7px">All copy, names, numbers and imagery. People, project and client images are real Roars assets pulled from the live site.</div>
+      </div>
+    </div>
+    <div style="font-size:12pt;font-weight:500;line-height:1.55;letter-spacing:-0.02em;color:#4A4A4A;margin-top:14px">The four original <span style="font-weight:600;color:#141414">Roars - *.dc.html</span> files are frozen. New work lands as <span style="font-weight:600;color:#141414">Roars v2 - &lt;Page&gt;.dc.html</span>.</div>
+  </div>
+
+  <!-- ── 02 colour ── -->
+  <div style="margin-top:32px">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">02 — Colour</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">Astra&rsquo;s neutrals, Roars&rsquo; one yellow</div>
+    <div style="font-size:12pt;font-weight:500;line-height:1.55;letter-spacing:-0.02em;color:#4A4A4A;margin-top:10px;max-width:560px">Astra&rsquo;s system is black / white / grey with a single amber accent (rgb 255,170,1). That accent becomes Roars yellow <span style="font-weight:600;color:#141414">#FFD400</span>, used exactly as sparingly: hover fills, the wordmark badge, the scroll ring. Never a yellow background panel, never yellow body text.</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px;break-inside:avoid">
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#000000"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#000000</div><div style="font-size:10pt;color:#6A6A67">dark sections, buttons</div></div>
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#0B0B0B"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#0B0B0B</div><div style="font-size:10pt;color:#6A6A67">footer ground</div></div>
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#141414"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#141414</div><div style="font-size:10pt;color:#6A6A67">body ink</div></div>
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#242424"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#242424</div><div style="font-size:10pt;color:#6A6A67">section headers</div></div>
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#474747"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#474747</div><div style="font-size:10pt;color:#6A6A67">micro captions</div></div>
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#919191"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#919191</div><div style="font-size:10pt;color:#6A6A67">labels</div></div>
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#999895"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#999895</div><div style="font-size:10pt;color:#6A6A67">rules, dot 1</div></div>
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#F5F5F5;border:1px solid #E6E5E2"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#F5F5F5</div><div style="font-size:10pt;color:#6A6A67">services, FAQ bg</div></div>
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#FBFBFB;border:1px solid #E6E5E2"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#FBFBFB</div><div style="font-size:10pt;color:#6A6A67">hero wordmark</div></div>
+      <div style="break-inside:avoid"><div style="height:54px;border-radius:6px;background:#FFD400"></div><div style="font-size:10.5pt;font-weight:600;margin-top:6px">#FFD400</div><div style="font-size:10pt;color:#6A6A67">accent — sparing</div></div>
+    </div>
+  </div>
+
+  <!-- ── 03 type ── -->
+  <div style="margin-top:32px">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">03 — Typography</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">Inter, tight tracking, one exception</div>
+    <div style="font-size:12pt;font-weight:500;line-height:1.55;letter-spacing:-0.02em;color:#4A4A4A;margin-top:10px;max-width:560px">Inter 400–800 everywhere. Button labels are the single exception: Helvetica Neue Medium. Negative tracking is the signature — display type at −0.04/−0.05em, body and labels as tight as −0.06em.</div>
+    <div style="margin-top:14px;border-bottom:1px solid #E6E5E2">
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">hero wordmark</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 600 · 212px · lh 86 · ls −0.04em · #FBFBFB · blend difference</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">footer wordmark</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 600 · 182px · lh 86 · ls −0.04em</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">section header</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 600 · 124px · ls −0.05em · #242424 (dark: #FFF at 0.9, blend difference)</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">big stat</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 600 · 84px · lh 43 · ls −0.05em · suffix 36px/500 · % 26px/700</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">stat mid</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 600 · 42px or 28px · ls −0.05em</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">name / h-name</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 600 · 24px · ls −0.04em</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">intro</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 500 · 22/32 · ls −0.04em — large variant 24/34 at 0.7 opacity</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">body</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 500 · 16/22–23 · ls −0.06em · #141414 or #020202</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">label</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 600 · 14px · ls −0.06em · #919191</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">micro</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 400/500 · 12/19 · ls −0.06em — 13/18 ls −0.05em #474747 for captions</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">footer nav</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 600 · 24/40 · ls −0.06em · 0.9 opacity</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2;break-inside:avoid"><div style="font-size:11.5pt;font-weight:600">button label</div><div style="font-size:11.5pt;color:#4A4A4A">Helvetica Neue 500 · 14px · ls −0.03em (ghost variant 12px)</div></div>
+    </div>
+  </div>
+
+  <!-- ── 04 grid ── -->
+  <div style="margin-top:32px;break-inside:avoid">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">04 — Canvas &amp; grid</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">1440 canvas, absolute positions</div>
+    <div style="font-size:12pt;font-weight:500;line-height:1.55;letter-spacing:-0.02em;color:#4A4A4A;margin-top:10px;max-width:560px">Every page is authored at the Figma canvas width of 1440 with absolutely-positioned children, then scaled to the container. Positions come from the file — don&rsquo;t re-flow them into flex.</div>
+    <div style="margin-top:14px;border-bottom:1px solid #E6E5E2">
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">page gutters</div><div style="font-size:11.5pt;color:#4A4A4A">left 39 → right 1401 · content width 1362</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">inner column</div><div style="font-size:11.5pt;color:#4A4A4A">left 503 · width 901 (left rail 464 wide)</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">top bar</div><div style="font-size:11.5pt;color:#4A4A4A">fixed · 1440×150 · inner block at 39,36 sized 1366×111 · z-index 50</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">rule pair</div><div style="font-size:11.5pt;color:#4A4A4A">top 1.5px #999895 at 0.7 · bottom 0.5px #999895 at 0.5</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">image cards</div><div style="font-size:11.5pt;color:#4A4A4A">radius 12 · placeholder ground rgb(30,30,30) · object-fit cover</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;padding:7px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">section grounds</div><div style="font-size:11.5pt;color:#4A4A4A">#FFF default · #F5F5F5 services &amp; FAQ · #000 + space.jpg for projects, pricing, team, footer</div></div>
+    </div>
+  </div>
+
+  <!-- ── 05 components ── -->
+  <div style="margin-top:32px">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">05 — Components</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">Pill buttons and two dots</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+      <div style="border:1px solid #E6E5E2;border-radius:8px;padding:16px;break-inside:avoid">
+        <div style="font-size:12pt;font-weight:600;letter-spacing:-0.03em">Primary button</div>
+        <div style="margin-top:12px;position:relative;width:204px;height:47px;border-radius:60px;background:#000000">
+          <span style="position:absolute;left:25px;top:14px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:#FFFFFF;white-space:nowrap">Contact Now</span>
+          <span style="position:absolute;left:167px;top:20px;width:8px;height:8px;border-radius:50%;background:rgba(153,152,149,.6)"></span>
+          <span style="position:absolute;left:177px;top:20px;width:8px;height:8px;border-radius:50%;background:#FFFFFF"></span>
+        </div>
+        <div style="font-size:11.5pt;line-height:1.5;color:#4A4A4A;margin-top:12px">204×47 · r60 · black. Label at x25; dots 8px at x167 (#999895 @.6) and x177 (#FFF). On dark sections it inverts to white with black label. Hover fills <span style="font-weight:600;color:#141414">#FFD400</span>.</div>
+      </div>
+      <div style="border:1px solid #E6E5E2;border-radius:8px;padding:16px;break-inside:avoid">
+        <div style="font-size:12pt;font-weight:600;letter-spacing:-0.03em">Ghost button (dark ground)</div>
+        <div style="margin-top:12px;position:relative;width:243px;height:42px;border-radius:60px;background:#0B0B0B;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)">
+          <span style="position:absolute;left:18px;top:11px;font-size:12px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:#FFFFFF;white-space:nowrap">Contact Now</span>
+          <span style="position:absolute;left:205px;top:17px;width:8px;height:8px;border-radius:50%;background:#999895"></span>
+          <span style="position:absolute;left:216px;top:17px;width:8px;height:8px;border-radius:50%;background:#FFFFFF"></span>
+        </div>
+        <div style="font-size:11.5pt;line-height:1.5;color:#4A4A4A;margin-top:12px">195×42 or 243×42 · r60 · inset ring 2px #FFF at 0.25 · 12px label. Used in the top bar beside the 42px founder avatar.</div>
+      </div>
+      <div style="border:1px solid #E6E5E2;border-radius:8px;padding:16px;break-inside:avoid">
+        <div style="font-size:12pt;font-weight:600;letter-spacing:-0.03em">Accordion toggle</div>
+        <div style="margin-top:12px;display:flex;gap:10px">
+          <span style="width:36px;height:36px;border-radius:60px;background:#0B0B0B;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:300;line-height:1">+</span>
+          <span style="width:36px;height:36px;border-radius:60px;background:#F0F0EE;color:#141414;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:300;line-height:1">&ndash;</span>
+        </div>
+        <div style="font-size:11.5pt;line-height:1.5;color:#4A4A4A;margin-top:12px">36px circle, r60, white on dark grounds. &ldquo;+&rdquo; 28px/300, &ldquo;–&rdquo; 26px/300.</div>
+      </div>
+      <div style="border:1px solid #E6E5E2;border-radius:8px;padding:16px;break-inside:avoid">
+        <div style="font-size:12pt;font-weight:600;letter-spacing:-0.03em">Wordmark badge &amp; avatars</div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:14px">
+          <span style="position:relative;font-size:44px;font-weight:600;letter-spacing:-0.04em;line-height:1;color:#141414">roars<span style="position:absolute;right:-16px;top:-2px;width:20px;height:20px;border-radius:60px;background:#FFD400;display:flex;align-items:center;justify-content:center;font-size:9px;color:#0B0B0B">&#8599;</span></span>
+        </div>
+        <div style="font-size:11.5pt;line-height:1.5;color:#4A4A4A;margin-top:16px">Badge: 31px yellow circle r60 with a 13px/600 glyph, pinned to the wordmark&rsquo;s last letter. Avatars are 42px circles (60px on About), r60, white ground.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 06 page shell ── -->
+  <div style="margin-top:32px;break-inside:avoid">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">06 — Page shell</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">The recipe every v2 page repeats</div>
+    <div style="margin-top:14px;border-bottom:1px solid #E6E5E2">
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">[data-fit]</div><div style="font-size:11.5pt;color:#4A4A4A">outer wrapper, width 100%, overflow hidden. Its height is set to canvasHeight × scale.</div></div>
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">[data-canvas]</div><div style="font-size:11.5pt;color:#4A4A4A">the 1440-wide artboard, transform: scale(containerWidth / 1440), origin 0 0.</div></div>
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">[data-topbar]</div><div style="font-size:11.5pt;color:#4A4A4A">fixed bar, scaled by the same factor and left-aligned to the wrapper&rsquo;s bounding box.</div></div>
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">DARK ranges</div><div style="font-size:11.5pt;color:#4A4A4A">array of [startY, endY] canvas bands that are dark. The bar recolours as it crosses them.</div></div>
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">[data-ink] / [data-fill]</div><div style="font-size:11.5pt;color:#4A4A4A">bar elements whose colour / background flip between #FFF and #141414 per band.</div></div>
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">[data-ring]</div><div style="font-size:11.5pt;color:#4A4A4A">scroll-progress ring: conic-gradient(#FFD400 &lt;turn&gt;, rgba(255,212,0,.14) 0turn), shown on light bands only.</div></div>
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">wiring</div><div style="font-size:11.5pt;color:#4A4A4A">fit() + tint() on mount, on resize, on scroll, and via a ResizeObserver on the wrapper.</div></div>
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">helmet</div><div style="font-size:11.5pt;color:#4A4A4A">Inter 300–800 from Google Fonts; body reset; <span style="font-weight:600;color:#141414">a:hover { color:#FFD400 }</span>; box-sizing border-box.</div></div>
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">labels</div><div style="font-size:11.5pt;color:#4A4A4A">each section carries data-screen-label (&ldquo;Footer&rdquo;, &ldquo;Hero&rdquo;…) for review context.</div></div>
+    </div>
+  </div>
+
+  <!-- ── 07 motion ── -->
+  <div style="margin-top:32px;break-inside:avoid">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">07 — Motion</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">Slow ease-out, nothing bouncy</div>
+    <div style="font-size:12pt;font-weight:500;line-height:1.6;letter-spacing:-0.02em;color:#4A4A4A;margin-top:10px;max-width:600px">Entrances use <span style="font-weight:600;color:#141414">cubic-bezier(.16,1,.3,1)</span> at ~1.1s with a short delay; hovers and bar recolours use .25s ease. The mark rotates 45° and turns yellow over light bands. Everything motion-related is skipped when <span style="font-weight:600;color:#141414">prefers-reduced-motion: reduce</span> matches.</div>
+  </div>
+
+  <!-- ── 08 content facts ── -->
+  <div style="margin-top:32px">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">08 — Content facts</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">Reuse these, don&rsquo;t invent new ones</div>
+    <div style="margin-top:14px;border-bottom:1px solid #E6E5E2">
+      <div style="display:grid;grid-template-columns:110px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">Stats</div><div style="font-size:11.5pt;color:#4A4A4A">20+ years (since 2005) · 250+ projects delivered · 96% returning customers · 4.9 average review</div></div>
+      <div style="display:grid;grid-template-columns:110px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">Services</div><div style="font-size:11.5pt;color:#4A4A4A">Product Development · User Experience Design · Mobile App Development · MVP Development · AI Automation</div></div>
+      <div style="display:grid;grid-template-columns:110px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">Work</div><div style="font-size:11.5pt;color:#4A4A4A">Snowman Logistics · GymBait.AI · Parqly · Concierge Loyalty · GISAID · Advisee · Company Guru · Ventura Law Firm · The President&rsquo;s Club · 411Drives</div></div>
+      <div style="display:grid;grid-template-columns:110px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">Team</div><div style="font-size:11.5pt;color:#4A4A4A">Riinkesh A Sshah (CEO / Founder) · Suzanne Martin · Avinash Kumar · Kevin Jacob · Shiva Kumar · Chetna Shah · Khusboo Panchal · Ankush A Sshah</div></div>
+      <div style="display:grid;grid-template-columns:110px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">Ventures</div><div style="font-size:11.5pt;color:#4A4A4A">Produit · Hostwala · UX Audit Pro · Microkopy · GetAutomation</div></div>
+      <div style="display:grid;grid-template-columns:110px 1fr;gap:16px;padding:8px 0;border-top:1px solid #E6E5E2"><div style="font-size:11.5pt;font-weight:600">Contact</div><div style="font-size:11.5pt;color:#4A4A4A">USA +1 (302) 505-1200 · UK +44 (7537) 183399 · sales@roarsinc.com</div></div>
+    </div>
+  </div>
+
+  <!-- ── 09 imagery ── -->
+  <div style="margin-top:32px;break-inside:avoid">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">09 — Imagery</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">Space for grounds, real photos for people</div>
+    <div style="font-size:12pt;font-weight:500;line-height:1.6;letter-spacing:-0.02em;color:#4A4A4A;margin-top:10px;max-width:600px">The space photograph (<span style="font-weight:600;color:#141414">assets/space.jpg</span>, often flipped with scaleY(-1)) is the dark-section art direction inherited from the Figma file — it is treatment, not content. Everything depicting Roars — founders, team, office, client work — uses real imagery from roarsinc.com. Small line marks (stars, asteroids, union) live in <span style="font-weight:600;color:#141414">assets/</span> as SVG and are inverted with filter: invert(1) on dark grounds.</div>
+  </div>
+
+  <!-- ── 10 checklist ── -->
+  <div style="margin-top:32px;break-inside:avoid">
+    <div style="font-size:10pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6A6A67">10 — New page checklist</div>
+    <div style="font-size:20pt;font-weight:600;letter-spacing:-0.04em;margin-top:8px">Before calling a page done</div>
+    <div style="display:grid;gap:7px;margin-top:14px">
+      <div style="display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:11.5pt;line-height:1.5;color:#4A4A4A"><span style="color:#FFD400;font-weight:700">&#10003;</span><span>File named <span style="font-weight:600;color:#141414">Roars v2 - &lt;Page&gt;.dc.html</span>; the four v1 files untouched.</span></div>
+      <div style="display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:11.5pt;line-height:1.5;color:#4A4A4A"><span style="color:#FFD400;font-weight:700">&#10003;</span><span>1440 canvas, gutters at 39 / 1401, inner column at 503 where a rail is used.</span></div>
+      <div style="display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:11.5pt;line-height:1.5;color:#4A4A4A"><span style="color:#FFD400;font-weight:700">&#10003;</span><span>Top bar copied intact, with DARK ranges updated to the new page&rsquo;s dark bands.</span></div>
+      <div style="display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:11.5pt;line-height:1.5;color:#4A4A4A"><span style="color:#FFD400;font-weight:700">&#10003;</span><span>fit() height constant matches the real canvas height.</span></div>
+      <div style="display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:11.5pt;line-height:1.5;color:#4A4A4A"><span style="color:#FFD400;font-weight:700">&#10003;</span><span>Footer block with the 182px wordmark, nav and contact lines present.</span></div>
+      <div style="display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:11.5pt;line-height:1.5;color:#4A4A4A"><span style="color:#FFD400;font-weight:700">&#10003;</span><span>Yellow appears only as hover, badge or ring — no yellow panels or yellow text.</span></div>
+      <div style="display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:11.5pt;line-height:1.5;color:#4A4A4A"><span style="color:#FFD400;font-weight:700">&#10003;</span><span>Cross-links point to existing v2 files; every new page is linked from the footer nav.</span></div>
+      <div style="display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:11.5pt;line-height:1.5;color:#4A4A4A"><span style="color:#FFD400;font-weight:700">&#10003;</span><span>Copy comes from roarsinc.com verbatim; no invented stats, names or client logos.</span></div>
+    </div>
+  </div>
+
+</doc-page>
+
+</x-dc>
+</body>
+</html>

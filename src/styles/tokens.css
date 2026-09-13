@@ -1,0 +1,189 @@
+/* ============================================================
+   ROARS v2 design tokens
+   Single source of truth. If a value is not here, it does not
+   exist. Rationale and the mapping from the prototypes'
+   46 font sizes down to this scale: docs/DESIGN-SYSTEM.md
+   ============================================================ */
+
+:root {
+  /* ---------- Colour ---------- */
+  --c-white:            #FFFFFF;
+  --c-surface:          #F5F5F5;   /* section grey: services, FAQ, CTA bands */
+  --c-black:            #000000;   /* heroes, proof bands, featured work */
+  --c-footer:           #0B0B0B;
+
+  --c-ink-heading:      #242424;
+  --c-ink-body:         #141414;
+  --c-ink-muted:        rgba(20, 20, 20, 0.62);
+  --c-ink-label:        #919191;
+
+  --c-rule:             #999895;
+  --c-rule-strong:      rgba(153, 152, 149, 0.7);   /* 1.5px top rules */
+  --c-rule-soft:        rgba(153, 152, 149, 0.5);   /* 0.5-1px sub-rules */
+  --c-hairline-dark:    rgba(255, 255, 255, 0.25);  /* rules on dark ground */
+
+  /* Accent. Never a background. Max two moments per viewport. */
+  --c-accent:           #FFD400;
+
+  /* On dark grounds */
+  --c-on-dark:          #FFFFFF;
+  --c-on-dark-90:       rgba(255, 255, 255, 0.9);
+  --c-on-dark-78:       rgba(255, 255, 255, 0.78);
+  --c-on-dark-50:       rgba(255, 255, 255, 0.5);
+
+  --c-ring-light:       rgba(15, 15, 15, 0.28);     /* ghost button on light */
+  --c-ring-dark:        rgba(255, 255, 255, 0.25);  /* ghost button on dark  */
+
+  /* ---------- Type ---------- */
+  --font-sans: 'Inter', var(--font-fallback);
+  --font-fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semi:    600;
+
+  /* Ten steps. The prototypes used 46; every one of those maps
+     onto the nearest step here. Do not add an eleventh. */
+  --fs-micro:     12px;   /* captions, meta, legal            */
+  --fs-label:     14px;   /* rail labels, button labels       */
+  --fs-body:      16px;   /* body copy                        */
+  --fs-intro:     22px;   /* section intros, lead paragraphs  */
+  --fs-item:      24px;   /* card and list item names         */
+  --fs-stat:      42px;   /* mid stats, CTA headlines, dates  */
+  --fs-display:   84px;   /* big stats, process steps, codes  */
+  --fs-heading:  124px;   /* section headers                  */
+  --fs-wordmark: 182px;   /* footer wordmark                  */
+  --fs-hero:     212px;   /* hero wordmark                    */
+
+  /* Mobile equivalents */
+  --fs-body-m:      15px;
+  --fs-item-m:      20px;
+  --fs-stat-m:      32px;
+  --fs-heading-m:   48px;
+  --fs-wordmark-m:  88px;
+
+  /* Line heights */
+  --lh-tight:   0.7;    /* display type, 86px on a 124px heading */
+  --lh-snug:    1.4;    /* intro: 32px on 22px                   */
+  --lh-body:    1.4;    /* body:  22px on 16px                   */
+  --lh-loose:   1.6;    /* long-form reading                     */
+
+  /* Tracking. Negative throughout; this is characteristic, not a mistake. */
+  --ls-display: -0.05em;  /* headings, stats, display sub */
+  --ls-item:    -0.04em;  /* item names, intro            */
+  --ls-body:    -0.06em;  /* body, labels, micro          */
+  --ls-button:  -0.03em;
+
+  /* ---------- Layout (1440 design width) ---------- */
+  --page-gutter:   39px;
+  --content-max: 1362px;
+  --rail-width:   464px;   /* left rail: labels, section markers */
+  --col-start:    503px;   /* inner content column origin        */
+  --col-width:    901px;
+
+  /* ---------- Spacing ---------- */
+  --sp-1:   4px;
+  --sp-2:   8px;
+  --sp-3:  16px;
+  --sp-4:  24px;
+  --sp-5:  40px;
+  --sp-6:  64px;
+  --sp-7: 104px;
+  --sp-8: 168px;
+
+  /* ---------- Radii ---------- */
+  --r-pill:   60px;   /* buttons, chips. The only non-zero radius. */
+  --r-circle: 999px;
+  --r-card:    0px;   /* cards are square. Do not change. */
+
+  /* ---------- Components ---------- */
+  --btn-w:        204px;
+  --btn-h:         47px;
+  --btn-ghost-h:   42px;
+  --icon-circle:   36px;
+  --avatar:        42px;
+  --avatar-lg:     60px;
+  --avatar-overlap: -9px;
+
+  /* ---------- Motion ---------- */
+  --ease-out:     cubic-bezier(0.22, 0.68, 0.28, 1);
+  --ease-spring:  cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast:     250ms;
+  --dur-base:     620ms;
+  --dur-reveal:   720ms;
+  --dur-intro:   1100ms;
+  --reveal-y:      26px;
+
+  /* ---------- Elevation (used sparingly, by design) ---------- */
+  --shadow-chip: 0 1px 0 rgba(10, 10, 10, 0.06);
+  --shadow-ring: 0 0 0 3px var(--c-white);
+}
+
+/* ============================================================
+   The design is light-first by decision: predominantly white,
+   with black sections as punctuation. There is no dark theme.
+   Dark grounds are a compositional device, applied per section
+   via [data-ground="dark"], not a user preference.
+   ============================================================ */
+
+[data-ground='dark'] {
+  --ground:     var(--c-black);
+  --ink:        var(--c-on-dark);
+  --ink-muted:  var(--c-on-dark-78);
+  --rule:       var(--c-hairline-dark);
+  --ring:       var(--c-ring-dark);
+}
+
+[data-ground='light'] {
+  --ground:     var(--c-white);
+  --ink:        var(--c-ink-heading);
+  --ink-muted:  var(--c-ink-muted);
+  --rule:       var(--c-rule-strong);
+  --ring:       var(--c-ring-light);
+}
+
+[data-ground='surface'] {
+  --ground:     var(--c-surface);
+  --ink:        var(--c-ink-heading);
+  --ink-muted:  var(--c-ink-muted);
+  --rule:       var(--c-rule-strong);
+  --ring:       var(--c-ring-light);
+}
+
+/* ---------- Base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--c-white);
+  color: var(--c-ink-body);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img, video { max-width: 100%; height: auto; }
+
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+
+/* Wide content scrolls inside its own container so the page body
+   never scrolls sideways. */
+.overflow-x { overflow-x: auto; max-width: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

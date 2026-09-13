@@ -1,0 +1,76 @@
+name: Build and deploy
+
+# The build runs HERE, never on the Plesk server. Only finished static
+# files land on the box. That is the whole security model: no Node, no
+# toolchain, no node_modules in the webspace.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false   # never interrupt a live deploy mid-rsync
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Fails the build on thin content, duplicate meta, broken internal
+      # links, or any inventory URL with no corresponding page.
+      - name: Validate content
+        run: node scripts/validate-content.mjs
+
+      - name: Validate redirects
+        run: node scripts/validate-redirects.mjs
+
+      # Indexing stays OFF until the site is finished. See docs/NOINDEX.md.
+      # To go live, set this to 'true' (a launch-checklist step, not a code change).
+      - run: npm run build
+        env:
+          PUBLIC_ALLOW_INDEXING: ${{ vars.PUBLIC_ALLOW_INDEXING }}
+
+      # Emits nginx 301 rules from the redirect map. Astro's own redirects
+      # are meta-refresh pages, which pass equity poorly.
+      - name: Generate nginx redirect rules
+        run: node scripts/generate-nginx-redirects.mjs
+
+      # Catches the expensive failure BEFORE anything ships.
+      # THE GUARD. Never make this non-fatal and never skip it. It also
+      # fails if a meta-refresh redirect page reached dist/, which is how
+      # Astro's built-in redirects would otherwise ship.
+      - name: Assert every inventory URL exists in dist
+        run: node scripts/assert-urls.mjs
+        env:
+          BUILD_PHASE: ${{ vars.BUILD_PHASE || '0' }}
+
+      - name: Deploy to Plesk
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          # --delete keeps the webspace exactly matching dist.
+          # Excludes protect the one piece of server-side code and its config.
+          switches: >-
+            -avzr --delete
+            --exclude 'api/'
+            --exclude '.well-known/'
+            --exclude 'config/'
+          path: dist/
+          remote_path: ${{ secrets.PLESK_PATH }}
+          remote_host: ${{ secrets.PLESK_HOST }}
+          remote_user: ${{ secrets.PLESK_USER }}
+          remote_key: ${{ secrets.PLESK_SSH_KEY }}
+
+      - name: Ping IndexNow
+        run: node scripts/indexnow.mjs
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}

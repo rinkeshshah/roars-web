@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; background:#0B0B0B; }
+  body { font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#FFD400; }
+</style>
+</helmet>
+
+<div data-mobile="1" data-screen-label="Callback (mobile)" style="display:none;width:100%;background:rgb(11,11,11);padding:44px 20px 48px;flex-direction:column;gap:22px">
+  <div data-mrev="1" style="display:flex;flex-direction:column;gap:14px">
+    <div style="height:1.5px;background:rgba(180,174,174,.35)"></div>
+    <span style="font-size:13px;font-weight:600;letter-spacing:-0.06em;color:rgb(145,145,145)">A to B</span>
+  </div>
+  <span data-mrev="1" style="font-size:34px;font-weight:600;line-height:42px;letter-spacing:-0.05em;color:rgb(255,255,255)">Find how we can help you get from A to B</span>
+  <span data-mrev="1" style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.72)">Our love for innovation design and technology is evident in all our works. No detail is too small. Together, we&rsquo;ll make your business grow, manifold.</span>
+  <a data-mrev="1" href="https://meet.roarsinc.com/sales" style="display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 24px;border-radius:60px;background:rgb(255,255,255)" style-hover="background:#FFD400">
+    <span style="font-size:14px;font-weight:500;letter-spacing:-0.03em;color:rgb(11,11,11)">Request a Callback</span>
+    <span style="display:flex;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:rgba(11,11,11,.35)"></span><span style="width:8px;height:8px;border-radius:50%;background:rgb(11,11,11)"></span></span>
+  </a>
+  <span data-mrev="1" style="font-size:13px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">USA +1 (302) 505-1200&ensp;&middot;&ensp;UK +44 (7537) 183399</span>
+</div>
+
+<div data-band="1" data-screen-label="Callback" style="position:relative;width:1440px;height:540px;background:rgb(11,11,11);overflow:hidden;transform-origin:0 0">
+  <div style="position:absolute;left:40px;top:100px;width:1362px;height:1.5px;background:rgba(180,174,174,.35)"></div>
+  <span style="position:absolute;left:40px;top:124px;font-size:14px;font-weight:600;line-height:19px;letter-spacing:-0.06em;color:rgb(145,145,145);white-space:nowrap">A to B</span>
+
+  <span style="position:absolute;left:33px;top:190px;width:760px;height:110px;font-size:42px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(255,255,255)">Find how we can help you get from A to B</span>
+
+  <span style="position:absolute;left:962px;top:196px;width:440px;height:90px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(255,255,255,.72)">Our love for innovation design and technology is evident in all our works. No detail is too small. Together, we&rsquo;ll make your business grow, manifold.</span>
+
+  <a href="https://meet.roarsinc.com/sales" style="position:absolute;left:962px;top:340px;width:204px;height:47px;border-radius:60px;background:rgb(255,255,255);display:block" style-hover="background:#FFD400">
+    <span style="position:absolute;left:25px;top:14px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:rgb(11,11,11);white-space:nowrap">Request a Callback</span>
+    <span style="position:absolute;left:167px;top:20px;width:8px;height:8px;border-radius:50%;background:rgba(11,11,11,.35)"></span>
+    <span style="position:absolute;left:177px;top:20px;width:8px;height:8px;border-radius:50%;background:rgb(11,11,11)"></span>
+  </a>
+
+  <span style="position:absolute;left:40px;top:350px;width:500px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.5)">USA +1 (302) 505-1200&ensp;&middot;&ensp;UK +44 (7537) 183399</span>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:540}}">class Component extends DCLogic {
+  componentDidMount() {
+    this.mq = matchMedia('(max-width: 760px)');
+    this.fit = () => {
+      const band = document.querySelector('[data-band]');
+      const mob = document.querySelector('[data-mobile]');
+      if (!band || !mob) return;
+      const m = this.mq.matches;
+      mob.style.display = m ? 'flex' : 'none';
+      band.style.display = m ? 'none' : 'block';
+      if (m) return;
+      const w = (band.parentElement ? band.parentElement.clientWidth : innerWidth) || 1440;
+      const s = Math.min(1, w / 1440);
+      band.style.transform = 'scale(' + s + ')';
+      band.style.height = (540 * s) + 'px';
+    };
+    this.reveal = () => {
+      const mob = document.querySelector('[data-mobile]');
+      if (!mob || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const items = [...mob.querySelectorAll('[data-mrev]')];
+      items.forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(18px)';
+        el.style.transition = 'transform .7s cubic-bezier(.22,.68,.28,1) ' + (i * 70) + 'ms, opacity .55s ease ' + (i * 70) + 'ms';
+      });
+      this.io = new IntersectionObserver(ens => {
+        ens.forEach(en => {
+          if (!en.isIntersecting) return;
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'none';
+          this.io.unobserve(en.target);
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+      items.forEach(el => this.io.observe(el));
+    };
+    this.fit();
+    this.reveal();
+    addEventListener('resize', this.fit);
+    if (this.mq.addEventListener) this.mq.addEventListener('change', this.fit);
+  }
+
+  componentWillUnmount() {
+    removeEventListener('resize', this.fit);
+    if (this.io) this.io.disconnect();
+    if (this.mq && this.mq.removeEventListener) this.mq.removeEventListener('change', this.fit);
+  }
+}</script>
+</body>
+</html>

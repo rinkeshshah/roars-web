@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; background:#FFFFFF; }
+  body { font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#FFD400; }
+  @keyframes swoosh { from { clip-path:inset(0 100% 0 0); } to { clip-path:inset(0 0 0 0); } }
+  @media (prefers-reduced-motion: reduce) { [data-swoosh] { animation:none !important; } }
+</style>
+</helmet>
+
+<div data-fit="1" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+
+<div data-topbar="1" style="position:fixed;left:0;top:0;width:1440px;height:150px;transform-origin:0 0;z-index:50;pointer-events:none">
+  <div style="pointer-events:auto">
+  <div style="position:absolute;left:39px;top:36px;width:1366px;height:111px;overflow:hidden">
+    <a href="Roars v2 - Main.dc.html" data-mark="1" style="position:absolute;left:-9px;top:-4px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:999px;transform-origin:50% 50%;transition:background .45s ease, box-shadow .45s ease"><span data-logo-ring="1" style="position:absolute;inset:0;border-radius:999px;background:conic-gradient(#FFD400 0turn,rgba(255,212,0,.14) 0turn);mask:radial-gradient(circle,rgba(0,0,0,0) 61%,#000 63%);-webkit-mask:radial-gradient(circle,rgba(0,0,0,0) 61%,#000 63%);opacity:0;transition:opacity .45s ease"></span><img data-logo-img="1" src="brand/roars-mark.png" alt="Roars" style="position:relative;width:26px;height:auto;display:block;transform-origin:50% 50%;transition:filter .5s ease, transform .6s cubic-bezier(.16,1,.3,1)" /></a>
+    <div data-contact="1" style="position:absolute;left:929px;top:0;width:285px;height:111px;overflow:hidden;transition:opacity .25s ease, transform .25s ease">
+      <span data-ink="1" style="position:absolute;left:0;top:71px;width:180px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgb(255,255,255);opacity:.75">We reply within 24 hours</span>
+      <div style="position:absolute;left:0;top:0;width:285px;height:42px">
+        <div style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;overflow:hidden;background:rgb(255,255,255)">
+          <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:5px;top:5px;width:32px;height:32px;border-radius:60px;object-fit:cover" />
+        </div>
+        <a href="https://meet.roarsinc.com/sales" data-ring="1" style="position:absolute;left:42px;top:0;width:243px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);display:block">
+          <span data-ink="1" style="position:absolute;left:18px;top:11px;font-size:12px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:rgb(255,255,255);white-space:nowrap">Setup a Meeting</span>
+          <span style="position:absolute;left:205px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span>
+          <span data-fill="1" style="position:absolute;left:216px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(255,255,255)"></span>
+        </a>
+      </div>
+    </div>
+    <div style="position:absolute;left:1340px;top:18px;width:26px;height:6px;display:flex;flex-direction:column;justify-content:space-between">
+      <span data-fill="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255)"></span>
+      <span data-fill="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255)"></span>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div data-topbar-m="1" style="display:none;position:fixed;left:0;top:0;right:0;height:60px;z-index:60;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(153,152,149,.25);transition:background .4s ease, border-color .4s ease">
+  <a href="Roars v2 - Main.dc.html" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-left:-10px"><img data-mbar-img="1" src="brand/roars-mark.png" alt="Roars" style="width:24px;height:auto;display:block;filter:brightness(0);transition:filter .4s ease" /></a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a href="Roars v2 - Contact.dc.html" data-mbar-pill="1" style="height:34px;padding:0 16px;border-radius:60px;display:flex;align-items:center;box-shadow:inset 0 0 0 1.5px rgba(15,15,15,.28);font-size:12px;font-weight:500;letter-spacing:-0.03em;color:rgb(15,15,15);transition:box-shadow .4s ease, color .4s ease">Contact</a>
+    <a href="Roars v2 - Menu.dc.html" style="width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:5px">
+      <span data-mbar-line="1" style="display:block;width:24px;height:2px;background:rgb(15,15,15);transition:background .4s ease"></span>
+      <span data-mbar-line="1" style="display:block;width:24px;height:2px;background:rgb(15,15,15);transition:background .4s ease"></span>
+    </a>
+  </div>
+</div>
+
+<div data-mobile="1" style="display:none;width:100%;overflow:hidden;background:#FFFFFF">
+  <!-- hero -->
+  <section data-mdark="1" style="position:relative;padding:96px 20px 48px;background:#000;overflow:hidden;display:flex;flex-direction:column;gap:30px">
+    <img data-mpar="0.05" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover" />
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,.64) 0%,rgba(0,0,0,.24) 44%,rgba(0,0,0,.6) 100%)"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:30px">
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:14px">
+        <a href="Roars v2 - Resources.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgba(255,255,255,.55)">&larr; RESOURCES / GUIDES</a>
+        <div style="width:16px;height:1.5px;background:#FFD400"></div>
+        <span style="font-size:19px;font-weight:500;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.94)">Everything you need to know about innovation, in our free PDF guides, with examples, templates, agendas.</span>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-wrap:wrap;gap:8px">
+        <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">10 GUIDES</span>
+        <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">PDF</span>
+        <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">FREE</span>
+      </div>
+      <div data-mrev="1" style="position:relative;width:100%;max-width:260px;align-self:center;background:#FBFBF9;box-shadow:0 24px 56px rgba(0,0,0,.5);transform:rotate(-1.2deg);padding:0 0 14px">
+        <div style="height:4px;background:#FFD400"></div>
+        <img src="https://www.roarsinc.com/wp-content/uploads/2022/08/startup-guides-books.png" alt="Roars guides" style="width:100%;height:auto;object-fit:contain;padding:22px 18px 12px;box-sizing:border-box;display:block" />
+        <div style="display:flex;justify-content:space-between;padding:0 18px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.18em;color:rgba(20,20,20,.5)"><span>THE GUIDE SET</span><span style="font-weight:500;color:rgba(20,20,20,.4)">PDF &middot; 01</span></div>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:18px;font-weight:600;letter-spacing:-0.04em;color:rgb(251,251,251)">roars</span><img src="assets/star-5.svg" alt="" style="width:10px;height:10px;filter:invert(1)" /></div>
+        <span style="font-size:62px;font-weight:600;line-height:62px;letter-spacing:-0.055em;color:rgb(251,251,251)">Guides</span>
+        <span style="font-size:18px;font-weight:500;letter-spacing:-0.04em;color:rgba(255,255,255,.72)">Examples, templates, agendas</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- library -->
+  <section style="padding:44px 20px 52px;background:#fff;display:flex;flex-direction:column;gap:22px">
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px">
+      <div style="height:1.5px;background:rgba(153,152,149,.7)"></div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.18em;color:rgb(145,145,145)">ALL CATEGORIES</span>
+    </div>
+    <span data-mrev="1" style="font-size:52px;font-weight:600;line-height:52px;letter-spacing:-0.05em;color:rgb(36,36,36)">the shelf</span>
+    <span data-mrev="1" style="font-size:15px;font-weight:500;line-height:22px;letter-spacing:-0.04em;color:rgba(20,20,20,.62)">One page each. Print it, fill it in, take it into the room. Filter by what you are trying to work out.</span>
+
+    <div data-mrev="1" style="display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px">
+      <span data-mfilter="all" style="flex:none;padding:9px 16px;border-radius:60px;background:#FFD400;box-shadow:inset 0 0 0 1px #FFD400;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:background .3s ease, box-shadow .3s ease">ALL</span>
+      <span data-mfilter="bm" style="flex:none;padding:9px 16px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(20,20,20,.16);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:background .3s ease, box-shadow .3s ease">BUSINESS MODEL</span>
+      <span data-mfilter="fav" style="flex:none;padding:9px 16px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(20,20,20,.16);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:background .3s ease, box-shadow .3s ease">OUR FAVOURITE</span>
+      <span data-mfilter="pd" style="flex:none;padding:9px 16px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(20,20,20,.16);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:background .3s ease, box-shadow .3s ease">PROBLEM DISCOVERY</span>
+      <span data-mfilter="str" style="flex:none;padding:9px 16px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(20,20,20,.16);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:background .3s ease, box-shadow .3s ease">STRATEGY</span>
+    </div>
+    <span data-mcount="1" style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">10 / 10</span>
+
+    <a data-mrev="1" data-mcard="1" data-mcat="bm fav" href="https://www.roarsinc.com/resources/business-model-canvas/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">BUSINESS MODEL</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/business-model-canvas.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">Business Model Canvas</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">The Business Model Canvas is a one page overview that lays out both what you do (or want to do), and how you go about doing it ; enabling structured conversations around management and strategy.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+    <a data-mrev="1" data-mcard="1" data-mcat="bm" href="https://www.roarsinc.com/resources/building-partnerships/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">BUSINESS MODEL</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/building-partnership-placeholder.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">Building Partnerships</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">Many complex problems have several different yet related causes and effects. With many organisations having limited resources, forming partnerships is a good approach to not only increase capability but also your reach.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+    <a data-mrev="1" data-mcard="1" data-mcat="bm" href="https://www.roarsinc.com/resources/business-plan/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">BUSINESS MODEL</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/business-plan-placeholder.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">Business Plan</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">A structured description of how you do what you do. The plan needs to articulate the problem the business proposes to solve, a vision for how that will be accomplished.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+    <a data-mrev="1" data-mcard="1" data-mcat="fav pd" href="https://www.roarsinc.com/resources/swot-analysis/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">OUR FAVOURITE</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/Startup-Swot-analysis.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">SWOT Analysis</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">SWOT stands for <span style="font-weight:700;color:rgb(20,20,20)">Strengths</span>, <span style="font-weight:700;color:rgb(20,20,20)">Weaknesses</span>, <span style="font-weight:700;color:rgb(20,20,20)">Opportunities</span> and <span style="font-weight:700;color:rgb(20,20,20)">Threats</span>. A SWOT analysis can be carried out for a specific project, organisation or even a whole sector.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+    <a data-mrev="1" data-mcard="1" data-mcat="fav" href="https://www.roarsinc.com/resources/learning-loop/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">OUR FAVOURITE</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/Srartup-learning-loop.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">Learning Loop</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">The Learning Loop is a tool that helps you to define how the work you do now informs what you do next. It provides a high-level perspective on how implementing social change can be broken down into iterative cycles.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+    <a data-mrev="1" data-mcard="1" data-mcat="pd" href="https://www.roarsinc.com/resources/product-solution-benefit/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">PROBLEM DISCOVERY</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/placeholder.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">Product Solution Benefit</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">Storyboarding to help find out customer pain points and find a magical solutions for there problems.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+    <a data-mrev="1" data-mcard="1" data-mcat="pd" href="https://www.roarsinc.com/resources/value-proposition/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">PROBLEM DISCOVERY</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/startup-value-proposition.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">Value Proposition</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">Identify your customer&rsquo;s major jobs to be done, the pains they face when trying to accomplish their jobs and the gains they perceive by getting their jobs done.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+    <a data-mrev="1" data-mcard="1" data-mcat="pd" href="https://www.roarsinc.com/resources/target-group/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">PROBLEM DISCOVERY</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/target-group-placeholder.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">Target Group</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">Target Group is probably best used when you are trying to work out some initial ideas about who you want to cater to, and why.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+    <a data-mrev="1" data-mcard="1" data-mcat="pd" href="https://www.roarsinc.com/resources/prototype-testing-plan/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">PROBLEM DISCOVERY</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/prototyping-placeholder.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">Prototype Testing Plan</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">IDEA: TRY: TEST: SPECIFY. Prototyping is more than just &lsquo;trying out&rsquo;; it is a structured way to check that you have an efficient and fitting solution.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+    <a data-mrev="1" data-mcard="1" data-mcat="str" href="https://www.roarsinc.com/resources/evidence-planning/" style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5);border-bottom:.5px solid rgba(153,152,149,.5);padding-bottom:20px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">STRATEGY</span>
+      <div style="width:100%;aspect-ratio:2.17;background:rgb(244,244,242);overflow:hidden"><img src="https://www.roarsinc.com/wp-content/uploads/2022/08/startup-evidence-plannig.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <span style="font-size:26px;font-weight:600;line-height:32px;letter-spacing:-0.045em;color:rgb(36,36,36)">Evidence Planning</span>
+      <span style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72)">The Evidence Planning tool is a quick way to help articulate and improve what you are trying to accomplish. It gives you an easy way to define and share what it is that you&rsquo;re trying to do.</span>
+      <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+    </a>
+  </section>
+
+  <!-- cta -->
+  <section style="padding:44px 20px 52px;background:rgb(245,245,245);display:flex;flex-direction:column;gap:20px">
+    <span data-mrev="1" style="font-size:40px;font-weight:600;line-height:44px;letter-spacing:-0.05em;color:rgb(36,36,36)">Let&rsquo;s get your project started.</span>
+    <span data-mrev="1" style="font-size:17px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgba(20,20,20,.72)">Our love for innovation design and technology is evident in all our works. No details are too small. Together, we&rsquo;ll make your business grow manifold.</span>
+    <a data-mrev="1" href="https://meet.roarsinc.com/sales" style="display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 24px;border-radius:60px;background:rgb(0,0,0)" style-hover="background:#FFD400">
+      <span style="font-size:14px;font-weight:500;letter-spacing:-0.03em;color:rgb(255,255,255)">Shall we chat?</span>
+      <span style="display:flex;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:rgba(153,152,149,.6)"></span><span style="width:8px;height:8px;border-radius:50%;background:#FFD400"></span></span>
+    </a>
+    <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:.5px solid rgba(153,152,149,.5)">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(20,20,20,.5)">MORE IN THE LIBRARY</span>
+      <a href="Roars v2 - Resources.dc.html" style="font-size:19px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgb(20,20,20)">Staff picks &amp; tools &nbsp;&rarr;</a>
+    </div>
+    <span data-mrev="1" style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;line-height:18px;letter-spacing:0.16em;color:rgba(20,20,20,.5)">USA +1 (302) 505-1200 &nbsp;/&nbsp; UK +44 (7537) 183399</span>
+  </section>
+
+  <section data-mdark="1" style="position:relative;padding:56px 20px 40px;background:rgb(11,11,11);overflow:hidden;display:flex;flex-direction:column;gap:34px">
+    <img data-mpar="0.06" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;transform:scaleY(-1);opacity:.55" />
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(11,11,11,.6) 0%,rgba(11,11,11,.9) 100%)"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:34px">
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:18px">
+        <img src="assets/mark.svg" alt="Roars" style="width:21px;height:21px;filter:invert(1)" />
+        <span style="font-size:18px;font-weight:500;line-height:26px;letter-spacing:-0.02em;color:rgb(255,255,255)">Space of Product<br />Solutions<span style="color:#FFD400">*</span></span>
+        <span style="font-size:17px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgb(147,147,147)">Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.</span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="" style="width:42px;height:42px;border-radius:60px;object-fit:cover" />
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:400;letter-spacing:-0.06em;color:rgba(255,255,255,.9)">Riinkesh A Sshah</span><span style="font-size:12px;font-weight:400;letter-spacing:-0.06em;color:rgba(255,255,255,.5)">CEO / Founder</span></div>
+        </div>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:8px;padding-top:18px;border-top:1px solid rgba(180,174,174,.35)">
+        <span style="font-size:12px;font-weight:500;letter-spacing:-0.04em;color:rgba(255,255,255,.8)">USA +1 (302) 505-1200</span>
+        <a href="mailto:sales@roarsinc.com" style="font-size:20px;font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.95)">sales@roarsinc.com</a>
+      </div>
+      <div data-mrev="1" style="display:flex;gap:40px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:600;letter-spacing:-0.06em;color:rgb(145,145,145)">Navigation</span>
+          <div style="width:16px;height:1.5px;background:rgba(153,152,149,.7);margin-bottom:4px"></div>
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:20px;font-weight:600;line-height:30px;letter-spacing:-0.06em;color:rgba(255,255,255,.9)">
+            <a href="Roars v2 - Main.dc.html">Home</a><a href="Roars v2 - Agency.dc.html">Agency</a><a href="Roars v2 - Projects.dc.html">Projects</a><a href="Roars v2 - Insights.dc.html">Insights</a><a href="Roars v2 - Contact.dc.html">Contact</a>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;padding-top:32px;font-size:15px;font-weight:500;line-height:26px;letter-spacing:-0.06em;color:rgba(255,255,255,.78)">
+          <a href="https://www.twitter.com/roarstech">Twitter</a><a href="https://www.instagram.com/roarstech">Instagram</a><a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./">LinkedIn</a>
+        </div>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:14px;padding-top:18px;border-top:1px solid rgba(180,174,174,.35)">
+        <span style="font-size:13px;font-weight:600;letter-spacing:-0.06em;color:rgb(145,145,145)">Subscribe our News</span>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:400;letter-spacing:-0.06em;color:rgb(255,255,255)">Your name *</span><div style="height:1px;background:rgba(231,231,231,.3)"></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:400;letter-spacing:-0.06em;color:rgb(255,255,255)">Email *</span><div style="height:1px;background:rgba(231,231,231,.3)"></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;height:46px;padding:0 20px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);cursor:pointer">
+          <span style="font-size:12px;font-weight:500;color:rgb(255,255,255)">Subscribe</span>
+          <span style="display:flex;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span><span style="width:8px;height:8px;border-radius:50%;background:#fff"></span></span>
+        </div>
+      </div>
+      <div data-mrev="1" style="display:flex;align-items:flex-start;gap:8px;padding-top:10px">
+        <span style="font-size:84px;font-weight:600;line-height:72px;letter-spacing:-0.04em;color:rgb(255,255,255)">roars</span>
+        <span style="width:24px;height:24px;border-radius:60px;background:#FFD400;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:rgb(31,31,31);margin-top:4px">&reg;</span>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-wrap:wrap;gap:22px 40px;padding-top:18px;border-top:1px solid rgba(180,174,174,.25);font-size:12px;font-weight:500;line-height:19px;letter-spacing:-0.04em">
+        <div style="display:flex;flex-direction:column"><span style="color:rgba(255,255,255,.5)">&copy; 2026</span><span style="color:rgba(255,255,255,.5)">Roars Technologies</span></div>
+        <div style="display:flex;flex-direction:column;color:rgba(255,255,255,.8)"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="https://link.roars.in/F39Mv">Company Profile</a></div>
+        <div style="display:flex;flex-direction:column"><span style="color:rgba(255,255,255,.5)">Offices</span><span style="color:rgba(255,255,255,.8)">USA &middot; UK &middot; India</span></div>
+        <div style="display:flex;flex-direction:column"><span style="color:rgba(255,255,255,.5)">Built by</span><span style="color:rgba(255,255,255,.8)">Roars Technologies</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div data-canvas="1" style="position:relative;width:1440px;height:5005px;transform-origin:0 0;background:#FFFFFF">
+
+<!-- ════════ HERO (0) ════════ -->
+<div data-screen-label="Hero" style="position:absolute;left:0;top:0;width:1440px;height:700px;overflow:hidden;background:rgb(0,0,0)">
+  <img data-par="-0.05" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-40px;width:1440px;height:780px;object-fit:cover" />
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.2) 44%,rgba(0,0,0,.55) 100%)"></div>
+
+  <div style="position:absolute;left:39px;top:180px;width:400px;height:300px">
+    <a href="Roars v2 - Resources.dc.html" style="position:absolute;left:0;top:0;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;line-height:19px;letter-spacing:0.18em;color:rgba(255,255,255,.55);white-space:nowrap">&larr; RESOURCES / GUIDES</a>
+    <div data-accent-bg="1" style="position:absolute;left:0;top:38px;width:16px;height:1.5px;background:#FFD400"></div>
+    <span style="position:absolute;left:0;top:64px;width:390px;height:96px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.94)">Everything you need to know about innovation, in our free PDF guides, with examples, templates, agendas.</span>
+    <div style="position:absolute;left:0;top:186px;width:400px;height:44px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start">
+      <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">10 GUIDES</span>
+      <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">PDF</span>
+      <span style="padding:7px 13px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,.88)">FREE</span>
+    </div>
+  </div>
+
+  <div data-par="0.04" style="position:absolute;left:1052px;top:168px;width:350px;height:330px">
+    <div style="position:absolute;left:26px;top:26px;width:300px;height:286px;background:rgba(251,251,249,.32);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);transform:rotate(3.4deg)"></div>
+    <div style="position:absolute;left:14px;top:14px;width:300px;height:286px;background:rgba(251,251,249,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);transform:rotate(1.6deg)"></div>
+    <div style="position:absolute;left:0;top:0;width:300px;height:286px;background:#FBFBF9;box-shadow:0 30px 70px rgba(0,0,0,.5);transform:rotate(-1.2deg);overflow:hidden">
+      <div data-accent-bg="1" style="position:absolute;left:0;top:0;width:300px;height:4px;background:#FFD400"></div>
+      <img src="https://www.roarsinc.com/wp-content/uploads/2022/08/startup-guides-books.png" alt="Roars guides" style="position:absolute;left:22px;top:34px;width:256px;height:186px;object-fit:contain" />
+      <span style="position:absolute;left:22px;top:238px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.2em;color:rgba(20,20,20,.5)">THE GUIDE SET</span>
+      <span style="position:absolute;left:216px;top:238px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:rgba(20,20,20,.4)">PDF &middot; 01</span>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:420px;top:340px;width:760px;height:300px">
+    <div style="position:absolute;left:8px;top:0;width:62px;height:24px">
+      <span style="position:absolute;left:0;top:4px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">roars</span>
+      <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px;filter:invert(1)" />
+    </div>
+    <img data-swoosh="1" src="assets/union.svg" alt="" style="position:absolute;left:6px;top:44px;width:88px;height:10px;filter:invert(1);transform:rotate(5.4deg);transform-origin:0 0;animation:swoosh 1.1s cubic-bezier(.16,1,.3,1) .9s both" />
+    <span style="position:absolute;left:0;top:48px;width:900px;height:150px;font-size:148px;font-weight:600;line-height:140px;letter-spacing:-0.055em;color:rgb(251,251,251);white-space:nowrap">Guides</span>
+    <span style="position:absolute;left:6px;top:200px;width:560px;height:30px;font-size:24px;font-weight:500;line-height:34px;letter-spacing:-0.04em;color:rgba(255,255,255,.72);white-space:nowrap">Examples, templates, agendas</span>
+  </div>
+</div>
+
+<!-- ════════ LIBRARY (700) ════════ -->
+<div data-screen-label="Library" style="position:absolute;left:0;top:700px;width:1440px;height:2740px;background:rgb(255,255,255);overflow:hidden">
+  <div style="position:absolute;left:40px;top:80px;width:1362px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+  <span style="position:absolute;left:40px;top:104px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;line-height:19px;letter-spacing:0.18em;color:rgb(145,145,145);white-space:nowrap">ALL CATEGORIES</span>
+
+  <span style="position:absolute;left:33px;top:146px;width:900px;height:100px;font-size:84px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:rgb(36,36,36);white-space:nowrap">the shelf</span>
+  <span style="position:absolute;left:962px;top:156px;width:440px;height:80px;font-size:16px;font-weight:500;line-height:23px;letter-spacing:-0.04em;color:rgba(20,20,20,.62)">One page each. Print it, fill it in, take it into the room. Filter by what you are trying to work out.</span>
+
+  <div style="position:absolute;left:40px;top:288px;width:1362px;height:44px;display:flex;gap:8px;align-items:center">
+    <span data-filter="all" style="padding:9px 16px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(20,20,20,.16);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:box-shadow .3s ease, background .3s ease">ALL</span>
+    <span data-filter="bm" style="padding:9px 16px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(20,20,20,.16);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:box-shadow .3s ease, background .3s ease">BUSINESS MODEL</span>
+    <span data-filter="fav" style="padding:9px 16px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(20,20,20,.16);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:box-shadow .3s ease, background .3s ease">OUR FAVOURITE</span>
+    <span data-filter="pd" style="padding:9px 16px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(20,20,20,.16);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:box-shadow .3s ease, background .3s ease">PROBLEM DISCOVERY</span>
+    <span data-filter="str" style="padding:9px 16px;border-radius:60px;box-shadow:inset 0 0 0 1px rgba(20,20,20,.16);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgb(20,20,20);cursor:pointer;transition:box-shadow .3s ease, background .3s ease">STRATEGY</span>
+    <span data-count="1" style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">10 / 10</span>
+  </div>
+
+  <a href="https://www.roarsinc.com/resources/business-model-canvas/" data-card="1" data-cat="bm fav" style="position:absolute;left:40px;top:380px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">BUSINESS MODEL</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/business-model-canvas.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">Business Model Canvas</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">The Business Model Canvas is a one page overview that lays out both what you do (or want to do), and how you go about doing it ; enabling structured conversations around management and strategy.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+
+  <a href="https://www.roarsinc.com/resources/building-partnerships/" data-card="1" data-cat="bm" style="position:absolute;left:504px;top:380px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">BUSINESS MODEL</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/building-partnership-placeholder.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">Building Partnerships</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">Many complex problems have several different yet related causes and effects. With many organisations having limited resources, forming partnerships is a good approach to not only increase capability but also your reach.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+
+  <a href="https://www.roarsinc.com/resources/business-plan/" data-card="1" data-cat="bm" style="position:absolute;left:968px;top:380px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">BUSINESS MODEL</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/business-plan-placeholder.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">Business Plan</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">A structured description of how you do what you do. The plan needs to articulate the problem the business proposes to solve, a vision for how that will be accomplished.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+
+  <a href="https://www.roarsinc.com/resources/swot-analysis/" data-card="1" data-cat="fav pd" style="position:absolute;left:40px;top:960px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">OUR FAVOURITE</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/Startup-Swot-analysis.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">SWOT Analysis</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">SWOT stands for <span style="font-weight:700;color:rgb(20,20,20)">Strengths</span>, <span style="font-weight:700;color:rgb(20,20,20)">Weaknesses</span>, <span style="font-weight:700;color:rgb(20,20,20)">Opportunities</span> and <span style="font-weight:700;color:rgb(20,20,20)">Threats</span>. A SWOT analysis can be carried out for a specific project, organisation or even a whole sector.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+
+  <a href="https://www.roarsinc.com/resources/learning-loop/" data-card="1" data-cat="fav" style="position:absolute;left:504px;top:960px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">OUR FAVOURITE</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/Srartup-learning-loop.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">Learning Loop</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">The Learning Loop is a tool that helps you to define how the work you do now informs what you do next. It provides a high-level perspective on how implementing social change can be broken down into iterative cycles.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+
+  <a href="https://www.roarsinc.com/resources/product-solution-benefit/" data-card="1" data-cat="pd" style="position:absolute;left:968px;top:960px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">PROBLEM DISCOVERY</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/placeholder.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">Product Solution Benefit</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">Storyboarding to help find out customer pain points and find a magical solutions for there problems.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+
+  <a href="https://www.roarsinc.com/resources/value-proposition/" data-card="1" data-cat="pd" style="position:absolute;left:40px;top:1540px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">PROBLEM DISCOVERY</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/startup-value-proposition.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">Value Proposition</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">Identify your customer&rsquo;s major jobs to be done, the pains they face when trying to accomplish their jobs and the gains they perceive by getting their jobs done.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+
+  <a href="https://www.roarsinc.com/resources/target-group/" data-card="1" data-cat="pd" style="position:absolute;left:504px;top:1540px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">PROBLEM DISCOVERY</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/target-group-placeholder.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">Target Group</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">Target Group is probably best used when you are trying to work out some initial ideas about who you want to cater to, and why.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+
+  <a href="https://www.roarsinc.com/resources/prototype-testing-plan/" data-card="1" data-cat="pd" style="position:absolute;left:968px;top:1540px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">PROBLEM DISCOVERY</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/prototyping-placeholder.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">Prototype Testing Plan</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">IDEA: TRY: TEST: SPECIFY. Prototyping is more than just &lsquo;trying out&rsquo;; it is a structured way to check that you have an efficient and fitting solution.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+
+  <a href="https://www.roarsinc.com/resources/evidence-planning/" data-card="1" data-cat="str" style="position:absolute;left:40px;top:2120px;width:434px;height:530px;display:block;transition:transform .55s cubic-bezier(.22,.68,.28,1), opacity .35s ease">
+    <div style="position:absolute;left:0;top:0;width:434px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span data-card-cat="1" style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.14em;color:rgb(145,145,145)">STRATEGY</span>
+    <div style="position:absolute;left:0;top:50px;width:434px;height:200px;background:rgb(244,244,242);overflow:hidden">
+      <img data-card-img="1" src="https://www.roarsinc.com/wp-content/uploads/2022/08/startup-evidence-plannig.png" alt="" style="position:absolute;left:0;top:0;width:434px;height:200px;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1)" />
+    </div>
+    <span data-card-name="1" style="position:absolute;left:0;top:268px;width:420px;height:70px;font-size:28px;font-weight:600;line-height:34px;letter-spacing:-0.045em;color:rgb(36,36,36);transition:color .3s ease">Evidence Planning</span>
+    <span style="position:absolute;left:0;top:348px;width:420px;height:128px;font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.045em;color:rgba(20,20,20,.72);overflow:hidden">The Evidence Planning tool is a quick way to help articulate and improve what you are trying to accomplish. It gives you an easy way to define and share what it is that you&rsquo;re trying to do.</span>
+    <span data-card-cta="1" style="position:absolute;left:0;top:490px;font-size:16px;font-weight:600;line-height:22px;letter-spacing:-0.04em;color:rgb(20,20,20)">Download &nbsp;&darr;</span>
+  </a>
+</div>
+
+<!-- ════════ CTA (3440) ════════ -->
+<div data-screen-label="CTA" style="position:absolute;left:0;top:3440px;width:1440px;height:460px;background:rgb(245,245,245);overflow:hidden">
+  <span style="position:absolute;left:34px;top:96px;width:780px;height:160px;font-size:64px;font-weight:600;line-height:70px;letter-spacing:-0.05em;color:rgb(36,36,36)">Let&rsquo;s get your project started.</span>
+  <span style="position:absolute;left:38px;top:258px;width:800px;height:100px;font-size:18px;font-weight:500;line-height:27px;letter-spacing:-0.04em;color:rgba(20,20,20,.72)">Our love for innovation design and technology is evident in all our works. No details are too small. Together, we&rsquo;ll make your business grow manifold.</span>
+
+  <a href="https://meet.roarsinc.com/sales" style="position:absolute;left:962px;top:100px;width:204px;height:47px;border-radius:60px;background:rgb(0,0,0);display:block;transition:transform .35s cubic-bezier(.16,1,.3,1)" style-hover="transform:translateY(-2px)">
+    <span style="position:absolute;left:25px;top:13px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:rgb(255,255,255);white-space:nowrap">Shall we chat?</span>
+    <span style="position:absolute;left:167px;top:19px;width:8px;height:8px;border-radius:50%;background:rgba(153,152,149,.6)"></span>
+    <span data-accent-bg="1" style="position:absolute;left:177px;top:19px;width:8px;height:8px;border-radius:50%;background:#FFD400"></span>
+  </a>
+
+  <div style="position:absolute;left:962px;top:186px;width:440px;height:120px">
+    <div style="position:absolute;left:0;top:0;width:440px;height:0.5px;background:rgba(153,152,149,.5)"></div>
+    <span style="position:absolute;left:0;top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(20,20,20,.5);white-space:nowrap">MORE IN THE LIBRARY</span>
+    <a href="Roars v2 - Resources.dc.html" style="position:absolute;left:0;top:44px;font-size:20px;font-weight:600;line-height:26px;letter-spacing:-0.04em;color:rgb(20,20,20)">Staff picks &amp; tools &nbsp;&rarr;</a>
+  </div>
+
+  <span style="position:absolute;left:962px;top:324px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:rgba(20,20,20,.5);white-space:nowrap">USA +1 (302) 505-1200 &nbsp;/&nbsp; UK +44 (7537) 183399</span>
+</div>
+
+<!-- ════════ FOOTER (3900) ════════ -->
+<div data-screen-label="Footer" style="position:absolute;left:0;top:3900px;width:1440px;height:1105px;background:rgb(11,11,11);overflow:hidden">
+  <img src="assets/space.jpg" alt="" style="position:absolute;left:-37px;top:-10px;width:1672.305px;height:1115.006px;object-fit:cover;transform:scaleY(-1)" />
+
+  <div style="position:absolute;left:44px;top:61px;width:1073px;height:192px;overflow:hidden">
+    <img src="assets/mark.svg" alt="Roars" style="position:absolute;left:0;top:0;width:21px;height:21px;filter:invert(1)" />
+    <div style="position:absolute;left:458px;top:5px;width:384px;height:187px;overflow:hidden">
+      <span style="position:absolute;left:0;top:0;width:384px;height:120px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgb(147,147,147)">Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.</span>
+      <div style="position:absolute;left:0;top:145px;width:170px;height:42px">
+        <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+        <span style="position:absolute;left:56px;top:3px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.95);white-space:nowrap">Riinkesh A Sshah</span>
+        <span style="position:absolute;left:56px;top:23px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.6);white-space:nowrap">CEO / Founder</span>
+      </div>
+    </div>
+    <span style="position:absolute;left:921px;top:11px;width:180px;height:48px;font-size:18px;font-weight:500;line-height:24px;letter-spacing:-0.02em;color:rgb(255,255,255)">Space of Product<br />Solutions<span data-accent-tx="1" style="color:#FFD400">*</span></span>
+  </div>
+
+  <div style="position:absolute;left:43px;top:378px;width:1356px;height:258px;overflow:hidden">
+    <div style="position:absolute;left:0;top:36px;width:249px;height:81px">
+      <div style="position:absolute;left:1px;top:0;width:16px;height:1.5px;background:rgba(180,174,174,.7)"></div>
+      <span style="position:absolute;left:0;top:34px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);white-space:nowrap">USA +1 (302) 505-1200</span>
+      <a href="mailto:sales@roarsinc.com" style="position:absolute;left:1px;top:57px;font-size:20px;font-weight:600;line-height:24px;letter-spacing:-0.02em;color:rgba(255,255,255,.95);white-space:nowrap">sales@roarsinc.com</a>
+    </div>
+
+    <span style="position:absolute;left:459px;top:0;font-size:14px;font-weight:600;line-height:19px;letter-spacing:-0.06em;color:rgb(145,145,145);white-space:nowrap">Navigation</span>
+    <div style="position:absolute;left:459px;top:39px;width:16px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+    <div style="position:absolute;left:459px;top:58px;width:200px;height:240px;font-size:24px;font-weight:600;line-height:40px;letter-spacing:-0.06em;color:rgba(255,255,255,.9);display:flex;flex-direction:column">
+      <a href="Roars v2 - Main.dc.html">Home</a>
+      <a href="Roars v2 - Agency.dc.html">Agency</a>
+      <a href="Roars v2 - Approach.dc.html">Approach</a>
+      <a href="Roars v2 - Projects.dc.html">Projects</a>
+      <a href="Roars v2 - Insights.dc.html">Insights</a>
+      <a href="Roars v2 - Contact.dc.html">Contact</a>
+    </div>
+
+    <div style="position:absolute;left:692px;top:64px;width:120px;height:90px;font-size:16px;font-weight:500;line-height:30px;letter-spacing:-0.06em;color:rgba(255,255,255,.78);display:flex;flex-direction:column">
+      <a href="https://www.twitter.com/roarstech">Twitter</a>
+      <a href="https://www.instagram.com/roarstech">Instagram</a>
+      <a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./">LinkedIn</a>
+    </div>
+
+    <span style="position:absolute;left:925px;top:0;font-size:14px;font-weight:600;line-height:19px;letter-spacing:-0.06em;color:rgb(145,145,145);white-space:nowrap">Subscribe our News</span>
+    <div style="position:absolute;left:926px;top:39px;width:16px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+    <div style="position:absolute;left:926px;top:70px;width:430px;height:182px;overflow:hidden">
+      <span style="position:absolute;left:0;top:0;font-size:16px;font-weight:400;line-height:19px;letter-spacing:-0.06em;color:rgb(255,255,255);white-space:nowrap">Your name *</span>
+      <div style="position:absolute;left:0;top:40px;width:430px;height:1px;background:rgba(231,231,231,.3)"></div>
+      <span style="position:absolute;left:0;top:66px;font-size:16px;font-weight:400;line-height:19px;letter-spacing:-0.06em;color:rgb(255,255,255);white-space:nowrap">Email *</span>
+      <div style="position:absolute;left:0;top:106px;width:430px;height:1px;background:rgba(231,231,231,.3)"></div>
+      <div style="position:absolute;left:0;top:140px;width:195px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);cursor:pointer">
+        <span style="position:absolute;left:21px;top:10px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:12px;font-weight:500;line-height:20px;color:rgb(255,255,255);white-space:nowrap">Subscribe</span>
+        <span style="position:absolute;left:158px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span>
+        <span style="position:absolute;left:169px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(255,255,255)"></span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:43px;top:734px;width:1053px;height:310px;overflow:hidden">
+    <div style="position:absolute;left:459px;top:0;width:594px;height:186px;overflow:hidden">
+      <img src="assets/asteroids.svg" alt="" style="position:absolute;left:5px;top:61px;width:58px;height:7px;filter:invert(1);transform:rotate(6.7deg);transform-origin:0 0" />
+      <span style="position:absolute;left:0;top:0;width:555px;height:186px;font-size:182px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:rgb(255,255,255);white-space:nowrap">roars</span>
+      <div data-accent-bg="1" style="position:absolute;left:443px;top:28px;width:31px;height:31px;border-radius:60px;background:#FFD400">
+        <span style="position:absolute;left:0;top:0;width:31px;height:31px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;line-height:1;letter-spacing:0;color:rgb(31,31,31)">&reg;</span>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;top:238px;width:1053px;height:72px;overflow:hidden">
+      <span style="position:absolute;left:0;top:5px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">&copy; 2026</span>
+      <span style="position:absolute;left:0;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Roars Technologies</span>
+      <div style="position:absolute;left:459px;top:0;width:247px;height:72px;font-size:12px;font-weight:500;line-height:21px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);display:flex;flex-direction:column">
+        <a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="https://link.roars.in/F39Mv">Company Profile</a>
+      </div>
+      <span style="position:absolute;left:692px;top:3px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Offices</span>
+      <span style="position:absolute;left:692px;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);white-space:nowrap">India &middot; USA &middot; UK &middot; Belgium &middot; Germany</span>
+      <span style="position:absolute;left:926px;top:3px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Built by</span>
+      <span style="position:absolute;left:926px;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);white-space:nowrap">Roars Technologies</span>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FFD400&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FFD400&quot;,&quot;#FF6A2B&quot;,&quot;#B9FF3D&quot;,&quot;#FFFFFF&quot;]},&quot;category&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;all&quot;,&quot;options&quot;:[&quot;all&quot;,&quot;bm&quot;,&quot;fav&quot;,&quot;pd&quot;,&quot;str&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Library&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const H = 5005;
+    const DARK = [[0, 700], [3900, H]];
+    const accent = this.props.accent || '#FFD400';
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+      || this.props.motion === false;
+    const COLS = [40, 504, 968], STEP = 580, TOP = 380;
+
+    this.paintAccent = () => {
+      document.querySelectorAll('[data-accent-bg]').forEach(el => { el.style.background = accent; });
+      document.querySelectorAll('[data-accent-tx]').forEach(el => { el.style.color = accent; });
+    };
+
+    // ── filterable grid: cards translate to their new slot ───────────
+    this.grid = () => {
+      const cards = [...document.querySelectorAll('[data-card]')];
+      const chips = [...document.querySelectorAll('[data-filter]')];
+      const count = document.querySelector('[data-count]');
+      if (!cards.length) return;
+      const base = new Map();
+      cards.forEach(c => base.set(c, { l: parseFloat(c.style.left), t: parseFloat(c.style.top) }));
+
+      const apply = key => {
+        let j = 0;
+        cards.forEach(c => {
+          const on = key === 'all' || (' ' + c.getAttribute('data-cat') + ' ').indexOf(' ' + key + ' ') >= 0;
+          const b = base.get(c);
+          if (on) {
+            const dx = COLS[j % 3] - b.l;
+            const dy = (TOP + Math.floor(j / 3) * STEP) - b.t;
+            c.style.transform = 'translate3d(' + dx + 'px,' + dy + 'px,0)';
+            c.style.opacity = '1';
+            c.style.pointerEvents = 'auto';
+            j += 1;
+          } else {
+            c.style.opacity = '0';
+            c.style.pointerEvents = 'none';
+          }
+        });
+        if (count) count.textContent = j + ' / ' + cards.length;
+        chips.forEach(ch => {
+          const on = ch.getAttribute('data-filter') === key;
+          ch.style.background = on ? accent : 'transparent';
+          ch.style.boxShadow = 'inset 0 0 0 1px ' + (on ? accent : 'rgba(20,20,20,.16)');
+        });
+      };
+
+      chips.forEach(ch => ch.addEventListener('click', () => apply(ch.getAttribute('data-filter'))));
+      cards.forEach(c => {
+        const img = c.querySelector('[data-card-img]');
+        const name = c.querySelector('[data-card-name]');
+        const cta = c.querySelector('[data-card-cta]');
+        c.addEventListener('mouseenter', () => {
+          if (img) img.style.transform = 'scale(1.04)';
+          if (name) name.style.color = 'rgb(20,20,20)';
+          if (cta) cta.style.color = 'rgb(20,20,20)';
+        });
+        c.addEventListener('mouseleave', () => {
+          if (img) img.style.transform = 'none';
+          if (name) name.style.color = 'rgb(36,36,36)';
+        });
+      });
+      apply(this.props.category || 'all');
+    };
+
+    this.mq = matchMedia('(max-width: 760px)');
+    this.fit = () => {
+      const wrap = document.querySelector('[data-fit]');
+      const canvas = document.querySelector('[data-canvas]');
+      if (!wrap || !canvas) return;
+      const m = this.mq.matches;
+      const mob = document.querySelector('[data-mobile]');
+      const barM = document.querySelector('[data-topbar-m]');
+      const barD = document.querySelector('[data-topbar]');
+      if (mob) mob.style.display = m ? 'block' : 'none';
+      if (barM) barM.style.display = m ? 'flex' : 'none';
+      if (barD) barD.style.display = m ? 'none' : 'block';
+      canvas.style.display = m ? 'none' : 'block';
+      if (m) { wrap.style.height = 'auto'; return; }
+      const s = wrap.clientWidth / 1440;
+      canvas.style.transform = 'scale(' + s + ')';
+      wrap.style.height = (H * s) + 'px';
+      const bar = document.querySelector('[data-topbar]');
+      if (bar) {
+        bar.style.transform = 'scale(' + s + ')';
+        bar.style.left = wrap.getBoundingClientRect().left + 'px';
+      }
+    };
+
+    this.tint = () => {
+      const wrap = document.querySelector('[data-fit]');
+      const bar = document.querySelector('[data-topbar]');
+      if (!wrap || !bar) return;
+      const s = wrap.clientWidth / 1440;
+      const yy = (scrollY + 60) / s;
+      const onDark = DARK.some(r => yy >= r[0] && yy < r[1]);
+      const ink = onDark ? 'rgb(255,255,255)' : 'rgb(15,15,15)';
+      const contact = bar.querySelector('[data-contact]');
+      if (contact) {
+        const gone = scrollY > 80;
+        contact.style.opacity = gone ? '0' : '1';
+        contact.style.transform = gone ? 'translateY(-12px)' : 'none';
+        contact.style.pointerEvents = gone ? 'none' : 'auto';
+      }
+      bar.querySelectorAll('[data-ink]').forEach(el => { el.style.color = ink; });
+      bar.querySelectorAll('[data-fill]').forEach(el => { el.style.background = ink; });
+      bar.querySelectorAll('[data-ring]').forEach(el => {
+        el.style.boxShadow = 'inset 0 0 0 2px ' + (onDark ? 'rgba(255,255,255,.25)' : 'rgba(15,15,15,.28)');
+      });
+      const mark = bar.querySelector('[data-mark]');
+      if (mark) {
+        const ring = mark.querySelector('[data-logo-ring]');
+        const img = mark.querySelector('[data-logo-img]');
+        const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+        const prog = Math.min(1, Math.max(0, scrollY / max));
+        const onLight = !onDark;
+        if (ring) {
+          ring.style.background = 'conic-gradient(' + accent + ' ' + prog.toFixed(4) + 'turn, rgba(255,212,0,.14) 0turn)';
+          ring.style.opacity = onLight ? '1' : '0';
+        }
+        mark.style.background = onLight ? '#FBFBF9' : 'transparent';
+        mark.style.boxShadow = onLight ? '0 1px 0 rgba(10,10,10,.06)' : 'none';
+        if (img) {
+          img.style.filter = onLight
+            ? 'brightness(0)'
+            : 'brightness(0) invert(84%) sepia(72%) saturate(1400%) hue-rotate(357deg) brightness(104%)';
+          img.style.transform = onLight ? 'rotate(45deg) scale(.92)' : 'rotate(0deg) scale(1)';
+        }
+      }
+    };
+
+    this.motion = () => {
+      if (reduce) return;
+      document.querySelectorAll('[data-par]').forEach(el => {
+        const f = parseFloat(el.getAttribute('data-par'));
+        const rr = el.getBoundingClientRect();
+        const off = ((rr.top + rr.height / 2) - innerHeight / 2) * f;
+        el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)';
+      });
+    };
+
+    this.onScroll = () => {
+      if (this.raf) return;
+      this.raf = requestAnimationFrame(() => {
+        this.raf = null;
+        this.tint();
+        this.motion();
+      });
+    };
+
+    this.logoIntro = () => {
+      const img0 = document.querySelector('[data-logo-img]');
+      if (!img0 || reduce) return;
+      img0.animate(
+        [{ transform: 'scale(.2) rotate(-90deg)', opacity: 0.001 },
+         { transform: 'scale(1.12) rotate(8deg)', opacity: 1, offset: 0.62 },
+         { transform: 'scale(1) rotate(0deg)', opacity: 1 }],
+        { duration: 1100, delay: 300, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' }
+      );
+    };
+
+    // cards own their transform (filter), so reveal skips them
+    this.reveal = () => {
+      const canvas = document.querySelector('[data-canvas]');
+      if (!canvas) return;
+      const items = [];
+      [...canvas.querySelectorAll('[data-screen-label]')].forEach(sec => {
+        [...sec.children].forEach(el => {
+          if (el.tagName === 'IMG' && el.parentElement === sec) return;
+          if (el.hasAttribute && (el.hasAttribute('data-par') || el.hasAttribute('data-card'))) return;
+          if (!el.style || el.style.position !== 'absolute') return;
+          el.style.willChange = 'transform,opacity';
+          el.style.transition = 'transform .72s cubic-bezier(.22,.68,.28,1), opacity .62s ease';
+          const d = el.getAttribute('data-delay');
+          if (d) el.style.transitionDelay = d;
+          el.style.opacity = '0';
+          items.push(el);
+        });
+      });
+      const base = new Map();
+      items.forEach(el => base.set(el, el.style.transform || ''));
+      items.forEach(el => { el.style.transform = (base.get(el) + ' translateY(26px)').trim(); });
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (!en.isIntersecting) return;
+          const el = en.target;
+          el.style.transform = base.get(el);
+          el.style.opacity = '1';
+          io.unobserve(el);
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.04 });
+      items.forEach(el => io.observe(el));
+      this.io = io;
+    };
+
+    this.paintAccent();
+    this.grid();
+    this.logoIntro();
+    this.tint();
+    if (!reduce) requestAnimationFrame(() => this.reveal());
+    addEventListener('scroll', this.onScroll, { passive: true });
+
+    this.fit();
+    this.motion();
+    this.mobileMotion = () => {
+      const mob = document.querySelector('[data-mobile]');
+      if (!mob || this.mio) return;
+      const soft = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const bar = document.querySelector('[data-topbar-m]');
+      if (bar && !bar.querySelector('[data-mprog]')) {
+        const p = document.createElement('span');
+        p.setAttribute('data-mprog', '1');
+        p.style.cssText = 'position:absolute;left:0;bottom:-1px;height:2px;width:0;background:#FFD400;transition:width .12s linear';
+        bar.appendChild(p);
+      }
+      if (!soft) {
+        [...mob.querySelectorAll('[data-mrev]')].forEach(el => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(24px) scale(.985)';
+          el.style.transition = 'transform .8s cubic-bezier(.22,.68,.28,1), opacity .6s ease';
+          [...el.children].forEach((c, i) => {
+            if (i > 7) return;
+            c.style.opacity = '0';
+            c.style.transform = 'translateY(12px)';
+            c.style.transition = 'transform .66s cubic-bezier(.22,.68,.28,1) ' + (60 + i * 70) + 'ms, opacity .5s ease ' + (60 + i * 70) + 'ms';
+          });
+        });
+        this.mio = new IntersectionObserver(ens => {
+          ens.forEach(en => {
+            if (!en.isIntersecting) return;
+            const el = en.target;
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            [...el.children].forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+            const dot = el.querySelector('[data-mdot]');
+            if (dot) { dot.style.background = '#FFD400'; dot.style.boxShadow = 'inset 0 0 0 1.5px rgba(20,20,20,.15)'; }
+            this.mio.unobserve(el);
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+        [...mob.querySelectorAll('[data-mrev]')].forEach(el => this.mio.observe(el));
+      }
+      const darks = [...mob.querySelectorAll('[data-mdark]')];
+      const pars = [...mob.querySelectorAll('[data-mpar]')];
+      this.mtint = () => {
+        if (!this.mq.matches) return;
+        const doc = document.documentElement;
+        const prog = Math.min(1, Math.max(0, scrollY / Math.max(1, doc.scrollHeight - innerHeight)));
+        const pb = bar && bar.querySelector('[data-mprog]');
+        if (pb) pb.style.width = (prog * 100).toFixed(2) + '%';
+        if (!soft) pars.forEach(el => {
+          const r = el.getBoundingClientRect();
+          const k = parseFloat(el.getAttribute('data-mpar')) || 0.06;
+          const off = (r.top + r.height / 2 - innerHeight / 2) * -k;
+          const flip = (el.style.transform || '').indexOf('scaleY(-1)') >= 0 ? ' scaleY(-1)' : '';
+          el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)' + flip;
+        });
+        if (!bar) return;
+        const onDark = darks.some(s => { const r = s.getBoundingClientRect(); return r.top <= 30 && r.bottom > 30; });
+        bar.style.background = onDark ? 'rgba(10,10,10,.55)' : 'rgba(255,255,255,.86)';
+        bar.style.borderBottomColor = onDark ? 'rgba(255,255,255,.16)' : 'rgba(153,152,149,.25)';
+        const ink = onDark ? 'rgb(255,255,255)' : 'rgb(15,15,15)';
+        bar.querySelectorAll('[data-mbar-line]').forEach(el => { el.style.background = ink; });
+        const pill = bar.querySelector('[data-mbar-pill]');
+        if (pill) { pill.style.color = ink; pill.style.boxShadow = 'inset 0 0 0 1.5px ' + (onDark ? 'rgba(255,255,255,.3)' : 'rgba(15,15,15,.28)'); }
+        const img = bar.querySelector('[data-mbar-img]');
+        if (img) img.style.filter = onDark ? 'brightness(0) invert(84%) sepia(72%) saturate(1400%) hue-rotate(357deg) brightness(104%)' : 'brightness(0)';
+      };
+      // ── mobile: tap-to-open accordions ──────────────────────────────
+      const maccs = [...mob.querySelectorAll('[data-macc]')];
+      maccs.forEach(acc => {
+        if (acc.dataset.wired) return;
+        acc.dataset.wired = '1';
+        const head = acc.querySelector('[data-macc-head]');
+        const body = acc.querySelector('[data-macc-body]');
+        const inner = acc.querySelector('[data-macc-inner]');
+        const ico = acc.querySelector('[data-macc-ico]');
+        if (!head || !body || !inner) return;
+        const set = on => {
+          acc.dataset.open = on ? '1' : '';
+          body.style.height = on ? inner.offsetHeight + 'px' : '0px';
+          if (ico) {
+            ico.style.transform = on ? 'rotate(45deg)' : 'none';
+            ico.style.color = on ? '#FFD400' : 'rgba(20,20,20,.5)';
+          }
+        };
+        acc.__set = set;
+        head.addEventListener('click', () => {
+          const on = acc.dataset.open !== '1';
+          maccs.forEach(o => { if (o !== acc && o.__set) o.__set(false); });
+          set(on);
+        });
+      });
+
+      // ── mobile: filter chips ────────────────────────────────────────
+      const mchips = [...mob.querySelectorAll('[data-mfilter]')];
+      const mcards = [...mob.querySelectorAll('[data-mcard]')];
+      if (mchips.length && mcards.length) {
+        const mcount = mob.querySelector('[data-mcount]');
+        const applyM = key => {
+          let n = 0;
+          mcards.forEach(c => {
+            const on = key === 'all' || (' ' + c.getAttribute('data-mcat') + ' ').indexOf(' ' + key + ' ') >= 0;
+            c.style.display = on ? 'flex' : 'none';
+            if (on) n += 1;
+          });
+          if (mcount) mcount.textContent = n + ' / ' + mcards.length;
+          mchips.forEach(ch => {
+            const on = ch.getAttribute('data-mfilter') === key;
+            ch.style.background = on ? '#FFD400' : 'transparent';
+            ch.style.boxShadow = 'inset 0 0 0 1px ' + (on ? '#FFD400' : 'rgba(20,20,20,.16)');
+          });
+        };
+        mchips.forEach(ch => ch.addEventListener('click', () => applyM(ch.getAttribute('data-mfilter'))));
+      }
+
+      // ── mobile: stagger children + reveal, progress bar, parallax ───
+      const soft2 = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (bar && !bar.querySelector('[data-mprog]')) {
+        const pb0 = document.createElement('span');
+        pb0.setAttribute('data-mprog', '1');
+        pb0.style.cssText = 'position:absolute;left:0;bottom:-1px;height:2px;width:0;background:#FFD400;transition:width .12s linear';
+        bar.appendChild(pb0);
+      }
+      if (!soft2) {
+        mob.querySelectorAll('section > img').forEach(im => {
+          if (!im.hasAttribute('data-mpar') && !im.hasAttribute('data-mpar2')) {
+            im.setAttribute('data-mpar2', '0.05');
+            im.style.willChange = 'transform';
+          }
+        });
+        const revs = [...mob.querySelectorAll('[data-mrev]')];
+        revs.forEach(el => {
+          el.style.willChange = 'transform,opacity';
+          if (!el.style.transition) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(24px) scale(.985)';
+            el.style.transition = 'transform .8s cubic-bezier(.22,.68,.28,1), opacity .6s ease';
+          }
+          [...el.children].forEach((c, i) => {
+            if (i > 7 || c.dataset.stag) return;
+            c.dataset.stag = '1';
+            c.style.opacity = '0';
+            c.style.transform = 'translateY(12px)';
+            c.style.transition = 'transform .66s cubic-bezier(.22,.68,.28,1) ' + (60 + i * 70) + 'ms, opacity .5s ease ' + (60 + i * 70) + 'ms';
+          });
+        });
+        this.mio2 = new IntersectionObserver(ens => {
+          ens.forEach(en => {
+            if (!en.isIntersecting) return;
+            const el = en.target;
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            [...el.children].forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+            const dot = el.querySelector('[data-mdot]');
+            if (dot) { dot.style.background = '#FFD400'; dot.style.boxShadow = 'inset 0 0 0 1.5px rgba(20,20,20,.15)'; }
+            this.mio2.unobserve(el);
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+        revs.forEach(el => this.mio2.observe(el));
+      }
+      const pars2 = [...mob.querySelectorAll('[data-mpar2]')];
+      this.mextra = () => {
+        if (!this.mq.matches) return;
+        const pb = bar && bar.querySelector('[data-mprog]');
+        if (pb) {
+          const prog = Math.min(1, Math.max(0, scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)));
+          pb.style.width = (prog * 100).toFixed(2) + '%';
+        }
+        if (soft2) return;
+        pars2.forEach(el => {
+          const r = el.getBoundingClientRect();
+          const k = parseFloat(el.getAttribute('data-mpar2')) || 0.05;
+          const off = (r.top + r.height / 2 - innerHeight / 2) * -k;
+          const flip = (el.getAttribute('style') || '').indexOf('scaleY(-1)') >= 0 ? ' scaleY(-1)' : '';
+          el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)' + flip;
+        });
+      };
+      this.mextra();
+      addEventListener('scroll', this.mextra, { passive: true });
+
+      this.mtint();
+      addEventListener('scroll', this.mtint, { passive: true });
+    };
+    this.mobileMotion();
+    this.onMq = () => this.fit();
+    if (this.mq.addEventListener) this.mq.addEventListener('change', this.onMq);
+
+    addEventListener('resize', this.fit);
+    const wrap = document.querySelector('[data-fit]');
+    if (wrap && window.ResizeObserver) {
+      this.ro = new ResizeObserver(() => { this.fit(); this.motion(); });
+      this.ro.observe(wrap);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.mtint) removeEventListener('scroll', this.mtint);
+    if (this.mio) this.mio.disconnect();
+    if (this.mio2) this.mio2.disconnect();
+    if (this.mextra) removeEventListener('scroll', this.mextra);
+    if (this.mq && this.mq.removeEventListener) this.mq.removeEventListener('change', this.onMq);
+    removeEventListener('resize', this.fit);
+    removeEventListener('scroll', this.onScroll);
+    if (this.io) this.io.disconnect();
+    if (this.ro) this.ro.disconnect();
+    if (this.raf) cancelAnimationFrame(this.raf);
+  }
+}
+
+</script>
+</body>
+</html>

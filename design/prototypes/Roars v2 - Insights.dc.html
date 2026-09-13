@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; background:#FFFFFF; }
+  body { font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#FFD400; }
+</style>
+</helmet>
+
+<div data-fit="1" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+<div data-topbar="1" style="position:fixed;left:0;top:0;width:1440px;height:150px;transform-origin:0 0;z-index:50;pointer-events:none">
+  <div style="pointer-events:auto">
+  <div style="position:absolute;left:39px;top:36px;width:1366px;height:111px;overflow:hidden">
+    <a href="Roars v2 - Main.dc.html" data-mark="1" style="position:absolute;left:-9px;top:-4px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:999px;transform-origin:50% 50%;transition:background .45s ease, box-shadow .45s ease"><span data-logo-ring="1" style="position:absolute;inset:0;border-radius:999px;background:conic-gradient(#FFD400 0turn,rgba(255,212,0,.14) 0turn);mask:radial-gradient(circle,rgba(0,0,0,0) 61%,#000 63%);-webkit-mask:radial-gradient(circle,rgba(0,0,0,0) 61%,#000 63%);opacity:0;transition:opacity .45s ease"></span><img data-logo-img="1" src="brand/roars-mark.png" alt="Roars" style="position:relative;width:26px;height:auto;display:block;transform-origin:50% 50%;transition:filter .5s ease, transform .6s cubic-bezier(.16,1,.3,1)" /></a>
+    <div data-contact="1" style="position:absolute;left:929px;top:0;width:285px;height:111px;overflow:hidden;transition:opacity .25s ease, transform .25s ease">
+      <span data-ink="1" style="position:absolute;left:0;top:71px;width:160px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgb(255,255,255);opacity:.75">Reach out to start your project</span>
+      <div style="position:absolute;left:0;top:0;width:285px;height:42px">
+        <div style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;overflow:hidden;background:rgb(255,255,255)">
+          <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:5px;top:5px;width:32px;height:32px;border-radius:60px;object-fit:cover" />
+        </div>
+        <a href="Roars v2 - Contact.dc.html" style="position:absolute;left:42px;top:0;width:243px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);display:block" data-ring="1" style-hover="box-shadow:inset 0 0 0 2px #FFD400">
+          <span data-ink="1" style="position:absolute;left:18px;top:11px;font-size:12px;font-weight:500;line-height:20px;letter-spacing:-0.03em;color:rgb(255,255,255);white-space:nowrap">Contact Now</span>
+          <span style="position:absolute;left:205px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span>
+          <span data-fill="1" style="position:absolute;left:216px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(255,255,255)"></span>
+        </a>
+      </div>
+    </div>
+    <div style="position:absolute;left:1340px;top:18px;width:26px;height:6px;display:flex;flex-direction:column;justify-content:space-between">
+      <span data-fill="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255)"></span>
+      <span data-fill="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255)"></span>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div data-topbar-m="1" style="display:none;position:fixed;left:0;top:0;right:0;height:60px;z-index:60;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(153,152,149,.25);transition:background .4s ease, border-color .4s ease">
+  <a href="Roars v2 - Main.dc.html" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-left:-10px"><img data-mbar-img="1" src="brand/roars-mark.png" alt="Roars" style="width:24px;height:auto;display:block;filter:brightness(0);transition:filter .4s ease" /></a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a href="Roars v2 - Contact.dc.html" data-mbar-pill="1" style="height:34px;padding:0 16px;border-radius:60px;display:flex;align-items:center;box-shadow:inset 0 0 0 1.5px rgba(15,15,15,.28);font-size:12px;font-weight:500;letter-spacing:-0.03em;color:rgb(15,15,15);transition:box-shadow .4s ease, color .4s ease">Contact</a>
+    <a href="Roars v2 - Menu.dc.html" style="width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:5px">
+      <span data-mbar-line="1" style="display:block;width:24px;height:2px;background:rgb(15,15,15);transition:background .4s ease"></span>
+      <span data-mbar-line="1" style="display:block;width:24px;height:2px;background:rgb(15,15,15);transition:background .4s ease"></span>
+    </a>
+  </div>
+</div>
+
+<div data-mobile="1" style="display:none;width:100%;overflow:hidden;background:#FFFFFF">
+  <!-- hero -->
+  <section data-mdark="1" style="position:relative;padding:100px 20px 48px;background:#000;overflow:hidden;display:flex;flex-direction:column;gap:34px">
+    <img data-mpar="0.05" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover" />
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.2) 42%,rgba(0,0,0,.62) 100%)"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:34px">
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="width:42px;height:42px;border-radius:60px;object-fit:cover" />
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600;letter-spacing:-0.05em;color:rgba(255,255,255,.95)">Riinkesh A Sshah</span><span style="font-size:14px;font-weight:500;letter-spacing:-0.05em;color:rgba(255,255,255,.6)">Founder</span></div>
+        </div>
+        <img src="assets/quote.svg" alt="" style="width:28px;height:24px;opacity:.55" />
+        <span style="font-size:19px;font-weight:500;line-height:28px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">We have a lot to say about product work, how we approach the process, and the nuances of building for founders.</span>
+      </div>
+
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:10px;padding-top:16px">
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:18px;font-weight:600;letter-spacing:-0.04em;color:rgb(251,251,251)">roars</span><img src="assets/star-5.svg" alt="" style="width:10px;height:10px;filter:invert(1)" /></div>
+        <span style="font-size:66px;font-weight:600;line-height:66px;letter-spacing:-0.04em;color:rgb(251,251,251)">Insights</span>
+        <span style="font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.06em;color:rgb(255,255,255);opacity:.89">From the<br />Roars Journal</span>
+      </div>
+
+      <div data-mrev="1" style="display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center">
+          <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Chetna.webp" alt="" style="width:40px;height:40px;border-radius:60px;object-fit:cover" />
+          <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/suzanne.webp" alt="" style="width:40px;height:40px;border-radius:60px;object-fit:cover;margin-left:-9px" />
+          <div style="width:40px;height:40px;border-radius:60px;background:#fff;margin-left:-9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;letter-spacing:-0.04em;color:#000">48</div>
+        </div>
+        <span style="font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgb(255,255,255);opacity:.75">Articles from the team</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- featured -->
+  <section style="padding:44px 20px 20px;background:#fff;display:flex;flex-direction:column;gap:24px">
+    <a data-mrev="1" href="Roars v2 - Insight-details.dc.html" style="display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;border-radius:12px;overflow:hidden;background:rgb(30,30,30);aspect-ratio:4/3">
+        <img src="https://www.roarsinc.com/wp-content/uploads/2025/07/ai-fitness-home.jpg" alt="How smart design boosts conversion" style="width:100%;height:100%;object-fit:cover;display:block" />
+        <div style="position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(0deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,0) 100%)"></div>
+        <div style="position:absolute;left:16px;bottom:16px;display:flex;align-items:baseline;gap:8px"><span style="font-size:38px;font-weight:600;line-height:1;letter-spacing:-0.05em;color:#fff">09</span><span style="font-size:17px;font-weight:500;letter-spacing:-0.05em;color:#fff">Aug</span></div>
+      </div>
+      <span style="font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgb(20,20,20)">How smart design can boost conversion</span>
+    </a>
+  </section>
+
+  <!-- post list -->
+  <section style="padding:0 20px 56px;background:#fff;display:flex;flex-direction:column">
+    <sc-for list="{{ posts }}" as="i" hint-placeholder-count="6">
+      <a data-mrev="1" href="Roars v2 - Insight-details.dc.html" style="display:flex;align-items:center;gap:16px;padding:18px 0;border-top:1px solid rgba(153,152,149,.7)">
+        <div style="width:84px;height:84px;flex:none;border-radius:50%;background-color:rgb(217,217,217);background-image:{{ i.bg }};background-size:cover;background-position:center"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:26px;font-weight:600;line-height:1;letter-spacing:-0.05em;color:rgb(36,36,36)">{{ i.day }}</span><span style="font-size:15px;font-weight:500;letter-spacing:-0.05em;color:rgb(36,36,36)">{{ i.month }}</span></div>
+          <span style="font-size:17px;font-weight:500;line-height:24px;letter-spacing:-0.03em;color:rgb(20,20,20)">{{ i.title }}</span>
+        </div>
+      </a>
+    </sc-for>
+    <a data-mrev="1" href="Roars v2 - Contact.dc.html" style="display:flex;align-items:center;justify-content:space-between;height:52px;margin-top:28px;padding:0 24px;border-radius:60px;background:rgb(0,0,0)" style-hover="background:#FFD400">
+      <span style="font-size:14px;font-weight:500;letter-spacing:-0.03em;color:rgb(255,255,255)">Work with us</span>
+      <span style="display:flex;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:rgba(153,152,149,.6)"></span><span style="width:8px;height:8px;border-radius:50%;background:#fff"></span></span>
+    </a>
+  </section>
+
+  <section data-mdark="1" style="position:relative;padding:56px 20px 40px;background:rgb(11,11,11);overflow:hidden;display:flex;flex-direction:column;gap:34px">
+    <img data-mpar="0.06" src="assets/space.jpg" alt="" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;transform:scaleY(-1);opacity:.55" />
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(11,11,11,.6) 0%,rgba(11,11,11,.9) 100%)"></div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:34px">
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:18px">
+        <img src="assets/mark.svg" alt="Roars" style="width:21px;height:21px;filter:invert(1)" />
+        <span style="font-size:18px;font-weight:500;line-height:26px;letter-spacing:-0.02em;color:rgb(255,255,255)">Space of Product<br />Solutions<span style="color:#FFD400">*</span></span>
+        <span style="font-size:17px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgb(147,147,147)">Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.</span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="" style="width:42px;height:42px;border-radius:60px;object-fit:cover" />
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:400;letter-spacing:-0.06em;color:rgba(255,255,255,.9)">Riinkesh A Sshah</span><span style="font-size:12px;font-weight:400;letter-spacing:-0.06em;color:rgba(255,255,255,.5)">CEO / Founder</span></div>
+        </div>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:8px;padding-top:18px;border-top:1px solid rgba(180,174,174,.35)">
+        <span style="font-size:12px;font-weight:500;letter-spacing:-0.04em;color:rgba(255,255,255,.8)">USA +1 (302) 505-1200</span>
+        <a href="mailto:sales@roarsinc.com" style="font-size:20px;font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.95)">sales@roarsinc.com</a>
+      </div>
+      <div data-mrev="1" style="display:flex;gap:40px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:600;letter-spacing:-0.06em;color:rgb(145,145,145)">Navigation</span>
+          <div style="width:16px;height:1.5px;background:rgba(153,152,149,.7);margin-bottom:4px"></div>
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:20px;font-weight:600;line-height:30px;letter-spacing:-0.06em;color:rgba(255,255,255,.9)">
+            <a href="Roars v2 - Main.dc.html">Home</a><a href="Roars v2 - Agency.dc.html">Agency</a><a href="Roars v2 - Projects.dc.html">Projects</a><a href="Roars v2 - Insights.dc.html">Insights</a><a href="Roars v2 - Contact.dc.html">Contact</a>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;padding-top:32px;font-size:15px;font-weight:500;line-height:26px;letter-spacing:-0.06em;color:rgba(255,255,255,.78)">
+          <a href="https://www.twitter.com/roarstech">Twitter</a><a href="https://www.instagram.com/roarstech">Instagram</a><a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./">LinkedIn</a>
+        </div>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:14px;padding-top:18px;border-top:1px solid rgba(180,174,174,.35)">
+        <span style="font-size:13px;font-weight:600;letter-spacing:-0.06em;color:rgb(145,145,145)">Subscribe our News</span>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:400;letter-spacing:-0.06em;color:rgb(255,255,255)">Your name *</span><div style="height:1px;background:rgba(231,231,231,.3)"></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:400;letter-spacing:-0.06em;color:rgb(255,255,255)">Email *</span><div style="height:1px;background:rgba(231,231,231,.3)"></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;height:46px;padding:0 20px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);cursor:pointer">
+          <span style="font-size:12px;font-weight:500;color:rgb(255,255,255)">Subscribe</span>
+          <span style="display:flex;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span><span style="width:8px;height:8px;border-radius:50%;background:#fff"></span></span>
+        </div>
+      </div>
+      <div data-mrev="1" style="display:flex;align-items:flex-start;gap:8px;padding-top:10px">
+        <span style="font-size:84px;font-weight:600;line-height:72px;letter-spacing:-0.04em;color:rgb(255,255,255)">roars</span>
+        <span style="width:24px;height:24px;border-radius:60px;background:#FFD400;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:rgb(31,31,31);margin-top:4px">&reg;</span>
+      </div>
+      <div data-mrev="1" style="display:flex;flex-wrap:wrap;gap:22px 40px;padding-top:18px;border-top:1px solid rgba(180,174,174,.25);font-size:12px;font-weight:500;line-height:19px;letter-spacing:-0.04em">
+        <div style="display:flex;flex-direction:column"><span style="color:rgba(255,255,255,.5)">&copy; 2026</span><span style="color:rgba(255,255,255,.5)">Roars Technologies</span></div>
+        <div style="display:flex;flex-direction:column;color:rgba(255,255,255,.8)"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="https://link.roars.in/F39Mv">Company Profile</a></div>
+        <div style="display:flex;flex-direction:column"><span style="color:rgba(255,255,255,.5)">Offices</span><span style="color:rgba(255,255,255,.8)">USA &middot; UK &middot; India</span></div>
+        <div style="display:flex;flex-direction:column"><span style="color:rgba(255,255,255,.5)">Built by</span><span style="color:rgba(255,255,255,.8)">Roars Technologies</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div data-canvas="1" style="position:relative;width:1440px;height:3505px;transform-origin:0 0;background:#FFFFFF">
+
+<!-- ════════ HEADER  (0) ════════ -->
+<div data-screen-label="Header" style="position:absolute;left:0;top:0;width:1440px;height:780px;overflow:hidden;background:rgb(0,0,0)">
+  <img src="assets/space.jpg" alt="" style="position:absolute;left:0;top:0;width:1440px;height:780px;object-fit:cover" />
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.45) 100%)"></div>
+
+  <div style="position:absolute;left:39px;top:96px;width:384px;height:232px">
+    <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+    <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.95);white-space:nowrap">Riinkesh A Sshah</span>
+    <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.6);white-space:nowrap">Founder</span>
+    <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.55" />
+    <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">&emsp;&emsp;&ensp;We have a lot to say about product work, how we approach the process, and the nuances of building for founders.</span>
+  </div>
+
+  <div style="position:absolute;left:488.849px;top:440px;width:778.151px;height:253px">
+    <div style="position:absolute;left:0;top:23px;width:449.152px;height:157.176px">
+      <img src="assets/union.svg" alt="" style="position:absolute;left:1.026px;top:139.875px;width:73.401px;height:8.868px;filter:invert(1);transform:rotate(6.66deg);transform-origin:0 0" />
+      <span style="position:absolute;left:6.151px;top:52px;width:443px;height:86px;font-size:124px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">Insights</span>
+      <div style="position:absolute;left:13.152px;top:0;width:62px;height:24px">
+        <span style="position:absolute;left:0;top:4px;width:59px;height:20px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">roars</span>
+        <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px;filter:invert(1)" />
+      </div>
+    </div>
+    <div style="position:absolute;left:479.151px;top:0;width:299px;height:43px">
+      <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Chetna.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover;background:rgb(173,173,173)" />
+      <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/suzanne.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover;background:rgb(173,173,173)" />
+      <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:rgb(255,255,255)">
+        <span style="position:absolute;left:10px;top:8px;width:23px;height:24px;font-size:18px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgb(0,0,0);white-space:nowrap">48</span>
+        <img src="assets/star-3.svg" alt="" style="position:absolute;left:30px;top:6px;width:9px;height:9px" />
+      </div>
+      <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgb(255,255,255);opacity:.75">Articles from the team</span>
+    </div>
+    <span style="position:absolute;left:246.151px;top:213px;width:163px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.06em;color:rgb(255,255,255);opacity:.89">From the<br />Roars Journal</span>
+  </div>
+</div>
+
+<!-- ════════ INSIGHTS  (802) ════════ -->
+<div data-screen-label="Insights" style="position:absolute;left:0;top:780px;width:1440px;height:1620px;background:rgb(255,255,255);overflow:hidden">
+  <!-- featured post -->
+  <a href="Roars v2 - Insight.dc.html" style="position:absolute;left:40px;top:180px;width:1362px;height:536px;display:block">
+    <div style="position:absolute;left:0;top:0;width:1362px;height:536px;border-radius:12px;overflow:hidden;background:rgb(30,30,30)">
+      <img src="https://www.roarsinc.com/wp-content/uploads/2025/07/ai-fitness-home.jpg" alt="How smart design boosts conversion" style="width:100%;height:100%;object-fit:cover;display:block" />
+      <div style="position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(0deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,0) 100%)"></div>
+      <span style="position:absolute;left:1288px;top:30px;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.55)"></span>
+      <span style="position:absolute;left:1301px;top:30px;width:8px;height:8px;border-radius:50%;background:rgb(255,255,255)"></span>
+    </div>
+    <div style="position:absolute;left:457px;top:406px;width:667px;height:77px">
+      <div style="position:absolute;left:0;top:0;width:88px;height:61px">
+        <span style="position:absolute;left:0;top:0;width:87px;height:61px;font-size:42px;font-weight:600;line-height:43px;letter-spacing:-0.05em;color:rgb(255,255,255);white-space:nowrap">09</span>
+        <span style="position:absolute;left:55px;top:1px;width:33px;height:43px;font-size:18px;font-weight:500;line-height:43px;letter-spacing:-0.05em;color:rgb(255,255,255);white-space:nowrap">Aug</span>
+      </div>
+      <span style="position:absolute;left:472px;top:18px;width:430px;height:26px;font-size:20px;font-weight:500;line-height:26px;letter-spacing:-0.04em;color:rgb(255,255,255);white-space:nowrap">How smart design can boost conversion</span>
+    </div>
+  </a>
+
+  <sc-for list="{{ posts }}" as="i" hint-placeholder-count="6">
+    <a href="Roars v2 - Insight.dc.html" style="position:absolute;left:{{ i.x }};top:{{ i.y }};width:435px;height:300px;display:block">
+      <div style="position:absolute;left:234px;top:0;width:138px;height:138px;border-radius:50%;background-color:rgb(217,217,217);background-image:{{ i.bg }};background-size:cover;background-position:center"></div>
+      <div style="position:absolute;left:2px;top:174px;width:433px;height:1px;background:rgb(153,152,149);opacity:.7"></div>
+      <span style="position:absolute;left:0;top:196px;width:87px;height:43px;font-size:42px;font-weight:600;line-height:43px;letter-spacing:-0.05em;color:rgb(36,36,36);white-space:nowrap">{{ i.day }}</span>
+      <span style="position:absolute;left:55px;top:190px;width:40px;height:43px;font-size:18px;font-weight:500;line-height:43px;letter-spacing:-0.05em;color:rgb(36,36,36);white-space:nowrap">{{ i.month }}</span>
+      <span style="position:absolute;left:234px;top:198px;width:200px;height:108px;font-size:18px;font-weight:500;line-height:27px;letter-spacing:-0.03em;color:rgb(20,20,20)">{{ i.title }}</span>
+    </a>
+  </sc-for>
+</div>
+
+<!-- ════════ FOOTER  (11860) ════════ -->
+<div data-screen-label="Footer" style="position:absolute;left:0;top:2400px;width:1440px;height:1105px;background:rgb(11,11,11);overflow:hidden">
+  <img src="assets/space.jpg" alt="" style="position:absolute;left:-37px;top:-10px;width:1672.305px;height:1115.006px;object-fit:cover;transform:scaleY(-1)" />
+
+  <!-- topline -->
+  <div style="position:absolute;left:44px;top:61px;width:1073px;height:192px;overflow:hidden">
+    <img src="assets/mark.svg" alt="Roars" style="position:absolute;left:0;top:0;width:21px;height:21px;filter:invert(1)" />
+    <div style="position:absolute;left:458px;top:5px;width:384px;height:187px;overflow:hidden">
+      <span style="position:absolute;left:0;top:0;width:384px;height:120px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgb(147,147,147)">Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.</span>
+      <div style="position:absolute;left:0;top:145px;width:170px;height:42px">
+        <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+        <span style="position:absolute;left:56px;top:3px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.95);white-space:nowrap">Riinkesh A Sshah</span>
+        <span style="position:absolute;left:56px;top:23px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.6);white-space:nowrap">CEO / Founder</span>
+      </div>
+    </div>
+    <span style="position:absolute;left:921px;top:11px;width:180px;height:48px;font-size:18px;font-weight:500;line-height:24px;letter-spacing:-0.02em;color:rgb(255,255,255)">Space of Product<br />Solutions<span style="color:#FFD400">*</span></span>
+  </div>
+
+  <!-- contact and nav -->
+  <div style="position:absolute;left:43px;top:378px;width:1356px;height:258px;overflow:hidden">
+    <div style="position:absolute;left:0;top:36px;width:249px;height:81px">
+      <div style="position:absolute;left:1px;top:0;width:16px;height:1.5px;background:rgba(180,174,174,.7)"></div>
+      <span style="position:absolute;left:0;top:34px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);white-space:nowrap">USA +1 (302) 505-1200</span>
+      <a href="mailto:sales@roarsinc.com" style="position:absolute;left:1px;top:57px;font-size:20px;font-weight:600;line-height:24px;letter-spacing:-0.02em;color:rgba(255,255,255,.95);white-space:nowrap">sales@roarsinc.com</a>
+    </div>
+
+    <span style="position:absolute;left:459px;top:0;font-size:14px;font-weight:600;line-height:19px;letter-spacing:-0.06em;color:rgb(145,145,145);white-space:nowrap">Navigation</span>
+    <div style="position:absolute;left:459px;top:39px;width:16px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+    <div style="position:absolute;left:459px;top:58px;width:200px;height:200px;font-size:24px;font-weight:600;line-height:40px;letter-spacing:-0.06em;color:rgba(255,255,255,.9);display:flex;flex-direction:column">
+      <a href="Roars v2 - Main.dc.html">Home</a>
+      <a href="Roars v2 - Agency.dc.html">Agency</a>
+      <a href="Roars v2 - Projects.dc.html">Projects</a>
+      <a href="Roars v2 - Insights.dc.html">Insights</a>
+      <a href="Roars v2 - Contact.dc.html">Contact</a>
+    </div>
+
+    <div style="position:absolute;left:692px;top:64px;width:120px;height:90px;font-size:16px;font-weight:500;line-height:30px;letter-spacing:-0.06em;color:rgba(255,255,255,.78);display:flex;flex-direction:column">
+      <a href="https://www.twitter.com/roarstech">Twitter</a>
+      <a href="https://www.instagram.com/roarstech">Instagram</a>
+      <a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./">LinkedIn</a>
+    </div>
+
+    <span style="position:absolute;left:925px;top:0;font-size:14px;font-weight:600;line-height:19px;letter-spacing:-0.06em;color:rgb(145,145,145);white-space:nowrap">Subscribe our News</span>
+    <div style="position:absolute;left:926px;top:39px;width:16px;height:1.5px;background:rgba(153,152,149,.7)"></div>
+    <div style="position:absolute;left:926px;top:70px;width:430px;height:182px;overflow:hidden">
+      <span style="position:absolute;left:0;top:0;font-size:16px;font-weight:400;line-height:19px;letter-spacing:-0.06em;color:rgb(255,255,255);white-space:nowrap">Your name *</span>
+      <div style="position:absolute;left:0;top:40px;width:430px;height:1px;background:rgba(231,231,231,.3)"></div>
+      <span style="position:absolute;left:0;top:66px;font-size:16px;font-weight:400;line-height:19px;letter-spacing:-0.06em;color:rgb(255,255,255);white-space:nowrap">Email *</span>
+      <div style="position:absolute;left:0;top:106px;width:430px;height:1px;background:rgba(231,231,231,.3)"></div>
+      <div style="position:absolute;left:0;top:140px;width:195px;height:42px;border-radius:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);cursor:pointer">
+        <span style="position:absolute;left:21px;top:10px;font-family:'Helvetica Neue',Inter,sans-serif;font-size:12px;font-weight:500;line-height:20px;color:rgb(255,255,255);white-space:nowrap">Subscribe</span>
+        <span style="position:absolute;left:158px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(153,152,149)"></span>
+        <span style="position:absolute;left:169px;top:17px;width:8px;height:8px;border-radius:50%;background:rgb(255,255,255)"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- bottom part -->
+  <div style="position:absolute;left:43px;top:734px;width:1053px;height:310px;overflow:hidden">
+    <div style="position:absolute;left:459px;top:0;width:594px;height:186px;overflow:hidden">
+      <img src="assets/asteroids.svg" alt="" style="position:absolute;left:5px;top:61px;width:58px;height:7px;filter:invert(1);transform:rotate(6.7deg);transform-origin:0 0" />
+      <span style="position:absolute;left:0;top:0;width:555px;height:186px;font-size:182px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:rgb(255,255,255);white-space:nowrap">roars</span>
+      <div style="position:absolute;left:443px;top:28px;width:31px;height:31px;border-radius:60px;background:#FFD400">
+        <span style="position:absolute;left:0;top:0;width:31px;height:31px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;line-height:1;letter-spacing:0;color:rgb(31,31,31)">&reg;</span>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;top:238px;width:1053px;height:72px;overflow:hidden">
+      <span style="position:absolute;left:0;top:5px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">&copy; 2026</span>
+      <span style="position:absolute;left:0;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Roars Technologies</span>
+      <div style="position:absolute;left:459px;top:0;width:247px;height:72px;font-size:12px;font-weight:500;line-height:21px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);display:flex;flex-direction:column">
+        <a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="https://link.roars.in/F39Mv">Company Profile</a>
+      </div>
+      <span style="position:absolute;left:692px;top:3px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Offices</span>
+      <span style="position:absolute;left:692px;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);white-space:nowrap">USA &middot; UK &middot; India</span>
+      <span style="position:absolute;left:926px;top:3px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Built by</span>
+      <span style="position:absolute;left:926px;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);white-space:nowrap">Roars Technologies</span>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    this.mq = matchMedia('(max-width: 760px)');
+    this.fit = () => {
+      const wrap = document.querySelector('[data-fit]');
+      const canvas = document.querySelector('[data-canvas]');
+      if (!wrap || !canvas) return;
+      const m = this.mq.matches;
+      const mob = document.querySelector('[data-mobile]');
+      const barM = document.querySelector('[data-topbar-m]');
+      const barD = document.querySelector('[data-topbar]');
+      if (mob) mob.style.display = m ? 'block' : 'none';
+      if (barM) barM.style.display = m ? 'flex' : 'none';
+      if (barD) barD.style.display = m ? 'none' : 'block';
+      canvas.style.display = m ? 'none' : 'block';
+      if (m) { wrap.style.height = 'auto'; return; }
+      const s = wrap.clientWidth / 1440;
+      canvas.style.transform = 'scale(' + s + ')';
+      wrap.style.height = (3505 * s) + 'px';
+      const bar = document.querySelector('[data-topbar]');
+      if (bar) {
+        bar.style.transform = 'scale(' + s + ')';
+        bar.style.left = wrap.getBoundingClientRect().left + 'px';
+      }
+    };
+
+    const DARK = [[0, 780], [2400, 3505]];
+    this.tint = () => {
+      const wrap = document.querySelector('[data-fit]');
+      const bar = document.querySelector('[data-topbar]');
+      if (!wrap || !bar) return;
+      const s = wrap.clientWidth / 1440;
+      const yy = (scrollY + 60) / s;
+      const onDark = DARK.some(r => yy >= r[0] && yy < r[1]);
+      const ink = onDark ? 'rgb(255,255,255)' : 'rgb(15,15,15)';
+      const contact = bar.querySelector('[data-contact]');
+      if (contact) {
+        const gone = scrollY > 80;
+        contact.style.opacity = gone ? '0' : '1';
+        contact.style.transform = gone ? 'translateY(-12px)' : 'none';
+        contact.style.pointerEvents = gone ? 'none' : 'auto';
+      }
+      bar.querySelectorAll('[data-ink]').forEach(el => { el.style.color = ink; });
+      bar.querySelectorAll('[data-fill]').forEach(el => { el.style.background = ink; });
+      bar.querySelectorAll('[data-ring]').forEach(el => {
+        el.style.boxShadow = 'inset 0 0 0 2px ' + (onDark ? 'rgba(255,255,255,.25)' : 'rgba(15,15,15,.28)');
+      });
+      const mark = bar.querySelector('[data-mark]');
+      if (mark) {
+        const ring = mark.querySelector('[data-logo-ring]');
+        const img = mark.querySelector('[data-logo-img]');
+        const doc = document.documentElement;
+        const max = Math.max(1, doc.scrollHeight - innerHeight);
+        const prog = Math.min(1, Math.max(0, scrollY / max));
+        const onLight = !onDark;
+        if (ring) {
+          ring.style.background = 'conic-gradient(#FFD400 ' + prog.toFixed(4) + 'turn, rgba(255,212,0,.14) 0turn)';
+          ring.style.opacity = onLight ? '1' : '0';
+        }
+        mark.style.background = onLight ? '#FBFBF9' : 'transparent';
+        mark.style.boxShadow = onLight ? '0 1px 0 rgba(10,10,10,.06)' : 'none';
+        if (img) {
+          img.style.filter = onLight
+            ? 'brightness(0)'
+            : 'brightness(0) invert(84%) sepia(72%) saturate(1400%) hue-rotate(357deg) brightness(104%)';
+          img.style.transform = onLight ? 'rotate(45deg) scale(.92)' : 'rotate(0deg) scale(1)';
+        }
+      }
+    };
+
+    this.logoIntro = () => {
+      const img0 = document.querySelector('[data-logo-img]');
+      if (!img0 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      img0.animate(
+        [{ transform: 'scale(.2) rotate(-90deg)', opacity: 0.001 },
+         { transform: 'scale(1.12) rotate(8deg)', opacity: 1, offset: 0.62 },
+         { transform: 'scale(1) rotate(0deg)', opacity: 1 }],
+        { duration: 1100, delay: 300, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' }
+      );
+    };
+    this.logoIntro();
+    this.tint();
+    addEventListener('scroll', this.tint, { passive: true });
+    // subtle scroll reveal: direct blocks of each section rise and fade in once
+    this.reveal = () => {
+      const canvas = document.querySelector('[data-canvas]');
+      if (!canvas) return;
+      const items = [];
+      [...canvas.querySelectorAll('[data-screen-label]')].forEach(sec => {
+        [...sec.children].forEach(el => {
+          if (el.tagName === 'IMG' && el.parentElement === sec) return;
+          if (el.dataset.slide !== undefined || el.dataset.slideA !== undefined) return;
+          if (!el.style || el.style.position !== 'absolute') return;
+          el.style.willChange = 'transform,opacity';
+          el.style.transition = 'transform .72s cubic-bezier(.22,.68,.28,1), opacity .62s ease';
+          el.style.opacity = '0';
+          items.push(el);
+        });
+      });
+      const base = new Map();
+      items.forEach(el => base.set(el, el.style.transform || ''));
+      items.forEach(el => { el.style.transform = (base.get(el) + ' translateY(26px)').trim(); });
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (!en.isIntersecting) return;
+          const el = en.target;
+          el.style.transform = base.get(el);
+          el.style.opacity = '1';
+          io.unobserve(el);
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.06 });
+      items.forEach(el => io.observe(el));
+      this.io = io;
+    };
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(() => this.reveal());
+
+    this.fit();
+    this.mobileMotion = () => {
+      const mob = document.querySelector('[data-mobile]');
+      if (!mob || this.mio) return;
+      const soft = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const bar = document.querySelector('[data-topbar-m]');
+      if (bar && !bar.querySelector('[data-mprog]')) {
+        const p = document.createElement('span');
+        p.setAttribute('data-mprog', '1');
+        p.style.cssText = 'position:absolute;left:0;bottom:-1px;height:2px;width:0;background:#FFD400;transition:width .12s linear';
+        bar.appendChild(p);
+      }
+      if (!soft) {
+        [...mob.querySelectorAll('[data-mrev]')].forEach(el => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(24px) scale(.985)';
+          el.style.transition = 'transform .8s cubic-bezier(.22,.68,.28,1), opacity .6s ease';
+          [...el.children].forEach((c, i) => {
+            if (i > 7) return;
+            c.style.opacity = '0';
+            c.style.transform = 'translateY(12px)';
+            c.style.transition = 'transform .66s cubic-bezier(.22,.68,.28,1) ' + (60 + i * 70) + 'ms, opacity .5s ease ' + (60 + i * 70) + 'ms';
+          });
+        });
+        this.mio = new IntersectionObserver(ens => {
+          ens.forEach(en => {
+            if (!en.isIntersecting) return;
+            const el = en.target;
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            [...el.children].forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+            const dot = el.querySelector('[data-mdot]');
+            if (dot) { dot.style.background = '#FFD400'; dot.style.boxShadow = 'inset 0 0 0 1.5px rgba(20,20,20,.15)'; }
+            this.mio.unobserve(el);
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+        [...mob.querySelectorAll('[data-mrev]')].forEach(el => this.mio.observe(el));
+      }
+      const darks = [...mob.querySelectorAll('[data-mdark]')];
+      const pars = [...mob.querySelectorAll('[data-mpar]')];
+      this.mtint = () => {
+        if (!this.mq.matches) return;
+        const doc = document.documentElement;
+        const prog = Math.min(1, Math.max(0, scrollY / Math.max(1, doc.scrollHeight - innerHeight)));
+        const pb = bar && bar.querySelector('[data-mprog]');
+        if (pb) pb.style.width = (prog * 100).toFixed(2) + '%';
+        if (!soft) pars.forEach(el => {
+          const r = el.getBoundingClientRect();
+          const k = parseFloat(el.getAttribute('data-mpar')) || 0.06;
+          const off = (r.top + r.height / 2 - innerHeight / 2) * -k;
+          const flip = (el.style.transform || '').indexOf('scaleY(-1)') >= 0 ? ' scaleY(-1)' : '';
+          el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)' + flip;
+        });
+        if (!bar) return;
+        const onDark = darks.some(s => { const r = s.getBoundingClientRect(); return r.top <= 30 && r.bottom > 30; });
+        bar.style.background = onDark ? 'rgba(10,10,10,.55)' : 'rgba(255,255,255,.86)';
+        bar.style.borderBottomColor = onDark ? 'rgba(255,255,255,.16)' : 'rgba(153,152,149,.25)';
+        const ink = onDark ? 'rgb(255,255,255)' : 'rgb(15,15,15)';
+        bar.querySelectorAll('[data-mbar-line]').forEach(el => { el.style.background = ink; });
+        const pill = bar.querySelector('[data-mbar-pill]');
+        if (pill) { pill.style.color = ink; pill.style.boxShadow = 'inset 0 0 0 1.5px ' + (onDark ? 'rgba(255,255,255,.3)' : 'rgba(15,15,15,.28)'); }
+        const img = bar.querySelector('[data-mbar-img]');
+        if (img) img.style.filter = onDark ? 'brightness(0) invert(84%) sepia(72%) saturate(1400%) hue-rotate(357deg) brightness(104%)' : 'brightness(0)';
+      };
+      // ── mobile: tap-to-open accordions ──────────────────────────────
+      const maccs = [...mob.querySelectorAll('[data-macc]')];
+      maccs.forEach(acc => {
+        if (acc.dataset.wired) return;
+        acc.dataset.wired = '1';
+        const head = acc.querySelector('[data-macc-head]');
+        const body = acc.querySelector('[data-macc-body]');
+        const inner = acc.querySelector('[data-macc-inner]');
+        const ico = acc.querySelector('[data-macc-ico]');
+        if (!head || !body || !inner) return;
+        const set = on => {
+          acc.dataset.open = on ? '1' : '';
+          body.style.height = on ? inner.offsetHeight + 'px' : '0px';
+          if (ico) {
+            ico.style.transform = on ? 'rotate(45deg)' : 'none';
+            ico.style.color = on ? '#FFD400' : 'rgba(20,20,20,.5)';
+          }
+        };
+        acc.__set = set;
+        head.addEventListener('click', () => {
+          const on = acc.dataset.open !== '1';
+          maccs.forEach(o => { if (o !== acc && o.__set) o.__set(false); });
+          set(on);
+        });
+      });
+
+      // ── mobile: filter chips ────────────────────────────────────────
+      const mchips = [...mob.querySelectorAll('[data-mfilter]')];
+      const mcards = [...mob.querySelectorAll('[data-mcard]')];
+      if (mchips.length && mcards.length) {
+        const mcount = mob.querySelector('[data-mcount]');
+        const applyM = key => {
+          let n = 0;
+          mcards.forEach(c => {
+            const on = key === 'all' || (' ' + c.getAttribute('data-mcat') + ' ').indexOf(' ' + key + ' ') >= 0;
+            c.style.display = on ? 'flex' : 'none';
+            if (on) n += 1;
+          });
+          if (mcount) mcount.textContent = n + ' / ' + mcards.length;
+          mchips.forEach(ch => {
+            const on = ch.getAttribute('data-mfilter') === key;
+            ch.style.background = on ? '#FFD400' : 'transparent';
+            ch.style.boxShadow = 'inset 0 0 0 1px ' + (on ? '#FFD400' : 'rgba(20,20,20,.16)');
+          });
+        };
+        mchips.forEach(ch => ch.addEventListener('click', () => applyM(ch.getAttribute('data-mfilter'))));
+      }
+
+      // ── mobile: stagger children + reveal, progress bar, parallax ───
+      const soft2 = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (bar && !bar.querySelector('[data-mprog]')) {
+        const pb0 = document.createElement('span');
+        pb0.setAttribute('data-mprog', '1');
+        pb0.style.cssText = 'position:absolute;left:0;bottom:-1px;height:2px;width:0;background:#FFD400;transition:width .12s linear';
+        bar.appendChild(pb0);
+      }
+      if (!soft2) {
+        mob.querySelectorAll('section > img').forEach(im => {
+          if (!im.hasAttribute('data-mpar') && !im.hasAttribute('data-mpar2')) {
+            im.setAttribute('data-mpar2', '0.05');
+            im.style.willChange = 'transform';
+          }
+        });
+        const revs = [...mob.querySelectorAll('[data-mrev]')];
+        revs.forEach(el => {
+          el.style.willChange = 'transform,opacity';
+          if (!el.style.transition) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(24px) scale(.985)';
+            el.style.transition = 'transform .8s cubic-bezier(.22,.68,.28,1), opacity .6s ease';
+          }
+          [...el.children].forEach((c, i) => {
+            if (i > 7 || c.dataset.stag) return;
+            c.dataset.stag = '1';
+            c.style.opacity = '0';
+            c.style.transform = 'translateY(12px)';
+            c.style.transition = 'transform .66s cubic-bezier(.22,.68,.28,1) ' + (60 + i * 70) + 'ms, opacity .5s ease ' + (60 + i * 70) + 'ms';
+          });
+        });
+        this.mio2 = new IntersectionObserver(ens => {
+          ens.forEach(en => {
+            if (!en.isIntersecting) return;
+            const el = en.target;
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            [...el.children].forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+            const dot = el.querySelector('[data-mdot]');
+            if (dot) { dot.style.background = '#FFD400'; dot.style.boxShadow = 'inset 0 0 0 1.5px rgba(20,20,20,.15)'; }
+            this.mio2.unobserve(el);
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+        revs.forEach(el => this.mio2.observe(el));
+      }
+      const pars2 = [...mob.querySelectorAll('[data-mpar2]')];
+      this.mextra = () => {
+        if (!this.mq.matches) return;
+        const pb = bar && bar.querySelector('[data-mprog]');
+        if (pb) {
+          const prog = Math.min(1, Math.max(0, scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)));
+          pb.style.width = (prog * 100).toFixed(2) + '%';
+        }
+        if (soft2) return;
+        pars2.forEach(el => {
+          const r = el.getBoundingClientRect();
+          const k = parseFloat(el.getAttribute('data-mpar2')) || 0.05;
+          const off = (r.top + r.height / 2 - innerHeight / 2) * -k;
+          const flip = (el.getAttribute('style') || '').indexOf('scaleY(-1)') >= 0 ? ' scaleY(-1)' : '';
+          el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)' + flip;
+        });
+      };
+      this.mextra();
+      addEventListener('scroll', this.mextra, { passive: true });
+
+      this.mtint();
+      addEventListener('scroll', this.mtint, { passive: true });
+    };
+    this.mobileMotion();
+    this.onMq = () => this.fit();
+    if (this.mq.addEventListener) this.mq.addEventListener('change', this.onMq);
+
+    addEventListener('resize', this.fit);
+    const wrap = document.querySelector('[data-fit]');
+    if (wrap && window.ResizeObserver) {
+      this.ro = new ResizeObserver(() => this.fit());
+      this.ro.observe(wrap);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.mtint) removeEventListener('scroll', this.mtint);
+    if (this.mio) this.mio.disconnect();
+    if (this.mio2) this.mio2.disconnect();
+    if (this.mextra) removeEventListener('scroll', this.mextra);
+    if (this.mq && this.mq.removeEventListener) this.mq.removeEventListener('change', this.onMq);
+    removeEventListener('resize', this.fit);
+    removeEventListener('scroll', this.tint);
+    if (this.io) this.io.disconnect();
+    if (this.ro) this.ro.disconnect();
+  }
+
+  renderVals() {
+    const U = 'https://www.roarsinc.com/wp-content/uploads/';
+    const list = [
+      { day: '15', month: 'May', title: 'AI App Development vs Traditional App Development', img: U + '2025/07/ai-fitness-home.jpg' },
+      { day: '04', month: 'May', title: '20 Years of Roars: Built on Purpose, Driven by Impact', img: U + '2024/11/roars-office-upscale-768x768.jpg' },
+      { day: '11', month: 'Dec', title: 'The Unexpected Insight — We built a meal planning app', img: U + '2025/04/beautiful-experience.jpg' },
+      { day: '28', month: 'Oct', title: 'What a warehouse compliance rebuild taught us about scope', img: U + '2026/02/Snowman-Logistics-app-solution.jpg' },
+      { day: '12', month: 'Aug', title: 'Behind every project: the thinking that fuels how Roars builds', img: U + '2026/04/aboutus-strategy.jpg' },
+      { day: '19', month: 'Jun', title: 'Shipping an MVP in sixteen weeks without cutting the idea', img: U + '2025/07/parqly-parking-mobile-app.jpg' }
+    ];
+    const xs = ['40px', '501px', '962px'];
+    return {
+      posts: list.map((p, i) => Object.assign({}, p, {
+        x: xs[i % 3],
+        y: (820 + Math.floor(i / 3) * 360) + 'px',
+        bg: 'url("' + p.img + '")'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

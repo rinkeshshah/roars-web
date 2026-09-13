@@ -1,0 +1,67 @@
+---
+/**
+ * Must return a real HTTP 404, not a 200 with a 404 page. nginx does that
+ * via `error_page 404 /404.html` (docs/DEPLOYMENT.md).
+ *
+ * Always noindex regardless of the site-wide switch.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { site } from '../lib/site'
+---
+
+<BaseLayout
+  title={`Page not found | ${site.name}`}
+  description="That page does not exist. Use the navigation to find what you were looking for."
+  path="/404/"
+  noindex={true}
+>
+  <section class="wrap notfound" data-ground="light">
+    <p class="notfound__code">404</p>
+    <h1 class="notfound__title">Page not found</h1>
+    <p class="notfound__body">
+      That page does not exist, or it has moved. If you followed a link here,
+      it is worth telling us at <a href={`mailto:${site.email.sales}`}>{site.email.sales}</a>.
+    </p>
+    <p><a class="notfound__home" href="/">Back to the homepage</a></p>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding-block: var(--sp-8) var(--sp-7);
+    max-width: 640px;
+  }
+  .notfound__code {
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body);
+    color: var(--c-ink-label);
+    margin-bottom: var(--sp-3);
+  }
+  .notfound__title {
+    font-size: var(--fs-stat);
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display);
+    color: var(--c-ink-heading);
+    line-height: 1.1;
+    margin: 0 0 var(--sp-4);
+  }
+  .notfound__body {
+    font-size: var(--fs-body);
+    color: var(--c-ink-muted);
+    line-height: var(--lh-body);
+    margin-bottom: var(--sp-5);
+  }
+  .notfound__home {
+    display: inline-flex;
+    align-items: center;
+    height: var(--btn-ghost-h);
+    padding-inline: var(--sp-4);
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1.5px var(--c-ring-light);
+    font-size: var(--fs-label);
+    letter-spacing: var(--ls-button);
+    transition: box-shadow var(--dur-fast) ease;
+  }
+  .notfound__home:hover { box-shadow: inset 0 0 0 1.5px var(--c-accent); }
+</style>

@@ -1,0 +1,29 @@
+{
+  "name": "roars-web",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "validate:redirects": "node scripts/validate-redirects.mjs",
+    "validate:content": "node scripts/validate-content.mjs",
+    "assert:urls": "node scripts/assert-urls.mjs",
+    "nginx:redirects": "node scripts/generate-nginx-redirects.mjs",
+    "verify": "npm run validate:redirects && npm run validate:content && npm run build && npm run nginx:redirects && npm run assert:urls"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^8.0.1",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.2"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "typescript": "^7.0.2"
+  }
+}
