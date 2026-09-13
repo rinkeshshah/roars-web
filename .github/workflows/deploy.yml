@@ -1,8 +1,17 @@
 name: Build and deploy
 
-# The build runs HERE, never on the Plesk server. Only finished static
-# files land on the box. That is the whole security model: no Node, no
-# toolchain, no node_modules in the webspace.
+# The build runs HERE, never on the Plesk server. Only finished static files
+# reach the box: no Node, no toolchain, no node_modules in the webspace.
+#
+# DEPLOY DIRECTION. This workflow does not touch the server and holds no
+# credentials for it. It publishes dist/ to the `deploy` branch and Plesk
+# pulls from GitHub. If this repository or its Actions were ever compromised,
+# the blast radius stops at the repo; there is no SSH key here to steal.
+#
+# `deploy` is rebuilt as an ORPHAN every run: a fresh git history containing
+# only the built output, force-pushed. That keeps build artefacts out of the
+# source history and stops the repository growing by a full copy of the site
+# on every build.
 
 on:
   push:
@@ -11,7 +20,10 @@ on:
 
 concurrency:
   group: deploy
-  cancel-in-progress: false   # never interrupt a live deploy mid-rsync
+  cancel-in-progress: false # never interrupt a deploy mid-publish
+
+permissions:
+  contents: write # required to force-push the deploy branch
 
 jobs:
   build:
@@ -26,8 +38,13 @@ jobs:
 
       - run: npm ci
 
+      # Chromium for the browser assertions below. --with-deps pulls the
+      # system libraries the runner image does not ship.
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
       # Fails the build on thin content, duplicate meta, broken internal
-      # links, or any inventory URL with no corresponding page.
+      # links, malformed front matter, or out-of-range SEO fields.
       - name: Validate content
         run: node scripts/validate-content.mjs
 
@@ -35,42 +52,80 @@ jobs:
         run: node scripts/validate-redirects.mjs
 
       # Indexing stays OFF until the site is finished. See docs/NOINDEX.md.
-      # To go live, set this to 'true' (a launch-checklist step, not a code change).
-      - run: npm run build
+      # Going live is a repository-variable change, not a code change.
+      - name: Build
+        run: npm run build
         env:
           PUBLIC_ALLOW_INDEXING: ${{ vars.PUBLIC_ALLOW_INDEXING }}
 
-      # Emits nginx 301 rules from the redirect map. Astro's own redirects
-      # are meta-refresh pages, which pass equity poorly.
+      # Emits real nginx 301s. Astro's own redirects are meta-refresh pages,
+      # which pass equity poorly, so they are applied in dev only.
       - name: Generate nginx redirect rules
         run: node scripts/generate-nginx-redirects.mjs
 
-      # Catches the expensive failure BEFORE anything ships.
-      # THE GUARD. Never make this non-fatal and never skip it. It also
-      # fails if a meta-refresh redirect page reached dist/, which is how
-      # Astro's built-in redirects would otherwise ship.
+      # THE GUARD. Never make this non-fatal and never skip it. It also fails
+      # if a meta-refresh page reached dist/, or if any page is not
+      # directory-format. BUILD_PHASE scopes it to the routes that should
+      # exist yet; the full 194 are enforced from phase 6.
       - name: Assert every inventory URL exists in dist
         run: node scripts/assert-urls.mjs
         env:
           BUILD_PHASE: ${{ vars.BUILD_PHASE || '0' }}
 
-      - name: Deploy to Plesk
-        uses: burnett01/rsync-deployments@7.0.1
-        with:
-          # --delete keeps the webspace exactly matching dist.
-          # Excludes protect the one piece of server-side code and its config.
-          switches: >-
-            -avzr --delete
-            --exclude 'api/'
-            --exclude '.well-known/'
-            --exclude 'config/'
-          path: dist/
-          remote_path: ${{ secrets.PLESK_PATH }}
-          remote_host: ${{ secrets.PLESK_HOST }}
-          remote_user: ${{ secrets.PLESK_USER }}
-          remote_key: ${{ secrets.PLESK_SSH_KEY }}
+      # --- browser assertions --------------------------------------------
+      # Keyboard reachability, focus trap, one-open-at-a-time accordion,
+      # filtering without a URL change, ink inversion, reduced motion, and
+      # the homepage LCP / CLS / JS budgets. None of these are checkable by
+      # reading the code, which is why they run on every push.
 
+      - name: Content gate self-test
+        run: node scripts/test-content-gate.mjs
+
+      # python3 is already on the runner, so this pulls no extra packages.
+      - name: Serve dist for browser tests
+        run: |
+          (cd dist && python3 -m http.server 4325 >/dev/null 2>&1 &)
+          for i in $(seq 1 30); do
+            curl -sf -o /dev/null http://127.0.0.1:4325/ && exit 0
+            sleep 1
+          done
+          echo "static server did not come up"; exit 1
+
+      - name: Component assertions
+        run: node scripts/test-components.mjs
+        env:
+          BASE: http://127.0.0.1:4325
+
+      - name: Homepage budgets
+        run: node scripts/test-homepage.mjs
+        env:
+          BASE: http://127.0.0.1:4325
+
+      # --- publish --------------------------------------------------------
+      # Orphan branch, force-pushed. dist/ gets its own throwaway history each
+      # run, so the branch is exactly one commit of built output and the
+      # repository does not accumulate a site copy per build.
+      - name: Publish dist to the deploy branch
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cd dist
+          git init -q
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b deploy
+          git add -A
+          git commit -q -m "Build ${GITHUB_SHA::7} from ${GITHUB_REF_NAME}"
+          git push -q --force \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # NOT WRITTEN YET. scripts/indexnow.mjs does not exist; the condition
+      # below means the step never runs while the site is noindexed, so it is
+      # inert rather than broken. Write it as part of going live.
       - name: Ping IndexNow
+        if: github.ref == 'refs/heads/main' && vars.PUBLIC_ALLOW_INDEXING == 'true'
         run: node scripts/indexnow.mjs
         env:
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}

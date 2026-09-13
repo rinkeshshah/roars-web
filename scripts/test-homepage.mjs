@@ -14,7 +14,7 @@
  * regression guard and it is not field data. The real numbers come from CrUX
  * once the site is live behind nginx with the real caching headers.
  */
-import { chromium } from '/opt/node22/lib/node_modules/playwright/index.mjs'
+import { chromium } from 'playwright'
 
 const BASE = process.env.BASE || 'http://127.0.0.1:4325'
 const BUDGET = { lcp: 2000, cls: 0.05, js: 25 * 1024 }

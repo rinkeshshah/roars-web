@@ -8,13 +8,23 @@ is the main reason this stack was chosen.
 
 ```
 GitHub push (main)
-   -> Actions: npm ci, validate, astro build, assert URLs
-   -> rsync dist/ to the Plesk webspace
+   -> Actions: npm ci, validate, build, assert URLs, browser tests
+   -> force-push dist/ to the ORPHAN `deploy` branch
+   -> Plesk pulls `deploy` from GitHub
    -> nginx serves static files
 ```
 
-The build never runs on the server. No `node_modules`, no toolchain, no
-build memory spike on a box serving 15 customer subscriptions.
+The build never runs on the server. No `node_modules`, no toolchain, no build
+memory spike on a box serving 15 customer subscriptions.
+
+**Plesk pulls; Actions does not push to the server.** GitHub therefore holds no
+credential for the box: no SSH key, no `PLESK_*` secrets. If the repository or
+an Action were ever compromised, the blast radius stops at the repository.
+Deployment is a pull the server chooses to make.
+
+`deploy` is an **orphan** branch, rebuilt from scratch and force-pushed each
+run. It holds one commit of built output and no source history, so the
+repository does not grow by a copy of the site on every build.
 
 ## One-time Plesk setup
 
@@ -23,11 +33,20 @@ build memory spike on a box serving 15 customer subscriptions.
    document root during cutover; they will fight over `index.php` versus
    `index.html`.
 
-2. **Document root.** Point at the directory rsync writes to. There is no
+2. **Document root.** Point at the directory Plesk pulls into. There is no
    `/public` indirection as there would be with Laravel.
 
-3. **SSH key.** Create a key for the deploy user, add the private half as
-   the `PLESK_SSH_KEY` Actions secret. Restrict the user to the webspace.
+3. **Git pull, not SSH push.** In Plesk, Websites & Domains > Git, add
+   `https://github.com/rinkeshshah/roars-web` and select the **`deploy`**
+   branch. The branch only appears in the dropdown once it exists on the
+   remote, which it now does. Set the deployment path to the document root
+   and choose automatic deployment; Plesk registers a webhook so a push to
+   `deploy` triggers the pull. For a private repository, add Plesk's
+   generated deploy key to the repository under Settings > Deploy keys,
+   read-only.
+
+   No key travels in the other direction. Actions never touches the server,
+   and there are no `PLESK_*` secrets to create or rotate.
 
 4. **PHP.** Needed only for the form endpoint. Keep 8.4. If the form moves
    to a Cloudflare Worker later, disable PHP for the domain entirely.
@@ -87,6 +106,8 @@ error_page 404 /404.html;
 
 What an attacker can reach: static files and one PHP endpoint.
 
+- No deploy credential in GitHub. The server pulls; CI cannot reach it.
+
 - No CMS login, so no brute force target
 - No database queries on page render, so no injection surface on content
 - No plugin ecosystem, so no supply chain to patch
@@ -99,8 +120,12 @@ each a patch surface, with an admin login exposed to the internet.
 
 ## Rollback
 
-`git revert` and push. Actions rebuilds and rsyncs. Under two minutes, and
-no database state to unwind. Plesk's own backup is the second line.
+`git revert` on `main` and push. Actions rebuilds and force-pushes `deploy`,
+Plesk pulls it. Under two minutes, and no database state to unwind.
+
+For an immediate rollback without waiting for a build, Plesk can pull an
+earlier `deploy` commit directly from the Git panel. Plesk's own backup is the
+third line.
 
 ## Post-cutover cleanup
 

@@ -12,8 +12,8 @@
  * Uses the Playwright already installed globally in the build image, so it
  * adds no dependency to package.json.
  */
-import { chromium } from '/opt/node22/lib/node_modules/playwright/index.mjs'
-const base = 'http://127.0.0.1:4323'
+import { chromium } from 'playwright'
+const base = process.env.BASE || 'http://127.0.0.1:4325'
 const out = []
 const ok = (n, c, d = '') => out.push(`${c ? 'PASS' : 'FAIL'}  ${n}${d ? '  — ' + d : ''}`)
 
