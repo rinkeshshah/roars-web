@@ -2,7 +2,7 @@
 """
 Is the source we exported from actually current?
 
-    python3 compare-freshness.py ../wp-export ../docs/URL-INVENTORY.csv
+    python3 compare-freshness.py ../../exports/wp-export ../../docs/URL-INVENTORY.csv
 
 URL-INVENTORY.csv was built by crawling the six live Squirrly sitemaps on
 production on 13 Sep 2026, and 116 of its 194 rows carry a real `lastmod`.

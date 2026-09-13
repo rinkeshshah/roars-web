@@ -26,8 +26,8 @@ reach the site.
 ## A. Squirrly meta
 
 ```bash
-wp eval-file docs/roars-v2-build-handoff/export/squirrly-meta.php \
-    docs/roars-v2-build-handoff/squirrly-meta.csv
+wp eval-file scripts/wordpress-export/squirrly-meta.php \
+    exports/squirrly-meta.csv
 ```
 
 ### The handoff's query is incomplete, and this matters
@@ -88,7 +88,7 @@ It writes nothing back.
 The script prints the published-document count and the newest `post_date_gmt`
 and `post_modified_gmt`. Production had **194 published URLs when crawled on
 13 Sep 2026**. A materially lower count, or a newest-modified date behind the
-newest `lastmod` in `../docs/URL-INVENTORY.csv`, means the source is behind
+newest `lastmod` in `../../docs/URL-INVENTORY.csv`, means the source is behind
 production. For the per-URL picture, run the comparator in section D.
 
 ---
@@ -96,15 +96,15 @@ production. For the per-URL picture, run the comparator in section D.
 ## B. WordPress REST export
 
 ```bash
-./docs/roars-v2-build-handoff/export/wp-rest-export.sh
+./scripts/wordpress-export/wp-rest-export.sh
 
 # or against dev, which sits behind basic auth
 BASE=https://dev.roarsinc.com BASIC_USER=... BASIC_PASS=... \
-  ./docs/roars-v2-build-handoff/export/wp-rest-export.sh
+  ./scripts/wordpress-export/wp-rest-export.sh
 ```
 
 Pulls `types.json` first, then every needed collection at `per_page=100`,
-paging on the `X-WP-TotalPages` header, into `../wp-export/`. Taxonomies and
+paging on the `X-WP-TotalPages` header, into `../../exports/wp-export/`. Taxonomies and
 users follow.
 
 The types it looks for, taken from the `wp_type` column of
@@ -137,9 +137,9 @@ Check those counts against the table above before moving on.
 ## C. Content anomalies
 
 ```bash
-python3 docs/roars-v2-build-handoff/export/content-anomalies.py \
-    docs/roars-v2-build-handoff/wp-export \
-    docs/roars-v2-build-handoff/content-anomalies.md
+python3 scripts/wordpress-export/content-anomalies.py \
+    exports/wp-export \
+    exports/content-anomalies.md
 ```
 
 Needs B's output. For each document it measures what share of the distinct
@@ -170,9 +170,9 @@ false-flag a well-formed post.
 ## D. Freshness comparison
 
 ```bash
-python3 docs/roars-v2-build-handoff/export/compare-freshness.py \
-    docs/roars-v2-build-handoff/wp-export \
-    docs/roars-v2-build-handoff/docs/URL-INVENTORY.csv
+python3 scripts/wordpress-export/compare-freshness.py \
+    exports/wp-export \
+    docs/URL-INVENTORY.csv
 ```
 
 Diffs whatever was exported against the production reference in the inventory:

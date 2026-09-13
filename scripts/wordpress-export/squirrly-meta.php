@@ -4,8 +4,8 @@
  *
  * Run with WP-CLI ON THE SERVER, from the WordPress root:
  *
- *   wp eval-file docs/roars-v2-build-handoff/export/squirrly-meta.php \
- *       docs/roars-v2-build-handoff/squirrly-meta.csv
+ *   wp eval-file scripts/wordpress-export/squirrly-meta.php \
+ *       exports/squirrly-meta.csv
  *
  * WHY THIS IS NOT THE ONE-LINE QUERY IN THE HANDOFF
  *
@@ -59,7 +59,7 @@ if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
 global $wpdb;
 
 $args = $args ?? array();
-$out  = isset( $args[0] ) ? $args[0] : 'docs/roars-v2-build-handoff/squirrly-meta.csv';
+$out  = isset( $args[0] ) ? $args[0] : 'exports/squirrly-meta.csv';
 
 $dir = dirname( $out );
 if ( ! is_dir( $dir ) && ! mkdir( $dir, 0775, true ) ) {
@@ -224,7 +224,7 @@ WP_CLI::log( "newest post_modified : " . ( $newest ?: 'n/a' ) );
 WP_CLI::log( '' );
 WP_CLI::log( 'Production was crawled 13 Sep 2026 and had 194 published URLs.' );
 WP_CLI::log( 'If the count above is materially lower, or newest post_modified predates' );
-WP_CLI::log( 'the newest lastmod in docs/roars-v2-build-handoff/docs/URL-INVENTORY.csv,' );
+WP_CLI::log( 'the newest lastmod in docs/URL-INVENTORY.csv,' );
 WP_CLI::log( 'this database is behind production and the export should be treated as' );
 WP_CLI::log( 'indicative rather than authoritative. Run compare-freshness.py to see' );
 WP_CLI::log( 'the per-URL drift.' );

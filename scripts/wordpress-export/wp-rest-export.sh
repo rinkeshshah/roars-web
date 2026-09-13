@@ -6,7 +6,7 @@
 #   BASE=https://dev.roarsinc.com \
 #   BASIC_USER=... BASIC_PASS=... ./wp-rest-export.sh
 #
-# Writes to docs/roars-v2-build-handoff/wp-export/ and prints a report of
+# Writes to exports/wp-export/ and prints a report of
 # which post types are REST-exposed and which are not. The ones that are not
 # are the only ones needing a database route.
 #
@@ -17,7 +17,7 @@
 set -euo pipefail
 
 BASE="${BASE:-https://www.roarsinc.com}"
-OUT="${OUT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/wp-export}"
+OUT="${OUT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/exports/wp-export}"
 API="$BASE/wp-json/wp/v2"
 PER=100
 

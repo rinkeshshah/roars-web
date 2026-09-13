@@ -2,7 +2,7 @@
 """
 Title-versus-body vocabulary check over the WordPress REST export.
 
-    python3 content-anomalies.py ../wp-export ../content-anomalies.md
+    python3 content-anomalies.py ../../exports/wp-export ../../exports/content-anomalies.md
 
 Post 15170 is the known case: its title, excerpt and body are three different
 articles. The check that would have caught it is vocabulary overlap. If the
