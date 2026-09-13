@@ -51,9 +51,80 @@ repository does not grow by a copy of the site on every build.
 4. **PHP.** Needed only for the form endpoint. Keep 8.4. If the form moves
    to a Cloudflare Worker later, disable PHP for the domain entirely.
 
-5. **MySQL.** One database, one user, `INSERT` only on the submissions
-   table. No `SELECT`, no `DROP`. If the credentials leak, the worst case
-   is junk rows, not a data breach.
+5. **MySQL.** One database, one user, `INSERT` only on the submissions table.
+   No `SELECT`, no `DROP`. If the credentials leak, the worst case is junk
+   rows, not a data breach.
+
+   Run these in Plesk's Databases > phpMyAdmin, or over SSH with `mysql -u
+   admin -p`. Set a real password first; do not use the literal below.
+
+   ```sql
+   CREATE DATABASE IF NOT EXISTS roars_forms
+     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+   USE roars_forms;
+
+   CREATE TABLE IF NOT EXISTS submissions (
+     id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+     form        ENUM('contact','newsletter','guide','callback') NOT NULL,
+     name        VARCHAR(190)  NOT NULL,
+     email       VARCHAR(254)  NOT NULL,
+     phone       VARCHAR(40)       NULL,
+     message     TEXT              NULL,
+     page_url    VARCHAR(500)      NULL,
+     referrer    VARCHAR(500)      NULL,
+     -- Retention-limited. Purge both after 90 days; see below.
+     ip          VARCHAR(45)       NULL,
+     user_agent  VARCHAR(255)      NULL,
+     status      ENUM('new','contacted','qualified','spam')
+                 NOT NULL DEFAULT 'new',
+     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     PRIMARY KEY (id),
+     KEY idx_form_created (form, created_at),
+     KEY idx_created (created_at)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+   ```
+
+   The grant. `INSERT` and nothing else, on one table, from localhost only:
+
+   ```sql
+   CREATE USER 'roars_forms_insert'@'localhost'
+     IDENTIFIED BY 'PUT-A-REAL-PASSWORD-HERE';
+
+   GRANT INSERT ON roars_forms.submissions TO 'roars_forms_insert'@'localhost';
+
+   FLUSH PRIVILEGES;
+   ```
+
+   No `SELECT`, so the endpoint cannot read back what it wrote. No `UPDATE`
+   or `DELETE`, so it cannot alter history. No `DROP`. Read submissions as
+   the Plesk admin user, through phpMyAdmin.
+
+   Confirm the grant is exactly what you meant:
+
+   ```sql
+   SHOW GRANTS FOR 'roars_forms_insert'@'localhost';
+   -- expect only:
+   --   GRANT USAGE ON *.* TO ...
+   --   GRANT INSERT ON `roars_forms`.`submissions` TO ...
+   ```
+
+   Then copy `public/api/contact-config.example.php` to
+   `/var/www/vhosts/roarsinc.com/private/contact-config.php`, fill it in, and
+   `chmod 600` it. Above the document root, so no browser can fetch it. The
+   filled file is gitignored and must never be committed.
+
+   **Retention.** `ip` and `user_agent` exist for abuse handling, not
+   analytics. Purge them at 90 days with a Plesk scheduled task:
+
+   ```sql
+   UPDATE submissions
+      SET ip = NULL, user_agent = NULL
+    WHERE created_at < NOW() - INTERVAL 90 DAY
+      AND (ip IS NOT NULL OR user_agent IS NOT NULL);
+   ```
+
+   That runs as the admin user, not the insert-only one.
 
 6. **Let's Encrypt.** Standard Plesk issuance, auto-renew on.
 

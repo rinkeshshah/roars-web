@@ -1,0 +1,89 @@
+---
+/**
+ * /about-us/ — inventory path. The design spec calls this page "Agency" and
+ * proposes /agency/; the CSV wins and the nav label stays "Agency".
+ * Copy verbatim from design/specs/Agency.md.
+ */
+import MarketingPage from '../components/MarketingPage.astro'
+import StatBlock from '../components/StatBlock.astro'
+import AvatarStack from '../components/AvatarStack.astro'
+import { site } from '../lib/site'
+
+/** Real names from the brand guidelines content facts. No portraits in the
+ *  repo yet, so AvatarStack falls back to initials rather than a stock face. */
+const team = [
+  { name: 'Riinkesh A Sshah' },
+  { name: 'Suzanne Martin' },
+  { name: 'Avinash Kumar' },
+  { name: 'Kevin Jacob' },
+  { name: 'Shiva Kumar' },
+  { name: 'Chetna Shah' },
+  { name: 'Khusboo Panchal' },
+  { name: 'Ankush A Sshah' },
+]
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    '@id': `${site.url}/about-us/#aboutpage`,
+    name: 'About Roars',
+    isPartOf: { '@id': `${site.url}/#website` },
+    about: { '@id': `${site.url}/#organization` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Agency' },
+    ],
+  },
+]
+---
+
+<MarketingPage
+  title="About Roars | 250+ Products Since 2005"
+  description="We work alongside entrepreneurs and visionaries, using agile methodologies to produce brilliant, scalable, technology-based products and services."
+  path="/about-us/"
+  label="Agency"
+  heading="Agency"
+  intro="We work alongside entrepreneurs and visionaries, using agile methodologies to produce brilliant, scalable, technology-based products and services."
+  schema={schema}
+>
+  <p>
+    <strong>Roars</strong> helps founders stand out with bold product design and
+    smart digital solutions. We mix strategy, creativity and technology to craft
+    work that’s clean, purposeful and built to last.
+  </p>
+
+  <p class="about__creed">
+    Driven by ideas. Focused on results. Built for the future. Simple ideas.
+    Strong products. Real impact.
+  </p>
+
+  <div class="about__stats">
+    <StatBlock value="20" suffix="+" label="Years in product development" />
+    <StatBlock value="250" suffix="+" label="Projects delivered" />
+    <StatBlock value="96" suffix="%" suffixStyle="percent" label="Returning customers" />
+  </div>
+
+  <h2>Team of Roars</h2>
+  <AvatarStack people={team} size={60} count="59" />
+
+  <p>If you want to become one of our happy clients, get in touch with us right now.</p>
+</MarketingPage>
+
+<style>
+  .about__creed {
+    font-size: var(--fs-intro) !important;
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item);
+    color: var(--c-ink-heading) !important;
+  }
+  .about__stats {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-5); margin: var(--sp-6) 0;
+  }
+  @media (max-width: 760px) { .about__stats { grid-template-columns: 1fr; } }
+</style>

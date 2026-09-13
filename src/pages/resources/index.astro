@@ -1,0 +1,95 @@
+---
+/**
+ * Resources index. Fifteen gated templates.
+ *
+ * Cards come from the inventory so all fifteen are reachable, with the seeded
+ * ones carrying their real description. Filter chips are deliberately absent
+ * until there is real taxonomy to filter on; a chip row over one category
+ * would be decoration.
+ *
+ * Six of the live fifteen ship images named "placeholder" on the current site.
+ * They are download pages, so that art must be replaced during migration, not
+ * carried across. Flagged in CLAUDE.md, known landmines.
+ */
+import { getCollection } from 'astro:content'
+import MarketingPage from '../../components/MarketingPage.astro'
+import { slugsOf, nameFromSlug } from '../../lib/inventory'
+import { site } from '../../lib/site'
+
+const entries = await getCollection('resources')
+const byId = new Map(entries.map((e) => [e.id, e]))
+const items = slugsOf('free_stuff').map((slug) => ({
+  slug,
+  href: `/resources/${slug}/`,
+  name: byId.get(slug)?.data.title ?? nameFromSlug(slug),
+  description: byId.get(slug)?.data.seo.description,
+}))
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${site.url}/resources/#collection`,
+    name: 'Resources',
+    isPartOf: { '@id': `${site.url}/#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: items.length,
+      itemListElement: items.map((it, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: it.name,
+        url: `${site.url}${it.href}`,
+      })),
+    },
+  },
+]
+---
+
+<MarketingPage
+  title="Free Product Strategy Templates and Canvases | Roars"
+  description="Fifteen templates we use in real engagements: business model canvas, value proposition, SWOT, prototype testing plan and more. Free, no strings."
+  path="/resources/"
+  label="Resources"
+  heading="Resources"
+  intro="The templates we actually use in engagements, free to download."
+  schema={schema}
+>
+  <ul class="res">
+    {items.map((it) => (
+      <li class="res__item">
+        <a class="res__link" href={it.href}>
+          <span class="res__name">{it.name}</span>
+          {it.description && <span class="res__desc">{it.description}</span>}
+          <span class="res__go" aria-hidden="true">&rarr;</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</MarketingPage>
+
+<style>
+  .res { list-style: none; margin: 0; padding: 0; }
+  .res__item { border-top: 0.5px solid var(--c-rule-soft); }
+  .res__item:last-child { border-bottom: 0.5px solid var(--c-rule-soft); }
+  .res__link {
+    display: grid;
+    grid-template-columns: minmax(0, 320px) minmax(0, 1fr) 32px;
+    gap: var(--sp-5);
+    align-items: baseline;
+    padding: var(--sp-4) var(--sp-3);
+    transition: background var(--dur-fast) ease;
+  }
+  .res__link:hover { background: rgba(255, 212, 0, 0.1); }
+  .res__name {
+    font-size: var(--fs-item); font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .res__desc { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-ink-muted); }
+  .res__go { font-size: 20px; color: rgba(20, 20, 20, 0.45); justify-self: end; }
+
+  @media (max-width: 760px) {
+    .res__link { grid-template-columns: 1fr; gap: var(--sp-2); }
+    .res__go { display: none; }
+  }
+</style>

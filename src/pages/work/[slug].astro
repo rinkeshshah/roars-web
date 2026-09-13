@@ -1,0 +1,67 @@
+---
+/**
+ * Case study detail. Twenty-three live URLs at /work/[slug]/.
+ *
+ * Routes come from the inventory. Client names come from src/lib/projects.ts.
+ * Bodies and hero images arrive with the content migration, so these render
+ * the pending state with the real client name in the heading and carry
+ * noindex until then.
+ */
+import { getCollection, render } from 'astro:content'
+import MarketingPage from '../../components/MarketingPage.astro'
+import { slugsOf, nameFromSlug } from '../../lib/inventory'
+import { clientFor } from '../../lib/projects'
+import { site } from '../../lib/site'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('projects')
+  const byId = new Map(entries.map((e) => [e.id, e]))
+  return slugsOf('post(work)').map((slug) => ({
+    params: { slug },
+    props: { entry: byId.get(slug) },
+  }))
+}
+
+const { slug } = Astro.params
+const { entry } = Astro.props
+const path = `/work/${slug}/`
+const client = entry?.data.client ?? clientFor(slug) ?? nameFromSlug(slug)
+
+const schema = entry
+  ? [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CreativeWork',
+        '@id': `${site.url}${path}#work`,
+        name: entry.data.title,
+        about: client,
+        creator: { '@id': `${site.url}/#organization` },
+        datePublished: entry.data.publishedAt.toISOString(),
+        description: entry.data.seo.description,
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+          { '@type': 'ListItem', position: 2, name: 'Work', item: `${site.url}/work/` },
+          { '@type': 'ListItem', position: 3, name: client },
+        ],
+      },
+    ]
+  : []
+
+const { Content } = entry ? await render(entry) : { Content: null }
+---
+
+<MarketingPage
+  title={entry?.data.seo.title ?? `${client} Case Study | ${site.name}`}
+  description={entry?.data.seo.description}
+  path={path}
+  label="Case study"
+  heading={client}
+  schema={schema}
+  pending={!entry}
+>
+  {Content && <Content />}
+</MarketingPage>

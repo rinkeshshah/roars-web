@@ -1,0 +1,81 @@
+---
+/**
+ * /work/ — STUB, deliberately.
+ *
+ * TODO: layout is an open design decision, not an implementation question.
+ * The approved design draws five projects at roughly 707px per row. There are
+ * 23, which is a 16,000px page and about twenty screens. A brief proposing a
+ * two-tier index (four or five featured at full height, the rest in a denser
+ * ~320px row) is at docs/briefs/work-index-at-real-scale.md, unanswered.
+ *
+ * Pagination is the obvious fix and is the wrong one here: /work/page/2/ has
+ * to be noindex under our own rules, which would strip the crawl path from
+ * eighteen case studies, thirteen of which are already orphaned from the nav.
+ * Whatever the answer is, all 23 stay on one crawlable URL.
+ *
+ * Until that is settled this returns 200 with a correct canonical and links
+ * every case study, so no URL 404s and every detail page stays reachable. It
+ * is not the designed page and does not pretend to be.
+ */
+import MarketingPage from '../../components/MarketingPage.astro'
+import { PROJECTS } from '../../lib/projects'
+import { site } from '../../lib/site'
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${site.url}/work/#collection`,
+    name: 'Our Work',
+    isPartOf: { '@id': `${site.url}/#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: PROJECTS.length,
+      itemListElement: PROJECTS.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: p.client,
+        url: `${site.url}/work/${p.slug}/`,
+      })),
+    },
+  },
+]
+---
+
+<MarketingPage
+  title="Our Work | Roars Technologies"
+  description="Twenty-three product case studies across logistics, fitness, healthcare, concierge, travel, retail, SaaS, legal and finance. Built since 2005."
+  path="/work/"
+  label="Work"
+  heading="Work"
+  intro="Twenty-three case studies. The index layout is being designed; every project is linked below in the meantime."
+  schema={schema}
+>
+  <ul class="work">
+    {PROJECTS.map((p) => (
+      <li class="work__item">
+        <a class="work__link" href={`/work/${p.slug}/`}>
+          <span class="work__name">{p.client}</span>
+          <span class="work__go" aria-hidden="true">&rarr;</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</MarketingPage>
+
+<style>
+  .work { list-style: none; margin: 0; padding: 0; }
+  .work__item { border-top: 0.5px solid var(--c-rule-soft); }
+  .work__item:last-child { border-bottom: 0.5px solid var(--c-rule-soft); }
+  .work__link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--sp-4) var(--sp-3);
+    transition: background var(--dur-fast) ease;
+  }
+  .work__link:hover { background: rgba(255, 212, 0, 0.1); }
+  .work__name {
+    font-size: clamp(var(--fs-item), 2.2vw, 32px); font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .work__go { font-size: 24px; color: rgba(20, 20, 20, 0.45); }
+</style>

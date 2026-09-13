@@ -1,0 +1,150 @@
+---
+/**
+ * The shared shell for every phase 4 marketing page: compact dark header,
+ * body, CTA band, footer. Section rhythm and grid come from the design
+ * system, so a service page and an industry page cannot drift apart.
+ *
+ * `pending` is the honest state for a route whose body has not been migrated
+ * yet. It still returns 200 with a correct canonical, which is what stops a
+ * ranking URL 404ing at cutover, but it carries noindex and says plainly that
+ * the content is coming rather than padding the page out.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from './Section.astro'
+import TopBar from './TopBar.astro'
+import NavOverlay from './NavOverlay.astro'
+import SiteFooter from './SiteFooter.astro'
+import CtaBand from './CtaBand.astro'
+import Reveal from './Reveal.astro'
+
+interface Props {
+  title: string
+  description?: string
+  path: string
+  /** Small label in the left rail above the page name. */
+  label: string
+  /** The h1. */
+  heading: string
+  intro?: string
+  schema?: unknown[]
+  noindex?: boolean
+  pending?: boolean
+  /** Hide the CTA band on pages that already end in a form. */
+  cta?: boolean
+}
+const {
+  title, description, path, label, heading, intro,
+  schema = [], noindex = false, pending = false, cta = true,
+} = Astro.props
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  noindex={noindex || pending}
+  schema={schema}
+>
+  <TopBar slot="topbar" />
+  <NavOverlay />
+
+  <Section ground="dark" class="mh">
+    <div class="mh__inner">
+      <div class="mh__rail">
+        <div class="mh__rule"></div>
+        <span class="mh__label">{label}</span>
+      </div>
+      <div class="mh__col">
+        <h1 class="mh__h1">{heading}</h1>
+        {intro && <p class="mh__intro">{intro}</p>}
+      </div>
+    </div>
+  </Section>
+
+  {pending ? (
+    <Section ground="light">
+      <div class="pending">
+        <p class="pending__label">Content pending migration</p>
+        <p class="pending__body">
+          This page exists so its URL keeps resolving. The copy is still on the
+          WordPress site and moves across in the content migration, at which
+          point this page carries the real thing and becomes indexable again.
+        </p>
+      </div>
+    </Section>
+  ) : (
+    <Section ground="light">
+      <Reveal class="prose"><slot /></Reveal>
+    </Section>
+  )}
+
+  {cta && <CtaBand />}
+  <SiteFooter slot="footer" />
+</BaseLayout>
+
+<style>
+  .mh { background: var(--c-black); }
+  .mh__inner {
+    display: grid;
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    column-gap: var(--sp-5);
+    padding-block: 200px 120px;
+  }
+  .mh__rule { width: 16px; height: 1.5px; background: var(--c-hairline-dark); margin-bottom: var(--sp-4); }
+  .mh__label {
+    font-size: var(--fs-label); font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body); color: var(--c-ink-label);
+  }
+  .mh__h1 {
+    margin: 0;
+    font-size: clamp(var(--fs-heading-m), 7vw, 92px);
+    font-weight: var(--fw-semi);
+    line-height: 0.94;
+    letter-spacing: var(--ls-display);
+    color: #fbfbfb;
+  }
+  .mh__intro {
+    margin-top: var(--sp-5); max-width: 620px;
+    font-size: var(--fs-intro); font-weight: var(--fw-medium);
+    line-height: var(--lh-snug); letter-spacing: var(--ls-item);
+    color: var(--c-on-dark-78);
+  }
+
+  .pending, .prose { padding-block: var(--sp-7); }
+  .pending { max-width: 620px; }
+  .pending__label {
+    font-size: var(--fs-label); font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body); color: var(--c-ink-label);
+    margin-bottom: var(--sp-4);
+  }
+  .pending__body { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-ink-muted); }
+
+  /* Long-form body. Markdown from the collections lands here. */
+  .prose { max-width: 760px; margin-left: calc(var(--rail-width) + var(--sp-5)); }
+  .prose :global(h2) {
+    margin: var(--sp-6) 0 var(--sp-4);
+    font-size: clamp(var(--fs-item), 2.2vw, 32px);
+    font-weight: var(--fw-semi); line-height: 1.2;
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .prose :global(h3) {
+    margin: var(--sp-5) 0 var(--sp-3);
+    font-size: var(--fs-item); font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .prose :global(p) {
+    margin-bottom: var(--sp-4);
+    font-size: var(--fs-body); line-height: var(--lh-loose);
+    letter-spacing: var(--ls-item); color: var(--c-ink-body);
+  }
+  .prose :global(strong) { font-weight: var(--fw-semi); }
+  .prose :global(a) { box-shadow: inset 0 -1px 0 var(--c-rule-soft); }
+  .prose :global(a:hover) { color: var(--c-accent); box-shadow: inset 0 -1px 0 var(--c-accent); }
+  .prose :global(ul) { margin: 0 0 var(--sp-4) var(--sp-4); padding: 0; }
+  .prose :global(li) { margin-bottom: var(--sp-2); font-size: var(--fs-body); line-height: var(--lh-loose); }
+
+  @media (max-width: 1040px) {
+    .mh__inner { grid-template-columns: 1fr; row-gap: var(--sp-4); padding-block: 150px 80px; }
+    .prose { margin-left: 0; }
+  }
+</style>

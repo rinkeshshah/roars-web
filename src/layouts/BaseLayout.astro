@@ -15,8 +15,12 @@ import '../styles/base.css'
 interface Props {
   /** 50-60 chars including the suffix. Zod enforces this on collections. */
   title: string
-  /** 140-160 chars. Must carry the primary intent, must not open with the brand. */
-  description: string
+  /**
+   * 140-160 chars, carrying the primary intent and not opening with the brand.
+   * Optional ONLY for routes whose content has not been migrated yet: those
+   * omit the tag rather than ship a fabricated one, and carry noindex.
+   */
+  description?: string
   /** Route path with leading and trailing slash, e.g. "/about-us/". */
   path: string
   ogType?: 'website' | 'article'
@@ -55,7 +59,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
     <meta name="theme-color" content="#FFD400" />
 
     <title>{title}</title>
-    <meta name="description" content={description} />
+    {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
     <meta name="robots" content={robots} />
 
@@ -76,7 +80,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
     <meta property="og:site_name" content={site.name} />
     <meta property="og:locale" content={site.locale} />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageAbs} />
     <meta property="og:image:width" content="1200" />
@@ -88,7 +92,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
     <meta name="twitter:site" content={site.twitter} />
     <meta name="twitter:creator" content={site.twitter} />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    {description && <meta name="twitter:description" content={description} />}
     <meta name="twitter:image" content={ogImageAbs} />
     <meta name="twitter:image:alt" content={imageAlt} />
 
@@ -122,6 +126,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
       import { initAccordions } from '../scripts/accordion'
       import { initFilters } from '../scripts/filters'
       import { initCrossfade } from '../scripts/crossfade'
+      import { initForms } from '../scripts/form'
 
       initReveal()
       initTopbar()
@@ -129,6 +134,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
       initAccordions()
       initFilters()
       initCrossfade()
+      initForms()
     </script>
 
     {!ALLOW_INDEXING && (

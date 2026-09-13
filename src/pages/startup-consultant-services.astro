@@ -1,0 +1,18 @@
+---
+/**
+ * /startup-consultant-services/ — live and indexed, and absent from the design specs.
+ *
+ * Built as a real route so the URL keeps resolving through cutover. The body
+ * is on the WordPress site and arrives with the content migration; nothing is
+ * invented here in the meantime.
+ */
+import MarketingPage from '../components/MarketingPage.astro'
+---
+
+<MarketingPage
+  title="Startup Consultant Services | Roars Technologies"
+  path="/startup-consultant-services/"
+  label="Services"
+  heading="Startup Consultant Services"
+  pending={true}
+/>

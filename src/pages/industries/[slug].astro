@@ -1,0 +1,68 @@
+---
+/**
+ * Industry pages. Nine live URLs at /industries/[slug]/.
+ *
+ * Routes come from docs/URL-INVENTORY.csv, not from the collection, so every
+ * ranking URL resolves even before its body is migrated. Seeded entries render
+ * their real content; the rest render the pending state and carry noindex.
+ */
+import { getCollection, render } from 'astro:content'
+import MarketingPage from '../../components/MarketingPage.astro'
+import { slugsOf, nameFromSlug } from '../../lib/inventory'
+import { site } from '../../lib/site'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('industries')
+  const byId = new Map(entries.map((e) => [e.id, e]))
+  return slugsOf('industries').map((slug) => ({
+    params: { slug },
+    props: { entry: byId.get(slug) },
+  }))
+}
+
+const { slug } = Astro.params
+const { entry } = Astro.props
+const path = `/industries/${slug}/`
+const name = entry?.data.title ?? nameFromSlug(slug)
+
+const schema = entry
+  ? [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        '@id': `${site.url}${path}#service`,
+        name,
+        description: entry.data.seo.description,
+        serviceType: entry.data.serviceType,
+        provider: { '@id': `${site.url}/#organization` },
+        areaServed: [
+          { '@type': 'Country', name: 'United States' },
+          { '@type': 'Country', name: 'United Kingdom' },
+          { '@type': 'Country', name: 'India' },
+        ],
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+          { '@type': 'ListItem', position: 2, name },
+        ],
+      },
+    ]
+  : []
+
+const { Content } = entry ? await render(entry) : { Content: null }
+---
+
+<MarketingPage
+  title={entry?.data.seo.title ?? `${name} | ${site.name}`}
+  description={entry?.data.seo.description}
+  path={path}
+  label="Industry"
+  heading={name}
+  schema={schema}
+  pending={!entry}
+>
+  {Content && <Content />}
+</MarketingPage>

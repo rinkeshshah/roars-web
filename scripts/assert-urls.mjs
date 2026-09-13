@@ -53,6 +53,40 @@ const phaseArg = args.includes('--phase')
 /** Highest completed phase. "0-3" and "3" both mean the same thing. */
 const PHASE = Number(String(phaseArg).split('-').pop())
 
+/** The root-level pages phase 4 builds, by path. */
+const PHASE_4_PAGES = new Set([
+  '/about-us/',
+  '/approach/',
+  '/contact-us/',
+  '/terms-of-service/',
+  '/privacy-policy/',
+  '/resources/',
+  // Live and indexed, no design spec. Built as real routes so the URLs keep
+  // resolving; bodies arrive with the content migration.
+  '/startup-consultant-services/',
+  '/vision-pro-app-development/',
+  '/terrapay-payment-api-integration-services/',
+])
+
+/**
+ * DEFERRED. Live, indexed URLs that no phase covers yet.
+ *
+ * Printed on every run so the exclusion stays visible instead of quietly
+ * becoming permanent. Nothing here is an oversight; each row says what it is
+ * waiting on. The list must be empty before cutover, because phase 6 enforces
+ * the full inventory and any survivor here fails the build then.
+ */
+const DEFERRED = new Map([
+  ['/product-development-agency-in-london/', 'UK city pages: open decision, docs/URL-INVENTORY-FINDINGS.md §3'],
+  ['/product-development-agency-in-manchester/', 'UK city pages: open decision, shared imagery with the London page'],
+  ['/product-development-agency-in-birmingham/', 'UK city pages: open decision, shared Elementor thumbnail'],
+  ['/ui-ux-design-services-london/', 'UK city pages: open decision, and two naming conventions to reconcile'],
+  ['/ui-ux-design-services-bristol/', 'UK city pages: open decision'],
+  ['/ui-and-ux-design-agency-birmingham/', 'UK city pages: open decision, non-standard slug pattern'],
+  ['/ui-and-ux-design-agency-manchester/', 'UK city pages: open decision, non-standard slug pattern'],
+  ['/thankyou/', 'utility page, marked noindex in the inventory; not a page to design'],
+])
+
 /**
  * Which inventory rows each phase is expected to have built.
  * Keyed on the CSV's own wp_type column so the mapping is checkable.
@@ -65,13 +99,25 @@ const PHASE_SCOPE = {
   2: () => false,
   // Phase 3 adds the homepage and nothing else.
   3: (row) => row.path === '/',
-  // Phase 4 adds the marketing pages: services, industries, resources,
-  // case-study details and the root-level pages. Not posts, not the /work/
-  // index (open design decision), not category archives.
+  // Phase 4 adds exactly the routes the phase brief names, plus three live
+  // indexed root pages that had been missed:
+  //   /about-us/ /approach/ /contact-us/ /terms-of-service/ /privacy-policy/
+  //   /resources/ /resources/[slug]/ /s/[slug]/ /industries/[slug]/ /work/[slug]/
+  //
+  // NOT phase 4, and deliberately excluded:
+  //   /work/                    the index; layout is an open design decision
+  //   the seven UK city pages   keep / consolidate / retire is an open decision
+  //                             (docs/URL-INVENTORY-FINDINGS.md section 3)
+  //   /vision-pro-app-development/, /terrapay-.../, /schedule-ux-ui-meeting/,
+  //   /startup-consultant-services/
+  //                             root pages with no design spec; they belong
+  //                             with the phase 5 content migration
+  //   /thankyou/                utility page, marked noindex in the inventory
+  //   /our-journal/             phase 5
   4: (row) =>
     row.path === '/' ||
     ['service', 'industries', 'free_stuff', 'post(work)'].includes(row.wp_type) ||
-    (row.wp_type === 'page' && row.path !== '/work/' && row.path !== '/our-journal/'),
+    PHASE_4_PAGES.has(row.path),
   // Phase 5 adds the journal. Everything except the /work/ index.
   5: (row) => row.path !== '/work/',
   // Phase 6 is cutover. Everything, no exceptions.
@@ -200,7 +246,24 @@ console.log(`  MISSING             : ${missing.length}`)
 console.log(`pages built in total  : ${built.size}`)
 console.log('')
 
+/* Deferred rows, printed every run so they cannot be quietly forgotten. */
+const stillDeferred = [...DEFERRED].filter(([path]) => !built.has(path))
+if (stillDeferred.length) {
+  console.log(`deferred, not yet covered : ${stillDeferred.length}`)
+  for (const [path, why] of stillDeferred) console.log(`    ${path}\n        ${why}`)
+  console.log('    These are live, indexed URLs. Phase 6 enforces the full')
+  console.log('    inventory, so each one must be built or redirected by then.')
+  console.log('')
+}
+
 let failed = false
+
+if (PHASE >= 6 && stillDeferred.length) {
+  failed = true
+  console.error(`FAIL: ${stillDeferred.length} deferred URL(s) are still unresolved at cutover.`)
+  console.error('    Each needs a page or a redirect before phase 6 can pass.')
+  console.error('')
+}
 
 if (missing.length) {
   failed = true

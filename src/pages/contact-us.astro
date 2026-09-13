@@ -1,0 +1,242 @@
+---
+/**
+ * /contact-us/ — inventory path, not the spec's /contact/.
+ * Copy verbatim from design/specs/Contact.md.
+ *
+ * The form posts to public/api/contact.php, the only server-side code in the
+ * project. Turnstile renders only when a site key is configured, so the page
+ * is not broken while the key is unset; the endpoint still refuses anything
+ * without a valid token, so an unconfigured build cannot be used to spam.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import TopBar from '../components/TopBar.astro'
+import NavOverlay from '../components/NavOverlay.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import Reveal from '../components/Reveal.astro'
+import { site } from '../lib/site'
+
+const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    '@id': `${site.url}/contact-us/#contactpage`,
+    name: 'Contact Roars',
+    isPartOf: { '@id': `${site.url}/#website` },
+    about: { '@id': `${site.url}/#organization` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Contact' },
+    ],
+  },
+]
+---
+
+<BaseLayout
+  title="Contact Roars | Offices in 5 Countries"
+  description="Send us your details and we'll call within 24 hours. Offices in India, the United States, the United Kingdom, Belgium and Germany."
+  path="/contact-us/"
+  schema={schema}
+>
+  <TopBar slot="topbar" />
+  <NavOverlay />
+
+  <Section ground="dark" class="ch">
+    <div class="ch__inner">
+      <div class="ch__rail">
+        <div class="ch__rule"></div>
+        <span class="ch__label">Offices in five countries</span>
+      </div>
+      <div>
+        <h1 class="ch__h1">We look forward to<br />hearing from you.</h1>
+        <p class="ch__intro">
+          We design innovative products and solutions that elevate businesses,
+          products, and practices.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section ground="light">
+    <div class="cx">
+      <Reveal class="cx__words">
+        <p class="cx__lead">
+          Whether you are just interested to know more about what we do or would
+          like to enroll our services to grow your business, we would love to
+          hear from you.
+        </p>
+        <p class="cx__body">
+          If you have any questions, comments, or simply fancy a chat about our
+          company over a cup of coffee, please contact us using any of the
+          methods outlined on this page.
+        </p>
+
+        <div class="cx__block">
+          <p class="cx__k">Email</p>
+          <a class="cx__email" href={`mailto:${site.email.sales}`}>{site.email.sales}</a>
+        </div>
+        <div class="cx__block">
+          <p class="cx__k">Call</p>
+          <p class="cx__v">
+            <a href={`tel:${site.phones.US.tel}`}>USA {site.phones.US.display}</a><br />
+            <a href={`tel:${site.phones.UK.tel}`}>UK {site.phones.UK.display}</a>
+          </p>
+        </div>
+        <div class="cx__block">
+          <p class="cx__k">Offices</p>
+          <p class="cx__v">India, the United States, the United Kingdom, Belgium and Germany.</p>
+        </div>
+      </Reveal>
+
+      <Reveal class="cx__form" delay={80}>
+        <h2 class="cx__h2">Can we help you crack a complicated conundrum?</h2>
+        <p class="cx__note">
+          If you are interested in any of our products or services, we’d love to
+          discuss how we can help your business grow. Our dedicated team is
+          always on hand to help. Simply send us your details and we’ll give you
+          a call within 24 hours to discuss your requirements in depth.
+        </p>
+
+        <form
+          class="form"
+          action="/api/contact.php"
+          method="post"
+          data-contact-form
+        >
+          <input type="hidden" name="form" value="contact" />
+
+          {/* Honeypot. Hidden from people, irresistible to bots. */}
+          <div class="form__pot" aria-hidden="true">
+            <label for="company_website">Company website</label>
+            <input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="form__row">
+            <label for="c-name">Your name *</label>
+            <input id="c-name" name="name" type="text" required autocomplete="name" />
+          </div>
+          <div class="form__row">
+            <label for="c-email">Email *</label>
+            <input id="c-email" name="email" type="email" required autocomplete="email" />
+          </div>
+          <div class="form__row">
+            <label for="c-phone">Phone</label>
+            <input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+          <div class="form__row">
+            <label for="c-message">Leave us a quick message.</label>
+            <textarea id="c-message" name="message" rows="4"></textarea>
+          </div>
+
+          {turnstileKey && (
+            <div class="cf-turnstile" data-sitekey={turnstileKey} data-theme="light"></div>
+          )}
+
+          <button class="form__submit" type="submit">
+            <span>Send</span>
+            <span class="form__dots" aria-hidden="true"><i></i><i></i></span>
+          </button>
+
+          <p class="form__status" data-form-status role="status" aria-live="polite"></p>
+
+          <noscript>
+            <p class="form__status" data-state="error">
+              This form needs JavaScript. Email <a href={`mailto:${site.email.sales}`}>{site.email.sales}</a> instead.
+            </p>
+          </noscript>
+        </form>
+      </Reveal>
+    </div>
+  </Section>
+
+  <SiteFooter slot="footer" />
+
+  {turnstileKey && (
+    <script
+      is:inline
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    ></script>
+  )}
+</BaseLayout>
+
+<style>
+  .ch { background: var(--c-black); }
+  .ch__inner {
+    display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    column-gap: var(--sp-5); padding-block: 200px 120px;
+  }
+  .ch__rule { width: 16px; height: 1.5px; background: var(--c-hairline-dark); margin-bottom: var(--sp-4); }
+  .ch__label { font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
+  .ch__h1 {
+    margin: 0; font-size: clamp(var(--fs-heading-m), 6.4vw, 84px);
+    font-weight: var(--fw-semi); line-height: 0.98;
+    letter-spacing: var(--ls-display); color: #fbfbfb;
+  }
+  .ch__intro {
+    margin-top: var(--sp-5); max-width: 560px;
+    font-size: var(--fs-intro); line-height: var(--lh-snug);
+    letter-spacing: var(--ls-item); color: var(--c-on-dark-78);
+  }
+
+  .cx {
+    display: grid; grid-template-columns: 464fr 898fr;
+    column-gap: var(--sp-5); padding-block: var(--sp-7);
+  }
+  .cx__lead { font-size: var(--fs-intro); line-height: var(--lh-snug); letter-spacing: var(--ls-item); color: var(--c-ink-body); }
+  .cx__body { margin-top: var(--sp-4); font-size: var(--fs-body); line-height: var(--lh-loose); color: var(--c-ink-muted); }
+  .cx__block { margin-top: var(--sp-6); }
+  .cx__k { font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); margin-bottom: var(--sp-2); }
+  .cx__v { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-ink-body); }
+  .cx__email { font-size: 20px; font-weight: var(--fw-semi); letter-spacing: -0.02em; }
+  .cx__email:hover, .cx__v a:hover { color: var(--c-accent); }
+  .cx__h2 {
+    margin: 0; font-size: clamp(var(--fs-item), 2.9vw, var(--fs-stat));
+    font-weight: var(--fw-semi); line-height: 1.14;
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .cx__note { margin-top: var(--sp-4); max-width: 560px; font-size: var(--fs-body); line-height: var(--lh-loose); color: var(--c-ink-muted); }
+
+  .form { margin-top: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-4); max-width: 560px; }
+  /* Off-screen rather than display:none, which some bots skip. */
+  .form__pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .form__row { display: flex; flex-direction: column; gap: var(--sp-2); }
+  .form__row label { font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-ink-body); }
+  .form__row input, .form__row textarea {
+    padding: var(--sp-3) 0;
+    border: 0; border-bottom: 1px solid var(--c-rule-soft);
+    background: none; font-family: inherit; font-size: var(--fs-body);
+    color: var(--c-ink-body); resize: vertical;
+  }
+  .form__row input:focus, .form__row textarea:focus { outline: 0; border-bottom-color: var(--c-accent); }
+  .form__submit {
+    display: inline-flex; align-items: center; justify-content: space-between;
+    align-self: flex-start; min-width: var(--btn-w); height: var(--btn-h);
+    padding-inline: 25px 27px; border: 0; border-radius: var(--r-pill);
+    background: var(--c-black); color: var(--c-white);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: var(--fs-label); letter-spacing: var(--ls-button); cursor: pointer;
+    transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+  .form__submit:hover:not([disabled]) { background: var(--c-accent); color: var(--c-footer); }
+  .form__submit[disabled] { opacity: 0.5; cursor: progress; }
+  .form__dots { display: flex; gap: 2px; margin-left: var(--sp-4); }
+  .form__dots i { width: 8px; height: 8px; border-radius: var(--r-circle); display: block; }
+  .form__dots i:first-child { background: rgba(153, 152, 149, 0.6); }
+  .form__dots i:last-child { background: var(--c-white); }
+  .form__status:empty { display: none; }
+  .form__status { font-size: var(--fs-label); letter-spacing: var(--ls-item); color: var(--c-ink-muted); }
+  .form__status[data-state='error'] { color: #9a1b1b; }
+
+  @media (max-width: 1040px) {
+    .ch__inner, .cx { grid-template-columns: 1fr; row-gap: var(--sp-5); }
+    .ch__inner { padding-block: 150px 80px; }
+  }
+</style>
