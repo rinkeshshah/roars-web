@@ -35,6 +35,12 @@ import mark from '../assets/roars-mark.png'
 ---
 
 <a class="chip" href="/" data-logo-chip aria-label="Roars, home">
+  {/* Scroll-progress ring. DELIBERATE ADDITION, not fidelity: the export
+      carries this element and its conic gradient but leaves it at opacity 0,
+      so it never paints there. Requested, and it reuses the export's own
+      device and the progress value the top bar already computes, rather than
+      inventing a new one. --p is 0..1, written by src/scripts/topbar.ts. */}
+  <span class="chip__ring" data-logo-ring aria-hidden="true"></span>
   {/* Masked, not <img>: the mark has to take a token colour — accent over the
       hero, ink over light grounds, white on dark — and a raster cannot. The
       mask keeps one asset and lets `background` do the colouring. */}
@@ -59,6 +65,23 @@ import mark from '../assets/roars-mark.png'
     border-radius: var(--r-circle);
     color: var(--c-accent);
   }
+  .chip__ring {
+    position: absolute;
+    inset: -5px;
+    border-radius: var(--r-circle);
+    background: conic-gradient(
+      var(--c-accent) calc(var(--p, 0) * 1turn),
+      rgba(255, 212, 0, 0.16) 0turn
+    );
+    -webkit-mask: radial-gradient(circle, transparent 61%, #000 63%);
+    mask: radial-gradient(circle, transparent 61%, #000 63%);
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+  /* Appears once the page has actually moved, so it reads as progress rather
+     than decoration sitting there at zero. */
+  :global(.topbar.is-scrolled) .chip__ring { opacity: 1; }
+
   .chip__mark {
     position: relative;
     display: block;
