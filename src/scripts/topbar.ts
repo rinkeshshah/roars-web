@@ -48,12 +48,38 @@ export function initTopbar(): void {
   }
   applyInk()
 
+  /**
+   * The scroll-progress ring around the mark.
+   *
+   * This was built once before and removed, because it rendered as a pale
+   * filled circle behind the mark — the badge that had been explicitly cut —
+   * and came back as a complaint three times. It is back by request, drawn
+   * correctly this time: a conic gradient with a radial MASK punching its
+   * centre out, so it is an annulus and cannot read as a disc whatever ground
+   * it sits on. scripts/test-components.mjs asserts the centre stays clear.
+   *
+   * Invisible at the top and fading in once the page has actually moved, so
+   * it reads as progress rather than decoration parked at zero. A page too
+   * short to scroll never shows it at all.
+   */
+  const ring = document.querySelector<HTMLElement>('[data-logo-ring]')
+
+  const setRing = () => {
+    if (!ring) return
+    const span = document.documentElement.scrollHeight - window.innerHeight
+    if (span < 120) { ring.style.opacity = '0'; return }
+    const p = Math.min(1, Math.max(0, window.scrollY / span))
+    ring.style.setProperty('--p', `${p.toFixed(4)}turn`)
+    ring.style.opacity = window.scrollY > 24 ? '1' : '0'
+  }
+
   let frame = 0
   const onScroll = () => {
     if (frame) return
     frame = requestAnimationFrame(() => {
       frame = 0
       bar.classList.toggle('is-scrolled', window.scrollY > 80)
+      setRing()
     })
   }
 

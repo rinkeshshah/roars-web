@@ -12,6 +12,13 @@ relatedIndustries:
   - "food-restaurant-app-development"
   - "on-demand-fitness-app-development"
   - "saas-application-development-services"
+cta:
+  label: "Start here"
+  heading: "Bring us your least favourite part of the week."
+  body: "A 30-minute call. We listen, ask questions, and tell you whether AI automation is the right answer or whether you'd be better off fixing a process first."
+  ctaLabel: "Book a call"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  footerBlurb: "Bring us your least favourite part of the week and we will tell you honestly whether AI is the right answer."
 seo:
   title: "AI Automation Services That Ship and Get Measured"
   description: "Small, specific AI systems that remove friction from work your team already does, then get measured. If an automation does not beat the status quo, we turn it off."

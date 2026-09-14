@@ -58,6 +58,7 @@ const { Content } = entry ? await render(entry) : { Content: null }
   heading={name}
   schema={schema}
   pending={!entry}
+  ctaCopy={entry?.data.cta}
 >
   {Content && <Content />}
 </MarketingPage>

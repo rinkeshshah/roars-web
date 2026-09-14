@@ -136,12 +136,22 @@ CSS change is what made this session slow — fifteen runs at two minutes each.
 - **Client logo row motion.** The export's row is static. Each mark fades up
   in turn and comes to full colour on hover. Staggered off `--i`.
 - **`Contact Now` dot pulse.** Four seconds on the trailing dot only.
-- **The scroll-progress ring on the logo: REMOVED.** It was added as "logo
-  motion", reusing the export's own conic element — which the export leaves at
-  `opacity: 0`. On a light ground it rendered as exactly the white badge that
-  had been explicitly cut, and came back as a complaint three times before I
-  connected them. **Do not add it back.** The export leaves that element
-  invisible for a reason.
+- **The scroll-progress ring on the logo: RESTORED, by request.** It was
+  removed once, and the removal was right at the time: it reused the export's
+  conic element and rendered as a pale filled circle behind the mark — the
+  badge that had been explicitly cut — and came back as a complaint three
+  times. The client has since asked for it back.
+
+  **What was actually wrong was the construction, not the idea.** The ring
+  must be a conic gradient with a radial MASK punching its centre out, so it
+  is an annulus and cannot read as a disc on any ground. Without the mask the
+  gradient fills the whole 52px circle and you get the badge again. Verified
+  at three scroll positions and on both grounds; the centre stays clear.
+  `src/components/LogoChip.astro` carries the note.
+
+  The export's intro animation ships with it: a quarter turn and a slight
+  overshoot on load, 1100ms after a 300ms delay. Both skip under
+  `prefers-reduced-motion`.
 
 - **The dashed rule under inner-page titles: REMOVED.** `assets/union.svg`,
   the hand-drawn scribble the export draws under "Agency", "Projects" and

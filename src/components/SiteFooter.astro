@@ -1,6 +1,14 @@
 ---
 /**
- * Shared footer. Identical on every page.
+ * Shared footer. The chrome is identical on every page; the OPENING BLURB is
+ * not.
+ *
+ * That paragraph is the page's closing pitch, and it was shipping the CTA
+ * band's sentence verbatim on all fourteen routes — so a visitor who read the
+ * band then reached the footer read the same line twice, and every page
+ * offered search engines the same closing copy. It takes the page's own
+ * sentence now. The founder chip under it does not change: it is an
+ * attribution, not a message.
  *
  * One four-column grid carries all three bands: 459 / 233 / 234 / 436 of the
  * 1362 content width, taken from the measured x positions in the specs
@@ -18,6 +26,14 @@ import GrainField from './GrainField.astro'
 import { PORTRAIT } from '../lib/media'
 import mark from '../assets/roars-mark.png'
 
+interface Props {
+  /** This page's closing line. Omit for the shipped default. */
+  blurb?: string
+}
+const {
+  blurb = 'Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.',
+} = Astro.props
+
 const year = new Date().getFullYear()
 ---
 
@@ -29,11 +45,7 @@ const year = new Date().getFullYear()
       {/* The real mark, masked so it reads white on the dark ground. */}
       <span class="ft__mark" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
       <div class="ft__blurb">
-        <p>
-          Find how we can help you get from A to B. Our love for innovation
-          design and technology is evident in all our work. No detail is too
-          small.
-        </p>
+        <p>{blurb}</p>
         <div class="ft__by">
           <img class="ft__face" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
           <span class="ft__by-text">

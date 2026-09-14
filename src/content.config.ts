@@ -54,9 +54,46 @@ const seo = z.object({
     .default('WebPage'),
 })
 
+/**
+ * The closing CTA band's copy, per entry.
+ *
+ * Optional, because the band ships a real default rather than a placeholder —
+ * but a service or industry page that ends on the same sentence as thirteen
+ * others is a weaker page, and the export writes a distinct close for each.
+ *
+ * Lengths are bounded for the same reason the seo fields are: a 42px headline
+ * that runs to three lines stops being a headline, and the band is drawn 540
+ * tall. Too long fails the build instead of overflowing the band in
+ * production.
+ */
+const cta = z
+  .object({
+    label: z.string().min(2).max(28).optional(),
+    heading: z
+      .string()
+      .min(12, 'cta.heading is too short to be an offer.')
+      .max(90, 'cta.heading over 90 characters wraps past the band it is drawn in.'),
+    body: z
+      .string()
+      .min(40, 'cta.body is too short to say anything.')
+      .max(260, 'cta.body over 260 characters overruns the right column.')
+      .optional(),
+    ctaLabel: z.string().min(2).max(32).optional(),
+    ctaHref: z.string().min(1).optional(),
+    /** The footer's closing line for this entry. One sentence: the block is
+     *  drawn 384 wide at 22/30, so roughly four lines is the ceiling. */
+    footerBlurb: z
+      .string()
+      .min(12, 'cta.footerBlurb is too short to be a closing line.')
+      .max(190, 'cta.footerBlurb over 190 characters overruns the 384px footer block.')
+      .optional(),
+  })
+  .optional()
+
 /** Fields every collection shares beyond seo. */
 const base = {
   title: z.string().min(1),
+  cta,
   /** Real publish date. Never a bulk-edit `modified` value from WordPress. */
   publishedAt: z.coerce.date(),
   /**

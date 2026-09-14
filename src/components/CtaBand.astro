@@ -1,30 +1,59 @@
 ---
 /**
  * Shared CTA band. 1440x540 dark, 42/52 headline, one primary button.
- * Copy is verbatim from design/specs/CTA Band.md.
+ * The defaults are verbatim from design/specs/CTA Band.md.
+ *
+ * THE COPY IS PER PAGE, THE BAND IS NOT. One component keeps the geometry,
+ * the rule, the label and the ink from drifting apart across fourteen pages;
+ * the sentence inside it is the page's own. That is what the export already
+ * does — AI Automation closes on "Bring us your least favourite part of the
+ * week", Industries on "Bring unique food & restaurant app ideas to life",
+ * Resources and Guides on "Let's get your project started." One shared
+ * sentence everywhere is a weaker page and a weaker search result.
+ *
+ * A page written as .astro passes these props. A page driven by a collection
+ * carries its copy in front matter under `cta`, where Zod checks it like
+ * everything else — see src/content.config.ts. Omitting them is not a silent
+ * failure: you get the shipped default, which is a real sentence.
  */
 import Section from './Section.astro'
 import Button from './Button.astro'
 import { site } from '../lib/site'
+
+interface Props {
+  /** Small rail label above the headline. */
+  label?: string
+  heading?: string
+  body?: string
+  ctaLabel?: string
+  ctaHref?: string
+}
+const {
+  label = 'A to B',
+  heading = 'Find how we can help you get from A to B',
+  body = 'Our love for innovation design and technology is evident in all our works. No detail is too small. Together, we’ll make your business grow, manifold.',
+  ctaLabel = 'Request a Callback',
+  ctaHref = site.booking,
+} = Astro.props
+
+/** External only when it actually leaves the site. An in-site href must not
+ *  pick up target=_blank and rel=noopener just because the default does. */
+const external = /^https?:\/\//.test(ctaHref)
 ---
 
 <Section ground="dark">
   <div class="cta__grid">
     <div data-reveal class="cta__left">
       <div class="cta__rule"></div>
-      <span class="cta__label">A to B</span>
-      <p class="cta__head">Find how we can help you get from A to B</p>
+      <span class="cta__label">{label}</span>
+      <p class="cta__head">{heading}</p>
       <p class="cta__phones">
         USA {site.phones.US.display} &middot; UK {site.phones.UK.display}
       </p>
     </div>
     <div data-reveal class="cta__right" style="transition-delay:80ms">
-      <p class="cta__body">
-        Our love for innovation design and technology is evident in all our
-        works. No detail is too small. Together, we&rsquo;ll make your business
-        grow, manifold.
-      </p>
-      <Button href={site.booking} label="Request a Callback" variant="light" external />
+      <p class="cta__body">{body}</p>
+      <Button href={ctaHref} label={ctaLabel} variant="light" external={external} />
     </div>
   </div>
 </Section>
