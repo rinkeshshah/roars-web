@@ -149,9 +149,15 @@ function frontMatterProse(data) {
      bands, process, featured, receipts and close — none of which were in this
      list, so eight real service pages counted about 150 words when they carry
      four times that. */
+  /* Resource keys. A guide's designed page renders `summary` in the hero and
+     `sections` in the long read, and never mounts <Content />, so the markdown
+     body of a designed guide is not on the page at all. Counting only the body
+     measured the one part of a guide nobody sees, and would have passed a page
+     with nine hundred words of front matter and an empty section list. */
   for (const k of [
     'headline', 'standfirst', 'hero', 'journey', 'surfaces', 'proof', 'cta',
     'bands', 'process', 'featured', 'receipts', 'close', 'faq',
+    'summary', 'sections',
   ]) {
     if (data[k] !== undefined) walk(data[k], k)
   }

@@ -53,6 +53,12 @@ const ACCEPTED = [
   { a: /^(AI|food &|clinics &|mvp|user|page|web app|mobile app|growth|digital|retail &|travel &|members &|transport &|learning &|innovation|dedicated|devops|product|ecommerce)$/i,
     b: /^(automation|restaurant|healthcare|development|experience|not found|hacking|transformation|ecommerce|hospitality|concierge|logistics|education|design|developers|services)$/i,
     why: 'masthead lockup: the small word is set over the large one' },
+  /* The guide masthead is the same lockup, built from the guide's own title:
+     56px on a 60px line over a 124px line. The boxes overlap by the leading,
+     the glyphs do not touch. Listed by word, like the rule above, so a real
+     collision on some other page still fails. */
+  { a: /^(SWOT)$/, b: /^(Analysis)$/,
+    why: 'guide masthead lockup: the small word is set over the large one' },
   /* A display heading with its figure set beside it — "Projects" and "250+".
      The heading's descenders reach past the figure's cap line; no ink meets. */
   { a: /^(Projects|People say)$/, b: /^(250\+|4\.9\/5)$/,
@@ -70,6 +76,11 @@ const PAGES = [
   ['home', '/'], ['agency', '/about-us/'], ['approach', '/approach/'],
   ['contact', '/contact-us/'], ['work', '/work/'], ['resources', '/resources/'],
   ['guides', '/resources/guides/'],
+  /* A guide DETAIL page, not just the shelf. Its long-read blocks are a fixed
+     520px with the body absolutely positioned inside them, so a section whose
+     copy runs long paints over the next section's rule rather than pushing it
+     down. Nothing on the shelf page would show that. */
+  ['guide', '/resources/swot-analysis/'],
   ['hub-s', '/s/'],
   ['hub-ind', '/industries/'],
   ['industry', '/industries/food-restaurant-app-development/'],

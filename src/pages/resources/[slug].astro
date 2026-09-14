@@ -101,7 +101,13 @@ const { Content } = entry ? await render(entry) : { Content: null }
 ---
 
 {designed && d ? (
-  <BaseLayout title={d.seo.title} description={d.seo.description} path={path} schema={schema}>
+  <BaseLayout
+    title={d.seo.title}
+    description={d.seo.description}
+    path={path}
+    schema={schema}
+    noindex={d.needsReview}
+  >
     <TopBar slot="topbar" cta="meeting" />
     <NavOverlay />
 

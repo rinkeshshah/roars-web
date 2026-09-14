@@ -767,6 +767,17 @@ const resources = defineCollection({
     previewAlt: z.string().optional(),
 
     /**
+     * Drafted sections are on the page but not offered to search.
+     *
+     * Same arrangement as services and industries. The nine guides whose long
+     * read was written here describe public frameworks rather than anything
+     * about Roars, so the risk is lower than an invented outcome figure, but
+     * the copy is still ours and not theirs. It stays out of the index until
+     * somebody has read it.
+     */
+    needsReview: z.boolean().default(false),
+
+    /**
      * The shelf card's own line, and the guide hero's. Drawn 420 wide at
      * 15/23 on the card, so roughly five lines is the ceiling.
      *
