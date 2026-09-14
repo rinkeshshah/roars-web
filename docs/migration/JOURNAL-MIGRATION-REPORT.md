@@ -166,12 +166,44 @@ place on the server. If it is ever cleared, these images break and so do the
 work pages and guide covers, which use the same registry.
 
 I could not verify any of the URLs resolve. Outbound access to roarsinc.com is
-blocked from this environment (see section 6), so "the file is at that path" is
+blocked from this environment (see section 8), so "the file is at that path" is
 taken from the export's attachment records, not from a 200.
 
 ---
 
-## 5. The index
+## 5. The post page
+
+Rebuilt against `design/specs/Insight-details.md`, which I had not followed on
+the first pass: the title had gone into a dark hero band, and the design puts
+it on white. Now, per the spec — a 196px dark band carrying nothing, then a
+419px left rail with "See all Insights" and its two dots, and a right column
+with the title at 58px/62px, the standfirst, and the date as a large day
+beside a small month. Hero image below at 654px, radius 12. Body headings sit
+above their paragraph at 26px/37px rather than floating into the rail, which
+is both what the spec draws and what keeps them clear of the byline.
+
+**The byline is the organisation, not a person.** The spec draws the founder's
+portrait there. The export credits all nineteen posts to a different author
+account, and the page's own `BlogPosting` schema names the Organization as
+author, so a face would contradict both. A personal byline needs that person's
+confirmed display name and a portrait in `src/lib/media.ts`; neither exists
+yet, and guessing one is the same mistake as guessing alt text.
+
+**Previous / next.** Not in the desktop prototype — it ends at the article, and
+only the mobile layout offers a way onward, as a single "More Insights"
+button. With nineteen posts, someone who finishes one should be able to take
+the next without going back to the index. The chain is newest-first, matching
+the order the index pages in, and contains **migrated posts only**: a next
+link into a "content pending migration" page is a dead end with extra steps.
+The newest post has no previous and the oldest has no next, verified in the
+built HTML.
+
+`assert-overlap.mjs` now covers `/our-journal/` and a post. Both are clean at
+1440: no overlapping text, no horizontal scroll.
+
+---
+
+## 6. The index
 
 `/our-journal/` lists the migrated posts and nothing else: one featured card
 plus 18, twelve to a page, two pages. It used to list all 115 inventory rows,
@@ -199,7 +231,7 @@ Two knock-on fixes came with that:
 
 ---
 
-## 6. Redirects
+## 7. Redirects
 
 Source of truth: `docs/migration/roarsinc-redirects.conf`, supplied with the
 Search Console decisions, **never edited**. Corrections layer on top from
@@ -326,11 +358,11 @@ in its own output and is what `npm run verify` uses.
 
 ---
 
-## 7. What I could not check
+## 8. What I could not check
 
 - **Any live HTTP status.** Egress to roarsinc.com is blocked (403 on CONNECT
   at the agent proxy), confirmed with curl, WebFetch and the proxy's own
-  status endpoint. Every redirect claim in section 6 is static analysis of the
+  status endpoint. Every redirect claim in section 7 is static analysis of the
   config and the build output.
 - **That the `/wp-content/uploads/` images resolve.** Same reason.
 

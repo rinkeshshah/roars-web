@@ -25,6 +25,8 @@ const PAGES = [
   ['contact', '/contact-us/'], ['work', '/work/'], ['resources', '/resources/'],
   ['industry', '/industries/food-restaurant-app-development/'],
   ['service', '/s/product-development-company/'],
+  ['journal', '/our-journal/'],
+  ['post', '/our-journal/how-ai-is-transforming-user-experience-design/'],
 ]
 const b = await chromium.launch()
 for (const [name, url] of PAGES) {
