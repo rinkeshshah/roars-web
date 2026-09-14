@@ -820,10 +820,14 @@ const schema = [
   .about__est-row { display: flex; align-items: flex-start; gap: var(--sp-5); margin-top: var(--sp-4); }
   .about__stat-num {
     font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display));
-    font-weight: var(--fw-semi); line-height: 43px;
+    /* 84/84 in the export. 43 was a mispairing — it is the /Projects count
+       in the Services rows that leads at 43 — and the 41px it cost is
+       exactly what left the About section short and shifted every section
+       below it. */
+    font-weight: var(--fw-semi); line-height: 84px;
     letter-spacing: var(--ls-display); color: var(--c-black);
   }
-  .about__plus { font-size: 0.43em; font-weight: var(--fw-medium); }
+  .about__plus { font-size: 0.43em; line-height: 31px; font-weight: var(--fw-medium); }
   .about__pct { font-size: 0.31em; font-weight: 700; }
   .about__stat-note, .about__est-note {
     max-width: 170px; margin-top: 19px;
@@ -1141,11 +1145,19 @@ const schema = [
   /* The cascade. Seven tracks so the four items land on the prototype's
      uneven column rhythm (292 / 57 / 339 / 7 / 435 / 29 / 206 of 1365); each
      item then drops by its own offset. Proportional, so it holds off 1440. */
+  /* The cascade is an authored 525px band (container 39,329 to 854 in the
+     export), not a content-driven one — the four cards carry deliberate
+     vertical offsets, so letting the tallest set the height put the review
+     bar below it 37px low. min-height, not height: the export's container
+     clips at 525 and its mock quotes fit; the real testimonials are longer,
+     and cutting a client's words off mid-sentence to save 37px is not a
+     trade worth making. Where the band has to grow, it grows. */
   .say__list {
     list-style: none; margin: 27px 0 0; padding: 0;
     display: grid;
     grid-template-columns: 292fr 57fr 339fr 7fr 435fr 29fr 206fr;
     align-items: start;
+    min-height: 525px;
   }
   .say__item {
     grid-row: 1;
@@ -1166,9 +1178,13 @@ const schema = [
 
   /* 386 / 737 / 966 in the prototype, which is its own rhythm rather than
      the inner column. */
-  .say__foot { display: grid; grid-template-columns: 351px 150px 79px auto; align-items: center; margin-top: 12px; margin-left: 347px; }
+  /* Measured: the nav block at 386,880 and the stack block at 737,866, so
+     they are 351 apart and NOT baseline-aligned — the nav sits 14 lower.
+     Within the stack block: avatars 0-138, meta at 150, pill at 464. */
+  .say__foot { display: grid; grid-template-columns: 351px 150px 314px auto; align-items: start; margin-top: 12px; margin-left: 347px; }
   .say__foot :global(a) { justify-self: start; }
-  .say__nav { display: flex; align-items: center; gap: var(--sp-3); font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); }
+  /* 190px band: dot at 0, "Prev." at 18, "Next" at 128, dot at 182. */
+  .say__nav { display: grid; grid-template-columns: 8px 102px 42px 8px; gap: 0 10px; width: 190px; align-items: center; margin-top: 14px; font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); }
   .say__prev { color: rgba(0, 0, 0, 0.4); }
   .say__next { color: rgb(8, 8, 8); }
   .say__dot { width: 8px; height: 8px; border-radius: var(--r-circle); background: rgba(0, 0, 0, 0.4); }

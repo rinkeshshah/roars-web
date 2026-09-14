@@ -99,6 +99,10 @@ const CTA = {
     background: var(--c-white);
   }
   .topbar__face img { width: 32px; height: 32px; border-radius: var(--r-circle); object-fit: cover; display: block; }
+  /* With the portrait still 404ing, the white disc is a blob sitting next to
+     the pill on every light ground. Collapse the whole slot until the file
+     lands, rather than shipping the ring around nothing. */
+  .topbar__face:has(img.is-missing) { display: none; }
   .topbar__note {
     margin-top: 29px;
     font-size: var(--fs-label);

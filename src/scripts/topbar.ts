@@ -20,7 +20,6 @@ export function initTopbar(): void {
   const darks = Array.from(
     document.querySelectorAll<HTMLElement>('[data-ground="dark"], [data-topbar-ink="light"]'),
   )
-  const ring = bar.querySelector<HTMLElement>('[data-logo-ring]')
 
   /** Dark sections currently crossing the bar's probe line. */
   const overlapping = new Set<Element>()
@@ -55,10 +54,6 @@ export function initTopbar(): void {
     frame = requestAnimationFrame(() => {
       frame = 0
       bar.classList.toggle('is-scrolled', window.scrollY > 80)
-      if (ring) {
-        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
-        ring.style.setProperty('--p', String(Math.min(1, Math.max(0, window.scrollY / max))))
-      }
     })
   }
 
