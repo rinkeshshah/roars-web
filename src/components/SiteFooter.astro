@@ -15,6 +15,7 @@
 import { site } from '../lib/site'
 import { FOOTER_NAV, SOCIAL, LEGAL } from '../lib/nav'
 import GrainField from './GrainField.astro'
+import { PORTRAIT } from '../lib/media'
 import mark from '../assets/roars-mark.png'
 
 const year = new Date().getFullYear()
@@ -33,9 +34,8 @@ const year = new Date().getFullYear()
           design and technology is evident in all our work. No detail is too
           small.
         </p>
-        {/* Portrait arrives with the Phase 5 uploads import. */}
         <div class="ft__by">
-          <span class="ft__face" aria-hidden="true"></span>
+          <img class="ft__face" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
           <span class="ft__by-text">
             <span class="ft__by-name">Rinkesh A Shah</span>
             <span class="ft__by-role">CEO / Founder</span>
@@ -146,7 +146,7 @@ const year = new Date().getFullYear()
     color: rgb(147, 147, 147);
   }
   .ft__by { display: flex; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
-  .ft__face { width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); background: rgba(255, 255, 255, 0.22); }
+  .ft__face { width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); object-fit: cover; background: rgba(255, 255, 255, 0.22); }
   .ft__by-text { display: flex; flex-direction: column; gap: 2px; }
   .ft__by-name { font-size: var(--fs-micro); font-weight: var(--fw-regular); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-on-dark-90); }
   .ft__by-role { font-size: var(--fs-micro); font-weight: var(--fw-regular); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-on-dark-50); }

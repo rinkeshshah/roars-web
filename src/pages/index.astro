@@ -21,6 +21,7 @@ import SiteFooter from '../components/SiteFooter.astro'
 import Button from '../components/Button.astro'
 import Accordion from '../components/Accordion.astro'
 import { site } from '../lib/site'
+import { PORTRAIT, CLIENT_LOGOS, WORK, SERVICE_IMG, JOURNAL } from '../lib/media'
 import GrainField from '../components/GrainField.astro'
 /* Decorative furniture still used by About and Insights. The hero's own
    set — planet, starbelt, slash mark — went with the export 2 redesign. */
@@ -69,12 +70,16 @@ const featured = [
     year: '2025',
     name: 'Parqly.',
     href: '/work/parqly-parking-solution/',
+    img: WORK.parqly,
+    faces: [PORTRAIT.chetna, PORTRAIT.atul],
   },
   {
     day: '15 Oct',
     year: '2026',
     name: 'Snowman Logistics.',
     href: '/work/warehouse-compliance-checklist-app/',
+    img: WORK.snowman,
+    faces: [PORTRAIT.abhishek, PORTRAIT.suzanne],
   },
 ]
 
@@ -87,28 +92,28 @@ const featured = [
  */
 const testimonials = [
   {
-    col: 5, top: 0, avatar: 80, label: 14, qs: 24, lead: 32, star: 14,
+    col: 5, top: 0, avatar: 80, label: 14, qs: 24, lead: 32, star: 14, photo: PORTRAIT.suzanne,
     name: 'Jayeis Sonill',
     role: 'CEO, Aum Investment',
     quote:
       'Roars has consistently positioned themselves at the forefront of innovation and technology. They understand business needs and craft technologies to address them.',
   },
   {
-    col: 3, top: 264, avatar: 65, label: 13, qs: 18, lead: 25, star: 12,
+    col: 3, top: 264, avatar: 65, label: 13, qs: 18, lead: 25, star: 12, photo: PORTRAIT.abhishek,
     name: 'James Hadley',
     role: 'CEO, Simthing New, LLC',
     quote:
       'I was pleased with the deliverables. I was able to see and understand the efforts required to scale the solution in development.',
   },
   {
-    col: 1, top: 108, avatar: 57, label: 12, qs: 15, lead: 21, star: 11,
+    col: 1, top: 108, avatar: 57, label: 12, qs: 15, lead: 21, star: 11, photo: PORTRAIT.chetna,
     name: 'Avinash Kumar',
     role: 'Project Manager, Roars',
     quote:
       'From discovery to launch, the team brought our platform to life with precision. A genuine product partner.',
   },
   {
-    col: 7, top: 230, avatar: 40, label: 10, qs: 12, lead: 17, star: 9,
+    col: 7, top: 230, avatar: 40, label: 10, qs: 12, lead: 17, star: 9, photo: PORTRAIT.khusboo,
     name: 'Khusboo Panchal',
     role: 'Digital Marketing',
     quote: 'Fast, smart and beautiful. We will be back for round two soon.',
@@ -132,18 +137,21 @@ const insights = [
     day: '15',
     month: 'May',
     title: 'AI App Development vs Traditional App Development',
+    img: JOURNAL.aiVsTraditional,
     href: '/our-journal/ai-app-development-vs-traditional-app-development-which-is-better-for-customer-engagement/',
   },
   {
     day: '04',
     month: 'May',
     title: '20 Years of Roars: Built on Purpose, Driven by Impact',
+    img: JOURNAL.twentyYears,
     href: '/our-journal/20-years-of-roars-built-on-purpose-driven-by-impact/',
   },
   {
     day: '11',
     month: 'Dec',
     title: 'The Unexpected Insight — We built a meal planning app',
+    img: JOURNAL.mealPlanning,
     href: '/our-journal/the-unexpected-insight-we-built-a-meal-planning-app/',
   },
 ]
@@ -343,11 +351,11 @@ const schema = [
             portraits on a 2x3 lattice with one cell left empty, and the count
             sits in that gap. Portraits arrive with the Phase 5 uploads
             import; the discs hold their places until then. */}
-        <div class="about__cluster" aria-hidden="true">
-          <span class="about__face about__face--a"></span>
-          <span class="about__face about__face--b"></span>
-          <span class="about__face about__face--c"></span>
-          <span class="about__face about__face--d"></span>
+        <div class="about__cluster">
+          <img class="about__face about__face--a" src={PORTRAIT.suzanne} alt="" width="42" height="42" loading="lazy" />
+          <img class="about__face about__face--b" src={PORTRAIT.chetna} alt="" width="42" height="42" loading="lazy" />
+          <img class="about__face about__face--c" src={PORTRAIT.nitin} alt="" width="42" height="42" loading="lazy" />
+          <img class="about__face about__face--d" src={PORTRAIT.atul} alt="" width="42" height="42" loading="lazy" />
           <p class="about__team-count"><span>59</span></p>
         </div>
       </div>
@@ -372,10 +380,11 @@ const schema = [
           the Phase 5 uploads import; CLAUDE.md forbids hot-linking the live
           site, so the row holds its 44px height and its edge fades until then
           and is listed in the build report. */}
-      <div class="about__logos" aria-hidden="true">
+      <div class="about__logos">
         <div class="about__logo-row">
-          <span></span><span></span><span></span>
-          <span></span><span></span><span></span>
+          {CLIENT_LOGOS.map((l) => (
+            <img src={l.src} alt={l.alt} height={l.h} loading="lazy" decoding="async" />
+          ))}
         </div>
       </div>
     </div>
@@ -427,12 +436,9 @@ const schema = [
               hidden={i !== 0}
             >
               <div class="svc__inner">
-                {/* Imagery arrives with the Phase 5 uploads import. The
-                    placeholder holds the prototype's 138px and 37px discs so
-                    the row keeps its height and CLS stays honest. */}
                 <div class="svc__media" aria-hidden="true">
-                  <span class="svc__disc"></span>
-                  <span class="svc__disc svc__disc--sm"></span>
+                  <img class="svc__disc" src={SERVICE_IMG.productConsultant} alt="" width="138" height="138" loading="lazy" decoding="async" />
+                  <img class="svc__disc svc__disc--sm" src={SERVICE_IMG.beautifulExperience} alt="" width="37" height="37" loading="lazy" decoding="async" />
                 </div>
                 <div class="svc__detail">
                   {s.stages && <p class="svc__stages">{s.stages}</p>}
@@ -491,8 +497,10 @@ const schema = [
               <span class="proj__year">{f.year}</span>
             </div>
             <a class="proj__card" href={f.href}>
-              {/* Hero image arrives with the Phase 5 uploads import. */}
-              <div class="proj__ph" role="img" aria-label={f.name}></div>
+              <img class="proj__ph" src={f.img} alt={f.name} width="1129" height="580" loading="lazy" decoding="async" />
+              <span class="proj__faces" aria-hidden="true">
+                {f.faces.map((src) => <img src={src} alt="" width="42" height="42" loading="lazy" />)}
+              </span>
               <span class="proj__name">{f.name}</span>
             </a>
           </article>
@@ -522,8 +530,7 @@ const schema = [
             data-reveal
             style={`--col:${t.col};--top:${t.top}px;--av:${t.avatar}px;--lb:${t.label}px;--qt:${t.qs}px;--ld:${t.lead}px;--st:${t.star}px;transition-delay:${i * 70}ms`}
           >
-            {/* Portraits arrive with the Phase 5 uploads import. */}
-            <span class="say__avatar" aria-hidden="true"></span>
+            <img class="say__avatar" src={t.photo} alt="" width={t.avatar} height={t.avatar} loading="lazy" decoding="async" />
             <p class="say__name">{t.name}</p>
             <p class="say__role">{t.role}</p>
             <div class="say__rule"></div>
@@ -598,8 +605,7 @@ const schema = [
       <h2 class="display">Insights</h2>
       <div class="ins__head">
         <div class="ins__who">
-          {/* Portrait arrives with the Phase 5 uploads import. */}
-          <span class="ins__avatar" aria-hidden="true"></span>
+          <img class="ins__avatar" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
           <p class="ins__name">Rinkesh A Shah</p>
           <p class="ins__role">Founder</p>
         </div>
@@ -614,9 +620,7 @@ const schema = [
         {insights.map((post, i) => (
           <li data-reveal style={`transition-delay:${i * 70}ms`}>
             <a class="ins__card" href={post.href}>
-              {/* Featured image arrives with the Phase 5 uploads import.
-                  A 138px disc, matching the services row. */}
-              <span class="ins__ph" aria-hidden="true"></span>
+              <img class="ins__ph" src={post.img} alt="" width="138" height="138" loading="lazy" decoding="async" />
               <span class="ins__rule"></span>
               <span class="ins__day">{post.day}</span>
               <span class="ins__month">{post.month}</span>
@@ -642,8 +646,7 @@ const schema = [
       <h2 class="display">FAQ</h2>
       {/* Founder block sits in the left rail, as in the prototype. */}
       <div class="faq__rail">
-        {/* Portrait arrives with the Phase 5 uploads import. */}
-        <span class="faq__avatar" aria-hidden="true"></span>
+        <img class="faq__avatar" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
         <p class="faq__who">Rinkesh A Shah</p>
         <p class="faq__role">CEO / Founder</p>
         <p class="faq__intro">
@@ -775,7 +778,7 @@ const schema = [
   .about__cluster { position: relative; width: 145px; height: 143px; margin-top: var(--sp-5); }
   .about__face {
     position: absolute; width: var(--avatar); height: var(--avatar);
-    border-radius: var(--r-circle); background: rgb(173, 173, 173);
+    border-radius: var(--r-circle); object-fit: cover; background: rgb(173, 173, 173);
   }
   .about__face--a { left: 103px; top: 0; }
   .about__face--b { left: 52px;  top: 50px; }
@@ -799,7 +802,7 @@ const schema = [
   .about__logos::before { left: 0; background: linear-gradient(270deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
   .about__logos::after { right: 0; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
   .about__logo-row { display: flex; align-items: center; gap: 44px; height: 44px; padding-inline: 6px; filter: grayscale(1); opacity: 0.62; }
-  .about__logo-row span { flex: 0 0 84px; height: 24px; background: rgb(217, 217, 217); }
+  .about__logo-row img { flex: 0 0 auto; width: auto; }
 
   .about__pitch { grid-column: 3 / 5; }
   .about__pitch p {
@@ -906,7 +909,7 @@ const schema = [
   }
   .svc__detail { grid-column: 2 / -1; }
   .svc__media { position: relative; height: 138px; }
-  .svc__disc { position: absolute; left: 0; top: 0; width: 138px; height: 138px; border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .svc__disc { position: absolute; left: 0; top: 0; width: 138px; height: 138px; border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
   .svc__disc--sm { left: 141px; top: 5px; width: 37px; height: 37px; background: rgb(102, 102, 102); }
   .svc__detail { display: flex; flex-direction: column; gap: var(--sp-4); }
   .svc__stages { margin: 0; font-size: var(--fs-label); font-weight: var(--fw-medium); line-height: 19px; letter-spacing: var(--ls-body); color: rgb(71, 71, 71); opacity: 0.8; }
@@ -942,6 +945,10 @@ const schema = [
   .proj__date .rule { margin-block: var(--sp-3); width: 85px; }
   .proj__year { font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-body); color: var(--c-rule); }
   .proj__card { position: relative; display: block; border-radius: var(--r-card, 12px); overflow: hidden; }
+  .proj__ph { display: block; width: 100%; height: 100%; object-fit: cover; background: rgb(30, 30, 30); }
+  /* Two ringed faces at the card's top right, as the export draws them. */
+  .proj__faces { position: absolute; right: var(--sp-4); top: var(--sp-4); display: flex; flex-direction: column; gap: 6px; }
+  .proj__faces img { width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); object-fit: cover; box-shadow: var(--shadow-ring); }
   /* Placeholder ground from the design system: rgb(30,30,30) at the card's
      real aspect so the layout and CLS budget hold once the photo lands. */
   .proj__ph { aspect-ratio: 1129 / 579; background: rgb(30, 30, 30); border-radius: 12px; }
@@ -972,7 +979,7 @@ const schema = [
     grid-column: var(--col);
     margin-top: var(--top);
   }
-  .say__avatar { display: block; width: var(--av); height: var(--av); border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .say__avatar { display: block; width: var(--av); height: var(--av); border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
   .say__name { margin: 15px 0 0; font-size: var(--lb); font-weight: var(--fw-semi); line-height: 19px; letter-spacing: var(--ls-body); color: rgb(31, 31, 31); }
   .say__role { margin: 0; font-size: var(--lb); font-weight: var(--fw-medium); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-ink-label); }
   .say__rule { height: 1.5px; margin-top: 19px; background: var(--c-rule-strong); }
@@ -1054,7 +1061,7 @@ const schema = [
   .ins { padding-block: 120px 79px; }
   .ins .display, .ins__head, .ins__foot { margin-left: var(--rail-width); }
   .ins__head { display: grid; grid-template-columns: 232px minmax(0, 524px); gap: 0; margin-top: 92px; align-items: start; }
-  .ins__avatar { display: block; width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .ins__avatar { display: block; width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
   .ins__name { margin: 18px 0 0; font-size: var(--fs-label); font-weight: var(--fw-semi); line-height: 20px; letter-spacing: var(--ls-display); color: rgb(22, 22, 22); }
   .ins__role { margin: 0; font-size: var(--fs-label); font-weight: var(--fw-medium); line-height: 20px; letter-spacing: var(--ls-display); color: rgb(145, 144, 142); }
   .ins__intro { margin: 0; }
@@ -1069,7 +1076,7 @@ const schema = [
     row-gap: 0;
   }
   /* A 138px disc, offset into the second column, matching the services row. */
-  .ins__ph { grid-column: 2; width: 138px; height: 138px; border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .ins__ph { grid-column: 2; width: 138px; height: 138px; border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
   .ins__rule { grid-column: 1 / -1; height: 1px; margin-top: 36px; background: var(--c-rule-strong); }
   .ins__day { grid-column: 1; grid-row: 3; margin-top: 13px; font-size: var(--fs-stat); font-weight: var(--fw-semi); line-height: 43px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
   .ins__month { grid-column: 1; grid-row: 3; justify-self: start; margin: 13px 0 0 55px; font-size: var(--fs-body); font-weight: var(--fw-medium); line-height: 43px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
@@ -1085,7 +1092,7 @@ const schema = [
   .faq :global(.acc) { margin-top: var(--sp-7); margin-left: var(--rail-width); }
   /* Founder block in the left rail. */
   .faq__rail { position: absolute; left: 3px; top: 308px; width: 195px; }
-  .faq__avatar { display: block; width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .faq__avatar { display: block; width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
   .faq__who { margin: 10px 0 0; font-size: var(--fs-micro); font-weight: var(--fw-medium); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-black); }
   .faq__role { margin: 0; font-size: var(--fs-micro); font-weight: var(--fw-regular); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-rule); }
   .faq__intro { margin: var(--sp-4) 0 0; font-size: var(--fs-body); font-weight: var(--fw-medium); line-height: 22px; letter-spacing: var(--ls-body); color: rgb(20, 20, 20); }
