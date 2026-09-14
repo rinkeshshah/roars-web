@@ -148,6 +148,49 @@ const projects = defineCollection({
     /** Editorial, set here, not "most recent". Drives the /work/ index tiers. */
     featured: z.boolean().default(false),
     team: z.array(z.string()).default([]),
+
+    /**
+     * The case study's own layout, from `Roars v2 - Project Detail`.
+     * Everything optional: a project with nothing but a name still gets the
+     * pending state, which is what twenty-two of the twenty-three need today.
+     */
+    /** Display date under the client name, e.g. "Feb 18, 2026". */
+    dateLabel: z.string().max(24).optional(),
+    /**
+     * The masthead word. The export sets "Snowman" at 124px, not "Snowman
+     * Logistics" — at that size the full name wraps onto the date. Defaults to
+     * the client name for the short ones.
+     */
+    headline: z.string().max(20).optional(),
+    /**
+     * The four-slot showcase the export draws between Goals and Outcome:
+     * 1358x737, then two 662x700, then 1358x754. Fewer than four is fine; the
+     * slots that have no image still draw, because the block is part of the
+     * layout rather than a gallery that appears when it is full.
+     */
+    showcase: z.array(z.object({ src: z.string(), alt: z.string().max(120).default('') })).max(4).default([]),
+    /** The one-sentence what-this-is, set 26/37 across 689px. */
+    about: z.string().max(320).optional(),
+    /** The four-row fact table. Label left, value right. */
+    facts: z.array(z.object({ k: z.string().max(20), v: z.string().max(80) })).max(6).default([]),
+    liveUrl: z.string().optional(),
+    liveLabel: z.string().max(24).default('Live Version'),
+    /**
+     * The two headed blocks — "Goals of the Project:" and "Outcome:". Each is
+     * a heading, a lead set at 26/37 and a second paragraph at 18/28.
+     */
+    blocks: z
+      .array(
+        z.object({
+          heading: z.string().max(40),
+          lead: z.string().max(320),
+          body: z.string().max(320).optional(),
+        }),
+      )
+      .max(4)
+      .default([]),
+    /** Paths under /wp-content/uploads/, served from the webspace. */
+    gallery: z.array(z.object({ src: z.string(), alt: z.string().max(120).default('') })).max(4).default([]),
   }),
 })
 
