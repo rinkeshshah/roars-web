@@ -1,67 +1,309 @@
 ---
 /**
- * Must return a real HTTP 404, not a 200 with a 404 page. nginx does that
- * via `error_page 404 /404.html` (docs/DEPLOYMENT.md).
+ * Not found.
  *
- * Always noindex regardless of the site-wide switch.
+ * MUST RETURN A REAL 404, not a 200 carrying a 404 page. nginx does that with
+ * `error_page 404 /404.html` — see docs/DEPLOYMENT.md. A soft 404 is worse
+ * than a hard one: Google keeps the URL in the index and reports it as a
+ * crawl error, and a visitor's browser cannot tell the two apart.
+ *
+ * Everything that was ever indexed and has since moved is a 301 in
+ * src/lib/redirects.mjs, emitted as real nginx rules by the postbuild step.
+ * This page is for the rest: mistyped addresses, stale links from elsewhere,
+ * and anything genuinely retired. It is not a redirect target — sending every
+ * unmatched URL to the homepage would be a soft 404 with extra steps.
+ *
+ * THE PATH IS NOT ECHOED BACK. Printing "we could not find /whatever/" is the
+ * oldest reflected-XSS hole there is, and it tells the visitor nothing they
+ * do not already know. CLAUDE.md: never echo user input.
+ *
+ * The ticket is the industries receipt, reused. A request that came back with
+ * nothing is still a request, and printing it as a docket says so with more
+ * wit than an apology does. Its clock is the same module the hero ticket
+ * uses, so it costs no new JavaScript.
+ *
+ * Always noindex, whatever the site-wide switch says.
  */
 import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import TopBar from '../components/TopBar.astro'
+import NavOverlay from '../components/NavOverlay.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import GrainField from '../components/GrainField.astro'
 import { site } from '../lib/site'
+import { inventory } from '../lib/inventory'
+import { redirectList } from '../lib/redirects.mjs'
+
+/* Real counts, read at build time. Hardcoding "198" was accurate the day it
+   was written and wrong the day a page was added — a docket that quietly goes
+   stale is worse than one with no numbers on it. */
+const urlCount = inventory.length
+const redirectCount = redirectList.length
+
+/* Where people actually meant to go. Every one is a live route. */
+const ways = [
+  { n: '01', label: 'Work', body: 'Twenty-three case studies.', href: '/work/' },
+  { n: '02', label: 'Services', body: 'What we do, and how.', href: '/s/ai-automation-services/' },
+  { n: '03', label: 'Insights', body: 'Twenty years, written down.', href: '/our-journal/' },
+  { n: '04', label: 'Resources', body: 'Free one page templates.', href: '/resources/guides/' },
+  { n: '05', label: 'Contact', body: 'Five offices, one reply.', href: '/contact-us/' },
+]
 ---
 
 <BaseLayout
   title={`Page not found | ${site.name}`}
-  description="That page does not exist. Use the navigation to find what you were looking for."
+  description="That page does not exist, or it has moved. Here is the way back."
   path="/404/"
   noindex={true}
 >
-  <section class="wrap notfound" data-ground="light">
-    <p class="notfound__code">404</p>
-    <h1 class="notfound__title">Page not found</h1>
-    <p class="notfound__body">
-      That page does not exist, or it has moved. If you followed a link here,
-      it is worth telling us at <a href={`mailto:${site.email.sales}`}>{site.email.sales}</a>.
-    </p>
-    <p><a class="notfound__home" href="/">Back to the homepage</a></p>
-  </section>
+  <TopBar slot="topbar" cta="contact" />
+  <NavOverlay />
+
+  <Section ground="dark" bleed>
+    <div class="nf">
+      <GrainField tone="dark" second />
+      <div class="wrap nf__inner">
+        <div class="nf__rail" data-reveal>
+          <span class="nf__eyebrow">ERROR / 404</span>
+          <span class="nf__tick" aria-hidden="true"></span>
+          <h1 class="nf__h">
+            <span class="nf__h-small">page</span>
+            <span class="nf__h-large">not found</span>
+          </h1>
+          <p class="nf__body">
+            We looked. It is not here. Either the address has a typo in it, the page
+            moved and something still points at the old one, or we retired it. None of
+            those are your fault.
+          </p>
+          <a class="nf__home" href="/">
+            <span>Back to the homepage</span>
+            <span class="nf__dot nf__dot--grey" aria-hidden="true"></span>
+            <span class="nf__dot nf__dot--accent" aria-hidden="true"></span>
+          </a>
+        </div>
+
+        {/* The docket. Same shape as the hero ticket on an industry page, and
+            the same clock module — a request that came back empty is still a
+            request, and this prints it. */}
+        <aside
+          class="nf__ticket"
+          data-reveal
+          data-ticket={JSON.stringify(['SEARCHING', 'NO MATCH', 'NOT FOUND'])}
+          data-ticket-index="2"
+          aria-hidden="true"
+        >
+          <span class="nf__tear" aria-hidden="true"></span>
+          <div class="nf__paper">
+            <div class="nf__head">
+              <span>ROARS INDEX</span>
+              <span class="nf__time" data-ticket-clock>09:04:04</span>
+            </div>
+            <span class="nf__hair"></span>
+            <p class="nf__meta">LOOKUP #404</p>
+            <p class="nf__meta nf__meta--dim">ONE RESULT EXPECTED</p>
+            <span class="nf__hair"></span>
+            <ul class="nf__lines">
+              <li><span>URLs on file</span><span class="nf__v">{urlCount}</span></li>
+              <li><span>Redirects checked</span><span class="nf__v">{redirectCount}</span></li>
+              <li><span>Matches</span><span class="nf__v">0</span></li>
+            </ul>
+            <span class="nf__hair"></span>
+            <p class="nf__label">STATUS</p>
+            <p class="nf__status">
+              <span class="nf__led"></span><span data-ticket-status>NOT FOUND</span>
+            </p>
+            <div class="nf__ticks">
+              {[0, 1, 2].map((i) => (
+                <span data-ticket-step class:list={[i <= 2 && 'is-on']}></span>
+              ))}
+            </div>
+            <span class="nf__hair"></span>
+            <p class="nf__foot">NOTHING WAS CHARGED</p>
+          </div>
+          <span class="nf__tear" aria-hidden="true"></span>
+        </aside>
+      </div>
+    </div>
+  </Section>
+
+  {/* Not a dead end. Five real routes, so the page is a junction. */}
+  <Section ground="light">
+    <div class="nw">
+      <span class="nw__rule" aria-hidden="true"></span>
+      <span class="nw__eyebrow">WHERE YOU PROBABLY MEANT TO GO</span>
+      <ul class="nw__rows">
+        {ways.map((w) => (
+          <li>
+            <a href={w.href}>
+              <span class="nw__n">{w.n}</span>
+              <span class="nw__label">{w.label}</span>
+              <span class="nw__body">{w.body}</span>
+              <span class="nw__go" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="nw__note">
+        Followed a link to get here? Tell us where it was and we will fix it —
+        <a href={`mailto:${site.email.sales}`}>{site.email.sales}</a>.
+      </p>
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    blurbTitle="Still not finding it?"
+    blurb="Tell us what you were after. It is quicker than hunting through a nav, and somebody here has probably written about it."
+    tagline="user experience matters"
+    ctaLabel="Shall we chat?"
+    ctaHref="https://meet.roarsinc.com/sales"
+  />
 </BaseLayout>
 
 <style>
-  .notfound {
-    padding-block: var(--sp-8) var(--sp-7);
-    max-width: 640px;
+  /* ── the band ───────────────────────────────────────────── */
+  .nf { position: relative; }
+  .nf__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: minmax(0, 1fr) 228px;
+    column-gap: 60px; align-content: start; padding-block: 180px 120px; min-height: 700px;
   }
-  .notfound__code {
-    font-size: var(--fs-label); line-height: var(--lh-label);
-    font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-body);
-    color: var(--c-ink-label);
-    margin-bottom: var(--sp-3);
+  .nf__rail { grid-column: 1; max-width: 700px; }
+  .nf__eyebrow {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.55);
   }
-  .notfound__title {
-    font-size: var(--fs-stat);
-    font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-display);
-    color: var(--c-ink-heading);
-    line-height: 1.1;
-    margin: 0 0 var(--sp-4);
+  .nf__tick { display: block; width: 16px; height: 1.5px; margin-top: 19px; background: var(--c-accent); }
+
+  .nf__h { margin: 26px 0 0; }
+  .nf__h-small {
+    display: block; margin-left: 2px;
+    font-size: 56px; line-height: 60px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgba(255, 255, 255, 0.6);
   }
-  .notfound__body {
-    font-size: var(--fs-body);
-    color: var(--c-ink-muted);
-    line-height: var(--lh-body);
-    margin-bottom: var(--sp-5);
+  /* Sized off the viewport so the two words never wrap into three lines and
+     never overhang. The vw term stays above the cap / 14.4 rule. */
+  .nf__h-large {
+    display: block; margin-top: 2px; white-space: nowrap;
+    font-size: clamp(52px, 8.62vw, 124px); line-height: 124px; font-weight: var(--fw-semi);
+    letter-spacing: -0.055em; color: rgb(251, 251, 251);
   }
-  .notfound__home {
-    display: inline-flex;
-    align-items: center;
-    height: var(--btn-ghost-h);
-    padding-inline: var(--sp-4);
-    border-radius: var(--r-pill);
-    box-shadow: inset 0 0 0 1.5px var(--c-ring-light);
-    font-size: var(--fs-label); line-height: var(--lh-label);
-    letter-spacing: var(--ls-button);
-    transition: box-shadow var(--dur-fast) ease;
+  .nf__body {
+    margin: 26px 0 0; max-width: 520px;
+    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.78);
   }
-  .notfound__home:hover { box-shadow: inset 0 0 0 1.5px var(--c-accent); }
+  .nf__home {
+    position: relative; display: inline-flex; align-items: center;
+    width: 244px; height: 47px; margin-top: 40px; padding-left: 25px;
+    border-radius: var(--r-pill); background: var(--c-white);
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: normal; color: var(--c-footer);
+    transition: background var(--dur-fast) ease;
+  }
+  .nf__home:hover { background: var(--c-accent); }
+  .nf__dot { position: absolute; top: 20px; width: 8px; height: 8px; border-radius: 50%; }
+  .nf__dot--grey { left: 207px; background: rgba(11, 11, 11, 0.28); }
+  .nf__dot--accent { left: 217px; background: var(--c-accent); transition: background var(--dur-fast) ease; }
+  .nf__home:hover .nf__dot--accent { background: var(--c-footer); }
+
+  /* ── the docket ─────────────────────────────────────────── */
+  .nf__ticket { grid-column: 2; width: 228px; margin-top: 6px; color: rgb(20, 20, 20); line-height: normal; }
+  .nf__tear {
+    display: block; height: 8px;
+    background: repeating-linear-gradient(90deg, rgb(251, 251, 249) 0 8px, transparent 8px 16px);
+  }
+  .nf__paper { background: rgb(251, 251, 249); padding: 22px 20px 28px; }
+  .nf__head {
+    display: flex;
+    font-size: 11px; font-weight: var(--fw-semi); letter-spacing: 0.24em;
+  }
+  .nf__head > :first-child { flex: 1; }
+  .nf__time { width: 56px; font-weight: var(--fw-medium); letter-spacing: 0.04em; }
+  .nf__hair { display: block; height: 1px; background: rgba(20, 20, 20, 0.14); }
+  .nf__head + .nf__hair { margin-top: 12.7px; }
+  .nf__meta { margin: 11px 0 0; font-size: var(--fs-micro); letter-spacing: 0.02em; }
+  .nf__meta--dim { margin-top: 5.5px; color: rgba(20, 20, 20, 0.55); }
+  .nf__meta + .nf__hair { margin-top: 13.5px; }
+  .nf__lines {
+    list-style: none; margin: 15px 0 0; padding: 0;
+    font-size: var(--fs-micro); line-height: 26px; letter-spacing: 0.01em;
+  }
+  .nf__lines li { display: flex; justify-content: space-between; }
+  .nf__v { color: rgba(20, 20, 20, 0.55); }
+  .nf__lines + .nf__hair { margin-top: 14px; }
+  .nf__label { margin: 15px 0 0; font-size: 10px; font-weight: var(--fw-semi); letter-spacing: 0.22em; color: rgba(20, 20, 20, 0.5); }
+  .nf__status {
+    display: flex; align-items: center; gap: 9px; margin: 7.9px 0 0; height: 20px;
+    font-size: 13px; font-weight: var(--fw-semi); letter-spacing: 0.03em;
+  }
+  .nf__led { width: 7px; height: 7px; background: var(--c-accent); }
+  .nf__ticks { display: flex; align-items: flex-start; gap: 5px; height: 26px; margin-top: 16px; }
+  .nf__ticks span { flex: 1; height: 3px; background: rgba(20, 20, 20, 0.15); transition: background var(--dur-fast) ease; }
+  .nf__ticks span.is-on { background: var(--c-accent); }
+  .nf__ticks + .nf__hair { margin-top: 4px; }
+  .nf__foot { margin: 15px 0 0; font-size: 10px; font-weight: var(--fw-medium); letter-spacing: 0.14em; color: rgba(20, 20, 20, 0.5); }
+
+  /* ── the junction ───────────────────────────────────────── */
+  .nw { padding-block: 80px 110px; }
+  .nw__rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+  .nw__eyebrow {
+    display: block; margin-top: 24px;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
+  }
+  .nw__rows { list-style: none; margin: 54px 0 0; padding: 0; }
+  .nw__rows a { position: relative; display: block; height: 84px; }
+  .nw__rows li::before {
+    content: ''; display: block; width: 100%; height: 0.5px; background: var(--c-rule-soft);
+  }
+  .nw__rows li:last-child::after {
+    content: ''; display: block; width: 100%; height: 0.5px; background: var(--c-rule-soft);
+  }
+  .nw__n {
+    position: absolute; left: 14px; top: 36px;
+    font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: 0.14em; color: var(--c-ink-label);
+  }
+  .nw__label {
+    position: absolute; left: 5.139%; top: 22px;
+    font-size: 32px; line-height: 40px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .nw__body {
+    position: absolute; left: 44.419%; top: 31px;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  .nw__go {
+    position: absolute; right: 0; top: 26px;
+    font-size: var(--fs-item); line-height: 32px; letter-spacing: normal; color: rgba(20, 20, 20, 0.45);
+    transition: transform var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+  .nw__rows a:hover .nw__label { color: var(--c-black); }
+  .nw__rows a:hover .nw__go { color: var(--c-black); transform: translateX(8px); }
+  .nw__note {
+    position: relative; margin: 46px 0 0; max-width: 620px;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  .nw__note a { color: rgb(20, 20, 20); text-decoration: underline; }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .nf__inner { grid-template-columns: 1fr; row-gap: 48px; padding-block: 130px 80px; min-height: 0; }
+    .nf__ticket { grid-column: 1; margin-top: 0; }
+    .nf__h-large { white-space: normal; line-height: 1.04; }
+    .nf__h-small { line-height: 1.06; }
+
+    .nw { padding-block: 64px 72px; }
+    .nw__rows a { height: auto; padding: 18px 0; }
+    .nw__n, .nw__label, .nw__body, .nw__go { position: static; }
+    .nw__n { display: block; }
+    .nw__label { display: block; margin-top: 6px; font-size: var(--fs-item); line-height: 1.3; }
+    .nw__body { display: block; margin-top: 6px; }
+    .nw__go { display: none; }
+  }
 </style>

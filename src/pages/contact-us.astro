@@ -355,12 +355,21 @@ const schema = [
   /* ── get in touch ───────────────────────────────────────── */
   .cg { position: relative; padding-block: 80px 80px; min-height: 620px; }
   .cg .c-label { margin-top: 24px; }
+  /* Stops short of the intro's column. The 900px box was fine while the
+     intro sat at 962; now that it starts at 605 the heading's box reached
+     288px into it — no ink collided, but a longer heading on another page
+     would, and assert-overlap is right to refuse the arrangement. */
   .cg__h {
-    margin: 27px 0 0 -7px; max-width: 900px;
+    margin: 27px 0 0 -7px; max-width: 43%;
     font-size: clamp(52px, 8.62vw, 124px); line-height: 110px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
   }
-  .cg__intro { position: absolute; left: 67.695%; top: 150px; width: 32.305%; }
+  /* Starts on the "Call us" column, not the "Rather talk it through" one.
+     The export puts it at 962 — over the third column — but a paragraph that
+     begins on the same vertical as the row below it reads as one grid rather
+     than two. 605/1362 is where that column starts; the 440-wide measure is
+     kept, so the line length does not grow to something unreadable. */
+  .cg__intro { position: absolute; left: 44.419%; top: 150px; width: 32.305%; }
   .cg__intro-a {
     margin: 0;
     font-size: var(--fs-intro); line-height: 32px; font-weight: var(--fw-medium);
