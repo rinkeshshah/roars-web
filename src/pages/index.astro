@@ -92,28 +92,28 @@ const featured = [
  */
 const testimonials = [
   {
-    col: 5, top: 0, avatar: 80, label: 14, quote: 24, lead: 32, star: 14,
+    col: 5, top: 0, avatar: 80, label: 14, qs: 24, lead: 32, star: 14,
     name: 'Jayeis Sonill',
     role: 'CEO, Aum Investment',
     quote:
       'Roars has consistently positioned themselves at the forefront of innovation and technology. They understand business needs and craft technologies to address them.',
   },
   {
-    col: 3, top: 264, avatar: 65, label: 13, quote: 18, lead: 25, star: 12,
+    col: 3, top: 264, avatar: 65, label: 13, qs: 18, lead: 25, star: 12,
     name: 'James Hadley',
     role: 'CEO, Simthing New, LLC',
     quote:
       'I was pleased with the deliverables. I was able to see and understand the efforts required to scale the solution in development.',
   },
   {
-    col: 1, top: 108, avatar: 57, label: 12, quote: 15, lead: 21, star: 11,
+    col: 1, top: 108, avatar: 57, label: 12, qs: 15, lead: 21, star: 11,
     name: 'Avinash Kumar',
     role: 'Project Manager, Roars',
     quote:
       'From discovery to launch, the team brought our platform to life with precision. A genuine product partner.',
   },
   {
-    col: 7, top: 230, avatar: 40, label: 10, quote: 12, lead: 17, star: 9,
+    col: 7, top: 230, avatar: 40, label: 10, qs: 12, lead: 17, star: 9,
     name: 'Khusboo Panchal',
     role: 'Digital Marketing',
     quote: 'Fast, smart and beautiful. We will be back for round two soon.',
@@ -423,18 +423,20 @@ const schema = [
     <div class="svc">
       <h2 class="display">Services</h2>
 
-      {/* Accordion, not the static grid this used to be: the prototype opens
-          /01 with its imagery and tags and collapses the rest to a count and
-          a toggle. Approved island 2 of 4, shared with the FAQ below.
+      {/* Accordion. Approved island 2 of 4, shared with the FAQ below.
 
-          The mock is internally inconsistent about where a row's name sits —
-          two collapsed rows put it in the left rail at x=39, the other and the
-          open row put it in the inner column at x=503 — so it is placed in the
-          rail for every row, which is also where Industries and the FAQ put
-          their section labels. docs/DESIGN-SYSTEM.md records the call. */}
+          THE ROWS ALTERNATE. Odd rows take the wide inner track — name at 502,
+          body at 966, toggle at the far right — and even rows take the narrow
+          rail track: name at 39, body at 503, toggle at 901. A zigzag.
+
+          This was previously flattened to the rail on every row and logged as
+          artboard drift, on the reasoning that two rows disagreed with two
+          rows and there was no majority. There was no majority because it
+          alternates. Where the prototype is irregular, the irregularity is
+          the design; see CLAUDE.md. */}
       <ul class="svc__list" data-accordion>
         {services.map((s, i) => (
-          <li class="svc__row">
+          <li class="svc__row" data-side={i % 2 === 0 ? 'inner' : 'rail'}>
             <h3 class="svc__h">
               <button
                 class="svc__trigger"
@@ -443,10 +445,8 @@ const schema = [
                 aria-controls={`svc-panel-${i}`}
                 id={`svc-trigger-${i}`}
               >
-                <span class="svc__rail">
-                  <span class="svc__n">{s.n}</span>
-                  <span class="svc__name">{s.name}</span>
-                </span>
+                <span class="svc__n">{s.n}</span>
+                <span class="svc__name">{s.name}</span>
                 <span class="svc__body">{s.body}</span>
                 {/* /01 carries a client list instead of a count in the
                     spec's own data. Empty rather than a fabricated number. */}
@@ -563,7 +563,7 @@ const schema = [
           <li
             class="say__item"
             data-reveal
-            style={`--col:${t.col};--top:${t.top}px;--av:${t.avatar}px;--lb:${t.label}px;--qt:${t.quote}px;--ld:${t.lead}px;--st:${t.star}px;transition-delay:${i * 70}ms`}
+            style={`--col:${t.col};--top:${t.top}px;--av:${t.avatar}px;--lb:${t.label}px;--qt:${t.qs}px;--ld:${t.lead}px;--st:${t.star}px;transition-delay:${i * 70}ms`}
           >
             {/* Portraits arrive with the Phase 5 uploads import. */}
             <span class="say__avatar" aria-hidden="true"></span>
@@ -946,24 +946,18 @@ const schema = [
   .svc { padding-block: 115px 212px; }
   .svc .display { margin-left: var(--rail-width); }
   .svc__list { list-style: none; margin: 98px 0 0; padding: 0; }
-  /* The panel shares the trigger's grid row and takes the count's track,
-     which is free precisely when a row is open: the open row carries a client
-     list, not a count. Row height is then max(trigger, panel) rather than
-     their sum, which is what makes the open row read as one 195px band the
-     way the prototype draws it instead of a 357px stack. */
+  /* Two layouts, alternating. Measured off the export: odd rows run
+     index(463) name(464) body(231) meta(167) toggle(37) to the full 1362;
+     even rows run name(464) body(232) count(166) toggle(36) and stop at 898. */
   .svc__row {
     display: grid;
-    grid-template-columns: var(--rail-width) 232px 166px minmax(0, 1fr) var(--icon-circle);
     align-items: start;
     border-top: 1.5px solid var(--c-rule-strong);
   }
   .svc__h { grid-column: 1 / -1; grid-row: 1; margin: 0; font-size: inherit; font-weight: inherit; }
-  /* Name and index in the rail, body and count in the inner column, toggle at
-     the far right — the same anatomy as the FAQ rows below. */
+
   .svc__trigger {
     display: grid;
-    grid-template-columns: var(--rail-width) 232px 166px minmax(0, 1fr) var(--icon-circle);
-    gap: 0;
     align-items: start;
     width: 100%;
     padding: 26px 0 24px;
@@ -971,21 +965,44 @@ const schema = [
     font-family: inherit; color: inherit; text-align: left;
     cursor: pointer;
   }
-  .svc__rail { display: flex; flex-direction: column; gap: 6px; }
-  .svc__n { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: rgb(17, 17, 17); }
+  [data-side='inner'] .svc__trigger {
+    grid-template-columns: 463px 464px 231px 167px 37px;
+  }
+  [data-side='rail'] .svc__trigger {
+    grid-template-columns: 464px 232px 166px 36px;
+    justify-content: start;
+  }
+  /* The index sits in the rail on wide rows and is only drawn when the row is
+     open, which is the only place the export shows one. */
+  .svc__n {
+    grid-column: 1; grid-row: 1;
+    font-size: var(--fs-label); line-height: var(--lh-label);
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
+    color: rgb(17, 17, 17);
+    visibility: hidden;
+  }
+  [aria-expanded='true'] .svc__n { visibility: visible; }
+  [data-side='rail'] .svc__n { display: none; }
+
   .svc__name {
-    font-size: var(--fs-item);
-    font-weight: var(--fw-semi); line-height: 32px;
+    font-size: var(--fs-item); line-height: 32px;
+    font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
-  .svc__trigger:hover .svc__name { color: rgb(90, 90, 90); }
-  .svc__body { font-size: var(--fs-body); font-weight: var(--fw-medium); line-height: 23px; letter-spacing: var(--ls-body); color: rgb(2, 2, 2); }
-  .svc__count { font-size: 32px; font-weight: var(--fw-semi); line-height: 32px; letter-spacing: var(--ls-display); color: var(--c-black); white-space: nowrap; }
-  .svc__count span { margin-right: var(--sp-3); }
-  .svc__count { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); }
-  .svc__count span { font-size: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+  [data-side='inner'] .svc__name { grid-column: 2; grid-row: 1; font-size: 32px; line-height: 40px; }
+  [data-side='rail']  .svc__name { grid-column: 1; grid-row: 1; }
 
-  /* Same disc as the FAQ: white on the grey ground, glyph at the right. */
+  [data-side='inner'] .svc__body { grid-column: 3; grid-row: 1; }
+  [data-side='rail']  .svc__body { grid-column: 2; grid-row: 1; }
+  .svc__body { font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(2, 2, 2); }
+
+  [data-side='inner'] .svc__count { grid-column: 4; grid-row: 1; }
+  [data-side='rail']  .svc__count { grid-column: 3; grid-row: 1; }
+  .svc__count { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); color: var(--c-black); white-space: nowrap; }
+  .svc__count span { margin-right: var(--sp-3); font-size: 32px; line-height: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+
+  [data-side='inner'] .svc__icon { grid-column: 5; grid-row: 1; }
+  [data-side='rail']  .svc__icon { grid-column: 4; grid-row: 1; }
   .svc__icon {
     position: relative; justify-self: end;
     width: var(--icon-circle); height: var(--icon-circle);
@@ -1001,8 +1018,11 @@ const schema = [
   .svc__icon::after { width: 1.25px; height: 13px; }
   [aria-expanded='true'] .svc__icon::after { opacity: 0; }
   .svc__trigger:hover .svc__icon { background: var(--c-accent); }
+  .svc__trigger:hover .svc__name { color: rgb(90, 90, 90); }
 
-  .svc__panel { grid-column: 3 / -1; grid-row: 1; margin-top: 26px; overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
+  [data-side='inner'] .svc__panel { grid-column: 3 / -1; }
+  [data-side='rail'] .svc__panel { grid-column: 2 / -1; }
+  .svc__panel { grid-row: 1; margin-top: 26px; overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
   .svc__panel[hidden] { display: block; height: 0; }
   /* Row one ships open, so it needs a real height before any script runs.
      The island overwrites this with a measured pixel height on first toggle. */

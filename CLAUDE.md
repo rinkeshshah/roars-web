@@ -91,7 +91,8 @@ If a case study, stat, testimonial or client name is not in the specs or the mig
 
 - Inter only, 400/500/600, self-hosted variable file, latin subset. Not Google Fonts.
 - White, `#F5F5F5`, black, `#0B0B0B`, `#242424` ink, `#FFD400` accent.
-- **Yellow is an accent, never a ground.** Max two yellow moments per viewport. The page is predominantly white; black sections are punctuation.
+- **Yellow may be a SECTION GROUND.** Export 2 makes the homepage hero a full-bleed `#FFD400`, and that is approved. Accent discipline still applies everywhere else: outside a section that is deliberately grounded in yellow, it stays an accent, max two moments per viewport, never a background for a card, chip or band that was not designed that way.
+- The page is predominantly white; black and yellow sections are punctuation.
 - `border-radius: 60px` on pills and buttons. Cards square. No other radii.
 - Borders are `box-shadow: inset`, not `border`.
 - `prefers-reduced-motion` respected everywhere.
@@ -115,13 +116,33 @@ The prohibitions still stand, because they are about technique, not about fideli
 
 **Read computed styles, not the static markup.** The prototypes render through React and Babel and fill template variables at runtime, so `font-size:{{ f.qSize }}` in the file tells you nothing. Query the live DOM.
 
-**When the prototype and a spec disagree, say so. Do not pick silently.** Same when the prototype disagrees with *itself*: the Services rows put the row name in the left rail twice and in the inner column twice, and one collapsed row is indented 463px for no reason. Normalise it, and write down which reading you took and why.
+### Where the prototype is irregular, the irregularity IS the design
+
+**Never normalise it.** This is a standing rule and it overrides any instinct
+toward consistency.
+
+Two things were flattened on the homepage by treating deliberate irregularity
+as artboard drift, and both had to be reverted:
+
+- **Services rows ALTERNATE** — rail, inner, rail, inner. A zigzag. It was
+  read as "two rows disagree with two rows, no majority" and flattened to the
+  rail. There was no majority because it alternates.
+- **People say is a CASCADE** — four sizes at four vertical offsets, not four
+  equal columns.
+
+A design that is irregular on purpose looks exactly like a design that is
+sloppy. The difference is that you do not get to decide which it is. When a
+layout does not resolve to a rule, that is the signal to render it as drawn
+and say so, not to invent the rule yourself.
+
+**When the prototype and a spec disagree, say so. Do not pick silently.**
 
 **Decisions taken so far, so they are not relitigated:**
 
 | Conflict | Resolution |
 |---|---|
 | Accordion toggle: Brand Guidelines says a 36px dark circle on the left; the prototype renders a white disc at the right | Prototype wins. Brand doc unchanged. |
+| Services row names: flattened to the left rail as "mock drift" | **WRONG, reverted.** They alternate rail/inner/rail/inner by design. |
 | Footer nav: the Approach spec lists six items, Main lists five | Prototype wins, five, Approach out of the footer only. |
 | Offices: the Approach spec says five countries, Main shows three, the build showed five cities | Five countries. The slot is 234px; five countries measure 185px, five cities 234.05px, which is why they collided. A factual list is not a visual treatment. |
 | Top bar CTA: six prototypes say "Contact Now", eight say "Setup a Meeting" | Both are real. It is a `cta` prop on `TopBar`; Brand Guidelines' "Contact Now" is the default. |
