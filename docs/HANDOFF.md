@@ -143,6 +143,13 @@ CSS change is what made this session slow — fifteen runs at two minutes each.
   connected them. **Do not add it back.** The export leaves that element
   invisible for a reason.
 
+- **The dashed rule under inner-page titles: REMOVED.** `assets/union.svg`,
+  the hand-drawn scribble the export draws under "Agency", "Projects" and
+  "Insights". Asked about once in the design chat and again on the built page,
+  and removed both times. It is IN the export, so a fidelity pass will want to
+  put it back and the visual diff will never object, because it carries no
+  text. Do not restore it on any inner page.
+
 The lesson generalises: an addition that resembles something the client
 already rejected is not an addition, it is a regression with a comment on it.
 

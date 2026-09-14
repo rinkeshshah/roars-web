@@ -26,7 +26,6 @@ import { PORTRAIT, AGENCY_IMG } from '../lib/media'
 import { site } from '../lib/site'
 import star3 from '../assets/star-3.svg'
 import star5 from '../assets/star-5.svg'
-import union from '../assets/union.svg'
 import quote from '../assets/quote.svg'
 
 /* ------------------------------------------------------------ content */
@@ -132,12 +131,10 @@ const schema = [
             <span class="starmark" style={`--m:url(${star5.src});width:10px;height:10px`}></span>
           </span>
           <h1 class="agh__h1">Agency</h1>
-          {/* union.svg, the hand-drawn rule under every inner-page title.
-              FLAGGED: this is the mark queried as "the dots under the
-              heading". It was dropped from the header OPTIONS file only; the
-              export still carries it on Agency, Projects and Insights, so it
-              ships here until that is decided. One line to remove. */}
-          <img class="agh__underline" src={union.src} alt="" width="73" height="9" />
+          {/* NO union.svg under the title. The export draws its hand-drawn
+              dashed rule here and on Projects and Insights; it was asked for
+              twice and removed, so it does not ship on any inner page. Do not
+              restore it from the export. */}
         </div>
 
         {/* Trust row at 929 in the box, 26 below the masthead's top. */}
@@ -301,7 +298,6 @@ const schema = [
   .agh__chip { display: flex; align-items: flex-start; gap: 8px; margin-left: 15px; height: 24px; }
   .agh__chip > span:first-child { font-size: 20px; line-height: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: #fbfbfb; padding-top: 4px; }
   .agh__h1 { margin: 26px 0 0 6px; font-size: clamp(var(--fs-heading-m), 8.62vw, var(--fs-heading)); line-height: 86px; font-weight: var(--fw-semi); letter-spacing: -0.04em; color: rgb(251, 251, 251); }
-  .agh__underline { display: block; width: 73px; height: 9px; margin: 2px 0 0 1px; filter: invert(1); opacity: 0.9; }
 
   .agh__trust { grid-column: 4; grid-row: 2; margin-top: 112px; display: flex; align-items: flex-start; height: 43px; }
   .agh__trust-face { width: 42px; height: 42px; border-radius: var(--r-circle); object-fit: cover; background: rgba(255, 255, 255, 0.14); }
