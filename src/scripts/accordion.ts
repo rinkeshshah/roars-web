@@ -15,6 +15,17 @@ export function initAccordions(): void {
       if (!panel) return
       trigger.setAttribute('aria-expanded', String(open))
 
+      /* A SWAP row, not a panel row. The Services rows change layout between
+         states — the open row has six grid tracks, a photo and a client list
+         where the closed row has a count — so there is no box whose height
+         can be animated. Both states ship in the DOM behind
+         `display: contents` and this flips which one the grid sees. The FAQ
+         below still animates a real panel; same island, two row kinds. */
+      if (panel.hasAttribute('data-svc-row')) {
+        panel.setAttribute('data-open', String(open))
+        return
+      }
+
       if (open) {
         panel.hidden = false
         panel.style.height = `${panel.scrollHeight}px`
