@@ -95,7 +95,7 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "Snowman Logistics"
-    body: "We design and develop integrated Fleet management solutions for enterprise companies. Using this software, Flight and aviation Company can manage their day-to-day operations and crew members easily."
+    body: "We design and develop integrated Fleet management solutions for enterprise companies."
     href: "/work/warehouse-compliance-checklist-app/"
     ctaLabel: "View Project"
 sectors:

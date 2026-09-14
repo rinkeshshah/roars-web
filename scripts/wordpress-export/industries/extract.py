@@ -364,7 +364,12 @@ def build(path):
         client, body, href = featured
         fm += ['  featured:', '    label: "FEATURED WORK"',
                f'    client: {yq(clip(client, 40))}',
-               f'    body: {yq(clip(body, 220))}',
+               # 160, not the schema's 220. The block is absolutely placed:
+               # the body opens at top 100 in a 440px column and the View
+               # Project link sits at 270, so seven lines of text reach the
+               # link. clip() drops whole sentences, so this shortens the
+               # teaser rather than cutting one mid-clause.
+               f'    body: {yq(clip(body, 160))}',
                f'    href: {yq(href)}', '    ctaLabel: "View Project"']
 
     fm += ['sectors:', '  label: "WHERE ELSE WE WORK"', '  heading: "nine sectors"',

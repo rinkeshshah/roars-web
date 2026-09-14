@@ -4,10 +4,18 @@
  *
  *   node scripts/generate-favicons.mjs
  *
- * Source: design/prototypes/brand/roars-icon.png — the mark on the #FFD400
- * ground, 417x417. Not the transparent wordmark: a favicon is shown against
- * whatever chrome the browser has, and a black mark with no ground disappears
- * on a dark tab strip.
+ * TRANSPARENT, and yellow rather than black.
+ *
+ * The source mark (src/assets/roars-mark.png) is black on transparent. Shipped
+ * as-is it disappears on a dark tab strip, which is half of all browsers now.
+ * So the alpha channel is kept and the ink is replaced with the brand yellow:
+ * #FFD400 reads on a dark strip and stays legible on a light one, and it is
+ * the colour the mark is drawn in everywhere else on the site.
+ *
+ * THE APPLE TOUCH ICON IS THE EXCEPTION and keeps its yellow ground. iOS does
+ * not honour transparency on a home-screen icon — it composites onto black —
+ * so a transparent one would be a yellow mark on a black tile, which is not
+ * the brand's square.
  *
  * Output, all into public/ so Astro copies them to the site root:
  *
@@ -30,11 +38,46 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
-const SRC = join(ROOT, 'design/prototypes/brand/roars-icon.png')
+/** The mark alone, black on transparent. */
+const MARK = join(ROOT, 'src/assets/roars-mark.png')
+/** The same mark on its yellow square, for the one icon that needs a ground. */
+const TILE = join(ROOT, 'design/prototypes/brand/roars-icon.png')
 const OUT = join(ROOT, 'public')
 
-const png = (size) =>
-  sharp(SRC).resize(size, size, { fit: 'cover', kernel: 'lanczos3' }).png({ compressionLevel: 9 }).toBuffer()
+const ACCENT = { r: 255, g: 212, b: 0 }
+/** Breathing room, as a fraction of the icon. At 16px a mark that touches the
+ *  edges reads as a smudge; the tab strip gives it no margin of its own. */
+const PAD = 0.12
+
+/**
+ * The mark in brand yellow, on transparency, square and centred.
+ *
+ * sharp's tint() multiplies, and anything multiplied by black is black, so the
+ * ink cannot be recoloured in place. Instead the alpha channel is lifted off
+ * and used as the mask for a flat yellow fill — the shape is the mark's, the
+ * colour is the brand's.
+ */
+const png = async (size) => {
+  const inner = Math.round(size * (1 - PAD * 2))
+  const mask = await sharp(MARK)
+    .ensureAlpha()
+    .resize(inner, inner, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .extend({
+      top: Math.floor((size - inner) / 2), bottom: Math.ceil((size - inner) / 2),
+      left: Math.floor((size - inner) / 2), right: Math.ceil((size - inner) / 2),
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    })
+    .extractChannel('alpha')
+    .toBuffer()
+  return sharp({ create: { width: size, height: size, channels: 3, background: ACCENT } })
+    .joinChannel(mask)
+    .png({ compressionLevel: 9 })
+    .toBuffer()
+}
+
+/** The yellow square, for the Apple touch icon only. */
+const tile = (size) =>
+  sharp(TILE).resize(size, size, { fit: 'cover', kernel: 'lanczos3' }).png({ compressionLevel: 9 }).toBuffer()
 
 /** ICO container around already-encoded PNGs. */
 function ico(images) {
@@ -69,11 +112,11 @@ await writeFile(join(OUT, 'favicon.ico'), ico(icoImages))
 
 const files = [
   ['favicon-96.png', 96],
-  ['apple-touch-icon.png', 180],
   ['icon-192.png', 192],
   ['icon-512.png', 512],
 ]
 for (const [name, size] of files) await writeFile(join(OUT, name), await png(size))
+await writeFile(join(OUT, 'apple-touch-icon.png'), await tile(180))
 
 const manifest = {
   name: 'Roars Technologies',
@@ -81,7 +124,9 @@ const manifest = {
   icons: [
     { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
     { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
-    { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+    /* No maskable entry. A maskable icon is cropped to whatever shape the
+       launcher wants and must bleed its background to the edges; a
+       transparent one would be cropped to a yellow mark on nothing. */
   ],
   theme_color: '#FFD400',
   background_color: '#0B0B0B',
@@ -91,6 +136,7 @@ const manifest = {
 await writeFile(join(OUT, 'site.webmanifest'), JSON.stringify(manifest, null, 2) + '\n')
 
 console.log('--- generate-favicons ---')
-console.log(`favicon.ico          ${icoSizes.join(' + ')}  (${icoImages.reduce((n, i) => n + i.data.length, 0)} bytes of PNG)`)
-for (const [name, size] of files) console.log(`${name.padEnd(21)}${size}`)
+console.log(`favicon.ico          ${icoSizes.join(' + ')}  transparent  (${icoImages.reduce((n, i) => n + i.data.length, 0)} bytes of PNG)`)
+for (const [name, size] of files) console.log(`${name.padEnd(21)}${String(size).padEnd(5)}transparent`)
+console.log('apple-touch-icon.png 180  yellow ground (iOS does not honour alpha)')
 console.log('site.webmanifest')

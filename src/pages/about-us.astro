@@ -194,8 +194,9 @@ const schema = [
           </li>
         ))}
         <li class="agb__rest">
-          <span class="agb__rest-disc" aria-hidden="true"></span>
-          <span class="agb__rest-n">25<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
+          <span class="agb__rest-disc" aria-hidden="true">
+            <span class="agb__rest-n">25<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
+          </span>
           <span class="agb__rest-label">The rest of the<br />Roars Fam</span>
         </li>
       </ul>
@@ -214,8 +215,9 @@ const schema = [
           </li>
         ))}
         <li class="agb__rest">
-          <span class="agb__rest-disc" aria-hidden="true"></span>
-          <span class="agb__rest-n agb__rest-n--wide">250<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
+          <span class="agb__rest-disc" aria-hidden="true">
+            <span class="agb__rest-n">250<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
+          </span>
           <span class="agb__rest-label">More than 250<br />Clients</span>
         </li>
       </ul>
@@ -376,14 +378,40 @@ const schema = [
   .agb__person-name { display: block; margin-top: 20px; font-size: var(--fs-body); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
   .agb__person-role { display: block; margin-top: 2px; font-size: var(--fs-body); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
 
-  /* 100% of its track, not a fixed 437. The track is 430fr of a 1362 box,
-     so the fixed value was already 7px wider than its column at 1440 and
-     grew worse as the box narrowed. */
-  .agb__rest { position: relative; width: 100%; max-width: 437px; height: 198px; }
-  .agb__rest-disc { position: absolute; inset: 0; width: 198px; height: 198px; border-radius: 50%; background: rgb(208, 208, 208); opacity: 0.34; }
-  .agb__rest-n { position: absolute; left: 63px; top: 66px; display: flex; align-items: flex-start; gap: 9px; font-size: 65px; line-height: 64px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-black); opacity: 0.3; }
-  .agb__rest-n--wide { left: 44px; }
-  .agb__rest-label { position: absolute; left: 54.691%; top: 70px; width: 45.309%; font-size: 20px; line-height: 28px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: rgb(22, 22, 22); }
+  /* A row: the disc with its numeral, then the label beside it.
+     It was four absolutely placed boxes inside a 437px block — a 198px disc
+     at 0, the numeral at 63,66 and the label at 54.691%. None of those
+     offsets survive a narrower box. At 1440 the block sat in one 198px grid
+     column, so 54.691% was 108px and the label printed over the numeral; at
+     768 the same thing; at 390 the block collapsed to zero width and its
+     absolute children painted 200px off the page.
+     In a flex row the disc keeps its size, the numeral centres in it, and
+     the label takes what is left — at any width, with no offsets to keep in
+     step with a box width that changes. */
+  .agb__rest {
+    display: flex; align-items: center; gap: 28px;
+    width: 100%; max-width: 437px; min-height: 198px;
+  }
+  .agb__rest-disc {
+    position: relative; flex: none;
+    width: 198px; height: 198px; border-radius: 50%;
+    background: rgb(208, 208, 208); opacity: 0.34;
+  }
+  /* Centred in the disc, which is what the export's 63,66 offset amounts to
+     for a two-digit figure. The three-digit "250" used its own nudge to stay
+     centred; centring properly makes that unnecessary. */
+  .agb__rest-n {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    font-size: 65px; line-height: 64px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-black);
+  }
+  .agb__rest-n .starmark { align-self: flex-start; margin-top: 4px; }
+  .agb__rest-label {
+    min-width: 0;
+    font-size: 20px; line-height: 28px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(22, 22, 22);
+  }
 
   .agb__plate { margin-top: 104px; height: 764px; border-radius: 10px; overflow: hidden; background: var(--c-black); }
   .agb__plate img { width: 100%; height: 100%; object-fit: cover; }

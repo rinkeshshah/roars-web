@@ -195,7 +195,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
           <span class="sv-band__rule" aria-hidden="true"></span>
           <div class="sv-band__head" data-reveal>
             <span class="sv-eyebrow">{capabilities.label}</span>
-            <h2 class="sv-band__h">{capabilities.heading}</h2>
+            <h2 class:list={['sv-band__h', (capabilities.heading).length > 30 && 'sv-band__h--long']}>{capabilities.heading}</h2>
           </div>
           {capabilities.intro && <p class="sv-band__intro" data-reveal>{capabilities.intro}</p>}
           <ul class="sv-cards">
@@ -242,7 +242,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
           <span class="sv-proc__tick" aria-hidden="true"></span>
           <div class="sv-proc__head" data-reveal>
             <span class="sv-eyebrow">{d.process.label}</span>
-            <h2 class="sv-band__h">{d.process.heading}</h2>
+            <h2 class:list={['sv-band__h', (d.process.heading).length > 30 && 'sv-band__h--long']}>{d.process.heading}</h2>
           </div>
           {d.process.intro && <p class="sv-proc__intro" data-reveal>{d.process.intro}</p>}
           {/* The track runs behind the four steps, with the accent marking the
@@ -272,7 +272,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
           <span class="sv-band__rule" aria-hidden="true"></span>
           <div class="sv-band__head" data-reveal>
             <span class="sv-eyebrow">{engagements.label}</span>
-            <h2 class="sv-band__h">{engagements.heading}</h2>
+            <h2 class:list={['sv-band__h', (engagements.heading).length > 30 && 'sv-band__h--long']}>{engagements.heading}</h2>
           </div>
           {engagements.intro && <p class="sv-band__intro" data-reveal>{engagements.intro}</p>}
           <ul class="sv-cards sv-cards--tall">
@@ -325,7 +325,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
           <span class="sv-band__rule" aria-hidden="true"></span>
           <div class="sv-band__head" data-reveal>
             {d.faqLabel && <span class="sv-eyebrow">{d.faqLabel}</span>}
-            <h2 class="sv-band__h">{d.faqHeading ?? 'The honest answers.'}</h2>
+            <h2 class:list={['sv-band__h', (d.faqHeading ?? 'The honest answers.').length > 30 && 'sv-band__h--long']}>{d.faqHeading ?? 'The honest answers.'}</h2>
           </div>
           {d.faqIntro && <p class="sv-band__intro" data-reveal>{d.faqIntro}</p>}
           <div class="sv-faq__list" data-reveal>
@@ -508,6 +508,18 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     margin: 44px 0 0 -7px; max-width: 880px;
     font-size: clamp(42px, 5.84vw, 84px); line-height: 92px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  /* A long heading comes down a step.
+     Every block in these sections is absolutely placed at a fixed top — the
+     process steps at 310, the track at 380, the intro at 158 — and all of
+     those offsets assume the heading is one line, which the hand-built page's
+     "Ask first. Build second." is. A migrated page's heading is its own
+     section title: "Our User Experience Design Services and Solutions" set at
+     84px is three lines, 276px tall, and it printed straight through the
+     steps beneath it. At 52px the longest of them is two lines and clears
+     310 with room. */
+  .sv-band__h--long {
+    font-size: clamp(34px, 3.8vw, 52px); line-height: 60px;
   }
   .sv-band__intro {
     position: absolute; left: 67.695%; top: 158px; width: 32.305%;

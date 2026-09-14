@@ -91,7 +91,7 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "GymBait"
-    body: "Give a fantastic user experience along with real-time fitness tracking through smartwatches. With our proven expertise in wearable integration, we provide personalized information to end-users in real-time."
+    body: "Give a fantastic user experience along with real-time fitness tracking through smartwatches."
     href: "/work/gymbait/"
     ctaLabel: "View Project"
 sectors:

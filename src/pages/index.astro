@@ -1560,6 +1560,16 @@ const schema = [
     .proj__legend { margin-left: 0; }
     .proj__legend li { grid-template-columns: minmax(0, 1fr) 16px; }
     .say__nav { width: auto; }
+    /* The + and the % are absolutely placed at 152,17 and 110,19 against an
+       84px numeral. Below the design grid the numeral clamps down — 123px
+       wide at 768 instead of 200 — while the offsets do not, so both signs
+       landed past the figure and on top of the note beside it. Back to being
+       the next character along, which is what they read as anyway. */
+    .about__stat-num { position: static; }
+    .about__plus, .about__pct {
+      position: static; margin-left: 6px; line-height: normal;
+      vertical-align: baseline;
+    }
 
     /* Section rhythm. Every vertical gap on this page was measured off the
        1440 canvas, where a section is a tenth of the page. Kept as-is they

@@ -91,7 +91,7 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "GISAID OSS"
-    body: "Being the best-in-class medical apps development company , We offer cloud-based solutions like AWS Managed Services, AWS professional services, DevOps Services and a lot more to make it easier for the healthcare…"
+    body: "Being the best-in-class medical apps development company , We offer cloud-based solutions like AWS Managed Services, AWS professional services, DevOps Services…"
     href: "/work/gisaid-health-tech/"
     ctaLabel: "View Project"
 sectors:

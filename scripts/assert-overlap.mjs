@@ -43,6 +43,20 @@ const BASE = `http://127.0.0.1:${server.address().port}`
    us to ignore the output. Anything not matched here is a bug. */
 const ACCEPTED = [
   { a: /^[A-Z]{2}$/, b: /^[A-Z]{2}$/, why: 'Agency team cluster: avatars are shingled on purpose' },
+  /* The footer wordmark is 182px of "roars" that the columns sit across. It
+     is the one place in the design where type is deliberately a ground. */
+  { a: /^roars$/, b: /^(Privacy Policy|Offices|Agency|Home|Projects|Insights|Contact|Twitter)/,
+    why: 'footer wordmark: the nav columns sit over it by design' },
+  /* Every masthead is a small word tucked over a large one — "food &" over
+     "restaurant". The descender of the first crosses the cap line of the
+     second, which is the lockup, not a collision. */
+  { a: /^(AI|food &|clinics &|mvp|user|page|web app|mobile app|growth|digital|retail &|travel &|members &|transport &|learning &|innovation|dedicated|devops|product|ecommerce)$/i,
+    b: /^(automation|restaurant|healthcare|development|experience|not found|hacking|transformation|ecommerce|hospitality|concierge|logistics|education|design|developers|services)$/i,
+    why: 'masthead lockup: the small word is set over the large one' },
+  /* A display heading with its figure set beside it — "Projects" and "250+".
+     The heading's descenders reach past the figure's cap line; no ink meets. */
+  { a: /^(Projects|People say)$/, b: /^(250\+|4\.9\/5)$/,
+    why: 'display heading and its figure, set close on purpose' },
 ]
 const accepted = (a, b) => ACCEPTED.some((r) => r.a.test(a) && r.b.test(b))
 
