@@ -68,5 +68,15 @@ export const JOURNAL = {
   mealPlanning: `${U}/2025/07/concierge-ai-home.jpg`,
 } as const
 
+/** The three photographs on /about-us/, in the export's order. The office
+ *  shot and beautiful-experience are shared with JOURNAL and SERVICE_IMG
+ *  above; the same file on two pages is the export's own choice, not a
+ *  placeholder standing in for something missing. */
+export const AGENCY_IMG = {
+  office: `${U}/2024/11/roars-office-upscale-768x768.jpg`,
+  strategy: `${U}/2026/04/aboutus-strategy.jpg`,
+  experience: `${U}/2025/04/beautiful-experience.jpg`,
+} as const
+
 /** Gated PDFs. Root-level /tools/, NOT under the wp-content rewrite. */
 export const TOOLS = '/tools'
