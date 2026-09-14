@@ -93,9 +93,10 @@ const year = new Date().getFullYear()
     </div>
 
     <div class="ft__grid ft__bottom">
-      <p class="ft__wordmark">
-        roars<span class="ft__badge" aria-hidden="true">&reg;</span>
-      </p>
+      {/* Export 2 dropped the registered badge and the asteroid slash from
+          the footer wordmark. Keeping the badge read as a second logo
+          stacked under the mark at the top of the column. */}
+      <p class="ft__wordmark">roars</p>
     </div>
 
     <div class="ft__grid ft__legal">
@@ -227,13 +228,6 @@ const year = new Date().getFullYear()
     font-size: clamp(var(--fs-wordmark-m), 12.6vw, var(--fs-wordmark));
     font-weight: var(--fw-semi); line-height: 0.86;
     letter-spacing: var(--ls-item); color: var(--c-white);
-  }
-  .ft__badge {
-    display: flex; align-items: center; justify-content: center;
-    width: 31px; height: 31px; margin-top: 28px;
-    background: var(--c-accent); border-radius: var(--r-pill);
-    font-size: 13px; font-weight: var(--fw-semi); line-height: 1;
-    letter-spacing: 0; color: rgb(31, 31, 31);
   }
 
   .ft__legal {

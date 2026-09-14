@@ -408,7 +408,7 @@ const schema = [
           the design; see CLAUDE.md. */}
       <ul class="svc__list" data-accordion>
         {services.map((s, i) => (
-          <li class="svc__row" data-side={i % 2 === 0 ? 'inner' : 'rail'}>
+          <li class:list={['svc__row', i % 2 === 0 ? 'svc__row--inner' : 'svc__row--rail']}>
             <h3 class="svc__h">
               <button
                 class="svc__trigger"
@@ -440,16 +440,20 @@ const schema = [
                   <img class="svc__disc" src={SERVICE_IMG.productConsultant} alt="" width="138" height="138" loading="lazy" decoding="async" />
                   <img class="svc__disc svc__disc--sm" src={SERVICE_IMG.beautifulExperience} alt="" width="37" height="37" loading="lazy" decoding="async" />
                 </div>
+                {/* Column 2: description with the tag line BELOW it, in grey,
+                    exactly as the export stacks them. */}
                 <div class="svc__detail">
+                  <p class="svc__panel-body">{s.body}</p>
                   {s.stages && <p class="svc__stages">{s.stages}</p>}
-                  {s.clients && (
-                    <ul class="svc__clients">
-                      {s.clients.map((c) => <li>{c}</li>)}
-                      <li class="svc__more">{s.more}</li>
-                    </ul>
-                  )}
                   <a class="svc__link" href={s.href}>Read about {s.name}</a>
                 </div>
+                {/* Column 3: the client list, at 1197. */}
+                {s.clients && (
+                  <ul class="svc__clients">
+                    {s.clients.map((c) => <li>{c}</li>)}
+                    <li class="svc__more">{s.more}</li>
+                  </ul>
+                )}
               </div>
             </div>
           </li>
@@ -476,10 +480,9 @@ const schema = [
         <h2 class="display display--on-dark">Projects</h2>
         <p class="proj__count">250<span>+</span></p>
         <ul class="proj__legend">
-          <li>Recent Projects</li>
-          <li>Product Development</li>
-          <li>UI/UX and Product Design</li>
-          <li>Mobile and AI</li>
+          {['Recent Projects', 'Product Development', 'UI/UX and Product Design', 'Mobile and AI'].map((l) => (
+            <li><span>{l}</span><i aria-hidden="true"></i></li>
+          ))}
         </ul>
       </div>
 
@@ -508,6 +511,10 @@ const schema = [
       </div>
 
       <div class="proj__foot">
+        <span class="proj__stars" aria-hidden="true">
+          <img src={star3.src} alt="" width="17" height="17" />
+          <img src={star5.src} alt="" width="17" height="17" />
+        </span>
         <Button href="/work/" label="All Projects" variant="light" />
       </div>
     </div>
@@ -594,6 +601,10 @@ const schema = [
       </ul>
 
       <div class="ind__foot">
+        <span class="ind__stars" aria-hidden="true">
+          <img src={star3.src} alt="" width="17" height="17" />
+          <img src={star5.src} alt="" width="17" height="17" />
+        </span>
         <Button href="/work/" label="See the work" />
       </div>
     </div>
@@ -824,6 +835,11 @@ const schema = [
     align-items: start;
     border-top: 1.5px solid var(--c-rule-strong);
   }
+  /* The row's tracks must match its trigger's, because the panel is a child
+     of the ROW. Without these the panel fell into auto-flow and put the photo
+     at 1401 instead of 743. */
+  .svc__row--inner { grid-template-columns: 463px 241px 223px 231px 167px 37px; }
+  .svc__row--rail  { grid-template-columns: 464px 232px 166px 36px; justify-content: start; }
   .svc__h { grid-column: 1 / -1; grid-row: 1; margin: 0; font-size: inherit; font-weight: inherit; }
 
   .svc__trigger {
@@ -835,10 +851,17 @@ const schema = [
     font-family: inherit; color: inherit; text-align: left;
     cursor: pointer;
   }
-  [data-side='inner'] .svc__trigger {
-    grid-template-columns: 463px 464px 231px 167px 37px;
+  .svc__row--inner .svc__trigger {
+    grid-template-columns: 463px 241px 223px 231px 167px 37px;
   }
-  [data-side='rail'] .svc__trigger {
+  /* When the row is open the panel supplies the description and the client
+     list in columns 3-5, so the trigger's own copies are removed rather than
+     hidden — leaving them in place is what drew the tag line through the
+     title. */
+  .svc__row--inner [aria-expanded='true'] .svc__body,
+  .svc__row--inner [aria-expanded='true'] .svc__count { display: none; }
+  .svc__row--inner .svc__icon { grid-column: 6; }
+  .svc__row--rail .svc__trigger {
     grid-template-columns: 464px 232px 166px 36px;
     justify-content: start;
   }
@@ -852,27 +875,26 @@ const schema = [
     visibility: hidden;
   }
   [aria-expanded='true'] .svc__n { visibility: visible; }
-  [data-side='rail'] .svc__n { display: none; }
+  .svc__row--rail .svc__n { display: none; }
 
   .svc__name {
     font-size: var(--fs-item); line-height: 32px;
     font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
-  [data-side='inner'] .svc__name { grid-column: 2; grid-row: 1; font-size: 32px; line-height: 40px; }
-  [data-side='rail']  .svc__name { grid-column: 1; grid-row: 1; }
+  .svc__row--inner .svc__name { grid-column: 2; grid-row: 1; font-size: 32px; line-height: 40px; }
+  .svc__row--inner .svc__body { grid-column: 4; grid-row: 1; }
+  .svc__row--inner .svc__count { grid-column: 5; grid-row: 1; }
+  .svc__row--rail  .svc__name { grid-column: 1; grid-row: 1; }
 
-  [data-side='inner'] .svc__body { grid-column: 3; grid-row: 1; }
-  [data-side='rail']  .svc__body { grid-column: 2; grid-row: 1; }
+  .svc__row--rail  .svc__body { grid-column: 2; grid-row: 1; }
   .svc__body { font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(2, 2, 2); }
 
-  [data-side='inner'] .svc__count { grid-column: 4; grid-row: 1; }
-  [data-side='rail']  .svc__count { grid-column: 3; grid-row: 1; }
+  .svc__row--rail  .svc__count { grid-column: 3; grid-row: 1; }
   .svc__count { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); color: var(--c-black); white-space: nowrap; }
   .svc__count span { margin-right: var(--sp-3); font-size: 32px; line-height: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
 
-  [data-side='inner'] .svc__icon { grid-column: 5; grid-row: 1; }
-  [data-side='rail']  .svc__icon { grid-column: 4; grid-row: 1; }
+  .svc__row--rail  .svc__icon { grid-column: 4; grid-row: 1; }
   .svc__icon {
     position: relative; justify-self: end;
     width: var(--icon-circle); height: var(--icon-circle);
@@ -894,20 +916,24 @@ const schema = [
      Sharing row 1 was an attempt to match the prototype's 195px open row; it
      drew the tag line straight through the row title. A taller row that reads
      correctly beats a short one with text on top of text. */
-  .svc__panel { grid-column: 1 / -1; margin-top: 26px; overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
+  .svc__row--inner .svc__panel { grid-row: 1; grid-column: 3 / 6; margin-top: 26px; }
+  .svc__row--rail .svc__panel { grid-column: 1 / -1; margin-top: 26px; overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
   .svc__panel[hidden] { display: block; height: 0; }
   /* Row one ships open, so it needs a real height before any script runs.
      The island overwrites this with a measured pixel height on first toggle. */
   .svc__panel:not([hidden]) { height: auto; }
+  /* photo | description + tags | clients — the export's order, left to right */
   .svc__inner {
     display: grid;
-    grid-template-columns: 223px 231px minmax(0, 1fr);
-    gap: var(--sp-5);
-    /* Aligned to the inner column, as the export draws it, not the rail. */
-    margin-left: var(--rail-width);
+    grid-template-columns: 223px 231px 167px;
+    align-items: start;
     padding-bottom: var(--sp-6);
   }
-  .svc__detail { grid-column: 2 / -1; }
+  .svc__row--rail .svc__inner { margin-left: var(--rail-width); }
+  .svc__detail { display: flex; flex-direction: column; }
+  .svc__panel-body { margin: 0; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: -0.05em; color: rgb(14, 14, 14); }
+  .svc__stages { margin: 108px 0 0; }
+  .svc__link { margin-top: var(--sp-4); }
   .svc__media { position: relative; height: 138px; }
   .svc__disc { position: absolute; left: 0; top: 0; width: 138px; height: 138px; border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
   .svc__disc--sm { left: 141px; top: 5px; width: 37px; height: 37px; background: rgb(102, 102, 102); }
@@ -931,7 +957,14 @@ const schema = [
   .proj__head { margin-left: var(--rail-width); }
   .proj__count { margin-top: var(--sp-4); font-size: 40px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: rgb(236, 234, 228); }
   .proj__count span { font-size: 22px; font-weight: var(--fw-medium); }
-  .proj__legend { list-style: none; margin: var(--sp-4) 0 0; padding: 0; font-size: var(--fs-body); line-height: 28px; letter-spacing: var(--ls-display); color: var(--c-white); }
+  /* Label at 732, a 16px white rule at 974. Measured off the export. */
+  .proj__legend {
+    list-style: none; margin: var(--sp-4) 0 0 229px; padding: 0;
+    font-size: var(--fs-body); line-height: 28px;
+    letter-spacing: var(--ls-display); color: var(--c-white);
+  }
+  .proj__legend li { display: grid; grid-template-columns: 242px 16px; align-items: center; }
+  .proj__legend i { display: block; height: 1px; background: var(--c-white); }
 
   .proj__stage { position: relative; margin-top: 77px; min-height: 580px; }
   .proj__slide {
@@ -959,6 +992,7 @@ const schema = [
   }
   .proj__foot { display: grid; grid-template-columns: 232px auto; margin-top: 107px; margin-left: var(--rail-width); }
   .proj__foot :global(a) { grid-column: 2; justify-self: start; }
+  .proj__stars, .ind__stars { display: flex; gap: 6px; align-self: center; }
 
   /* 5. people say ------------------------------------------------------ */
   .say { padding-block: 147px 95px; }
@@ -1027,7 +1061,7 @@ const schema = [
   .ind__rail { position: absolute; left: 3px; top: 319px; }
   .ind__label { margin: 0; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); color: var(--c-black); }
   .ind__sub { margin: 0; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-regular); letter-spacing: var(--ls-display); color: var(--c-rule); }
-  .ind__intro { margin-top: var(--sp-4); max-width: 620px; }
+  .ind__intro { margin-top: var(--sp-4); max-width: 756px; }
   .ind__grid { list-style: none; margin: 202px 0 0 var(--rail-width); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 107px 20px; }
 
   /* Horizontal: ring circle on the left, name and cta to its right, rule
