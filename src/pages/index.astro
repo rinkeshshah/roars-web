@@ -515,8 +515,13 @@ const schema = [
               )}
             </div>
 
+            {/* Two placed spans, not a number followed by a word. The export
+                draws a 206x32 block with the figure at 0,0 and the label at
+                56,7 — the label sits on the figure's optical middle, not on
+                its baseline. As the block's own text node it measured from
+                the block's top edge and read 34px high on all three rows. */}
             <p class="svc__count" data-svc-closed>
-              {s.count && <><span>{s.count}</span> Projects</>}
+              {s.count && <><span class="svc__count-n">{s.count}</span><span class="svc__count-l">Projects</span></>}
             </p>
 
             <button
@@ -1032,9 +1037,10 @@ const schema = [
      row container at 306, foot at 1025 running to 1153. */
   .svc { padding-block: 121px 207px; }
   .svc .display { margin-left: var(--rail-width); }
-  /* Rows start at 306 in the section. The title box lands at 121+86=207, so
-     the gap is 99 — not 98, and the 25px that was missing was here. */
-  .svc__list { list-style: none; margin: 123px 0 0; padding: 0; }
+  /* Rows start at 306 in the section. The title box is 121 to 208 (86.8px of
+     leading rounds to 87), so the gap is 98. It was 123, which put the whole
+     rail 25px low and took every row with it. */
+  .svc__list { list-style: none; margin: 98px 0 0; padding: 0; }
 
   /* ── Services rows ──────────────────────────────────────────────
      Measured off the export, container at 38,306 sized 1364x647:
@@ -1053,7 +1059,11 @@ const schema = [
   .svc__row {
     display: grid;
     grid-template-columns: 465px 232px 166px 36px;
-    grid-template-rows: auto auto;
+    /* The rule's track is ZERO height. The export draws each rule as a
+       hairline sitting ON the row's top edge, taking no space; given a real
+       auto track it added its own 1-2px to every row, and the four rows
+       compounded that into the 5px the section was over. */
+    grid-template-rows: 0 auto;
     align-items: start;
     justify-content: start;
     /* The gap below each row is the export's own and is not a rhythm:
@@ -1078,7 +1088,9 @@ const schema = [
   .svc__n {
     grid-row: 2; grid-column: 1;
     padding-top: 25px;
-    font-size: var(--fs-label); line-height: 19px;
+    /* 20px in the export, not --fs-label. This is the section's rail number,
+       not a rail label, and at 14 it read as a caption. */
+    font-size: 20px; line-height: 19px;
     font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
     color: rgb(17, 17, 17);
     display: none;
@@ -1149,14 +1161,18 @@ const schema = [
 
   .svc__count {
     grid-row: 2; grid-column: 3;
-    margin: 0;
-    padding-top: 27px;
-    font-size: var(--fs-label); line-height: var(--lh-label);
-    font-weight: var(--fw-medium); color: var(--c-black);
+    position: relative; height: 32px;
+    margin: 0; padding-top: 27px;
+    color: var(--c-black);
     white-space: nowrap;
   }
   .svc__row--inner .svc__count { grid-column: 4; }
-  .svc__count span { margin-right: var(--sp-3); font-size: 32px; line-height: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+  .svc__count-n { font-size: 32px; line-height: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+  .svc__count-l {
+    position: absolute; left: 56px; top: 34px;
+    font-size: var(--fs-label); line-height: 19px;
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-display); opacity: 0.9;
+  }
 
   .svc__icon {
     grid-row: 2;

@@ -41,7 +41,8 @@
  * as-is. Getting this wrong would make every coordinate silently ~1% off.
  */
 import { chromium } from 'playwright'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 const SRC = process.env.SRC || 'http://127.0.0.1:4349'
 const BUILD = process.env.BUILD || 'http://127.0.0.1:4351'
@@ -65,6 +66,46 @@ const CDN = {
   'https://unpkg.com/@babel/standalone@7.29.0/babel.min.js': `${VENDOR}/babel-standalone/babel.min.js`,
 }
 
+/**
+ * THE PROTOTYPES ASK GOOGLE FONTS FOR INTER AND DO NOT GET IT.
+ *
+ * `<link href="fonts.googleapis.com/css2?family=Inter...">` fails closed in a
+ * sandboxed runner — here with ERR_CONNECTION_RESET — and the page silently
+ * falls through its stack to Arial. `document.fonts` comes back EMPTY and
+ * nothing in the render says anything is wrong.
+ *
+ * Arial is far narrower than Inter at the same size and tracking: the string
+ * "Human-centered design that turns complex ideas into easy, elegant user
+ * experiences" measures 458px against Inter's 569px, a 24% difference. So a
+ * 191px column takes three lines in the prototype and four in the build, and
+ * every block whose height follows wrapped text, and everything positioned
+ * under it, disagrees. That is not the build being wrong.
+ *
+ * Declared type — size, weight, leading, tracking, colour — was never
+ * affected, because those are computed values. Wrapping, block heights and
+ * anything that flows after them were, for every page measured before this.
+ *
+ * Serving BOTH sides the site's own woff2 is also the honest comparison: it
+ * is the font that ships. Inlined as a data URI so it needs no CORS header
+ * and no second request.
+ */
+const INTER = join(import.meta.dirname, '..', 'public', 'fonts', 'inter-var-latin.woff2')
+const INTER_CSS = existsSync(INTER)
+  ? `@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:block;` +
+    `src:url(data:font/woff2;base64,${readFileSync(INTER).toString('base64')}) format('woff2-variations');}`
+  : null
+
+/** Fulfil the prototype's Google Fonts request with that face. */
+async function routeFonts(page) {
+  if (!INTER_CSS) {
+    console.warn('WARNING: public/fonts/inter-var-latin.woff2 missing; the prototype will render in a fallback font and every wrap will be wrong.')
+    return
+  }
+  await page.route('https://fonts.googleapis.com/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'text/css', body: INTER_CSS }),
+  )
+}
+
 /* Tolerances. 2px on geometry is the brief; type and colour must match. */
 const GEO_TOL = 2
 
@@ -85,16 +126,13 @@ const ACCEPTED = [
   { match: /^Read about /, why: 'accordion panels need a real link out; the prototype has none' },
   { match: /^Approach$/, why: 'footer nav is five items by decision; Approach stays in the overlay' },
 
-  /* Consequences of the Services normalisation. The mock puts a row's name in
-     the left rail on two rows and in the inner column on the other two, with
-     no majority; it sits in the rail on every row here, which shifts the open
-     row's remaining columns left with it. Decided, not drift. */
-  { field: 'x', match: /^(Product Development|Mobile App Development)$/, why: 'Services: row name in the left rail on every row' },
-  { field: 'x', match: /^(We take products from idea to launch|Native and cross-platform apps)/, why: 'Services: open-row columns follow the name into the rail' },
-  { field: 'x', match: /^(Snowman Logistics|Parqly|\+ 11|Discovery, Architecture)/, why: 'Services: open-row columns follow the name into the rail' },
-  /* Row 3 of the Services accordion is indented 463px in the mock while rows
-     2 and 4 sit at the gutter. Artboard drift, normalised to the other two. */
-  { field: 'x', match: /^(35|Projects)$/, why: 'Services: mock drift on row 3, normalised to rows 2 and 4' },
+  /* REMOVED: four entries excusing the Services normalisation — "row name in
+     the left rail on every row" and "mock drift on row 3, normalised". Both
+     described a build that had flattened the export's alternating indent, and
+     both were wrong: the indent alternates by design and row 3 is indented on
+     purpose. The rows now follow the export, so there is nothing to excuse.
+     An ACCEPTED entry that outlives the decision it recorded is worse than no
+     entry, because it suppresses the row that would have caught the regression. */
   /* The ten-step scale HOLDS. The prototypes use 46 sizes; collapsing them was
      the point, so an 18px or 20px value snaps to the nearest step and the 2px
      difference is accepted. A scale that grows to fit every prototype value
@@ -484,6 +522,7 @@ const wanted = args.length ? [[args[0], args[1]]] : PAGES
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 1200 }, deviceScaleFactor: 1 })
 const page = await ctx.newPage()
+await routeFonts(page)
 await page.route('https://unpkg.com/**', async (route) => {
   const local = CDN[route.request().url()]
   if (!local) return route.abort()

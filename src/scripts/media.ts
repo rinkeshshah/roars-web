@@ -18,8 +18,27 @@
 const BLANK =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
+/**
+ * PIN THE BOX BEFORE SWAPPING THE SRC.
+ *
+ * A 1x1 GIF has a 1x1 intrinsic size, so any slot whose width is not set in
+ * CSS collapses to a pixel the moment the src changes. The avatar discs carry
+ * an explicit width and height and were unaffected; the client logo strip
+ * sets only `height`, took its width from the intrinsic ratio, and went from
+ * six 22px-tall marks to six single pixels — the whole strip vanished.
+ *
+ * Reading the rect first and pinning it keeps whatever box the slot already
+ * had, which is the same box it held when these were hidden rather than
+ * blanked. Nothing reflows when the real files land, because by then this
+ * never runs.
+ */
 export function initMedia(): void {
   const hide = (img: HTMLImageElement) => {
+    const { width, height } = img.getBoundingClientRect()
+    if (width > 1 && height > 1) {
+      img.style.width = `${Math.round(width)}px`
+      img.style.height = `${Math.round(height)}px`
+    }
     img.classList.add('is-missing')
     img.src = BLANK
   }
