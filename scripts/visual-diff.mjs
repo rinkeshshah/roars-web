@@ -100,6 +100,11 @@ const ACCEPTED = [
      difference is accepted. A scale that grows to fit every prototype value
      is not a scale. See CLAUDE.md, Design system. */
   { field: 'fs', match: /./, why: 'ten-step type scale: prototype sizes snap to the nearest step, max 2px' },
+  /* The prototypes carry the corrupted spelling. The build carries the
+     corrected one, so the diff reports it on both sides. See
+     scripts/assert-attribution.mjs. */
+  { match: /^(Riinkesh A Sshah|Ankush A Sshah)$/, why: 'prototype ships the scrambled founder name; the build corrects it' },
+  { match: /^(Rinkesh A Shah|Ankush A Shah)$/, why: 'corrected founder name, see above' },
 ]
 /* An entry with `field` accepts only that measurement for that text; an entry
    without one accepts the element's presence or absence outright. */
