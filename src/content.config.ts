@@ -455,6 +455,47 @@ const resources = defineCollection({
     downloadFile: z.string().optional(),
     previewImage: z.string().optional(),
     previewAlt: z.string().optional(),
+
+    /**
+     * The shelf card's own line, and the guide hero's. Drawn 420 wide at
+     * 15/23 on the card, so roughly five lines is the ceiling.
+     *
+     * OPTIONAL ON PURPOSE. The export writes ten of the fifteen; the other
+     * five have no copy anywhere, and a card with the real name and no blurb
+     * is honest where an invented sentence is not. See CLAUDE.md, no
+     * fabricated data.
+     */
+    summary: z.string().max(300).optional(),
+    /**
+     * The chip this guide filters under. Free text rather than an enum: the
+     * four the export uses are its own, and validate-content checks that the
+     * set stays small rather than that it matches a list written here.
+     */
+    category: z.string().max(28).optional(),
+    /** Three at most; they sit on one 420px row in the hero. */
+    pills: z.array(z.string().max(20)).max(3).default([]),
+    /**
+     * The PDF's basename under /tools/, e.g. "business-model-canvas.pdf".
+     * The browser never sends this — public/api/contact.php resolves the file
+     * from an allowlisted slug — but the card prints it, so it is content.
+     */
+    file: z.string().max(80).optional(),
+    /**
+     * The long read: "01 / PURPOSE — What is this for?" and so on. Each block
+     * is a label, a heading, a lead paragraph and a second one under a rule.
+     * Absent for the guides whose bodies have not been written.
+     */
+    sections: z
+      .array(
+        z.object({
+          label: z.string().max(28),
+          heading: z.string().max(60),
+          lead: z.string().max(420),
+          body: z.string().max(420).optional(),
+        }),
+      )
+      .max(4)
+      .default([]),
   }),
 })
 

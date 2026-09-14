@@ -1,6 +1,19 @@
 ---
 title: "Business Model Canvas"
 publishedAt: 2026-09-13
+category: "BUSINESS MODEL"
+summary: "The Business Model Canvas is a one page overview that lays out both what you do (or want to do), and how you go about doing it ; enabling structured conversations around management and strategy."
+pills: ["PDF", "ONE PAGE", "BUSINESS MODEL"]
+file: "business-model-canvas.pdf"
+sections:
+  - label: "01 / PURPOSE"
+    heading: "What is this for?"
+    lead: "Existing programmes can develop new initiatives and identify opportunities while becoming more efficient by illustrating potential trade-offs and aligning activities. New programmes can use it to plan and work out how to make their offering real."
+    body: "The individual elements prompt thoughts within the separate activities or resources, while the capability to have the complete overview encourages fresh perspectives and ideas about how those pieces fit together. This structure also helps to keep group discussions more focused and bring everyone onto the same page."
+  - label: "02 / METHOD"
+    heading: "Step-by-step guide."
+    lead: "To make a Business Model Canvas, the easiest way to start is by filling out what you do. This helps keep the focus on your main goal as you fill out the other building blocks of the canvas. From there you can build on that goal and see how it can be achieved by adding details about the other activities and resources you have."
+    body: "Start from a blank canvas and add notes with keywords to each building block of the canvas. If you use ‘sticky notes\u2019 for this, you can move ideas around as you fill out each building block in the canvas. You may want to colour-code elements related to a specific client segment."
 seo:
   title: "Business Model Canvas Template, Free Download"
   description: "A one page overview of both what you do and how you go about doing it, laying out the crucial activities and challenges and how they relate to each other."

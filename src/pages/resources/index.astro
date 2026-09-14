@@ -1,35 +1,99 @@
 ---
 /**
- * Resources index. Fifteen gated templates.
+ * Resources. One page, at /resources/.
  *
- * Cards come from the inventory so all fifteen are reachable, with the seeded
- * ones carrying their real description. Filter chips are deliberately absent
- * until there is real taxonomy to filter on; a chip row over one category
- * would be decoration.
+ * TWO EXPORTS, ONE ROUTE. `Roars v2 - Resources` draws a three-shelf overview
+ * (Guides / Staff Picks / Tools) whose shelves link onward; `Roars v2 - Guides`
+ * draws the library those links lead to. The CSV has fifteen flat
+ * /resources/<slug>/ rows and NOTHING ELSE — no index row, no /guides/,
+ * /staff-picks/ or /tools/ — and CLAUDE.md already resolves guide detail to
+ * the flat form. So the two designs stack on the one route that exists: the
+ * shelves as the header, the library under them. Nothing is invented and no
+ * shelf links to a page that is not there.
  *
- * Six of the live fifteen ship images named "placeholder" on the current site.
- * They are download pages, so that art must be replaced during migration, not
- * carried across. Flagged in CLAUDE.md, known landmines.
+ * The shelves are DESCRIPTIVE, not links. Only Guides has items today; Staff
+ * Picks and Tools have no content and no URLs, and a card that looks clickable
+ * and is not is worse than one that does not pretend. Their copy is the
+ * export's own, so it is real — it describes collections Roars intends to
+ * have, and each becomes a link the moment one does.
+ *
+ * Canvas, section-relative: Hero 700, Collections 1020, Library 2740.
+ *
+ * The chip row is approved island 3 (filter chips) — client-side only, so a
+ * filtered view never becomes its own indexable URL. See docs/SEO-SPEC.md.
+ *
+ * Six of the live fifteen ship cover art named "placeholder" on the current
+ * site. They are download pages, so that art is replaced during migration, not
+ * carried across — the card's cover slot is drawn, not sourced. Flagged in
+ * CLAUDE.md, known landmines.
  */
 import { getCollection } from 'astro:content'
-import MarketingPage from '../../components/MarketingPage.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { site } from '../../lib/site'
+import star5 from '../../assets/star-5.svg'
 
+const path = '/resources/'
+
+/* Cards come from the INVENTORY, not the collection, so all fifteen live URLs
+   are reachable. Ten carry the export's copy; the other five have none written
+   anywhere and get their real name and no blurb rather than an invented one. */
 const entries = await getCollection('resources')
 const byId = new Map(entries.map((e) => [e.id, e]))
-const items = slugsOf('free_stuff').map((slug) => ({
-  slug,
-  href: `/resources/${slug}/`,
-  name: byId.get(slug)?.data.title ?? nameFromSlug(slug),
-  description: byId.get(slug)?.data.seo.description,
-}))
+const items = slugsOf('free_stuff').map((slug) => {
+  const d = byId.get(slug)?.data
+  return {
+    slug,
+    href: `/resources/${slug}/`,
+    name: d?.title ?? nameFromSlug(slug),
+    summary: d?.summary,
+    category: d?.category,
+  }
+})
+
+/* The chip row is built from what the entries actually carry, in the export's
+   order. A category nothing is filed under never gets a chip, so no chip can
+   return an empty shelf. */
+const ORDER = ['BUSINESS MODEL', 'OUR FAVOURITE', 'PROBLEM DISCOVERY', 'STRATEGY']
+const present = new Set(items.map((i) => i.category).filter(Boolean) as string[])
+const categories = ORDER.filter((c) => present.has(c))
+const key = (c: string) => c.toLowerCase().replace(/\s+/g, '-')
+
+/* The export's own shelf copy, verbatim. Guides is the only one with items. */
+const shelves = [
+  {
+    n: '01 / PDF',
+    stamp: ['EXAMPLES', 'TEMPLATES', 'AGENDAS'],
+    name: 'Guides',
+    body: 'Everything you need to know about innovation, in our free PDF guides, with examples, templates, agendas.',
+    count: items.length,
+  },
+  {
+    n: '02 / MIXED',
+    stamp: ['BOOKS', 'TOOLS', 'PODCASTS'],
+    name: 'Staff Picks',
+    body: 'A selection of our favorite books, tools, podcasts, guides, and more.',
+    count: 0,
+  },
+  {
+    n: '03 / PDF',
+    stamp: ['HANDS-ON', 'EASY TO USE', 'ACTIONABLE'],
+    name: 'Tools',
+    body: 'Actionable tools for change-makers. We’ve transformed a lot of boring innovation management theory into hands-on, easy-to-use, actionable innovation tools. Explore our library of PDFs, free for you to download.',
+    count: 0,
+  },
+]
 
 const schema = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    '@id': `${site.url}/resources/#collection`,
+    '@id': `${site.url}${path}#collection`,
     name: 'Resources',
     isPartOf: { '@id': `${site.url}/#website` },
     mainEntity: {
@@ -43,53 +107,361 @@ const schema = [
       })),
     },
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Resources' },
+    ],
+  },
 ]
 ---
 
-<MarketingPage
-  title="Free Product Strategy Templates and Canvases | Roars"
-  description="Fifteen templates we use in real engagements: business model canvas, value proposition, SWOT, prototype testing plan and more. Free, no strings."
-  path="/resources/"
-  label="Resources"
-  heading="Resources"
-  intro="The templates we actually use in engagements, free to download."
+<BaseLayout
+  title="Free Innovation Guides and Templates | Roars"
+  description="Free one page PDF guides and templates: business model canvas, SWOT, value proposition, evidence planning and more. Ours to make, yours to download."
+  path={path}
   schema={schema}
 >
-  <ul class="res">
-    {items.map((it) => (
-      <li class="res__item">
-        <a class="res__link" href={it.href}>
-          <span class="res__name">{it.name}</span>
-          {it.description && <span class="res__desc">{it.description}</span>}
-          <span class="res__go" aria-hidden="true">&rarr;</span>
-        </a>
-      </li>
-    ))}
-  </ul>
-</MarketingPage>
+  <TopBar slot="topbar" cta="meeting" />
+  <NavOverlay />
+
+  {/* ── Hero, 1440x700 ─────────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="rh">
+      <GrainField tone="dark" second />
+      <div class="wrap rh__inner">
+        <div class="rh__rail" data-reveal>
+          <span class="r-eyebrow r-eyebrow--dark">RESOURCES / 03 COLLECTIONS</span>
+          <span class="rh__tick" aria-hidden="true"></span>
+          <p class="rh__statement">Free PDFs, templates and agendas. Ours to make, yours to download.</p>
+          <ul class="rh__pills">
+            <li>GUIDES</li>
+            <li>STAFF PICKS</li>
+            <li>TOOLS</li>
+          </ul>
+        </div>
+
+        <div class="rh__mast" data-reveal>
+          <span class="r-chip">
+            <span>roars</span>
+            <span class="starmark r-chip__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+          </span>
+          <h1 class="rh__large">resources</h1>
+          <p class="rh__standfirst">Guides, staff picks and tools</p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── The three shelves, 1440x1020 ───────────────────────── */}
+  <Section ground="light">
+    <div class="rc">
+      <span class="r-rule" aria-hidden="true"></span>
+      <span class="r-eyebrow">THE LIBRARY</span>
+      <h2 class="rc__h">three shelves</h2>
+      <p class="rc__intro" data-reveal>
+        Everything here started as internal material. We cleaned it up and put it out front.
+      </p>
+
+      <ul class="rc__grid">
+        {shelves.map((s, i) => (
+          <li class="rc__card" data-reveal style={`transition-delay:${i * 70}ms`}>
+            <span class="rc__n">{s.n}</span>
+            {/* Three stacked sheets, drawn rather than photographed: the
+                export builds them from three offset blocks and a rule, so
+                there is no image to 404 and none to replace at migration. */}
+            <span class="rc__stack" aria-hidden="true">
+              <span class="rc__sheet rc__sheet--3"></span>
+              <span class="rc__sheet rc__sheet--2"></span>
+              <span class="rc__sheet rc__sheet--1">
+                <em>{s.stamp.map((line, n) => <>{n > 0 && <br />}{line}</>)}</em>
+              </span>
+            </span>
+            <h3 class="rc__name">{s.name}</h3>
+            <p class="rc__body">{s.body}</p>
+            <span class="rc__foot">
+              {s.count > 0 ? (
+                <a href="#shelf">See all {s.name.toLowerCase()}<span class="rc__go" aria-hidden="true">→</span></a>
+              ) : (
+                <em class="rc__soon">Not published yet</em>
+              )}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* ── The library, 1440x2740 ─────────────────────────────── */}
+  <Section ground="light">
+    <div class="rl" id="shelf">
+      <span class="r-rule" aria-hidden="true"></span>
+      <span class="r-eyebrow">ALL CATEGORIES</span>
+      <h2 class="rl__h">the shelf</h2>
+      <p class="rl__intro" data-reveal>
+        One page each. Print it, fill it in, take it into the room. Filter by what you are
+        trying to work out.
+      </p>
+
+      <div class="rl__chips" data-filter-group="guides">
+        <button type="button" data-filter="all" aria-pressed="true">ALL</button>
+        {categories.map((c) => (
+          <button type="button" data-filter={key(c)} aria-pressed="false">{c}</button>
+        ))}
+        <span class="rl__count" data-filter-readout>{items.length} / {items.length}</span>
+      </div>
+
+      <ul class="rl__grid">
+        {items.map((it, i) => (
+          <li
+            class="rl__card"
+            data-filter-item="guides"
+            data-cats={it.category ? key(it.category) : ''}
+            data-reveal
+            style={`transition-delay:${(i % 3) * 70}ms`}
+          >
+            <a href={it.href}>
+              <span class="rl__cat">{it.category ?? 'GUIDE'}</span>
+              <span class="rl__thumb" aria-hidden="true"></span>
+              <span class="rl__name">{it.name}</span>
+              {it.summary && <span class="rl__sum">{it.summary}</span>}
+              <span class="rl__dl">Download <span aria-hidden="true">↓</span></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    blurbTitle="Want the one page version of your problem?"
+    blurb="Take a template into the room first. If the problem turns out to be bigger than a page, that is worth a call."
+    tagline="ours to make, yours to download"
+    ctaLabel="Shall we chat?"
+    ctaHref="https://meet.roarsinc.com/sales"
+  />
+</BaseLayout>
 
 <style>
-  .res { list-style: none; margin: 0; padding: 0; }
-  .res__item { border-top: 0.5px solid var(--c-rule-soft); }
-  .res__item:last-child { border-bottom: 0.5px solid var(--c-rule-soft); }
-  .res__link {
-    display: grid;
-    grid-template-columns: minmax(0, 320px) minmax(0, 1fr) 32px;
-    gap: var(--sp-5);
-    align-items: baseline;
-    padding: var(--sp-4) var(--sp-3);
-    transition: background var(--dur-fast) ease;
+  /* ── shared ─────────────────────────────────────────────── */
+  .r-eyebrow {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
   }
-  .res__link:hover { background: rgba(255, 212, 0, 0.1); }
-  .res__name {
-    font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  .r-eyebrow--dark { color: rgba(255, 255, 255, 0.55); }
+  .r-rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+  .r-chip { position: relative; display: flex; align-items: flex-start; height: 24px; margin-left: 8px; }
+  .r-chip > span:first-child {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: #fbfbfb; padding-top: 4px;
   }
-  .res__desc { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-ink-muted); }
-  .res__go { font-size: 20px; color: rgba(20, 20, 20, 0.45); justify-self: end; }
+  .r-chip__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: #fbfbfb; }
 
-  @media (max-width: 760px) {
-    .res__link { grid-template-columns: 1fr; gap: var(--sp-2); }
-    .res__go { display: none; }
+  /* ── hero ───────────────────────────────────────────────── */
+  .rh { position: relative; }
+  .rh__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 380px minmax(0, 1fr);
+    align-content: start; padding-block: 180px 0; min-height: 700px;
+  }
+  /* Fixed offsets, as the export authors them: 0 / 38 / 64 / 180, so a
+     statement that wraps to two lines does not drag the pills up with it. */
+  .rh__rail { position: relative; grid-column: 1; grid-row: 1; width: 400px; height: 300px; }
+  .rh__tick { position: absolute; top: 38px; display: block; width: 16px; height: 1.5px; background: var(--c-accent); }
+  .rh__statement {
+    position: absolute; top: 64px; margin: 0; width: 390px;
+    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.94);
+  }
+  .rh__pills {
+    position: absolute; top: 180px; left: 0; margin: 0; padding: 0; list-style: none;
+    display: flex; flex-wrap: wrap; gap: 8px; width: 400px;
+  }
+  .rh__pills li {
+    padding: 7px 14px; border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+    font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.88);
+  }
+
+  .rh__mast { grid-column: 2; grid-row: 1; margin-top: 150px; }
+  .rh__large {
+    margin: 24px 0 0; white-space: nowrap;
+    font-size: clamp(56px, 9.73vw, 140px); line-height: 140px; font-weight: var(--fw-semi);
+    letter-spacing: -0.055em; color: rgb(251, 251, 251);
+  }
+  .rh__standfirst {
+    margin: 16px 0 0 6px; max-width: 560px;
+    font-size: var(--fs-item); line-height: 34px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.72);
+  }
+
+  /* ── the three shelves ──────────────────────────────────── */
+  .rc { position: relative; padding-block: 80px 80px; }
+  .rc .r-eyebrow { margin-top: 24px; }
+  .rc__h {
+    margin: 18px 0 0 -7px;
+    font-size: clamp(46px, 5.84vw, var(--fs-display)); line-height: 86px;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .rc__intro {
+    position: absolute; left: 922px; top: 156px; width: 440px; margin: 0;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  .rc__grid {
+    list-style: none; margin: 151px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, 434fr); column-gap: 30px;
+  }
+  /* Fixed 434x560, everything pinned to the export's own offsets — 22 / 60 /
+     276 / 368 / 512. A shelf whose blurb runs one line longer must not drag
+     its "see all" up out of line with the other two. */
+  .rc__card { position: relative; height: 560px; }
+  .rc__card::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 100%; height: 0.5px; background: var(--c-rule-soft);
+  }
+  .rc__n {
+    position: absolute; top: 22px; left: 0;
+    font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: 0.14em; color: var(--c-ink-label);
+  }
+  .rc__stack { position: absolute; top: 60px; left: 0; display: block; width: 300px; height: 176px; }
+  .rc__sheet { position: absolute; width: 252px; height: 148px; }
+  .rc__sheet--3 { left: 24px; top: 24px; background: rgb(237, 237, 235); }
+  .rc__sheet--2 { left: 12px; top: 12px; background: rgb(244, 244, 242); }
+  .rc__sheet--1 { left: 0; top: 0; background: rgb(251, 251, 249); border-top: 3px solid rgba(20, 20, 20, 0.14); }
+  .rc__sheet--1 em {
+    position: absolute; left: 18px; top: 26px; width: 200px;
+    font-style: normal; font-size: 10px; line-height: 16px; font-weight: var(--fw-medium);
+    letter-spacing: 0.14em; color: rgba(20, 20, 20, 0.45);
+  }
+  .rc__name {
+    position: absolute; top: 276px; left: -3px; margin: 0;
+    font-size: 64px; line-height: 70px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .rc__body {
+    position: absolute; top: 368px; left: 0; margin: 0; width: 420px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.75);
+  }
+  .rc__foot { position: absolute; top: 512px; left: 0; display: block; width: 100%; padding-top: 14px; }
+  .rc__foot::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 100%; height: 0.5px; background: var(--c-rule-soft);
+  }
+  .rc__foot a {
+    display: block;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
+  }
+  .rc__go {
+    position: absolute; right: 0; top: 8px;
+    font-size: var(--fs-item); line-height: 32px; letter-spacing: normal; color: rgba(20, 20, 20, 0.45);
+    transition: transform var(--dur-fast) ease;
+  }
+  .rc__foot a:hover .rc__go { transform: translateX(8px); }
+  /* No link, and it does not pretend to be one. */
+  .rc__soon {
+    display: block; font-style: normal;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.4);
+  }
+
+  /* ── the library ────────────────────────────────────────── */
+  .rl { position: relative; padding-block: 80px 100px; scroll-margin-top: 90px; }
+  .rl .r-eyebrow { margin-top: 24px; }
+  .rl__h {
+    margin: 18px 0 0 -7px;
+    font-size: clamp(46px, 5.84vw, var(--fs-display)); line-height: 86px;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .rl__intro {
+    position: absolute; left: 922px; top: 156px; width: 440px; margin: 0;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  .rl__chips { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 62px; }
+  .rl__chips button {
+    padding: 8px 16px; border: 0; border-radius: var(--r-pill); cursor: pointer;
+    background: transparent; box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.16);
+    font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: 0.12em; color: rgb(20, 20, 20);
+    transition: background var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  }
+  .rl__chips button:hover { box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.4); }
+  .rl__chips button[aria-pressed='true'] { background: var(--c-accent); box-shadow: none; }
+  .rl__count {
+    margin-left: 12px;
+    font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: 0.14em; color: var(--c-ink-label);
+  }
+
+  .rl__grid {
+    list-style: none; margin: 48px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, 434fr); column-gap: 30px; row-gap: 50px;
+  }
+  .rl__card { position: relative; }
+  .rl__card a { display: block; position: relative; padding-top: 20px; }
+  .rl__card a::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 100%; height: 0.5px; background: var(--c-rule-soft);
+  }
+  .rl__cat {
+    display: block; font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: 0.14em; color: var(--c-ink-label);
+  }
+  .rl__thumb { display: block; margin-top: 30px; height: 200px; background: rgb(244, 244, 242); }
+  .rl__name {
+    display: block; margin-top: 18px;
+    font-size: 28px; line-height: 34px; font-weight: var(--fw-semi);
+    letter-spacing: -0.045em; color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .rl__card a:hover .rl__name { color: var(--c-black); }
+  .rl__sum {
+    display: block; margin-top: 12px;
+    font-size: 15px; line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.72);
+  }
+  .rl__dl {
+    display: block; margin-top: 22px;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
+  }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .rh__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 130px 72px; row-gap: 40px; }
+    .rh__rail, .rh__mast { grid-column: 1; grid-row: auto; margin-top: 0; width: auto; height: auto; }
+    .rh__tick, .rh__statement, .rh__pills { position: static; top: auto; width: auto; max-width: 440px; }
+    .rh__tick { margin-top: 19px; }
+    .rh__statement { margin-top: 27px; }
+    .rh__pills { margin-top: 26px; }
+    .rh__large { white-space: normal; line-height: 1.02; }
+
+    .rc, .rl { padding-block: 64px 72px; }
+    .rc__h, .rl__h { line-height: 1.06; margin-left: 0; }
+    .rc__intro, .rl__intro { position: static; width: auto; max-width: 560px; margin-top: 28px; }
+    .rc__grid { margin-top: 56px; grid-template-columns: 1fr; row-gap: 56px; }
+    .rc__card { height: auto; padding-top: 22px; }
+    .rc__n, .rc__stack, .rc__name, .rc__body, .rc__foot { position: static; top: auto; left: auto; }
+    .rc__stack { margin-top: 38px; }
+    .rc__name { font-size: var(--fs-stat); line-height: 1.1; margin: 40px 0 0; }
+    .rc__body { margin-top: 22px; }
+    .rc__foot { margin-top: 24px; }
+    .rc__go { top: 8px; }
+    .rc__body { width: auto; max-width: 560px; }
+    .rl__chips { margin-top: 36px; }
+    .rl__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+  }
+  @media (max-width: 780px) {
+    .rl__grid { grid-template-columns: 1fr; }
+    .rl__name { font-size: var(--fs-item); line-height: 1.25; }
   }
 </style>

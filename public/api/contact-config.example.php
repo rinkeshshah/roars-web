@@ -21,6 +21,14 @@ return [
     'notify_to' => 'sales@roarsinc.com',
     'from'      => 'noreply@roarsinc.com',
 
+    // Where the gated PDFs live on the webspace. ABSOLUTE path, and the only
+    // directory contact.php will ever read a file from. A guide is attached
+    // only when <slug>.pdf exists here and is within max_attach.
+    'tools_dir'   => '/var/www/vhosts/roarsinc.com/httpdocs/tools',
+    // Bytes. Past roughly 10MB most mail servers start bouncing attachments,
+    // so a file over this is skipped rather than sent and rejected.
+    'max_attach'  => 8 * 1024 * 1024,
+
     // Rate limit: rate_max posts per rate_window seconds, per IP.
     'rate_window' => 3600,
     'rate_max'    => 5,

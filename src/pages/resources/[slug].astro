@@ -1,29 +1,74 @@
 ---
 /**
- * Resource pages. Fifteen live URLs at /resources/[slug]/. Gated downloads.
+ * Guide detail. Fifteen live URLs at /resources/[slug]/. Gated downloads.
  *
  * Routes come from docs/URL-INVENTORY.csv, not from the collection, so every
- * ranking URL resolves even before its body is migrated. Seeded entries render
- * their real content; the rest render the pending state and carry noindex.
+ * ranking URL resolves even before its body is migrated. CLAUDE.md already
+ * resolves the spec's /resources/guides/[slug] to this flat form.
+ *
+ * TWO RENDERINGS, ONE ROUTE — as on /s/[slug]/ and /industries/[slug]/:
+ *   - An entry with a migrated BODY gets the designed page, built against
+ *     design/prototypes/Roars v2 - Guide Detail.dc.html. One of the fifteen.
+ *   - The rest keep MarketingPage and its pending state. Nine of them carry
+ *     real card copy from the export, which is what the library shelf reads,
+ *     but card copy is not a page: a hero, a form and three links is about
+ *     thirty-five words, and these URLs already rank. They are `draft: true`
+ *     until their bodies migrate. See scripts/validate-content.mjs, MIN_WORDS.
+ *
+ * Canvas, section-relative: Hero 700, Reading 1140, Get the file 700,
+ * More guides 620.
  */
 import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
 import MarketingPage from '../../components/MarketingPage.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { site } from '../../lib/site'
+import star5 from '../../assets/star-5.svg'
 
 export async function getStaticPaths() {
   const entries = await getCollection('resources')
   const byId = new Map(entries.map((e) => [e.id, e]))
-  return slugsOf('free_stuff').map((slug) => ({
+  const all = slugsOf('free_stuff')
+  return all.map((slug) => ({
     params: { slug },
-    props: { entry: byId.get(slug) },
+    props: {
+      entry: byId.get(slug),
+      /* The three that follow this one on the shelf, wrapping at the end, so
+         every guide offers somewhere to go next and none links to itself. */
+      next: [1, 2, 3]
+        .map((n) => all[(all.indexOf(slug) + n) % all.length])
+        .map((s) => ({
+          href: `/resources/${s}/`,
+          name: byId.get(s)?.data.title ?? nameFromSlug(s),
+          category: byId.get(s)?.data.category,
+        })),
+    },
   }))
 }
 
 const { slug } = Astro.params
-const { entry } = Astro.props
+const { entry, next } = Astro.props
 const path = `/resources/${slug}/`
 const name = entry?.data.title ?? nameFromSlug(slug)
+const d = entry?.data
+/* Designed ONLY when the guide has a body. An entry with card copy and no
+   body would render a hero, a form and three links — about thirty-five words
+   on a URL that already ranks, which is the thin page the content gate exists
+   to stop. Those keep the pending state until their copy is migrated. */
+const designed = Boolean(d?.summary) && !d?.draft
+
+const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
+
+/* The masthead sets small over large, as the export does with "Business
+   Model" over "Canvas". The last word is the large line. */
+const words = name.split(' ')
+const large = words.length > 1 ? words[words.length - 1] : name
+const small = words.length > 1 ? words.slice(0, -1).join(' ') : ''
 
 const schema = entry
   ? [
@@ -50,15 +95,459 @@ const schema = entry
 const { Content } = entry ? await render(entry) : { Content: null }
 ---
 
-<MarketingPage
-  title={entry?.data.seo.title ?? `${name} | ${site.name}`}
-  description={entry?.data.seo.description}
-  path={path}
-  label="Resource"
-  heading={name}
-  schema={schema}
-  pending={!entry}
-  ctaCopy={entry?.data.cta}
->
-  {Content && <Content />}
-</MarketingPage>
+{designed && d ? (
+  <BaseLayout title={d.seo.title} description={d.seo.description} path={path} schema={schema}>
+    <TopBar slot="topbar" cta="meeting" />
+    <NavOverlay />
+
+    {/* ── Hero, 1440x700 ───────────────────────────────────── */}
+    <Section ground="dark" bleed>
+      <div class="gh">
+        <GrainField tone="dark" second />
+        <div class="wrap gh__inner">
+          <div class="gh__rail" data-reveal>
+            <a class="gh__back" href="/resources/">← BACK / GUIDES</a>
+            <span class="gh__tick" aria-hidden="true"></span>
+            <p class="gh__statement">{d.summary}</p>
+            <a class="g-ghost" href="#get">
+              <span>Download</span>
+              <span class="g-ghost__dot g-ghost__dot--grey" aria-hidden="true"></span>
+              <span class="g-ghost__dot g-ghost__dot--accent" aria-hidden="true"></span>
+            </a>
+            {d.pills.length > 0 && (
+              <ul class="gh__pills">{d.pills.map((p) => <li>{p}</li>)}</ul>
+            )}
+          </div>
+
+          <div class="gh__mast" data-reveal>
+            <span class="g-chip">
+              <span>roars</span>
+              <span class="starmark g-chip__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+            </span>
+            {small && <span class="gh__small">{small}</span>}
+            <h1 class="gh__large">{large}</h1>
+          </div>
+
+          {/* Three stacked sheets, drawn rather than photographed. The live
+              cover art for six of the fifteen is named "placeholder" and gets
+              replaced at migration rather than carried across, so nothing
+              here sources an image that would have to be thrown away. */}
+          <div class="gh__preview" data-reveal aria-hidden="true">
+            <span class="gh__sheet gh__sheet--3"></span>
+            <span class="gh__sheet gh__sheet--2"></span>
+            <span class="gh__sheet gh__sheet--1">
+              <span class="gh__cover"></span>
+              <em class="gh__stamp">PREVIEW</em>
+              <em class="gh__page">PDF · 01</em>
+            </span>
+          </div>
+        </div>
+      </div>
+    </Section>
+
+    {/* ── The long read, 1440x1140 ─────────────────────────── */}
+    {d.sections.length > 0 && (
+      <Section ground="light">
+        <div class="gr">
+          {d.sections.map((s) => (
+            <div class="gr__block" data-reveal>
+              <span class="gr__rule" aria-hidden="true"></span>
+              <span class="g-eyebrow">{s.label}</span>
+              <h2 class="gr__h">{s.heading}</h2>
+              <div class="gr__body">
+                <p class="gr__lead">{s.lead}</p>
+                {s.body && <p class="gr__more">{s.body}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+    )}
+
+    {/* ── Get the file, 1440x700 on #F5F5F5 ────────────────── */}
+    <Section ground="surface">
+      <div class="gg" id="get">
+        <h2 class="gg__h">Get the file!</h2>
+        <p class="gg__sub">Fill in this form to get a file download of the guide.</p>
+
+        <div class="gg__card" aria-hidden="true">
+          <span class="gg__sheet gg__sheet--3"></span>
+          <span class="gg__sheet gg__sheet--2"></span>
+          <span class="gg__sheet gg__sheet--1">
+            <em class="gg__file">{(d.file ?? `${slug}.pdf`).toUpperCase()}</em>
+            <span class="gg__hair"></span>
+            <em class="gg__meta">ONE PAGE · FREE</em>
+            <em class="gg__meta gg__meta--2">FILL THE FORM →</em>
+            <span class="gg__disc">↓</span>
+          </span>
+        </div>
+
+        {/* Posts to the same endpoint as every other form; `guide` is already
+            one of its four accepted form types. The SLUG is sent, never a
+            path: contact.php resolves the file from an allowlist, so nothing
+            the browser sends can name a file on disk. */}
+        <form class="gg__form" action="/api/contact.php" method="post" data-contact-form>
+          <input type="hidden" name="form" value="guide" />
+          <input type="hidden" name="guide" value={slug} />
+          <input type="hidden" name="message" value={`Guide request: ${name}`} />
+
+          {/* Honeypot. Hidden from people, irresistible to bots. */}
+          <div class="gg__pot" aria-hidden="true">
+            <label for="g-website">Company website</label>
+            <input id="g-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="gg__grid">
+            <div class="gg__row">
+              <label for="g-name">FIRST NAME</label>
+              <input id="g-name" name="name" type="text" autocomplete="given-name" />
+            </div>
+            <div class="gg__row">
+              <label for="g-email">PROFESSIONAL EMAIL*</label>
+              <input id="g-email" name="email" type="email" required autocomplete="email" />
+            </div>
+          </div>
+
+          {turnstileKey && (
+            <div class="cf-turnstile" data-sitekey={turnstileKey} data-theme="light"></div>
+          )}
+
+          <button class="gg__submit" type="submit">
+            <span>Download</span>
+            <span class="gg__dots" aria-hidden="true"><i></i><i></i></span>
+          </button>
+
+          <p class="gg__status" data-form-status role="status" aria-live="polite"></p>
+
+          <p class="gg__legal">
+            You may unsubscribe from these communications at any time. For more information on
+            our privacy practices and how we are committed to protecting and respecting your
+            privacy, please review our <a href="/privacy-policy/">privacy policy.</a>
+          </p>
+
+          <noscript>
+            <p class="gg__status" data-state="error">
+              This form needs JavaScript. Email <a href={`mailto:${site.email.sales}`}>{site.email.sales}</a> instead.
+            </p>
+          </noscript>
+        </form>
+      </div>
+    </Section>
+
+    {/* ── Next in the shelf, 1440x620 ──────────────────────── */}
+    <Section ground="light">
+      <div class="gn">
+        <span class="gn__tick" aria-hidden="true"></span>
+        <span class="g-eyebrow">NEXT IN THE SHELF</span>
+        <ul class="gn__rows">
+          {next.map((n) => (
+            <li>
+              <a href={n.href}>
+                <span class="gn__cat">{n.category ?? 'GUIDE'}</span>
+                <span class="gn__name">{n.name}</span>
+                <span class="gn__go" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a class="gn__all" href="/resources/">All guides <span aria-hidden="true">→</span></a>
+      </div>
+    </Section>
+
+    <SiteFooter
+      slot="footer"
+      blurbTitle="Filled it in and still stuck?"
+      blurb="A template gets you to the right question. If the answer needs a team, that is the conversation we are good at."
+      tagline="ours to make, yours to download"
+      ctaLabel="Shall we chat?"
+      ctaHref="https://meet.roarsinc.com/sales"
+    />
+
+    {turnstileKey && (
+      <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    )}
+  </BaseLayout>
+) : (
+  <MarketingPage
+    title={entry?.data.seo.title ?? `${name} | ${site.name}`}
+    description={entry?.data.seo.description}
+    path={path}
+    label="Resource"
+    heading={name}
+    schema={schema}
+    pending={!entry || Boolean(entry.data.draft)}
+    ctaCopy={entry?.data.cta}
+  >
+    {Content && <Content />}
+  </MarketingPage>
+)}
+
+<style>
+  /* ── shared ─────────────────────────────────────────────── */
+  .g-eyebrow {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
+  }
+  .g-chip { position: relative; display: flex; align-items: flex-start; height: 24px; margin-left: 8px; }
+  .g-chip > span:first-child {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: #fbfbfb; padding-top: 4px;
+  }
+  .g-chip__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: #fbfbfb; }
+  .g-ghost {
+    position: relative; display: inline-flex; align-items: center;
+    width: 195px; height: 42px; padding-left: 21px; border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1.5px var(--c-ring-dark);
+    font-size: var(--fs-micro); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: normal; color: var(--c-white);
+    transition: box-shadow var(--dur-fast) ease;
+  }
+  .g-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--c-accent); }
+  .g-ghost__dot { position: absolute; top: 17px; width: 8px; height: 8px; border-radius: 50%; }
+  .g-ghost__dot--grey { left: 158px; background: rgb(153, 152, 149); }
+  .g-ghost__dot--accent { left: 169px; background: var(--c-accent); }
+
+  /* ── hero ───────────────────────────────────────────────── */
+  .gh { position: relative; }
+  .gh__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 460px 592px minmax(0, 1fr);
+    align-content: start; padding-block: 172px 0; min-height: 700px;
+  }
+  /* Fixed offsets: 0 / 38 / 64 / 346 / 414, so a summary that runs short does
+     not pull the button and the pills up with it. */
+  .gh__rail { position: relative; grid-column: 1; grid-row: 1; width: 420px; height: 456px; }
+  .gh__back {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.55);
+    transition: color var(--dur-fast) ease;
+  }
+  .gh__back:hover { color: rgba(255, 255, 255, 0.9); }
+  .gh__tick { position: absolute; top: 38px; display: block; width: 16px; height: 1.5px; background: var(--c-accent); }
+  .gh__statement {
+    position: absolute; top: 64px; margin: 0; width: 410px;
+    font-size: 20px; line-height: 29px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.9);
+  }
+  .gh__rail .g-ghost { position: absolute; top: 346px; }
+  .gh__pills {
+    position: absolute; top: 414px; left: 0; margin: 0; padding: 0; list-style: none;
+    display: flex; flex-wrap: wrap; gap: 8px; width: 420px;
+  }
+  .gh__pills li {
+    padding: 7px 14px; border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+    font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.88);
+  }
+
+  .gh__mast { grid-column: 2; grid-row: 1; margin-top: 188px; }
+  .gh__small {
+    display: block; margin: 16px 0 0 2px;
+    font-size: 56px; line-height: 60px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgba(255, 255, 255, 0.6);
+  }
+  .gh__large {
+    margin: 2px 0 0; white-space: nowrap;
+    font-size: clamp(52px, 8.62vw, 124px); line-height: 124px; font-weight: var(--fw-semi);
+    letter-spacing: -0.055em; color: rgb(251, 251, 251);
+  }
+
+  .gh__preview { position: relative; grid-column: 3; grid-row: 1; width: 320px; height: 340px; margin-top: -4px; }
+  .gh__sheet { position: absolute; display: block; width: 288px; height: 266px; }
+  .gh__sheet--3 { left: 22px; top: 22px; background: rgba(251, 251, 249, 0.3); }
+  .gh__sheet--2 { left: 11px; top: 11px; background: rgba(251, 251, 249, 0.58); }
+  .gh__sheet--1 { left: 0; top: 0; background: rgb(251, 251, 249); border-top: 4px solid var(--c-accent); }
+  .gh__cover { position: absolute; left: 16px; top: 26px; width: 256px; height: 186px; background: rgb(240, 240, 237); }
+  .gh__stamp, .gh__page {
+    position: absolute; top: 228px; font-style: normal; line-height: normal;
+    font-size: 10px; font-weight: var(--fw-semi); letter-spacing: 0.2em; color: rgba(20, 20, 20, 0.5);
+  }
+  .gh__stamp { left: 18px; }
+  .gh__page { left: 214px; font-weight: var(--fw-medium); letter-spacing: 0.16em; color: rgba(20, 20, 20, 0.4); }
+
+  /* ── the long read ──────────────────────────────────────── */
+  /* 520px pitch, as the export sets it: rules at 80 and 600. The body is
+     absolutely placed in the right column, so a block left in flow collapses
+     to the height of its heading and the second rule climbs 340px. */
+  .gr { padding-block: 80px 20px; }
+  .gr__block { position: relative; height: 520px; padding-top: 24px; }
+  .gr__rule { position: absolute; left: 0; top: 0; display: block; width: 100%; height: 1.5px; background: var(--c-rule-strong); }
+  .gr__h {
+    margin: 23px 0 0 -7px; width: 460px;
+    font-size: 52px; line-height: 58px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .gr__body { position: absolute; left: 540px; top: 70px; width: 822px; }
+  .gr__lead {
+    margin: 0; width: 790px;
+    font-size: 20px; line-height: 31px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.88);
+  }
+  /* Pinned at 198 rather than flowed under the lead: the export puts the rule
+     at 170 and this at 198 whatever the paragraph above it measures. */
+  .gr__more {
+    position: absolute; top: 198px; left: 0; margin: 0; padding-top: 28px; width: 790px;
+    font-size: 17px; line-height: 28px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.72);
+  }
+  .gr__more::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 100%; height: 0.5px; background: var(--c-rule-soft);
+  }
+
+  /* ── get the file ───────────────────────────────────────── */
+  .gg { position: relative; padding-block: 150px 110px; }
+  .gg__h {
+    margin: 0 0 0 -7px;
+    font-size: clamp(46px, 5.84vw, var(--fs-display)); line-height: 86px;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .gg__sub {
+    margin: 24px 0 0; width: 520px;
+    font-size: 20px; line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.72);
+  }
+  .gg__card { position: relative; margin-top: 62px; width: 360px; height: 240px; }
+  .gg__sheet { position: absolute; display: block; width: 300px; height: 196px; }
+  .gg__sheet--3 { left: 20px; top: 18px; background: rgb(237, 237, 235); }
+  .gg__sheet--2 { left: 10px; top: 9px; background: rgb(245, 245, 243); }
+  .gg__sheet--1 { left: 0; top: 0; background: rgb(251, 251, 249); border-top: 4px solid var(--c-accent); }
+  .gg__file {
+    position: absolute; left: 20px; top: 22px; width: 190px; font-style: normal;
+    font-size: 11px; line-height: 17px; font-weight: var(--fw-semi);
+    letter-spacing: 0.14em; color: rgba(20, 20, 20, 0.75); word-break: break-word;
+  }
+  .gg__hair { position: absolute; left: 20px; top: 86px; width: 260px; height: 0.5px; background: rgba(20, 20, 20, 0.16); }
+  .gg__meta {
+    position: absolute; left: 20px; top: 104px; font-style: normal; line-height: normal;
+    font-size: 10px; font-weight: var(--fw-medium); letter-spacing: 0.16em; color: rgba(20, 20, 20, 0.45);
+  }
+  .gg__meta--2 { top: 132px; }
+  .gg__disc {
+    position: absolute; left: 222px; top: 114px;
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 50%; background: var(--c-accent);
+    font-size: var(--fs-item); line-height: 1; color: rgb(20, 20, 20);
+  }
+
+  .gg__form { position: absolute; left: 540px; top: 174px; width: 822px; padding-top: 32px; }
+  .gg__form::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 100%; height: 1.5px; background: var(--c-rule-strong);
+  }
+  .gg__pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .gg__grid { display: grid; grid-template-columns: 390fr 42fr 390fr; }
+  .gg__row:last-of-type { grid-column: 3; }
+  .gg__row label {
+    display: block;
+    font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: 0.16em; color: rgba(20, 20, 20, 0.5);
+  }
+  .gg__row input {
+    display: block; width: 100%; height: 44px; margin-top: 6px;
+    background: transparent; border: 0; border-bottom: 1px solid rgba(20, 20, 20, 0.2);
+    font-family: inherit; font-size: 18px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
+  }
+  .gg__row input:focus-visible { outline: none; border-bottom-color: rgb(20, 20, 20); }
+
+  .gg__submit {
+    position: relative; display: inline-flex; align-items: center;
+    width: 204px; height: 47px; margin-top: 46px; padding-left: 25px;
+    border: 0; border-radius: var(--r-pill); background: var(--c-black); cursor: pointer;
+    font-family: inherit; font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-button); color: var(--c-white);
+    transition: background var(--dur-fast) ease;
+  }
+  .gg__submit:hover { background: rgb(38, 38, 38); }
+  .gg__submit:disabled { cursor: progress; opacity: 0.7; }
+  .gg__dots { position: absolute; left: 142px; top: 19px; display: flex; gap: 2px; }
+  .gg__dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(153, 152, 149, 0.6); }
+  .gg__dots i:last-child { background: var(--c-accent); }
+
+  .gg__status { margin: 16px 0 0; font-size: var(--fs-body); line-height: 22px; color: rgba(20, 20, 20, 0.7); }
+  .gg__status[data-state='error'] { color: rgb(176, 42, 42); }
+  .gg__legal {
+    margin: 26px 0 0; width: 700px;
+    font-size: 13px; line-height: 21px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-button); color: rgba(20, 20, 20, 0.55);
+  }
+  .gg__legal a { font-weight: var(--fw-semi); color: rgb(20, 20, 20); text-decoration: underline; }
+
+  /* ── next in the shelf ──────────────────────────────────── */
+  .gn { padding-block: 146px 110px; }
+  .gn__tick { display: block; width: 16px; height: 1.5px; background: var(--c-rule-strong); }
+  .gn .g-eyebrow { margin-top: 20px; }
+  .gn__rows { list-style: none; margin: 60px 0 0; padding: 0; }
+  .gn__rows a { position: relative; display: block; height: 62px; }
+  .gn__rows li::before {
+    content: ''; display: block; width: 100%; height: 0.5px; background: var(--c-rule-soft);
+  }
+  .gn__rows li:last-child::after {
+    content: ''; display: block; width: 100%; height: 0.5px; background: var(--c-rule-soft);
+  }
+  .gn__cat {
+    position: absolute; left: 14px; top: 26px;
+    font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
+    letter-spacing: 0.14em; color: var(--c-ink-label);
+  }
+  .gn__name {
+    position: absolute; left: 260px; top: 16px;
+    font-size: 32px; line-height: 40px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .gn__go {
+    position: absolute; left: 1290px; top: 20px;
+    font-size: var(--fs-item); line-height: 32px; letter-spacing: normal; color: rgba(20, 20, 20, 0.45);
+    transition: transform var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+  .gn__rows a:hover .gn__name { color: var(--c-black); }
+  .gn__rows a:hover .gn__go { color: var(--c-black); transform: translateX(8px); }
+  .gn__all {
+    display: inline-block; margin-top: 42px;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
+  }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .gh__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 130px 72px; row-gap: 40px; }
+    .gh__rail, .gh__mast, .gh__preview { grid-column: 1; grid-row: auto; margin-top: 0; width: auto; height: auto; }
+    .gh__rail { max-width: 460px; }
+    .gh__tick, .gh__statement, .gh__pills, .gh__rail .g-ghost { position: static; top: auto; width: auto; max-width: 440px; }
+    .gh__tick { margin-top: 19px; }
+    .gh__statement { margin-top: 27px; }
+    .gh__rail .g-ghost { margin-top: 30px; }
+    .gh__pills { margin-top: 26px; }
+    .gh__large { white-space: normal; line-height: 1.04; }
+    .gh__small { line-height: 1.06; }
+    .gh__preview { width: 320px; height: 300px; }
+
+    .gr { padding-block: 64px 72px; }
+    .gr__block { height: auto; }
+    .gr__block + .gr__block { margin-top: 64px; }
+    .gr__h { width: auto; max-width: 560px; line-height: 1.08; margin-left: 0; font-size: var(--fs-stat); }
+    .gr__body { position: static; width: auto; margin-top: 26px; }
+    .gr__more { position: static; top: auto; margin-top: 28px; }
+    .gr__lead, .gr__more { width: auto; max-width: 720px; }
+
+    .gg { padding-block: 64px 72px; }
+    .gg__h { line-height: 1.06; margin-left: 0; }
+    .gg__sub { width: auto; max-width: 520px; }
+    .gg__form { position: static; width: auto; margin-top: 48px; }
+    .gg__grid { grid-template-columns: 1fr; row-gap: 26px; }
+    .gg__row:last-of-type { grid-column: 1; }
+    .gg__legal { width: auto; max-width: 700px; }
+
+    .gn { padding-block: 64px 72px; }
+    .gn__rows { margin-top: 40px; }
+    .gn__rows a { height: auto; padding-bottom: 18px; }
+    .gn__cat { position: static; display: block; padding-top: 14px; }
+    .gn__name { position: static; display: block; padding-top: 6px; font-size: var(--fs-item); line-height: 1.3; }
+    .gn__go { display: none; }
+  }
+</style>

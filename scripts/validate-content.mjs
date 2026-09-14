@@ -260,6 +260,56 @@ for (const [collection, group] of byCollection) {
   }
 }
 
+/* -------------------------------------------- the guide allowlist in PHP */
+
+/**
+ * public/api/contact.php holds a hardcoded list of guide slugs. It is the only
+ * thing standing between a POSTed string and a filename, so it has to be a
+ * literal in the PHP — but a literal drifts, and a slug that falls off it is a
+ * guide whose download silently stops working.
+ *
+ * So it is checked against the inventory here, in both directions. This is the
+ * same reasoning as assert-styles: the failure mode is silence, so something
+ * has to fail loudly instead.
+ */
+const ENDPOINT = join(ROOT, 'public/api/contact.php')
+if (existsSync(ENDPOINT)) {
+  const php = readFileSync(ENDPOINT, 'utf8')
+  const block = php.match(/const GUIDE_SLUGS = \[([\s\S]*?)\];/)
+  if (!block) {
+    errors.push({
+      file: 'public/api/contact.php',
+      rule: 'guide-allowlist',
+      msg: 'GUIDE_SLUGS is gone. The guide download resolves a filename from a POSTed slug and that list is what makes it safe.',
+    })
+  } else {
+    const inPhp = new Set([...block[1].matchAll(/'([a-z0-9-]+)'/g)].map((m) => m[1]))
+    const inCsv = new Set(
+      [...inventoryPaths]
+        .filter((p) => /^\/resources\/[^/]+\/$/.test(p))
+        .map((p) => p.split('/')[2]),
+    )
+    for (const slug of inCsv) {
+      if (!inPhp.has(slug)) {
+        errors.push({
+          file: 'public/api/contact.php',
+          rule: 'guide-allowlist',
+          msg: `/resources/${slug}/ is in the inventory but not in GUIDE_SLUGS, so its download would be refused.`,
+        })
+      }
+    }
+    for (const slug of inPhp) {
+      if (!inCsv.has(slug)) {
+        errors.push({
+          file: 'public/api/contact.php',
+          rule: 'guide-allowlist',
+          msg: `GUIDE_SLUGS carries "${slug}", which is not a /resources/ row in the inventory.`,
+        })
+      }
+    }
+  }
+}
+
 /* --------------------------------------------------------------- report */
 
 console.log('--- validate-content ---')
