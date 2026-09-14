@@ -1,0 +1,208 @@
+---
+/**
+ * /s/ — the services hub.
+ *
+ * NOT A CARD GRID, and not at /services/. The brief asked for a hub at
+ * /services/, but /s/ is the prefix every service page already lives under
+ * and neither URL is in docs/URL-INVENTORY.csv, so this is a new page either
+ * way. Putting it at the parent of the twelve children is the version that
+ * does not create a second name for the same idea.
+ *
+ * THE GROUPING IS THE CONTENT. Twelve services listed as cards say nothing
+ * that the nav does not. Four families, each with the question that sends you
+ * to it, say how Roars reads a problem, which is the thing being sold. A
+ * visitor who cannot name their service can almost always name their
+ * question.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
+import { site } from '../../lib/site'
+
+const path = '/s/'
+
+const FAMILIES = [
+  {
+    n: '01',
+    name: 'Before you commit',
+    when: 'You have an idea and no evidence. The expensive mistake here is building the whole thing to find out.',
+    items: [
+      { name: 'MVP development', href: '/s/mvp-development/', why: 'Put one testable version in front of real users and read what they do.' },
+      { name: 'Innovation design', href: '/s/innovation-design-company/', why: 'Turn an ambition everyone agrees with into something specific enough to be wrong.' },
+    ],
+  },
+  {
+    n: '02',
+    name: 'Building the thing',
+    when: 'What to build is settled. The question is whether it gets built well and whether it arrives.',
+    items: [
+      { name: 'Product development', href: '/s/product-development-company/', why: 'Strategy, design and engineering as one team, for a product with a roadmap.' },
+      { name: 'Mobile app development', href: '/s/mobile-app-development/', why: 'Native or cross platform, built to survive the second week rather than the review.' },
+      { name: 'Web app development', href: '/s/web-app-development/', why: 'The system that replaces the spreadsheet your operations actually run on.' },
+      { name: 'eCommerce development', href: '/s/ecommerce-development-company/', why: 'Storefront, checkout and the stock integration, tested before the peak.' },
+    ],
+  },
+  {
+    n: '03',
+    name: 'Making it work harder',
+    when: 'It exists, it ships, and a number is still wrong. Usually the answer is not more features.',
+    items: [
+      { name: 'UX design', href: '/s/user-experience-design-agency/', why: 'Find where the product loses people, fix it, and prove the number moved.' },
+      { name: 'Growth hacking', href: '/s/growth-hacking-agency/', why: 'Small bets with a read on each, so spend stops being a renewal of last year.' },
+      { name: 'AI automation', href: '/s/ai-automation-services/', why: 'Let a system own the routine work your team is spending Tuesdays on.' },
+    ],
+  },
+  {
+    n: '04',
+    name: 'When delivery is the constraint',
+    when: 'The product is not the problem. Getting changes out, or getting people, is.',
+    items: [
+      { name: 'DevOps', href: '/s/result-oriented-devops-services/', why: 'Turn a release event into a release routine your own team runs.' },
+      { name: 'Hire dedicated developers', href: '/s/hire-dedicated-developers/', why: 'Named people on your board, without four months of recruiting first.' },
+      { name: 'Digital transformation', href: '/s/digital-business-transformation-services/', why: 'When four systems disagree and nobody owns the agreement between them.' },
+    ],
+  },
+]
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${site.url}${path}#collection`,
+    name: 'Services',
+    isPartOf: { '@id': `${site.url}/#website` },
+  },
+]
+---
+
+<BaseLayout
+  title="Services: Four Questions, Twelve Answers | Roars"
+  description="Twelve services grouped by the question that sends you to them. Before you commit, building the thing, making it work harder, and when delivery is the constraint."
+  path={path}
+  schema={schema}
+>
+  <TopBar slot="topbar" cta="meeting" />
+  <NavOverlay />
+
+  <Section ground="dark" bleed>
+    <div class="hb">
+      <GrainField tone="dark" second />
+      <div class="wrap hb__inner">
+        <span class="hb__eyebrow">SERVICES</span>
+        <span class="hb__tick" aria-hidden="true"></span>
+        <h1 class="hb__h">Most people arrive with a question, not a service name.</h1>
+        <p class="hb__sub">
+          So these are grouped by the question rather than by what we call the work.
+          Find the one that sounds like your week.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section ground="light">
+    <div class="hf">
+      {FAMILIES.map((f, i) => (
+        <section class="hf__fam" data-reveal style={`transition-delay:${(i % 2) * 70}ms`}>
+          <span class="hf__rule" aria-hidden="true"></span>
+          <div class="hf__head">
+            <span class="hf__n">{f.n}</span>
+            <h2 class="hf__name">{f.name}</h2>
+            <p class="hf__when">{f.when}</p>
+          </div>
+          <ul class="hf__list">
+            {f.items.map((it) => (
+              <li>
+                <a href={it.href}>
+                  <b>{it.name}</b>
+                  <span>{it.why}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    blurbTitle="Not sure which one you need?"
+    blurb="Describe the week you are having. We will tell you which of these it is, and say so when the answer is none of them."
+    tagline="one question at a time"
+    ctaLabel="Shall we chat?"
+    ctaHref="https://meet.roarsinc.com/sales"
+  />
+</BaseLayout>
+
+<style>
+  .hb { position: relative; }
+  .hb__inner { position: relative; z-index: 1; padding-block: 170px 96px; }
+  .hb__eyebrow {
+    display: block;
+    font-size: var(--fs-micro); font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.55);
+  }
+  .hb__tick { display: block; width: 16px; height: 1.5px; margin-top: 19px; background: var(--c-accent); }
+  /* The compression device: one line that holds its weight, everything around
+     it quieter. */
+  .hb__h {
+    margin: 30px 0 0 -4px; max-width: 900px;
+    font-size: clamp(34px, 4.4vw, 62px); line-height: 1.1; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(251, 251, 251);
+  }
+  .hb__sub {
+    margin: 26px 0 0; max-width: 540px;
+    font-size: 18px; line-height: 28px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.62);
+  }
+
+  .hf { padding-block: 96px; }
+  .hf__fam {
+    display: grid; grid-template-columns: minmax(280px, 34%) minmax(0, 1fr);
+    gap: 40px 60px; padding-top: 26px; margin-top: 56px;
+  }
+  .hf__fam:first-child { margin-top: 0; }
+  /* A structural line across the family, not a card around it. */
+  .hf__rule { grid-column: 1 / -1; height: 2px; margin-bottom: 4px; background: rgba(153, 152, 149, 0.4); }
+  .hf__fam:first-child .hf__rule { background: var(--c-accent); }
+  .hf__n {
+    display: block;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; color: var(--c-ink-label);
+  }
+  .hf__name {
+    margin: 16px 0 0;
+    font-size: clamp(26px, 2.6vw, 36px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .hf__when {
+    margin: 16px 0 0; max-width: 380px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.7);
+  }
+  .hf__list { list-style: none; margin: 0; padding: 0; }
+  .hf__list li { border-bottom: 1px solid rgba(153, 152, 149, 0.28); }
+  .hf__list a { display: block; padding: 18px 0; }
+  .hf__list b {
+    display: block;
+    font-size: 20px; line-height: 26px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .hf__list span {
+    display: block; margin-top: 5px;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.6);
+  }
+  .hf__list a:hover b { color: rgb(90, 90, 90); }
+
+  @media (max-width: 1040px) {
+    .hb__inner { padding-block: 130px 72px; }
+    .hf { padding-block: 64px; }
+    .hf__fam { grid-template-columns: 1fr; gap: 24px; margin-top: 44px; }
+    .hf__when { max-width: 560px; }
+  }
+</style>

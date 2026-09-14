@@ -70,6 +70,8 @@ const PAGES = [
   ['home', '/'], ['agency', '/about-us/'], ['approach', '/approach/'],
   ['contact', '/contact-us/'], ['work', '/work/'], ['resources', '/resources/'],
   ['guides', '/resources/guides/'],
+  ['hub-s', '/s/'],
+  ['hub-ind', '/industries/'],
   ['industry', '/industries/food-restaurant-app-development/'],
   /* One MIGRATED industry page as well as the hand-built one. Their copy is
      longer than the design assumed — a capability name where the design has a
