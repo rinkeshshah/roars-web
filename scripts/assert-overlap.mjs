@@ -46,13 +46,23 @@ const ACCEPTED = [
 ]
 const accepted = (a, b) => ACCEPTED.some((r) => r.a.test(a) && r.b.test(b))
 
+/*
+ * One entry per DESIGNED page. The other service and industry URLs — 11 of 12
+ * and 8 of 9 — render the noindex "content pending migration" holding page,
+ * which is a heading and a paragraph and has nothing to break. Listing them
+ * would triple the run time to assert that a paragraph fits on a phone.
+ */
 const PAGES = [
   ['home', '/'], ['agency', '/about-us/'], ['approach', '/approach/'],
   ['contact', '/contact-us/'], ['work', '/work/'], ['resources', '/resources/'],
+  ['guides', '/resources/guides/'],
   ['industry', '/industries/food-restaurant-app-development/'],
-  ['service', '/s/product-development-company/'],
+  ['service', '/s/ai-automation-services/'],
+  ['pending', '/s/product-development-company/'],
+  ['project', '/work/warehouse-compliance-checklist-app/'],
   ['journal', '/our-journal/'],
   ['post', '/our-journal/how-ai-is-transforming-user-experience-design/'],
+  ['404', '/404.html'],
 ]
 /*
  * Widths. 1440 is the design canvas; 390 is a phone and 768 is the band

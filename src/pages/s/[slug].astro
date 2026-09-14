@@ -542,8 +542,11 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
 
   /* ── featured work ──────────────────────────────────────── */
   .sv-feat { position: relative; padding-block: 110px 0; min-height: 620px; }
+  /* Capped short of the column at 67.695%. The heading is a block, so
+     without a cap its box runs the full 1362 and a client name longer than
+     "GYMBAIT.AI" would set type straight through the body copy beside it. */
   .sv-feat__client {
-    margin: 40px 0 0 -6px;
+    margin: 40px 0 0 -6px; max-width: 62%;
     font-size: clamp(46px, 5.84vw, 84px); line-height: 86px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: rgb(251, 251, 251);
   }
