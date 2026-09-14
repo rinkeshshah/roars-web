@@ -26,7 +26,9 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import CanvasPlate from '../../components/CanvasPlate.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
+import { GUIDE_COVER } from '../../lib/media'
 import { site } from '../../lib/site'
 import star5 from '../../assets/star-5.svg'
 
@@ -61,6 +63,8 @@ const d = entry?.data
    on a URL that already ranks, which is the thin page the content gate exists
    to stop. Those keep the pending state until their copy is migrated. */
 const designed = Boolean(d?.summary) && !d?.draft
+/* Absent for the five whose live cover is a file named placeholder. */
+const cover = GUIDE_COVER[slug as string]
 
 const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
 
@@ -86,7 +90,8 @@ const schema = entry
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
           { '@type': 'ListItem', position: 2, name: 'Resources', item: `${site.url}/resources/` },
-          { '@type': 'ListItem', position: 3, name },
+          { '@type': 'ListItem', position: 3, name: 'Guides', item: `${site.url}/resources/guides/` },
+          { '@type': 'ListItem', position: 4, name },
         ],
       },
     ]
@@ -106,7 +111,7 @@ const { Content } = entry ? await render(entry) : { Content: null }
         <GrainField tone="dark" second />
         <div class="wrap gh__inner">
           <div class="gh__rail" data-reveal>
-            <a class="gh__back" href="/resources/">← BACK / GUIDES</a>
+            <a class="gh__back" href="/resources/guides/">← BACK / GUIDES</a>
             <span class="gh__tick" aria-hidden="true"></span>
             <p class="gh__statement">{d.summary}</p>
             <a class="g-ghost" href="#get">
@@ -136,7 +141,12 @@ const { Content } = entry ? await render(entry) : { Content: null }
             <span class="gh__sheet gh__sheet--3"></span>
             <span class="gh__sheet gh__sheet--2"></span>
             <span class="gh__sheet gh__sheet--1">
-              <span class="gh__cover"></span>
+              <span class="gh__cover">
+                <CanvasPlate shape={d.category === 'OUR FAVOURITE' ? 'quad' : 'grid'} />
+                {cover && (
+                  <img src={cover} alt="" width="256" height="186" loading="lazy" decoding="async" />
+                )}
+              </span>
               <em class="gh__stamp">PREVIEW</em>
               <em class="gh__page">PDF · 01</em>
             </span>
@@ -250,7 +260,7 @@ const { Content } = entry ? await render(entry) : { Content: null }
             </li>
           ))}
         </ul>
-        <a class="gn__all" href="/resources/">All guides <span aria-hidden="true">→</span></a>
+        <a class="gn__all" href="/resources/guides/">All guides <span aria-hidden="true">→</span></a>
       </div>
     </Section>
 
@@ -360,7 +370,8 @@ const { Content } = entry ? await render(entry) : { Content: null }
   .gh__sheet--3 { left: 22px; top: 22px; background: rgba(251, 251, 249, 0.3); }
   .gh__sheet--2 { left: 11px; top: 11px; background: rgba(251, 251, 249, 0.58); }
   .gh__sheet--1 { left: 0; top: 0; background: rgb(251, 251, 249); border-top: 4px solid var(--c-accent); }
-  .gh__cover { position: absolute; left: 16px; top: 26px; width: 256px; height: 186px; background: rgb(240, 240, 237); }
+  .gh__cover { position: absolute; left: 16px; top: 26px; overflow: hidden; width: 256px; height: 186px; background: rgb(240, 240, 237); }
+  .gh__cover img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; }
   .gh__stamp, .gh__page {
     position: absolute; top: 228px; font-style: normal; line-height: normal;
     font-size: 10px; font-weight: var(--fw-semi); letter-spacing: 0.2em; color: rgba(20, 20, 20, 0.5);

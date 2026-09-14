@@ -74,6 +74,32 @@ export const WORK_HERO: Record<string, string> = {
 export const workHeroFor = (href: string): string | undefined =>
   WORK_HERO[href.replace(/^\/work\//, '').replace(/\/$/, '')]
 
+/**
+ * Guide cover art, by /resources/ slug.
+ *
+ * FIVE OF THE TEN ARE MISSING ON PURPOSE. The live site serves
+ * building-partnership-placeholder.png, business-plan-placeholder.png,
+ * placeholder.png, target-group-placeholder.png and
+ * prototyping-placeholder.png for the other five — files named placeholder
+ * because that is what they are. CLAUDE.md's known landmines say that art is
+ * replaced during migration, not carried across, so those slugs are absent
+ * here and their cards draw the empty slot instead. An empty slot is honest;
+ * shipping a file called placeholder.png to a download page is not.
+ *
+ * Filenames are the live ones, typos included — "Srartup", "plannig". They are
+ * what the server has, and renaming them would 404.
+ */
+export const GUIDE_COVER: Record<string, string> = {
+  'business-model-canvas': `${U}/2022/08/business-model-canvas.png`,
+  'swot-analysis': `${U}/2022/08/Startup-Swot-analysis.png`,
+  'learning-loop': `${U}/2022/08/Srartup-learning-loop.png`,
+  'value-proposition': `${U}/2022/08/startup-value-proposition.png`,
+  'evidence-planning': `${U}/2022/08/startup-evidence-plannig.png`,
+}
+
+/** The stack on the Guides hero. One image for the set, not per guide. */
+export const GUIDE_SET = `${U}/2022/08/startup-guides-books.png`
+
 /** Service row imagery on the homepage accordion. */
 export const SERVICE_IMG = {
   productConsultant: `${U}/2023/06/produc-consultant.jpg`,
