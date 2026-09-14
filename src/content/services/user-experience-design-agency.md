@@ -59,6 +59,117 @@ seo:
   primaryIntent: "user experience design agency"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "People sign up, look around, and never come back. Nothing is broken."
+  qualifier: "For teams with a live product and a drop-off they cannot explain. Not for a first design of something that does not exist yet, that is product design inside an MVP."
+  proof:
+    value: "FlowRow"
+    label: "FITNESS APP WE DESIGNED END TO END"
+cost:
+  label: "THE COST OF WAITING"
+  heading: "A funnel that leaks quietly is the most expensive kind."
+  body: "Nothing errors, nobody complains, and the number just sits lower than it should. Every month you spend acquiring users into a flow that loses them, you are paying full price for a fraction of the value."
+engagement:
+  label: "HOW IT RUNS"
+  heading: "Find the drop, fix the drop, prove it moved"
+  phases:
+    - n: "01"
+      name: "Research"
+      duration: "Weeks 1 to 2"
+      delivers: "You get the map of where people actually leave, from your own analytics and from watching real users, with the three places worth fixing ranked by what they cost you."
+    - n: "02"
+      name: "Wireframe"
+      duration: "Weeks 3 to 4"
+      delivers: "The reworked flows as wireframes, with the reasoning for each change written next to it. You can argue with the reasoning before anyone designs a pixel."
+    - n: "03"
+      name: "Interface"
+      duration: "Weeks 5 to 7"
+      delivers: "Finished screens and the components behind them, handed to your engineers in a form they can build from without asking what a state does."
+    - n: "04"
+      name: "Measure"
+      duration: "Week 8 onward"
+      delivers: "The events needed to tell whether the change worked, and a read of the first weeks of data once it is live."
+anchor:
+  label: "WHAT THIS LOOKS LIKE"
+  client: "FlowRow"
+  situation: "A fitness app where people signed up in good numbers and stopped opening it somewhere in the first fortnight."
+  did:
+    - "Traced the drop to the gap between signing up and the first session that felt worth doing."
+    - "Rebuilt the opening flow around one session rather than around a profile, a plan and a goal."
+  outcome: "[ NEEDS THE REAL FIGURE: retention or activation change, with a number and a timeframe ]"
+  href: "/work/flowrow-fitness-app/"
+scope:
+  label: "SCOPE"
+  heading: "What a UX engagement includes, and what it does not"
+  includes:
+    - "Analytics review and user interviews"
+    - "A ranked list of where the product loses people"
+    - "Reworked flows as wireframes, with the reasoning"
+    - "Finished interface design and a component set"
+    - "Developer handoff with states and edge cases drawn"
+    - "The event tracking needed to prove it worked"
+  excludes:
+    - "Building the design, unless you also engage us to develop"
+    - "Brand identity, logos or a visual language from scratch"
+    - "Marketing site design"
+    - "Ongoing design support on a retainer"
+    - "Redesigning everything, we work on the parts that cost you money"
+shape:
+  label: "THE SHAPE OF IT"
+  heading: "What you are signing up to"
+  duration: "Seven to nine weeks, depending on how many flows are in scope."
+  team:
+    - role: "UX lead"
+      does: "Runs the research and owns the argument for every change."
+    - role: "Interface designer"
+      does: "Takes the agreed flows to finished screens and a component set."
+    - role: "Researcher"
+      does: "Runs the interviews and the usability sessions, part time across the engagement."
+  needs:
+    - "Read access to your analytics, on day one rather than week three"
+    - "Introductions to five current users and, if you can, two who left"
+    - "One person who can approve a direction without a committee"
+  pricing: "Priced per engagement against the flows in scope, agreed before we start. Research and design are not billed separately, because splitting them is how you end up with pretty screens nobody validated. [ NEEDS THE REAL BAND: typical UX engagement range ]"
+faqLabel: "THE QUESTIONS WE GET"
+faqHeading: "Asked on real calls."
+faq:
+  - question: "We already have a designer. What changes?"
+    answer: "We are usually looking at a different question. An in-house designer owns the whole surface; we come in on one flow that is losing money and leave when it is not. If your designer has the time and the analytics access to do that, they should."
+  - question: "What if we do not like the first direction?"
+    answer: "You see the reasoning at wireframe stage, before anything is designed. That is the cheapest point to disagree, and it is the point where disagreeing is most useful."
+  - question: "Can you work with our existing dev team?"
+    answer: "Yes, and it is the common case. Handoff includes states, edge cases and the empty and error screens, which is usually where a handoff falls apart."
+  - question: "Do we need to rebuild the whole product?"
+    answer: "Almost never. Most of the loss is concentrated in one or two places. Finding those is most of the value of the first two weeks."
+  - question: "How do we know it worked?"
+    answer: "Because we agree the number before we start and wire the tracking to measure it. If it did not move, that is a finding too, and we would rather you heard it from us."
+next:
+  label: "WHERE TO GO NEXT"
+  heading: "If this is not quite it"
+  services:
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "When the design is agreed and you want the same team to build it."
+    - name: "MVP development"
+      href: "/s/mvp-development/"
+      why: "If there is no product yet and the flow you want to fix does not exist."
+    - name: "Innovation design"
+      href: "/s/innovation-design-company/"
+      why: "When the problem is not the flow but what the product is for."
+  industries:
+    - name: "eCommerce"
+      href: "/industries/retail-ecommerce-development/"
+      why: "Where the gap between catalogue and checkout is measurable to the pound."
+    - name: "Healthcare"
+      href: "/industries/healthcare-app-development-company/"
+      why: "Where the flow has to work for people who are stressed, rushed, or both."
+close:
+  heading: "Send us the screen people leave from."
+  body: "We will come back in two working days with what we think is happening and what we would change first. It takes you about ten minutes to send, and you get a second opinion either way."
+  ctaLabel: "Shall we chat?"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/coding-6.webp)
 

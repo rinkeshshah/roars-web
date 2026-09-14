@@ -116,6 +116,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     description={d.seo.description}
     path={path}
     schema={schema}
+    noindex={d.needsReview}
   >
     <TopBar slot="topbar" cta="meeting" />
     <NavOverlay />
@@ -128,9 +129,27 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
           {/* Left column at the gutter, 400 wide, opening at 168. */}
           <div class="sv-hero__rail" data-reveal>
             {d.eyebrow && <span class="sv-eyebrow sv-eyebrow--dark">{d.eyebrow}</span>}
+            {/* S1. The failure state, not the service name. The eyebrow above
+                carries the service for wayfinding and for search; the reader
+                gets the problem they arrived with. */}
+            {d.frame && (
+              <Fragment>
+                <h1 class="sv-frame__h">{d.frame.h1}</h1>
+                <p class="sv-frame__qual">{d.frame.qualifier}</p>
+                {d.frame.proof && (
+                  <p class="sv-frame__proof">
+                    <b>{d.frame.proof.value}</b>
+                    <i>{d.frame.proof.label}</i>
+                  </p>
+                )}
+              </Fragment>
+            )}
             <span class="sv-hero__tick" aria-hidden="true"></span>
-            <p class="sv-hero__statement">{d.hero!.statement}</p>
-            {d.hero!.sub && <p class="sv-hero__sub">{d.hero!.sub}</p>}
+            {/* The migrated statement, for pages that have no frame yet. A
+                page with S1 says the same thing better and does not need
+                both. */}
+            {!d.frame && <p class="sv-hero__statement">{d.hero!.statement}</p>}
+            {!d.frame && d.hero!.sub && <p class="sv-hero__sub">{d.hero!.sub}</p>}
             {d.hero!.pills.length > 0 && (
               <ul class="sv-hero__pills">
                 {d.hero!.pills.map((p) => <li>{p}</li>)}
@@ -189,6 +208,118 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     </Section>
 
     {/* ── Capabilities, 1440x1060 on #F5F5F5 ───────────────── */}
+    {/* S2. What continuing as-is costs. Short on purpose: past about sixty
+        words this stops being a cost and starts being a funnel. */}
+    {d.cost && (
+      <Section ground="light">
+        <div class="sv-cost">
+          <span class="sv-eyebrow">{d.cost.label}</span>
+          <h2 class="sv-cost__h" data-reveal>{d.cost.heading}</h2>
+          <p class="sv-cost__body" data-reveal>{d.cost.body}</p>
+        </div>
+      </Section>
+    )}
+
+    {/* S3. Phases named by what you HAVE at the end of each one. */}
+    {d.engagement && (
+      <Section ground="surface">
+        <div class="sv-eng">
+          <span class="sv-eyebrow">{d.engagement.label}</span>
+          <h2 class:list={['sv-eng__h', d.engagement.heading.length > 30 && 'sv-band__h--long']}>
+            {d.engagement.heading}
+          </h2>
+          <ol class="sv-eng__list">
+            {d.engagement.phases.map((ph, i) => (
+              <li class="sv-eng__phase" data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
+                <span class="sv-eng__rule" aria-hidden="true"></span>
+                <span class="sv-eng__n">{ph.n}</span>
+                <span class="sv-eng__dur">{ph.duration}</span>
+                <h3 class="sv-eng__name">{ph.name}</h3>
+                <p class="sv-eng__delivers">{ph.delivers}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Section>
+    )}
+
+    {/* S4. One case, in full. Not a carousel, and no logo grid on this page. */}
+    {d.anchor && (
+      <Section ground="dark">
+        <div class="sv-anchor">
+          <span class="sv-eyebrow sv-eyebrow--dark">{d.anchor.label}</span>
+          <h2 class="sv-anchor__client" data-reveal>{d.anchor.client}</h2>
+          <p class="sv-anchor__sit" data-reveal>{d.anchor.situation}</p>
+          <ul class="sv-anchor__did" data-reveal>
+            {d.anchor.did.map((x) => <li>{x}</li>)}
+          </ul>
+          {d.anchor.outcome && <p class="sv-anchor__out" data-reveal>{d.anchor.outcome}</p>}
+          <a class="sv-ghost sv-anchor__cta" href={d.anchor.href}>
+            {d.anchor.ctaLabel}
+            <span class="sv-dots" aria-hidden="true"><i></i><i></i></span>
+          </a>
+        </div>
+      </Section>
+    )}
+
+    {/* S5. In and out. Saying what we do not do makes the rest credible. */}
+    {d.scope && (
+      <Section ground="light">
+        <div class="sv-scope">
+          <span class="sv-eyebrow">{d.scope.label}</span>
+          <h2 class:list={['sv-scope__h', d.scope.heading.length > 30 && 'sv-band__h--long']}>
+            {d.scope.heading}
+          </h2>
+          <div class="sv-scope__cols">
+            <div data-reveal>
+              <h3 class="sv-scope__col-h">In</h3>
+              <ul class="sv-scope__list">{d.scope.includes.map((x) => <li>{x}</li>)}</ul>
+            </div>
+            <div data-reveal style="transition-delay:80ms">
+              <h3 class="sv-scope__col-h sv-scope__col-h--out">Out</h3>
+              <ul class="sv-scope__list sv-scope__list--out">{d.scope.excludes.map((x) => <li>{x}</li>)}</ul>
+            </div>
+          </div>
+        </div>
+      </Section>
+    )}
+
+    {/* S6. Duration, team, what we need from you, how pricing works. */}
+    {d.shape && (
+      <Section ground="surface">
+        <div class="sv-shape">
+          <span class="sv-eyebrow">{d.shape.label}</span>
+          <h2 class:list={['sv-shape__h', d.shape.heading.length > 30 && 'sv-band__h--long']}>
+            {d.shape.heading}
+          </h2>
+          <dl class="sv-shape__grid">
+            <div data-reveal>
+              <dt>Typical duration</dt>
+              <dd>{d.shape.duration}</dd>
+            </div>
+            <div data-reveal style="transition-delay:60ms">
+              <dt>Who you work with</dt>
+              <dd>
+                <ul class="sv-shape__list">
+                  {d.shape.team.map((t) => <li><b>{t.role}</b>{t.does}</li>)}
+                </ul>
+              </dd>
+            </div>
+            <div data-reveal style="transition-delay:120ms">
+              <dt>What we need from you</dt>
+              <dd>
+                <ul class="sv-shape__list">{d.shape.needs.map((x) => <li>{x}</li>)}</ul>
+              </dd>
+            </div>
+            <div data-reveal style="transition-delay:180ms">
+              <dt>How pricing works</dt>
+              <dd>{d.shape.pricing}</dd>
+            </div>
+          </dl>
+        </div>
+      </Section>
+    )}
+
     {capabilities && (
       <Section ground="surface">
         <div class="sv-band">
@@ -335,6 +466,41 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
       </Section>
     )}
 
+    {/* S8. Internal links that carry a reason. A list of names is navigation;
+        a reason is what makes somebody follow one. */}
+    {d.next && (
+      <Section ground="light">
+        <div class="sv-next">
+          <span class="sv-eyebrow">{d.next.label}</span>
+          <h2 class:list={['sv-next__h', d.next.heading.length > 30 && 'sv-band__h--long']}>
+            {d.next.heading}
+          </h2>
+          <div class="sv-next__cols">
+            {d.next.services.length > 0 && (
+              <div data-reveal>
+                <h3 class="sv-next__col-h">Services</h3>
+                <ul class="sv-next__list">
+                  {d.next.services.map((x) => (
+                    <li><a href={x.href}><b>{x.name}</b><span>{x.why}</span></a></li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {d.next.industries.length > 0 && (
+              <div data-reveal style="transition-delay:80ms">
+                <h3 class="sv-next__col-h">Sectors</h3>
+                <ul class="sv-next__list">
+                  {d.next.industries.map((x) => (
+                    <li><a href={x.href}><b>{x.name}</b><span>{x.why}</span></a></li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </Section>
+    )}
+
     {/* The export ends on a grey band repeating the offer, and the footer
         directly under it now carries the same heading and the same paragraph.
         One scroll apart, twice. The band is gone; its button and contact line
@@ -342,8 +508,12 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
 
     <SiteFooter
       slot="footer"
-      blurbTitle={d.cta?.footerTitle}
-      blurb={d.cta?.footerBlurb}
+      {/* S9. The specific invitation wins over the migrated CTA when a page
+          has one. "Send us the screen that is not converting" asks for one
+          thing and says what it costs the reader; "Let's get your project
+          started" asks them to do the framing. */}
+      blurbTitle={d.close?.heading ?? d.cta?.footerTitle}
+      blurb={d.close?.body ?? d.cta?.footerBlurb}
       tagline={d.cta?.footerTagline}
       ctaLabel={d.close?.ctaLabel}
       ctaHref={d.close?.ctaHref}
@@ -579,6 +749,199 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   }
   .sv-feat__col .sv-ghost { margin-top: 32px; }
 
+  /* ── S1 frame ───────────────────────────────────────────── */
+  /* In the hero rail, in flow. The rail is 400 wide, so the failure state is
+     set at a size that takes three or four lines there rather than one line
+     across the page. It is a sentence to read, not a banner. */
+  .sv-frame__h {
+    margin: 22px 0 0; max-width: 400px;
+    font-size: 30px; line-height: 38px; font-weight: var(--fw-semi);
+    letter-spacing: -0.03em; color: rgb(251, 251, 251);
+  }
+  .sv-frame__qual {
+    margin: 18px 0 0; max-width: 400px;
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.62);
+  }
+  .sv-frame__proof {
+    display: flex; align-items: baseline; gap: 12px; margin: 26px 0 0;
+    padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  /* The value can be a client name rather than a figure, and some of those
+     are two words, so this wraps rather than being forced onto one line. */
+  .sv-frame__proof b {
+    max-width: 180px;
+    font-size: 24px; line-height: 28px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-accent);
+  }
+  .sv-frame__proof i {
+    font-style: normal; max-width: 260px;
+    font-size: var(--fs-micro); line-height: 17px; font-weight: var(--fw-medium);
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ── S2 cost ────────────────────────────────────────────── */
+  .sv-cost { padding-block: 96px; }
+  .sv-cost__h {
+    margin: 26px 0 0 -4px; max-width: 900px;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-cost__body {
+    margin: 24px 0 0; max-width: 707px;
+    font-size: 20px; line-height: 32px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.78);
+  }
+
+  /* ── S3 engagement ──────────────────────────────────────── */
+  .sv-eng { padding-block: 96px; }
+  .sv-eng__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-eng__list {
+    list-style: none; margin: 56px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px 30px;
+  }
+  .sv-eng__phase { display: flex; flex-direction: column; min-width: 0; }
+  .sv-eng__rule { display: block; height: 2px; background: rgba(153, 152, 149, 0.4); }
+  .sv-eng__phase:first-child .sv-eng__rule { background: var(--c-accent); }
+  .sv-eng__n {
+    margin-top: 18px;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; color: rgb(20, 20, 20);
+  }
+  .sv-eng__dur {
+    margin-top: 8px;
+    font-size: var(--fs-micro); font-weight: var(--fw-medium);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .sv-eng__name {
+    margin: 22px 0 0;
+    font-size: 26px; line-height: 32px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-eng__delivers {
+    margin: 14px 0 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.75);
+  }
+
+  /* ── S4 anchor ──────────────────────────────────────────── */
+  .sv-anchor { padding-block: 96px; max-width: 820px; }
+  .sv-anchor__client {
+    margin: 26px 0 0 -5px;
+    font-size: clamp(40px, 5vw, 72px); line-height: 1.06; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(251, 251, 251);
+  }
+  .sv-anchor__sit {
+    margin: 26px 0 0;
+    font-size: 20px; line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.9);
+  }
+  .sv-anchor__did { list-style: none; margin: 28px 0 0; padding: 0; }
+  .sv-anchor__did li {
+    position: relative; margin-top: 12px; padding-left: 22px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.72);
+  }
+  .sv-anchor__did li::before {
+    content: ''; position: absolute; left: 0; top: 10px;
+    width: 8px; height: 2px; background: var(--c-accent);
+  }
+  .sv-anchor__out {
+    margin: 30px 0 0; padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 22px; line-height: 32px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-accent);
+  }
+  .sv-anchor__cta { margin-top: 34px; }
+
+  /* ── S5 scope ───────────────────────────────────────────── */
+  .sv-scope { padding-block: 96px; }
+  .sv-scope__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-scope__cols {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 48px 60px; margin-top: 52px;
+  }
+  .sv-scope__col-h {
+    margin: 0 0 20px; padding-bottom: 14px;
+    border-bottom: 2px solid var(--c-accent);
+    font-size: 22px; line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-scope__col-h--out { border-bottom-color: rgba(153, 152, 149, 0.5); }
+  .sv-scope__list { list-style: none; margin: 0; padding: 0; }
+  .sv-scope__list li {
+    padding: 13px 0; border-bottom: 1px solid rgba(153, 152, 149, 0.28);
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.82);
+  }
+  .sv-scope__list--out li { color: rgba(20, 20, 20, 0.52); }
+
+  /* ── S6 shape ───────────────────────────────────────────── */
+  .sv-shape { padding-block: 96px; }
+  .sv-shape__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-shape__grid {
+    margin: 52px 0 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 44px 30px;
+  }
+  .sv-shape__grid dt {
+    padding-bottom: 14px; border-bottom: 1px solid rgba(153, 152, 149, 0.4);
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .sv-shape__grid dd {
+    margin: 18px 0 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.82);
+  }
+  .sv-shape__list { list-style: none; margin: 0; padding: 0; }
+  .sv-shape__list li { margin-top: 12px; }
+  .sv-shape__list li:first-child { margin-top: 0; }
+  .sv-shape__list b { display: block; font-weight: var(--fw-semi); color: var(--c-black); }
+
+  /* ── S8 next ────────────────────────────────────────────── */
+  .sv-next { padding-block: 96px; }
+  .sv-next__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-next__cols {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 48px 60px; margin-top: 52px;
+  }
+  .sv-next__col-h {
+    margin: 0 0 10px;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .sv-next__list { list-style: none; margin: 0; padding: 0; }
+  .sv-next__list li { border-bottom: 1px solid rgba(153, 152, 149, 0.28); }
+  .sv-next__list a { display: block; padding: 18px 0; }
+  .sv-next__list b {
+    display: block;
+    font-size: 20px; line-height: 26px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .sv-next__list span {
+    display: block; margin-top: 5px;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.6);
+  }
+  .sv-next__list a:hover b { color: rgb(90, 90, 90); }
+
   /* ── process ────────────────────────────────────────────── */
   .sv-proc { position: relative; padding-block: 80px 0; min-height: 1000px; }
   .sv-proc__tick { display: block; width: 16px; height: 1.5px; background: var(--c-rule-strong); }
@@ -678,6 +1041,9 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     .sv-hero__large { white-space: normal; line-height: 1.02; }
     .sv-hero__small { line-height: 1.05; }
 
+    .sv-cost, .sv-eng, .sv-anchor, .sv-scope, .sv-shape, .sv-next { padding-block: 64px; }
+    .sv-eng__h, .sv-scope__h, .sv-shape__h, .sv-next__h { max-width: 100%; }
+    .sv-frame__h { font-size: 26px; line-height: 33px; }
     .sv-band, .sv-band--tall, .sv-proc, .sv-rec, .sv-faq, .sv-feat {
       min-height: 0; padding-block: 64px 72px;
     }

@@ -42,6 +42,117 @@ seo:
   primaryIntent: "mobile app development"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "Your app is in the store. Nobody opens it twice."
+  qualifier: "For teams that need a native app built properly, or an existing one rescued. Not for a first test of an idea, an MVP will answer that faster and for less."
+  proof:
+    value: "250+"
+    label: "PRODUCTS SHIPPED SINCE 2005"
+cost:
+  label: "THE COST OF WAITING"
+  heading: "A shipped app that nobody returns to is a running cost."
+  body: "Store fees, certificates, SDK updates and an OS release twice a year that breaks something. An app with no second session is not an asset sitting idle. It is a subscription you pay to keep a disappointment available."
+engagement:
+  label: "HOW IT RUNS"
+  heading: "Built to survive the second week, not just the review"
+  phases:
+    - n: "01"
+      name: "Pre-design"
+      duration: "Weeks 1 to 2"
+      delivers: "You get the decisions written down: who it is for, which platform first, what the app does on a bad network, and what it does not do at all."
+    - n: "02"
+      name: "Design"
+      duration: "Weeks 3 to 5"
+      delivers: "The flows and screens, including the states everyone forgets. Offline, empty, error, and the first run when there is no data yet."
+    - n: "03"
+      name: "Development"
+      duration: "Weeks 6 to 14"
+      delivers: "A build in your hands every fortnight on a real device, not a video of one. You can use it while it is being made."
+    - n: "04"
+      name: "Store and after"
+      duration: "Weeks 15 to 16"
+      delivers: "Submission, review responses and the first release. Crash reporting and analytics are live before launch, not after the first bad week."
+anchor:
+  label: "WHAT THIS LOOKS LIKE"
+  client: "Snowman Logistics"
+  situation: "Warehouse staff in cold storage were completing compliance checks on paper, in gloves, with no signal."
+  did:
+    - "Designed for the actual conditions: large targets, offline capture, and no typing anywhere a tap would do."
+    - "Built sync that assumes the network is absent rather than treating it as an error state."
+  outcome: "[ NEEDS THE REAL FIGURE: what changed on the warehouse floor, with a number and a timeframe ]"
+  href: "/work/warehouse-compliance-checklist-app/"
+scope:
+  label: "SCOPE"
+  heading: "What a build includes, and what it does not"
+  includes:
+    - "One platform built native, or both built cross platform"
+    - "Design of every state, including offline and error"
+    - "API work and the backend the app needs"
+    - "Crash reporting, analytics and release pipeline"
+    - "Store submission and review responses"
+    - "A fortnight of support after launch"
+  excludes:
+    - "Both native platforms in one engagement at one price"
+    - "App store optimisation or paid install campaigns"
+    - "Ongoing feature work, that is a separate agreement"
+    - "Backend for a business you have not defined yet"
+    - "Porting an existing app without looking at why it is not working"
+shape:
+  label: "THE SHAPE OF IT"
+  heading: "What you are signing up to"
+  duration: "Fourteen to eighteen weeks to a released app, depending on platform and backend."
+  team:
+    - role: "Product lead"
+      does: "Holds the scope and runs the fortnightly build review with you."
+    - role: "Designer"
+      does: "Flows, screens and the state work that keeps the app usable when things go wrong."
+    - role: "Two to three engineers"
+      does: "Mobile and backend. The same people through to release."
+  needs:
+    - "Developer accounts in your company name, set up in week one"
+    - "One decision maker, and an hour a fortnight for the build review"
+    - "Access to two or three people who will actually use the app"
+  pricing: "Scoped and fixed after the pre-design phase, when there is enough detail to be honest about. Anything found later is quoted as a change, not absorbed and then argued about. [ NEEDS THE REAL BAND: typical mobile build range ]"
+faqLabel: "THE QUESTIONS WE GET"
+faqHeading: "Asked on real calls."
+faq:
+  - question: "Native or cross platform?"
+    answer: "Cross platform unless something in your product needs the device in a way it cannot reach. We will tell you which one you are in during pre-design, and the answer is cross platform more often than agencies admit."
+  - question: "Can you take over an app somebody else built?"
+    answer: "Sometimes. We read the code first and give you an honest view. If the answer is that rewriting is cheaper than inheriting, we will say so, including when that is the more expensive quote."
+  - question: "Can you work with our existing backend?"
+    answer: "Yes. If the API is doing something the app cannot live with, we will show you exactly what and let you decide whether to change it."
+  - question: "What happens after launch?"
+    answer: "Two weeks of support is in the price, for the things a real release surfaces. Beyond that it is a separate agreement, and plenty of clients do not need one."
+  - question: "Who owns the accounts?"
+    answer: "You do. Developer accounts, certificates and the repository are in your name from the start. We have seen what happens when they are not."
+next:
+  label: "WHERE TO GO NEXT"
+  heading: "If this is not quite it"
+  services:
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "If the app is already built and the problem is that people stop using it."
+    - name: "MVP development"
+      href: "/s/mvp-development/"
+      why: "When the idea has not been tested and a full build is a large bet on a guess."
+    - name: "Web app development"
+      href: "/s/web-app-development/"
+      why: "When what you need reaches people faster in a browser than in a store."
+  industries:
+    - name: "Logistics"
+      href: "/industries/logistics-transportation-app-development/"
+      why: "Where the app has to work in gloves, in the cold, with no signal."
+    - name: "Restaurant"
+      href: "/industries/food-restaurant-app-development/"
+      why: "Four surfaces that have to agree with each other in real time."
+close:
+  heading: "Tell us what your app is for and where it loses people."
+  body: "Two paragraphs is plenty. We will come back in two working days with whether we would build it, rebuild it, or leave it alone, and why."
+  ctaLabel: "Shall we chat?"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/ticket-1.png)
 

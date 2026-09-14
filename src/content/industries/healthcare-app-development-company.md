@@ -10,7 +10,7 @@ headline:
 standfirst: "Healthcare App Development Company"
 hero:
   statement: "Bring Healthcare to Your Fingertips with our well-built solutions!"
-  sub: "We have years of experience in developing integrated healthcare mobile applications , physician platforms, and a lot…"
+  sub: "We have years of experience in developing integrated healthcare mobile applications physician platforms, and a lot more…"
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
@@ -33,7 +33,7 @@ journey:
       tags: ["HOSPITAL", "MANAGEMENT"]
     - n: "04"
       name: "Cloud"
-      body: "Being the best-in-class medical apps development company , We offer cloud-based solutions like AWS Managed Services, AWS professional services, DevOps Services and a lot more to make it easier for the healthcare professionals to solve their challenges with a…"
+      body: "Being the best-in-class medical apps development company We offer cloud-based solutions like AWS Managed Services, AWS professional services, DevOps Services and a lot more to make it easier for the healthcare professionals to solve their challenges with a…"
       tags: ["CLOUD", "BASED"]
     - n: "05"
       name: "Expertise"
@@ -91,7 +91,7 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "GISAID OSS"
-    body: "Being the best-in-class medical apps development company , We offer cloud-based solutions like AWS Managed Services, AWS professional services, DevOps Services…"
+    body: "Being the best-in-class medical apps development company We offer cloud-based solutions like AWS Managed Services, AWS professional services, DevOps Services…"
     href: "/work/gisaid-health-tech/"
     ctaLabel: "View Project"
 sectors:

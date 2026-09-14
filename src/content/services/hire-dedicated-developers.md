@@ -59,6 +59,113 @@ seo:
   primaryIntent: "hire dedicated developers"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "You have the roadmap and the budget. You are four months from having the team."
+  qualifier: "For teams that know what to build and need capacity to build it. Not for teams that want someone to decide what to build, that is product development."
+  proof:
+    value: "The Club Social"
+    label: "BUILT BY A DEDICATED TEAM, STILL RUNNING"
+cost:
+  label: "THE COST OF WAITING"
+  heading: "Four months of hiring is four months of not shipping."
+  body: "Plus agency fees, the offers that fall through, and the ramp-up after they start. The roadmap does not pause while you recruit. It just gets longer, and the reason it slipped stops being visible to anyone above you."
+engagement:
+  label: "HOW IT RUNS"
+  heading: "People who join your team, not a ticket queue"
+  phases:
+    - n: "01"
+      name: "Enquiry and analysis"
+      duration: "Week 1"
+      delivers: "An honest read on what you actually need. Sometimes it is two people rather than five, and we will say so before you have signed anything."
+    - n: "02"
+      name: "Wireframe and design"
+      duration: "Weeks 2 to 3"
+      delivers: "If the work needs design, it gets design. Handing engineers an undefined brief is how augmentation ends up slower than hiring."
+    - n: "03"
+      name: "Development and delivery"
+      duration: "Ongoing"
+      delivers: "The same named people in your stand-ups, working your board, with code reviewed against your standards rather than ours."
+anchor:
+  label: "WHAT THIS LOOKS LIKE"
+  client: "The Club Social"
+  situation: "A club that needed amenities, restaurant ordering and membership in one app for its members."
+  did:
+    - "Put a dedicated team on it rather than passing it between whoever was free."
+    - "Built one app for members and for the club, so the two sides could not drift apart."
+  outcome: "[ NEEDS THE REAL FIGURE: what changed for the club or its members, with a number and a timeframe ]"
+  href: "/work/club-social/"
+scope:
+  label: "SCOPE"
+  heading: "What a dedicated team includes, and what it does not"
+  includes:
+    - "Named people, full time, on your board and in your stand-ups"
+    - "Code reviewed against your standards"
+    - "Design capacity when the work needs it"
+    - "A minimum three month commitment, both ways"
+    - "Direct contact with the engineers, not through an account manager"
+    - "Notice periods that are the same in both directions"
+  excludes:
+    - "Deciding your roadmap, that is your job or a different engagement"
+    - "Paying for someone to sit idle while you decide"
+    - "Swapping people out without telling you"
+    - "Hourly billing against a ticket queue"
+    - "Anyone who has not worked with the rest of the team before"
+shape:
+  label: "THE SHAPE OF IT"
+  heading: "What you are signing up to"
+  duration: "Three month minimum, monthly after that, thirty days notice either way."
+  team:
+    - role: "Engineers"
+      does: "Two to six, sized to the work. Named people, and you meet them before you commit."
+    - role: "Designer"
+      does: "Part time or full time, only when the work needs one."
+    - role: "Delivery lead"
+      does: "Included, not billed. There so you have one person to talk to when something is wrong."
+  needs:
+    - "A backlog that is ready enough to start on in week one"
+    - "Someone on your side who can answer a question the same day"
+    - "Access to your repository, environments and standards documentation"
+  pricing: "Monthly per person, all in. No recruitment fee, no charge for the delivery lead, no markup on tools. [ NEEDS THE REAL BAND: monthly rate per engineer ]"
+faqLabel: "THE QUESTIONS WE GET"
+faqHeading: "Asked on real calls."
+faq:
+  - question: "Can we interview them first?"
+    answer: "Yes, and you should. If you would not hire the person, we should not be putting them on your team."
+  - question: "What if it is not working?"
+    answer: "Thirty days notice, both ways, from month three. A contract that traps you is a contract that stops us having to be good."
+  - question: "Do they work our hours?"
+    answer: "There is a four hour overlap with your working day as standard, and more if the work needs it. Say what you need before you sign, not after."
+  - question: "Who owns the code?"
+    answer: "You do, from the first commit, in your repository."
+  - question: "Can we hire them permanently?"
+    answer: "After twelve months, with no fee. Before that we will talk about it. People are not a lock-in mechanism."
+next:
+  label: "WHERE TO GO NEXT"
+  heading: "If this is not quite it"
+  services:
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "When you want the team to own outcomes rather than tickets."
+    - name: "DevOps"
+      href: "/s/result-oriented-devops-services/"
+      why: "If more engineers will not help because releasing is the bottleneck."
+    - name: "Mobile app development"
+      href: "/s/mobile-app-development/"
+      why: "When the capacity you are missing is specifically mobile."
+  industries:
+    - name: "SaaS"
+      href: "/industries/saas-application-development-services/"
+      why: "Where roadmaps outgrow teams faster than anywhere else."
+    - name: "Concierge"
+      href: "/industries/concierge-app-development/"
+      why: "Member products where the surface keeps growing after launch."
+close:
+  heading: "Send us your backlog, or the part of it you can share."
+  body: "We will come back in two working days with what shape of team we think it needs, including when the answer is fewer people than you asked for."
+  ctaLabel: "Shall we chat?"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/coding-2.webp)
 

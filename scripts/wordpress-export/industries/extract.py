@@ -102,7 +102,27 @@ def text(v):
     """Tags out, entities decoded, whitespace collapsed. Words untouched."""
     s = re.sub(r'<br\s*/?>', ' ', v or '')
     s = re.sub(r'<[^>]+>', ' ', s)
-    return re.sub(r'\s+', ' ', html.unescape(s)).strip()
+    return dedash(re.sub(r'\s+', ' ', html.unescape(s)).strip())
+
+
+DASH_RANGE = re.compile(r'(\d)\s*[\u2013\u2014]\s*(\d)')
+DASH_SPACED = re.compile(r'\s*[\u2013\u2014]\s*')
+
+
+def dedash(s):
+    """House style: no em dashes, no en dashes used as punctuation.
+
+    They are the surest tell that a sentence was assembled rather than
+    written, and the brief for these pages asks for copy that sounds like a
+    person. A number range becomes "to"; anything else becomes a comma, which
+    is what the dash was standing in for. Hyphens inside words are untouched.
+    """
+    s = s or ''
+    s = DASH_RANGE.sub(r'\1 to \2', s)
+    s = DASH_SPACED.sub(', ', s)
+    # A dash that opened a clause leaves a comma with nothing before it.
+    s = re.sub(r'(^|[\s(])\s*,\s*', lambda m: m.group(1), s)
+    return re.sub(r'\s+([,.;:!?])', r'\1', s).strip()
 
 
 def upload(url):

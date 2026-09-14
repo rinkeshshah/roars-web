@@ -245,6 +245,112 @@ const projects = defineCollection({
  * is drawn at a size the copy has to live inside — the same reasoning as the
  * seo fields.
  */
+/**
+ * The S1-S9 service page.
+ *
+ * Every field is optional and every section renders only when it has data, so
+ * a page that has half of it is a shorter page rather than a broken one. That
+ * matters here: the sections that make a claim about the business (S4's
+ * outcome, S5's exclusions, S6's pricing, S7's answers) are drafted and under
+ * review, and a page must be able to ship without them.
+ *
+ * The rule the structure exists to enforce: a page must carry at least one
+ * asset that cannot appear on any other page. A named client and what changed
+ * for them, a real number with its unit and timeframe, a constraint only this
+ * service has, or a real artefact. scripts/validate-content.mjs checks for
+ * one and refuses to let a page without one call itself indexable.
+ */
+const servicePage = {
+  /** S1. The failure state in the reader's words, not the service name. */
+  frame: z
+    .object({
+      h1: z.string().min(20).max(120),
+      /** Who it is for and who it is not. Exclusion earns more trust. */
+      qualifier: z.string().max(220),
+      /** One named client or one number, above the fold. */
+      proof: z.object({ value: z.string().max(24), label: z.string().max(80) }).optional(),
+    })
+    .optional(),
+  /** S2. What continuing as-is costs. Under 60 words, or it reads as a funnel. */
+  cost: z
+    .object({
+      label: z.string().max(32).default('THE COST OF WAITING'),
+      heading: z.string().max(80),
+      body: z.string().max(400),
+    })
+    .optional(),
+  /** S3. Phases named by what the client HAS at the end, not what we do. */
+  engagement: z
+    .object({
+      label: z.string().max(32).default('HOW IT RUNS'),
+      heading: z.string().max(80),
+      phases: z
+        .array(
+          z.object({
+            n: z.string().max(4),
+            name: z.string().max(40),
+            /** Vagueness about time reads as vagueness about competence. */
+            duration: z.string().max(24),
+            delivers: z.string().max(320),
+          }),
+        )
+        .min(3)
+        .max(5),
+    })
+    .optional(),
+  /** S4. One case, in full. Not a carousel, and no logo grid on this page. */
+  anchor: z
+    .object({
+      label: z.string().max(32).default('WHAT THIS LOOKS LIKE'),
+      client: z.string().max(40),
+      situation: z.string().max(200),
+      did: z.array(z.string().max(220)).min(1).max(3),
+      /** The number and the timeframe. Absent until the real one is supplied. */
+      outcome: z.string().max(220).optional(),
+      href: z.string(),
+      ctaLabel: z.string().max(24).default('Read the case study'),
+    })
+    .optional(),
+  /** S5. In and out. The highest-trust block on the page. */
+  scope: z
+    .object({
+      label: z.string().max(32).default('SCOPE'),
+      heading: z.string().max(80),
+      includes: z.array(z.string().max(120)).min(2).max(8),
+      excludes: z.array(z.string().max(120)).min(2).max(8),
+    })
+    .optional(),
+  /** S6. Duration, team, what we need from you, and how pricing works. */
+  shape: z
+    .object({
+      label: z.string().max(32).default('THE SHAPE OF IT'),
+      heading: z.string().max(80),
+      duration: z.string().max(120),
+      team: z.array(z.object({ role: z.string().max(40), does: z.string().max(140) })).min(1).max(5),
+      /** Named as commitments: a weekly hour, access to two customers. */
+      needs: z.array(z.string().max(140)).min(1).max(5),
+      pricing: z.string().max(320),
+    })
+    .optional(),
+  /** S8. Internal links with a REASON, which is what makes them useful. */
+  next: z
+    .object({
+      label: z.string().max(32).default('WHERE TO GO NEXT'),
+      heading: z.string().max(80),
+      services: z.array(z.object({ name: z.string().max(40), href: z.string(), why: z.string().max(160) })).max(3).default([]),
+      industries: z.array(z.object({ name: z.string().max(40), href: z.string(), why: z.string().max(160) })).max(3).default([]),
+    })
+    .optional(),
+  /**
+   * Drafted sections are on the page but not offered to search.
+   *
+   * S4's outcome, S5, S6 and S7's answers are claims about the business. They
+   * were written to be corrected, not to be published, so a page still
+   * carrying them is noindex until somebody says otherwise.
+   */
+  needsReview: z.boolean().default(false),
+}
+
 const serviceLayout = {
   /** Small tracked line above the masthead, e.g. "SERVICES / AI AUTOMATION". */
   eyebrow: z.string().max(48).optional(),
@@ -370,6 +476,7 @@ const services = defineCollection({
   schema: z.object({
     ...base,
     ...serviceLayout,
+    ...servicePage,
     /* Migrated pages keep the live site's own rank_math metadata, which runs
        long. Same arrangement as the journal and the industries. */
     seo: z.union([seo, seoMigrated]),
@@ -532,6 +639,10 @@ const industries = defineCollection({
        on each so the debt stays visible. Same arrangement as the journal. */
     seo: z.union([seo, seoMigrated]),
     migrated: z.boolean().default(false),
+    /* Held out of the index until somebody has checked it. Used here for the
+       two sectors that have no case study to point at, which is the rule
+       about unique assets doing its job rather than a bug. */
+    needsReview: z.boolean().default(false),
     serviceType: z.string(),
     /**
      * An industry page with no case study is a noun swap, which is exactly the

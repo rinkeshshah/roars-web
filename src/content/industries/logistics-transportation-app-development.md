@@ -185,7 +185,7 @@ Our logistics management solution offers easy integration with multiple platform
 
 ## Les Concierges
 
-Les Concierges B2B2C platform which helps corporate employees to get anything deliver no matter where you are – at work, at home or on the road.
+Les Concierges B2B2C platform which helps corporate employees to get anything deliver no matter where you are, at work, at home or on the road.
 
 [View the project](/work/les-concierges/)
 

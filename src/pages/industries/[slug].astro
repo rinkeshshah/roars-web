@@ -83,7 +83,13 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
 ---
 
 {designed && d ? (
-  <BaseLayout title={d.seo.title} description={d.seo.description} path={path} schema={schema}>
+  <BaseLayout
+    title={d.seo.title}
+    description={d.seo.description}
+    path={path}
+    schema={schema}
+    noindex={d.needsReview}
+  >
     <TopBar slot="topbar" cta="meeting" />
     <NavOverlay />
 

@@ -59,6 +59,112 @@ seo:
   primaryIntent: "product development company"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "The product works, the team is busy, and the roadmap has not moved in a quarter."
+  qualifier: "For companies with a product in market and a delivery problem. Not for validating a new idea, that is MVP work, and not for a single flow, that is UX."
+  proof:
+    value: "The President's Club"
+    label: "MEMBER PRODUCT WE BUILT AND SHIPPED"
+cost:
+  label: "THE COST OF WAITING"
+  heading: "A stalled roadmap is not a delivery problem for long."
+  body: "It becomes a hiring problem, then a retention problem, then a funding conversation you did not want to have. The cost is rarely the quarter you lost. It is what your competitors shipped during it."
+engagement:
+  label: "HOW IT RUNS"
+  heading: "Strategy, design and engineering under one roof"
+  phases:
+    - n: "01"
+      name: "Ideation and prototype"
+      duration: "Weeks 1 to 4"
+      delivers: "You get the architecture decisions written down and a prototype of the part everyone disagrees about, so the disagreement happens early and cheaply."
+    - n: "02"
+      name: "Build and launch"
+      duration: "Weeks 5 to 20"
+      delivers: "Working software every fortnight, in an environment you can use. Not a demo, the actual thing, with the tests and the pipeline that keep it shippable."
+    - n: "03"
+      name: "Support and hand back"
+      duration: "Ongoing or fixed"
+      delivers: "Either we keep running it, or we hand it to your team with the documentation and the pairing time to make that real rather than nominal."
+anchor:
+  label: "WHAT THIS LOOKS LIKE"
+  client: "The President's Club"
+  situation: "A members organisation running its community, events and benefits across separate tools that did not know about each other."
+  did:
+    - "Put membership, events and benefits behind one model instead of three, so a member is one record everywhere."
+    - "Built it so the operations team could change what members see without asking an engineer."
+  outcome: "[ NEEDS THE REAL FIGURE: what changed for their team or their members, with a number and a timeframe ]"
+  href: "/work/the-presidents-club/"
+scope:
+  label: "SCOPE"
+  heading: "What a product engagement includes, and what it does not"
+  includes:
+    - "Product strategy and the architecture decisions behind it"
+    - "Design, from flows to a component set"
+    - "Engineering, front end, back end and infrastructure"
+    - "Test coverage and a release pipeline that your team can run"
+    - "Documentation written for the people who inherit it"
+    - "A defined handover, or an ongoing arrangement if you want one"
+  excludes:
+    - "Taking over a codebase without reading it first"
+    - "Brand, marketing or content production"
+    - "Staff augmentation, we work as a team or not at all"
+    - "Working to a roadmap we are not allowed to question"
+shape:
+  label: "THE SHAPE OF IT"
+  heading: "What you are signing up to"
+  duration: "Twenty weeks and up. Shorter than that is usually an MVP or a UX engagement in disguise."
+  team:
+    - role: "Product lead"
+      does: "Owns delivery and is the person you escalate to. One name, not a rota."
+    - role: "Designer"
+      does: "Flows, interface and the component set the engineers build against."
+    - role: "Three to five engineers"
+      does: "Front end, back end and infrastructure, sized to the work rather than to the invoice."
+  needs:
+    - "One decision maker with authority over scope and budget"
+    - "A weekly hour, and a fortnightly review with whoever owns the roadmap"
+    - "Access to your production analytics and to your support queue"
+  pricing: "Monthly, against a team shape agreed up front, with a scope we revisit every quarter rather than pretending a year is knowable. [ NEEDS THE REAL MODEL: monthly band or day rate ]"
+faqLabel: "THE QUESTIONS WE GET"
+faqHeading: "Asked on real calls."
+faq:
+  - question: "Can you work alongside our engineers?"
+    answer: "Yes, and it works best when the split is by area rather than by ticket. Two teams sharing one backlog is how both end up slower."
+  - question: "What if we want to bring it in house later?"
+    answer: "That is the normal ending and we plan for it. Documentation and pairing time are in the engagement, not sold back to you at the end."
+  - question: "Do you take over an existing codebase?"
+    answer: "After we have read it. You get an honest assessment first, including the case for not doing it."
+  - question: "How do you handle scope changes?"
+    answer: "We requote the change and you decide. We do not absorb it quietly and then use it to explain a missed date."
+  - question: "What if the roadmap is the problem?"
+    answer: "Then we will say so in the first month. Building the wrong thing well is the most expensive outcome available, and it is not one we will be quiet about."
+next:
+  label: "WHERE TO GO NEXT"
+  heading: "If this is not quite it"
+  services:
+    - name: "MVP development"
+      href: "/s/mvp-development/"
+      why: "If the next thing on the roadmap has not been validated with anyone yet."
+    - name: "DevOps"
+      href: "/s/result-oriented-devops-services/"
+      why: "When the delivery problem is the release process rather than the code."
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "When the product ships fine and the usage numbers still do not move."
+  industries:
+    - name: "SaaS"
+      href: "/industries/saas-application-development-services/"
+      why: "Where onboarding and activation decide whether the rest of the product matters."
+    - name: "Concierge"
+      href: "/industries/concierge-app-development/"
+      why: "Requests, members and loyalty held in one model rather than three tools."
+close:
+  heading: "Tell us what has not shipped this quarter, and why."
+  body: "One paragraph. We will come back in two working days with where we think the blockage is. Often it is not where people expect, and you keep that read whether or not you engage us."
+  ctaLabel: "Shall we chat?"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/coding-5.webp)
 

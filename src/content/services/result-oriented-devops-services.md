@@ -59,6 +59,113 @@ seo:
   primaryIntent: "result oriented devops services"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "The code was finished on Tuesday. It goes live a week on Thursday, if nothing breaks."
+  qualifier: "For teams whose software is good and whose release process is not. Not for teams without a product in production yet, there is nothing to release."
+  proof:
+    value: "GISAID"
+    label: "PLATFORM SERVING THE WORLD’S LARGEST COVID DATA SET"
+cost:
+  label: "THE COST OF WAITING"
+  heading: "A slow release is a tax on everything your team does."
+  body: "It makes every change bigger, because batching is the only way to make the cost worth paying. Bigger changes fail more often, which makes people more careful, which makes releases slower. That loop tightens on its own."
+engagement:
+  label: "HOW IT RUNS"
+  heading: "From a release event to a release routine"
+  phases:
+    - n: "01"
+      name: "Assessment and strategy"
+      duration: "Weeks 1 to 2"
+      delivers: "How long a change actually takes to reach users today, measured rather than estimated, and the three things making it slow."
+    - n: "02"
+      name: "Pilot framework"
+      duration: "Weeks 3 to 6"
+      delivers: "One service moved onto the new pipeline, all the way to production, so the approach is proven on something real before it is applied everywhere."
+    - n: "03"
+      name: "End to end rollout"
+      duration: "Weeks 7 to 14"
+      delivers: "The rest brought across, with monitoring and rollback in place, and your engineers running it rather than watching us run it."
+anchor:
+  label: "WHAT THIS LOOKS LIKE"
+  client: "GISAID"
+  situation: "A platform holding one of the largest COVID data sets in the world, where availability was not negotiable."
+  did:
+    - "Built the tooling for a scale where a bad deploy is a public problem rather than an internal one."
+    - "Automated the paths that had been manual, so releasing stopped depending on who was awake."
+  outcome: "[ NEEDS THE REAL FIGURE: deploy frequency or downtime change, with a number and a timeframe ]"
+  href: "/work/gisaid-health-tech/"
+scope:
+  label: "SCOPE"
+  heading: "What a DevOps engagement includes, and what it does not"
+  includes:
+    - "Measuring how long a change takes to reach production today"
+    - "Build, test and deployment pipelines"
+    - "Infrastructure as code for the environments you keep"
+    - "Monitoring, alerting and a rollback that has been tested"
+    - "A pilot on one real service before anything is rolled out"
+    - "Handover so your team runs it without us"
+  excludes:
+    - "Running your infrastructure permanently as a managed service"
+    - "Rewriting your application to fit a platform"
+    - "Choosing a cloud provider for commercial reasons rather than technical ones"
+    - "On-call cover for your product"
+    - "Security certification and audit work"
+shape:
+  label: "THE SHAPE OF IT"
+  heading: "What you are signing up to"
+  duration: "Fourteen weeks, with the pilot proving the approach by week six."
+  team:
+    - role: "DevOps lead"
+      does: "Measures what you have now and owns the plan for changing it."
+    - role: "Platform engineer"
+      does: "Builds the pipelines and the infrastructure code."
+    - role: "Your engineers"
+      does: "Involved from the pilot, because a pipeline nobody on your side understands is a new dependency rather than a fix."
+  needs:
+    - "Access to your cloud accounts and repositories in week one"
+    - "One engineer from your side who can spend half their week on it"
+    - "Permission to change the release process, not only to document it"
+  pricing: "Fixed for the assessment, then quoted against the rollout once the pilot has shown what it involves. [ NEEDS THE REAL BAND: assessment fee and rollout model ]"
+faqLabel: "THE QUESTIONS WE GET"
+faqHeading: "Asked on real calls."
+faq:
+  - question: "Do we have to change cloud provider?"
+    answer: "No. Most of the delay is in the pipeline and the process, not in whose data centre it runs in. We will say if that is genuinely the problem, and it rarely is."
+  - question: "Will our team be able to run this?"
+    answer: "That is the point, and it is why one of your engineers is on the pilot. If the answer at the end is that only we understand it, we have failed."
+  - question: "Do you take over our on-call?"
+    answer: "No. We build the monitoring and the runbooks so your on-call is survivable, but the rota stays yours."
+  - question: "What if the pilot does not work?"
+    answer: "Then you stop after six weeks having spent six weeks. That is the reason the pilot comes before the rollout."
+  - question: "How do you measure success?"
+    answer: "The time from a merged change to it being live, and how often a release has to be rolled back. Both measured before we start, so the comparison is real."
+next:
+  label: "WHERE TO GO NEXT"
+  heading: "If this is not quite it"
+  services:
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "When shipping faster only helps if there is more being built."
+    - name: "Hire dedicated developers"
+      href: "/s/hire-dedicated-developers/"
+      why: "If the pipeline is fine and the constraint is simply capacity."
+    - name: "Web app development"
+      href: "/s/web-app-development/"
+      why: "When the thing being released badly should probably be rebuilt."
+  industries:
+    - name: "SaaS"
+      href: "/industries/saas-application-development-services/"
+      why: "Where release cadence is the difference between a roadmap and a backlog."
+    - name: "Healthcare"
+      href: "/industries/healthcare-app-development-company/"
+      why: "Where a rollback plan is a compliance requirement rather than a nicety."
+close:
+  heading: "Tell us how long your last change took to reach users."
+  body: "From merged to live, honestly. We will come back in two working days with where we think the time goes and which part we would fix first."
+  ctaLabel: "Shall we chat?"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/puzzle-piece.webp)
 

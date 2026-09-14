@@ -32,7 +32,7 @@ bands:
         body: "We help clients integrate advanced AI & Machine Learning into applications to strengthen capabilities and improve user experiences."
       - tag: "BIG"
         name: "BIG DATA ANALYTICS"
-        body: "Our digital business transformation solutions support business digitalisation by helping companies understand massive sets of structured and unstructured data—breaking them down into critical insights that drive faster, better, and more informed business decisions."
+        body: "Our digital business transformation solutions support business digitalisation by helping companies understand massive sets of structured and unstructured data, breaking them down into critical insights that drive faster, better, and more informed business decisions."
       - tag: "SERVICE"
         name: "AR & VR"
         body: "Build innovative user experiences and cutting-edge virtual reality solutions for your customers with advanced technologies like AR & VR."
@@ -59,6 +59,113 @@ seo:
   primaryIntent: "digital business transformation services"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "Six tools hold the truth about one customer, and none of them agree."
+  qualifier: "For companies whose operations have outgrown the software running them. Not for teams looking to add a feature, that is product development."
+  proof:
+    value: "Tanishq"
+    label: "DATA PLATFORM WE BUILT FOR ONE OF INDIA’S LARGEST RETAILERS"
+cost:
+  label: "THE COST OF WAITING"
+  heading: "Nobody budgets for the reconciliation."
+  body: "It comes out of people instead. The hours spent working out which system is right, the reports built twice because two teams did not trust the same number, and the decisions taken late because somebody was still checking. That cost grows with you, quietly."
+engagement:
+  label: "HOW IT RUNS"
+  heading: "Work out what is really happening, then change it"
+  phases:
+    - n: "01"
+      name: "Analyse and conduct"
+      duration: "Weeks 1 to 3"
+      delivers: "You get a map of how work actually moves through your business, including the workarounds people have stopped mentioning. Most of the value is in that second part."
+    - n: "02"
+      name: "Evaluate and understand"
+      duration: "Weeks 4 to 5"
+      delivers: "The short list of changes worth making, ranked by what they are costing you now rather than by how modern they sound."
+    - n: "03"
+      name: "Roadmap and transition"
+      duration: "Weeks 6 to 8"
+      delivers: "A sequenced plan with the first change already underway, so you are looking at something running rather than at a document about running it."
+anchor:
+  label: "WHAT THIS LOOKS LIKE"
+  client: "Tanishq"
+  situation: "A retailer with more data about its customers than any one team could see at once."
+  did:
+    - "Brought the sources into one model so a customer is one customer, not one per system."
+    - "Built the analytics for the people making the decisions rather than for the people maintaining the warehouse."
+  outcome: "[ NEEDS THE REAL FIGURE: what changed for their decision making, with a number and a timeframe ]"
+  href: "/work/tanishq-data-analytics/"
+scope:
+  label: "SCOPE"
+  heading: "What a transformation engagement includes, and what it does not"
+  includes:
+    - "Mapping how work moves today, including the workarounds"
+    - "A ranked list of changes with what each one is costing now"
+    - "A sequenced roadmap with the first change started"
+    - "Integration work between the systems you keep"
+    - "Data modelling and migration"
+    - "Training for the people who will run it"
+  excludes:
+    - "Replacing every system in one programme"
+    - "Licence negotiation with your vendors"
+    - "Change management across the whole organisation"
+    - "A strategy document with no build attached"
+    - "Recommending a platform we resell, we do not resell any"
+shape:
+  label: "THE SHAPE OF IT"
+  heading: "What you are signing up to"
+  duration: "Eight weeks to the roadmap and the first change. Delivery after that depends on what the roadmap says."
+  team:
+    - role: "Lead consultant"
+      does: "Runs the mapping and writes the recommendation. Not a salesperson with a template."
+    - role: "Data engineer"
+      does: "Models what you have and builds the integrations between the systems you keep."
+    - role: "Product lead"
+      does: "Turns the roadmap into something that ships rather than something that circulates."
+  needs:
+    - "Two hours with each team whose work is in scope"
+    - "Read access to the systems in question, early"
+    - "A sponsor senior enough to change a process, not only to approve a document"
+  pricing: "The eight week assessment is fixed price. Delivery afterwards is quoted against the roadmap, and you are free to take the roadmap elsewhere. [ NEEDS THE REAL BAND: assessment fee and delivery model ]"
+faqLabel: "THE QUESTIONS WE GET"
+faqHeading: "Asked on real calls."
+faq:
+  - question: "Do we have to replace everything?"
+    answer: "Almost never, and a proposal that says you do is usually selling a platform. Most of the gain comes from making four systems agree rather than from replacing all four."
+  - question: "What if the roadmap says do nothing?"
+    answer: "Then that is what it says. It has happened. You will have paid for eight weeks instead of eighteen months."
+  - question: "Can we take the roadmap and build it ourselves?"
+    answer: "Yes. It is written to be handed to a team, including one that is not us."
+  - question: "Who owns the data model?"
+    answer: "You do, along with the integrations and the documentation. Nothing is held back as leverage for the next phase."
+  - question: "How is this different from hiring a consultancy?"
+    answer: "We build. The people who write the recommendation are the people who deliver the first change, which tends to keep recommendations realistic."
+next:
+  label: "WHERE TO GO NEXT"
+  heading: "If this is not quite it"
+  services:
+    - name: "Web app development"
+      href: "/s/web-app-development/"
+      why: "When the answer is one system replacing the spreadsheets rather than a programme."
+    - name: "AI automation"
+      href: "/s/ai-automation-services/"
+      why: "When the work being reconciled is routine enough for a system to own it."
+    - name: "DevOps"
+      href: "/s/result-oriented-devops-services/"
+      why: "If the blockage is in releasing changes rather than in deciding them."
+  industries:
+    - name: "Logistics"
+      href: "/industries/logistics-transportation-app-development/"
+      why: "Where the reconciliation is a compliance record and getting it wrong is expensive."
+    - name: "eCommerce"
+      href: "/industries/retail-ecommerce-development/"
+      why: "Where catalogue, stock and orders each hold part of the same truth."
+close:
+  heading: "Name the number two teams argue about."
+  body: "That argument is usually where the work is. Tell us what it is and we will come back in two working days with where we think the disagreement actually comes from."
+  ctaLabel: "Shall we chat?"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/puzzle-piece-1.webp)
 
@@ -74,7 +181,7 @@ migrated: true
 
 ## IOT
 
-With our top-of-the-line digital business transformation expertise, we offer tangible business impact to our clients using the latest tools and technologies like IoT, AI & ML. From integrating sensors to deriving actionable insights and offering hands-on support, we guide our clients through successful digital transformation journeys , helping them choose the right platform for their IT landscapes.
+With our top-of-the-line digital business transformation expertise, we offer tangible business impact to our clients using the latest tools and technologies like IoT, AI & ML. From integrating sensors to deriving actionable insights and offering hands-on support, we guide our clients through successful digital transformation journeys helping them choose the right platform for their IT landscapes.
 
 ## Get in touch
 

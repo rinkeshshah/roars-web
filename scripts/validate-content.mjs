@@ -257,6 +257,59 @@ for (const e of entries) {
     } else descriptions.set(s.description, file)
   }
 
+  /* --- The unique-asset rule ---
+   *
+   * "Every page must carry at least one asset that cannot exist on any other
+   * page." A named client and what changed for them, a real number with its
+   * unit and timeframe, a constraint only this service deals with, or a real
+   * artefact. A page with none of those is a holding page in a costume, and
+   * twelve of them teach a search engine that the site is generic.
+   *
+   * The check is deliberately crude: it looks for a case study link, a figure
+   * with a unit, or an exclusion list, because those are the three shapes the
+   * rule takes in this schema. It is a floor, not a judgement about quality.
+   */
+  if (e.collection === 'services' || e.collection === 'industries') {
+    const asset =
+      Boolean(data.anchor?.href) ||
+      Boolean(data.featured?.href) ||
+      Boolean(data.proof?.featured?.href) ||
+      Boolean(data.frame?.proof?.value) ||
+      (data.scope?.excludes?.length ?? 0) > 0 ||
+      /\b\d+([.,]\d+)?\s*(%|x|weeks?|days?|hours?|months?)\b/i.test(
+        `${data.frame?.h1 ?? ''} ${data.cost?.body ?? ''} ${data.hero?.statement ?? ''}`,
+      )
+    if (!asset && data.needsReview !== true) {
+      fail(
+        file, 'no unique asset',
+        'nothing on this page could not appear on another one. Add a named client and ' +
+          'what changed, a number with its unit and timeframe, a constraint only this ' +
+          'page has, or a real artefact. Or leave the page as a holding page.',
+      )
+    }
+  }
+
+  /* --- House style ---
+   *
+   * No em dashes and no en dashes used as punctuation. They are the surest
+   * tell that a machine wrote the sentence, and this site's copy is meant to
+   * sound like a person. A hyphen inside a word is fine.
+   */
+  /* Prose only. The design uses a dash as a GLYPH in two places: the section
+     counter, "INDUSTRIES / 04 — 09", and a tracked label like
+     "3-6 WEEKS TO PILOT". Those are typography, not sentences, and rewriting
+     them to "04, 09" would be nonsense. */
+  const prosey = { ...data }
+  delete prosey.eyebrow
+  const dashes = [...`${JSON.stringify(prosey)} ${body}`.matchAll(/\S*[\u2014\u2013]\S*/g)]
+    .map((m) => m[0])
+    .filter((x) => !/^[a-z]+\u2013[a-z]+$/i.test(x))
+    // a tracked uppercase label, e.g. "3-6 WEEKS TO PILOT"
+    .filter((x) => !/^[\d\u2013\u2014]+$/.test(x.replace(/[",]/g, '')))
+  if (dashes.length) {
+    warn(file, 'em dash', `${dashes.length} found, e.g. ${dashes.slice(0, 2).join(' , ')}. Use a comma, a full stop or a colon.`)
+  }
+
   // --- Body ---
   const text = pageText(data, body)
   const count = words(text).length

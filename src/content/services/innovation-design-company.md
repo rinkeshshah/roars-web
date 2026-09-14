@@ -59,6 +59,113 @@ seo:
   primaryIntent: "innovation design company"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "Everyone in the room agrees it is a good idea. Nobody can say who it is for."
+  qualifier: "For teams with an ambition and no shape for it yet. Not for teams who know exactly what to build and want it built, that is product development."
+  proof:
+    value: "GymBait.AI"
+    label: "A PRODUCT THAT STARTED AS A QUESTION ABOUT COACHING"
+cost:
+  label: "THE COST OF WAITING"
+  heading: "An idea with no shape absorbs budget without ever being wrong."
+  body: "It survives every review because there is nothing specific enough to argue with. Meanwhile the team builds around it, the roadmap bends to it, and the first real test happens after the money is spent."
+engagement:
+  label: "HOW IT RUNS"
+  heading: "Make it specific enough to be wrong"
+  phases:
+    - n: "01"
+      name: "Research"
+      duration: "Weeks 1 to 2"
+      delivers: "What the people you are building for actually do today, and where the friction is. Usually not where the room assumed."
+    - n: "02"
+      name: "Ideation"
+      duration: "Weeks 3 to 4"
+      delivers: "Three directions, different enough to argue about, each with the reason it might fail written next to it."
+    - n: "03"
+      name: "Prototyping"
+      duration: "Weeks 5 to 7"
+      delivers: "The chosen direction as something people can use and react to, plus what happened when they did."
+anchor:
+  label: "WHAT THIS LOOKS LIKE"
+  client: "GymBait.AI"
+  situation: "A fitness business asking whether coaching could reach members at the moment it mattered rather than at their next session."
+  did:
+    - "Turned the ambition into one testable thing: a nudge that learns from how a member actually trains."
+    - "Built it as a product with a human in the loop rather than as a model with an interface on top."
+  outcome: "[ NEEDS THE REAL FIGURE: what the prototype proved, with a number and a timeframe ]"
+  href: "/work/gymbait/"
+scope:
+  label: "SCOPE"
+  heading: "What an innovation engagement includes, and what it does not"
+  includes:
+    - "Research with the people you are designing for"
+    - "Three distinct directions, with the risks named"
+    - "A working prototype of the chosen one"
+    - "Testing it with real users and reporting what happened"
+    - "A recommendation, including the option to stop"
+    - "Everything documented so another team could pick it up"
+  excludes:
+    - "Building the production product, that is a separate engagement"
+    - "Brand identity or naming"
+    - "A workshop with no prototype at the end of it"
+    - "Market sizing and investment decks"
+    - "Telling you your idea is good, when it is not"
+shape:
+  label: "THE SHAPE OF IT"
+  heading: "What you are signing up to"
+  duration: "Seven weeks from kickoff to a tested prototype and a recommendation."
+  team:
+    - role: "Design lead"
+      does: "Runs the research and owns the argument for each direction."
+    - role: "Product designer"
+      does: "Takes the chosen direction to something people can actually use."
+    - role: "Engineer"
+      does: "Part time, building the prototype so it survives contact with real users."
+  needs:
+    - "Access to eight people from the group you are designing for"
+    - "A decision maker in the room at the end of week four"
+    - "Willingness to hear that one of the three directions is the answer and it is not the one you brought"
+  pricing: "Fixed price for the seven weeks, agreed before we start. What happens afterwards is a separate conversation and a separate quote. [ NEEDS THE REAL BAND: innovation engagement fee ]"
+faqLabel: "THE QUESTIONS WE GET"
+faqHeading: "Asked on real calls."
+faq:
+  - question: "What if we already know what we want to build?"
+    answer: "Then this is the wrong engagement and product development is the right one. We will tell you that on the first call rather than sell you a discovery you do not need."
+  - question: "What if we do not like any of the three directions?"
+    answer: "That happens, and it is still a result. It usually means the research found a different problem than the one the brief described, which is worth knowing at week four."
+  - question: "Is this just a workshop?"
+    answer: "No. A workshop produces alignment; this produces a prototype that real users have used and a record of what they did with it."
+  - question: "Can you build it afterwards?"
+    answer: "Yes, and often we do. It is not a condition, and the documentation is written so somebody else could."
+  - question: "How do we know it worked?"
+    answer: "You have something specific enough to be rejected, and evidence about whether it was. That is a better position than a good idea everyone agrees with."
+next:
+  label: "WHERE TO GO NEXT"
+  heading: "If this is not quite it"
+  services:
+    - name: "MVP development"
+      href: "/s/mvp-development/"
+      why: "When the prototype worked and the next step is something real users can pay for."
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "When the direction is settled and it needs building properly."
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "If the product exists and the problem is the experience rather than the idea."
+  industries:
+    - name: "Fitness"
+      href: "/industries/on-demand-fitness-app-development/"
+      why: "Where coaching, streaks and week three attention make or break a product."
+    - name: "Concierge"
+      href: "/industries/concierge-app-development/"
+      why: "Where the idea is usually about service, and service is hard to prototype."
+close:
+  heading: "Tell us the idea in two sentences, and who it is for in one."
+  body: "If the third sentence is hard to write, that is the thing worth working on. We will come back in two working days with what we would test first."
+  ctaLabel: "Shall we chat?"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/recruitment.png)
 
@@ -74,7 +181,7 @@ migrated: true
 
 ## PRODUCT DEVELOPMENT
 
-Roars Inc. is not just an innovation design company — we're also a top-tier product engineering partner. We work closely with clients to develop cutting-edge solutions, using new technologies to solve real-time business challenges. Let us help you move from idea to execution with high-quality product development services.
+Roars Inc. is not just an innovation design company, we're also a top-tier product engineering partner. We work closely with clients to develop cutting-edge solutions, using new technologies to solve real-time business challenges. Let us help you move from idea to execution with high-quality product development services.
 
 ## Get in touch
 

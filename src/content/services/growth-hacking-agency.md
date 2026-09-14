@@ -42,6 +42,104 @@ seo:
   primaryIntent: "growth hacking agency"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "You are spending on acquisition and cannot say which pound worked."
+  qualifier: "For teams with a product people already buy and a growth number that will not move. Not for launching something with no users yet, growth tactics on an unvalidated product just burn the budget faster."
+  proof:
+    value: "Test first"
+    label: "NOTHING SCALES UNTIL IT HAS BEATEN THE CONTROL"
+cost:
+  label: "THE COST OF WAITING"
+  heading: "Unattributed spend is not marketing. It is a subscription to hope."
+  body: "Every month you cannot trace revenue back to a channel, you renew the same budget on the same guesses. The waste is not the campaign that failed. It is the one that worked and got cut because nobody could prove it."
+engagement:
+  label: "HOW IT RUNS"
+  heading: "Small bets, measured, then scaled"
+  phases:
+    - n: "01"
+      name: "Ideate and prioritise"
+      duration: "Weeks 1 to 2"
+      delivers: "A ranked backlog of experiments, scored on expected effect and how long each takes to read. You can see why the top one is the top one."
+    - n: "02"
+      name: "Test and analyse"
+      duration: "Weeks 3 to 8"
+      delivers: "Experiments running on a fixed cadence, each with its result written down, including the ones that did nothing. Those are the ones agencies usually leave out."
+    - n: "03"
+      name: "Implement the winners"
+      duration: "Weeks 9 to 12"
+      delivers: "The changes that beat the control, built properly rather than left as a hack, and the tracking that keeps proving they still work."
+scope:
+  label: "SCOPE"
+  heading: "What a growth engagement includes, and what it does not"
+  includes:
+    - "Analytics and attribution audit"
+    - "A prioritised experiment backlog"
+    - "Running the experiments and reading them honestly"
+    - "Landing pages and funnel changes needed to test"
+    - "Building the winners into the product properly"
+    - "A written record of everything that did not work"
+  excludes:
+    - "Managing your ad accounts on an ongoing retainer"
+    - "Brand campaigns and creative production"
+    - "Content marketing at volume"
+    - "Guaranteed rankings or guaranteed growth numbers"
+    - "Anything that only works until a platform notices"
+shape:
+  label: "THE SHAPE OF IT"
+  heading: "What you are signing up to"
+  duration: "Twelve weeks. Shorter than that and there is not enough time to read a result."
+  team:
+    - role: "Growth lead"
+      does: "Owns the backlog and the read on every experiment, including the negative ones."
+    - role: "Designer"
+      does: "Landing pages and funnel changes, fast enough to keep the cadence."
+    - role: "Engineer"
+      does: "Tracking, experiment plumbing and building the winners into the product."
+  needs:
+    - "Admin access to analytics and ad accounts in week one"
+    - "Permission to change the funnel without a two week approval loop"
+    - "An hour a week to review results and kill the losers"
+  pricing: "Monthly for the engagement, with ad spend separate and paid by you directly. We do not take a percentage of media, because that pays us to spend more rather than to spend well. [ NEEDS THE REAL BAND: monthly engagement fee ]"
+faqLabel: "THE QUESTIONS WE GET"
+faqHeading: "Asked on real calls."
+faq:
+  - question: "Can you guarantee growth?"
+    answer: "No, and anyone who does is describing a sales process rather than a method. What we can promise is that you will know which things worked and which did not."
+  - question: "Do you manage our ad spend?"
+    answer: "During the engagement, for the experiments. We do not want to be your permanent media buyer, and we do not take a cut of spend."
+  - question: "What if none of the experiments work?"
+    answer: "Then the problem is upstream of marketing, usually in the product or the offer, and we will say so. That answer is worth more than another quarter of tactics."
+  - question: "How is this different from an SEO agency?"
+    answer: "Scope. SEO is one channel. This starts from which channel is worth your money at all, and sometimes the answer is the one you already have."
+  - question: "Who owns the accounts and data?"
+    answer: "You do, throughout. We work inside your accounts rather than behind our own dashboard."
+next:
+  label: "WHERE TO GO NEXT"
+  heading: "If this is not quite it"
+  services:
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "When the experiments keep pointing at the same broken step in the product."
+    - name: "eCommerce development"
+      href: "/s/ecommerce-development-company/"
+      why: "If the conversion problem is the checkout rather than the traffic."
+    - name: "MVP development"
+      href: "/s/mvp-development/"
+      why: "When growth is flat because the thing being sold has not been validated."
+  industries:
+    - name: "SaaS"
+      href: "/industries/saas-application-development-services/"
+      why: "Where activation, not acquisition, is usually the number that is stuck."
+    - name: "eCommerce"
+      href: "/industries/retail-ecommerce-development/"
+      why: "Where every experiment has a revenue figure attached to it within days."
+close:
+  heading: "Tell us the growth number that has not moved in two quarters."
+  body: "And what you have already tried. We will come back in two working days with the three experiments we would run first and what each one would tell you."
+  ctaLabel: "Shall we chat?"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/coding-1.webp)
 

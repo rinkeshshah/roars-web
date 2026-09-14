@@ -42,6 +42,104 @@ seo:
   primaryIntent: "ecommerce development company"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "Traffic is up, the basket is full, and the order never arrives."
+  qualifier: "For retailers with real volume and a checkout that leaks. Not for a first shop on a hosted platform, you do not need an agency for that yet."
+  proof:
+    value: "Since 2005"
+    label: "BUILDING COMMERCE BEFORE THE PLATFORMS EXISTED"
+cost:
+  label: "THE COST OF WAITING"
+  heading: "Checkout abandonment is the only metric that bills you twice."
+  body: "You paid to bring them in and you paid to hold the stock. A shop that converts a point lower than it should is not losing sales in the abstract. It is losing them after every other cost has already been spent."
+engagement:
+  label: "HOW IT RUNS"
+  heading: "Catalogue, checkout, and the gap between them"
+  phases:
+    - n: "01"
+      name: "Planning"
+      duration: "Weeks 1 to 3"
+      delivers: "Where the drop-off actually is, from your own data, plus the decision about platform: keep it, extend it, or leave it. We will say keep it when keeping it is right."
+    - n: "02"
+      name: "Implementation"
+      duration: "Weeks 4 to 14"
+      delivers: "The storefront, the integrations and the checkout, built and running on your real catalogue rather than on sample products."
+    - n: "03"
+      name: "Support"
+      duration: "First eight weeks live"
+      delivers: "Someone watching the first peak with you, because the first peak is when you find out what the load test did not."
+scope:
+  label: "SCOPE"
+  heading: "What an eCommerce engagement includes, and what it does not"
+  includes:
+    - "Analytics review of where orders are lost"
+    - "Storefront design and build"
+    - "Payment, tax and shipping integration"
+    - "Catalogue, stock and order sync with your systems"
+    - "Performance work for peak traffic"
+    - "Eight weeks of support after going live"
+  excludes:
+    - "Product photography and catalogue copy"
+    - "Paid search, social or email marketing"
+    - "Warehouse and fulfilment operations"
+    - "Customer service tooling"
+    - "Marketplace listings on Amazon and the rest"
+shape:
+  label: "THE SHAPE OF IT"
+  heading: "What you are signing up to"
+  duration: "Fourteen to sixteen weeks to live, plus eight weeks of support."
+  team:
+    - role: "Product lead"
+      does: "Owns the scope and the launch plan, including what happens if the date slips."
+    - role: "Designer"
+      does: "Catalogue, product page and checkout, designed against your real products."
+    - role: "Two to three engineers"
+      does: "Storefront, integrations and the performance work."
+  needs:
+    - "A real catalogue export in week one, not a sample"
+    - "Access to your payment and shipping accounts"
+    - "Whoever owns stock, so the integration is agreed rather than assumed"
+  pricing: "Fixed against the scope after planning. Integrations are priced separately, because their cost belongs to the other system rather than to ours. [ NEEDS THE REAL BAND: typical eCommerce build range ]"
+faqLabel: "THE QUESTIONS WE GET"
+faqHeading: "Asked on real calls."
+faq:
+  - question: "Do we have to leave our current platform?"
+    answer: "Usually not. Most of what looks like a platform problem is a checkout problem, and we will tell you which one you have in planning rather than after a migration."
+  - question: "Can you work with our existing stock system?"
+    answer: "Yes, and we would rather. Replacing a stock system during a storefront build is two risks stacked on one launch date."
+  - question: "What about the peak?"
+    answer: "It is in the plan. We do not launch a shop in the four weeks before its biggest trading period, and we will push back if that is the date on the table."
+  - question: "Who owns the storefront afterwards?"
+    answer: "You do. Standard stack, documented, and buildable by another team."
+  - question: "Can you improve what we have instead of rebuilding?"
+    answer: "Often, yes. It is the cheaper answer and it is the one we recommend more than half the time."
+next:
+  label: "WHERE TO GO NEXT"
+  heading: "If this is not quite it"
+  services:
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "When the shop works and the checkout still loses people."
+    - name: "Web app development"
+      href: "/s/web-app-development/"
+      why: "For the operations behind the shop rather than the shop itself."
+    - name: "Growth hacking"
+      href: "/s/growth-hacking-agency/"
+      why: "Once conversion is fixed and the question becomes how to bring more people in."
+  industries:
+    - name: "eCommerce"
+      href: "/industries/retail-ecommerce-development/"
+      why: "The sector page, with the work and the constraints in one place."
+    - name: "Restaurant"
+      href: "/industries/food-restaurant-app-development/"
+      why: "Where ordering is commerce with a kitchen attached and a much shorter clock."
+close:
+  heading: "Send us your checkout funnel for the last month."
+  body: "A screenshot of the drop-off is enough. We will come back in two working days with where we think it is going and whether it is worth a rebuild or a fortnight of fixes."
+  ctaLabel: "Shall we chat?"
+  ctaHref: "https://meet.roarsinc.com/sales"
+  contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/coding.webp)
 
@@ -71,7 +169,7 @@ Want to migrate or upgrade from your existing eCommerce services to the scalable
 
 ## TECHNOLOGY CONSULTING
 
-Being a top-notch eCommerce development company , we have established our reputation in providing high-quality eCommerce consulting services to clients worldwide. Our eCommerce technology consultants will help you find the right platform, technology, and framework for your project to save your time and cost.
+Being a top-notch eCommerce development company we have established our reputation in providing high-quality eCommerce consulting services to clients worldwide. Our eCommerce technology consultants will help you find the right platform, technology, and framework for your project to save your time and cost.
 
 ## SUPPORT & MAINTENANCE
 

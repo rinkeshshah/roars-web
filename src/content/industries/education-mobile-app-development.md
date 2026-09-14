@@ -141,6 +141,10 @@ seo:
   primaryIntent: "education mobile app development"
   schemaType: "Service"
 migrated: true
+# No case study on the live site points at this sector, so the page has
+# nothing on it that could not sit on another sector page. Held back until
+# it has one, per the unique-asset rule.
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/education.webp)
 
