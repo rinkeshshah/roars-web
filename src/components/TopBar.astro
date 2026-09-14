@@ -40,7 +40,6 @@ const CTA = {
           <GhostButton
             href={site.booking}
             label={CTA.label}
-            on="dark"
             width={243}
             external
           />
@@ -95,10 +94,13 @@ const CTA = {
   .topbar__burger {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 6px;
     width: 26px;
-    height: 6px;
-    margin-top: 18px;
+    height: 42px;   /* matches the pill, so it centres against it */
+    margin-top: 0;
+    align-self: flex-start;
     padding: 0;
     border: 0;
     background: none;

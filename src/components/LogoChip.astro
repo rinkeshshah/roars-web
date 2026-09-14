@@ -6,10 +6,15 @@
  * circles that stood in for it. The stand-in was never meant to ship; the
  * asset was in the repo the whole time and nothing pointed at it.
  *
- * Over light grounds the chip gets a pale ground, the mark rotates 45deg and
- * the yellow ring fills in proportion to scroll progress. Over dark grounds
- * the ring hides and the mark sits plain. Driven by the same top-bar
- * observer, never by hard-coded pixel bands.
+ * The mark NEVER rotates and carries NO badge. Measured off the export at
+ * five scroll positions — hero, about, services, projects, footer — the
+ * computed transform is matrix(1,0,0,1,0,0) every time. The rotate(45deg)
+ * and scale(.92) in the prototype's script are dead code from an older
+ * version: reading that source describes behaviour the export does not use.
+ *
+ * Colour is the only thing that changes: black on light grounds, yellow on
+ * dark. On the yellow hero that means a bare black mark directly on the
+ * yellow, with no circle behind it.
  */
 import mark from '../assets/roars-mark.png'
 ---
@@ -62,13 +67,13 @@ import mark from '../assets/roars-mark.png'
     background: var(--c-accent);
     -webkit-mask: var(--mark) center / contain no-repeat;
     mask: var(--mark) center / contain no-repeat;
-    transition: rotate var(--dur-base) var(--ease-spring), background var(--dur-fast) ease;
+    transition: background var(--dur-fast) ease;
   }
 
   /* Light ground. The observer sets this on the top bar. */
-  :global(.topbar.is-light) .chip { background: #fbfbf9; box-shadow: var(--shadow-chip); }
+
   :global(.topbar.is-light) .chip__ring { opacity: 1; }
-  :global(.topbar.is-light) .chip__mark { rotate: 45deg; background: var(--c-ink-body); }
+  :global(.topbar.is-light) .chip__mark { background: var(--c-footer); }
 
   @media (prefers-reduced-motion: reduce) {
     .chip__mark { transition: none; }

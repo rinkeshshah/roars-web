@@ -47,6 +47,11 @@ const { href, label, on = 'dark', width = 243, external = false, class: cls } = 
   .ghost__dots i:first-child { background: var(--c-rule); }
 
   .ghost--dark { color: var(--c-on-dark); box-shadow: inset 0 0 0 2px var(--c-ring-dark); }
+  /* Inside the top bar the ink follows the observed ground rather than a
+     prop fixed at build time. That prop was hardcoded to "dark", which is why
+     the label stayed white over the yellow hero and over the grey sections. */
+  :global(.topbar.is-light) .ghost { color: rgb(15, 15, 15); box-shadow: inset 0 0 0 2px var(--c-ring-light); }
+  :global(.topbar.is-light) .ghost__dots i:last-child { background: rgb(15, 15, 15); }
   .ghost--dark .ghost__dots i:last-child { background: var(--c-white); }
 
   .ghost--light { color: var(--c-ink-body); box-shadow: inset 0 0 0 1.5px var(--c-ring-light); }
