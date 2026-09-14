@@ -144,6 +144,50 @@ migrated: true
 # No case study on the live site points at this sector, so the page has
 # nothing on it that could not sit on another sector page. Held back until
 # it has one, per the unique-asset rule.
+frame:
+  h1: "Every visit is paid for twice before it reaches the basket."
+  does: "We work on the part of retail where the money is measurable: the distance between a catalogue and a completed order."
+constraints:
+  label: "WHAT IS DIFFERENT HERE"
+  heading: "What makes retail software different"
+  items:
+    - name: "Peak is a deadline, not a forecast"
+      body: "The trading period does not move. A build that is two weeks late in October is a build that missed the year, and no amount of quality argues with that."
+    - name: "Stock is the hardest integration in the business"
+      body: "Catalogue, warehouse and storefront each believe something slightly different about what is available. Overselling is a reputational cost, not a technical one."
+    - name: "Conversion is measured to the decimal"
+      body: "A tenth of a point is a real number in this sector. That makes it the one place where design decisions get argued with data rather than with taste."
+    - name: "Every visit is already expensive"
+      body: "Acquisition is paid before anybody sees a product page. A checkout that loses people is not losing sales, it is losing sales you have already bought."
+failures:
+  label: "WHERE THIS GOES WRONG"
+  heading: "Where retail builds usually come apart"
+  items:
+    - name: "Replatforming to fix a checkout problem"
+      body: "A migration is the expensive answer to a question that was usually about three screens. Most platform pain is checkout pain wearing a bigger label."
+    - name: "Launching into the peak"
+      body: "The date gets chosen for commercial reasons and the first real load test happens on the busiest day of the year, with nobody available to fix it."
+    - name: "Designing the catalogue, forgetting the basket"
+      body: "Enormous care goes into product pages and none into the five steps after add to basket, which is where the measurable loss actually is."
+applies:
+  label: "WHAT WE DO IN THIS SECTOR"
+  heading: "What we do for retail clients"
+  items:
+    - name: "eCommerce development"
+      href: "/s/ecommerce-development-company/"
+      why: "Storefront, checkout and the stock integration, built and load tested before the trading period rather than during it."
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "The five steps after add to basket, where a tenth of a point is a real number."
+    - name: "Growth hacking"
+      href: "/s/growth-hacking-agency/"
+      why: "Once conversion holds, finding which channel is worth the spend rather than renewing last year’s budget."
+    - name: "Web app development"
+      href: "/s/web-app-development/"
+      why: "The operations behind the shop, where the spreadsheet usually still is."
+close:
+  heading: "Send us your checkout funnel for the last month."
+  body: "A screenshot of the drop-off is enough. We will come back in two working days with where we think it is going and whether it is a rebuild or a fortnight of fixes."
 needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/hotel-1.png)

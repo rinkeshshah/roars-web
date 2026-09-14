@@ -148,6 +148,64 @@ seo:
   primaryIntent: "on demand fitness app development"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "Signups are not the problem. Week three is."
+  does: "We build fitness products designed around the session somebody actually does, not the plan they meant to follow."
+constraints:
+  label: "WHAT IS DIFFERENT HERE"
+  heading: "What makes fitness products different"
+  items:
+    - name: "Motivation decays on a schedule"
+      body: "Almost every fitness app loses its cohort in the same window. Design that ignores week three is designing for the download, not for the member."
+    - name: "The first session decides the rest"
+      body: "People who complete one worthwhile session stay. People who complete a profile, a goal and a plan usually do not. The opening flow is the retention feature."
+    - name: "Wearables are a data source, not a feature"
+      body: "Rings, watches and machines all report differently and none of them report reliably. Anything built on that has to be right when the data is wrong."
+    - name: "Coaching does not scale by copying it"
+      body: "A message that helps one member at the right moment is noise sent to everyone. The moment matters more than the message."
+failures:
+  label: "WHERE THIS GOES WRONG"
+  heading: "Where fitness builds usually come apart"
+  items:
+    - name: "Onboarding that asks before it gives"
+      body: "Five screens of goals and measurements before anybody has done anything. Every question is a chance to leave, and they are all asked before there is a reason to stay."
+    - name: "Streaks that punish a missed day"
+      body: "A mechanic that resets to zero teaches people to stop rather than to return. The interesting design problem is the day after the one they missed."
+    - name: "Content libraries with no path through them"
+      body: "Four hundred videos and no answer to what to do today. Volume reads as value on a feature list and as paralysis in the app."
+cases:
+  label: "WHAT WE HAVE BUILT HERE"
+  items:
+    - client: "GymBait.AI"
+      situation: "A fitness business asking whether coaching could reach a member at the moment it mattered rather than at their next session."
+      did: "Built a nudge that learns from how a member actually trains, with a coach reviewing what goes out rather than a model sending it unattended."
+      outcome: "[ NEEDS THE REAL FIGURE: engagement or retention change, with a number and a timeframe ]"
+      href: "/work/gymbait/"
+    - client: "FlowRow"
+      situation: "People signed up in good numbers and stopped opening the app somewhere in the first fortnight."
+      did: "Rebuilt the opening around one session worth doing rather than around a profile, a plan and a goal."
+      outcome: "[ NEEDS THE REAL FIGURE: activation or week-three retention change, with a number and a timeframe ]"
+      href: "/work/flowrow-fitness-app/"
+applies:
+  label: "WHAT WE DO IN THIS SECTOR"
+  heading: "What we do for fitness clients"
+  items:
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "The opening flow, which is where fitness apps win or lose the member, and the day after a missed session."
+    - name: "Mobile app development"
+      href: "/s/mobile-app-development/"
+      why: "Native where the wearable integration needs it, built to be right when the sensor data is not."
+    - name: "AI automation"
+      href: "/s/ai-automation-services/"
+      why: "Coaching that arrives at the moment it helps, with a human reviewing what goes out."
+    - name: "MVP development"
+      href: "/s/mvp-development/"
+      why: "Testing a coaching model on one cohort before building the product around it."
+close:
+  heading: "Send us your retention curve for the first thirty days."
+  body: "Just the shape of it. We will come back in two working days with where we think people are going and which part of the first session we would change."
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/chip-1.png)
 

@@ -627,11 +627,113 @@ const industryLayout = {
     .optional(),
 }
 
+/**
+ * The I1-I8 industry page.
+ *
+ * A service page answers "can you do this". An industry page answers "do you
+ * understand my world", and the whole product is domain fluency. That is why
+ * I2 is the section the page exists for: four constraints an insider would
+ * nod at. If four cannot be written without research, the page does not
+ * exist yet and belongs on the holding template.
+ *
+ * Every field is optional, so a sector with two constraints and one case is a
+ * shorter page rather than a broken one.
+ */
+const industryPage = {
+  /** I1. The constraint that defines the sector, not the sector's name. */
+  frame: z
+    .object({
+      h1: z.string().min(20).max(140),
+      /** One line on what Roars does here. */
+      does: z.string().max(220),
+    })
+    .optional(),
+  /** I2. Three or four constraints, named and specific. The reason to exist. */
+  constraints: z
+    .object({
+      label: z.string().max(32).default('WHAT IS DIFFERENT HERE'),
+      heading: z.string().max(90),
+      items: z
+        .array(z.object({ name: z.string().max(48), body: z.string().max(320) }))
+        .min(3)
+        .max(4),
+    })
+    .optional(),
+  /** I3. Failure patterns seen in this sector. Naming other people's mistakes
+   *  accurately is the fastest way to show you have been here. */
+  failures: z
+    .object({
+      label: z.string().max(32).default('WHERE THIS GOES WRONG'),
+      heading: z.string().max(90),
+      items: z
+        .array(z.object({ name: z.string().max(60), body: z.string().max(320) }))
+        .min(2)
+        .max(3),
+    })
+    .optional(),
+  /** I4. One or two cases, both from THIS sector. One is better than a
+   *  borrowed second. */
+  cases: z
+    .object({
+      label: z.string().max(32).default('WHAT WE HAVE BUILT HERE'),
+      items: z
+        .array(
+          z.object({
+            client: z.string().max(40),
+            situation: z.string().max(200),
+            did: z.string().max(240),
+            outcome: z.string().max(220).optional(),
+            href: z.string(),
+          }),
+        )
+        .min(1)
+        .max(2),
+    })
+    .optional(),
+  /** I5. Services with a line on how each applies HERE. Not a service list. */
+  applies: z
+    .object({
+      label: z.string().max(32).default('WHAT WE DO IN THIS SECTOR'),
+      heading: z.string().max(90),
+      items: z
+        .array(z.object({ name: z.string().max(40), href: z.string(), why: z.string().max(180) }))
+        .min(2)
+        .max(6),
+    })
+    .optional(),
+  /**
+   * I6. The block that survives a procurement review.
+   *
+   * Compliance regimes, integrations, standards and platforms actually worked
+   * with in this sector, named. ONLY WHAT IS TRUE: one invented item poisons
+   * the whole block, and the block's entire value is that it can be checked.
+   */
+  domain: z
+    .object({
+      label: z.string().max(32).default('DOMAIN'),
+      heading: z.string().max(90),
+      note: z.string().max(220).optional(),
+      groups: z
+        .array(z.object({ k: z.string().max(40), items: z.array(z.string().max(48)).min(1).max(8) }))
+        .min(1)
+        .max(4),
+    })
+    .optional(),
+  /** I8. Same shape as the service close, framed for the sector. */
+  close: z
+    .object({
+      heading: z.string().max(120),
+      body: z.string().max(400),
+    })
+    .optional(),
+}
+
 const industries = defineCollection({
   loader: glob({ base: './src/content/industries', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     ...base,
     ...industryLayout,
+    ...industryPage,
     /* Migrated pages keep the live site's own rank_math title and
        description. They run long — the healthcare one is 205 characters —
        and the choice was between shipping the real metadata over target or

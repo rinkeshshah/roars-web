@@ -149,6 +149,59 @@ seo:
   primaryIntent: "saas application development services"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "You do not have an acquisition problem. You have a first-week problem."
+  does: "We build and fix the part of a SaaS product between signing up and the moment it is worth paying for."
+constraints:
+  label: "WHAT IS DIFFERENT HERE"
+  heading: "What makes SaaS different"
+  items:
+    - name: "Activation decides everything downstream"
+      body: "Churn, expansion and support load are all mostly set in the first week. Work spent further down the funnel is usually work spent on a symptom."
+    - name: "Multi-tenancy is an early decision"
+      body: "How tenants are isolated shapes the schema, the permissions and the cost of every enterprise conversation you will have later. It is hard to revisit."
+    - name: "Every release reaches everyone at once"
+      body: "There is no staged rollout to a physical population. Feature flags and a tested rollback are what make shipping frequently survivable."
+    - name: "The buyer and the user are different people"
+      body: "One signs, the other decides whether it gets used. A product that only serves the buyer renews once."
+failures:
+  label: "WHERE THIS GOES WRONG"
+  heading: "Where SaaS builds usually come apart"
+  items:
+    - name: "An empty state that explains nothing"
+      body: "The new account opens on a dashboard with no data in it. The most important screen in the product is the one that gets the least design attention."
+    - name: "Features added to close deals"
+      body: "Each one was reasonable in the room. Together they are a product with no shape, and a roadmap owned by whoever was last on a call."
+    - name: "Onboarding treated as a marketing job"
+      body: "A tour and an email sequence bolted onto a product that has not changed. Activation is a product problem, and tours are what people do instead of fixing it."
+cases:
+  label: "WHAT WE HAVE BUILT HERE"
+  items:
+    - client: "The Club Social"
+      situation: "A membership operation running amenities, ordering and members across tools that each held part of the truth."
+      did: "Built one product where a member is one record, so the operations team could change what members see without waiting on an engineer."
+      outcome: "[ NEEDS THE REAL FIGURE: what changed for their team, with a number and a timeframe ]"
+      href: "/work/club-social/"
+applies:
+  label: "WHAT WE DO IN THIS SECTOR"
+  heading: "What we do for SaaS clients"
+  items:
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "The multi-tenancy and permissions decisions that are expensive to revisit once there are customers on them."
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "Activation in the first week, including the empty state that gets the least design and decides the most."
+    - name: "DevOps"
+      href: "/s/result-oriented-devops-services/"
+      why: "Feature flags and a tested rollback, which are what make shipping to everyone at once survivable."
+    - name: "MVP development"
+      href: "/s/mvp-development/"
+      why: "Proving a model on one segment before building the platform that serves all of them."
+close:
+  heading: "Tell us what percentage of signups reach your activation moment."
+  body: "And what you count as that moment. If the second answer is hard, that is the thing worth working on. We will come back in two working days."
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/coding-8.webp)
 

@@ -152,6 +152,59 @@ seo:
   primaryIntent: "logistics transportation app development"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "The app has to work in gloves, in the cold, with no signal, or it is paperwork."
+  does: "We build logistics software for the conditions the work actually happens in, not for the conditions it is specified in."
+constraints:
+  label: "WHAT IS DIFFERENT HERE"
+  heading: "What makes logistics software different"
+  items:
+    - name: "Connectivity is the design problem"
+      body: "Cold stores, loading bays, basements and long stretches of road. Offline is the normal state, and anything that treats it as an error has made the driver the fallback."
+    - name: "The hands are not free"
+      body: "Gloves, a clipboard, a pallet truck, poor light. Large targets, no typing where a tap will do, and nothing that needs two hands."
+    - name: "The record is a legal document"
+      body: "A compliance check is evidence. Timestamps, signatures and an audit trail are not features, they are the reason the software is allowed to replace paper."
+    - name: "Sync conflicts are an operations decision"
+      body: "Two people recording the same pallet from two devices is a Tuesday. The resolution rule is a business decision and it has to be made explicitly."
+failures:
+  label: "WHERE THIS GOES WRONG"
+  heading: "Where logistics builds usually come apart"
+  items:
+    - name: "Designed at a desk, used on a forklift"
+      body: "The interface is specified by people who will never use it in the conditions it runs in, and the first real feedback arrives after rollout."
+    - name: "Offline added later"
+      body: "Retro-fitting offline to an online-first product means rebuilding the data layer. It is the single most expensive thing to postpone in this sector."
+    - name: "Paper kept running alongside"
+      body: "When the app is harder than the clipboard, staff keep the clipboard. Then you have two records and neither is trusted."
+cases:
+  label: "WHAT WE HAVE BUILT HERE"
+  items:
+    - client: "Snowman Logistics"
+      situation: "Warehouse staff in cold storage completing compliance checks on paper, in gloves, with no signal."
+      did: "Designed for the actual conditions: large targets, offline capture, no typing where a tap would do, and sync that assumes the network is absent rather than broken."
+      outcome: "[ NEEDS THE REAL FIGURE: what changed on the warehouse floor, with a number and a timeframe ]"
+      href: "/work/warehouse-compliance-checklist-app/"
+applies:
+  label: "WHAT WE DO IN THIS SECTOR"
+  heading: "What we do for logistics clients"
+  items:
+    - name: "Mobile app development"
+      href: "/s/mobile-app-development/"
+      why: "The app on the floor, built offline first because retro-fitting it means rebuilding the data layer."
+    - name: "Web app development"
+      href: "/s/web-app-development/"
+      why: "The operations side, which is usually the spreadsheet that holds the compliance record today."
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "The sync and conflict rules, which are business decisions rather than technical ones."
+    - name: "Digital transformation"
+      href: "/s/digital-business-transformation-services/"
+      why: "When the problem is four systems disagreeing about where a consignment is."
+close:
+  heading: "Tell us what your team still records on paper."
+  body: "And why the last attempt to change that did not stick. We will come back in two working days with what we think would survive contact with the floor."
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/freight.webp)
 

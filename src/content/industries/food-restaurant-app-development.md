@@ -28,7 +28,7 @@ hero:
         v: "180"
       - k: "2× Gulab jamun"
         v: "260"
-    note: "— no onion, table 12"
+    note: "no onion, table 12"
     totalLabel: "TOTAL"
     total: "1,240"
     paid: "PAID · UPI"
@@ -192,6 +192,59 @@ seo:
   description: "A restaurant is not one app. It is six moments that have to agree with each other, and the plumbing that keeps them in step. Discovery through delivery."
   primaryIntent: "restaurant app development"
   schemaType: "Service"
+frame:
+  h1: "Six moments, four screens, and a kitchen that cannot wait for a sync."
+  does: "We build the surfaces a restaurant actually runs on, and the plumbing that keeps them agreeing with each other."
+constraints:
+  label: "WHAT IS DIFFERENT HERE"
+  heading: "What makes restaurant software different"
+  items:
+    - name: "The clock is the spec"
+      body: "A ticket that lands ninety seconds late is a cold plate. Sync latency is not a performance metric here, it is the product working or not working."
+    - name: "Four surfaces, one truth"
+      body: "Diner, waiter, kitchen and owner all read the same order. When the 86 list updates, it has to update everywhere before the next person taps add."
+    - name: "The interface is used at arm’s length"
+      body: "A kitchen display is read across a pass, in steam, by someone holding a pan. Tap targets and type sizes that are fine on a desk are unusable there."
+    - name: "Margins do not absorb mistakes"
+      body: "A sector working on single-digit margins cannot carry a system that occasionally sells what the kitchen has run out of."
+failures:
+  label: "WHERE THIS GOES WRONG"
+  heading: "Where restaurant builds usually come apart"
+  items:
+    - name: "Five systems that disagree about the price of a side"
+      body: "Each moment gets bought as its own product, and nobody owns the agreement between them. The work that matters is one source of truth for the menu, one for availability, one for the order."
+    - name: "Designed for the launch photo, not the Friday"
+      body: "Interfaces that look right in a screenshot and fall apart at eighty covers. The test is a full floor, not a demo."
+    - name: "Offline treated as an error"
+      body: "Venues have dead spots. A system that shows a spinner when the till loses signal has made the staff the fallback."
+cases:
+  label: "WHAT WE HAVE BUILT HERE"
+  items:
+    - client: "The Club Social"
+      situation: "A club running amenities, restaurant ordering and membership through separate tools, with staff reconciling between them."
+      did: "Built one app for members and for the club, so an order, a booking and a member are the same records on both sides."
+      outcome: "[ NEEDS THE REAL FIGURE: what changed for the club or its staff, with a number and a timeframe ]"
+      href: "/work/club-social/"
+applies:
+  label: "WHAT WE DO IN THIS SECTOR"
+  heading: "What we do for restaurant and hospitality clients"
+  items:
+    - name: "Mobile app development"
+      href: "/s/mobile-app-development/"
+      why: "The diner and waiter apps, built for a full floor rather than a demo, with offline capture that assumes the dead spot."
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "Kitchen displays read across a pass, and ordering flows that survive a modifier list forty items long."
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "The layer underneath: one menu, one availability, one order, shared by every surface."
+    - name: "MVP development"
+      href: "/s/mvp-development/"
+      why: "When a single venue wants to test an ordering model before rolling it across a group."
+close:
+  heading: "Tell us which of the six moments is costing you most."
+  body: "Discovery, ordering, payment, the pass, delivery, or the second visit. We will come back in two working days with where we think the money is going and what we would fix first."
+needsReview: true
 ---
 
 We build the best-in-class solutions that help you serve your diners better.

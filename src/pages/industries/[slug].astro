@@ -101,8 +101,20 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
           <div class="ih__rail" data-reveal>
             {d.eyebrow && <span class="i-eyebrow i-eyebrow--dark">{d.eyebrow}</span>}
             <span class="ih__tick" aria-hidden="true"></span>
-            <p class="ih__statement">{d.hero!.statement}</p>
-            {d.hero!.sub && <p class="ih__sub">{d.hero!.sub}</p>}
+            {/* I1. The constraint that defines the sector, not the sector's
+                name. An insider should nod at it.
+                ART DIRECTION, the compression device: the rail stacks tight
+                and the h1 is the one line that refuses to thin out, so the
+                density resolves into it rather than surrounding it. */}
+            {/* All nine sectors carry a frame now, so the migrated hero
+                statement no longer renders. It stays in the content as the
+                source the I1 line was written from. */}
+            {d.frame && (
+              <Fragment>
+                <h1 class="if__h">{d.frame.h1}</h1>
+                <p class="if__does">{d.frame.does}</p>
+              </Fragment>
+            )}
             {d.hero!.ctaLabel && d.hero!.ctaHref && (
               <a class="i-ghost" href={d.hero!.ctaHref} target="_blank" rel="noopener">
                 <span>{d.hero!.ctaLabel}</span>
@@ -192,6 +204,111 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     </Section>
 
     {/* ── The journey, 1440x2160 ───────────────────────────── */}
+    {/* I2. The section the page exists for. Four constraints an insider would
+        nod at, not four ways of saying the sector moves fast. */}
+    {d.constraints && (
+      <Section ground="light">
+        <div class="ic">
+          <span class="i-eyebrow">{d.constraints.label}</span>
+          <h2 class="ic__h" data-reveal>{d.constraints.heading}</h2>
+          <ol class="ic__list">
+            {d.constraints.items.map((it, i) => (
+              <li class="ic__item" data-reveal style={`transition-delay:${(i % 4) * 70}ms`}>
+                <span class="ic__n">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="ic__name">{it.name}</h3>
+                <p class="ic__body">{it.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Section>
+    )}
+
+    {/* I3. Failure patterns. Naming other people's mistakes accurately is the
+        fastest way to show you have worked here. */}
+    {d.failures && (
+      <Section ground="surface">
+        <div class="ifl">
+          <span class="i-eyebrow">{d.failures.label}</span>
+          <h2 class="ifl__h" data-reveal>{d.failures.heading}</h2>
+          <ul class="ifl__list">
+            {d.failures.items.map((it, i) => (
+              <li class="ifl__item" data-reveal style={`transition-delay:${(i % 3) * 70}ms`}>
+                <span class="ifl__rule" aria-hidden="true"></span>
+                <h3 class="ifl__name">{it.name}</h3>
+                <p class="ifl__body">{it.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    )}
+
+    {/* I4. One or two cases, both from this sector.
+        ART DIRECTION: the yellow stroke cuts across the case rather than
+        framing it, which is the V1 habit worth keeping. */}
+    {d.cases && (
+      <Section ground="dark">
+        <div class="icz">
+          <span class="i-eyebrow i-eyebrow--dark">{d.cases.label}</span>
+          <div class:list={['icz__grid', d.cases.items.length === 1 && 'icz__grid--one']}>
+            {d.cases.items.map((c, i) => (
+              <article class="icz__case" data-reveal style={`transition-delay:${i * 90}ms`}>
+                <span class="icz__cut" aria-hidden="true"></span>
+                <h3 class="icz__client">{c.client}</h3>
+                <p class="icz__sit">{c.situation}</p>
+                <p class="icz__did">{c.did}</p>
+                {c.outcome && <p class="icz__out">{c.outcome}</p>}
+                <a class="i-ghost icz__cta" href={c.href}><span>Read the case study</span></a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </Section>
+    )}
+
+    {/* I5. Services with a line on how each one applies HERE. This block and
+        the service pages' S8 are the whole internal link structure. */}
+    {d.applies && (
+      <Section ground="light">
+        <div class="iap">
+          <span class="i-eyebrow">{d.applies.label}</span>
+          <h2 class="iap__h" data-reveal>{d.applies.heading}</h2>
+          <ul class="iap__list">
+            {d.applies.items.map((it, i) => (
+              <li data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
+                <a href={it.href}>
+                  <b>{it.name}</b>
+                  <span>{it.why}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    )}
+
+    {/* I6. The block that survives a procurement review. Named things only. */}
+    {d.domain && (
+      <Section ground="surface">
+        <div class="idm">
+          <span class="i-eyebrow">{d.domain.label}</span>
+          <h2 class="idm__h" data-reveal>{d.domain.heading}</h2>
+          {d.domain.note && <p class="idm__note" data-reveal>{d.domain.note}</p>}
+          <dl class="idm__grid">
+            {d.domain.groups.map((g, i) => (
+              <div data-reveal style={`transition-delay:${(i % 4) * 60}ms`}>
+                <dt>{g.k}</dt>
+                <dd>
+                  <ul>{g.items.map((x) => <li>{x}</li>)}</ul>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </Section>
+    )}
+
     {d.journey && (
       <Section ground="light">
         <div class="ij">
@@ -420,16 +537,6 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
      lines instead of three must not drag the button up with it. */
   .ih__rail { position: relative; grid-column: 1; grid-row: 1; width: 400px; height: 340px; }
   .ih__tick { position: absolute; top: 38px; display: block; width: 16px; height: 1.5px; background: var(--c-accent); }
-  .ih__statement {
-    position: absolute; top: 66px; margin: 0; width: 390px;
-    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.94);
-  }
-  .ih__sub {
-    position: absolute; top: 180px; margin: 0; width: 370px;
-    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.6);
-  }
   .ih__rail .i-ghost { position: absolute; top: 262px; }
 
   .ih__mast { grid-column: 2; grid-row: 1; margin-top: 212px; }
@@ -504,6 +611,165 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   .rcpt__ticks span { transition: background var(--dur-fast) ease; }
   .rcpt__ticks + .rcpt__hair { margin-top: 14px; }
   .rcpt__foot { margin: 15px 0 0; font-size: 10px; font-weight: var(--fw-medium); letter-spacing: 0.14em; color: rgba(20, 20, 20, 0.5); }
+
+  /* ── I1 frame ───────────────────────────────────────────── */
+  /* The compression device. The rail stacks tight, the eyebrow and the tick
+     sit close above, and the h1 is the line that refuses to thin out: it
+     holds its weight while everything around it gets quieter. */
+  .if__h {
+    margin: 20px 0 0; max-width: 460px;
+    font-size: 32px; line-height: 39px; font-weight: var(--fw-semi);
+    letter-spacing: -0.035em; color: rgb(251, 251, 251);
+  }
+  .if__does {
+    margin: 18px 0 0; max-width: 440px;
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ── I2 constraints ─────────────────────────────────────── */
+  .ic { padding-block: 96px; }
+  .ic__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .ic__list {
+    list-style: none; margin: 56px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 44px 30px;
+  }
+  .ic__item { min-width: 0; border-top: 2px solid rgba(153, 152, 149, 0.4); padding-top: 18px; }
+  .ic__item:first-child { border-top-color: var(--c-accent); }
+  .ic__n {
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; color: var(--c-ink-label);
+  }
+  .ic__name {
+    margin: 18px 0 0;
+    font-size: 24px; line-height: 30px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .ic__body {
+    margin: 14px 0 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.75);
+  }
+
+  /* ── I3 failures ────────────────────────────────────────── */
+  .ifl { padding-block: 96px; }
+  .ifl__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .ifl__list {
+    list-style: none; margin: 52px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px 30px;
+  }
+  .ifl__item { min-width: 0; }
+  .ifl__rule { display: block; width: 28px; height: 2px; background: var(--c-accent); }
+  .ifl__name {
+    margin: 20px 0 0;
+    font-size: 22px; line-height: 29px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .ifl__body {
+    margin: 12px 0 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.72);
+  }
+
+  /* ── I4 cases ───────────────────────────────────────────── */
+  .icz { padding-block: 96px; }
+  .icz__grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 56px 60px; margin-top: 44px;
+  }
+  .icz__grid--one { grid-template-columns: minmax(0, 760px); }
+  .icz__case { position: relative; min-width: 0; padding-top: 30px; }
+  /* The stroke cuts ACROSS the case rather than boxing it in. Rounded cards
+     stay out; this is a structural line. */
+  .icz__cut {
+    position: absolute; left: -12px; top: 0; width: 120px; height: 3px;
+    background: var(--c-accent);
+  }
+  .icz__client {
+    margin: 0;
+    font-size: clamp(30px, 3vw, 44px); line-height: 1.1; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(251, 251, 251);
+  }
+  .icz__sit {
+    margin: 20px 0 0;
+    font-size: 18px; line-height: 27px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.88);
+  }
+  .icz__did {
+    margin: 14px 0 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.66);
+  }
+  .icz__out {
+    margin: 22px 0 0; padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 19px; line-height: 28px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-accent);
+  }
+  .icz__cta { margin-top: 26px; }
+
+  /* ── I5 services applied ────────────────────────────────── */
+  .iap { padding-block: 96px; }
+  .iap__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .iap__list {
+    list-style: none; margin: 48px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 60px;
+  }
+  .iap__list li { border-top: 1px solid rgba(153, 152, 149, 0.3); }
+  .iap__list a { display: block; padding: 20px 0; }
+  .iap__list b {
+    display: block;
+    font-size: 20px; line-height: 26px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .iap__list span {
+    display: block; margin-top: 5px;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.6);
+  }
+  .iap__list a:hover b { color: rgb(90, 90, 90); }
+
+  /* ── I6 domain ──────────────────────────────────────────── */
+  .idm { padding-block: 96px; }
+  .idm__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .idm__note {
+    margin: 20px 0 0; max-width: 620px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.66);
+  }
+  .idm__grid {
+    margin: 48px 0 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px 30px;
+  }
+  .idm__grid dt {
+    padding-bottom: 12px; border-bottom: 1px solid rgba(153, 152, 149, 0.4);
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .idm__grid dd { margin: 16px 0 0; }
+  .idm__grid ul { list-style: none; margin: 0; padding: 0; }
+  .idm__grid li {
+    padding: 7px 0;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.82);
+  }
 
   /* ── the journey ────────────────────────────────────────── */
   .ij { position: relative; padding-block: 80px 270px; min-height: 2160px; }
@@ -801,15 +1067,16 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
      against the 1362 box returns to flow; the spine goes with it, and the
      tab list stacks above its panel rather than beside it. */
   @media (max-width: 1360px) {
+    .ic, .ifl, .icz, .iap, .idm { padding-block: 64px; }
+    .ic__h, .ifl__h, .iap__h, .idm__h { max-width: 100%; }
+    .if__h { font-size: 27px; line-height: 34px; }
+    .icz__grid--one { grid-template-columns: minmax(0, 1fr); }
     .ih__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 130px 72px; row-gap: 40px; }
     .ih__rail, .ih__mast, .rcpt { grid-column: 1; grid-row: auto; margin-top: 0; width: auto; max-width: 460px; }
     .ih__rail { height: auto; }
-    .ih__tick, .ih__statement, .ih__sub, .ih__rail .i-ghost { position: static; top: auto; }
+    .ih__tick, .ih__rail .i-ghost { position: static; top: auto; }
     .ih__tick { margin-top: 19px; }
-    .ih__statement { margin-top: 27px; }
-    .ih__sub { margin-top: 18px; }
     .ih__rail .i-ghost { margin-top: 30px; }
-    .ih__statement, .ih__sub { width: auto; max-width: 440px; }
     .ih__large { white-space: normal; line-height: 1.02; }
     .ih__small { line-height: 1.05; }
 

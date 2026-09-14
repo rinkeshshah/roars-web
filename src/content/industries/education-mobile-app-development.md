@@ -144,6 +144,50 @@ migrated: true
 # No case study on the live site points at this sector, so the page has
 # nothing on it that could not sit on another sector page. Held back until
 # it has one, per the unique-asset rule.
+frame:
+  h1: "Attention is the scarce resource, and the buyer is never the learner."
+  does: "We build education products around the session a learner will actually finish."
+constraints:
+  label: "WHAT IS DIFFERENT HERE"
+  heading: "What makes education software different"
+  items:
+    - name: "Three users, one product"
+      body: "Learner, teacher and administrator want different things from the same screens. Designing for one of them is how the other two end up working around it."
+    - name: "The year has a shape"
+      body: "Terms, admissions and exam periods are fixed. A rollout in week two of term is a rollout nobody has time to adopt."
+    - name: "Completion is the only honest metric"
+      body: "Enrolments and logins measure intent. What a product is for is a learner finishing something, and that number is usually much smaller."
+    - name: "Procurement is slower than the product"
+      body: "The person who wants it cannot buy it, and the person who buys it will not use it. The evidence a product needs is evidence for a committee."
+failures:
+  label: "WHERE THIS GOES WRONG"
+  heading: "Where education builds usually come apart"
+  items:
+    - name: "A content library with no path through it"
+      body: "Volume gets treated as value. The learner opens it, cannot tell what to do today, and does not come back."
+    - name: "Built for the buyer"
+      body: "Dashboards, reporting and controls, because that is what the demo has to show. The learner experience gets whatever budget is left."
+    - name: "Ignoring the teacher’s workload"
+      body: "A product that needs an hour of setup per class does not get set up. The adoption blocker is almost never the learner."
+applies:
+  label: "WHAT WE DO IN THIS SECTOR"
+  heading: "What we do for education clients"
+  items:
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "Three users on one product, and the path through the library that decides whether anybody finishes anything."
+    - name: "Mobile app development"
+      href: "/s/mobile-app-development/"
+      why: "The learner app, where a session has to survive a commute and a bad connection."
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "The reporting the buyer needs, built without letting it decide the learner experience."
+    - name: "MVP development"
+      href: "/s/mvp-development/"
+      why: "Proving completion with one cohort before a committee is asked to buy it for everyone."
+close:
+  heading: "Tell us your completion rate, not your enrolment number."
+  body: "That gap is usually the whole brief. We will come back in two working days with where we think learners are stopping and what we would change first."
 needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/education.webp)

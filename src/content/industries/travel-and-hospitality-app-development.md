@@ -146,6 +146,59 @@ seo:
   primaryIntent: "travel and hospitality app development"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "The plan is fine until the day it changes, and then the product is the whole service."
+  does: "We build travel products for the moment the itinerary stops being a document and starts being a problem."
+constraints:
+  label: "WHAT IS DIFFERENT HERE"
+  heading: "What makes travel software different"
+  items:
+    - name: "The value is in the disruption"
+      body: "Search and booking are solved. What decides whether a traveller trusts a product is what it does at the gate when the flight moves."
+    - name: "Inventory belongs to somebody else"
+      body: "Availability, price and cancellation rules live in systems you do not control and do not agree with each other. The product has to be honest about that."
+    - name: "Connectivity is the worst you design for"
+      body: "Airports, foreign networks, roaming turned off. Anything that only works with a good connection does not work when it matters."
+    - name: "Time zones are a correctness problem"
+      body: "Not a formatting one. Most travel bugs that reach a customer are a date that was right in one place and wrong in another."
+failures:
+  label: "WHERE THIS GOES WRONG"
+  heading: "Where travel builds usually come apart"
+  items:
+    - name: "A beautiful search and nothing after booking"
+      body: "Everything goes into the funnel and nothing into the trip. The traveller’s hardest moments all happen after payment."
+    - name: "Treating supplier data as reliable"
+      body: "Prices and availability get cached optimistically, and the failure shows up as a booking that cannot be honoured."
+    - name: "Notifications that arrive too late to help"
+      body: "A gate change alert that lands after the gate change is worse than none. The timing is the feature."
+cases:
+  label: "WHAT WE HAVE BUILT HERE"
+  items:
+    - client: "ONUS"
+      situation: "A travel and hospitality operation that needed its product to hold up away from a desk and away from a good connection."
+      did: "Designed for the disruption rather than the booking, so the product is most useful at the point the plan stops working."
+      outcome: "[ NEEDS THE REAL FIGURE: what changed for travellers or staff, with a number and a timeframe ]"
+      href: "/work/onus/"
+applies:
+  label: "WHAT WE DO IN THIS SECTOR"
+  heading: "What we do for travel and hospitality clients"
+  items:
+    - name: "Mobile app development"
+      href: "/s/mobile-app-development/"
+      why: "The app a traveller opens at the gate, built for the worst connection rather than the office wifi."
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "The itinerary model underneath, which is where supplier data and time zones become correctness problems."
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "The disruption flows, which are the ones that decide whether the traveller trusts the product again."
+    - name: "Web app development"
+      href: "/s/web-app-development/"
+      why: "The operations side, where the staff resolving the disruption actually work."
+close:
+  heading: "Tell us what your product does when a booking changes."
+  body: "That answer usually explains the rest of the product. We will come back in two working days with what we would fix first."
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/hotel.png)
 

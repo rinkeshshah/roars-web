@@ -152,6 +152,64 @@ seo:
   primaryIntent: "concierge app development"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "The service is the product, and software usually gets in its way."
+  does: "We build member products where the technology stays out of the way of the person delivering the service."
+constraints:
+  label: "WHAT IS DIFFERENT HERE"
+  heading: "What makes concierge products different"
+  items:
+    - name: "Requests do not fit a form"
+      body: "The valuable ones never do. A product that only accepts structured input has quietly narrowed the service it was meant to deliver."
+    - name: "The member expects to be known"
+      body: "Asking for the same preference twice is worse than not having the feature. Memory is the service, and it has to work across channels."
+    - name: "Two sides, very different speeds"
+      body: "The member app can be leisurely. The staff side is a queue under time pressure and it is the one that decides whether the service holds up."
+    - name: "Discretion is a design constraint"
+      body: "Who can see which request, and for how long, is not an admin setting bolted on later. It shapes the data model."
+failures:
+  label: "WHERE THIS GOES WRONG"
+  heading: "Where concierge builds usually come apart"
+  items:
+    - name: "A chat box with nothing behind it"
+      body: "Requests arrive and then live in somebody’s inbox. The interface was the easy half; the routing, the state and the record are the product."
+    - name: "Building the member app first"
+      body: "The side that fails is always the staff side. It gets designed last, on a smaller budget, by which point the workflow has been decided by the member screens."
+    - name: "Loyalty bolted on at the end"
+      body: "Points added after launch sit outside the request model, so the thing that should reward good service cannot see it happening."
+cases:
+  label: "WHAT WE HAVE BUILT HERE"
+  items:
+    - client: "Concierge Loyalty"
+      situation: "A concierge operation where recognising a returning member depended on whoever happened to take the request."
+      did: "Put requests, members and rewards behind one model so the service could remember a member without the staff having to."
+      outcome: "[ NEEDS THE REAL FIGURE: what changed for members or staff, with a number and a timeframe ]"
+      href: "/work/concierge-loyalty-program/"
+    - client: "Les Concierges"
+      situation: "A concierge business whose request handling ran across tools that did not share a view of the member."
+      did: "Built the staff side first, so the workflow decided the product rather than the other way round."
+      outcome: "[ NEEDS THE REAL FIGURE: what changed in request handling, with a number and a timeframe ]"
+      href: "/work/les-concierges/"
+applies:
+  label: "WHAT WE DO IN THIS SECTOR"
+  heading: "What we do for concierge and member businesses"
+  items:
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "Requests, members and rewards in one model, so the service can remember without the staff having to."
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "The staff queue, designed for time pressure, which is the side that decides whether the service holds."
+    - name: "Mobile app development"
+      href: "/s/mobile-app-development/"
+      why: "The member app, where the request has to be as easy as sending a message."
+    - name: "AI automation"
+      href: "/s/ai-automation-services/"
+      why: "Triage and routing on the staff side, with a person still deciding what the member is told."
+close:
+  heading: "Tell us what a request looks like when it goes wrong."
+  body: "That is usually where the model is thin. We will come back in two working days with where we think it breaks and what we would change first."
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/service-4.webp)
 

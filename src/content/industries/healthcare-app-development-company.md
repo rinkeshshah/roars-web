@@ -148,6 +148,79 @@ seo:
   primaryIntent: "healthcare app development company"
   schemaType: "Service"
 migrated: true
+frame:
+  h1: "The people using it are stressed, rushed, or unwell, and the rules do not bend."
+  does: "We build healthcare products for the conditions clinicians and patients actually use them in, inside the constraints that are not negotiable."
+constraints:
+  label: "WHAT IS DIFFERENT HERE"
+  heading: "What makes healthcare software different"
+  items:
+    - name: "The user is not at their best"
+      body: "A patient is anxious and a clinician is between appointments. Anything that needs full attention to use correctly will be used incorrectly."
+    - name: "The rules are not a preference"
+      body: "Data handling, consent and retention are set externally and change on somebody else’s schedule. They shape the architecture, not the settings screen."
+    - name: "Integration with systems older than you"
+      body: "Records live in platforms that were not designed to be integrated with. What is possible is decided by their interfaces, not by yours."
+    - name: "Wrong is worse than slow"
+      body: "Most software optimises for speed. Here the cost of a confident wrong answer is high enough that the design has to prefer asking."
+failures:
+  label: "WHERE THIS GOES WRONG"
+  heading: "Where healthcare builds usually come apart"
+  items:
+    - name: "Compliance treated as a final phase"
+      body: "Built first and reviewed at the end, which is when the data model turns out to be the thing that has to change."
+    - name: "Designed for the clinician, given to the patient"
+      body: "Or the reverse. The two use it in completely different states and a single interface serving both usually serves neither."
+    - name: "A portal nobody opens twice"
+      body: "Access is granted, the login is awkward, and the phone call it was meant to replace keeps happening."
+cases:
+  label: "WHAT WE HAVE BUILT HERE"
+  items:
+    - client: "GISAID"
+      situation: "A platform holding one of the largest COVID data sets in the world, where availability was not negotiable."
+      did: "Built the tooling for a scale where a bad release is a public problem rather than an internal one."
+      outcome: "[ NEEDS THE REAL FIGURE: availability or throughput change, with a number and a timeframe ]"
+      href: "/work/gisaid-health-tech/"
+    - client: "Friendo"
+      situation: "A healthcare product that had to work for people who are not at their best when they open it."
+      did: "Designed the flows for the state the user is actually in rather than for an attentive reader."
+      outcome: "[ NEEDS THE REAL FIGURE: what changed for patients or clinicians, with a number and a timeframe ]"
+      href: "/work/friendo-healthcare-mobile-app-development/"
+applies:
+  label: "WHAT WE DO IN THIS SECTOR"
+  heading: "What we do for healthcare clients"
+  items:
+    - name: "UX design"
+      href: "/s/user-experience-design-agency/"
+      why: "Flows designed for a user who is anxious or between appointments, not for an attentive reader."
+    - name: "Product development"
+      href: "/s/product-development-company/"
+      why: "The data model, which is what compliance actually constrains and what is most expensive to change late."
+    - name: "Mobile app development"
+      href: "/s/mobile-app-development/"
+      why: "Patient-facing apps, where a difficult login means the phone call you meant to replace keeps happening."
+    - name: "DevOps"
+      href: "/s/result-oriented-devops-services/"
+      why: "A tested rollback, which in this sector is closer to a requirement than a nicety."
+domain:
+  label: "DOMAIN"
+  heading: "What we have worked with in healthcare"
+  note: "Taken from what the live site already states. Confirm each entry before this page is published, because the value of this block is that it can be checked."
+  groups:
+    - k: "Compliance"
+      items:
+        - "HIPAA"
+    - k: "Platform"
+      items:
+        - "AWS Managed Services"
+        - "AWS Professional Services"
+    - k: "Practice"
+      items:
+        - "DevOps Services"
+close:
+  heading: "Tell us which regime you have to satisfy, and who the user is."
+  body: "Those two answers decide most of the architecture. We will come back in two working days with what we think that means for the build."
+needsReview: true
 ---
 ![](/wp-content/uploads/2022/08/image_2022_08_03T08_28_35_807Z.png)
 
