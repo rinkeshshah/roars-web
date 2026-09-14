@@ -124,7 +124,18 @@ for (const r of rules) {
   if (s && migrated.includes(s)) fail(r.from, 'source is a migrated post: the post would be unreachable')
 }
 
-// 6. The target exists in the build. This is what makes the live 200 possible;
+// 6. Apache's `Redirect` is a PREFIX match, not an exact one. A source that
+//    is a prefix of another URL catches that URL too and appends the
+//    remainder, so `/our-journal/` as a source would swallow every post.
+for (const r of rules) {
+  for (const other of [...sources, ...migratedUrls]) {
+    if (other !== r.from && other.startsWith(r.from)) {
+      fail(r.from, `is a path prefix of ${other}; Apache Redirect would catch that URL too`)
+    }
+  }
+}
+
+// 7. The target exists in the build. This is what makes the live 200 possible;
 //    it is not a substitute for observing it.
 for (const r of rules) {
   const p = pathOf(r.to)
@@ -132,12 +143,12 @@ for (const r of rules) {
   if (!existsSync(file)) fail(r.from, `target ${p} has no page in dist/ and would 404`)
 }
 
-// 7. Every migrated URL was built, at the trailing-slash form.
+// 8. Every migrated URL was built, at the trailing-slash form.
 for (const url of migratedUrls) {
   if (!existsSync(join(DIST, url, 'index.html'))) fail(url, 'migrated post has no page in dist/')
 }
 
-// 8. The site has two redirect layers. A journal URL can be clean in one and
+// 9. The site has two redirect layers. A journal URL can be clean in one and
 //    broken in the other, so the nginx map is held to the same standard and
 //    the two are checked against each other.
 if (existsSync(NGINX)) {
@@ -175,7 +186,7 @@ if (existsSync(NGINX)) {
 if (heldBack.length) {
   notes.push(
     `${heldBack.length} rule(s) are held back as comments in dist/.htaccess and are NOT verified here. ` +
-      'They are defects in the supplied map awaiting a decision.',
+      'Each would break a live URL; see the reasons written beside them in the file.',
   )
 }
 
@@ -269,6 +280,31 @@ async function runLive() {
     if (res.status !== 200) {
       liveFailures.push(`${url}\n        returned ${res.status}, expected 200 (a migrated post must not redirect)`)
     }
+
+    // And the no-slash form must reach it in one 301.
+    //
+    // Search Console treats /post and /post/ as two URLs and splits the stats
+    // between them — loyalty-reward-program-app landed in the decisions CSV
+    // twice, with opposite verdicts, for exactly that reason. The nginx config
+    // in docs/DEPLOYMENT.md canonicalises with
+    // `rewrite ^/(.*[^/])$ /$1/ permanent`, so this should already hold for
+    // every post. It is checked rather than assumed, because a one-line config
+    // change would take it away silently.
+    const bare = url.replace(/\/$/, '')
+    let slashless
+    try {
+      slashless = await head(`${BASE}${bare}`)
+    } catch (err) {
+      liveFailures.push(`${bare}\n        request failed: ${err.message}`)
+      continue
+    }
+    if (slashless.status !== 301) {
+      liveFailures.push(`${bare}\n        returned ${slashless.status}, expected 301 to ${url}`)
+    } else if (pathOf(slashless.location || '') !== url) {
+      liveFailures.push(
+        `${bare}\n        redirected to ${pathOf(slashless.location || '') || '(no Location)'}, expected ${url}`,
+      )
+    }
   }
 
   if (liveFailures.length) {
@@ -277,7 +313,8 @@ async function runLive() {
     return false
   }
   console.log(`LIVE PASS: ${rules.length} redirect(s) answered 301 in one hop to a 200;`)
-  console.log(`           ${migratedUrls.length} migrated URL(s) answered 200 without redirecting.`)
+  console.log(`           ${migratedUrls.length} migrated URL(s) answered 200 without redirecting,`)
+  console.log('           and each one 301s from its no-slash form.')
   return true
 }
 

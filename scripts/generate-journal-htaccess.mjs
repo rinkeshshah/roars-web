@@ -3,23 +3,21 @@
  * The /our-journal/ 301s, as Apache rules, emitted into dist/.htaccess.
  *
  * Source of truth: docs/migration/roarsinc-redirects.conf, supplied with the
- * Search Console decisions. Journal lines only — the other sections migrate
- * later and their rules stay out until they do.
+ * Search Console decisions, with corrections layered on from
+ * docs/migration/journal-redirect-overrides.conf. Journal lines only — the
+ * other sections migrate later and their rules stay out until they do.
  *
- * TWO RULES ARE HELD BACK, not silently dropped. Both are defects in the
- * supplied map and both would break a live URL:
+ * The supplied map is never edited. Five of its rules aimed at a target that
+ * redirected to itself, a fallback bug upstream; the overrides file points
+ * them at real pages and says why, next to each rule.
  *
- *   1. why-invest-in-ux-design-services-essential -> itself.
- *      A redirect to its own source is an infinite loop. Four further rules
- *      point at that URL, so six break together, and the target is not on
- *      the migrate list either, so even unlooped they would land on the
- *      noindex "content pending migration" holding page.
+ * ONE RULE IS STILL HELD BACK, not silently dropped:
  *
- *   2. loyalty-reward-program-app -> /our-journal/.
- *      That slug is on the migrate-as-is list. The decisions CSV carries it
- *      TWICE with opposite verdicts — "KEEP, earned clicks" without a
- *      trailing slash, "REDIRECT, no demand" with one — and the map took the
- *      REDIRECT. Shipping it would redirect a post that was just migrated.
+ *   loyalty-reward-program-app -> /our-journal/.
+ *   That slug is on the migrate-as-is list. The decisions CSV carries the
+ *   page twice, split by a trailing slash — "KEEP, earned clicks" without,
+ *   "REDIRECT, no demand" with — and the map took the REDIRECT row. Shipping
+ *   it would redirect a post that was just migrated. Confirmed to stay held.
  *
  * Held rules are written to the file as comments so the omission is visible
  * on the server rather than only in this script.
@@ -30,6 +28,7 @@ import { fileURLToPath } from 'node:url'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const SRC = join(ROOT, 'docs/migration/roarsinc-redirects.conf')
+const OVERRIDES = join(ROOT, 'docs/migration/journal-redirect-overrides.conf')
 const OUT = join(ROOT, 'dist/.htaccess')
 const POSTS = join(ROOT, 'src/content/posts')
 
@@ -40,13 +39,45 @@ const migrated = new Set(
 const strip = (u) => u.replace(/^https?:\/\/[^/]+/, '')
 const slugOf = (p) => (p.match(/^\/our-journal\/([^/]+)\/$/) || [])[1]
 
-const rules = []
-for (const line of readFileSync(SRC, 'utf8').split('\n')) {
-  const m = line.trim().match(/^Redirect 301 (\S+) (\S+)$/)
-  if (!m) continue
-  const [, from, to] = m
-  if (!from.startsWith('/our-journal/')) continue
-  rules.push({ from, to, toPath: strip(to) })
+const parse = (file) => {
+  const out = []
+  let why = ''
+  for (const raw of readFileSync(file, 'utf8').split('\n')) {
+    const line = raw.trim()
+    const w = line.match(/^#\s*why:\s*(.+)$/)
+    if (w) { why = w[1]; continue }
+    const m = line.match(/^Redirect 301 (\S+) (\S+)$/)
+    if (!m) { if (!line.startsWith('#')) why = ''; continue }
+    out.push({ from: m[1], to: m[2], toPath: strip(m[2]), why })
+    why = ''
+  }
+  return out
+}
+
+const rules = parse(SRC).filter((r) => r.from.startsWith('/our-journal/'))
+const bySource = new Map(rules.map((r) => [r.from, r]))
+
+/**
+ * Apply the corrections. Both failure modes are loud, because a stale
+ * override is how a fixed map quietly reverts and a redundant one is how a
+ * file fills with rules nobody can tell apart from the real ones.
+ */
+const applied = []
+for (const o of parse(OVERRIDES)) {
+  const base = bySource.get(o.from)
+  if (!base) {
+    console.error(`FAIL: override for ${o.from} has no matching rule in the supplied map.`)
+    console.error('    The upstream map changed. Re-check the override and delete it if it is done.')
+    process.exit(1)
+  }
+  if (base.to === o.to) {
+    console.error(`FAIL: override for ${o.from} sets the target the supplied map already has.`)
+    console.error('    Upstream is fixed. Delete this override.')
+    process.exit(1)
+  }
+  applied.push({ from: o.from, was: base.toPath, now: o.toPath, why: o.why })
+  base.to = o.to
+  base.toPath = o.toPath
 }
 
 const sources = new Set(rules.map((r) => r.from))
@@ -76,6 +107,13 @@ const out = [
   `# Shipped: ${safe.length}   Held back: ${held.length}`,
   '#',
   '# Journal only. Other sections keep their rules until they migrate.',
+  ...(applied.length
+    ? [
+        '#',
+        `# ${applied.length} rule(s) corrected from journal-redirect-overrides.conf:`,
+        ...applied.map((a) => `#   ${a.from}\n#     was ${a.was}\n#     now ${a.now}\n#     ${a.why}`),
+      ]
+    : []),
   '',
   ...safe.map((r) => `Redirect 301 ${r.from} ${r.to}`),
   '',
@@ -89,6 +127,10 @@ writeFileSync(OUT, out.join('\n'))
 
 console.log('--- generate-journal-htaccess ---')
 console.log(`shipped ${safe.length} rule(s) -> dist/.htaccess`)
+if (applied.length) {
+  console.log(`\nCORRECTED (${applied.length}) from journal-redirect-overrides.conf:`)
+  for (const a of applied) console.log(`    ${a.from}\n        was ${a.was}\n        now ${a.now}`)
+}
 if (held.length) {
   console.log(`\nHELD BACK (${held.length}) — commented out in the file:`)
   for (const r of held) console.log(`    ${r.from}\n        -> ${r.toPath}\n        ${r.why}`)

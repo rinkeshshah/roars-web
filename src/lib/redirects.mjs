@@ -60,33 +60,24 @@ export const duplicateSlugRedirects = [
     source: '/our-journal/the-presidents-club-2/',
     destination: '/work/the-presidents-club/',
   },
-  // HELD BACK, awaiting a decision. Not deleted, because the reasoning below
-  // may still be the right call.
-  //
-  //   {
-  //     // EXACT slug collision across two path prefixes. The industry page
-  //     // is commercial and wins.
-  //     source: '/our-journal/healthcare-app-development-company/',
-  //     destination: '/industries/healthcare-app-development-company/',
-  //   },
-  //
-  // This rule was written before the journal migration. It predates the
-  // migrate-as-is list, which names `healthcare-app-development-company` as
-  // one of the twenty posts to keep. Shipping both means the post is built
-  // and then immediately redirected away from, so the migration would have
-  // produced a page nobody can reach.
-  //
-  // docs/migration/roars-url-decisions.csv also contradicts it, line 76:
-  // REWRITE at the same URL, target "same", on "206 impressions, no clicks,
-  // avg pos 66". Rewrite the post, keep the URL. Not redirect.
-  //
-  // The two URLs do not actually collide — /our-journal/... and
-  // /industries/... are different paths. What collides is the intent: both
-  // target "healthcare app development", which is presumably what prompted
-  // the rule. That is a ranking judgement, not a technical one, so it is not
-  // mine to overturn silently even with the decisions file agreeing. The post
-  // stays reachable and carries needsRewrite; restore the block above to
-  // reverse it. scripts/verify-journal-redirects.mjs fails if both ship.
+  {
+    // EXACT slug collision across two path prefixes. The industry page is
+    // commercial and wins.
+    //
+    // The journal migration briefly listed this slug as a post to keep, on
+    // the strength of roars-url-decisions.csv line 76 (REWRITE, same URL).
+    // That row was wrong and the rule here was right: the journal post draws
+    // 206 impressions, /industries/healthcare-app-development-company/ draws
+    // 2,800. Same slug, same intent, and migrating the post keeps the two
+    // cannibalising each other. The post was dropped from the migration,
+    // which is why it is 19 and not 20.
+    //
+    // `how-ux-design-can-revolutionize-healthcare-ux-delivery` is NOT part of
+    // this. It is a genuine editorial angle rather than a second copy of the
+    // industry page, and it stays migrated.
+    source: '/our-journal/healthcare-app-development-company/',
+    destination: '/industries/healthcare-app-development-company/',
+  },
 ]
 
 /**

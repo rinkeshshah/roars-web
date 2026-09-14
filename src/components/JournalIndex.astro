@@ -1,27 +1,22 @@
 ---
 /**
- * /our-journal/ — the writing. 115 posts.
+ * /our-journal/ — the writing.
  *
  * Built against design/prototypes/Roars v2 - Insights.dc.html.
  * Canvas, section-relative: Header 780, Insights 1620.
  *
- * DRIVEN BY THE INVENTORY, NOT THE COLLECTION. src/content/posts/ is empty —
- * the WXR export has not landed — and an index that waits for it is an index
- * that links nothing. Every one of the 115 post URLs is live, indexed and
- * earning impressions today, and thirteen of them are the only crawl path to
- * work that is otherwise orphaned. So the cards come from the CSV and carry
- * the name already in the URL. When the bodies migrate the entry wins and the
- * card gains its date, its image and its excerpt.
+ * DRIVEN BY THE COLLECTION. It used to be driven by the inventory, because
+ * src/content/posts/ was empty and an index that waits for a migration is an
+ * index that links nothing. The export has landed, so the cards are posts
+ * again: real titles, real publish dates, real heroes, real excerpts.
  *
- * NO DATES YET, which is why the card draws without one. The CSV's lastmod is
- * a WordPress `modified` value and 37 posts share a single bulk-edit date;
- * printing those as publish dates would be manufactured freshness, which is a
- * spam signal. See CLAUDE.md, known landmines.
+ * The unmigrated URLs are no longer listed. They still build and still return
+ * 200 — [slug].astro takes its paths from the inventory — but a list of
+ * ninety cards that mostly open on "content pending migration" is worse than
+ * a shorter list that is all readable. See src/lib/journal.ts.
  *
- * NO HERO CARD YET. The export opens on one full-width feature at 1362x536.
- * It needs an image and an editor's choice of which post leads, and neither
- * exists. It returns with the migration rather than featuring whatever sorts
- * first.
+ * The hero card is back too, for the same reason: there is now a newest post
+ * with an image, rather than whatever happened to sort first.
  */
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Section from './Section.astro'
@@ -47,11 +42,17 @@ const { posts, featured, page, lastPage, total } = Astro.props
 const path = page === 1 ? '/our-journal/' : `/our-journal/page/${page}/`
 const pageUrl = (n: number) => (n === 1 ? '/our-journal/' : `/our-journal/page/${n}/`)
 
-/* A window of five around the current page, so 10 pages do not become 10
-   numbers on a row that then wraps. */
-const window = Array.from({ length: lastPage }, (_, i) => i + 1).filter(
-  (n) => n === 1 || n === lastPage || Math.abs(n - page) <= 1,
-)
+/* Every page number, because there are two of them.
+ *
+ * This used to window to five around the current page with an ellipsis for
+ * the gap, which was right when the index listed all 115 inventory rows. The
+ * index now lists migrated posts only, so the pager is two numbers wide and
+ * the elision could never fire — leaving a styled ellipsis that nothing
+ * rendered, which assert-styles correctly refused.
+ *
+ * Bring both back together, not separately, once the journal passes about
+ * nine pages and a single row starts to wrap. */
+const window = Array.from({ length: lastPage }, (_, i) => i + 1)
 
 const schema = [
   {
@@ -145,10 +146,11 @@ const schema = [
         {posts.map((p, i) => (
           <li data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
             <a href={p.href}>
-              {/* The export's circular thumbnail. Three post images are
-                  known; the rest draw the flat tint until their filenames
-                  arrive — a circle of colour is honest where somebody else's
-                  stock photo would not be. */}
+              {/* The export's circular thumbnail. Every migrated post brought
+                  its WordPress hero across, so this is the post's own image.
+                  The guard stays for the day one arrives without one: a circle
+                  of flat colour is honest where a stand-in photo would not
+                  be. */}
               <span class="jl__disc" aria-hidden="true">
                 {(p.hero ?? JOURNAL_IMG[p.slug]) && (
                   <img src={p.hero ?? JOURNAL_IMG[p.slug]} alt="" width="138" height="138" loading="lazy" decoding="async" />
@@ -174,14 +176,11 @@ const schema = [
           >← Previous</a>
 
           <span class="jl__nums">
-            {window.map((n, i) => (
-              <>
-                {i > 0 && window[i - 1] !== n - 1 && <span class="jl__gap" aria-hidden="true">…</span>}
-                <a
-                  href={pageUrl(n)}
-                  aria-current={n === page ? 'page' : undefined}
-                >{n}</a>
-              </>
+            {window.map((n) => (
+              <a
+                href={pageUrl(n)}
+                aria-current={n === page ? 'page' : undefined}
+              >{n}</a>
             ))}
           </span>
 
@@ -363,7 +362,6 @@ const schema = [
     color: rgba(20, 20, 20, 0.3); box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.08);
     pointer-events: none;
   }
-  .jl__gap { padding: 0 4px; font-size: var(--fs-label); color: var(--c-ink-label); }
 
   /* ── below the design grid ──────────────────────────────── */
   @media (max-width: 1360px) {

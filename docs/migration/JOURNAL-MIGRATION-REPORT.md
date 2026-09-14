@@ -1,7 +1,11 @@
 # Journal migration report
 
-Twenty `/our-journal/` posts, moved from the WordPress export into the Astro
-content collection. Written 2026-09-14.
+Nineteen `/our-journal/` posts, moved from the WordPress export into the Astro
+content collection. Written 2026-09-14, revised after the decisions in
+[Decisions](#decisions) came back.
+
+**Nineteen, not twenty.** `healthcare-app-development-company` was dropped
+from the migration — see decision 3.
 
 Scope was journal only. The two files touched outside `src/content/posts/`,
 `src/pages/our-journal/`, `src/lib/journal.ts` and the journal scripts are
@@ -70,7 +74,6 @@ the sequence never gaps. Heading *text* is untouched.
 | how-ai-is-transforming-user-experience-design | 1382 | squirrly | Y | Y | 0 | 0 | clean |
 | benefits-of-minimum-viable-product-development | 266 | rank_math | Y | N | 0 | 0 | clean, but thin |
 | minimum-viable-product-mvp-brilliant-success-stories | 731 | rank_math | Y | N | 0 | 0 | clean |
-| healthcare-app-development-company | 1089 | rank_math | Y | N | 0 | 0 | clean |
 
 **Mangled: none.** Two needed real repair work and got it:
 
@@ -82,18 +85,18 @@ the sequence never gaps. Heading *text* is untouched.
 
 ## 2. Descriptions
 
-**All 20 have one. None was written by me.**
+**All 19 have one. None was written by me.**
 
 Two sources, in priority order:
 
-1. `rank_math_description` from the export — 14 posts.
+1. `rank_math_description` from the export — 13 posts.
 2. `docs/migration/squirrly-meta.csv` — the remaining 6.
 
 The old site reused one excerpt across three posts. That does not survive here:
 `scripts/assert-journal.mjs` fails the build if any two migrated posts emit the
-same `<meta name="description">`. It currently passes, so all 20 are distinct.
+same `<meta name="description">`. It currently passes, so all 19 are distinct.
 
-**Length debt, carried deliberately.** 10 descriptions and 9 titles are longer
+**Length debt, carried deliberately.** 9 descriptions and 8 titles are longer
 than the 165 / 65 character targets, because they are the real ones from the
 old site and the alternative was inventing shorter ones. The schema accepts
 them under a `seoMigrated` variant; `validate-content` and `assert-journal`
@@ -106,7 +109,6 @@ silently normalised. Worst offenders, if you want to rewrite them:
 | utilizing-sensation-and-perception-... | 77 | 295 |
 | from-empathy-to-iteration-... | — | 336 |
 | game-on-how-gamification-... | 77 | 207 |
-| healthcare-app-development-company | 78 | 205 |
 
 ---
 
@@ -115,7 +117,7 @@ silently normalised. Worst offenders, if you want to rewrite them:
 **Nothing was invented.** No alt was generated from a filename, and none was
 generated from the image's surroundings.
 
-**Hero images: 20 of 20 present. 13 have no alt text in the export.**
+**Hero images: 19 of 19 present. 12 have no alt text in the export.**
 
 ```
 from-empathy-to-iteration-the-stages-of-design-thinking-for-successful-product-development
@@ -130,7 +132,6 @@ the-unexpected-insight-we-built-a-meal-planning-app
 build-cloud-based-saas-application
 benefits-of-minimum-viable-product-development
 minimum-viable-product-mvp-brilliant-success-stories
-healthcare-app-development-company
 ```
 
 **Body images: 9 across 3 posts. 8 have no alt text.**
@@ -170,37 +171,110 @@ taken from the export's attachment records, not from a 200.
 
 ---
 
-## 5. Redirects
+## 5. The index
+
+`/our-journal/` lists the migrated posts and nothing else: one featured card
+plus 18, twelve to a page, two pages. It used to list all 115 inventory rows,
+which was right while nothing had been migrated — the URLs were live and a
+title in a list beat no list at all. Now it would mean clicking ninety-odd
+cards to find that most of them say "content pending migration".
+
+The unlisted URLs **still build and still return 200**.
+`src/pages/our-journal/[slug].astro` takes its paths from the inventory, not
+from the index, so every legacy URL keeps resolving to its noindex holding
+page. They are simply not advertised.
+
+Two knock-on fixes came with that:
+
+- **Sitemap.** Unmigrated journal URLs are now filtered out
+  (`astro.config.mjs`). A sitemap is a list of pages you are asking to have
+  indexed, and those carry `noindex`; listing them asks and refuses at once.
+  With `PUBLIC_ALLOW_INDEXING=true` the sitemap now carries 19 posts plus the
+  index, and no holding pages.
+- **Pager.** The number list used to window to five around the current page
+  with an ellipsis for the gap. At two pages the elision can never fire, which
+  left a styled ellipsis that nothing rendered, and `assert-styles` refused it.
+  Both the window and its style came out together, with a note to bring them
+  back together once the journal passes about nine pages.
+
+---
+
+## 6. Redirects
 
 Source of truth: `docs/migration/roarsinc-redirects.conf`, supplied with the
-Search Console decisions. Journal lines only; the other sections keep their
-rules until they migrate.
+Search Console decisions, **never edited**. Corrections layer on top from
+`docs/migration/journal-redirect-overrides.conf`, each with a `# why:` line
+beside it. That way re-exporting the decisions cannot silently drop a fix, and
+the generator fails loudly if an override goes stale (its source vanished
+upstream) or redundant (upstream now sets the same target).
 
-`scripts/generate-journal-htaccess.mjs` emits `dist/.htaccess` on every build
-(wired into `postbuild`, so it cannot be forgotten).
+`scripts/generate-journal-htaccess.mjs` emits `dist/.htaccess` on every build,
+wired into `postbuild` so it cannot be forgotten.
 
-**48 rules shipped. 6 held back.** Held rules are written into the file as
-comments with their reason, so the omission is visible on the server and not
-only in the generator.
+**53 rules shipped. 5 corrected. 1 held back.**
 
-### Chained and broken rules found
+### The five corrections
 
-Four problems, three of which need your decision. They are listed in full at
-the end of this document under [Decisions needed](#decisions-needed).
+The supplied map's topic-fallback rule aimed every generic UX post at
+`why-invest-in-ux-design-services-essential` without checking whether that
+target was itself in the redirect bucket. It was, so it redirected to itself
+and took four other rules down with it. That post is not being migrated — 57
+impressions and zero clicks is not a reason to promote a page that was only
+load-bearing by accident.
 
-1. `why-invest-in-ux-design-services-essential` redirects to itself. Infinite
-   loop. Four more rules point at that same URL, so six break together.
-2. `loyalty-reward-program-app` redirects to `/our-journal/`, but that slug is
-   on your migrate-as-is list. `roars-url-decisions.csv` carries it twice with
-   opposite verdicts.
-3. `/our-journal/healthcare-app-development-company/` was already a redirect
-   source in `src/lib/redirects.mjs`, pointing at the industries page. Same
-   collision: migrate the post and then redirect away from it.
-4. The two redirect layers disagreed about
-   `crafting-one-of-a-kind-experiences-...-2`.
+| source | now goes to |
+|---|---|
+| `/our-journal/why-invest-in-ux-design-services-essential/` | `/s/user-experience-design-agency/` |
+| `/our-journal/saas-ux-design-how-to-build-products-that-users-actually-want-to-pay-for/` | `/s/user-experience-design-agency/` |
+| `/our-journal/10-key-things-to-consider-when-doing-uxdesign/` | `/s/user-experience-design-agency/` |
+| `/our-journal/3-design-mistakes-ux-designers-avoid/` | `/s/user-experience-design-agency/` |
+| `/our-journal/top-20-most-promising-ui-ux-companies/` | `/about-us/` |
 
-**No surviving chains.** After the holds, no shipped rule's target is another
-rule's source, in either layer.
+Both targets build and both are in the URL inventory.
+
+### The one still held back
+
+`/our-journal/loyalty-reward-program-app/` → `/our-journal/`. The source is a
+migrated post; shipping this would hide it. Confirmed to stay held. The rule
+is written into `dist/.htaccess` as a comment with its reason, so the omission
+is visible on the server and not only in the generator.
+
+### Trailing slash: already handled, no rule added
+
+The no-slash → slash 301 is already there, and site-wide. `docs/DEPLOYMENT.md`
+requires this nginx directive:
+
+```nginx
+rewrite ^/(.*[^/])$ /$1/ permanent;
+```
+
+nginx evaluates a server-level `rewrite` before location matching, so
+`/our-journal/loyalty-reward-program-app` is canonicalised to the slashed form
+with a 301 before any redirect rule is consulted. A second rule for that one
+post could never fire.
+
+Writing it into `.htaccess` instead would have been worse than useless.
+Apache's `Redirect` is a **prefix** match, so
+`Redirect 301 /our-journal/loyalty-reward-program-app https://.../loyalty-reward-program-app/`
+also matches the already-slashed request, appends the remainder, and sends it
+to `.../loyalty-reward-program-app//`. That is a loop, not a canonicalisation.
+
+So instead of one rule for one post, the **live verification now asserts it for
+all 19**: each migrated URL's no-slash form must answer 301 with a `Location`
+of the slashed form. That covers what the Search Console split was about, for
+every post rather than the one that happened to surface it, and it fails loudly
+if the nginx directive is ever dropped.
+
+While looking at that, the static half gained a prefix check: no shipped rule's
+source may be a path prefix of another rule's source or of a migrated URL,
+because Apache would swallow that URL too. Nothing currently trips it. A rule
+with `/our-journal/` as its source would.
+
+### Chains
+
+**None.** No shipped rule's target is another rule's source, in either layer.
+The two layers claim one source in common,
+`end-to-end-development-...-2`, and they agree on its target.
 
 ### Verification
 
@@ -215,26 +289,28 @@ map, and the built pages:
 - no rule's target is another rule's source (no chains)
 - no source declared twice
 - no migrated post used as a redirect source, in either layer
-- all 48 targets and all 20 migrated URLs exist as pages in `dist/`
+- no source is a path prefix of another URL (Apache `Redirect` is a prefix match)
+- all 53 targets and all 19 migrated URLs exist as pages in `dist/`
 - the two layers never claim one source with different targets
 
-**Live half — did not run, and is not reported as passing.** The four
-assertions your brief actually asks about are HTTP facts:
+**Live half — did not run, and is not reported as passing.** The assertions
+that matter are HTTP facts:
 
 - every journal redirect returns 301, not 302
 - exactly one hop, no chains
 - the target returns 200
-- each of the 20 migrated URLs returns 200 at its trailing-slash form and does
+- each of the 19 migrated URLs returns 200 at its trailing-slash form and does
   not itself redirect
+- each of the 19 answers 301 to the slashed form at its no-slash form
 
 Those cannot be observed from here. Outbound access to roarsinc.com is blocked
 at the agent proxy — `https://www.roarsinc.com/` answers 403 to every request,
 including the root. The script probes the root first for exactly this reason:
-without that probe, a blocked proxy reports "all 68 journal URLs returned 403",
+without that probe, a blocked proxy reports "all 72 journal URLs returned 403",
 which looks like a catastrophic site failure and is entirely an artefact of the
-network. It now prints `LIVE DID NOT RUN` and exits 1.
+network. It prints `LIVE DID NOT RUN` and exits 1.
 
-Run this from anywhere that can reach the site:
+Run this from the Plesk box over SSH, or locally, before cutover:
 
 ```
 node scripts/verify-journal-redirects.mjs --live
@@ -246,141 +322,110 @@ Exit codes: `0` both halves ran and passed · `1` something failed ·
 the live half having actually executed, except `--static-only`, which says so
 in its own output and is what `npm run verify` uses.
 
+**Until that passes, the redirect map is written but unproven.**
+
 ---
 
-## 6. What I could not check
+## 7. What I could not check
 
 - **Any live HTTP status.** Egress to roarsinc.com is blocked (403 on CONNECT
   at the agent proxy), confirmed with curl, WebFetch and the proxy's own
-  status endpoint. Every redirect claim in section 5 is static analysis of the
+  status endpoint. Every redirect claim in section 6 is static analysis of the
   config and the build output.
 - **That the `/wp-content/uploads/` images resolve.** Same reason.
-- **`npm run assert:urls` fails**, and did so before this work — verified by
-  stashing these changes and re-running. Nine inventory URLs have no page yet:
-  seven UK city pages (open decision), `/schedule-ux-ui-meeting/` and
-  `/thankyou/`. Nothing journal-related. It is pre-existing debt, not a
-  regression, and it will block a phase-6 deploy gate until those pages land.
+
+### `assert:urls` is red on purpose
+
+Nine inventory URLs have no page: seven UK location pages,
+`/schedule-ux-ui-meeting/` and `/thankyou/`. It failed before this work too —
+verified by stashing these changes and re-running — so it is not a regression.
+
+**Do not build the seven location pages to make this go green.** They use
+three different URL patterns and Birmingham has two competing pages:
+
+```
+/product-development-agency-in-london/
+/product-development-agency-in-manchester/
+/product-development-agency-in-birmingham/
+/ui-ux-design-services-london/
+/ui-ux-design-services-bristol/
+/ui-and-ux-design-agency-birmingham/
+/ui-and-ux-design-agency-manchester/
+```
+
+The pattern has to be decided before anything is built, and the gate staying
+red is what keeps that visible. See `docs/URL-INVENTORY-FINDINGS.md` §3.
 
 ---
 
-## Decisions needed
+## Decisions
 
-### 1. `why-invest-in-ux-design-services-essential` — infinite loop
+All four came back. Recorded here so the reasoning survives the conversation.
 
-The supplied map contains:
+### 1. `why-invest-in-ux-design-services-essential` — not migrated ✔
 
-```
-Redirect 301 /our-journal/why-invest-in-ux-design-services-essential/ \
-             https://www.roarsinc.com/our-journal/why-invest-in-ux-design-services-essential/
-```
+A bug in the upstream redirect generator: a topic-fallback rule pointed every
+generic UX post at that URL without checking the target was itself being
+redirected. 57 impressions, zero clicks — promoting it to post 20 would reward
+a page for being accidentally load-bearing.
 
-That comes straight from `roars-url-decisions.csv` line 93, where the "target"
-column was filled in with the source URL:
+Four of the five sources now go to `/s/user-experience-design-agency/`, which
+is topically exact and commercial. `top-20-most-promising-ui-ux-companies` is
+the 2018 CIO Review press piece, so it goes to `/about-us/` — credibility
+rather than services. Shipped via the overrides file.
 
-```
-.../our-journal/why-invest-in-ux-design-services-essential/  0 clicks, 57 impr, REDIRECT,
-  target .../our-journal/why-invest-in-ux-design-services-essential/
-```
+### 2. `loyalty-reward-program-app` — hold stands ✔
 
-A rule pointing at its own source. Apache would loop until the browser gives
-up. Four further rules aim at that same URL:
+One page, two URLs; Search Console split the stats, the no-slash form catching
+the click and the slashed form catching 56 impressions. Site convention is the
+trailing slash, so the slashed URL is canonical and the post is live. The
+`→ /our-journal/` rule stays held back.
 
-```
-/our-journal/10-key-things-to-consider-when-doing-uxdesign/
-/our-journal/3-design-mistakes-ux-designers-avoid/
-/our-journal/saas-ux-design-how-to-build-products-that-users-actually-want-to-pay-for/
-/our-journal/top-20-most-promising-ui-ux-companies/
-```
+The requested no-slash 301 was **not added as a rule**, because the site-wide
+nginx `rewrite` already does it and an `.htaccess` version would loop on a
+prefix match. It is asserted for all 19 posts in the live verification instead.
+Details under [Trailing slash](#trailing-slash-already-handled-no-rule-added).
 
-Unlooping it does not fix them. `why-invest-in-ux-design-services-essential`
-is not on the migrate-as-is list, so it renders the noindex "content pending
-migration" holding page. A 301 into a noindex page drops the source from the
-index and hands its equity to something that cannot hold it.
+### 3. `healthcare-app-development-company` — redirect restored ✔
 
-All six are held back. **What should those five source URLs point at?** If
-`why-invest-...` is meant to be the destination, it needs to be migrated too,
-which makes it post number 21.
+`redirects.mjs` had it right and the CSV row was wrong. The journal post draws
+206 impressions; `/industries/healthcare-app-development-company/` draws 2,800.
+Same slug, same intent, and migrating the post keeps the two cannibalising each
+other.
 
-### 2. `loyalty-reward-program-app` — migrated and redirected at the same time
+Dropped from the migration — that is why it is 19 and not 20 — and the redirect
+to the industries page is restored in `src/lib/redirects.mjs` with the full
+history in the comment.
 
-The map redirects it to `/our-journal/`. It is also slug number 7 on your
-migrate-as-is list, and it is now built with its five images.
-`docs/migration/roars-url-decisions.csv` carries it **twice, with opposite
-verdicts** — the only difference between the two rows is a trailing slash:
+`how-ux-design-can-revolutionize-healthcare-ux-delivery` is **not** affected.
+It is a genuine editorial angle rather than a second copy of the industry page,
+and it stays migrated.
 
-```
-line  31  .../our-journal/loyalty-reward-program-app    1 click,  2 impr,  KEEP      "Earned clicks. Migrate at the identical slug."
-line  94  .../our-journal/loyalty-reward-program-app/   0 clicks, 56 impr, REDIRECT  "No traffic, no demand. Fold into the nearest surviving page."
-```
+### 4. `crafting-one-of-a-kind-...-2` — supplied map wins ✔
 
-Same page, split across two Search Console rows. The KEEP row has the click,
-the REDIRECT row has the impressions. The redirect map took the REDIRECT row.
-I held it back, so the post is live. **Keep the post, or redirect it and drop
-it from the twenty?**
-
-### 3. `healthcare-app-development-company` — post vs industry page
-
-`src/lib/redirects.mjs` already redirected
-`/our-journal/healthcare-app-development-company/` to
-`/industries/healthcare-app-development-company/`, on the note "EXACT slug
-collision across two path prefixes. The industry page is commercial and wins."
-
-That rule predates your migrate list, and your own decisions file contradicts
-it. `docs/migration/roars-url-decisions.csv` line 76:
-
-```
-.../our-journal/healthcare-app-development-company/  0 clicks, 206 impr, REWRITE, target "same"
-  "206 impressions, no clicks, avg pos 66. Google gets the topic, the page does not deliver."
-```
-
-REWRITE at the same URL, not REDIRECT. The paths do not actually collide
-either — `/our-journal/...` and `/industries/...` are different URLs. What
-collides is the intent: both target "healthcare app development", which is
-presumably what prompted the original rule.
-
-I commented the rule out with its reasoning intact; the post is live and
-flagged `needsRewrite`, which matches the decisions file. **Confirm that is
-right, or restore the redirect** — the only reason this is a question and not
-a silent fix is that the note in `redirects.mjs` was a deliberate editorial
-call by somebody.
-
-### 4. `crafting-one-of-a-kind-experiences-...-2` — the two layers disagreed
-
-| layer | target | state of that target |
-|---|---|---|
-| `.htaccess`, from your supplied map | `from-empathy-to-iteration-...` | migrated, real copy |
-| `src/lib/redirects.mjs` → nginx | `cracking-the-code-how-ux-psychology-...` | not migrated, noindex holding page |
-
-Your decisions file backs the supplied map. `roars-url-decisions.csv` line 103
-sends it to `from-empathy-to-iteration-...`; the `redirects.mjs` entry was the
-outlier, written earlier from slug similarity rather than from the Search
-Console data.
-
-So I stood the nginx entry down and kept the supplied map's rule: a 301 into
-live content beats a 301 into a placeholder, and one URL should have one rule
-rather than two layers racing. This one I decided rather than blocking on,
-since the decisions file already answers it. **If `cracking-the-code-...` is
-the better destination editorially, say so** — but then change the target in
-the supplied map, not in `redirects.mjs`, so there is still only one rule for
-that URL.
+Redirecting to a noindex holding page would have been the worse outcome. The
+nginx entry is commented out in `src/lib/redirects.mjs`; the supplied map's
+rule, to the migrated `from-empathy-to-iteration-...`, is the only one for that
+URL.
 
 ---
 
 ## Out of scope, and why
 
-Two files outside the journal were touched. Both are journal redirects, which
-your brief put in scope, and neither changes a non-journal page:
+Files touched outside `src/content/posts/`, `src/pages/our-journal/`,
+`src/components/JournalIndex.astro`, `src/lib/journal.ts` and the journal
+scripts:
 
-- **`src/lib/redirects.mjs`** — the two entries in decisions 3 and 4 above.
-  Commented out with their reasoning, not deleted, so either is one edit to
-  restore.
+- **`src/lib/redirects.mjs`** — journal redirects, which the brief put in
+  scope. `healthcare-app-development-company` restored; `crafting-...-2`
+  commented out with its reasoning. No non-journal rule was touched.
 - **`package.json`** — `postbuild` now also runs the journal `.htaccess`
   generator, and `verify` gained the two journal gates. Without the first, the
   redirect file is generated only when somebody remembers, and `dist/` is
   rebuilt from scratch on every deploy, so it would never reach the server.
-
-One more, which is journal-adjacent rather than outside it:
-
-- **`src/layouts/BaseLayout.astro`** gained an optional `siteName` prop, so
+- **`astro.config.mjs`** — the sitemap filter, so unmigrated journal URLs are
+  not both requested for indexing and marked `noindex`. Journal paths only;
+  every other route's sitemap entry is unchanged.
+- **`src/layouts/BaseLayout.astro`** — an optional `siteName` prop, so
   `og:site_name` can be `Roars` on journal posts as the brief requires. The
   default is unchanged, so every other route emits exactly what it did before.

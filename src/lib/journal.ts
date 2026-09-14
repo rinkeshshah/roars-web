@@ -4,22 +4,23 @@
  * One source for both routes — /our-journal/ and /our-journal/page/N/ — so
  * page 1 and page 2 cannot disagree about how many pages there are.
  *
- * Posts come from the INVENTORY, not the collection: src/content/posts/ is
- * empty until the WXR export lands, and all 115 URLs are live and indexed
- * today. Names are the words already in the URL; nothing is invented.
+ * THE INDEX LISTS MIGRATED POSTS ONLY. It used to list all 115 inventory
+ * rows, which made sense while nothing had been migrated: the URLs were live
+ * and a title in a list beat no list at all. Now that the export has landed,
+ * that would be a reader clicking ninety-odd cards to find that most of them
+ * say "content pending migration". A journal is a reading surface, and a
+ * reading surface should not advertise pages that have nothing to read.
  *
- * DATES: the CSV's lastmod is exactly what the design prints — the export's
- * cards read 15 May, 04 May, 11 Dec and the CSV holds 2026-05-15, 2026-05-04,
- * 2025-12-11 for those same three posts. But it is a WordPress `modified`
- * value, and only the 34 rows marked `revised` carry a real one: 37
- * never-touched rows share 2022-08-31, the import date, and the bulk-edit
- * rows cluster 14 and 10 deep on single values. Printing those would put the
- * same day on 37 cards and call it a publish date.
+ * The unmigrated URLs still BUILD — src/pages/our-journal/[slug].astro takes
+ * its paths from the inventory, not from here, so every one of them keeps
+ * returning 200 with its noindex holding page. They are simply not listed.
+ * They stop being orphans the moment they are migrated or redirected, and the
+ * ones that are never coming back have 301s in dist/.htaccess already.
  *
- * So a card shows a date when it has one and shows none when it does not, and
- * the list is ordered newest first so the dated posts lead.
+ * DATES: every migrated post carries its real WordPress publish date, so
+ * every card printed here is dated. The old inventory path had to hide dates
+ * on 37 rows that shared the import date; that problem left with the rows.
  */
-import { inventory, nameFromSlug } from './inventory'
 import { getCollection } from 'astro:content'
 
 /** Four rows of three. Twelve keeps the page near the homepage's height. */
@@ -29,64 +30,39 @@ export interface JournalItem {
   slug: string
   href: string
   name: string
-  /** "15" — absent when the row's date is not trustworthy. */
+  /** "15" */
   day?: string
   /** "May" */
   month?: string
-  /** The post's own description. Migrated entries only. */
+  /** The post's own description, never a generated one. */
   excerpt?: string
-  /** Hero, root-relative under /wp-content/uploads/. Migrated entries only. */
+  /** Hero, root-relative under /wp-content/uploads/. */
   hero?: string
-  /** Sort key. Present even where the date is not shown, so the ordering is
-   *  still roughly right rather than alphabetical. */
+  /** ISO date. The sort key, newest first. */
   sort: string
 }
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-/**
- * A MIGRATED entry always wins. It carries the post's real title, its real
- * publish date from WordPress, and an excerpt — none of which the inventory
- * has. Slugs without one keep the CSV's row so all 115 URLs stay listed and
- * crawlable while the rest of the export lands.
- */
-const migrated = new Map(
-  (await getCollection('posts')).map((e) => [e.id, e.data]),
-)
-
-export const JOURNAL: JournalItem[] = inventory
-  .filter((r) => r.wpType === 'post')
-  .map((r) => {
-    const m = migrated.get(r.slug)
-    if (m) {
-      const iso = m.publishedAt.toISOString().slice(0, 10)
-      const [, mm, dd] = iso.split('-')
-      return {
-        slug: r.slug,
-        href: r.path,
-        name: m.title,
-        day: dd,
-        month: MONTHS[Number(mm) - 1],
-        excerpt: m.seo.description,
-        hero: m.heroImage,
-        sort: iso,
-      }
-    }
-    const trusted = r.staleness === 'revised' && /^\d{4}-\d{2}-\d{2}$/.test(r.lastmod)
-    const [y, m2, d] = r.lastmod.split('-')
+export const JOURNAL: JournalItem[] = (await getCollection('posts'))
+  .map((e) => {
+    const iso = e.data.publishedAt.toISOString().slice(0, 10)
+    const [, mm, dd] = iso.split('-')
     return {
-      slug: r.slug,
-      href: r.path,
-      name: nameFromSlug(r.slug),
-      day: trusted ? d : undefined,
-      month: trusted ? MONTHS[Number(m2) - 1] : undefined,
-      sort: r.lastmod || '0000-00-00',
+      slug: e.id,
+      href: `/our-journal/${e.id}/`,
+      name: e.data.title,
+      day: dd,
+      month: MONTHS[Number(mm) - 1],
+      excerpt: e.data.seo.description,
+      hero: e.data.heroImage,
+      sort: iso,
     }
   })
   .sort((a, b) => b.sort.localeCompare(a.sort))
 
-/** The lead card on page one. The newest post that has a real date. */
-export const FEATURED = JOURNAL.find((p) => p.day) ?? JOURNAL[0]
+/** The lead card on page one. The newest post. */
+export const FEATURED = JOURNAL[0]
 /** Everything else, featured removed so it is not printed twice. */
 export const REST = JOURNAL.filter((p) => p.slug !== FEATURED?.slug)
 
