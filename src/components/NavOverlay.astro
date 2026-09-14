@@ -231,7 +231,7 @@ import { MENU } from '../lib/nav'
     color: var(--c-on-dark);
     opacity: 0;
     transition: opacity var(--dur-fast) var(--ease-out);
-    overflow-y: auto;
+    overflow: hidden;
   }
   .nav.is-open .nav__panel { opacity: 1; }
   /* The scrim the prototype lays over the ground. */
@@ -251,16 +251,22 @@ import { MENU } from '../lib/nav'
 
   .nav__inner {
     display: grid;
-    grid-template-columns: 464fr 898fr;
+    /* minmax(0,1fr), not 898fr: an `fr` track grows to fit its content, so
+       the widest panel was pushing the nav column off the left edge every
+       time the pointer moved. */
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
     align-items: start;
-    /* NAVIGATION lands at ~150, not ~300. The export measures 300, but its
-       overlay is taller than a 900px screen; at 150 the whole menu fits one
-       viewport with no scroll, which is the behaviour that matters. */
-    padding-top: 143px;
+    /* Every vertical measure here is viewport-relative, because "fits one
+       screen" has to hold in a real browser. A fixed 143px fitted a 900px
+       viewport exactly and then cut the contact bar off at 845px, which is
+       what a window with tabs and a bookmarks bar actually gives you. These
+       clamp to the design's spacing on a tall screen and compress on a short
+       one. */
+    padding-top: clamp(40px, 14vh, 143px);
   }
 
   .nav__label, .nav__eyebrow {
-    margin: 0 0 66px;
+    margin: 0 0 clamp(14px, 6.4vh, 66px);
     font-size: 11px; font-weight: var(--fw-medium); line-height: var(--lh-micro);
     letter-spacing: 0.14em; color: var(--c-on-dark-50);
   }
@@ -271,7 +277,7 @@ import { MENU } from '../lib/nav'
     align-items: baseline;
     gap: 0 var(--sp-3);
     width: 100%;
-    height: 60px;
+    height: clamp(36px, 6.2vh, 60px);
     padding: 0;
     border: 0; background: none;
     font-family: inherit; text-align: left; cursor: pointer;
@@ -285,6 +291,9 @@ import { MENU } from '../lib/nav'
   .nav__row[aria-current='true'] .nav__name { color: var(--c-accent); }
   .nav__row:hover .nav__arrow, .nav__row:focus-visible .nav__arrow { transform: translateX(6px); color: var(--c-accent); }
 
+  /* The stage reserves the tallest panel's height, so switching panels
+     cannot move anything around it. */
+  .nav__stage { min-width: 0; min-height: 430px; }
   .nav__pane[hidden] { display: none; }
   .nav__statement {
     max-width: 900px; margin: 0;
@@ -315,8 +324,8 @@ import { MENU } from '../lib/nav'
   .nav__sub-note { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-on-dark-50); }
   .nav__soon { color: var(--c-on-dark-50); }
 
-  .nav__sub--links li a { display: flex; justify-content: space-between; align-items: center; width: 390px; padding-block: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); font-size: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); }
-  .nav__sub--rows li a { display: grid; grid-template-columns: 44px 356px minmax(0, 1fr); align-items: baseline; padding-block: 19px; }
+  .nav__sub--links li a { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 390px; padding-block: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); font-size: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); }
+  .nav__sub--rows li a { display: grid; grid-template-columns: 44px minmax(0, 356px) minmax(0, 1fr); align-items: baseline; padding-block: 19px; }
   .nav__sub--rows .nav__sub-name { font-size: 26px; line-height: 32px; }
   .nav__sub--cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 46px 44px; }
   .nav__sub--cards li a { display: flex; flex-direction: column; gap: 14px; }
@@ -327,16 +336,16 @@ import { MENU } from '../lib/nav'
   .nav__sub--kits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; margin-top: 104px; }
   .nav__sub--kits li { display: flex; flex-direction: column; gap: 14px; }
   .nav__sub--kits .nav__sub-name { font-size: 26px; line-height: 32px; }
-  .nav__sub--posts li a { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: baseline; padding-block: 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+  .nav__sub--posts li a { display: grid; grid-template-columns: 120px minmax(0, 1fr); max-width: 820px; align-items: baseline; padding-block: 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
   .nav__sub--posts .nav__sub-name { font-size: 21px; line-height: 28px; }
-  .nav__sub--contact { display: grid; grid-template-columns: 300px 300px; gap: 44px 0; margin-top: 134px; align-items: end; }
+  .nav__sub--contact { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 300px); gap: 44px 0; margin-top: 134px; align-items: end; }
   .nav__sub--contact > div { display: flex; flex-direction: column; gap: 10px; }
   .nav__big { font-size: var(--fs-intro); line-height: 28px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
   .nav__big:hover { color: var(--c-accent); }
 
   .nav__stats { margin-top: 90px; }
   .nav__stat-label { margin: 0 0 60px; }
-  .nav__stats ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 290px); }
+  .nav__stats ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 290px)); }
   .nav__stats li { display: flex; flex-direction: column; gap: 18px; }
   .nav__stat-v { font-size: 56px; font-weight: var(--fw-semi); line-height: 56px; letter-spacing: var(--ls-display); color: var(--c-on-dark); }
   .nav__ventures { margin-top: 60px; }
@@ -348,7 +357,7 @@ import { MENU } from '../lib/nav'
     align-items: center;
     gap: var(--sp-5);
     margin-top: auto;
-    padding-block: 44px 40px;
+    padding-block: clamp(12px, 4.2vh, 44px) clamp(12px, 3.6vh, 40px);
   }
   .nav__contact { display: flex; flex-direction: column; gap: 4px; }
   .nav__k { font-size: 10px; font-weight: var(--fw-medium); line-height: var(--lh-micro); letter-spacing: 0.14em; color: var(--c-on-dark-50); }
@@ -376,8 +385,8 @@ import { MENU } from '../lib/nav'
   .nav__sub-note { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-on-dark-50); }
   .nav__soon { color: var(--c-on-dark-50); }
 
-  .nav__sub--links li a { display: flex; justify-content: space-between; align-items: center; width: 390px; padding-block: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); font-size: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); }
-  .nav__sub--rows li a { display: grid; grid-template-columns: 44px 356px minmax(0, 1fr); align-items: baseline; padding-block: 19px; }
+  .nav__sub--links li a { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 390px; padding-block: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); font-size: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); }
+  .nav__sub--rows li a { display: grid; grid-template-columns: 44px minmax(0, 356px) minmax(0, 1fr); align-items: baseline; padding-block: 19px; }
   .nav__sub--rows .nav__sub-name { font-size: 26px; line-height: 32px; }
   .nav__sub--cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 46px 44px; }
   .nav__sub--cards li a { display: flex; flex-direction: column; gap: 14px; }
@@ -388,16 +397,16 @@ import { MENU } from '../lib/nav'
   .nav__sub--kits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; margin-top: 104px; }
   .nav__sub--kits li { display: flex; flex-direction: column; gap: 14px; }
   .nav__sub--kits .nav__sub-name { font-size: 26px; line-height: 32px; }
-  .nav__sub--posts li a { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: baseline; padding-block: 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+  .nav__sub--posts li a { display: grid; grid-template-columns: 120px minmax(0, 1fr); max-width: 820px; align-items: baseline; padding-block: 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
   .nav__sub--posts .nav__sub-name { font-size: 21px; line-height: 28px; }
-  .nav__sub--contact { display: grid; grid-template-columns: 300px 300px; gap: 44px 0; margin-top: 134px; align-items: end; }
+  .nav__sub--contact { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 300px); gap: 44px 0; margin-top: 134px; align-items: end; }
   .nav__sub--contact > div { display: flex; flex-direction: column; gap: 10px; }
   .nav__big { font-size: var(--fs-intro); line-height: 28px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
   .nav__big:hover { color: var(--c-accent); }
 
   .nav__stats { margin-top: 90px; }
   .nav__stat-label { margin: 0 0 60px; }
-  .nav__stats ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 290px); }
+  .nav__stats ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 290px)); }
   .nav__stats li { display: flex; flex-direction: column; gap: 18px; }
   .nav__stat-v { font-size: 56px; font-weight: var(--fw-semi); line-height: 56px; letter-spacing: var(--ls-display); color: var(--c-on-dark); }
   .nav__ventures { margin-top: 60px; }
