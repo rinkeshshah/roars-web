@@ -479,7 +479,12 @@ const schema = [
 
       <div class="proj__stage" data-crossfade>
         {featured.map((f, i) => (
-          <article class="proj__slide" data-slide style={`opacity:${i === 0 ? 1 : 0}`}>
+          <article
+            class="proj__slide"
+            data-slide
+            style={`opacity:${i === 0 ? 1 : 0};visibility:${i === 0 ? 'visible' : 'hidden'}`}
+            aria-hidden={i === 0 ? undefined : 'true'}
+          >
             <div class="proj__date">
               <span class="proj__day">{f.day}</span>
               <div class="rule rule--thin"></div>
@@ -882,19 +887,24 @@ const schema = [
   .svc__trigger:hover .svc__icon { background: var(--c-accent); }
   .svc__trigger:hover .svc__name { color: rgb(90, 90, 90); }
 
-  [data-side='inner'] .svc__panel { grid-column: 3 / -1; }
-  [data-side='rail'] .svc__panel { grid-column: 2 / -1; }
-  .svc__panel { grid-row: 1; margin-top: 26px; overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
+  /* The panel sits BELOW the trigger, not in its grid row.
+     Sharing row 1 was an attempt to match the prototype's 195px open row; it
+     drew the tag line straight through the row title. A taller row that reads
+     correctly beats a short one with text on top of text. */
+  .svc__panel { grid-column: 1 / -1; margin-top: 26px; overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
   .svc__panel[hidden] { display: block; height: 0; }
   /* Row one ships open, so it needs a real height before any script runs.
      The island overwrites this with a measured pixel height on first toggle. */
   .svc__panel:not([hidden]) { height: auto; }
   .svc__inner {
     display: grid;
-    grid-template-columns: 223px minmax(0, 1fr);
+    grid-template-columns: 223px 231px minmax(0, 1fr);
     gap: var(--sp-5);
-    padding-bottom: var(--sp-4);
+    /* Aligned to the inner column, as the export draws it, not the rail. */
+    margin-left: var(--rail-width);
+    padding-bottom: var(--sp-6);
   }
+  .svc__detail { grid-column: 2 / -1; }
   .svc__media { position: relative; height: 138px; }
   .svc__disc { position: absolute; left: 0; top: 0; width: 138px; height: 138px; border-radius: var(--r-circle); background: rgb(217, 217, 217); }
   .svc__disc--sm { left: 141px; top: 5px; width: 37px; height: 37px; background: rgb(102, 102, 102); }

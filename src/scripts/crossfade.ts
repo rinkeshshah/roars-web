@@ -1,14 +1,21 @@
 /**
- * Projects cross-fade. Approved island 4 of 4.
+ * Projects: one project at a time, advanced by scroll. Approved island 4 of 4.
  *
- * One parameter p in [0,1] across the section's scroll range, eased with the
- * smoothstep p*p*(3-2p). Opacities always sum to 1, so the slot is never empty
- * and never double-exposed.
+ * This used to hold the two slides at opacities summing to 1 across the
+ * section's scroll range, on the reasoning that the slot is then never empty
+ * and never double-exposed. It was wrong: at any point mid-range BOTH slides
+ * were partly opaque, so both titles and both dates rendered on top of each
+ * other. "02 Oct" drew through "15 Oct" and "Snowman Logistics." through
+ * "Parqly." A cross-fade between two pieces of text is always a collision.
+ *
+ * So the switch is now discrete. Exactly one slide is visible at a time; every
+ * other slide is visibility:hidden, which takes it out of the paint AND out of
+ * the accessibility tree, so nothing can overlap even during the fade.
  *
  * Never reads scrollY per event: an IntersectionObserver decides whether the
  * section is on screen at all, and only while it is does a rAF-throttled
- * handler sample the rect. Off screen it costs nothing. Skipped entirely under
- * prefers-reduced-motion, where the first slide simply stays put.
+ * handler sample the rect. Off screen it costs nothing. Under
+ * prefers-reduced-motion the first slide simply stays put.
  */
 export function initCrossfade(): void {
   const stage = document.querySelector<HTMLElement>('[data-crossfade]')
@@ -17,55 +24,46 @@ export function initCrossfade(): void {
   const slides = Array.from(stage.querySelectorAll<HTMLElement>('[data-slide]'))
   if (slides.length < 2) return
 
+  const show = (i: number) => {
+    slides.forEach((s, n) => {
+      const on = n === i
+      s.style.opacity = on ? '1' : '0'
+      s.style.visibility = on ? 'visible' : 'hidden'
+      s.setAttribute('aria-hidden', String(!on))
+    })
+  }
+
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    slides.forEach((s, i) => { s.style.opacity = i === 0 ? '1' : '0' })
+    show(0)
     return
   }
 
   let active = false
   let frame = 0
-
-  const smoothstep = (p: number) => p * p * (3 - 2 * p)
+  let current = -1
 
   const sample = () => {
-    frame = 0
-    const rect = stage.getBoundingClientRect()
-    // 0 when the stage's top reaches the viewport bottom, 1 when its bottom
-    // reaches the viewport top. Clamped, so the ends hold rather than snap.
-    const span = rect.height + window.innerHeight
-    const raw = (window.innerHeight - rect.top) / Math.max(1, span)
-    const p = smoothstep(Math.min(1, Math.max(0, raw)))
-
-    // Two slides: the pair's opacities are p and 1-p, which always sum to 1.
-    // With more, p walks the sequence and only the neighbouring pair blends.
-    const scaled = p * (slides.length - 1)
-    const index = Math.min(slides.length - 2, Math.floor(scaled))
-    const local = scaled - index
-
-    slides.forEach((slide, i) => {
-      let opacity = 0
-      if (i === index) opacity = 1 - local
-      else if (i === index + 1) opacity = local
-      slide.style.opacity = String(opacity)
-      slide.setAttribute('aria-hidden', opacity < 0.5 ? 'true' : 'false')
-    })
+    const r = stage.getBoundingClientRect()
+    /* Progress of the stage through the viewport, 0 as it arrives at the
+       bottom, 1 as it leaves the top. */
+    const span = r.height + innerHeight
+    const p = Math.min(1, Math.max(0, (innerHeight - r.top) / span))
+    const i = Math.min(slides.length - 1, Math.floor(p * slides.length))
+    if (i !== current) { current = i; show(i) }
   }
 
   const onScroll = () => {
     if (!active || frame) return
-    frame = requestAnimationFrame(sample)
+    frame = requestAnimationFrame(() => { frame = 0; sample() })
   }
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      active = entries.some((e) => e.isIntersecting)
-      if (active) sample()
-    },
-    { threshold: 0 },
-  )
+  const io = new IntersectionObserver((entries) => {
+    active = entries.some((e) => e.isIntersecting)
+    if (active) sample()
+  })
   io.observe(stage)
 
+  show(0)
   addEventListener('scroll', onScroll, { passive: true })
   addEventListener('resize', onScroll, { passive: true })
-  sample()
 }
