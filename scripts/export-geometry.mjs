@@ -41,6 +41,9 @@ const CDN = {
 }
 
 const [file, label] = process.argv.slice(2)
+/* Copy is truncated so the tree stays readable. TEXT=full when you need the
+   actual strings to author content from. */
+const TEXT_LIMIT = process.env.TEXT === 'full' ? 100000 : 58
 if (!file) {
   console.error('usage: export-geometry.mjs "<prototype basename>" [section label]')
   process.exit(1)
@@ -57,7 +60,7 @@ await page.route('https://unpkg.com/**', async (route) => {
 await page.goto(`${SRC}/design/prototypes/${encodeURIComponent(file)}.dc.html`, { waitUntil: 'networkidle' })
 await page.waitForTimeout(3000)
 
-const out = await page.evaluate((label) => {
+const out = await page.evaluate(({ label, TEXT_LIMIT }) => {
   const bands = [...document.querySelectorAll('[data-screen-label]')]
   if (!label) return { list: bands.map((b) => b.getAttribute('data-screen-label')) }
   const sec = bands.find((b) => b.getAttribute('data-screen-label') === label)
@@ -91,13 +94,13 @@ const out = await page.evaluate((label) => {
       if (a.background) bits.push('bg:' + a.background.slice(0, 44))
       if (a['border-radius']) bits.push('r' + a['border-radius'])
       if (a.opacity) bits.push('op' + a.opacity)
-      lines.push('  '.repeat(depth) + `${child.tagName} ${bits.join(' ')}` + (own ? `  "${own.slice(0, 58)}"` : ''))
+      lines.push('  '.repeat(depth) + `${child.tagName} ${bits.join(' ')}` + (own ? `  "${own.slice(0, TEXT_LIMIT)}"` : ''))
       walk(child, depth + 1)
     }
   }
   walk(sec, 0)
   return { style: (sec.getAttribute('style') || '').replace(/\s+/g, ' '), lines }
-}, label)
+}, { label, TEXT_LIMIT })
 
 if (out.err) { console.error(out.err); process.exitCode = 1 }
 else if (out.list) console.log(out.list.join('\n'))

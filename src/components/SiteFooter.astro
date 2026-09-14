@@ -30,10 +30,18 @@ interface Props {
   /** The closing CTA's two parts. Omit either for the shipped default. */
   blurbTitle?: string
   blurb?: string
+  /**
+   * The line beside it. The export prints "Space of Product Solutions*" on
+   * every page; it is the page's own tagline, and the house line is the
+   * fallback. The asterisk is added here, in the accent — it is not part of
+   * the string, so a page never has to remember to type it.
+   */
+  tagline?: string
 }
 const {
   blurbTitle = 'Let’s get your project started.',
   blurb = 'Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.',
+  tagline = 'user experience matters',
 } = Astro.props
 
 const year = new Date().getFullYear()
@@ -57,7 +65,7 @@ const year = new Date().getFullYear()
           </span>
         </div>
       </div>
-      <p class="ft__tagline">Space of Product<br />Solutions<i>*</i></p>
+      <p class="ft__tagline">{tagline}<i>*</i></p>
     </div>
 
     <div class="ft__grid ft__mid">
