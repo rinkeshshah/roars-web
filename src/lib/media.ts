@@ -53,7 +53,26 @@ export const WORK = {
   companyguru: `${U}/2025/03/companyguru.jpg`,
   concierge: `${U}/2025/07/ai-concierges-mobile-app.jpg`,
   ventura: `${U}/2023/02/ventura-law-header-12.jpg`,
+  clubSocial: `${U}/2022/08/club-social.jpg`,
 } as const
+
+/**
+ * The photograph at the top of a /work/[slug]/ page, by slug.
+ *
+ * Keyed by the inventory slug so a band that credits a project can find that
+ * project's own header without a second field in the content to keep in step
+ * with the link. Only slugs whose live path is KNOWN belong here — the paths
+ * are not derivable (the /YYYY/MM/ segment is whatever month the file was
+ * uploaded), and a guessed one is a 404 that looks like a bug rather than a
+ * gap. An unlisted slug returns undefined and the caller draws no image.
+ */
+export const WORK_HERO: Record<string, string> = {
+  'club-social': WORK.clubSocial,
+}
+
+/** `href` is the route as written in content, e.g. "/work/club-social/". */
+export const workHeroFor = (href: string): string | undefined =>
+  WORK_HERO[href.replace(/^\/work\//, '').replace(/\/$/, '')]
 
 /** Service row imagery on the homepage accordion. */
 export const SERVICE_IMG = {

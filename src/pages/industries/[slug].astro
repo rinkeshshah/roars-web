@@ -29,6 +29,7 @@ import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { site } from '../../lib/site'
+import { workHeroFor } from '../../lib/media'
 import star5 from '../../assets/star-5.svg'
 
 export async function getStaticPaths() {
@@ -75,6 +76,10 @@ const schema = entry
 
 const { Content } = entry ? await render(entry) : { Content: null }
 const designed = Boolean(d?.hero)
+/* The band credits a project, so it takes that project's own header photo.
+   Derived from the link rather than named again in the entry, so the picture
+   and the thing it links to cannot drift apart. */
+const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : undefined
 ---
 
 {designed && d ? (
@@ -271,6 +276,18 @@ const designed = Boolean(d?.hero)
     {d.proof && (
       <Section ground="dark">
         <div class="ip">
+          {/* The ground is the featured project's own header shot, under the
+              export's dark wash so the 84px numerals keep their contrast.
+              Served from /wp-content/uploads/ like every other photograph on
+              the site, so it 404s in this build and resolves on the webspace;
+              media.ts blanks it meanwhile and the band reads as it does now.
+              aria-hidden with an empty alt: it is a ground, and the credit
+              beside it is the content. */}
+          {featuredShot && (
+            <div class="ip__bg" aria-hidden="true">
+              <img src={featuredShot} alt="" width="1440" height="1000" loading="lazy" decoding="async" />
+            </div>
+          )}
           <span class="ip__tick" aria-hidden="true"></span>
           <span class="i-eyebrow i-eyebrow--dark">{d.proof.label}</span>
           <h2 class="ip__h">{d.proof.heading}</h2>
@@ -641,7 +658,22 @@ const designed = Boolean(d?.hero)
   }
 
   /* ── proof ──────────────────────────────────────────────── */
-  .ip { position: relative; padding-block: 90px 130px; min-height: 1000px; }
+  /* isolation, so the ground can sit at z-index -1 without dropping behind
+     the section's own background and out of the band entirely. */
+  .ip { position: relative; isolation: isolate; padding-block: 90px 130px; min-height: 1000px; }
+  /* Bleeds the full band, not the 1362 content box, so it reads as ground
+     rather than as a picture sitting on one. The wash is heaviest at the top
+     and bottom, where the 11px labels are, and thinnest across the middle
+     where the photograph is doing the work. */
+  .ip__bg {
+    position: absolute; left: 50%; top: 0; z-index: -1;
+    width: 100vw; height: 100%; transform: translateX(-50%); overflow: hidden;
+  }
+  .ip__bg img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .ip__bg::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.66) 44%, rgba(0, 0, 0, 0.9) 100%);
+  }
   .ip__tick { display: block; width: 16px; height: 1.5px; background: rgba(180, 174, 174, 0.7); }
   .ip .i-eyebrow { margin-top: 20px; }
   .ip__h {
