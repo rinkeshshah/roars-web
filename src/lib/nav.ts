@@ -112,7 +112,7 @@ export const MENU: MenuItem[] = [
     ],
   },
   {
-    n: '04', label: 'work', href: '/work/', meta: '10 PROJECTS',
+    n: '04', label: 'work', href: '/work/', meta: '23 PROJECTS',
     eyebrow: '04 — WORK',
     title: 'Selected projects',
     kind: 'cards',
@@ -126,7 +126,7 @@ export const MENU: MenuItem[] = [
     ],
   },
   {
-    n: '05', label: 'industries', href: null, meta: '8 SECTORS',
+    n: '05', label: 'industries', href: null, meta: '9 SECTORS',
     eyebrow: '05 — INDUSTRIES',
     title: 'Sectors we already understand',
     kind: 'sectors',
@@ -142,7 +142,7 @@ export const MENU: MenuItem[] = [
     ],
   },
   {
-    n: '06', label: 'services', href: null, meta: '5 SERVICES',
+    n: '06', label: 'services', href: null, meta: '12 SERVICES',
     eyebrow: '06 — SERVICES',
     title: 'What we do',
     kind: 'services',
@@ -155,7 +155,7 @@ export const MENU: MenuItem[] = [
     ],
   },
   {
-    n: '07', label: 'resources', href: '/resources/', meta: '3 KITS',
+    n: '07', label: 'resources', href: '/resources/', meta: '15 KITS',
     eyebrow: '07 — RESOURCES',
     title: 'Tools, guides and templates',
     body: 'Free downloads we use in our own discovery work.',

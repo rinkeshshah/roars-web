@@ -1,7 +1,21 @@
 ---
 /**
- * The mark. No scroll-progress ring: measured against the export at five
- * scroll positions and the ring element is not present at any of them.
+ * The mark.
+ *
+ * WHAT THE EXPORT ACTUALLY ANIMATES, measured rather than read off its script:
+ *   - transform is matrix(1,0,0,1,0,0) at every scroll position AND on hover,
+ *     so there is no rotation and no scale. The rotate(45deg) and scale(.92)
+ *     in the script are dead code from an older version.
+ *   - the conic ring element exists but sits at opacity 0 both at rest and on
+ *     hover, so it never paints. (An earlier probe reported the element as
+ *     absent; it is present, and permanently invisible. Same outcome, wrong
+ *     reason, worth correcting.)
+ *   - the motion is COLOUR: `transition: filter .5s ease` on the mark and
+ *     `background .45s ease, box-shadow .45s ease` on the chip, with the mark
+ *     going brightness(0) on hover.
+ *
+ * So the mark fades between inks over half a second. That is the whole effect,
+ * and shortening it to 250ms is what made the logo feel dead.
  *
  * This is the REAL brand mark from design/prototypes/brand/, not the two
  * circles that stood in for it. The stand-in was never meant to ship; the
@@ -35,6 +49,7 @@ import mark from '../assets/roars-mark.png'
 <style>
   .chip {
     position: relative;
+    transition: background 0.45s ease, box-shadow 0.45s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -43,7 +58,6 @@ import mark from '../assets/roars-mark.png'
     margin-left: -9px;
     border-radius: var(--r-circle);
     color: var(--c-accent);
-    transition: background var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
   }
   .chip__mark {
     position: relative;
@@ -53,12 +67,17 @@ import mark from '../assets/roars-mark.png'
     background: var(--c-accent);
     -webkit-mask: var(--mark) center / contain no-repeat;
     mask: var(--mark) center / contain no-repeat;
-    transition: background var(--dur-fast) ease;
+    /* .5s, matching the export's filter transition. */
+    transition: background 0.5s ease;
   }
 
   /* Light ground. The observer sets this on the top bar. */
 
   :global(.topbar.is-light) .chip__mark { background: var(--c-footer); }
+  /* brightness(0) in the export: the mark goes to ink on hover, from either
+     ground, over the same half second. */
+  .chip:hover .chip__mark { background: var(--c-footer); }
+  :global(.topbar:not(.is-light)) .chip:hover .chip__mark { background: var(--c-white); }
 
   @media (prefers-reduced-motion: reduce) {
     .chip__mark { transition: none; }

@@ -58,3 +58,20 @@ p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
+
+/* Screen-reader-only text. Referenced by the nav overlay's close button and
+   by form hints; it was being referenced before it existed, which printed
+   "Close menuCLOSE" in the menu. */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* A photograph that has not been uploaded yet shows nothing, not a broken
+   glyph and its alt text. Dimensions are kept so nothing reflows on arrival. */
+img.is-missing { visibility: hidden; }

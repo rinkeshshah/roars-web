@@ -56,7 +56,7 @@ const CTA = {
       >
         <span class="visually-hidden">Open menu</span>
         <span class="topbar__bar" aria-hidden="true"></span>
-        <span class="topbar__bar" aria-hidden="true"></span>
+        <span class="topbar__bar topbar__bar--short" aria-hidden="true"></span>
       </button>
     </div>
   </div>
@@ -106,7 +106,9 @@ const CTA = {
     background: none;
     cursor: pointer;
   }
-  .topbar__bar { display: block; width: 26px; height: 2px; background: var(--c-white); }
+  .topbar__bar { display: block; width: 26px; height: 2px; background: var(--c-white); transition: width var(--dur-fast) ease; }
+  .topbar__bar--short { width: 18px; }
+  .topbar__burger:hover .topbar__bar--short { width: 26px; }
 
   .topbar.is-light .topbar__bar { background: rgb(15, 15, 15); }
   .topbar.is-light .topbar__note { color: rgb(15, 15, 15); }
