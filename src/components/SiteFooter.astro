@@ -12,13 +12,30 @@
  * Shipping a form that silently swallows submissions is worse than one that
  * plainly is not ready.
  */
+import { Picture } from 'astro:assets'
 import { site } from '../lib/site'
-import { NAV, SOCIAL, LEGAL } from '../lib/nav'
+import { FOOTER_NAV, SOCIAL, LEGAL } from '../lib/nav'
+import space2000 from '../assets/space-2000.jpg'
 
 const year = new Date().getFullYear()
 ---
 
 <footer class="ft" data-ground="dark">
+  {/* The prototype's footer is a legible space photograph, not a black band.
+      It is flipped to match the hero and sits under a light scrim that only
+      has to buy contrast for the type, so the picture still reads. */}
+  <Picture
+    class="ft__bg"
+    src={space2000}
+    formats={['avif', 'webp']}
+    widths={[900, 1440, 2000]}
+    sizes="100vw"
+    quality={58}
+    alt=""
+    loading="lazy"
+    decoding="async"
+  />
+  <div class="ft__scrim"></div>
   <div class="wrap">
     <div class="ft__grid ft__top">
       <svg class="ft__mark" viewBox="0 0 21 21" width="21" height="21" aria-hidden="true">
@@ -31,6 +48,14 @@ const year = new Date().getFullYear()
           design and technology is evident in all our work. No detail is too
           small.
         </p>
+        {/* Portrait arrives with the Phase 5 uploads import. */}
+        <div class="ft__by">
+          <span class="ft__face" aria-hidden="true"></span>
+          <span class="ft__by-text">
+            <span class="ft__by-name">Riinkesh A Sshah</span>
+            <span class="ft__by-role">CEO / Founder</span>
+          </span>
+        </div>
       </div>
       <p class="ft__tagline">Space of Product<br />Solutions<i>*</i></p>
     </div>
@@ -47,7 +72,7 @@ const year = new Date().getFullYear()
         <div class="ft__rule ft__rule--short"></div>
         <nav aria-label="Footer">
           <ul class="ft__nav">
-            {NAV.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+            {FOOTER_NAV.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
           </ul>
         </nav>
       </div>
@@ -98,7 +123,7 @@ const year = new Date().getFullYear()
       </div>
       <div class="ft__col">
         <span class="ft__dim">Offices</span>
-        <span>{site.offices.map((o) => o.city).join(' · ')}</span>
+        <span>{site.offices.map((o) => o.label).join(' · ')}</span>
       </div>
       <div class="ft__col">
         <span class="ft__dim">Built by</span>
@@ -116,6 +141,25 @@ const year = new Date().getFullYear()
     padding-block: 61px;
     overflow: hidden;
   }
+  .ft__bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scaleY(-1);
+  }
+  /* Enough to hold the type, not enough to bury the photograph. The nebula
+     runs bright through the middle, which is exactly where the 50%-opacity
+     legal type sits, so this is set by contrast rather than by taste. */
+  .ft__scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(11, 11, 11, 0.42) 0%,
+      rgba(11, 11, 11, 0.58) 46%,
+      rgba(11, 11, 11, 0.72) 100%
+    );
+  }
+  .ft > .wrap { position: relative; z-index: 1; }
   .ft__grid {
     display: grid;
     grid-template-columns: 459fr 233fr 234fr 436fr;
@@ -129,6 +173,11 @@ const year = new Date().getFullYear()
     letter-spacing: var(--ls-item);
     color: rgb(147, 147, 147);
   }
+  .ft__by { display: flex; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
+  .ft__face { width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); background: rgba(255, 255, 255, 0.22); }
+  .ft__by-text { display: flex; flex-direction: column; gap: 2px; }
+  .ft__by-name { font-size: var(--fs-micro); font-weight: var(--fw-regular); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-on-dark-90); }
+  .ft__by-role { font-size: var(--fs-micro); font-weight: var(--fw-regular); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-on-dark-50); }
   .ft__tagline {
     max-width: 180px;
     font-size: 18px;

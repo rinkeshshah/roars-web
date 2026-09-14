@@ -9,6 +9,12 @@
  * `dark` also marks the section for the top bar's ink inversion, which is
  * driven by IntersectionObserver over [data-ground="dark"] rather than the
  * prototypes' hard-coded pixel bands.
+ *
+ * There is deliberately NO `class` prop. An Astro scope hash does not cross a
+ * component boundary, so a class passed in from a page compiles to a selector
+ * that matches nothing and the rule silently does nothing — which is exactly
+ * how .hero lost its 900px min-height. Style your own element inside the
+ * slot instead. scripts/assert-styles.mjs fails the build on a recurrence.
  */
 interface Props {
   ground?: 'light' | 'surface' | 'dark'
@@ -16,13 +22,12 @@ interface Props {
   as?: 'section' | 'footer' | 'div'
   /** Skip the inner .wrap when the section manages its own bleed. */
   bleed?: boolean
-  class?: string
   id?: string
 }
-const { ground = 'light', as: Tag = 'section', bleed = false, class: cls, id } = Astro.props
+const { ground = 'light', as: Tag = 'section', bleed = false, id } = Astro.props
 ---
 
-<Tag class:list={['sec', cls]} data-ground={ground} id={id}>
+<Tag class="sec" data-ground={ground} id={id}>
   <slot name="bleed" />
   {bleed ? <slot /> : <div class="wrap"><slot /></div>}
 </Tag>

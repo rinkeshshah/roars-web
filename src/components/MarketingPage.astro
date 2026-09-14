@@ -30,10 +30,13 @@ interface Props {
   pending?: boolean
   /** Hide the CTA band on pages that already end in a form. */
   cta?: boolean
+  /** Top bar call to action. See TopBar.astro for which prototype uses which. */
+  topCta?: 'contact' | 'meeting'
 }
 const {
   title, description, path, label, heading, intro,
   schema = [], noindex = false, pending = false, cta = true,
+  topCta = 'meeting',
 } = Astro.props
 ---
 
@@ -44,10 +47,10 @@ const {
   noindex={noindex || pending}
   schema={schema}
 >
-  <TopBar slot="topbar" />
+  <TopBar slot="topbar" cta={topCta} />
   <NavOverlay />
 
-  <Section ground="dark" class="mh">
+  <Section ground="dark">
     <div class="mh__inner">
       <div class="mh__rail">
         <div class="mh__rule"></div>
@@ -82,7 +85,6 @@ const {
 </BaseLayout>
 
 <style>
-  .mh { background: var(--c-black); }
   .mh__inner {
     display: grid;
     grid-template-columns: var(--rail-width) minmax(0, 1fr);
@@ -119,7 +121,7 @@ const {
   .pending__body { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-ink-muted); }
 
   /* Long-form body. Markdown from the collections lands here. */
-  .prose { max-width: 760px; margin-left: calc(var(--rail-width) + var(--sp-5)); }
+  .prose { max-width: 760px; margin-left: var(--rail-width); }
   .prose :global(h2) {
     margin: var(--sp-6) 0 var(--sp-4);
     font-size: clamp(var(--fs-item), 2.2vw, 32px);

@@ -12,6 +12,22 @@
 import LogoChip from './LogoChip.astro'
 import GhostButton from './GhostButton.astro'
 import { site } from '../lib/site'
+
+/**
+ * The prototypes carry two variants of this call to action and neither is a
+ * mistake: Main, Agency, Projects, Project Detail, Insights and Insight
+ * Details say "Contact Now"; Approach, Contact, Industries, Resources, Guides
+ * and the service pages say "Setup a Meeting". Brand Guidelines shows
+ * "Contact Now", so that is the default and the other is opt-in per page.
+ */
+interface Props {
+  cta?: 'contact' | 'meeting'
+}
+const { cta = 'contact' } = Astro.props
+const CTA = {
+  contact: { label: 'Contact Now', note: 'Reach out to start your project' },
+  meeting: { label: 'Setup a Meeting', note: 'We reply within 24 hours' },
+}[cta]
 ---
 
 <header class="topbar" data-topbar>
@@ -23,13 +39,13 @@ import { site } from '../lib/site'
         <div class="topbar__meet-row">
           <GhostButton
             href={site.booking}
-            label="Setup a Meeting"
+            label={CTA.label}
             on="dark"
             width={243}
             external
           />
         </div>
-        <span class="topbar__note" data-topbar-note>We reply within 24 hours</span>
+        <span class="topbar__note" data-topbar-note>{CTA.note}</span>
       </div>
 
       <button

@@ -8,7 +8,7 @@ import Button from './Button.astro'
 import { site } from '../lib/site'
 ---
 
-<Section ground="dark" class="cta">
+<Section ground="dark">
   <div class="cta__grid">
     <div data-reveal class="cta__left">
       <div class="cta__rule"></div>
@@ -30,7 +30,6 @@ import { site } from '../lib/site'
 </Section>
 
 <style>
-  .cta { background: var(--c-footer); }
   .cta__grid {
     display: grid;
     grid-template-columns: minmax(0, 922fr) minmax(0, 440fr);

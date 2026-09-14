@@ -83,26 +83,37 @@ const featured = [
   },
 ]
 
+/**
+ * The cascade. Four testimonials at four sizes and four vertical offsets,
+ * measured off the rendered prototype. The irregularity IS the design, so the
+ * per-item geometry lives here as data rather than as four hand-tuned CSS
+ * blocks: `col` places it in the 7-track grid, the rest drive one shared rule
+ * set through custom properties.
+ */
 const testimonials = [
   {
+    col: 5, top: 0, avatar: 80, label: 14, quote: 24, lead: 32, star: 14,
     name: 'Jayeis Sonill',
     role: 'CEO, Aum Investment',
     quote:
       'Roars has consistently positioned themselves at the forefront of innovation and technology. They understand business needs and craft technologies to address them.',
   },
   {
+    col: 3, top: 264, avatar: 65, label: 13, quote: 18, lead: 25, star: 12,
     name: 'James Hadley',
     role: 'CEO, Simthing New, LLC',
     quote:
       'I was pleased with the deliverables. I was able to see and understand the efforts required to scale the solution in development.',
   },
   {
+    col: 1, top: 108, avatar: 57, label: 12, quote: 15, lead: 21, star: 11,
     name: 'Avinash Kumar',
     role: 'Project Manager, Roars',
     quote:
       'From discovery to launch, the team brought our platform to life with precision. A genuine product partner.',
   },
   {
+    col: 7, top: 230, avatar: 40, label: 10, quote: 12, lead: 17, star: 9,
     name: 'Khusboo Panchal',
     role: 'Digital Marketing',
     quote: 'Fast, smart and beautiful. We will be back for round two soon.',
@@ -258,7 +269,8 @@ const schema = [
   <NavOverlay />
 
   {/* ── 1. Header ───────────────────────────────────────────── */}
-  <Section ground="light" class="hero" bleed>
+  <Section ground="light" bleed>
+    <div class="hero" data-topbar-ink="light">
     {/* The photograph is a PANEL on the right, not a full bleed: it starts at
         30% of the width and the left third stays white, which is what lets the
         services rail read as dark type on paper. The LCP element. AVIF first,
@@ -319,11 +331,17 @@ const schema = [
         <p class="hero__sub">Product Development<br />for Startups &amp; SMEs</p>
       </div>
     </div>
+    </div>
   </Section>
 
   {/* ── 2. About ────────────────────────────────────────────── */}
   <Section ground="light">
     <div class="about">
+      {/* The paired star marks in the left rail. Decoration, so aria-hidden. */}
+      <span class="about__stars" aria-hidden="true">
+        <img src={star3.src} alt="" width="20" height="20" />
+        <img src={star5.src} alt="" width="20" height="20" />
+      </span>
       <div data-reveal class="about__stats">
         <div class="about__stat">
           <p class="about__stat-name">Projects Delivered</p>
@@ -358,7 +376,17 @@ const schema = [
       <div data-reveal class="about__team" style="transition-delay:120ms">
         <p class="about__team-name">Team of Roars</p>
         <div class="rule rule--short"></div>
-        <p class="about__team-count"><span>59</span></p>
+        {/* Scattered cluster, not a row: the prototype offsets the four
+            portraits on a 2x3 lattice with one cell left empty, and the count
+            sits in that gap. Portraits arrive with the Phase 5 uploads
+            import; the discs hold their places until then. */}
+        <div class="about__cluster" aria-hidden="true">
+          <span class="about__face about__face--a"></span>
+          <span class="about__face about__face--b"></span>
+          <span class="about__face about__face--c"></span>
+          <span class="about__face about__face--d"></span>
+          <p class="about__team-count"><span>59</span></p>
+        </div>
       </div>
 
       <div data-reveal class="about__who" style="transition-delay:160ms">
@@ -371,14 +399,21 @@ const schema = [
       <div data-reveal class="about__pitch" style="transition-delay:200ms">
         <p>
           We work with you as thinkers, creators, consultants, designers and
-          implementers
-          <span class="about__pitch-mid">
-            to turn your product into a high quality marketable offering.
-          </span>
-          <span class="about__pitch-low">
-            Our approach is simple — we bring clarity to complex situations.
-          </span>
+          implementers{' '}
+          <span class="about__pitch-mid">to turn your product into a high quality marketable offering.</span>{' '}
+          <span class="about__pitch-low">Our approach is simple — we bring clarity to complex situations.</span>
         </p>
+      </div>
+
+      {/* Client logos. The files live on the WordPress install and arrive with
+          the Phase 5 uploads import; CLAUDE.md forbids hot-linking the live
+          site, so the row holds its 44px height and its edge fades until then
+          and is listed in the build report. */}
+      <div class="about__logos" aria-hidden="true">
+        <div class="about__logo-row">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
       </div>
     </div>
   </Section>
@@ -388,27 +423,64 @@ const schema = [
     <div class="svc">
       <h2 class="display">Services</h2>
 
-      <ul class="svc__list">
-        {services.map((s) => (
+      {/* Accordion, not the static grid this used to be: the prototype opens
+          /01 with its imagery and tags and collapses the rest to a count and
+          a toggle. Approved island 2 of 4, shared with the FAQ below.
+
+          The mock is internally inconsistent about where a row's name sits —
+          two collapsed rows put it in the left rail at x=39, the other and the
+          open row put it in the inner column at x=503 — so it is placed in the
+          rail for every row, which is also where Industries and the FAQ put
+          their section labels. docs/DESIGN-SYSTEM.md records the call. */}
+      <ul class="svc__list" data-accordion>
+        {services.map((s, i) => (
           <li class="svc__row">
-            <div class="rule"></div>
-            <div class="svc__grid">
-              <span class="svc__n">{s.n}</span>
-              <a class="svc__name" href={s.href}>{s.name}</a>
-              <p class="svc__body">
-                {s.body}
-                {s.stages && <span class="svc__stages">{s.stages}</span>}
-              </p>
-              <div class="svc__meta">
-                {s.clients && (
-                  <ul class="svc__clients">
-                    {s.clients.map((c) => <li>{c}</li>)}
-                    <li class="svc__more">{s.more}</li>
-                  </ul>
-                )}
-                {s.count && (
-                  <p class="svc__count"><span>{s.count}</span> Projects</p>
-                )}
+            <h3 class="svc__h">
+              <button
+                class="svc__trigger"
+                type="button"
+                aria-expanded={i === 0 ? 'true' : 'false'}
+                aria-controls={`svc-panel-${i}`}
+                id={`svc-trigger-${i}`}
+              >
+                <span class="svc__rail">
+                  <span class="svc__n">{s.n}</span>
+                  <span class="svc__name">{s.name}</span>
+                </span>
+                <span class="svc__body">{s.body}</span>
+                {/* /01 carries a client list instead of a count in the
+                    spec's own data. Empty rather than a fabricated number. */}
+                <span class="svc__count">
+                  {s.count && <><span>{s.count}</span> Projects</>}
+                </span>
+                <span class="svc__icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div
+              class="svc__panel"
+              id={`svc-panel-${i}`}
+              role="region"
+              aria-labelledby={`svc-trigger-${i}`}
+              hidden={i !== 0}
+            >
+              <div class="svc__inner">
+                {/* Imagery arrives with the Phase 5 uploads import. The
+                    placeholder holds the prototype's 138px and 37px discs so
+                    the row keeps its height and CLS stays honest. */}
+                <div class="svc__media" aria-hidden="true">
+                  <span class="svc__disc"></span>
+                  <span class="svc__disc svc__disc--sm"></span>
+                </div>
+                <div class="svc__detail">
+                  {s.stages && <p class="svc__stages">{s.stages}</p>}
+                  {s.clients && (
+                    <ul class="svc__clients">
+                      {s.clients.map((c) => <li>{c}</li>)}
+                      <li class="svc__more">{s.more}</li>
+                    </ul>
+                  )}
+                  <a class="svc__link" href={s.href}>Read about {s.name}</a>
+                </div>
               </div>
             </div>
           </li>
@@ -426,7 +498,8 @@ const schema = [
   </Section>
 
   {/* ── 4. Projects ─────────────────────────────────────────── */}
-  <Section ground="dark" class="proj" bleed>
+  <Section ground="dark" bleed>
+    <div class="proj">
     <Picture
       class="proj__bg"
       src={space2000}
@@ -473,6 +546,7 @@ const schema = [
         <Button href="/work/" label="All Projects" variant="light" />
       </div>
     </div>
+    </div>
   </Section>
 
   {/* ── 5. People say ───────────────────────────────────────── */}
@@ -481,38 +555,75 @@ const schema = [
       <h2 class="display">People say</h2>
       <p class="say__score">4.9/5</p>
 
+      {/* A cascade, not a row of four equal cards. The four columns do not
+          overlap horizontally, so this is one grid with uneven tracks plus a
+          per-item top offset — flow layout, no absolute positioning. */}
       <ul class="say__list">
         {testimonials.map((t, i) => (
-          <li data-reveal class="say__item" style={`transition-delay:${i * 70}ms`}>
+          <li
+            class="say__item"
+            data-reveal
+            style={`--col:${t.col};--top:${t.top}px;--av:${t.avatar}px;--lb:${t.label}px;--qt:${t.quote}px;--ld:${t.lead}px;--st:${t.star}px;transition-delay:${i * 70}ms`}
+          >
+            {/* Portraits arrive with the Phase 5 uploads import. */}
+            <span class="say__avatar" aria-hidden="true"></span>
             <p class="say__name">{t.name}</p>
             <p class="say__role">{t.role}</p>
+            <div class="say__rule"></div>
+            <div class="say__stars" aria-label="Rated 5 out of 5">
+              {[0, 1, 2, 3, 4].map(() => (
+                <img src={star5.src} alt="" width="14" height="14" aria-hidden="true" />
+              ))}
+            </div>
             <blockquote class="say__quote">{t.quote}</blockquote>
           </li>
         ))}
       </ul>
 
-      <p class="say__meta">37 reviews &middot; 4.9 average</p>
+      <div class="say__foot">
+        <div class="say__nav">
+          <span class="say__dot"></span>
+          <span class="say__prev">Prev.</span>
+          <span class="say__next">Next</span>
+          <span class="say__dot say__dot--on"></span>
+        </div>
+        {/* Reviewer portraits arrive with the Phase 5 uploads import; the
+            count disc closes the stack, as in the prototype. */}
+        <div class="say__stack">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span class="say__count">37</span>
+        </div>
+        <p class="say__meta">reviews<br />4.9 average</p>
+        <Button href="/contact-us/" label="Leave a Review" />
+      </div>
     </div>
   </Section>
 
   {/* ── 6. Industries ───────────────────────────────────────── */}
-  <Section ground="light">
+  <Section ground="surface">
     <div class="ind">
       <h2 class="display">Industries</h2>
-      <p class="ind__label">Eight sectors</p>
-      <p class="ind__sub">Where we work</p>
+      {/* Label pair lives in the left rail, not the inner column. */}
+      <div class="ind__rail">
+        <p class="ind__label">Eight sectors</p>
+        <p class="ind__sub">Where we work</p>
+      </div>
       <p class="intro ind__intro">
         We build in sectors we already understand, so the discovery work starts
         from domain knowledge rather than from scratch.
       </p>
 
       <ul class="ind__grid">
-        {industries.map((s, i) => (
+        {industries.map((sector, i) => (
           <li data-reveal style={`transition-delay:${i * 50}ms`}>
-            <a class="ind__card" href={s.href}>
-              <span class="ind__letter" aria-hidden="true">{s.letter}</span>
-              <span class="ind__name">{s.name}</span>
-              <span class="ind__cta">View sector</span>
+            <a class="ind__card" href={sector.href}>
+              <span class="ind__letter" aria-hidden="true">{sector.letter}</span>
+              <span class="ind__text">
+                <span class="ind__name">{sector.name}</span>
+                <span class="ind__cta">View sector</span>
+              </span>
             </a>
           </li>
         ))}
@@ -528,28 +639,41 @@ const schema = [
   <Section ground="light">
     <div class="ins">
       <h2 class="display">Insights</h2>
-      <p class="ins__who">Riinkesh A Sshah</p>
-      <p class="ins__role">Founder</p>
-      <p class="intro ins__intro">
-        We have a lot to say about product work — how we approach the process,
-        what the AI shift actually changes, and the nuances of building for
-        founders.
-      </p>
+      <div class="ins__head">
+        <div class="ins__who">
+          {/* Portrait arrives with the Phase 5 uploads import. */}
+          <span class="ins__avatar" aria-hidden="true"></span>
+          <p class="ins__name">Riinkesh A Sshah</p>
+          <p class="ins__role">Founder</p>
+        </div>
+        <p class="intro ins__intro">
+          We have a lot to say about product work — how we approach the process,
+          what the AI shift actually changes, and the nuances of building for
+          founders.
+        </p>
+      </div>
 
       <ul class="ins__grid">
-        {insights.map((p, i) => (
+        {insights.map((post, i) => (
           <li data-reveal style={`transition-delay:${i * 70}ms`}>
-            <a class="ins__card" href={p.href}>
-              {/* Featured image arrives with the Phase 5 uploads import. */}
-              <div class="ins__ph" aria-hidden="true"></div>
-              <span class="ins__date">{p.day} {p.month}</span>
-              <span class="ins__title">{p.title}</span>
+            <a class="ins__card" href={post.href}>
+              {/* Featured image arrives with the Phase 5 uploads import.
+                  A 138px disc, matching the services row. */}
+              <span class="ins__ph" aria-hidden="true"></span>
+              <span class="ins__rule"></span>
+              <span class="ins__day">{post.day}</span>
+              <span class="ins__month">{post.month}</span>
+              <span class="ins__title">{post.title}</span>
             </a>
           </li>
         ))}
       </ul>
 
       <div class="ins__foot">
+        <span class="ins__stars" aria-hidden="true">
+          <img src={star3.src} alt="" width="17" height="17" />
+          <img src={star5.src} alt="" width="17" height="17" />
+        </span>
         <Button href="/our-journal/" label="All Insights" />
       </div>
     </div>
@@ -559,11 +683,16 @@ const schema = [
   <Section ground="surface">
     <div class="faq">
       <h2 class="display">FAQ</h2>
-      <p class="faq__who">Riinkesh A Sshah</p>
-      <p class="faq__role">CEO / Founder</p>
-      <p class="intro faq__intro">
-        Behind every project: the thinking that fuels how Roars builds.
-      </p>
+      {/* Founder block sits in the left rail, as in the prototype. */}
+      <div class="faq__rail">
+        {/* Portrait arrives with the Phase 5 uploads import. */}
+        <span class="faq__avatar" aria-hidden="true"></span>
+        <p class="faq__who">Riinkesh A Sshah</p>
+        <p class="faq__role">CEO / Founder</p>
+        <p class="faq__intro">
+          Behind every project: the thinking that fuels how Roars builds.
+        </p>
+      </div>
 
       <Accordion items={faq} name="home-faq" />
 
@@ -604,7 +733,10 @@ const schema = [
   /* Geometry is expressed as percentages of the 1440 design width so it holds
      at any viewport: the panel edge is 433/1440, the planet 395/1440, and so
      on. Nothing here is a magic pixel. */
-  .hero { min-height: 900px; display: flex; align-items: center; background: var(--c-white); }
+  /* stretch, not center: the inner grid must fill the 900px so its own
+     align-items:end lands the wordmark block 100px off the bottom, which is
+     where the prototype puts it. Centering shifted everything up ~130px. */
+  .hero { position: relative; min-height: 900px; display: flex; align-items: stretch; background: var(--c-white); }
 
   .hero__panel {
     position: absolute; top: 0; bottom: 0;
@@ -669,6 +801,7 @@ const schema = [
   /* layout -------------------------------------------------------------- */
   .hero__inner {
     position: relative; z-index: 1;
+    width: 100%;
     display: grid;
     grid-template-columns: var(--rail-width) minmax(0, 1fr);
     align-items: end;
@@ -697,7 +830,7 @@ const schema = [
   .hero__wordmark {
     position: relative;
     display: flex; align-items: flex-start; gap: var(--sp-2);
-    margin: 75px 0 0;
+    margin: 11px 0 0;
     /* mix-blend-mode is deliberately NOT used. It is an extra compositing
        pass and a legibility gamble over an arbitrary photograph; the spec's
        own note flags it as a risk. Solid #FBFBFB is the documented fallback. */
@@ -722,13 +855,15 @@ const schema = [
     letter-spacing: 0; color: rgb(31, 31, 31);
   }
   .hero__sub {
-    margin: 95px 0 0 246px;
+    margin: 111px 0 0 246px;
     font-size: var(--fs-body); font-weight: var(--fw-medium);
     line-height: 24px; letter-spacing: var(--ls-button); color: var(--c-white);
   }
 
   /* 2. about ----------------------------------------------------------- */
+  .about__stars { position: absolute; left: 3px; top: 139px; display: flex; gap: 6px; }
   .about {
+    position: relative;
     display: grid;
     grid-template-columns: 463fr 435fr 464fr;
     gap: var(--sp-6) var(--sp-5);
@@ -769,6 +904,35 @@ const schema = [
   .about__who-sub { font-size: var(--fs-item); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: rgb(71, 71, 71); opacity: 0.7; }
   .about__who-person { margin-top: var(--sp-6); font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
   .about__who-role { font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
+  .about__cluster { position: relative; width: 145px; height: 143px; margin-top: var(--sp-5); }
+  .about__face {
+    position: absolute; width: var(--avatar); height: var(--avatar);
+    border-radius: var(--r-circle); background: rgb(173, 173, 173);
+  }
+  .about__face--a { left: 103px; top: 0; }
+  .about__face--b { left: 52px;  top: 50px; }
+  .about__face--c { left: 0;     top: 101px; }
+  .about__face--d { left: 103px; top: 101px; }
+  .about__team-count {
+    position: absolute; left: 0; top: 0;
+    display: flex; align-items: center; justify-content: center;
+    width: var(--avatar); height: var(--avatar);
+    margin: 0; border-radius: var(--r-circle);
+    background: var(--c-surface);
+    font-size: var(--fs-label); font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+
+  /* Edge fades so the row reads as a strip that continues past its box. */
+  .about__logos { grid-column: 2 / 4; position: relative; margin-top: 96px; overflow: hidden; }
+  .about__logos::before, .about__logos::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 54px; z-index: 1;
+  }
+  .about__logos::before { left: 0; background: linear-gradient(270deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
+  .about__logos::after { right: 0; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
+  .about__logo-row { display: flex; align-items: center; gap: 44px; height: 44px; padding-inline: 6px; filter: grayscale(1); opacity: 0.62; }
+  .about__logo-row span { flex: 0 0 84px; height: 24px; background: rgb(217, 217, 217); }
+
   .about__pitch { grid-column: 3 / 4; }
   .about__pitch p {
     font-size: var(--fs-item); font-weight: var(--fw-medium);
@@ -779,41 +943,89 @@ const schema = [
 
   /* 3. services -------------------------------------------------------- */
   .svc { padding-block: 121px; }
-  .svc .display { margin-left: calc(var(--rail-width) + var(--sp-5)); }
+  .svc .display { margin-left: var(--rail-width); }
   .svc__list { list-style: none; margin: 185px 0 0; padding: 0; }
-  .svc__row { margin-bottom: var(--sp-6); }
-  .svc__grid {
+  .svc__row { border-top: 1.5px solid var(--c-rule-strong); }
+  .svc__h { margin: 0; font-size: inherit; font-weight: inherit; }
+  /* Name and index in the rail, body and count in the inner column, toggle at
+     the far right — the same anatomy as the FAQ rows below. */
+  .svc__trigger {
     display: grid;
-    grid-template-columns: 464fr 241fr 464fr 200fr;
-    gap: var(--sp-5);
-    padding-top: 25px;
+    grid-template-columns: var(--rail-width) 232px 206px minmax(0, 1fr) var(--icon-circle);
+    gap: 0 var(--sp-5);
+    align-items: start;
+    width: 100%;
+    padding: 26px 0 24px;
+    border: 0; background: none;
+    font-family: inherit; color: inherit; text-align: left;
+    cursor: pointer;
   }
-  .svc__n { font-size: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: rgb(17, 17, 17); }
+  .svc__rail { display: flex; flex-direction: column; gap: 6px; }
+  .svc__n { font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: rgb(17, 17, 17); }
   .svc__name {
-    font-size: clamp(var(--fs-item), 2.2vw, 32px);
-    font-weight: var(--fw-semi); line-height: 1.25;
+    font-size: var(--fs-item);
+    font-weight: var(--fw-semi); line-height: 32px;
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
-  .svc__name:hover { color: var(--c-accent); }
-  .svc__body { font-size: var(--fs-body); line-height: 23px; letter-spacing: -0.05em; color: rgb(14, 14, 14); }
-  .svc__stages { display: block; margin-top: var(--sp-5); font-size: var(--fs-label); letter-spacing: var(--ls-body); color: rgb(71, 71, 71); opacity: 0.8; }
+  .svc__trigger:hover .svc__name { color: rgb(90, 90, 90); }
+  .svc__body { font-size: var(--fs-body); font-weight: var(--fw-medium); line-height: 23px; letter-spacing: var(--ls-body); color: rgb(2, 2, 2); }
+  .svc__count { font-size: 32px; font-weight: var(--fw-semi); line-height: 32px; letter-spacing: var(--ls-display); color: var(--c-black); white-space: nowrap; }
+  .svc__count span { margin-right: var(--sp-3); }
+  .svc__count { font-size: var(--fs-label); font-weight: var(--fw-medium); }
+  .svc__count span { font-size: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+
+  /* Same disc as the FAQ: white on the grey ground, glyph at the right. */
+  .svc__icon {
+    position: relative; justify-self: end;
+    width: var(--icon-circle); height: var(--icon-circle);
+    border-radius: var(--r-pill); background: var(--c-white);
+    transition: background var(--dur-fast) ease;
+  }
+  .svc__icon::before, .svc__icon::after {
+    content: ''; position: absolute; inset: 50% auto auto 50%;
+    translate: -50% -50%; background: var(--c-black);
+    transition: opacity var(--dur-fast) ease;
+  }
+  .svc__icon::before { width: 13px; height: 1.25px; }
+  .svc__icon::after { width: 1.25px; height: 13px; }
+  [aria-expanded='true'] .svc__icon::after { opacity: 0; }
+  .svc__trigger:hover .svc__icon { background: var(--c-accent); }
+
+  .svc__panel { overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
+  .svc__panel[hidden] { display: block; height: 0; }
+  /* Row one ships open, so it needs a real height before any script runs.
+     The island overwrites this with a measured pixel height on first toggle. */
+  .svc__panel:not([hidden]) { height: auto; }
+  .svc__inner {
+    display: grid;
+    grid-template-columns: 223px minmax(0, 1fr);
+    gap: var(--sp-5);
+    margin-left: var(--rail-width);
+    padding-bottom: var(--sp-6);
+  }
+  .svc__media { position: relative; height: 138px; }
+  .svc__disc { position: absolute; left: 0; top: 0; width: 138px; height: 138px; border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .svc__disc--sm { left: 141px; top: 5px; width: 37px; height: 37px; background: rgb(102, 102, 102); }
+  .svc__detail { display: flex; flex-direction: column; gap: var(--sp-4); }
+  .svc__stages { margin: 0; font-size: var(--fs-label); font-weight: var(--fw-medium); line-height: 19px; letter-spacing: var(--ls-body); color: rgb(71, 71, 71); opacity: 0.8; }
   .svc__clients { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: var(--fs-body); font-weight: var(--fw-semi); line-height: 22px; letter-spacing: var(--ls-item); }
   .svc__more { font-weight: var(--fw-medium); color: rgb(145, 144, 142); }
-  .svc__count { font-size: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
-  .svc__count span + * { font-size: var(--fs-label); }
+  .svc__link { font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(17, 17, 17); text-underline-offset: 4px; }
+
   .svc__foot {
-    display: grid; grid-template-columns: 464fr 1fr; gap: var(--sp-5);
-    margin-top: 72px; margin-left: calc(var(--rail-width) + var(--sp-5));
+    display: grid; grid-template-columns: 356px 1fr; gap: var(--sp-5);
+    margin-top: 72px; margin-left: var(--rail-width);
     align-items: start;
   }
   .svc__foot .intro { max-width: 356px; }
+  .svc__foot :global(a) { justify-self: start; }
 
   /* 4. projects -------------------------------------------------------- */
-  .proj { background: var(--c-black); }
+  .proj { position: relative; background: var(--c-black); }
   .proj__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleY(-1); }
   .proj__veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.2) 42%, rgba(0,0,0,.62) 100%); }
   .proj__inner { position: relative; z-index: 1; padding-block: 129px; }
-  .proj__head { margin-left: calc(var(--rail-width) + var(--sp-5)); }
+  .proj__head { margin-left: var(--rail-width); }
   .proj__count { margin-top: var(--sp-4); font-size: 40px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: rgb(236, 234, 228); }
   .proj__count span { font-size: 22px; font-weight: var(--fw-medium); }
   .proj__legend { list-style: none; margin: var(--sp-4) 0 0; padding: 0; font-size: var(--fs-body); line-height: 28px; letter-spacing: var(--ls-display); color: var(--c-white); }
@@ -838,67 +1050,142 @@ const schema = [
     font-size: 36px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-white);
   }
-  .proj__foot { margin-top: 107px; margin-left: calc(var(--rail-width) + var(--sp-5)); }
+  .proj__foot { margin-top: 107px; margin-left: var(--rail-width); }
 
   /* 5. people say ------------------------------------------------------ */
   .say { padding-block: 132px; }
-  .say .display, .say__score { margin-left: calc(var(--rail-width) + var(--sp-5)); }
+  .say .display, .say__score { margin-left: var(--rail-width); }
   .say__score { margin-top: var(--sp-4); font-size: var(--fs-stat); font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
-  .say__list { list-style: none; margin: 90px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-5); align-items: start; }
-  .say__name { font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(31, 31, 31); }
-  .say__role { font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
-  .say__quote { margin: var(--sp-5) 0 0; font-size: var(--fs-item); font-weight: var(--fw-medium); line-height: 32px; letter-spacing: var(--ls-item); color: var(--c-black); }
-  /* The spec steps each column down in size, so the row reads as a hierarchy
-     rather than four equal quotes. */
-  .say__item:nth-child(2) .say__quote { font-size: 18px; line-height: 25px; }
-  .say__item:nth-child(3) .say__quote { font-size: 15px; line-height: 21px; }
-  .say__item:nth-child(4) .say__quote { font-size: var(--fs-micro); line-height: 17px; }
-  .say__meta { margin-top: 80px; font-size: 13px; line-height: 18px; letter-spacing: var(--ls-display); color: rgb(71, 71, 71); }
+
+  /* The cascade. Seven tracks so the four items land on the prototype's
+     uneven column rhythm (292 / 57 / 339 / 7 / 435 / 29 / 206 of 1365); each
+     item then drops by its own offset. Proportional, so it holds off 1440. */
+  .say__list {
+    list-style: none; margin: 90px 0 0; padding: 0;
+    display: grid;
+    grid-template-columns: 292fr 57fr 339fr 7fr 435fr 29fr 206fr;
+    align-items: start;
+  }
+  .say__item {
+    grid-row: 1;
+    grid-column: var(--col);
+    margin-top: var(--top);
+  }
+  .say__avatar { display: block; width: var(--av); height: var(--av); border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .say__name { margin: 15px 0 0; font-size: var(--lb); font-weight: var(--fw-semi); line-height: 19px; letter-spacing: var(--ls-body); color: rgb(31, 31, 31); }
+  .say__role { margin: 0; font-size: var(--lb); font-weight: var(--fw-medium); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-ink-label); }
+  .say__rule { height: 1.5px; margin-top: 19px; background: var(--c-rule-strong); }
+  .say__stars { display: flex; gap: 4px; margin-top: 22px; }
+  .say__stars img { width: var(--st); height: var(--st); }
+  .say__quote {
+    margin: 28px 0 0;
+    font-size: var(--qt); font-weight: var(--fw-medium);
+    line-height: var(--ld); letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+
+  /* 386 / 737 / 966 in the prototype, which is its own rhythm rather than
+     the inner column. */
+  .say__foot { display: grid; grid-template-columns: 351px 229px auto; align-items: center; margin-top: 90px; margin-left: 347px; }
+  .say__foot :global(a) { justify-self: start; }
+  .say__nav { display: flex; align-items: center; gap: var(--sp-3); font-size: var(--fs-body); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); }
+  .say__prev { color: rgba(0, 0, 0, 0.4); }
+  .say__next { color: rgb(8, 8, 8); }
+  .say__dot { width: 8px; height: 8px; border-radius: var(--r-circle); background: rgba(0, 0, 0, 0.4); }
+  .say__dot--on { background: rgb(8, 8, 8); }
+  /* Overlapping stack: 42px discs at a 32px pitch, each ringed in the ground
+     colour so the overlap reads as depth rather than a smudge. */
+  .say__stack { display: flex; }
+  .say__stack > * {
+    width: var(--avatar); height: var(--avatar);
+    border-radius: var(--r-circle);
+    background: rgb(217, 217, 217);
+    box-shadow: var(--shadow-ring);
+  }
+  .say__stack > * + * { margin-left: var(--avatar-overlap); }
+  .say__count {
+    display: flex; align-items: center; justify-content: center;
+    background: rgb(20, 20, 20);
+    font-size: 15px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-white);
+  }
+  .say__meta { margin: 0; font-size: 13px; font-weight: var(--fw-medium); line-height: 18px; letter-spacing: var(--ls-display); color: rgb(71, 71, 71); }
 
   /* 6. industries ------------------------------------------------------ */
-  .ind { padding-block: 120px; }
-  .ind .display, .ind__label, .ind__sub, .ind__intro, .ind__grid, .ind__foot {
-    margin-left: calc(var(--rail-width) + var(--sp-5));
+  .ind { padding-block: 120px; position: relative; }
+  .ind .display, .ind__intro, .ind__grid, .ind__foot {
+    margin-left: var(--rail-width);
   }
-  .ind__label { margin-top: var(--sp-5); font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
-  .ind__sub { font-size: var(--fs-item); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-ink-heading); }
+  /* The label pair belongs to the left rail, not the inner column. */
+  .ind__rail { position: absolute; left: 3px; top: 319px; }
+  .ind__label { margin: 0; font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); color: var(--c-black); }
+  .ind__sub { margin: 0; font-size: var(--fs-label); font-weight: var(--fw-regular); letter-spacing: var(--ls-display); color: var(--c-rule); }
   .ind__intro { margin-top: var(--sp-4); max-width: 620px; }
-  .ind__grid { list-style: none; margin: var(--sp-7) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 210px); gap: 30px 20px; }
+  .ind__grid { list-style: none; margin: var(--sp-7) 0 0 var(--rail-width); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 107px 20px; }
+
+  /* Horizontal: ring circle on the left, name and cta to its right, rule
+     above. Square boxes with inset rings were the earlier reading and are
+     not what the prototype does. */
   .ind__card {
-    display: flex; flex-direction: column; gap: var(--sp-3);
-    height: 170px; padding: var(--sp-4);
-    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.16);
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    align-items: center;
+    gap: var(--sp-3);
+    padding-top: 28px;
+    border-top: 1px solid var(--c-rule-strong);
+  }
+  .ind__letter {
+    display: flex; align-items: center; justify-content: center;
+    width: 64px; height: 64px;
+    border-radius: var(--r-circle);
+    box-shadow: inset 0 0 0 1.5px rgba(20, 20, 20, 0.35);
+    font-size: var(--fs-intro); font-weight: var(--fw-semi); line-height: 1;
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
     transition: box-shadow var(--dur-fast) ease, background var(--dur-fast) ease;
   }
-  .ind__card:hover { box-shadow: inset 0 0 0 1px var(--c-accent); background: rgba(255, 212, 0, 0.1); }
-  .ind__letter { font-size: var(--fs-stat); font-weight: var(--fw-semi); line-height: 1; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
-  .ind__name { margin-top: auto; font-size: var(--fs-item); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); }
-  .ind__cta { font-size: var(--fs-micro); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
+  .ind__card:hover .ind__letter { box-shadow: inset 0 0 0 1.5px var(--c-accent); background: rgba(255, 212, 0, 0.14); }
+  .ind__text { display: flex; flex-direction: column; gap: 2px; }
+  .ind__name { font-size: var(--fs-intro); font-weight: var(--fw-semi); line-height: 28px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
+  .ind__cta { font-size: var(--fs-micro); font-weight: var(--fw-medium); line-height: 19px; letter-spacing: var(--ls-item); color: var(--c-rule); }
   .ind__foot { margin-top: var(--sp-7); }
 
   /* 7. insights -------------------------------------------------------- */
   .ins { padding-block: 120px; }
-  .ins .display, .ins__who, .ins__role, .ins__intro, .ins__grid, .ins__foot {
-    margin-left: calc(var(--rail-width) + var(--sp-5));
+  .ins .display, .ins__head, .ins__foot { margin-left: var(--rail-width); }
+  .ins__head { display: grid; grid-template-columns: 232px minmax(0, 524px); gap: 0; margin-top: 60px; align-items: start; }
+  .ins__avatar { display: block; width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .ins__name { margin: 18px 0 0; font-size: var(--fs-label); font-weight: var(--fw-semi); line-height: 20px; letter-spacing: var(--ls-display); color: rgb(22, 22, 22); }
+  .ins__role { margin: 0; font-size: var(--fs-label); font-weight: var(--fw-medium); line-height: 20px; letter-spacing: var(--ls-display); color: rgb(145, 144, 142); }
+  .ins__intro { margin: 0; }
+
+  /* Three cards across the FULL width, gutter to gutter, not inside the
+     inner column: the first card's month sits at x=94 in the prototype. */
+  .ins__grid { list-style: none; margin: 113px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 29px; }
+  .ins__card {
+    display: grid;
+    grid-template-columns: 232px minmax(0, 1fr);
+    align-items: start;
+    row-gap: 0;
   }
-  .ins__who { margin-top: var(--sp-5); font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
-  .ins__role { font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
-  .ins__intro { margin-top: var(--sp-4); max-width: 620px; }
-  .ins__grid { list-style: none; margin: var(--sp-7) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 435px)); gap: var(--sp-5); }
-  .ins__card { display: flex; flex-direction: column; gap: var(--sp-3); }
-  .ins__ph { aspect-ratio: 435 / 190; background: rgb(30, 30, 30); }
-  .ins__date { font-size: var(--fs-micro); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
-  .ins__title { font-size: var(--fs-item); font-weight: var(--fw-semi); line-height: 1.25; letter-spacing: var(--ls-item); color: var(--c-ink-heading); }
-  .ins__card:hover .ins__title { color: var(--c-accent); }
-  .ins__foot { margin-top: var(--sp-7); }
+  /* A 138px disc, offset into the second column, matching the services row. */
+  .ins__ph { grid-column: 2; width: 138px; height: 138px; border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .ins__rule { grid-column: 1 / -1; height: 1px; margin-top: 36px; background: var(--c-rule-strong); }
+  .ins__day { grid-column: 1; grid-row: 3; margin-top: 13px; font-size: var(--fs-stat); font-weight: var(--fw-semi); line-height: 43px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
+  .ins__month { grid-column: 1; grid-row: 3; justify-self: start; margin: 13px 0 0 55px; font-size: var(--fs-body); font-weight: var(--fw-medium); line-height: 43px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
+  .ins__title { grid-column: 2; grid-row: 3; max-width: 195px; margin-top: 25px; font-size: var(--fs-body); font-weight: var(--fw-medium); line-height: 22px; letter-spacing: var(--ls-body); color: rgb(20, 20, 20); }
+  .ins__card:hover .ins__title { color: rgb(90, 90, 90); }
+  .ins__foot { display: flex; align-items: center; gap: var(--sp-5); margin-top: 94px; }
+  .ins__stars { display: flex; gap: 5px; }
 
   /* 8. faq ------------------------------------------------------------- */
-  .faq { padding-block: 120px; }
-  .faq .display, .faq__who, .faq__role, .faq__intro, .faq__foot { margin-left: calc(var(--rail-width) + var(--sp-5)); }
-  .faq :global(.acc) { margin-top: var(--sp-7); margin-left: calc(var(--rail-width) + var(--sp-5)); }
-  .faq__who { margin-top: var(--sp-5); font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
-  .faq__role { font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
-  .faq__intro { margin-top: var(--sp-4); max-width: 620px; }
+  .faq { padding-block: 120px; position: relative; }
+  .faq .display, .faq__foot { margin-left: var(--rail-width); }
+  .faq :global(.acc) { margin-top: var(--sp-7); margin-left: var(--rail-width); }
+  /* Founder block in the left rail. */
+  .faq__rail { position: absolute; left: 3px; top: 308px; width: 195px; }
+  .faq__avatar { display: block; width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); background: rgb(217, 217, 217); }
+  .faq__who { margin: 10px 0 0; font-size: var(--fs-micro); font-weight: var(--fw-medium); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-black); }
+  .faq__role { margin: 0; font-size: var(--fs-micro); font-weight: var(--fw-regular); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-rule); }
+  .faq__intro { margin: var(--sp-4) 0 0; font-size: var(--fs-body); font-weight: var(--fw-medium); line-height: 22px; letter-spacing: var(--ls-body); color: rgb(20, 20, 20); }
   .faq__foot { margin-top: var(--sp-6); display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap; }
   .faq__ask { font-size: var(--fs-body); letter-spacing: var(--ls-item); color: var(--c-ink-muted); }
 

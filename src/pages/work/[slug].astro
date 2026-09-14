@@ -55,6 +55,7 @@ const { Content } = entry ? await render(entry) : { Content: null }
 ---
 
 <MarketingPage
+  topCta="contact"
   title={entry?.data.seo.title ?? `${client} Case Study | ${site.name}`}
   description={entry?.data.seo.description}
   path={path}

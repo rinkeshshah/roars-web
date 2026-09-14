@@ -40,12 +40,19 @@ export const site = {
     'https://www.facebook.com/roarstech/',
   ],
 
+  /**
+   * `city` feeds the Organization schema's PostalAddress, which wants the real
+   * locality. `label` is what the footer prints: the prototype's Offices slot
+   * is 234px of 12px type before it collides with the Built by column, and the
+   * five city names measure 234.05px — exactly the budget, which is why they
+   * ran into it. The five country names measure 185px and fit with room.
+   */
   offices: [
-    { code: 'IN', city: 'Bengaluru',           region: 'Karnataka', country: 'IN' },
-    { code: 'US', city: 'Frisco',              region: 'TX',        country: 'US' },
-    { code: 'UK', city: 'London',              region: '',          country: 'GB' },
-    { code: 'BE', city: 'Heist op den Berg',   region: '',          country: 'BE' },
-    { code: 'DE', city: 'München',             region: '',          country: 'DE' },
+    { code: 'IN', label: 'India',   city: 'Bengaluru',         region: 'Karnataka', country: 'IN' },
+    { code: 'US', label: 'USA',     city: 'Frisco',            region: 'TX',        country: 'US' },
+    { code: 'UK', label: 'UK',      city: 'London',            region: '',          country: 'GB' },
+    { code: 'BE', label: 'Belgium', city: 'Heist op den Berg', region: '',          country: 'BE' },
+    { code: 'DE', label: 'Germany', city: 'München',           region: '',          country: 'DE' },
   ],
 
   stats: {

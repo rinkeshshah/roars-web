@@ -13,7 +13,13 @@ export function initTopbar(): void {
   const bar = document.querySelector<HTMLElement>('[data-topbar]')
   if (!bar) return
 
-  const darks = Array.from(document.querySelectorAll<HTMLElement>('[data-ground="dark"]'))
+  /* A dark ground is the usual reason the bar needs light ink, but not the
+     only one: the homepage hero is a LIGHT section whose right two thirds are
+     a photograph, and the bar sits entirely over that. Such a section opts in
+     with data-topbar-ink="light" rather than lying about its ground. */
+  const darks = Array.from(
+    document.querySelectorAll<HTMLElement>('[data-ground="dark"], [data-topbar-ink="light"]'),
+  )
   const ring = bar.querySelector<HTMLElement>('[data-logo-ring]')
 
   /** Dark sections currently crossing the bar's probe line. */

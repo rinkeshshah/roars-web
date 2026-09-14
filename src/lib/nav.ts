@@ -16,6 +16,15 @@ export const NAV: NavItem[] = [
   { label: 'Contact', href: '/contact-us/' },
 ]
 
+/**
+ * Footer navigation. Five items, not six: the approved Main prototype's footer
+ * omits Approach, and the prototype is the visual target. The Approach spec's
+ * own footer lists six, which is the disagreement; this resolves it in the
+ * prototype's favour by decision, and the page itself stays in NAV above so it
+ * is still reachable from the nav overlay and the sitemap.
+ */
+export const FOOTER_NAV: NavItem[] = NAV.filter((i) => i.label !== 'Approach')
+
 export const SOCIAL: NavItem[] = [
   { label: 'Twitter', href: 'https://www.twitter.com/roarstech' },
   { label: 'Instagram', href: 'https://www.instagram.com/roarstech' },

@@ -43,10 +43,10 @@ const schema = [
   path="/contact-us/"
   schema={schema}
 >
-  <TopBar slot="topbar" />
+  <TopBar slot="topbar" cta="meeting" />
   <NavOverlay />
 
-  <Section ground="dark" class="ch">
+  <Section ground="dark">
     <div class="ch__inner">
       <div class="ch__rail">
         <div class="ch__rule"></div>
@@ -167,7 +167,6 @@ const schema = [
 </BaseLayout>
 
 <style>
-  .ch { background: var(--c-black); }
   .ch__inner {
     display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr);
     column-gap: var(--sp-5); padding-block: 200px 120px;
