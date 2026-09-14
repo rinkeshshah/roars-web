@@ -2,19 +2,29 @@
 /**
  * The mark, with a conic scroll-progress ring.
  *
+ * This is the REAL brand mark from design/prototypes/brand/, not the two
+ * circles that stood in for it. The stand-in was never meant to ship; the
+ * asset was in the repo the whole time and nothing pointed at it.
+ *
  * Over light grounds the chip gets a pale ground, the mark rotates 45deg and
  * the yellow ring fills in proportion to scroll progress. Over dark grounds
  * the ring hides and the mark sits plain. Driven by the same top-bar
  * observer, never by hard-coded pixel bands.
  */
+import mark from '../assets/roars-mark.png'
 ---
 
 <a class="chip" href="/" data-logo-chip aria-label="Roars, home">
   <span class="chip__ring" data-logo-ring aria-hidden="true"></span>
-  <svg class="chip__mark" data-logo-mark viewBox="0 0 26 26" width="26" height="26" aria-hidden="true">
-    <circle cx="13" cy="9" r="5.2" fill="none" stroke="currentColor" stroke-width="2.6" />
-    <circle cx="13" cy="20.5" r="2.6" fill="currentColor" />
-  </svg>
+  {/* Masked, not <img>: the mark has to take a token colour — accent over the
+      hero, ink over light grounds, white on dark — and a raster cannot. The
+      mask keeps one asset and lets `background` do the colouring. */}
+  <span
+    class="chip__mark"
+    data-logo-mark
+    style={`--mark:url(${mark.src})`}
+    aria-hidden="true"
+  ></span>
 </a>
 
 <style>
@@ -46,13 +56,19 @@
   }
   .chip__mark {
     position: relative;
-    transition: rotate var(--dur-base) var(--ease-spring), color var(--dur-fast) ease;
+    display: block;
+    width: 26px;
+    height: 33px;
+    background: var(--c-accent);
+    -webkit-mask: var(--mark) center / contain no-repeat;
+    mask: var(--mark) center / contain no-repeat;
+    transition: rotate var(--dur-base) var(--ease-spring), background var(--dur-fast) ease;
   }
 
   /* Light ground. The observer sets this on the top bar. */
   :global(.topbar.is-light) .chip { background: #fbfbf9; box-shadow: var(--shadow-chip); }
   :global(.topbar.is-light) .chip__ring { opacity: 1; }
-  :global(.topbar.is-light) .chip__mark { rotate: 45deg; color: var(--c-ink-body); }
+  :global(.topbar.is-light) .chip__mark { rotate: 45deg; background: var(--c-ink-body); }
 
   @media (prefers-reduced-motion: reduce) {
     .chip__mark { transition: none; }

@@ -16,6 +16,7 @@ import { Picture } from 'astro:assets'
 import { site } from '../lib/site'
 import { FOOTER_NAV, SOCIAL, LEGAL } from '../lib/nav'
 import space2000 from '../assets/space-2000.jpg'
+import mark from '../assets/roars-mark.png'
 
 const year = new Date().getFullYear()
 ---
@@ -38,10 +39,8 @@ const year = new Date().getFullYear()
   <div class="ft__scrim"></div>
   <div class="wrap">
     <div class="ft__grid ft__top">
-      <svg class="ft__mark" viewBox="0 0 21 21" width="21" height="21" aria-hidden="true">
-        <circle cx="10.5" cy="7.5" r="4.4" fill="none" stroke="currentColor" stroke-width="2.2" />
-        <circle cx="10.5" cy="17" r="2.2" fill="currentColor" />
-      </svg>
+      {/* The real mark, masked so it reads white on the dark ground. */}
+      <span class="ft__mark" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
       <div class="ft__blurb">
         <p>
           Find how we can help you get from A to B. Our love for innovation
@@ -52,7 +51,7 @@ const year = new Date().getFullYear()
         <div class="ft__by">
           <span class="ft__face" aria-hidden="true"></span>
           <span class="ft__by-text">
-            <span class="ft__by-name">Riinkesh A Sshah</span>
+            <span class="ft__by-name">Rinkesh A Shah</span>
             <span class="ft__by-role">CEO / Founder</span>
           </span>
         </div>
@@ -165,7 +164,12 @@ const year = new Date().getFullYear()
     grid-template-columns: 459fr 233fr 234fr 436fr;
   }
   .ft__top { margin-bottom: 125px; }
-  .ft__mark { color: var(--c-white); }
+  .ft__mark {
+    display: block; width: 21px; height: 27px;
+    background: var(--c-white);
+    -webkit-mask: var(--mark) center / contain no-repeat;
+    mask: var(--mark) center / contain no-repeat;
+  }
   .ft__blurb { grid-column: 2 / 4; max-width: 384px; }
   .ft__blurb p {
     font-size: var(--fs-intro);

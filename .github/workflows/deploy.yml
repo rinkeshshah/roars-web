@@ -80,6 +80,14 @@ jobs:
       - name: Assert every scoped style matches something
         run: node scripts/assert-styles.mjs
 
+      # Names on real people's testimonials. A visual diff cannot see a
+      # scrambled attribution, and the prototypes shipped several. Prints the
+      # unverified list on every run; fails from phase 6 (cutover).
+      - name: Assert every attribution is sourced
+        run: node scripts/assert-attribution.mjs
+        env:
+          BUILD_PHASE: ${{ vars.BUILD_PHASE || '0' }}
+
       # --- browser assertions --------------------------------------------
       # Keyboard reachability, focus trap, one-open-at-a-time accordion,
       # filtering without a URL change, ink inversion, reduced motion, and
