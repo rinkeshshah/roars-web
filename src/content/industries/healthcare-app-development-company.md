@@ -90,8 +90,8 @@ proof:
       label: "RETURNING CUSTOMERS"
   featured:
     label: "FEATURED WORK"
-    client: "Being the best-in-class medical apps…"
-    body: "GISAID OSS"
+    client: "GISAID OSS"
+    body: "Being the best-in-class medical apps development company , We offer cloud-based solutions like AWS Managed Services, AWS professional services, DevOps Services and a lot more to make it easier for the healthcare…"
     href: "/work/gisaid-health-tech/"
     ctaLabel: "View Project"
 sectors:

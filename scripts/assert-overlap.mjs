@@ -47,10 +47,10 @@ const ACCEPTED = [
 const accepted = (a, b) => ACCEPTED.some((r) => r.a.test(a) && r.b.test(b))
 
 /*
- * One entry per DESIGNED page. The other service and industry URLs — 11 of 12
- * and 8 of 9 — render the noindex "content pending migration" holding page,
- * which is a heading and a paragraph and has nothing to break. Listing them
- * would triple the run time to assert that a paragraph fits on a phone.
+ * One entry per page SHAPE, not per page. Every service page now runs through
+ * s/[slug].astro and every industry page through industries/[slug].astro, so
+ * one hand-built and one migrated example of each covers the layouts; the rest
+ * differ only in how long their sentences are.
  */
 const PAGES = [
   ['home', '/'], ['agency', '/about-us/'], ['approach', '/approach/'],
@@ -62,7 +62,7 @@ const PAGES = [
      single word — and that only shows up on a page built from the real text. */
   ['industry-m', '/industries/healthcare-app-development-company/'],
   ['service', '/s/ai-automation-services/'],
-  ['pending', '/s/product-development-company/'],
+  ['service-m', '/s/mvp-development/'],
   ['project', '/work/warehouse-compliance-checklist-app/'],
   ['journal', '/our-journal/'],
   ['post', '/our-journal/how-ai-is-transforming-user-experience-design/'],

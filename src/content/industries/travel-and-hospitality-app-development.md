@@ -88,8 +88,8 @@ proof:
       label: "RETURNING CUSTOMERS"
   featured:
     label: "FEATURED WORK"
-    client: "We have top-of-the-line expertise in…"
-    body: "ONUS"
+    client: "ONUS"
+    body: "We have top-of-the-line expertise in developing an online booking management system, integrated with operators and travel agencies software."
     href: "/work/onus/"
     ctaLabel: "View Project"
 sectors:

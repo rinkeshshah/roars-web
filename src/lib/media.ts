@@ -19,6 +19,8 @@
  * is missing on the server the slot renders empty rather than broken; nothing
  * invented, nothing substituted.
  */
+import { PROJECTS } from './projects'
+
 const U = '/wp-content/uploads'
 
 /** People. Filenames are the live ones; the captions they carry are not. */
@@ -68,20 +70,22 @@ export const WORK = {
 /**
  * The photograph at the top of a /work/[slug]/ page, by slug.
  *
- * Keyed by the inventory slug so a band that credits a project can find that
- * project's own header without a second field in the content to keep in step
- * with the link. Only slugs whose live path is KNOWN belong here — the paths
- * are not derivable (the /YYYY/MM/ segment is whatever month the file was
- * uploaded), and a guessed one is a 404 that looks like a bug rather than a
- * gap. An unlisted slug returns undefined and the caller draws no image.
+ * Read off PROJECTS rather than kept as a second list. Every project already
+ * names its own art there, and that is what the /work/ index draws; a
+ * separate map beside it went stale the moment a band credited a project it
+ * had never heard of. It had exactly one entry — club-social — so the
+ * featured block on eight industry pages drew nothing.
+ *
+ * A project with no `image` returns undefined and the caller draws no image.
+ * That is deliberate: the live paths are not derivable (the /YYYY/MM/ segment
+ * is whatever month the file was uploaded), and a guessed one is a 404 that
+ * looks like a bug rather than a gap.
  */
-export const WORK_HERO: Record<string, string> = {
-  'club-social': WORK.clubSocial,
+export const workHeroFor = (href: string): string | undefined => {
+  const slug = href.replace(/^\/work\//, '').replace(/\/$/, '')
+  const key = PROJECTS.find((p) => p.slug === slug)?.image
+  return key ? WORK[key as keyof typeof WORK] : undefined
 }
-
-/** `href` is the route as written in content, e.g. "/work/club-social/". */
-export const workHeroFor = (href: string): string | undefined =>
-  WORK_HERO[href.replace(/^\/work\//, '').replace(/\/$/, '')]
 
 /**
  * Guide cover art, by /resources/ slug.

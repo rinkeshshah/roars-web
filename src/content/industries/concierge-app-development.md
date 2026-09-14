@@ -94,8 +94,8 @@ proof:
       label: "RETURNING CUSTOMERS"
   featured:
     label: "FEATURED WORK"
-    client: "Now manage your loyalty programs with…"
-    body: "Concierges"
+    client: "Concierges"
+    body: "Now manage your loyalty programs with ease through the advanced concierge app. Build an application that helps you to create & execute successful loyalty programs."
     href: "/work/concierge-loyalty-program/"
     ctaLabel: "View Project"
 sectors:

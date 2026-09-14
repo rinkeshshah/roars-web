@@ -316,8 +316,11 @@ const serviceLayout = {
       steps: z
         .array(
           z.object({
-            when: z.string().max(16),
-            phase: z.string().max(20),
+            /* Optional, like the journey's lead. A migrated page describes
+               its process without putting a week number on each step, and
+               inventing one would be inventing a delivery commitment. */
+            when: z.string().max(16).optional(),
+            phase: z.string().max(20).optional(),
             name: z.string().max(48),
             body: z.string().max(320),
           }),
@@ -367,6 +370,10 @@ const services = defineCollection({
   schema: z.object({
     ...base,
     ...serviceLayout,
+    /* Migrated pages keep the live site's own rank_math metadata, which runs
+       long. Same arrangement as the journal and the industries. */
+    seo: z.union([seo, seoMigrated]),
+    migrated: z.boolean().default(false),
     /** Service.serviceType in the JSON-LD. */
     serviceType: z.string(),
     subServices: z.array(z.string()).default([]),

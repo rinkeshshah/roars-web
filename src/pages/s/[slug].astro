@@ -251,8 +251,8 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
           <ol class="sv-proc__steps">
             {d.process.steps.map((st, i) => (
               <li data-reveal style={`transition-delay:${i * 60}ms`}>
-                <span class="sv-proc__when">{st.when}</span>
-                <span class="sv-proc__phase">{st.phase}</span>
+                {st.when && <span class="sv-proc__when">{st.when}</span>}
+                {st.phase && <span class="sv-proc__phase">{st.phase}</span>}
                 <h3 class="sv-proc__name">{st.name}</h3>
                 <p class="sv-proc__body">{st.body}</p>
               </li>

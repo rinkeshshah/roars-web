@@ -145,7 +145,14 @@ function frontMatterProse(data) {
       for (const [k, x] of Object.entries(v)) walk(x, k)
     }
   }
-  for (const k of ['headline', 'standfirst', 'hero', 'journey', 'surfaces', 'proof', 'cta']) {
+  /* Industry keys and service keys. The service template carries its copy in
+     bands, process, featured, receipts and close — none of which were in this
+     list, so eight real service pages counted about 150 words when they carry
+     four times that. */
+  for (const k of [
+    'headline', 'standfirst', 'hero', 'journey', 'surfaces', 'proof', 'cta',
+    'bands', 'process', 'featured', 'receipts', 'close', 'faq',
+  ]) {
     if (data[k] !== undefined) walk(data[k], k)
   }
   return out.join(' ')

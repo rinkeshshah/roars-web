@@ -263,11 +263,15 @@ def build(path):
     for i, (k, v) in enumerate(blocks):
         if k != 'WORK':
             continue
-        before = [b for b in blocks[max(0, i - 3):i] if b[0] in ('H', 'P')]
+        before = [b[1] for b in blocks[max(0, i - 3):i] if b[0] in ('H', 'P')]
         if not before:
             break
-        client = before[0][1]
-        body = before[1][1] if len(before) > 1 else ''
+        # Which of the two is the client and which is the blurb depends on the
+        # page: healthcare puts "GISAID OSS" first, saas and travel put the
+        # sentence first. A client name is short and a description is not, so
+        # take the shorter as the name rather than trusting the order.
+        pair = sorted(before[:2], key=len)
+        client, body = pair[0], (pair[1] if len(pair) > 1 else '')
         featured = (client, body, v)
         break
 

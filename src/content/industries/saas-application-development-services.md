@@ -91,8 +91,8 @@ proof:
       label: "RETURNING CUSTOMERS"
   featured:
     label: "FEATURED WORK"
-    client: "Meet the desired expectations through…"
-    body: "The Club Social"
+    client: "The Club Social"
+    body: "Meet the desired expectations through SaaS-based application design solutions."
     href: "/work/club-social/"
     ctaLabel: "View Project"
 sectors:
