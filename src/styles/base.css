@@ -74,7 +74,12 @@ p { margin: 0; }
 
 /* A photograph that has not been uploaded yet shows nothing, not a broken
    glyph and its alt text. Dimensions are kept so nothing reflows on arrival. */
-img.is-missing { visibility: hidden; }
+/* The src is swapped for a transparent pixel in src/scripts/media.ts, so the
+   glyph and alt text are already gone. The element stays visible: its box
+   holds the layout AND its background paints, which is what keeps the avatar
+   discs and the founder chip reading as the drawn composition until
+   /wp-content/uploads/ lands. Hiding it took the discs with it. */
+img.is-missing { object-fit: fill; }
 
 /* ── Decorative star marks ─────────────────────────────────────────
    The export ships star-3.svg / star-5.svg with `fill="currentColor"`,

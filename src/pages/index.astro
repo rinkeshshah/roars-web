@@ -317,34 +317,51 @@ const schema = [
         <span class="starmark" style={`--m:url(${star3.src});width:20px;height:20px`}></span>
         <span class="starmark" style={`--m:url(${star5.src});width:20px;height:20px`}></span>
       </span>
+      {/* All THREE stats live in one 1362x362 block in the export, and the
+          third is nested inside it at an offset of 698,187 — it is not a
+          second row under the first two, which is how it was built and why it
+          sat 15px low with 2005 18px adrift. The two placements overlap in
+          the same grid area, which is what grid overlap is for; nothing here
+          is absolutely positioned. Columns 463/235/664 sum to the 1362
+          content box, so they hold at any width. */}
       <div data-reveal class="about__stats">
-        <div class="about__stat">
-          <p class="about__stat-name">Projects Delivered</p>
-          <div class="rule"></div>
-          <div class="about__stat-row">
-            <span class="about__stat-num">250<span class="about__plus">+</span></span>
-            <span class="about__stat-note">Products launched successfully since 2005</span>
+        <div class="about__stat-pair">
+          <div class="about__stat">
+            <p class="about__stat-name">Projects Delivered</p>
+            <div class="rule about__stat-rule"></div>
+            <div class="about__stat-row">
+              <span class="about__stat-num">250<span class="about__plus">+</span></span>
+              <span class="about__stat-note">Products launched successfully since 2005</span>
+            </div>
+          </div>
+          <div class="about__stat">
+            <p class="about__stat-name">Returning Customers</p>
+            <div class="rule about__stat-rule"></div>
+            <div class="about__stat-row">
+              <span class="about__stat-num">96<span class="about__pct">%</span></span>
+              <span class="about__stat-note">Clients who return for their next product</span>
+            </div>
           </div>
         </div>
-        <div class="about__stat">
-          <p class="about__stat-name">Returning Customers</p>
-          <div class="rule"></div>
-          <div class="about__stat-row">
-            <span class="about__stat-num">96<span class="about__pct">%</span></span>
-            <span class="about__stat-note">Clients who return for their next product</span>
-          </div>
-        </div>
-      </div>
 
-      <div data-reveal class="about__est" style="transition-delay:80ms">
-        <p class="about__est-name">Year of Establishment</p>
-        <div class="rule"></div>
-        <div class="about__est-row">
-          <span class="about__est-note">
-            The year Rinkesh A Shah founded Roars — a first product for an
-            early-stage startup.
-          </span>
-          <span class="about__stat-num">2005</span>
+        <div class="about__est">
+          <p class="about__est-name">Year of Establishment</p>
+          <div class="rule about__est-rule"></div>
+          <div class="about__est-row">
+            <span class="about__est-note">
+              The year Rinkesh A Shah founded Roars — a first product for an
+              early-stage startup.
+            </span>
+            <span class="about__est-side">
+              <span class="about__stat-num about__est-num">2005</span>
+              {/* Two 28px portraits under the year. Files arrive with the
+                  Phase 5 uploads import; the discs hold their places. */}
+              <span class="about__est-faces" aria-hidden="true">
+                <img src={PORTRAIT.suzanne} alt="" width="28" height="28" loading="lazy" />
+                <img src={PORTRAIT.nitin} alt="" width="28" height="28" loading="lazy" />
+              </span>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -372,31 +389,37 @@ const schema = [
         <p class="about__who-role">CEO / Founder</p>
       </div>
 
-      <div data-reveal class="about__pitch" style="transition-delay:200ms">
-        <p>
-          We work with you as thinkers, creators, consultants, designers and
-          implementers{' '}
-          <span class="about__pitch-mid">to turn your product into a high quality marketable offering.</span>{' '}
-          <span class="about__pitch-low">Our approach is simple — we bring clarity to complex situations.</span>
-        </p>
-      </div>
+      {/* The pitch and the logo strip share one column in the export — both
+          sit in the block that opens at 584, at 79 and 296 into it. Given
+          their own grid rows they were separated by the row gap and the strip
+          landed 45px low. */}
+      <div class="about__right">
+        <div data-reveal class="about__pitch" style="transition-delay:200ms">
+          <p>
+            We work with you as thinkers, creators, consultants, designers and
+            implementers{' '}
+            <span class="about__pitch-mid">to turn your product into a high quality marketable offering.</span>{' '}
+            <span class="about__pitch-low">Our approach is simple — we bring clarity to complex situations.</span>
+          </p>
+        </div>
 
-      {/* Client logos. The files live on the WordPress install and arrive with
-          the Phase 5 uploads import; CLAUDE.md forbids hot-linking the live
-          site, so the row holds its 44px height and its edge fades until then
-          and is listed in the build report. */}
-      <div class="about__logos" data-reveal>
-        <div class="about__logo-row">
-          {CLIENT_LOGOS.map((l, i) => (
-            <img
-              src={l.src}
-              alt={l.alt}
-              height={l.h}
-              style={`--i:${i}`}
-              loading="lazy"
-              decoding="async"
-            />
-          ))}
+        {/* Client logos. The files live on the WordPress install and arrive
+            with the Phase 5 uploads import; CLAUDE.md forbids hot-linking the
+            live site, so the row holds its 44px height and its edge fades
+            until then and is listed in the build report. */}
+        <div class="about__logos" data-reveal>
+          <div class="about__logo-row">
+            {CLIENT_LOGOS.map((l, i) => (
+              <img
+                src={l.src}
+                alt={l.alt}
+                height={l.h}
+                style={`--i:${i}`}
+                loading="lazy"
+                decoding="async"
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -731,9 +754,16 @@ const schema = [
   .rule { height: 1.5px; background: var(--c-rule-strong); }
   .rule--short { width: 16px; }
   .rule--thin { height: 1.25px; }
+  /* A clamp's vw term has to REACH its cap at the 1440 design width, or the
+     cap never applies and the step lands fractionally small. 8.6vw is 123.84
+     at 1440, not 124 — and since letter-spacing and any em-sized glyph
+     children are relative, one missing 0.16px reappears as a row per
+     descendant in the diff table. 124/1440 = 8.611vw, so 8.62vw overshoots by
+     a hair and the cap decides. Same rule at every clamp here: the vw term
+     must exceed cap/14.4. */
   .display {
     margin: 0;
-    font-size: clamp(var(--fs-heading-m), 8.6vw, var(--fs-heading));
+    font-size: clamp(var(--fs-heading-m), 8.62vw, var(--fs-heading));
     font-weight: var(--fw-semi);
     line-height: var(--lh-tight);
     letter-spacing: var(--ls-display);
@@ -798,59 +828,121 @@ const schema = [
     position: relative;
     display: grid;
     grid-template-columns: 464fr 234fr 234fr 430fr;
-    row-gap: var(--sp-6);
+    /* 83, not --sp-6: the export's stats block ends at 501 and the team row
+       opens at 584. */
+    row-gap: 83px;
     column-gap: 0;
-    padding-block: 139px 123px;
+    /* 155, not 123: the export's last block ends at 924 in a 1079 section. */
+    padding-block: 139px 155px;
   }
-  /* Stats container at 139 in the section, and inside it: label 0, rule 43,
-     number 54, note 73. The 26px top margin put the whole block that far
-     below where the export has it. */
-  .about__stats { grid-column: 2 / 5; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  /* The export's one stats block: 1362x362 at 39,139. Two placements share
+     it — the pair from column 463, the Year block from 698,187. Tracks are
+     fr so they resolve to 463/235/664 on the 1362 content box and stay
+     proportional below it. */
+  .about__stats {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 463fr 235fr 664fr;
+    grid-template-rows: 187px minmax(0, 1fr);
+    min-height: 362px;
+  }
+  .about__stat-pair {
+    grid-column: 2 / -1; grid-row: 1 / -1;
+    display: grid; grid-template-columns: 435fr 29fr 435fr;
+  }
+  .about__stat-pair > :last-child { grid-column: 3; }
+  .about__est { grid-column: 3 / -1; grid-row: 2 / -1; }
+
+  /* Inside a stat box: name 0, rule 43, number 54, note 73. The name and the
+     rule carry the export's 2px inset; the number does not. */
   .about__stat-name, .about__est-name {
     font-size: var(--fs-intro); line-height: 19px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-body); color: var(--c-black);
-    margin-bottom: 24px;
   }
+  .about__stat-name { margin-left: 2px; }
+  .about__stat-rule { margin: 24px 0 0 2px; }
+  /* Both tracks are fr and they SUM to the box. Pairing a large fr with 1fr
+     does not mean "235 then the rest" — fr distributes proportionally, so
+     235fr 1fr gives the second track 1/236th of the row and the note
+     collapsed to 2px. */
   .about__stat-row {
     display: grid;
-    grid-template-columns: 233px minmax(0, 1fr);
+    grid-template-columns: 235fr 200fr;
     align-items: start;
-    margin-top: 9px;
+    margin-top: 9.5px;
   }
-  .about__est-row { display: flex; align-items: flex-start; gap: var(--sp-5); margin-top: var(--sp-4); }
+  /* Year block: name 0, rule 38, row 60. The row holds the note at 0 and a
+     right column whose year overhangs it by 11px, exactly as drawn. */
+  .about__est-rule { margin-top: 19px; }
+  /* The drawn row is 448 of the block's 664; the trailing track is the
+     remainder so the first two land at 228 and 220. */
+  .about__est-row {
+    display: grid; grid-template-columns: 228fr 220fr 216fr;
+    align-items: start; margin-top: 20.5px;
+  }
+  .about__est-num { line-height: 84px; }
+  /* Flex, not block: as a block the 84px inline span sits in a line box with
+     the 22px strut and the two align on the baseline, which put the year 9px
+     high. A flex column makes the span its own item. */
+  .about__est-side { display: flex; flex-direction: column; align-items: flex-start; margin-top: -11px; }
+  .about__est-faces { display: flex; gap: 6px; margin-top: 9px; margin-left: 2px; }
+  .about__est-faces img {
+    width: 28px; height: 28px; border-radius: var(--r-circle);
+    object-fit: cover; background: rgb(173, 173, 173);
+  }
   .about__stat-num {
-    font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display));
+    /* 5.8vw is 83.52 at 1440, so the 84px cap never applied. See .display. */
+    font-size: clamp(var(--fs-stat-m), 5.84vw, var(--fs-display));
     /* 84/84 in the export. 43 was a mispairing — it is the /Projects count
        in the Services rows that leads at 43 — and the 41px it cost is
        exactly what left the About section short and shifted every section
        below it. */
     font-weight: var(--fw-semi); line-height: 84px;
     letter-spacing: var(--ls-display); color: var(--c-black);
+    position: relative; display: block;
   }
-  .about__plus { font-size: 0.43em; line-height: 31px; font-weight: var(--fw-medium); }
-  .about__pct { font-size: 0.31em; line-height: 31px; font-weight: 700; }
+  /* The export PLACES these — + at 152,71 and % at 110,73 against a number
+     that starts at 0,54 — it does not run them on after the digits. Set
+     inline they closed up tight against the figure and sat low on its
+     baseline. No table of text positions would have caught it: visual-diff
+     skips inline boxes, whose rect is a union of line boxes. It took looking
+     at the two renders side by side.
+     letter-spacing is re-declared because it INHERITS AS A COMPUTED PX value,
+     so both were carrying the number's -4.2px rather than their own. */
+  .about__plus, .about__pct {
+    position: absolute;
+    line-height: 31px;
+    letter-spacing: var(--ls-display);
+  }
+  .about__plus { left: 152px; top: 17px; font-size: 36px; font-weight: var(--fw-medium); }
+  .about__pct  { left: 110px; top: 19px; font-size: 26px; font-weight: 700; }
   .about__stat-note, .about__est-note {
     max-width: 170px; margin-top: 19px;
     font-size: var(--fs-body); line-height: 22px;
     letter-spacing: var(--ls-body); color: rgb(71, 71, 71); opacity: 0.78;
   }
-  .about__est { grid-column: 3 / 5; }
+  /* The 19px drop belongs to the two stat notes, which sit that far under
+     their number. The Year note opens its own row and starts at its top. */
+  .about__est-note { margin-top: 0; line-height: 23px; }
   .about__est-name { font-size: 18px; color: rgb(54, 53, 53); }
-  .about__team-name, .about__who-name {
-    font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-semi);
+  /* The export sets these three at 24px on a 19px leading — tighter than the
+     glyphs, which is what keeps "Roars / Product Company" reading as one
+     stacked lockup rather than two lines of copy. --lh-item (32px) is the
+     body pairing and is wrong here; it cost 4px on "Roars" and 6px on the
+     line under it. */
+  .about__team-name, .about__who-name, .about__who-sub {
+    font-size: var(--fs-item); line-height: 19px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
-  .about__team-count {
-    display: flex; align-items: center; justify-content: center;
-    width: 42px; height: 42px; margin-top: var(--sp-5);
-    background: rgba(153, 152, 149, 0.18); border-radius: var(--r-pill);
-    font-size: 18px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
-  }
+  /* Offsets inside the block, from the export: name 0, sub 30, portrait 85,
+     name 157, role 178. They are not a rhythm, so each carries its own gap. */
   .about__who { grid-column: 2 / 3; }
-  .about__who-sub { font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: rgb(71, 71, 71); opacity: 0.7; }
-  .about__who-person { margin-top: var(--sp-6); font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
-  .about__who-role { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
-  .about__cluster { position: relative; width: 145px; height: 143px; margin-top: var(--sp-5); }
+  .about__who-sub { margin-top: 11px; color: rgb(71, 71, 71); opacity: 0.7; }
+  .about__who-person { margin-top: 12px; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
+  .about__who-role { margin-top: 2px; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
+  /* Team block: name 0, rule 43, cluster 85. */
+  .about__team .rule--short { margin-top: 24px; background: rgb(180, 174, 174); }
+  .about__cluster { position: relative; width: 145px; height: 143px; margin-top: 40.5px; }
   .about__face {
     position: absolute; width: var(--avatar); height: var(--avatar);
     border-radius: var(--r-circle); object-fit: cover; background: rgb(173, 173, 173);
@@ -859,18 +951,26 @@ const schema = [
   .about__face--b { left: 52px;  top: 50px; }
   .about__face--c { left: 0;     top: 101px; }
   .about__face--d { left: 103px; top: 101px; }
+  /* One rule, not two. There was a second .about__team-count above the
+     cluster block that set 18px on a grey chip; this one overrode it and
+     shipped the counter at 14px/19. The export is 18px on a 43px leading. */
   .about__team-count {
     position: absolute; left: 0; top: 0;
-    display: flex; align-items: center; justify-content: center;
     width: var(--avatar); height: var(--avatar);
     margin: 0; border-radius: var(--r-circle);
-    background: var(--c-surface);
-    font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi);
+    background: rgba(153, 152, 149, 0.18);
+  }
+  /* Not centred — the export sets the numeral at 10,8 on a 43px leading,
+     which reads slightly high and left in the disc. Centring it moved the
+     figure 33px and lost the relationship to the star mark beside it. */
+  .about__team-count > span {
+    position: absolute; left: 10px; top: 8px;
+    font-size: 18px; line-height: 43px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
 
   /* Edge fades so the row reads as a strip that continues past its box. */
-  .about__logos { grid-column: 3 / 5; position: relative; margin-top: 30px; overflow: hidden; }
+  .about__logos { position: relative; width: 94.73%; margin: 81px 0 0 -1.81%; overflow: hidden; }
   .about__logos::before, .about__logos::after {
     content: ''; position: absolute; top: 0; bottom: 0; width: 54px; z-index: 1;
   }
@@ -907,11 +1007,18 @@ const schema = [
     .about__logo-row img { translate: 0 0; transition: filter var(--dur-fast) ease; }
   }
 
-  .about__who-face { display: block; width: 60px; height: 60px; margin-top: 21px; border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
+  /* Explicit box, not the attributes: tokens.css sets img{height:auto}, so a
+     portrait whose file is still missing collapses and takes the two names
+     under it up with it. The export puts this at 85 in the block, which is
+     36 under the line above. */
+  .about__who-face { display: block; width: 60px; height: 60px; margin-top: 36px; border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
   .about__who-person { margin-top: 12px; }
   /* Prototype: "Roars" at 610, the pitch at 689 — 79px lower, not level. */
-  .about__who { margin-top: 8px; }
-  .about__pitch { grid-column: 3 / 5; margin-top: 79px; }
+  /* The who block opens level with "Team of Roars" at 584, not 8px under it. */
+  /* 79 and 296 into the block that opens at 584, so the strip clears the
+     pitch by 81 rather than by the grid's row gap. */
+  .about__right { grid-column: 3 / 5; }
+  .about__pitch { margin-top: 79px; }
   .about__pitch p { max-width: 617px; }
   .about__pitch p {
     font-size: var(--fs-item); font-weight: var(--fw-medium);
@@ -1297,7 +1404,7 @@ const schema = [
   @media (max-width: 1040px) {
     .hero__inner { grid-template-columns: 1fr; padding-block: 180px 80px; row-gap: var(--sp-6); }
     .about { grid-template-columns: 1fr; padding-block: var(--sp-7); }
-    .about__stats, .about__est, .about__who, .about__pitch { grid-column: 1 / -1; }
+    .about__stats, .about__est, .about__who, .about__right { grid-column: 1 / -1; }
     .svc .display, .svc__foot, .proj__head, .proj__foot,
     .say .display, .say__score,
     .ind .display, .ind__label, .ind__sub, .ind__intro, .ind__grid, .ind__foot,

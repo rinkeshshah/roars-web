@@ -221,16 +221,34 @@ const COLLECT = (opts) => {
   return { sections, text, scale }
 }
 
+/**
+ * Scroll the whole page so every reveal-on-intersect block has fired before
+ * anything is measured.
+ *
+ * The step used to be a full viewport, which silently skipped blocks. The
+ * reveal observer takes `threshold: 0.04` with a `-12%` bottom root margin,
+ * so at a 1200px viewport the root bottom is 1056. A 138px block at y1065 is
+ * outside the root at scroll 0, and at scroll 1200 only 3px of it are inside
+ * — 2.2%, under the threshold. It never revealed, and its five rows showed up
+ * in the table as a +26px offset, which is exactly `--reveal-y`. The build
+ * was correct; the walk was measuring an element mid-transition.
+ *
+ * A third of a viewport guarantees any block taller than a few px is fully
+ * traversed, and the settle covers `--dur-reveal` (720ms) so nothing is
+ * caught part-way through its transform.
+ */
 async function walk(page) {
   await page.evaluate(async () => {
-    const step = window.innerHeight
+    const step = Math.max(200, Math.round(window.innerHeight / 3))
     for (let y = 0; y < document.body.scrollHeight; y += step) {
       window.scrollTo(0, y)
-      await new Promise((r) => setTimeout(r, 80))
+      await new Promise((r) => setTimeout(r, 50))
     }
+    window.scrollTo(0, document.body.scrollHeight)
+    await new Promise((r) => setTimeout(r, 120))
     window.scrollTo(0, 0)
   })
-  await page.waitForTimeout(700)
+  await page.waitForTimeout(900)
 }
 
 async function capture(page, url, { protoMode, settle, openMenu }) {
