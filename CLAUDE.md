@@ -27,7 +27,7 @@ Three things carry the risk:
 | Build | GitHub Actions. **Never on the server.** |
 | Server | Nginx serving static files on Plesk. No Node, no PHP, no database. |
 | Forms | One PHP endpoint writing to MySQL. The only server-side code. |
-| Deploy | Actions builds, rsyncs `dist/` to the webspace |
+| Deploy | Actions builds and force-pushes `dist/` to an orphan `deploy` branch; Plesk pulls it. No rsync, no server credentials in CI. |
 
 Do not add: React, Vue, Svelte, Tailwind, an animation library, a UI kit, or a CMS. If you think you need one, build without it and make the case in your report.
 

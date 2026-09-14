@@ -93,6 +93,21 @@ const opacities = await page.$$eval('[data-slide]', (els) =>
 const sum = opacities.reduce((a, b) => a + b, 0)
 ok('cross-fade opacities sum to 1', Math.abs(sum - 1) < 0.02, sum.toFixed(3))
 
+/* The hero is a LIGHT section whose right two thirds are a photograph, and
+   the bar sits entirely over that, so it must carry light ink at rest. The
+   generic ink test in test-components.mjs runs on /components/, whose hero is
+   light all the way across, so it cannot catch a regression here. */
+await page.evaluate(() => window.scrollTo(0, 0))
+await page.waitForTimeout(300)
+const barLight = await page.locator('[data-topbar]').evaluate((el) =>
+  el.classList.contains('is-light'),
+)
+ok('top bar carries light ink over the hero photo', barLight === false)
+const noteColor = await page
+  .locator('[data-topbar-note]')
+  .evaluate((el) => getComputedStyle(el).color)
+ok('top bar note is legible on the photo', noteColor === 'rgb(255, 255, 255)', noteColor)
+
 await ctx.close()
 await browser.close()
 
