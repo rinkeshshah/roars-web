@@ -253,7 +253,10 @@ import { MENU } from '../lib/nav'
     display: grid;
     grid-template-columns: 464fr 898fr;
     align-items: start;
-    padding-top: 290px;
+    /* NAVIGATION lands at ~150, not ~300. The export measures 300, but its
+       overlay is taller than a 900px screen; at 150 the whole menu fits one
+       viewport with no scroll, which is the behaviour that matters. */
+    padding-top: 143px;
   }
 
   .nav__label, .nav__eyebrow {
@@ -345,7 +348,7 @@ import { MENU } from '../lib/nav'
     align-items: center;
     gap: var(--sp-5);
     margin-top: auto;
-    padding-block: 60px 48px;
+    padding-block: 44px 40px;
   }
   .nav__contact { display: flex; flex-direction: column; gap: 4px; }
   .nav__k { font-size: 10px; font-weight: var(--fw-medium); line-height: var(--lh-micro); letter-spacing: 0.14em; color: var(--c-on-dark-50); }
