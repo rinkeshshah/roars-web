@@ -29,17 +29,20 @@ import TopBar from './TopBar.astro'
 import NavOverlay from './NavOverlay.astro'
 import SiteFooter from './SiteFooter.astro'
 import GrainField from './GrainField.astro'
-import { PORTRAIT } from '../lib/media'
+import { PORTRAIT, JOURNAL_IMG } from '../lib/media'
 import { site } from '../lib/site'
 import star5 from '../assets/star-5.svg'
 
+import type { JournalItem } from '../lib/journal'
 interface Props {
-  posts: { slug: string; href: string; name: string; date?: string }[]
+  posts: JournalItem[]
+  /** The lead card. Page one only; page two onward opens straight on the grid. */
+  featured?: JournalItem
   page: number
   lastPage: number
   total: number
 }
-const { posts, page, lastPage, total } = Astro.props
+const { posts, featured, page, lastPage, total } = Astro.props
 
 const path = page === 1 ? '/our-journal/' : `/our-journal/page/${page}/`
 const pageUrl = (n: number) => (n === 1 ? '/our-journal/' : `/our-journal/page/${n}/`)
@@ -120,15 +123,41 @@ const schema = [
         {page === 1 ? `ALL INSIGHTS / ${total}` : `PAGE ${page} OF ${lastPage} / ${total} PIECES`}
       </span>
 
+      {featured && (
+        <a class="jf" href={featured.href} data-reveal>
+          <span class="jf__shot">
+            {JOURNAL_IMG[featured.slug] && (
+              <img src={JOURNAL_IMG[featured.slug]} alt="" width="1362" height="536" loading="lazy" decoding="async" />
+            )}
+            <span class="jf__dot jf__dot--dim" aria-hidden="true"></span>
+            <span class="jf__dot jf__dot--lit" aria-hidden="true"></span>
+          </span>
+          <span class="jf__cap">
+            <span class="jf__date">
+              <b>{featured.day}</b><i>{featured.month}</i>
+            </span>
+            <span class="jf__title">{featured.name}</span>
+          </span>
+        </a>
+      )}
+
       <ul class="jl__grid">
         {posts.map((p, i) => (
           <li data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
             <a href={p.href}>
-              {/* The export's circular thumbnail. Drawn, not sourced: post
-                  imagery arrives with the bodies, and a circle of flat tint
-                  is honest where a stock photo would not be. */}
-              <span class="jl__disc" aria-hidden="true"></span>
+              {/* The export's circular thumbnail. Three post images are
+                  known; the rest draw the flat tint until their filenames
+                  arrive — a circle of colour is honest where somebody else's
+                  stock photo would not be. */}
+              <span class="jl__disc" aria-hidden="true">
+                {JOURNAL_IMG[p.slug] && (
+                  <img src={JOURNAL_IMG[p.slug]} alt="" width="138" height="138" loading="lazy" decoding="async" />
+                )}
+              </span>
               <span class="jl__hair" aria-hidden="true"></span>
+              {p.day && (
+                <span class="jl__date"><b>{p.day}</b><i>{p.month}</i></span>
+              )}
               <span class="jl__title">{p.name}</span>
             </a>
           </li>
@@ -237,6 +266,43 @@ const schema = [
     letter-spacing: 0.18em; color: var(--c-ink-label);
   }
 
+  /* ── the featured card, 1362x536 ────────────────────────── */
+  .jf { position: relative; display: block; margin-top: 80px; }
+  .jf__shot {
+    position: relative; display: block; height: 536px; overflow: hidden;
+    border-radius: 12px; background: rgb(30, 30, 30);
+  }
+  .jf__shot img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    transition: transform var(--dur-slow) ease;
+  }
+  .jf:hover .jf__shot img { transform: scale(1.03); }
+  /* The caption is white over the photo, so the photo has to be dark where
+     the caption is: a bottom-up wash over the lower 46%. */
+  .jf__shot::after {
+    content: ''; position: absolute; inset: auto 0 0 0; height: 46%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+  .jf__dot { position: absolute; top: 30px; width: 8px; height: 8px; border-radius: 50%; }
+  .jf__dot--dim { right: 74px; background: rgba(255, 255, 255, 0.55); }
+  .jf__dot--lit { right: 61px; background: var(--c-white); }
+  .jf__cap { position: absolute; left: 457px; bottom: 53px; right: 240px; display: block; }
+  .jf__date { position: absolute; left: 0; top: 0; display: block; width: 88px; }
+  .jf__date b {
+    font-size: var(--fs-stat); line-height: 43px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-white);
+  }
+  .jf__date i {
+    margin-left: 13px; font-style: normal;
+    font-size: 18px; line-height: 43px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-display); color: var(--c-white);
+  }
+  .jf__title {
+    display: block; margin-left: 472px; max-width: 430px; padding-top: 18px;
+    font-size: 20px; line-height: 26px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: var(--c-white);
+  }
+
   /* The export's card: a 138px disc on the right, a rule under it, then the
      date and the title. 435x300, three across. */
   .jl__grid {
@@ -252,17 +318,28 @@ const schema = [
   }
   .jl__grid a:hover .jl__disc { background: var(--c-accent); }
   .jl__hair { position: absolute; left: 2px; top: 174px; width: 433px; height: 1px; background: rgba(153, 152, 149, 0.7); }
-  /* The export sets the date at 42px on the left and the title in a 200px
-     column beside it. With no date the title takes the whole card rather than
-     sitting in a narrow column next to an empty one. It moves back when the
-     bodies migrate and bring real dates with them. */
+  .jl__date {
+    position: absolute; left: 0; top: 190px;
+    font-size: var(--fs-stat); line-height: 43px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .jl__date i {
+    margin-left: 13px; font-style: normal;
+    font-size: 18px; line-height: 43px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  /* Title beside the date, as the export sets it. Only 34 of the 115 have a
+     trustworthy date, so a card without one gives the title the full width
+     rather than leaving a 234px hole where a number should be. */
   .jl__title {
-    position: absolute; left: 0; top: 196px; width: 400px;
+    position: absolute; left: 234px; top: 198px; width: 200px;
     font-size: 18px; line-height: 27px; font-weight: var(--fw-medium);
     letter-spacing: -0.03em; color: rgb(20, 20, 20);
     transition: color var(--dur-fast) ease;
   }
   .jl__grid a:hover .jl__title { color: var(--c-black); }
+  .jl__grid a:not(:has(.jl__date)) .jl__title { left: 0; top: 196px; width: 400px; }
+  .jl__disc img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
   /* ── pager ──────────────────────────────────────────────── */
   .jl__pager {
@@ -298,7 +375,14 @@ const schema = [
     .jl { padding-block: 64px 72px; }
     .jl__grid { margin-top: 48px; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 40px; }
     .jl__grid a { min-height: 0; padding-top: 18px; }
-    .jl__disc, .jl__hair, .jl__title { position: static; }
+    .jf { margin-top: 48px; }
+    .jf__shot { height: auto; aspect-ratio: 1362 / 536; }
+    .jf__cap { left: 24px; right: 24px; bottom: 24px; }
+    .jf__date { position: static; width: auto; }
+    .jf__title { margin: 8px 0 0; padding: 0; max-width: none; }
+    .jl__disc, .jl__hair, .jl__date, .jl__title { position: static; }
+    .jl__grid a:not(:has(.jl__date)) .jl__title { width: auto; }
+    .jl__date { display: block; margin-top: 14px; }
     .jl__disc { width: 88px; height: 88px; }
     .jl__hair { width: 100%; margin: 18px 0; }
     .jl__title { width: auto; }

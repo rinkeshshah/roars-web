@@ -48,11 +48,22 @@ export const site = {
    * ran into it. The five country names measure 185px and fit with room.
    */
   offices: [
-    { code: 'IN', label: 'India',   city: 'Bengaluru',         region: 'Karnataka', country: 'IN' },
-    { code: 'US', label: 'USA',     city: 'Frisco',            region: 'TX',        country: 'US' },
-    { code: 'UK', label: 'UK',      city: 'London',            region: '',          country: 'GB' },
-    { code: 'BE', label: 'Belgium', city: 'Heist op den Berg', region: '',          country: 'BE' },
-    { code: 'DE', label: 'Germany', city: 'München',           region: '',          country: 'DE' },
+    { code: 'IN', label: 'India',   city: 'Bengaluru',         region: 'Karnataka', country: 'IN',
+      street: '4th Block, Jaynagar, Bengaluru', postal: 'India, 560041',
+      email: 'contact@roarsinc.com', phone: '+91 7990050464' },
+    { code: 'US', label: 'USA',     city: 'Frisco',            region: 'TX',        country: 'US',
+      street: '9300 John Hickman Parkway,', postal: 'Frisco TX 75035',
+      email: 'contact@roarsinc.com', phone: '+1 (302) 505-1200' },
+    { code: 'UK', label: 'UK',      city: 'London',            region: '',          country: 'GB',
+      street: '11 Tennyson Court, Marylebone,', postal: 'London, NW1 6QB, UK',
+      email: 'contact@roarsinc.com', phone: '+44 (7537) 183399' },
+    { code: 'BE', label: 'Belgium', city: 'Heist op den Berg', region: '',          country: 'BE',
+      street: 'Kleine Steenweg 1.88', postal: '2221 Heist op den Berg, België',
+      email: 'be@roarsinc.com', phone: '+32 495/483948' },
+    /* The export prints no number for Germany. It is not invented here. */
+    { code: 'DE', label: 'Germany', city: 'München',           region: '',          country: 'DE',
+      street: 'Herzog-Wilhelm-Straße 17', postal: 'München, Germany',
+      email: 'contact@roarsinc.com', phone: '' },
   ],
 
   stats: {

@@ -122,6 +122,22 @@ export const JOURNAL = {
   mealPlanning: `${U}/2025/07/concierge-ai-home.jpg`,
 } as const
 
+/**
+ * Post imagery, by /our-journal/ slug.
+ *
+ * THREE OF 115. These are the ones the exports actually name — the homepage
+ * insight row and the Insights featured card. The other 112 are on the
+ * webspace but nothing in this repo records their filenames, and a guessed
+ * /wp-content/uploads/YYYY/MM/<slug>.jpg is a 404 that looks like a bug
+ * rather than a gap. An unlisted slug draws the flat tinted circle.
+ */
+export const JOURNAL_IMG: Record<string, string> = {
+  'ai-app-development-vs-traditional-app-development-which-is-better-for-customer-engagement':
+    JOURNAL.aiVsTraditional,
+  '20-years-of-roars-built-on-purpose-driven-by-impact': JOURNAL.twentyYears,
+  'the-unexpected-insight-we-built-a-meal-planning-app': JOURNAL.mealPlanning,
+}
+
 /** The three photographs on /about-us/, in the export's order. The office
  *  shot and beautiful-experience are shared with JOURNAL and SERVICE_IMG
  *  above; the same file on two pages is the export's own choice, not a

@@ -10,7 +10,7 @@
  * rejected: there the index was the only path to the case studies.
  */
 import JournalIndex from '../../components/JournalIndex.astro'
-import { JOURNAL, LAST_PAGE, pageItems } from '../../lib/journal'
+import { FEATURED, JOURNAL, LAST_PAGE, pageItems } from '../../lib/journal'
 ---
 
-<JournalIndex posts={pageItems(1)} page={1} lastPage={LAST_PAGE} total={JOURNAL.length} />
+<JournalIndex posts={pageItems(1)} featured={FEATURED} page={1} lastPage={LAST_PAGE} total={JOURNAL.length} />
