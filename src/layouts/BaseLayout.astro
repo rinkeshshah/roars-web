@@ -32,6 +32,13 @@ interface Props {
   schema?: unknown[]
   /** Preload the LCP image. The hero photo on pages that have one. */
   preloadImage?: string
+  /**
+   * og:site_name. Defaults to the legal name, which is right for the
+   * Organization schema. The brand short form is "Roars" and the migration
+   * brief asks for it on journal posts; passing it per page keeps that change
+   * inside the journal rather than rewriting every route's head.
+   */
+  siteName?: string
 }
 
 const {
@@ -44,6 +51,7 @@ const {
   noindex = false,
   schema = [],
   preloadImage,
+  siteName = site.name,
 } = Astro.props
 
 const canonical = abs(path)
@@ -77,7 +85,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
     )}
 
     <meta property="og:type" content={ogType} />
-    <meta property="og:site_name" content={site.name} />
+    <meta property="og:site_name" content={siteName} />
     <meta property="og:locale" content={site.locale} />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}

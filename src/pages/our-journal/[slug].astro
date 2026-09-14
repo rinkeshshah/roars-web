@@ -13,9 +13,15 @@
  * and the page becomes real without the URL changing.
  */
 import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
 import MarketingPage from '../../components/MarketingPage.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
-import { site } from '../../lib/site'
+import { site, abs } from '../../lib/site'
 
 export async function getStaticPaths() {
   const entries = await getCollection('posts')
@@ -31,6 +37,12 @@ const { entry } = Astro.props
 const path = `/our-journal/${slug}/`
 const name = entry?.data.title ?? nameFromSlug(slug)
 
+const d = entry?.data
+/* Migrated posts get the real article page. The rest keep the pending state
+   until their bodies arrive. */
+const migrated = Boolean(d?.migrated)
+const heroAbs = d?.heroImage ? abs(d.heroImage) : undefined
+
 const schema = entry
   ? [
       {
@@ -40,7 +52,18 @@ const schema = entry
         headline: name,
         description: entry.data.seo.description,
         datePublished: entry.data.publishedAt.toISOString(),
-        author: { '@id': `${site.url}/#organization` },
+        /* No updatedAt on a migrated post means it has not been touched since
+           it was published. Claiming otherwise is manufactured freshness. */
+        dateModified: (entry.data.updatedAt ?? entry.data.publishedAt).toISOString(),
+        ...(heroAbs ? { image: [heroAbs] } : {}),
+        articleSection: entry.data.categories[0],
+        author: {
+          '@type': 'Organization',
+          name: site.name,
+          '@id': `${site.url}/#organization`,
+        },
+        publisher: { '@id': `${site.url}/#organization` },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': `${site.url}${path}` },
       },
       {
         '@context': 'https://schema.org',
@@ -55,8 +78,80 @@ const schema = entry
   : []
 
 const { Content } = entry ? await render(entry) : { Content: null }
+
+/* "15 May 2026" for the reader, the ISO value for the machine. */
+const shown = entry
+  ? entry.data.publishedAt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+  : ''
+const iso = entry ? entry.data.publishedAt.toISOString().slice(0, 10) : ''
 ---
 
+{migrated && d ? (
+  <BaseLayout
+    title={d.seo.title}
+    description={d.seo.description}
+    path={path}
+    ogType="article"
+    ogImage={d.heroImage}
+    imageAlt={d.heroAlt || name}
+    siteName="Roars"
+    schema={schema}
+  >
+    <TopBar slot="topbar" cta="contact" />
+    <NavOverlay />
+
+    {/* Greppable in the built HTML: `grep -rl NEEDS-REWRITE dist/`. High
+        impressions, near-zero clicks — the copy needs work. */}
+    {d.needsRewrite && <Fragment set:html={'<!-- NEEDS-REWRITE -->'} />}
+
+    <Section ground="dark" bleed>
+      <div class="jp">
+        <GrainField tone="dark" second />
+        <div class="wrap jp__inner">
+          <a class="jp__back" href="/our-journal/">← BACK / INSIGHTS</a>
+          <span class="jp__tick" aria-hidden="true"></span>
+          {/* The only h1 on the page. */}
+          <h1 class="jp__h">{d.title}</h1>
+          <p class="jp__meta">
+            <time datetime={iso}>{shown}</time>
+            <span aria-hidden="true">·</span>
+            <span>{d.categories[0]}</span>
+          </p>
+        </div>
+      </div>
+    </Section>
+
+    {d.heroImage && (
+      <Section ground="light">
+        <div class="jp__hero">
+          <img
+            src={d.heroImage}
+            alt={d.heroAlt || ''}
+            width="1362"
+            height="640"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </Section>
+    )}
+
+    <Section ground="light">
+      <div class="jp__body">
+        {Content && <Content />}
+      </div>
+    </Section>
+
+    <SiteFooter
+      slot="footer"
+      blurbTitle="Want the version with your numbers in it?"
+      blurb="Most of what is here we worked out the expensive way. If it is the problem in front of you, we can go deeper than a post does."
+      tagline="twenty years, written down"
+      ctaLabel="Shall we chat?"
+      ctaHref="https://meet.roarsinc.com/sales"
+    />
+  </BaseLayout>
+) : (
 <MarketingPage
   topCta="contact"
   title={entry?.data.seo.title ?? `${name} | ${site.name}`}
@@ -69,3 +164,79 @@ const { Content } = entry ? await render(entry) : { Content: null }
 >
   {Content && <Content />}
 </MarketingPage>
+)}
+
+<style>
+  /* ── the masthead ───────────────────────────────────────── */
+  .jp { position: relative; }
+  .jp__inner { position: relative; z-index: 1; padding-block: 170px 90px; }
+  .jp__back {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.55);
+    transition: color var(--dur-fast) ease;
+  }
+  .jp__back:hover { color: rgba(255, 255, 255, 0.9); }
+  .jp__tick { display: block; width: 16px; height: 1.5px; margin-top: 19px; background: var(--c-accent); }
+  /* Titles run from 38 to 92 characters, so this is sized to wrap rather than
+     to fit on one line. The cap is well under the display size the shorter
+     pages use — a 92-character headline at 124px is four lines of shouting. */
+  .jp__h {
+    margin: 30px 0 0 -4px; max-width: 1100px;
+    font-size: clamp(38px, 4.6vw, 66px); line-height: 1.08; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(251, 251, 251);
+  }
+  .jp__meta {
+    display: flex; align-items: center; gap: 12px; margin: 34px 0 0;
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.62);
+  }
+
+  /* ── hero ───────────────────────────────────────────────── */
+  .jp__hero { margin-top: 60px; overflow: hidden; border-radius: 12px; background: rgb(30, 30, 30); }
+  .jp__hero img { display: block; width: 100%; height: 640px; object-fit: cover; }
+
+  /* ── the article ────────────────────────────────────────── */
+  .jp__body { padding-block: 80px 110px; margin-left: 33.8%; max-width: 760px; }
+  /* Headings float into the page's own left rail, the same arrangement the
+     case study uses. Markdown gives no element to wrap a section in, so a
+     negative margin is the only way to pair a heading with its paragraph. */
+  .jp__body :global(h2), .jp__body :global(h3) {
+    float: left; clear: left; width: 300px; margin: 0 0 0 -380px;
+    font-size: 24px; line-height: 32px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .jp__body :global(h3) { font-size: 20px; line-height: 28px; }
+  .jp__body :global(h2:not(:first-child)), .jp__body :global(h3:not(:first-child)) { margin-top: 64px; }
+  .jp__body :global(p), .jp__body :global(ul), .jp__body :global(ol) {
+    margin: 0;
+    font-size: 18px; line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: -0.03em; color: rgba(71, 71, 71, 0.9);
+  }
+  .jp__body :global(p + p),
+  .jp__body :global(ul), .jp__body :global(ol) { margin-top: 22px; }
+  .jp__body :global(h2 + p), .jp__body :global(h3 + p) { margin-top: 0; }
+  .jp__body :global(h2:not(:first-child) + p),
+  .jp__body :global(h3:not(:first-child) + p) { margin-top: 64px; }
+  .jp__body :global(li) { margin-top: 8px; }
+  .jp__body :global(strong) { font-weight: var(--fw-semi); color: var(--c-black); }
+  .jp__body :global(a) { color: var(--c-black); text-decoration: underline; text-underline-offset: 3px; }
+  .jp__body :global(img) {
+    display: block; width: 100%; height: auto; margin: 40px 0;
+    border-radius: 12px; background: rgb(237, 237, 235);
+  }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .jp__inner { padding-block: 130px 64px; }
+    .jp__hero { margin-top: 40px; }
+    .jp__hero img { height: auto; aspect-ratio: 1362 / 640; }
+    .jp__body { margin-left: 0; padding-block: 56px 72px; max-width: 680px; }
+    .jp__body :global(h2), .jp__body :global(h3) {
+      float: none; width: auto; margin: 48px 0 14px;
+    }
+    .jp__body :global(h2:first-child), .jp__body :global(h3:first-child) { margin-top: 0; }
+    .jp__body :global(h2:not(:first-child) + p),
+    .jp__body :global(h3:not(:first-child) + p) { margin-top: 0; }
+  }
+</style>

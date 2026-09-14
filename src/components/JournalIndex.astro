@@ -126,8 +126,8 @@ const schema = [
       {featured && (
         <a class="jf" href={featured.href} data-reveal>
           <span class="jf__shot">
-            {JOURNAL_IMG[featured.slug] && (
-              <img src={JOURNAL_IMG[featured.slug]} alt="" width="1362" height="536" loading="lazy" decoding="async" />
+            {(featured.hero ?? JOURNAL_IMG[featured.slug]) && (
+              <img src={featured.hero ?? JOURNAL_IMG[featured.slug]} alt="" width="1362" height="536" loading="lazy" decoding="async" />
             )}
             <span class="jf__dot jf__dot--dim" aria-hidden="true"></span>
             <span class="jf__dot jf__dot--lit" aria-hidden="true"></span>
@@ -150,8 +150,8 @@ const schema = [
                   arrive — a circle of colour is honest where somebody else's
                   stock photo would not be. */}
               <span class="jl__disc" aria-hidden="true">
-                {JOURNAL_IMG[p.slug] && (
-                  <img src={JOURNAL_IMG[p.slug]} alt="" width="138" height="138" loading="lazy" decoding="async" />
+                {(p.hero ?? JOURNAL_IMG[p.slug]) && (
+                  <img src={p.hero ?? JOURNAL_IMG[p.slug]} alt="" width="138" height="138" loading="lazy" decoding="async" />
                 )}
               </span>
               <span class="jl__hair" aria-hidden="true"></span>

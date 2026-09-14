@@ -20,6 +20,7 @@
  * the list is ordered newest first so the dated posts lead.
  */
 import { inventory, nameFromSlug } from './inventory'
+import { getCollection } from 'astro:content'
 
 /** Four rows of three. Twelve keeps the page near the homepage's height. */
 export const PER_PAGE = 12
@@ -32,6 +33,10 @@ export interface JournalItem {
   day?: string
   /** "May" */
   month?: string
+  /** The post's own description. Migrated entries only. */
+  excerpt?: string
+  /** Hero, root-relative under /wp-content/uploads/. Migrated entries only. */
+  hero?: string
   /** Sort key. Present even where the date is not shown, so the ordering is
    *  still roughly right rather than alphabetical. */
   sort: string
@@ -39,17 +44,42 @@ export interface JournalItem {
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
+/**
+ * A MIGRATED entry always wins. It carries the post's real title, its real
+ * publish date from WordPress, and an excerpt — none of which the inventory
+ * has. Slugs without one keep the CSV's row so all 115 URLs stay listed and
+ * crawlable while the rest of the export lands.
+ */
+const migrated = new Map(
+  (await getCollection('posts')).map((e) => [e.id, e.data]),
+)
+
 export const JOURNAL: JournalItem[] = inventory
   .filter((r) => r.wpType === 'post')
   .map((r) => {
+    const m = migrated.get(r.slug)
+    if (m) {
+      const iso = m.publishedAt.toISOString().slice(0, 10)
+      const [, mm, dd] = iso.split('-')
+      return {
+        slug: r.slug,
+        href: r.path,
+        name: m.title,
+        day: dd,
+        month: MONTHS[Number(mm) - 1],
+        excerpt: m.seo.description,
+        hero: m.heroImage,
+        sort: iso,
+      }
+    }
     const trusted = r.staleness === 'revised' && /^\d{4}-\d{2}-\d{2}$/.test(r.lastmod)
-    const [y, m, d] = r.lastmod.split('-')
+    const [y, m2, d] = r.lastmod.split('-')
     return {
       slug: r.slug,
       href: r.path,
       name: nameFromSlug(r.slug),
       day: trusted ? d : undefined,
-      month: trusted ? MONTHS[Number(m) - 1] : undefined,
+      month: trusted ? MONTHS[Number(m2) - 1] : undefined,
       sort: r.lastmod || '0000-00-00',
     }
   })
