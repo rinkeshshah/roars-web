@@ -43,17 +43,71 @@ export const CLIENT_LOGOS = [
   { src: `${U}/2022/07/home-brand06.png`, alt: 'DDB', h: 22 },
 ] as const
 
-/** Case-study imagery. */
+/**
+ * Case-study imagery.
+ *
+ * The five the /work/ index draws are taken from design/specs/Projects.md, in
+ * its row order, because that export is the authority for that page. Three of
+ * them pointed at different live files carried over from an earlier session —
+ * also real, also on the server, but not the ones the design uses. Where a
+ * future page needs a different shot of the same client it gets its own key
+ * rather than editing one of these.
+ */
 export const WORK = {
   parqly: `${U}/2025/07/parqly-parking-mobile-app.jpg`,
   snowman: `${U}/2026/02/Snowman-Logistics-app-solution.jpg`,
-  gymbait: `${U}/2024/07/gymbait-ai-fitness-1.png`,
-  gisaid: `${U}/2022/08/GISAID-work-python.jpeg`,
+  gymbait: `${U}/2025/07/ai-fitness-home.jpg`,
+  gisaid: `${U}/2025/07/health-tech-covid.jpg`,
   advisee: `${U}/2025/03/advisee-finance-featured.jpg`,
   companyguru: `${U}/2025/03/companyguru.jpg`,
-  concierge: `${U}/2025/07/ai-concierges-mobile-app.jpg`,
+  concierge: `${U}/2025/07/concierge-ai-home.jpg`,
   ventura: `${U}/2023/02/ventura-law-header-12.jpg`,
+  clubSocial: `${U}/2022/08/club-social.jpg`,
 } as const
+
+/**
+ * The photograph at the top of a /work/[slug]/ page, by slug.
+ *
+ * Keyed by the inventory slug so a band that credits a project can find that
+ * project's own header without a second field in the content to keep in step
+ * with the link. Only slugs whose live path is KNOWN belong here — the paths
+ * are not derivable (the /YYYY/MM/ segment is whatever month the file was
+ * uploaded), and a guessed one is a 404 that looks like a bug rather than a
+ * gap. An unlisted slug returns undefined and the caller draws no image.
+ */
+export const WORK_HERO: Record<string, string> = {
+  'club-social': WORK.clubSocial,
+}
+
+/** `href` is the route as written in content, e.g. "/work/club-social/". */
+export const workHeroFor = (href: string): string | undefined =>
+  WORK_HERO[href.replace(/^\/work\//, '').replace(/\/$/, '')]
+
+/**
+ * Guide cover art, by /resources/ slug.
+ *
+ * FIVE OF THE TEN ARE MISSING ON PURPOSE. The live site serves
+ * building-partnership-placeholder.png, business-plan-placeholder.png,
+ * placeholder.png, target-group-placeholder.png and
+ * prototyping-placeholder.png for the other five — files named placeholder
+ * because that is what they are. CLAUDE.md's known landmines say that art is
+ * replaced during migration, not carried across, so those slugs are absent
+ * here and their cards draw the empty slot instead. An empty slot is honest;
+ * shipping a file called placeholder.png to a download page is not.
+ *
+ * Filenames are the live ones, typos included — "Srartup", "plannig". They are
+ * what the server has, and renaming them would 404.
+ */
+export const GUIDE_COVER: Record<string, string> = {
+  'business-model-canvas': `${U}/2022/08/business-model-canvas.png`,
+  'swot-analysis': `${U}/2022/08/Startup-Swot-analysis.png`,
+  'learning-loop': `${U}/2022/08/Srartup-learning-loop.png`,
+  'value-proposition': `${U}/2022/08/startup-value-proposition.png`,
+  'evidence-planning': `${U}/2022/08/startup-evidence-plannig.png`,
+}
+
+/** The stack on the Guides hero. One image for the set, not per guide. */
+export const GUIDE_SET = `${U}/2022/08/startup-guides-books.png`
 
 /** Service row imagery on the homepage accordion. */
 export const SERVICE_IMG = {
@@ -66,6 +120,32 @@ export const JOURNAL = {
   aiVsTraditional: `${U}/2025/07/ai-fitness-home.jpg`,
   twentyYears: `${U}/2024/11/roars-office-upscale-768x768.jpg`,
   mealPlanning: `${U}/2025/07/concierge-ai-home.jpg`,
+} as const
+
+/**
+ * Post imagery, by /our-journal/ slug.
+ *
+ * THREE OF 115. These are the ones the exports actually name — the homepage
+ * insight row and the Insights featured card. The other 112 are on the
+ * webspace but nothing in this repo records their filenames, and a guessed
+ * /wp-content/uploads/YYYY/MM/<slug>.jpg is a 404 that looks like a bug
+ * rather than a gap. An unlisted slug draws the flat tinted circle.
+ */
+export const JOURNAL_IMG: Record<string, string> = {
+  'ai-app-development-vs-traditional-app-development-which-is-better-for-customer-engagement':
+    JOURNAL.aiVsTraditional,
+  '20-years-of-roars-built-on-purpose-driven-by-impact': JOURNAL.twentyYears,
+  'the-unexpected-insight-we-built-a-meal-planning-app': JOURNAL.mealPlanning,
+}
+
+/** The three photographs on /about-us/, in the export's order. The office
+ *  shot and beautiful-experience are shared with JOURNAL and SERVICE_IMG
+ *  above; the same file on two pages is the export's own choice, not a
+ *  placeholder standing in for something missing. */
+export const AGENCY_IMG = {
+  office: `${U}/2024/11/roars-office-upscale-768x768.jpg`,
+  strategy: `${U}/2026/04/aboutus-strategy.jpg`,
+  experience: `${U}/2025/04/beautiful-experience.jpg`,
 } as const
 
 /** Gated PDFs. Root-level /tools/, NOT under the wp-content rewrite. */

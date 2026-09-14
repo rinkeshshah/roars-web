@@ -36,6 +36,10 @@ import mark from '../assets/roars-mark.png'
 ---
 
 <a class="chip" href="/" data-logo-chip aria-label="Roars, home">
+  {/* The scroll-progress ring. A conic gradient with its centre masked out,
+      so it is an ANNULUS — the previous attempt read as a filled disc, which
+      is the badge that was cut. Driven from src/scripts/topbar.ts. */}
+  <span class="chip__ring" data-logo-ring aria-hidden="true"></span>
   {/* Masked, not <img>: the mark has to take a token colour — accent over the
       hero, ink over light grounds, white on dark — and a raster cannot. The
       mask keeps one asset and lets `background` do the colouring. */}
@@ -61,27 +65,68 @@ import mark from '../assets/roars-mark.png'
     color: var(--c-accent);
   }
   /* Appears once the page has actually moved, so it reads as progress rather
-     than decoration sitting there at zero. */
+     than decoration sitting there at zero.
 
+     The two masks are the whole point. Without them the conic gradient fills
+     the 52px circle and the mark sits on a pale yellow plate — which is
+     exactly how this shipped last time and exactly what had been cut. The
+     inner 66% is punched out, leaving a 3px band clear of the 33px mark. */
+  .chip__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--r-circle);
+    background: conic-gradient(
+      from 0turn,
+      var(--c-accent) var(--p, 0turn),
+      rgba(255, 212, 0, 0.16) var(--p, 0turn)
+    );
+    -webkit-mask: radial-gradient(circle, #0000 0 66%, #000 68%);
+    mask: radial-gradient(circle, #0000 0 66%, #000 68%);
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+  }
+
+  /* THE MARK IS ONE COLOUR AT ALL TIMES. It does not interpolate.
+     Transitioning the ink meant half a second of values between yellow and
+     black — rgb(151,127,5) and the like — and a dark gold at 26px reads as
+     red-brown, which is what was showing on every ground change. Moving the
+     interpolation to oklab held the hue but did not fix it, because the
+     problem is the intermediate value existing at all, not its hue.
+     So the ink SWITCHES. The mark is #FFD400, #0B0B0B or #FFFFFF and nothing
+     between. The motion is the progress ring and the intro; the ink is a
+     state, and states do not need to be animated to feel alive.
+     `--mark-ink` stays a registered property so it holds a real colour value
+     rather than a string. */
   .chip__mark {
     position: relative;
     display: block;
     width: 26px;
     height: 33px;
-    background: var(--c-accent);
+    --mark-ink: var(--c-accent);
+    background: var(--mark-ink);
     -webkit-mask: var(--mark) center / contain no-repeat;
     mask: var(--mark) center / contain no-repeat;
-    /* .5s, matching the export's filter transition. */
-    transition: background 0.5s ease;
+    /* No transition on the ink. See the note above. */
+    /* The export's own intro: a quarter turn and a slight overshoot as the
+       page opens, 1100ms on a 300ms delay. It settles to nothing, so it costs
+       one animation and no layout. */
+    animation: logoIntro 1100ms cubic-bezier(0.16, 1, 0.3, 1) 300ms both;
+  }
+
+  @keyframes logoIntro {
+    0%   { transform: scale(0.2) rotate(-90deg); opacity: 0; }
+    62%  { transform: scale(1.12) rotate(8deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
   }
 
   /* Light ground. The observer sets this on the top bar. */
 
-  :global(.topbar.is-light) .chip__mark { background: var(--c-footer); }
+  :global(.topbar.is-light) .chip__mark { --mark-ink: var(--c-footer); }
   /* brightness(0) in the export: the mark goes to ink on hover, from either
      ground, over the same half second. */
-  .chip:hover .chip__mark { background: var(--c-footer); }
-  :global(.topbar:not(.is-light)) .chip:hover .chip__mark { background: var(--c-white); }
+  .chip:hover .chip__mark { --mark-ink: var(--c-footer); }
+  :global(.topbar:not(.is-light)) .chip:hover .chip__mark { --mark-ink: var(--c-white); }
 
   @media (prefers-reduced-motion: reduce) {
     .chip__mark { transition: none; }

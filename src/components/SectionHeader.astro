@@ -56,9 +56,11 @@ const { label, heading, level: Tag = 'h2', size = 'heading', intro } = Astro.pro
     color: var(--ink);
   }
   /* Clamped between the documented mobile value and the 1440 value, so the
-     124px header is exact at the design width and never overflows below it. */
-  .sh__heading--heading { font-size: clamp(var(--fs-heading-m), 8.6vw, var(--fs-heading)); }
-  .sh__heading--display { font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display)); }
+     124px header is exact at the design width and never overflows below it.
+     The vw term must EXCEED cap/14.4 or the cap never applies: 8.6vw is
+     123.84 at 1440 and 5.8vw is 83.52, both a fraction under. */
+  .sh__heading--heading { font-size: clamp(var(--fs-heading-m), 8.62vw, var(--fs-heading)); }
+  .sh__heading--display { font-size: clamp(var(--fs-stat-m), 5.84vw, var(--fs-display)); }
   .sh__intro {
     margin-top: var(--sp-5);
     max-width: 440px;

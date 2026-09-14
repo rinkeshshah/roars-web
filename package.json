@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "_postbuild": "The nginx 301 map is part of the deployable output. Without this it is generated only when somebody remembers to run nginx:redirects by hand, and since dist/ is rebuilt from scratch every time, it never reached the server at all.",
+    "postbuild": "node scripts/generate-nginx-redirects.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "validate:redirects": "node scripts/validate-redirects.mjs",

@@ -1,31 +1,51 @@
 ---
 /**
- * /work/ — STUB, deliberately.
+ * /work/ — the case study index. Twenty-three of them.
  *
- * TODO: layout is an open design decision, not an implementation question.
- * The approved design draws five projects at roughly 707px per row. There are
- * 23, which is a 16,000px page and about twenty screens. A brief proposing a
- * two-tier index (four or five featured at full height, the rest in a denser
- * ~320px row) is at docs/briefs/work-index-at-real-scale.md, unanswered.
+ * THE EXPORT'S DESIGN, FOR ALL TWENTY-THREE. `Roars v2 - Projects` draws one
+ * full-height row per project and that is what ships, by decision, after a
+ * two-tier version was built and rejected.
  *
- * Pagination is the obvious fix and is the wrong one here: /work/page/2/ has
- * to be noindex under our own rules, which would strip the crawl path from
- * eighteen case studies, thirteen of which are already orphaned from the nav.
- * Whatever the answer is, all 23 stay on one crawlable URL.
+ * The cost is recorded rather than hidden: 23 rows at 707px is roughly
+ * 17,000px, against the homepage's 10,022. docs/briefs/work-index-at-real-
+ * scale.md argues the case for compressing the tail; that brief is now
+ * ANSWERED — no. Do not re-propose it as a fix; it was considered and
+ * declined.
  *
- * Until that is settled this returns 200 with a correct canonical and links
- * every case study, so no URL 404s and every detail page stays reachable. It
- * is not the designed page and does not pretend to be.
+ * Pagination is separately ruled out and that has not changed: /work/page/2/
+ * has to be noindex under our own SEO rules, which would strip the crawl path
+ * from eighteen case studies, thirteen of which are already orphaned from the
+ * nav. All 23 stay on one crawlable URL.
+ *
+ * Fourteen have no photograph and five have no date, because neither exists
+ * anywhere yet. Those rows draw the export's dark card without an image and
+ * without a date rail, rather than a guessed date or somebody else's stock
+ * shot. Both arrive with the content migration.
+ *
+ * NO INDUSTRY FILTER, though the brief wants one. Industry tagging is
+ * deliberately absent from src/lib/projects.ts: the brief says the 23 span
+ * eight sectors but not which project is which, and guessing would put a real
+ * client in the wrong sector on a public page. It arrives with the migration.
  */
-import MarketingPage from '../../components/MarketingPage.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
 import { PROJECTS } from '../../lib/projects'
+import { WORK, PORTRAIT } from '../../lib/media'
 import { site } from '../../lib/site'
+import star5 from '../../assets/star-5.svg'
+
+const path = '/work/'
+const art = (key?: string) => (key ? WORK[key as keyof typeof WORK] : undefined)
 
 const schema = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    '@id': `${site.url}/work/#collection`,
+    '@id': `${site.url}${path}#collection`,
     name: 'Our Work',
     isPartOf: { '@id': `${site.url}/#website` },
     mainEntity: {
@@ -39,44 +59,217 @@ const schema = [
       })),
     },
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Work' },
+    ],
+  },
 ]
 ---
 
-<MarketingPage
-  topCta="contact"
-  title="Our Work | Roars Technologies"
-  description="Twenty-three product case studies across logistics, fitness, healthcare, concierge, travel, retail, SaaS, legal and finance. Built since 2005."
-  path="/work/"
-  label="Work"
-  heading="Work"
-  intro="Twenty-three case studies. The index layout is being designed; every project is linked below in the meantime."
+<BaseLayout
+  title="Our Work: 250 Products Since 2005 | Roars"
+  description="Twenty-three case studies across logistics, fitness, health-tech, hospitality, legal and SaaS. What we built, who for, and what it had to survive."
+  path={path}
   schema={schema}
 >
-  <ul class="work">
-    {PROJECTS.map((p) => (
-      <li class="work__item">
-        <a class="work__link" href={`/work/${p.slug}/`}>
-          <span class="work__name">{p.client}</span>
-          <span class="work__go" aria-hidden="true">&rarr;</span>
-        </a>
-      </li>
-    ))}
-  </ul>
-</MarketingPage>
+  <TopBar slot="topbar" cta="contact" />
+  <NavOverlay />
+
+  {/* ── Header, 1440x780 ───────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="wh">
+      <GrainField tone="dark" second />
+      <div class="wrap wh__inner">
+        <div class="wh__rail" data-reveal>
+          <span class="wh__who">
+            <img src={PORTRAIT.founder} alt="" width="42" height="42" />
+            <span class="wh__name">Rinkesh A Shah</span>
+            <span class="wh__role">CEO</span>
+          </span>
+          <p class="wh__statement">
+            250 products delivered since 2005, across logistics, fitness, health-tech,
+            hospitality, legal and SaaS.
+          </p>
+        </div>
+
+        <div class="wh__mast" data-reveal>
+          <span class="wh__chip">
+            <span>roars</span>
+            <span class="starmark wh__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+          </span>
+          <h1 class="wh__large">Projects</h1>
+        </div>
+
+        <div class="wh__count" data-reveal>
+          <span class="wh__disc">250</span>
+          <span class="wh__count-label">Products delivered</span>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── The projects, one row each at 1363x626 ───────────── */}
+  <Section ground="light">
+    <div class="wf">
+      <span class="w-rule" aria-hidden="true"></span>
+      <span class="w-eyebrow">ALL PROJECTS / {PROJECTS.length}</span>
+      <ul class="wf__rows">
+        {PROJECTS.map((p) => (
+          <li>
+            <a href={`/work/${p.slug}/`}>
+              {p.date && (
+                <span class="wf__date">
+                  <b>{p.date.slice(0, 6)}</b>
+                  <i>{p.date.slice(-4)}</i>
+                </span>
+              )}
+              <span class="wf__shot">
+                {art(p.image) && (
+                  <img src={art(p.image)} alt="" width="1129" height="625" loading="lazy" decoding="async" />
+                )}
+              </span>
+              <span class="wf__client">{p.client}.</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    blurbTitle="Does any of this look like your problem?"
+    blurb="If one of these is close to what you are carrying, say which. It is a faster conversation when we both already know the shape of it."
+    tagline="250 products since 2005"
+    ctaLabel="Shall we chat?"
+    ctaHref="https://meet.roarsinc.com/sales"
+  />
+</BaseLayout>
 
 <style>
-  .work { list-style: none; margin: 0; padding: 0; }
-  .work__item { border-top: 0.5px solid var(--c-rule-soft); }
-  .work__item:last-child { border-bottom: 0.5px solid var(--c-rule-soft); }
-  .work__link {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: var(--sp-4) var(--sp-3);
-    transition: background var(--dur-fast) ease;
+  /* ── shared ─────────────────────────────────────────────── */
+  .w-eyebrow {
+    display: block; margin-top: 24px;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
   }
-  .work__link:hover { background: rgba(255, 212, 0, 0.1); }
-  .work__name {
-    font-size: clamp(var(--fs-item), 2.2vw, 32px); font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  .w-rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+
+  /* ── header ─────────────────────────────────────────────── */
+  .wh { position: relative; }
+  .wh__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 449px minmax(0, 1fr);
+    align-content: start; padding-block: 96px 0; min-height: 780px;
   }
-  .work__go { font-size: 24px; color: rgba(20, 20, 20, 0.45); }
+  .wh__rail { grid-column: 1; grid-row: 1; width: 384px; }
+  .wh__who { position: relative; display: block; height: 42px; }
+  .wh__who img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: rgba(255, 255, 255, 0.12); }
+  .wh__name, .wh__role {
+    position: absolute; left: 56px;
+    font-size: var(--fs-label); line-height: 20px; letter-spacing: -0.05em;
+  }
+  .wh__name { top: 6px; font-weight: var(--fw-semi); color: rgba(255, 255, 255, 0.95); }
+  .wh__role { top: 25px; font-weight: var(--fw-medium); color: rgba(255, 255, 255, 0.6); }
+  .wh__statement {
+    margin: 32px 0 0; width: 384px;
+    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.92);
+  }
+
+  .wh__mast { grid-column: 2; grid-row: 1; margin-top: 367px; }
+  .wh__chip { position: relative; display: flex; align-items: flex-start; height: 24px; margin-left: 13px; }
+  .wh__chip > span:first-child {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(251, 251, 251); padding-top: 4px;
+  }
+  .wh__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: rgb(251, 251, 251); }
+  .wh__large {
+    margin: 28px 0 0 6px;
+    font-size: clamp(56px, 8.62vw, 124px); line-height: 86px; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: rgb(251, 251, 251);
+  }
+
+  /* The 250 badge sits on the header's own row, right of the masthead. */
+  .wh__count {
+    grid-column: 2; grid-row: 1; justify-self: end; align-self: start;
+    display: flex; align-items: center; gap: 28px; margin-top: 344px;
+  }
+  .wh__disc {
+    display: flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 50%; background: var(--c-white);
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .wh__count-label {
+    width: 127px;
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ── featured rows ──────────────────────────────────────── */
+  .wf { padding-block: 80px 110px; }
+  .wf__rows { list-style: none; margin: 60px 0 0; padding: 0; }
+  .wf__rows li + li { margin-top: 81px; }
+  .wf__rows a { position: relative; display: block; height: 626px; }
+
+  /* The date rail: day and month over a rule, year under it. */
+  .wf__date { position: absolute; left: 0; top: 3px; width: 86px; }
+  .wf__date b {
+    display: block; padding-bottom: 19px;
+    font-size: var(--fs-item); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: -0.06em; color: var(--c-black);
+    border-bottom: 1.25px solid rgba(71, 71, 71, 0.8);
+  }
+  .wf__date i {
+    display: block; margin-top: 11px; font-style: normal;
+    font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: -0.06em; color: rgba(71, 71, 71, 0.8);
+  }
+
+  .wf__shot {
+    position: absolute; left: 120px; top: 1px; right: 0;
+    display: block; height: 625px; overflow: hidden;
+    border-radius: 12px; background: rgb(30, 30, 30);
+  }
+  .wf__shot img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    transition: transform var(--dur-slow) ease;
+  }
+  .wf__rows a:hover .wf__shot img { transform: scale(1.03); }
+  /* The name is white over the photo, so the photo has to be dark where the
+     name is. The export lays a bottom-up wash over the lower 45%. */
+  .wf__shot::after {
+    content: ''; position: absolute; inset: auto 0 0 0; height: 45%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+  .wf__client {
+    position: absolute; left: 816px; top: 507px; z-index: 1;
+    font-size: 36px; line-height: 42px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-white);
+  }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .wh__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 120px 72px; row-gap: 36px; }
+    .wh__rail, .wh__mast, .wh__count { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 0; width: auto; }
+    .wh__statement { width: auto; max-width: 440px; }
+    .wh__large { line-height: 1.04; margin-left: 0; }
+
+    .wf { padding-block: 64px 24px; }
+    .wf__rows { margin-top: 44px; }
+    .wf__rows li + li { margin-top: 52px; }
+    .wf__rows a { height: auto; }
+    .wf__date { position: static; display: flex; align-items: baseline; gap: 10px; width: auto; }
+    .wf__date b { border: 0; padding: 0; }
+    .wf__date i { margin: 0; }
+    .wf__shot { position: static; height: auto; aspect-ratio: 1129 / 625; margin-top: 14px; }
+    .wf__client { position: absolute; left: 24px; right: 24px; top: auto; bottom: 24px; font-size: var(--fs-item); line-height: 1.2; }
+    .wf__rows li { position: relative; }
+
+  }
 </style>

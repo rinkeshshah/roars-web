@@ -1,0 +1,22 @@
+---
+/**
+ * /our-journal/page/N/ — pages two and up.
+ *
+ * `/page/N/` rather than Astro's default `/N/`, because that is the shape the
+ * SEO spec and the work-index brief both name. Page 1 is NOT generated here:
+ * it lives at /our-journal/, and a second URL serving the same twelve posts
+ * would be a duplicate of the index.
+ */
+import JournalIndex from '../../../components/JournalIndex.astro'
+import { JOURNAL, LAST_PAGE, pageItems } from '../../../lib/journal'
+
+export function getStaticPaths() {
+  return Array.from({ length: Math.max(0, LAST_PAGE - 1) }, (_, i) => ({
+    params: { page: String(i + 2) },
+  }))
+}
+
+const page = Number(Astro.params.page)
+---
+
+<JournalIndex posts={pageItems(page)} page={page} lastPage={LAST_PAGE} total={JOURNAL.length} />

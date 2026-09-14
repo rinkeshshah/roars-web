@@ -1,6 +1,14 @@
 ---
 /**
- * Shared footer. Identical on every page.
+ * Shared footer. The chrome is identical on every page; the OPENING BLURB is
+ * not.
+ *
+ * That paragraph is the page's closing pitch, and it was shipping the CTA
+ * band's sentence verbatim on all fourteen routes — so a visitor who read the
+ * band then reached the footer read the same line twice, and every page
+ * offered search engines the same closing copy. It takes the page's own
+ * sentence now. The founder chip under it does not change: it is an
+ * attribution, not a message.
  *
  * One four-column grid carries all three bands: 459 / 233 / 234 / 436 of the
  * 1362 content width, taken from the measured x positions in the specs
@@ -18,6 +26,43 @@ import GrainField from './GrainField.astro'
 import { PORTRAIT } from '../lib/media'
 import mark from '../assets/roars-mark.png'
 
+interface Props {
+  /** The closing CTA's two parts. Omit either for the shipped default. */
+  blurbTitle?: string
+  blurb?: string
+  /**
+   * The line beside it. The export prints "Space of Product Solutions*" on
+   * every page; it is the page's own tagline, and the house line is the
+   * fallback. The asterisk is added here, in the accent — it is not part of
+   * the string, so a page never has to remember to type it.
+   */
+  tagline?: string
+  /**
+   * The closing action, when the page has one.
+   *
+   * A service page used to end on a grey band that said the same thing the
+   * footer says, one scroll apart — the same heading, the same paragraph, the
+   * same offer. The band went; its button and its contact line came here, so
+   * the page still closes on something to press.
+   *
+   * Optional: a page with no specific action does not grow a button.
+   */
+  ctaLabel?: string
+  ctaHref?: string
+  contact?: string
+}
+const {
+  blurbTitle = 'Let’s get your project started.',
+  blurb = 'Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.',
+  tagline = 'user experience matters',
+  ctaLabel,
+  ctaHref,
+  contact,
+} = Astro.props
+
+/** Only leaves the site when it actually leaves the site. */
+const ctaExternal = ctaHref ? /^https?:\/\//.test(ctaHref) : false
+
 const year = new Date().getFullYear()
 ---
 
@@ -29,11 +74,20 @@ const year = new Date().getFullYear()
       {/* The real mark, masked so it reads white on the dark ground. */}
       <span class="ft__mark" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
       <div class="ft__blurb">
-        <p>
-          Find how we can help you get from A to B. Our love for innovation
-          design and technology is evident in all our work. No detail is too
-          small.
-        </p>
+        <p class="ft__blurb-title">{blurbTitle}</p>
+        <p class="ft__blurb-body">{blurb}</p>
+        {ctaLabel && ctaHref && (
+          <a
+            class="ft__cta"
+            href={ctaHref}
+            {...(ctaExternal ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            <span>{ctaLabel}</span>
+            <i class="ft__cta-dot ft__cta-dot--grey" aria-hidden="true"></i>
+            <i class="ft__cta-dot ft__cta-dot--accent" aria-hidden="true"></i>
+          </a>
+        )}
+        {contact && <p class="ft__contact">{contact}</p>}
         <div class="ft__by">
           <img class="ft__face" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
           <span class="ft__by-text">
@@ -42,7 +96,7 @@ const year = new Date().getFullYear()
           </span>
         </div>
       </div>
-      <p class="ft__tagline">Space of Product<br />Solutions<i>*</i></p>
+      <p class="ft__tagline">{tagline}<i>*</i></p>
     </div>
 
     <div class="ft__grid ft__mid">
@@ -140,11 +194,50 @@ const year = new Date().getFullYear()
     mask: var(--mark) center / contain no-repeat;
   }
   .ft__blurb { grid-column: 2 / 4; max-width: 384px; }
-  .ft__blurb p {
+  /* Two parts, not one paragraph. The export draws only the description here;
+     the title is the live site's, and without it the block is a statement
+     with nothing to act on. Both are existing steps — 24 and 22 — so this
+     adds a line, not an eleventh size. */
+  .ft__blurb-title {
+    font-size: var(--fs-item);
+    line-height: 1.28;
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item);
+    color: var(--c-white);
+    margin-bottom: var(--sp-3);
+  }
+  .ft__blurb-body {
     font-size: var(--fs-intro);
     line-height: 1.36;
     letter-spacing: var(--ls-item);
     color: rgb(147, 147, 147);
+  }
+  /* Light on the dark ground, so it is the brightest thing in the block —
+     which is what a closing action should be. */
+  .ft__cta {
+    position: relative; display: inline-flex; align-items: center;
+    width: 204px; height: 47px; margin-top: var(--sp-5); padding-left: 25px;
+    border-radius: var(--r-pill); background: var(--c-white); color: var(--c-footer);
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-button);
+    transition: background var(--dur-fast) ease;
+  }
+  .ft__cta:hover { background: var(--c-accent); color: var(--c-footer); }
+  /* Grey then ACCENT, which is the pair every other button on the site draws
+     and the one piece of brand in the mark. It was near-black here, so the
+     button read as two smudges — worst on hover, where a yellow pill under a
+     grey and a black dot has no accent in it at all.
+     The accent cannot show on the yellow hover ground, so on hover the second
+     dot takes the footer ink instead: rest is white + grey/yellow, hover is
+     yellow + grey/ink, and neither state has a dot that vanishes. */
+  .ft__cta-dot { position: absolute; top: 20px; width: 8px; height: 8px; border-radius: 50%; }
+  .ft__cta-dot--grey { left: 167px; background: rgba(11, 11, 11, 0.28); }
+  .ft__cta-dot--accent { left: 177px; background: var(--c-accent); transition: background var(--dur-fast) ease; }
+  .ft__cta:hover .ft__cta-dot--accent { background: var(--c-footer); }
+  .ft__contact {
+    margin-top: var(--sp-4);
+    font-size: 11px; font-weight: var(--fw-medium); letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.45);
   }
   .ft__by { display: flex; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
   .ft__face { width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); object-fit: cover; background: rgba(255, 255, 255, 0.22); }

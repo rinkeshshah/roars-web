@@ -30,12 +30,27 @@ interface Props {
   pending?: boolean
   /** Hide the CTA band on pages that already end in a form. */
   cta?: boolean
+  /** The closing band's copy for THIS page. Omit for the shipped default.
+   *  Collection-driven routes read it from front matter; see CtaBand.astro. */
+  ctaCopy?: {
+    label?: string
+    heading?: string
+    body?: string
+    ctaLabel?: string
+    ctaHref?: string
+    /** The footer's closing CTA, in two parts. Separate from the band's copy:
+     *  the band is a headline plus a paragraph, this is its own pair. */
+    footerTitle?: string
+    footerBlurb?: string
+    /** The footer's tagline slot. Defaults to the house line. */
+    footerTagline?: string
+  }
   /** Top bar call to action. See TopBar.astro for which prototype uses which. */
   topCta?: 'contact' | 'meeting'
 }
 const {
   title, description, path, label, heading, intro,
-  schema = [], noindex = false, pending = false, cta = true,
+  schema = [], noindex = false, pending = false, cta = true, ctaCopy,
   topCta = 'meeting',
 } = Astro.props
 ---
@@ -80,8 +95,8 @@ const {
     </Section>
   )}
 
-  {cta && <CtaBand />}
-  <SiteFooter slot="footer" />
+  {cta && <CtaBand {...({ ...(ctaCopy ?? {}), footerTitle: undefined, footerBlurb: undefined, footerTagline: undefined })} />}
+  <SiteFooter slot="footer" blurbTitle={ctaCopy?.footerTitle} blurb={ctaCopy?.footerBlurb} tagline={ctaCopy?.footerTagline} />
 </BaseLayout>
 
 <style>

@@ -1,21 +1,44 @@
 ---
 /**
  * /contact-us/ — inventory path, not the spec's /contact/.
- * Copy verbatim from design/specs/Contact.md.
+ * Built against design/prototypes/Roars v2 - Contact.dc.html.
+ * Canvas, section-relative: Header 780, Get in touch 620, Offices 780,
+ * Say hello 1020.
+ *
+ * Copy is the export's own. Office addresses live in src/lib/site.ts so the
+ * footer, the Organization schema and this page cannot disagree about where
+ * the company is.
  *
  * The form posts to public/api/contact.php, the only server-side code in the
  * project. Turnstile renders only when a site key is configured, so the page
  * is not broken while the key is unset; the endpoint still refuses anything
  * without a valid token, so an unconfigured build cannot be used to spam.
+ *
+ * THE FIELDS CARRY REAL LABELS. The export draws four bare underlined inputs
+ * with nothing naming them — fine in a picture, unusable with a screen reader
+ * and hostile to anyone who tabs into the third box and has to guess. The
+ * labels are visible rather than hidden, because a placeholder that vanishes
+ * on focus is the same problem wearing a disguise.
  */
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Section from '../components/Section.astro'
 import TopBar from '../components/TopBar.astro'
 import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
+import GrainField from '../components/GrainField.astro'
+import { PORTRAIT } from '../lib/media'
 import { site } from '../lib/site'
+import star5 from '../assets/star-5.svg'
 
 const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
+
+const socials = [
+  { label: 'Facebook', href: 'https://www.facebook.com/roarstech/' },
+  { label: 'Instagram', href: 'https://www.instagram.com/roarstech' },
+  { label: 'Twitter', href: 'https://twitter.com/roarstech' },
+  { label: 'Linkedin', href: 'https://www.linkedin.com/company/roars-technologies-pvt.-ltd.' },
+  { label: 'Envelope', href: `mailto:${site.email.contact}` },
+]
 
 const schema = [
   {
@@ -46,89 +69,164 @@ const schema = [
   <TopBar slot="topbar" cta="meeting" />
   <NavOverlay />
 
-  <Section ground="dark">
-    <div class="ch__inner">
-      <div class="ch__rail">
-        <div class="ch__rule"></div>
-        <span class="ch__label">Offices in five countries</span>
-      </div>
-      <div>
-        <h1 class="ch__h1">We look forward to<br />hearing from you.</h1>
-        <p class="ch__intro">
-          We design innovative products and solutions that elevate businesses,
-          products, and practices.
-        </p>
+  {/* ── Header, 1440x780 ───────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="ch">
+      <GrainField tone="dark" second />
+      <div class="wrap ch__inner">
+        <div class="ch__rail" data-reveal>
+          <span class="ch__who">
+            <img src={PORTRAIT.founder} alt="" width="42" height="42" />
+            <span class="ch__name">Rinkesh A Shah</span>
+            <span class="ch__role">Founder</span>
+          </span>
+          <p class="ch__statement">
+            We design innovative products and solutions that elevate businesses, products,
+            and practices.
+          </p>
+        </div>
+
+        <div class="ch__mast" data-reveal>
+          <span class="ch__chip">
+            <span>roars</span>
+            <span class="starmark ch__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+          </span>
+          <h1 class="ch__large">Contact us</h1>
+          <p class="ch__look">We look forward to hearing from you.</p>
+        </div>
+
+        <div class="ch__count" data-reveal>
+          <span class="ch__disc">05</span>
+          <span class="ch__count-label">Offices in five countries</span>
+        </div>
       </div>
     </div>
   </Section>
 
+  {/* ── Get in touch, 1440x620 ─────────────────────────────── */}
   <Section ground="light">
-    <div class="cx">
-      <div data-reveal class="cx__words">
-        <p class="cx__lead">
-          Whether you are just interested to know more about what we do or would
-          like to enroll our services to grow your business, we would love to
-          hear from you.
+    <div class="cg">
+      <span class="c-rule" aria-hidden="true"></span>
+      <span class="c-label">Contact</span>
+      {/* Two lines by choice, not by wrapping: an explicit break sets where
+          it falls instead of leaving it to whatever width the box happens to
+          be. The band has room — two 110px lines from 150 end at 370, and the
+          hairline under them sits at 400. */}
+      <h2 class="cg__h">get in<br />touch</h2>
+      <div class="cg__intro" data-reveal>
+        <p class="cg__intro-a">
+          Whether you are just interested to know more about what we do or would like to
+          enroll our services to grow your business, we would love to hear from you.
         </p>
-        <p class="cx__body">
-          If you have any questions, comments, or simply fancy a chat about our
-          company over a cup of coffee, please contact us using any of the
-          methods outlined on this page.
+        <p class="cg__intro-b">
+          If you have any questions, comments, or simply fancy a chat about our company
+          over a cup of coffee, please contact us using any of the methods outlined on
+          this page.
         </p>
+      </div>
 
-        <div class="cx__block">
-          <p class="cx__k">Email</p>
-          <a class="cx__email" href={`mailto:${site.email.sales}`}>{site.email.sales}</a>
+      <div class="cg__ways" data-reveal>
+        <div class="cg__way cg__way--write">
+          <span class="c-label">Write to us</span>
+          <a class="cg__email" href={`mailto:${site.email.sales}`}>{site.email.sales}</a>
         </div>
-        <div class="cx__block">
-          <p class="cx__k">Call</p>
-          <p class="cx__v">
-            <a href={`tel:${site.phones.US.tel}`}>USA {site.phones.US.display}</a><br />
-            <a href={`tel:${site.phones.UK.tel}`}>UK {site.phones.UK.display}</a>
+        <div class="cg__way cg__way--call">
+          <span class="c-label">Call us</span>
+          <a class="cg__tel" href={`tel:${site.phones.US.tel}`}>USA {site.phones.US.display}</a>
+          <a class="cg__tel" href={`tel:${site.phones.UK.tel}`}>UK {site.phones.UK.display}</a>
+        </div>
+        <div class="cg__way cg__way--meet">
+          <span class="c-label">Rather talk it through</span>
+          <a class="c-pill" href={site.booking} target="_blank" rel="noopener">
+            <span>Setup a Meeting</span>
+            <span class="c-pill__dot c-pill__dot--grey" aria-hidden="true"></span>
+            <span class="c-pill__dot c-pill__dot--white" aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── Offices, 1440x780 on #F5F5F5 ───────────────────────── */}
+  <Section ground="surface">
+    <div class="co">
+      <span class="co__tick" aria-hidden="true"></span>
+      <span class="c-label">Offices</span>
+      <h2 class="co__h">Five places we work from</h2>
+      <p class="co__intro" data-reveal>
+        India, the United States, the United Kingdom, Belgium and Germany.
+      </p>
+
+      <ul class="co__grid">
+        {site.offices.map((o, i) => (
+          <li data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
+            <span class="co__code">{o.code}</span>
+            <span class="co__street">{o.street}</span>
+            <span class="co__postal">{o.postal}</span>
+            <a class="co__email" href={`mailto:${o.email}`}>{o.email}</a>
+            {o.phone && <span class="co__phone">{o.phone}</span>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* ── Say hello, 1440x1020 ───────────────────────────────── */}
+  <Section ground="light" bleed>
+    <div class="cs">
+      {/* An 880px yellow panel bled to the left edge, the form on the white
+          beside it. The panel is the only yellow ground below the homepage
+          hero, which is what makes the form the loudest thing on the page. */}
+      <div class="cs__panel">
+        <GrainField tone="yellow" second />
+        <div class="cs__panel-in">
+          <span class="cs__eyebrow">Enquiry</span>
+          <h2 class="cs__h">Say hello.</h2>
+          <p class="cs__lede">
+            If you are interested in any of our products or services, we’d love to discuss
+            how we can help your business grow. Our dedicated team is always on hand to
+            help. Simply send us your details and we’ll give you a call within 24 hours to
+            discuss your requirements in depth.
           </p>
-        </div>
-        <div class="cx__block">
-          <p class="cx__k">Offices</p>
-          <p class="cx__v">India, the United States, the United Kingdom, Belgium and Germany.</p>
+          <span class="cs__hair" aria-hidden="true"></span>
+          <p class="cs__ask">Can we help you crack a complicated conundrum?</p>
+          <p class="cs__note">
+            Our love for innovation design and technology is evident in all our works. No
+            detail is too small. Together, we’ll make your business grow, manifold.
+          </p>
+          <a class="c-pill cs__callback" href={site.booking} target="_blank" rel="noopener">
+            <span>Request a Callback</span>
+            <span class="c-pill__dot c-pill__dot--grey" aria-hidden="true"></span>
+            <span class="c-pill__dot c-pill__dot--accent" aria-hidden="true"></span>
+          </a>
         </div>
       </div>
 
-      <div data-reveal class="cx__form" style="transition-delay:80ms">
-        <h2 class="cx__h2">Can we help you crack a complicated conundrum?</h2>
-        <p class="cx__note">
-          If you are interested in any of our products or services, we’d love to
-          discuss how we can help your business grow. Our dedicated team is
-          always on hand to help. Simply send us your details and we’ll give you
-          a call within 24 hours to discuss your requirements in depth.
-        </p>
+      <div class="cs__form-wrap">
+        <span class="cs__form-label">Leave us a quick message.</span>
 
-        <form
-          class="form"
-          action="/api/contact.php"
-          method="post"
-          data-contact-form
-        >
+        <form class="cf" action="/api/contact.php" method="post" data-contact-form>
           <input type="hidden" name="form" value="contact" />
 
           {/* Honeypot. Hidden from people, irresistible to bots. */}
-          <div class="form__pot" aria-hidden="true">
-            <label for="company_website">Company website</label>
-            <input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+          <div class="cf__pot" aria-hidden="true">
+            <label for="c-website">Company website</label>
+            <input id="c-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
           </div>
 
-          <div class="form__row">
+          <div class="cf__row">
             <label for="c-name">Your name *</label>
             <input id="c-name" name="name" type="text" required autocomplete="name" />
           </div>
-          <div class="form__row">
+          <div class="cf__row">
             <label for="c-email">Email *</label>
             <input id="c-email" name="email" type="email" required autocomplete="email" />
           </div>
-          <div class="form__row">
+          <div class="cf__row">
             <label for="c-phone">Phone</label>
             <input id="c-phone" name="phone" type="tel" autocomplete="tel" />
           </div>
-          <div class="form__row">
+          <div class="cf__row">
             <label for="c-message">Leave us a quick message.</label>
             <textarea id="c-message" name="message" rows="4"></textarea>
           </div>
@@ -137,104 +235,349 @@ const schema = [
             <div class="cf-turnstile" data-sitekey={turnstileKey} data-theme="light"></div>
           )}
 
-          <button class="form__submit" type="submit">
-            <span>Send</span>
-            <span class="form__dots" aria-hidden="true"><i></i><i></i></span>
+          <button class="cf__submit" type="submit">
+            <span>Send message</span>
+            <span class="cf__dots" aria-hidden="true"><i></i><i></i></span>
           </button>
 
-          <p class="form__status" data-form-status role="status" aria-live="polite"></p>
+          <p class="cf__status" data-form-status role="status" aria-live="polite"></p>
 
           <noscript>
-            <p class="form__status" data-state="error">
+            <p class="cf__status" data-state="error">
               This form needs JavaScript. Email <a href={`mailto:${site.email.sales}`}>{site.email.sales}</a> instead.
             </p>
           </noscript>
         </form>
+
+        <ul class="cs__social">
+          {socials.map((s) => (
+            <li><a href={s.href} target="_blank" rel="noopener">{s.label}</a></li>
+          ))}
+        </ul>
       </div>
     </div>
   </Section>
 
-  <SiteFooter slot="footer" />
+  <SiteFooter
+    slot="footer"
+    blurbTitle="One of five offices will pick this up."
+    blurb="Whichever timezone you are in, somebody here is awake. We reply within 24 hours, and it is a person rather than a queue."
+    tagline="five countries, one team"
+    ctaLabel="Setup a Meeting"
+    ctaHref="https://meet.roarsinc.com/sales"
+  />
 
   {turnstileKey && (
-    <script
-      is:inline
-      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-      async
-      defer
-    ></script>
+    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   )}
 </BaseLayout>
 
 <style>
+  /* ── shared ─────────────────────────────────────────────── */
+  .c-label {
+    display: block;
+    font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: -0.06em; color: var(--c-ink-label);
+  }
+  .c-rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+  .c-pill {
+    position: relative; display: inline-flex; align-items: center;
+    width: 204px; height: 47px; padding-left: 25px; border-radius: var(--r-pill);
+    background: var(--c-black);
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-button); color: var(--c-white);
+    transition: background var(--dur-fast) ease;
+  }
+  .c-pill:hover { background: rgb(38, 38, 38); }
+  .c-pill__dot { position: absolute; top: 20px; width: 8px; height: 8px; border-radius: 50%; }
+  .c-pill__dot--grey { left: 167px; background: rgba(153, 152, 149, 0.6); }
+  .c-pill__dot--white { left: 177px; background: var(--c-white); }
+  .c-pill__dot--accent { left: 177px; background: var(--c-accent); }
+
+  /* ── header ─────────────────────────────────────────────── */
+  .ch { position: relative; }
   .ch__inner {
-    display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr);
-    column-gap: var(--sp-5); padding-block: 200px 120px;
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 449px minmax(0, 1fr);
+    align-content: start; padding-block: 96px 0; min-height: 780px;
   }
-  .ch__rule { width: 16px; height: 1.5px; background: var(--c-hairline-dark); margin-bottom: var(--sp-4); }
-  .ch__label { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
-  .ch__h1 {
-    margin: 0; font-size: clamp(var(--fs-heading-m), 6.4vw, 84px);
-    font-weight: var(--fw-semi); line-height: 0.98;
-    letter-spacing: var(--ls-display); color: #fbfbfb;
+  .ch__rail { grid-column: 1; grid-row: 1; width: 384px; }
+  .ch__who { position: relative; display: block; height: 42px; }
+  .ch__who img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: rgba(255, 255, 255, 0.12); }
+  .ch__name, .ch__role {
+    position: absolute; left: 56px;
+    font-size: var(--fs-label); line-height: 20px; letter-spacing: -0.05em;
   }
-  .ch__intro {
-    margin-top: var(--sp-5); max-width: 560px;
-    font-size: var(--fs-intro); line-height: var(--lh-snug);
-    letter-spacing: var(--ls-item); color: var(--c-on-dark-78);
+  .ch__name { top: 6px; font-weight: var(--fw-semi); color: rgba(255, 255, 255, 0.95); }
+  .ch__role { top: 25px; font-weight: var(--fw-medium); color: rgba(255, 255, 255, 0.6); }
+  .ch__statement {
+    margin: 32px 0 0; width: 384px;
+    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.92);
   }
 
-  .cx {
-    display: grid; grid-template-columns: 464fr 898fr;
-    column-gap: var(--sp-5); padding-block: var(--sp-7);
+  .ch__mast { grid-column: 2; grid-row: 1; margin-top: 367px; }
+  .ch__chip { position: relative; display: flex; align-items: flex-start; height: 24px; margin-left: 13px; }
+  .ch__chip > span:first-child {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(251, 251, 251); padding-top: 4px;
   }
-  .cx__lead { font-size: var(--fs-intro); line-height: var(--lh-snug); letter-spacing: var(--ls-item); color: var(--c-ink-body); }
-  .cx__body { margin-top: var(--sp-4); font-size: var(--fs-body); line-height: var(--lh-loose); color: var(--c-ink-muted); }
-  .cx__block { margin-top: var(--sp-6); }
-  .cx__k { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); margin-bottom: var(--sp-2); }
-  .cx__v { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-ink-body); }
-  .cx__email { font-size: 20px; font-weight: var(--fw-semi); letter-spacing: -0.02em; }
-  .cx__email:hover, .cx__v a:hover { color: var(--c-accent); }
-  .cx__h2 {
-    margin: 0; font-size: clamp(var(--fs-item), 2.9vw, var(--fs-stat));
-    font-weight: var(--fw-semi); line-height: 1.14;
+  .ch__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: rgb(251, 251, 251); }
+  .ch__large {
+    margin: 28px 0 0 6px;
+    font-size: clamp(56px, 8.62vw, 124px); line-height: 86px; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: rgb(251, 251, 251);
+  }
+  .ch__look {
+    margin: 38px 0 0 246px; width: 220px;
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: -0.06em; color: rgba(255, 255, 255, 0.89);
+  }
+  /* The export sets this cluster at an absolute 968,440 — beside the
+     masthead, not flush to the right edge. justify-self:end put it 113px too
+     far out, because the content box is wider than the export's block. */
+  .ch__count {
+    position: absolute; left: 68.209%; top: 440px;
+    display: flex; align-items: center; gap: 28px;
+  }
+  .ch__disc {
+    display: flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 50%; background: var(--c-white);
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .ch__count-label {
+    width: 148px;
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ── get in touch ───────────────────────────────────────── */
+  .cg { position: relative; padding-block: 80px 80px; min-height: 620px; }
+  .cg .c-label { margin-top: 24px; }
+  /* Stops short of the intro's column. The 900px box was fine while the
+     intro sat at 962; now that it starts at 605 the heading's box reached
+     288px into it — no ink collided, but a longer heading on another page
+     would, and assert-overlap is right to refuse the arrangement. */
+  .cg__h {
+    margin: 27px 0 0 -7px; max-width: 43%;
+    font-size: clamp(52px, 8.62vw, 124px); line-height: 110px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
   }
-  .cx__note { margin-top: var(--sp-4); max-width: 560px; font-size: var(--fs-body); line-height: var(--lh-loose); color: var(--c-ink-muted); }
-
-  .form { margin-top: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-4); max-width: 560px; }
-  /* Off-screen rather than display:none, which some bots skip. */
-  .form__pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-  .form__row { display: flex; flex-direction: column; gap: var(--sp-2); }
-  .form__row label { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-ink-body); }
-  .form__row input, .form__row textarea {
-    padding: var(--sp-3) 0;
-    border: 0; border-bottom: 1px solid var(--c-rule-soft);
-    background: none; font-family: inherit; font-size: var(--fs-body); line-height: var(--lh-body);
-    color: var(--c-ink-body); resize: vertical;
+  /* Starts on the "Call us" column, not the "Rather talk it through" one.
+     The export puts it at 962 — over the third column — but a paragraph that
+     begins on the same vertical as the row below it reads as one grid rather
+     than two. 605/1362 is where that column starts; the 440-wide measure is
+     kept, so the line length does not grow to something unreadable. */
+  /* Spans columns two AND three — from the "Call us" column to the right
+     edge — rather than sitting in a 440 measure with 316px of dead space
+     beside it. */
+  .cg__intro { position: absolute; left: 44.419%; top: 150px; width: 55.581%; }
+  .cg__intro-a {
+    margin: 0;
+    font-size: var(--fs-intro); line-height: 32px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
   }
-  .form__row input:focus, .form__row textarea:focus { outline: 0; border-bottom-color: var(--c-accent); }
-  .form__submit {
-    display: inline-flex; align-items: center; justify-content: space-between;
-    align-self: flex-start; min-width: var(--btn-w); height: var(--btn-h);
-    padding-inline: 25px 27px; border: 0; border-radius: var(--r-pill);
-    background: var(--c-black); color: var(--c-white);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-button); cursor: pointer;
-    transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+  .cg__intro-b {
+    position: absolute; left: 0; top: 160px; margin: 0; width: 100%;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
   }
-  .form__submit:hover:not([disabled]) { background: var(--c-accent); color: var(--c-footer); }
-  .form__submit[disabled] { opacity: 0.5; cursor: progress; }
-  .form__dots { display: flex; gap: 2px; margin-left: var(--sp-4); }
-  .form__dots i { width: 8px; height: 8px; border-radius: var(--r-circle); display: block; }
-  .form__dots i:first-child { background: rgba(153, 152, 149, 0.6); }
-  .form__dots i:last-child { background: var(--c-white); }
-  .form__status:empty { display: none; }
-  .form__status { font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-item); color: var(--c-ink-muted); }
-  .form__status[data-state='error'] { color: #9a1b1b; }
 
-  @media (max-width: 1040px) {
-    .ch__inner, .cx { grid-template-columns: 1fr; row-gap: var(--sp-5); }
-    .ch__inner { padding-block: 150px 80px; }
+  /* Three ways to reach us, on the export's own columns: 0, 605, 922. */
+  .cg__ways {
+    position: absolute; left: 0; top: 440px; right: 0;
+    display: grid; grid-template-columns: 605fr 317fr 440fr;
+  }
+  .cg__ways::before {
+    content: ''; position: absolute; left: 0; top: -40px;
+    width: 100%; height: 0.5px; background: var(--c-rule-soft);
+  }
+  .cg__email {
+    display: block; margin-top: 11px;
+    font-size: var(--fs-stat); line-height: 50px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .cg__email:hover { color: var(--c-black); }
+  .cg__tel {
+    display: block; margin-top: 13px;
+    font-size: 20px; line-height: 30px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
+  }
+  .cg__tel + .cg__tel { margin-top: 0; }
+  .cg__way--meet .c-pill { margin-top: 11px; }
+
+  /* ── offices ────────────────────────────────────────────── */
+  .co { position: relative; padding-block: 90px 90px; min-height: 780px; }
+  .co__tick { display: block; width: 16px; height: 1.5px; background: var(--c-rule-strong); }
+  .co .c-label { margin-top: 18.5px; }
+  .co__h {
+    margin: 11px 0 0 -4px; max-width: 700px;
+    font-size: var(--fs-stat); line-height: 50px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .co__intro {
+    position: absolute; left: 67.695%; top: 148px; width: 32.305%; margin: 0;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  .co__grid {
+    list-style: none; margin: 0; padding: 0;
+    position: absolute; left: 0; top: 250px; right: 0;
+    display: grid; grid-template-columns: repeat(3, 435fr); column-gap: 26px; row-gap: 40px;
+  }
+  .co__grid li { position: relative; height: 230px; padding-top: 26px; }
+  .co__grid li::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 433px; height: 1px; background: rgba(153, 152, 149, 0.7);
+  }
+  .co__code {
+    position: absolute; left: -3px; top: 26px;
+    font-size: var(--fs-display); line-height: 86px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .co__street, .co__postal {
+    position: absolute; left: 200px; width: 235px;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item);
+  }
+  .co__street { top: 60px; color: rgb(20, 20, 20); }
+  .co__postal { top: 106px; color: rgba(20, 20, 20, 0.62); }
+  .co__email, .co__phone {
+    position: absolute; left: 0;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item);
+  }
+  .co__email { top: 176px; color: rgb(20, 20, 20); }
+  .co__phone { top: 201px; font-weight: var(--fw-semi); color: rgba(20, 20, 20, 0.62); }
+
+  /* ── say hello ──────────────────────────────────────────── */
+  .cs { position: relative; display: grid; grid-template-columns: 880px minmax(0, 1fr); min-height: 1020px; }
+  .cs__panel { position: relative; overflow: hidden; }
+  /* Pinned to the export's own offsets — 86 / 124 / 250 / 520 / 556 / 648 /
+     760 — rather than chained on margins, so a lede that wraps one line short
+     does not pull the callback button 100px up the panel. */
+  .cs__panel-in { position: relative; z-index: 1; height: 1020px; }
+  .cs__eyebrow {
+    position: absolute; left: 39px; top: 86px; display: block;
+    font-size: 13px; line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.14em; color: rgba(11, 11, 11, 0.7);
+  }
+  .cs__h {
+    position: absolute; left: 39px; top: 124px; margin: 0; width: 760px;
+    font-size: 72px; line-height: 74px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(11, 11, 11);
+  }
+  .cs__lede {
+    position: absolute; left: 39px; top: 250px; margin: 0; width: 660px;
+    font-size: 20px; line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(11, 11, 11, 0.82);
+  }
+  .cs__hair { position: absolute; left: 39px; top: 520px; display: block; width: 760px; height: 1px; background: rgba(11, 11, 11, 0.24); }
+  .cs__ask {
+    position: absolute; left: 39px; top: 556px; margin: 0; width: 660px;
+    font-size: 30px; line-height: 38px; font-weight: var(--fw-semi);
+    letter-spacing: -0.045em; color: rgb(11, 11, 11);
+  }
+  .cs__note {
+    position: absolute; left: 39px; top: 648px; margin: 0; width: 640px;
+    font-size: 17px; line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(11, 11, 11, 0.78);
+  }
+  .cs__callback { position: absolute; left: 39px; top: 760px; }
+
+  .cs__form-wrap { padding: 86px 39px 86px 40px; max-width: 520px; }
+  .cs__form-label {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.14em; color: var(--c-ink-label);
+  }
+  .cf { margin-top: 44px; }
+  .cf__pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .cf__row + .cf__row { margin-top: 26px; }
+  .cf__row label {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  .cf__row input, .cf__row textarea {
+    display: block; width: 100%; margin-top: 6px; padding: 0 0 10px;
+    background: transparent; border: 0; border-bottom: 1px solid rgba(20, 20, 20, 0.22);
+    font-family: inherit; font-size: 17px; line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
+  }
+  .cf__row input { height: 44px; }
+  .cf__row textarea { resize: vertical; min-height: 120px; }
+  .cf__row input:focus-visible, .cf__row textarea:focus-visible {
+    outline: none; border-bottom-color: rgb(20, 20, 20);
+  }
+
+  .cf__submit {
+    position: relative; display: inline-flex; align-items: center;
+    width: 204px; height: 47px; margin-top: 44px; padding-left: 25px;
+    border: 0; border-radius: var(--r-pill); background: var(--c-black); cursor: pointer;
+    font-family: inherit; font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-button); color: var(--c-white);
+    transition: background var(--dur-fast) ease;
+  }
+  .cf__submit:hover { background: rgb(38, 38, 38); }
+  .cf__submit:disabled { cursor: progress; opacity: 0.7; }
+  .cf__dots { position: absolute; left: 167px; top: 20px; display: flex; gap: 2px; }
+  .cf__dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(153, 152, 149, 0.6); }
+  .cf__dots i:last-child { background: var(--c-accent); }
+  .cf__status { margin: 16px 0 0; font-size: var(--fs-body); line-height: 22px; color: rgba(20, 20, 20, 0.7); }
+  .cf__status[data-state='error'] { color: rgb(176, 42, 42); }
+
+  .cs__social {
+    list-style: none; margin: 52px 0 0; padding: 26px 0 0;
+    display: flex; flex-wrap: wrap; gap: 24px;
+    border-top: 0.5px solid var(--c-rule-soft);
+  }
+  .cs__social a {
+    font-size: var(--fs-label); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+    transition: color var(--dur-fast) ease;
+  }
+  .cs__social a:hover { color: rgb(20, 20, 20); }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .ch__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 120px 72px; row-gap: 36px; }
+    .ch__rail, .ch__mast, .ch__count { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 0; width: auto; }
+    .ch__statement { width: auto; max-width: 440px; }
+    .ch__large { line-height: 1.04; margin-left: 0; }
+    .ch__look { margin: 20px 0 0; }
+
+    .cg { padding-block: 64px 72px; min-height: 0; }
+    .cg__h { line-height: 1.06; margin-left: 0; }
+    .cg__intro, .cg__intro-b { position: static; width: auto; max-width: 560px; margin-top: 28px; }
+    .cg__ways { position: static; margin-top: 56px; grid-template-columns: 1fr; row-gap: 40px; }
+    .cg__ways::before { position: static; display: block; margin-bottom: 40px; }
+
+    .co { padding-block: 64px 72px; min-height: 0; }
+    .co__intro { position: static; width: auto; max-width: 560px; margin-top: 24px; }
+    .co__grid { position: static; margin-top: 48px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .co__grid li { height: auto; padding-bottom: 24px; }
+    .co__code, .co__street, .co__postal, .co__email, .co__phone { position: static; width: auto; display: block; }
+    .co__code { font-size: var(--fs-stat); line-height: 1.1; margin-left: 0; }
+    .co__street { margin-top: 12px; }
+    .co__email { margin-top: 14px; }
+
+    .cs { grid-template-columns: 1fr; min-height: 0; }
+    .cs__panel-in { height: auto; padding: 64px 39px; }
+    .cs__eyebrow, .cs__h, .cs__lede, .cs__hair, .cs__ask, .cs__note, .cs__callback {
+      position: static; left: auto; top: auto; width: auto; max-width: 620px;
+    }
+    .cs__h { font-size: var(--fs-display); line-height: 1.04; margin-top: 19px; }
+    .cs__lede { margin-top: 32px; }
+    .cs__hair { margin-top: 40px; }
+    .cs__ask { margin-top: 32px; }
+    .cs__note { margin-top: 20px; }
+    .cs__callback { margin-top: 36px; }
+    .cs__form-wrap { padding: 64px 39px; max-width: none; }
+  }
+  @media (max-width: 680px) {
+    .co__grid { grid-template-columns: 1fr; }
   }
 </style>

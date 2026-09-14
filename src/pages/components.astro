@@ -78,6 +78,12 @@ const faq = [
         level="h1"
         intro="Every primitive in the system, on each ground it has to work on. Not part of the site."
       />
+      {/* SectionHeader takes two sizes and the gallery only ever rendered one,
+          so the 84px variant was a rule that matched nothing on any page. It
+          passed assert-styles until an unrelated change moved the bundle it
+          had been attributed to. A gallery that skips half a component's API
+          is how a rule goes dead without anyone noticing. */}
+      <SectionHeader label="Internal" heading="Display sub" size="display" />
     </div>
   </Section>
 

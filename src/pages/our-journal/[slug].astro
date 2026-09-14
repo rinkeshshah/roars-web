@@ -1,0 +1,71 @@
+---
+/**
+ * Journal posts. 115 live URLs at /our-journal/[slug]/.
+ *
+ * STUBS, ALL OF THEM. src/content/posts/ is empty — the WXR export has not
+ * landed — so every one renders the pending state: 200, a correct canonical,
+ * noindex, and a plain statement that the piece is being moved. That is what
+ * stops 115 indexed URLs 404ing at cutover, and it is what lets
+ * /our-journal/ link them without linking at holes.
+ *
+ * Routes come from docs/URL-INVENTORY.csv rather than the collection, so the
+ * set is right before any body exists. When a post migrates, its entry wins
+ * and the page becomes real without the URL changing.
+ */
+import { getCollection, render } from 'astro:content'
+import MarketingPage from '../../components/MarketingPage.astro'
+import { slugsOf, nameFromSlug } from '../../lib/inventory'
+import { site } from '../../lib/site'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('posts')
+  const byId = new Map(entries.map((e) => [e.id, e]))
+  return slugsOf('post').map((slug) => ({
+    params: { slug },
+    props: { entry: byId.get(slug) },
+  }))
+}
+
+const { slug } = Astro.params
+const { entry } = Astro.props
+const path = `/our-journal/${slug}/`
+const name = entry?.data.title ?? nameFromSlug(slug)
+
+const schema = entry
+  ? [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        '@id': `${site.url}${path}#post`,
+        headline: name,
+        description: entry.data.seo.description,
+        datePublished: entry.data.publishedAt.toISOString(),
+        author: { '@id': `${site.url}/#organization` },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+          { '@type': 'ListItem', position: 2, name: 'Insights', item: `${site.url}/our-journal/` },
+          { '@type': 'ListItem', position: 3, name },
+        ],
+      },
+    ]
+  : []
+
+const { Content } = entry ? await render(entry) : { Content: null }
+---
+
+<MarketingPage
+  topCta="contact"
+  title={entry?.data.seo.title ?? `${name} | ${site.name}`}
+  description={entry?.data.seo.description}
+  path={path}
+  label="Insight"
+  heading={name}
+  schema={schema}
+  pending={!entry}
+>
+  {Content && <Content />}
+</MarketingPage>

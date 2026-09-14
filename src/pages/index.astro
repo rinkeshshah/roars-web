@@ -317,34 +317,51 @@ const schema = [
         <span class="starmark" style={`--m:url(${star3.src});width:20px;height:20px`}></span>
         <span class="starmark" style={`--m:url(${star5.src});width:20px;height:20px`}></span>
       </span>
+      {/* All THREE stats live in one 1362x362 block in the export, and the
+          third is nested inside it at an offset of 698,187 — it is not a
+          second row under the first two, which is how it was built and why it
+          sat 15px low with 2005 18px adrift. The two placements overlap in
+          the same grid area, which is what grid overlap is for; nothing here
+          is absolutely positioned. Columns 463/235/664 sum to the 1362
+          content box, so they hold at any width. */}
       <div data-reveal class="about__stats">
-        <div class="about__stat">
-          <p class="about__stat-name">Projects Delivered</p>
-          <div class="rule"></div>
-          <div class="about__stat-row">
-            <span class="about__stat-num">250<span class="about__plus">+</span></span>
-            <span class="about__stat-note">Products launched successfully since 2005</span>
+        <div class="about__stat-pair">
+          <div class="about__stat">
+            <p class="about__stat-name">Projects Delivered</p>
+            <div class="rule about__stat-rule"></div>
+            <div class="about__stat-row">
+              <span class="about__stat-num">250<span class="about__plus">+</span></span>
+              <span class="about__stat-note">Products launched successfully since 2005</span>
+            </div>
+          </div>
+          <div class="about__stat">
+            <p class="about__stat-name">Returning Customers</p>
+            <div class="rule about__stat-rule"></div>
+            <div class="about__stat-row">
+              <span class="about__stat-num">96<span class="about__pct">%</span></span>
+              <span class="about__stat-note">Clients who return for their next product</span>
+            </div>
           </div>
         </div>
-        <div class="about__stat">
-          <p class="about__stat-name">Returning Customers</p>
-          <div class="rule"></div>
-          <div class="about__stat-row">
-            <span class="about__stat-num">96<span class="about__pct">%</span></span>
-            <span class="about__stat-note">Clients who return for their next product</span>
-          </div>
-        </div>
-      </div>
 
-      <div data-reveal class="about__est" style="transition-delay:80ms">
-        <p class="about__est-name">Year of Establishment</p>
-        <div class="rule"></div>
-        <div class="about__est-row">
-          <span class="about__est-note">
-            The year Rinkesh A Shah founded Roars — a first product for an
-            early-stage startup.
-          </span>
-          <span class="about__stat-num">2005</span>
+        <div class="about__est">
+          <p class="about__est-name">Year of Establishment</p>
+          <div class="rule about__est-rule"></div>
+          <div class="about__est-row">
+            <span class="about__est-note">
+              The year Rinkesh A Shah founded Roars — a first product for an
+              early-stage startup.
+            </span>
+            <span class="about__est-side">
+              <span class="about__stat-num about__est-num">2005</span>
+              {/* Two 28px portraits under the year. Files arrive with the
+                  Phase 5 uploads import; the discs hold their places. */}
+              <span class="about__est-faces" aria-hidden="true">
+                <img src={PORTRAIT.suzanne} alt="" width="28" height="28" loading="lazy" />
+                <img src={PORTRAIT.nitin} alt="" width="28" height="28" loading="lazy" />
+              </span>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -372,31 +389,49 @@ const schema = [
         <p class="about__who-role">CEO / Founder</p>
       </div>
 
-      <div data-reveal class="about__pitch" style="transition-delay:200ms">
-        <p>
-          We work with you as thinkers, creators, consultants, designers and
-          implementers{' '}
-          <span class="about__pitch-mid">to turn your product into a high quality marketable offering.</span>{' '}
-          <span class="about__pitch-low">Our approach is simple — we bring clarity to complex situations.</span>
-        </p>
-      </div>
+      {/* The pitch and the logo strip share one column in the export — both
+          sit in the block that opens at 584, at 79 and 296 into it. Given
+          their own grid rows they were separated by the row gap and the strip
+          landed 45px low. */}
+      <div class="about__right">
+        <div data-reveal class="about__pitch" style="transition-delay:200ms">
+          <p>
+            We work with you as thinkers, creators, consultants, designers and
+            implementers{' '}
+            <span class="about__pitch-mid">to turn your product into a high quality marketable offering.</span>{' '}
+            <span class="about__pitch-low">Our approach is simple — we bring clarity to complex situations.</span>
+          </p>
+        </div>
 
-      {/* Client logos. The files live on the WordPress install and arrive with
-          the Phase 5 uploads import; CLAUDE.md forbids hot-linking the live
-          site, so the row holds its 44px height and its edge fades until then
-          and is listed in the build report. */}
-      <div class="about__logos" data-reveal>
-        <div class="about__logo-row">
-          {CLIENT_LOGOS.map((l, i) => (
-            <img
-              src={l.src}
-              alt={l.alt}
-              height={l.h}
-              style={`--i:${i}`}
-              loading="lazy"
-              decoding="async"
-            />
-          ))}
+        {/* Client logos.
+
+            DELIBERATE CHANGE FROM THE EXPORT, asked for directly. The export
+            draws a static flex row inside a 629px overflow:hidden box, so
+            with the real files at their drawn heights only Samsung, TATA and
+            GISAID ever appear and Forbes, Reliance and DDB are clipped off
+            the right edge — six marks paid for, three seen. It rotates now,
+            and the marks are smaller so more of the strip reads at once.
+
+            The row is duplicated and the track travels -50%, which is what
+            makes the loop seamless; the export's own edge fades cover both
+            entry and exit. The clone is aria-hidden with empty alts so the
+            six brands are announced once. */}
+        <div class="about__logos" data-reveal>
+          <div class="about__logo-track">
+            {[false, true].map((clone) => (
+              <div class="about__logo-row" aria-hidden={clone ? 'true' : undefined}>
+                {CLIENT_LOGOS.map((l, i) => (
+                  <img
+                    src={l.src}
+                    alt={clone ? '' : l.alt}
+                    style={`--logo-h:${l.h}px;--i:${i}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -492,8 +527,13 @@ const schema = [
               )}
             </div>
 
+            {/* Two placed spans, not a number followed by a word. The export
+                draws a 206x32 block with the figure at 0,0 and the label at
+                56,7 — the label sits on the figure's optical middle, not on
+                its baseline. As the block's own text node it measured from
+                the block's top edge and read 34px high on all three rows. */}
             <p class="svc__count" data-svc-closed>
-              {s.count && <><span>{s.count}</span> Projects</>}
+              {s.count && <><span class="svc__count-n">{s.count}</span><span class="svc__count-l">Projects</span></>}
             </p>
 
             <button
@@ -534,12 +574,16 @@ const schema = [
         </ul>
       </div>
 
+      {/* No inline visibility on the slides: each card has to stay paintable
+          so the incoming image can ride up OVER the outgoing one, which is
+          the whole device. Only the text hides, and it hides discretely — see
+          .proj__slide[aria-hidden] below and scripts/crossfade.ts. */}
       <div class="proj__stage" data-crossfade>
         {featured.map((f, i) => (
           <article
             class="proj__slide"
             data-slide
-            style={`opacity:${i === 0 ? 1 : 0};visibility:${i === 0 ? 'visible' : 'hidden'}`}
+            style={`opacity:${i === 0 ? 1 : 0}`}
             aria-hidden={i === 0 ? undefined : 'true'}
           >
             <div class="proj__date">
@@ -731,9 +775,16 @@ const schema = [
   .rule { height: 1.5px; background: var(--c-rule-strong); }
   .rule--short { width: 16px; }
   .rule--thin { height: 1.25px; }
+  /* A clamp's vw term has to REACH its cap at the 1440 design width, or the
+     cap never applies and the step lands fractionally small. 8.6vw is 123.84
+     at 1440, not 124 — and since letter-spacing and any em-sized glyph
+     children are relative, one missing 0.16px reappears as a row per
+     descendant in the diff table. 124/1440 = 8.611vw, so 8.62vw overshoots by
+     a hair and the cap decides. Same rule at every clamp here: the vw term
+     must exceed cap/14.4. */
   .display {
     margin: 0;
-    font-size: clamp(var(--fs-heading-m), 8.6vw, var(--fs-heading));
+    font-size: clamp(var(--fs-heading-m), 8.62vw, var(--fs-heading));
     font-weight: var(--fw-semi);
     line-height: var(--lh-tight);
     letter-spacing: var(--ls-display);
@@ -798,59 +849,121 @@ const schema = [
     position: relative;
     display: grid;
     grid-template-columns: 464fr 234fr 234fr 430fr;
-    row-gap: var(--sp-6);
+    /* 83, not --sp-6: the export's stats block ends at 501 and the team row
+       opens at 584. */
+    row-gap: 83px;
     column-gap: 0;
-    padding-block: 139px 123px;
+    /* 155, not 123: the export's last block ends at 924 in a 1079 section. */
+    padding-block: 139px 155px;
   }
-  /* Stats container at 139 in the section, and inside it: label 0, rule 43,
-     number 54, note 73. The 26px top margin put the whole block that far
-     below where the export has it. */
-  .about__stats { grid-column: 2 / 5; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  /* The export's one stats block: 1362x362 at 39,139. Two placements share
+     it — the pair from column 463, the Year block from 698,187. Tracks are
+     fr so they resolve to 463/235/664 on the 1362 content box and stay
+     proportional below it. */
+  .about__stats {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 463fr 235fr 664fr;
+    grid-template-rows: 187px minmax(0, 1fr);
+    min-height: 362px;
+  }
+  .about__stat-pair {
+    grid-column: 2 / -1; grid-row: 1 / -1;
+    display: grid; grid-template-columns: 435fr 29fr 435fr;
+  }
+  .about__stat-pair > :last-child { grid-column: 3; }
+  .about__est { grid-column: 3 / -1; grid-row: 2 / -1; }
+
+  /* Inside a stat box: name 0, rule 43, number 54, note 73. The name and the
+     rule carry the export's 2px inset; the number does not. */
   .about__stat-name, .about__est-name {
     font-size: var(--fs-intro); line-height: 19px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-body); color: var(--c-black);
-    margin-bottom: 24px;
   }
+  .about__stat-name { margin-left: 2px; }
+  .about__stat-rule { margin: 24px 0 0 2px; }
+  /* Both tracks are fr and they SUM to the box. Pairing a large fr with 1fr
+     does not mean "235 then the rest" — fr distributes proportionally, so
+     235fr 1fr gives the second track 1/236th of the row and the note
+     collapsed to 2px. */
   .about__stat-row {
     display: grid;
-    grid-template-columns: 233px minmax(0, 1fr);
+    grid-template-columns: 235fr 200fr;
     align-items: start;
-    margin-top: 9px;
+    margin-top: 9.5px;
   }
-  .about__est-row { display: flex; align-items: flex-start; gap: var(--sp-5); margin-top: var(--sp-4); }
+  /* Year block: name 0, rule 38, row 60. The row holds the note at 0 and a
+     right column whose year overhangs it by 11px, exactly as drawn. */
+  .about__est-rule { margin-top: 19px; }
+  /* The drawn row is 448 of the block's 664; the trailing track is the
+     remainder so the first two land at 228 and 220. */
+  .about__est-row {
+    display: grid; grid-template-columns: 228fr 220fr 216fr;
+    align-items: start; margin-top: 20.5px;
+  }
+  .about__est-num { line-height: 84px; }
+  /* Flex, not block: as a block the 84px inline span sits in a line box with
+     the 22px strut and the two align on the baseline, which put the year 9px
+     high. A flex column makes the span its own item. */
+  .about__est-side { display: flex; flex-direction: column; align-items: flex-start; margin-top: -11px; }
+  .about__est-faces { display: flex; gap: 6px; margin-top: 9px; margin-left: 2px; }
+  .about__est-faces img {
+    width: 28px; height: 28px; border-radius: var(--r-circle);
+    object-fit: cover; background: rgb(173, 173, 173);
+  }
   .about__stat-num {
-    font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display));
+    /* 5.8vw is 83.52 at 1440, so the 84px cap never applied. See .display. */
+    font-size: clamp(var(--fs-stat-m), 5.84vw, var(--fs-display));
     /* 84/84 in the export. 43 was a mispairing — it is the /Projects count
        in the Services rows that leads at 43 — and the 41px it cost is
        exactly what left the About section short and shifted every section
        below it. */
     font-weight: var(--fw-semi); line-height: 84px;
     letter-spacing: var(--ls-display); color: var(--c-black);
+    position: relative; display: block;
   }
-  .about__plus { font-size: 0.43em; line-height: 31px; font-weight: var(--fw-medium); }
-  .about__pct { font-size: 0.31em; line-height: 31px; font-weight: 700; }
+  /* The export PLACES these — + at 152,71 and % at 110,73 against a number
+     that starts at 0,54 — it does not run them on after the digits. Set
+     inline they closed up tight against the figure and sat low on its
+     baseline. No table of text positions would have caught it: visual-diff
+     skips inline boxes, whose rect is a union of line boxes. It took looking
+     at the two renders side by side.
+     letter-spacing is re-declared because it INHERITS AS A COMPUTED PX value,
+     so both were carrying the number's -4.2px rather than their own. */
+  .about__plus, .about__pct {
+    position: absolute;
+    line-height: 31px;
+    letter-spacing: var(--ls-display);
+  }
+  .about__plus { left: 152px; top: 17px; font-size: 36px; font-weight: var(--fw-medium); }
+  .about__pct  { left: 110px; top: 19px; font-size: 26px; font-weight: 700; }
   .about__stat-note, .about__est-note {
     max-width: 170px; margin-top: 19px;
     font-size: var(--fs-body); line-height: 22px;
     letter-spacing: var(--ls-body); color: rgb(71, 71, 71); opacity: 0.78;
   }
-  .about__est { grid-column: 3 / 5; }
+  /* The 19px drop belongs to the two stat notes, which sit that far under
+     their number. The Year note opens its own row and starts at its top. */
+  .about__est-note { margin-top: 0; line-height: 23px; }
   .about__est-name { font-size: 18px; color: rgb(54, 53, 53); }
-  .about__team-name, .about__who-name {
-    font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-semi);
+  /* The export sets these three at 24px on a 19px leading — tighter than the
+     glyphs, which is what keeps "Roars / Product Company" reading as one
+     stacked lockup rather than two lines of copy. --lh-item (32px) is the
+     body pairing and is wrong here; it cost 4px on "Roars" and 6px on the
+     line under it. */
+  .about__team-name, .about__who-name, .about__who-sub {
+    font-size: var(--fs-item); line-height: 19px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
-  .about__team-count {
-    display: flex; align-items: center; justify-content: center;
-    width: 42px; height: 42px; margin-top: var(--sp-5);
-    background: rgba(153, 152, 149, 0.18); border-radius: var(--r-pill);
-    font-size: 18px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
-  }
+  /* Offsets inside the block, from the export: name 0, sub 30, portrait 85,
+     name 157, role 178. They are not a rhythm, so each carries its own gap. */
   .about__who { grid-column: 2 / 3; }
-  .about__who-sub { font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: rgb(71, 71, 71); opacity: 0.7; }
-  .about__who-person { margin-top: var(--sp-6); font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
-  .about__who-role { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
-  .about__cluster { position: relative; width: 145px; height: 143px; margin-top: var(--sp-5); }
+  .about__who-sub { margin-top: 11px; color: rgb(71, 71, 71); opacity: 0.7; }
+  .about__who-person { margin-top: 12px; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
+  .about__who-role { margin-top: 2px; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
+  /* Team block: name 0, rule 43, cluster 85. */
+  .about__team .rule--short { margin-top: 24px; background: rgb(180, 174, 174); }
+  .about__cluster { position: relative; width: 145px; height: 143px; margin-top: 40.5px; }
   .about__face {
     position: absolute; width: var(--avatar); height: var(--avatar);
     border-radius: var(--r-circle); object-fit: cover; background: rgb(173, 173, 173);
@@ -859,59 +972,96 @@ const schema = [
   .about__face--b { left: 52px;  top: 50px; }
   .about__face--c { left: 0;     top: 101px; }
   .about__face--d { left: 103px; top: 101px; }
+  /* One rule, not two. There was a second .about__team-count above the
+     cluster block that set 18px on a grey chip; this one overrode it and
+     shipped the counter at 14px/19. The export is 18px on a 43px leading. */
   .about__team-count {
     position: absolute; left: 0; top: 0;
-    display: flex; align-items: center; justify-content: center;
     width: var(--avatar); height: var(--avatar);
     margin: 0; border-radius: var(--r-circle);
-    background: var(--c-surface);
-    font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi);
+    background: rgba(153, 152, 149, 0.18);
+  }
+  /* Not centred — the export sets the numeral at 10,8 on a 43px leading,
+     which reads slightly high and left in the disc. Centring it moved the
+     figure 33px and lost the relationship to the star mark beside it. */
+  .about__team-count > span {
+    position: absolute; left: 10px; top: 8px;
+    font-size: 18px; line-height: 43px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
 
   /* Edge fades so the row reads as a strip that continues past its box. */
-  .about__logos { grid-column: 3 / 5; position: relative; margin-top: 30px; overflow: hidden; }
+  .about__logos { position: relative; width: 94.73%; margin: 81px 0 0 -1.81%; overflow: hidden; }
   .about__logos::before, .about__logos::after {
     content: ''; position: absolute; top: 0; bottom: 0; width: 54px; z-index: 1;
   }
   .about__logos::before { left: 0; background: linear-gradient(270deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
   .about__logos::after { right: 0; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
-  /* One treatment for every mark, which is the point of the row: grayscale,
-     62%, and the height each file needs to sit on the same optical baseline
-     (22/27/24/22/27/22 — they are not the same number and forcing one makes
-     TATA and Reliance look small). All from the export.
+  /* One treatment for every mark, which is the point of the row: grayscale at
+     62%, full colour under the cursor. The heights keep the export's relative
+     proportions (22/27/24/22/27/22 — not one number, because forcing one
+     makes TATA and Reliance look small) scaled to 0.73, which is the "make
+     them smaller" half of the request.
 
-     The motion is an ADDITION, not fidelity: the export's row is static.
-     Each mark fades up in turn as the row arrives, and comes to full colour
-     under the cursor. Staggered off --i so it reads as one row moving rather
-     than six things appearing. */
-  .about__logo-row { display: flex; align-items: center; gap: 44px; height: 44px; padding-inline: 6px; }
+     THE ROTATION IS A DELIBERATE CHANGE, not fidelity. See the markup. The
+     track is two identical rows and travels exactly -50%, so the moment it
+     wraps, row two is where row one began and the loop is invisible. Duration
+     scales with the content, not the clock: 6 marks at ~5s each. */
+  .about__logo-track {
+    display: flex;
+    width: max-content;
+    animation: logoMarquee 30s linear infinite;
+  }
+  .about__logos:hover .about__logo-track,
+  .about__logos:focus-within .about__logo-track { animation-play-state: paused; }
+  @keyframes logoMarquee {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+  .about__logo-row {
+    display: flex; align-items: center; gap: 36px;
+    height: 44px; padding-inline: 18px;
+  }
+  /* The entrance stagger is KEPT alongside the rotation. The two do not fight:
+     the stagger is a Y lift and a fade on each mark, the marquee an X
+     translate on the track above them, so they compose. The row still arrives
+     as one thing moving rather than six things appearing, and then it turns. */
   .about__logo-row img {
     flex: 0 0 auto;
     width: auto;
+    height: calc(var(--logo-h, 22px) * 0.73);
     filter: grayscale(1);
     opacity: 0.62;
     translate: 0 6px;
     transition:
-      filter var(--dur-mid) ease,
+      filter var(--dur-fast) ease,
       opacity var(--dur-mid) ease calc(var(--i) * 70ms),
       translate var(--dur-mid) cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 70ms);
   }
   /* Visible by default. Gating opacity on .is-in meant that if the observer
-     never fired the row simply was not there — which is exactly how it
-     looked. The reveal now only supplies the lift. */
+     never fired the row simply was not there. The reveal supplies the lift. */
   .about__logos.is-in .about__logo-row img { translate: 0 0; }
   .about__logo-row img:hover { filter: grayscale(0); opacity: 1; }
 
+  /* A strip that moves on its own is exactly what this switches off. It still
+     clips at 629, so the export's own three-and-a-bit is what shows. */
   @media (prefers-reduced-motion: reduce) {
+    .about__logo-track { animation: none; }
     .about__logo-row img { translate: 0 0; transition: filter var(--dur-fast) ease; }
   }
 
-  .about__who-face { display: block; width: 60px; height: 60px; margin-top: 21px; border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
+  /* Explicit box, not the attributes: tokens.css sets img{height:auto}, so a
+     portrait whose file is still missing collapses and takes the two names
+     under it up with it. The export puts this at 85 in the block, which is
+     36 under the line above. */
+  .about__who-face { display: block; width: 60px; height: 60px; margin-top: 36px; border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
   .about__who-person { margin-top: 12px; }
   /* Prototype: "Roars" at 610, the pitch at 689 — 79px lower, not level. */
-  .about__who { margin-top: 8px; }
-  .about__pitch { grid-column: 3 / 5; margin-top: 79px; }
+  /* The who block opens level with "Team of Roars" at 584, not 8px under it. */
+  /* 79 and 296 into the block that opens at 584, so the strip clears the
+     pitch by 81 rather than by the grid's row gap. */
+  .about__right { grid-column: 3 / 5; }
+  .about__pitch { margin-top: 79px; }
   .about__pitch p { max-width: 617px; }
   .about__pitch p {
     font-size: var(--fs-item); font-weight: var(--fw-medium);
@@ -925,9 +1075,10 @@ const schema = [
      row container at 306, foot at 1025 running to 1153. */
   .svc { padding-block: 121px 207px; }
   .svc .display { margin-left: var(--rail-width); }
-  /* Rows start at 306 in the section. The title box lands at 121+86=207, so
-     the gap is 99 — not 98, and the 25px that was missing was here. */
-  .svc__list { list-style: none; margin: 123px 0 0; padding: 0; }
+  /* Rows start at 306 in the section. The title box is 121 to 208 (86.8px of
+     leading rounds to 87), so the gap is 98. It was 123, which put the whole
+     rail 25px low and took every row with it. */
+  .svc__list { list-style: none; margin: 98px 0 0; padding: 0; }
 
   /* ── Services rows ──────────────────────────────────────────────
      Measured off the export, container at 38,306 sized 1364x647:
@@ -946,18 +1097,34 @@ const schema = [
   .svc__row {
     display: grid;
     grid-template-columns: 465px 232px 166px 36px;
-    grid-template-rows: auto auto;
+    /* The rule's track is ZERO height. The export draws each rule as a
+       hairline sitting ON the row's top edge, taking no space; given a real
+       auto track it added its own 1-2px to every row, and the four rows
+       compounded that into the 5px the section was over. */
+    grid-template-rows: 0 auto;
     align-items: start;
     justify-content: start;
     /* The gap below each row is the export's own and is not a rhythm:
        40, 43, 58, 0. Set per row from the data. */
     padding-bottom: var(--svc-pad, 43px);
   }
+  /* Those four numbers were measured with ROW 1 open, so they belong to that
+     state, not to those positions. Bound to the index alone, opening row 3
+     gave the tall open row the 58px gap meant for a short closed one and left
+     row 1 holding the open row's 40 — the rhythm inverted and the section
+     shuffled on every click. The gap follows the STATE: the open row takes 40
+     and the last row closes at 0, whichever rows those are. In the default
+     state this still resolves to exactly 40 / 43 / 58 / 0. */
+  .svc__row[data-open='true'] { padding-bottom: 40px; }
+  .svc__row:last-child { padding-bottom: 0; }
   /* An indented CLOSED row: an empty 463px rail, then the same four tracks. */
-  .svc__row--inner { grid-template-columns: 463px 465px 232px 166px 36px; }
+  /* fr, not px. The five tracks sum to exactly 1362 — the content box at a
+     1440 viewport — so at 1440 fr resolves to the identical widths, and at
+     anything narrower it scales instead of hanging off the edge. */
+  .svc__row--inner { grid-template-columns: 463fr 465fr 232fr 166fr 36fr; }
   /* The OPEN row is the only six-track row. */
   .svc__row[data-open='true'] {
-    grid-template-columns: 463px 241px 223px 231px 167px 37px;
+    grid-template-columns: 463fr 241fr 223fr 231fr 167fr 37fr;
   }
 
   .svc__stub, .svc__rule { grid-row: 1; height: 1.5px; background: var(--c-rule-strong); }
@@ -971,7 +1138,9 @@ const schema = [
   .svc__n {
     grid-row: 2; grid-column: 1;
     padding-top: 25px;
-    font-size: var(--fs-label); line-height: 19px;
+    /* 20px in the export, not --fs-label. This is the section's rail number,
+       not a rail label, and at 14 it read as a caption. */
+    font-size: 20px; line-height: 19px;
     font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
     color: rgb(17, 17, 17);
     display: none;
@@ -1042,14 +1211,18 @@ const schema = [
 
   .svc__count {
     grid-row: 2; grid-column: 3;
-    margin: 0;
-    padding-top: 27px;
-    font-size: var(--fs-label); line-height: var(--lh-label);
-    font-weight: var(--fw-medium); color: var(--c-black);
+    position: relative; height: 32px;
+    margin: 0; padding-top: 27px;
+    color: var(--c-black);
     white-space: nowrap;
   }
   .svc__row--inner .svc__count { grid-column: 4; }
-  .svc__count span { margin-right: var(--sp-3); font-size: 32px; line-height: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+  .svc__count-n { font-size: 32px; line-height: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+  .svc__count-l {
+    position: absolute; left: 56px; top: 34px;
+    font-size: var(--fs-label); line-height: 19px;
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-display); opacity: 0.9;
+  }
 
   .svc__icon {
     grid-row: 2;
@@ -1075,7 +1248,10 @@ const schema = [
   .svc__row[data-open='true'] .svc__icon::after { opacity: 0; }
   .svc__icon:hover { background: var(--c-accent); }
 
-  .svc__clients { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: var(--fs-body); font-weight: var(--fw-semi); line-height: 22px; letter-spacing: var(--ls-item); }
+  /* Opens at 26 like the description beside it, not hard against the rule,
+     and the three names sit on a plain 22px leading. The 10px gap made the
+     steps 32 and pushed "+ 11" past the block the export draws it in. */
+  .svc__clients { list-style: none; margin: 0; padding: 26px 0 0; display: flex; flex-direction: column; font-size: var(--fs-body); font-weight: var(--fw-semi); line-height: 22px; letter-spacing: var(--ls-item); }
   .svc__more { font-weight: var(--fw-medium); color: rgb(145, 144, 142); }
 
   .svc__foot {
@@ -1110,8 +1286,19 @@ const schema = [
     position: absolute; inset: 0;
     display: grid; grid-template-columns: 120px minmax(0, 1fr);
     gap: var(--sp-4);
-    transition: opacity .3s linear;
+    transform-origin: 50% 100%;
+    will-change: opacity, transform;
+    /* NO transition. The opacity and transform are sampled from the scroll
+       position every frame; a transition on top of that lags behind the
+       pointer and makes the handover feel elastic instead of tied to the
+       wheel. */
   }
+  /* The card overlaps. The TEXT does not: the outgoing date and title leave
+     the paint and the accessibility tree outright, so two dates are never on
+     screen together at any opacity. That collision is why this motion was
+     removed once already. */
+  .proj__slide[aria-hidden='true'] .proj__date,
+  .proj__slide[aria-hidden='true'] .proj__name { visibility: hidden; }
   .proj__slide:first-child { position: relative; }
   .proj__day { font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: #fbfbfb; }
   .proj__date .rule { margin-block: var(--sp-3); width: 85px; }
@@ -1297,7 +1484,7 @@ const schema = [
   @media (max-width: 1040px) {
     .hero__inner { grid-template-columns: 1fr; padding-block: 180px 80px; row-gap: var(--sp-6); }
     .about { grid-template-columns: 1fr; padding-block: var(--sp-7); }
-    .about__stats, .about__est, .about__who, .about__pitch { grid-column: 1 / -1; }
+    .about__stats, .about__est, .about__who, .about__right { grid-column: 1 / -1; }
     .svc .display, .svc__foot, .proj__head, .proj__foot,
     .say .display, .say__score,
     .ind .display, .ind__label, .ind__sub, .ind__intro, .ind__grid, .ind__foot,

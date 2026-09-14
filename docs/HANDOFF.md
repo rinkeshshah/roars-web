@@ -136,12 +136,34 @@ CSS change is what made this session slow — fifteen runs at two minutes each.
 - **Client logo row motion.** The export's row is static. Each mark fades up
   in turn and comes to full colour on hover. Staggered off `--i`.
 - **`Contact Now` dot pulse.** Four seconds on the trailing dot only.
-- **The scroll-progress ring on the logo: REMOVED.** It was added as "logo
-  motion", reusing the export's own conic element — which the export leaves at
-  `opacity: 0`. On a light ground it rendered as exactly the white badge that
-  had been explicitly cut, and came back as a complaint three times before I
-  connected them. **Do not add it back.** The export leaves that element
-  invisible for a reason.
+- **The scroll-progress ring on the logo: RESTORED, by request.** It was
+  removed once, and the removal was right at the time: it reused the export's
+  conic element and rendered as a pale filled circle behind the mark — the
+  badge that had been explicitly cut — and came back as a complaint three
+  times. The client has since asked for it back.
+
+  **What was actually wrong was the construction, not the idea.** The ring
+  must be a conic gradient with a radial MASK punching its centre out, so it
+  is an annulus and cannot read as a disc on any ground. Without the mask the
+  gradient fills the whole 52px circle and you get the badge again. Verified
+  at three scroll positions and on both grounds; the centre stays clear.
+  `src/components/LogoChip.astro` carries the note.
+
+  The export's intro animation ships with it: a quarter turn and a slight
+  overshoot on load, 1100ms after a 300ms delay. Both skip under
+  `prefers-reduced-motion`.
+
+- **The dashed rule under inner-page titles: REMOVED.** `assets/union.svg`,
+  the hand-drawn scribble the export draws under "Agency", "Projects" and
+  "Insights". Asked about once in the design chat and again on the built page,
+  and removed both times. It is IN the export, so a fidelity pass will want to
+  put it back and the visual diff will never object, because it carries no
+  text. Do not restore it on any inner page.
+
+  The industry hero is an inner page: the export draws the same scribble under
+  "food &" at 6,112 with a `swoosh` keyframe, and it is NOT in the build. The
+  star mark beside "roars" IS — that is `star-5.svg`, a different asset and a
+  different decision.
 
 The lesson generalises: an addition that resembles something the client
 already rejected is not an addition, it is a regression with a comment on it.
@@ -163,6 +185,26 @@ already rejected is not an addition, it is a regression with a comment on it.
 - **69 of 194 inventory URLs build**, plus 4 covered by redirect: home, about,
   approach, contact, work + 23 project pages, 9 industries, 12 services,
   resources, legal.
+- **Industry template** — `/industries/food-restaurant-app-development/`,
+  built from `Roars v2 - Industries v2`. Table **232 → 109**, and ~79 of the
+  109 are one artefact: the build has six sections where the export has seven
+  (the closing grey band is removed, §5), and `visual-diff.mjs` joins sections
+  BY ORDINAL, so the export's Footer pairs with nothing and every footer
+  string reports MISSING and EXTRA at once. Nothing real is over 7px except
+  the band itself and the shared top bar's right rail.
+  Three things the geometry tree alone would not have given:
+  the journey is **three** columns, not two — the tags are a column of their
+  own at 1022 with a hairline of their own, not a strip under the body copy;
+  the surfaces panels are **stacked**, all four in one 742x300 box, so the
+  section height never moves when a seat is picked; and the selected tab
+  steps 10px right and lights a dot at 504. Only the side-by-side showed the
+  last one.
+- **The receipt is live.** `src/scripts/ticket.ts`: the clock runs and the
+  order walks its five states, as the export does — but only while the ticket
+  is on screen, which on a 6800px page is the first screenful and nothing
+  after it. The states are content (`statuses` in the entry) and
+  `statusIndex` is server-rendered, so a crawler and a reduced-motion reader
+  both get a real printed ticket rather than a stopped animation.
 - **Search Console analysis** — `docs/search-console/FINDINGS.md`. Three
   findings that matter more than any layout delta; see §8.
 - **Star marks as CSS masks.** The SVGs ship `fill="currentColor"`, which is

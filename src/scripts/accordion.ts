@@ -40,11 +40,24 @@ export function initAccordions(): void {
       }
     }
 
+    /* A SWAP group always has exactly one row open; a PANEL group may have
+       none. The Services rows are swaps: the open row carries the photo, the
+       client list and six grid tracks where a closed row carries four and a
+       count, so closing the last open one does not collapse a panel, it
+       removes a third of the section and drags every row under it upward.
+       Clicking the open row there did exactly that. The export has no such
+       state — it always draws one row open. The FAQ below is a panel group
+       and still closes to nothing, which is what an FAQ should do. */
+    const isSwapGroup = triggers.some((t) =>
+      document.getElementById(t.getAttribute('aria-controls') || '')?.hasAttribute('data-svc-row'),
+    )
+
     triggers.forEach((trigger) => {
       trigger.addEventListener('click', () => {
-        const willOpen = trigger.getAttribute('aria-expanded') !== 'true'
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true'
+        if (isOpen && isSwapGroup) return
         triggers.forEach((other) => { if (other !== trigger) setRow(other, false) })
-        setRow(trigger, willOpen)
+        setRow(trigger, !isOpen)
       })
     })
   })

@@ -74,7 +74,12 @@ p { margin: 0; }
 
 /* A photograph that has not been uploaded yet shows nothing, not a broken
    glyph and its alt text. Dimensions are kept so nothing reflows on arrival. */
-img.is-missing { visibility: hidden; }
+/* The src is swapped for a transparent pixel in src/scripts/media.ts, so the
+   glyph and alt text are already gone. The element stays visible: its box
+   holds the layout AND its background paints, which is what keeps the avatar
+   discs and the founder chip reading as the drawn composition until
+   /wp-content/uploads/ lands. Hiding it took the discs with it. */
+img.is-missing { object-fit: fill; }
 
 /* ── Decorative star marks ─────────────────────────────────────────
    The export ships star-3.svg / star-5.svg with `fill="currentColor"`,
@@ -94,4 +99,18 @@ img.is-missing { visibility: hidden; }
   background: currentColor;
   -webkit-mask: var(--m) center / contain no-repeat;
   mask: var(--m) center / contain no-repeat;
+}
+
+/*
+ * The logo mark's ink, as a REGISTERED property so it interpolates in oklab.
+ * An unregistered custom property is a string and does not animate at all; a
+ * plain background-color transition animates in sRGB, and #FFD400 to #0B0B0B
+ * in sRGB passes through roughly rgb(133,111,5) — a muddy orange that reads
+ * as a red flash at 26px on every ground change. In oklab the same pair just
+ * darkens: hue holds, chroma falls. See src/components/LogoChip.astro.
+ */
+@property --mark-ink {
+  syntax: '<color>';
+  initial-value: #ffd400;
+  inherits: false;
 }
