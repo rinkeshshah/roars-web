@@ -828,7 +828,7 @@ const schema = [
     letter-spacing: var(--ls-display); color: var(--c-black);
   }
   .about__plus { font-size: 0.43em; line-height: 31px; font-weight: var(--fw-medium); }
-  .about__pct { font-size: 0.31em; font-weight: 700; }
+  .about__pct { font-size: 0.31em; line-height: 31px; font-weight: 700; }
   .about__stat-note, .about__est-note {
     max-width: 170px; margin-top: 19px;
     font-size: var(--fs-body); line-height: 22px;
@@ -1180,8 +1180,12 @@ const schema = [
      the inner column. */
   /* Measured: the nav block at 386,880 and the stack block at 737,866, so
      they are 351 apart and NOT baseline-aligned — the nav sits 14 lower.
-     Within the stack block: avatars 0-138, meta at 150, pill at 464. */
-  .say__foot { display: grid; grid-template-columns: 351px 150px 314px auto; align-items: start; margin-top: 12px; margin-left: 347px; }
+     Within the stack block: avatars 0-138, meta at 150, pill label at 991
+     page-absolute, so the pill starts 229 in and the meta track is 79.
+     (I briefly set that track to 314 off a `left:464px` found in the MENU
+     overlay's contact panel, not this section, and it threw the pill 235px
+     right. Grep the right block.) */
+  .say__foot { display: grid; grid-template-columns: 351px 150px 79px auto; align-items: start; margin-top: 12px; margin-left: 347px; }
   .say__foot :global(a) { justify-self: start; }
   /* 190px band: dot at 0, "Prev." at 18, "Next" at 128, dot at 182. */
   .say__nav { display: grid; grid-template-columns: 8px 102px 42px 8px; gap: 0 10px; width: 190px; align-items: center; margin-top: 14px; font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); }
