@@ -12,7 +12,10 @@ export function initNav(): void {
   const trigger = document.querySelector<HTMLElement>('[data-nav-trigger]')
   if (!overlay || !trigger) return
 
-  const close = overlay.querySelector<HTMLElement>('[data-nav-close]')
+  /* Two close controls now: the desktop canvas's X and the mobile header's.
+     querySelector would wire only the first, which is how a working X on one
+     breakpoint and a dead one on the other happens quietly. */
+  const closers = Array.from(overlay.querySelectorAll<HTMLElement>('[data-nav-close]'))
   let lastFocused: HTMLElement | null = null
 
   const focusables = () =>
@@ -57,7 +60,7 @@ export function initNav(): void {
   trigger.addEventListener('click', () =>
     setOpen(trigger.getAttribute('aria-expanded') !== 'true'),
   )
-  close?.addEventListener('click', () => setOpen(false))
+  closers.forEach((c) => c.addEventListener('click', () => setOpen(false)))
 
   /**
    * Mega-menu panel switching. Deliberately separate from the focus trap

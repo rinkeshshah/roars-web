@@ -36,6 +36,11 @@ const DIST = join(ROOT, process.argv[2] || 'dist')
 /* Pseudo-classes and -elements that cannot match in a static document but do
    not indicate a broken selector. A :hover rule matching nothing at rest is
    correct; a plain class matching nothing is not. */
+/* `.is-*` is this repo's convention for a class a script adds at runtime
+   (.is-open, .is-scrolled, .is-missing). It is absent from the built HTML by
+   definition, so matching nothing at rest is correct, not dead. Anything
+   else that matches nothing is still a bug. */
+const RUNTIME = /\.is-[a-z-]+/
 const STATEFUL = /:(hover|focus|focus-visible|focus-within|active|target|visited|any-link|placeholder|disabled|checked|indeterminate|autofill|user-invalid|before|after|first-line|first-letter|selection|backdrop|marker|placeholder-shown)\b|::/
 
 function walk(dir, out = []) {
@@ -117,7 +122,7 @@ for (const f of cssFiles) {
   for (const selText of selectors(css)) {
     for (const one of selText.split(',')) {
       const sel = one.trim()
-      if (!sel || STATEFUL.test(sel)) continue
+      if (!sel || STATEFUL.test(sel) || RUNTIME.test(sel)) continue
 
       // Only scoped selectors are checkable this way: a global selector may
       // legitimately target markup this build does not contain.

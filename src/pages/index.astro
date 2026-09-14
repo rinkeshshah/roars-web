@@ -753,13 +753,19 @@ const schema = [
     column-gap: 0;
     padding-block: 139px 123px;
   }
-  .about__stats { grid-column: 2 / 5; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .about__stats { grid-column: 2 / 5; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 26px; }
   .about__stat-name, .about__est-name {
     font-size: var(--fs-intro); line-height: var(--lh-intro); font-weight: var(--fw-semi);
     letter-spacing: var(--ls-body); color: var(--c-black);
-    margin-bottom: var(--sp-4);
+    margin-bottom: 11px;
   }
-  .about__stat-row, .about__est-row { display: flex; align-items: flex-start; gap: var(--sp-5); margin-top: var(--sp-4); }
+  .about__stat-row {
+    display: grid;
+    grid-template-columns: 233px minmax(0, 1fr);
+    align-items: start;
+    margin-top: 9px;
+  }
+  .about__est-row { display: flex; align-items: flex-start; gap: var(--sp-5); margin-top: var(--sp-4); }
   .about__stat-num {
     font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display));
     font-weight: var(--fw-semi); line-height: 1;
@@ -768,7 +774,7 @@ const schema = [
   .about__plus { font-size: 0.43em; font-weight: var(--fw-medium); }
   .about__pct { font-size: 0.31em; font-weight: 700; }
   .about__stat-note, .about__est-note {
-    max-width: 170px;
+    max-width: 170px; margin-top: 19px;
     font-size: var(--fs-body); line-height: 22px;
     letter-spacing: var(--ls-body); color: rgb(71, 71, 71); opacity: 0.78;
   }

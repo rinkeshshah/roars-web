@@ -60,11 +60,40 @@ export interface MenuItem {
   title: string
   body?: string
   /** Panel sub-content. `kind` picks the layout the prototype draws. */
-  kind?: 'links' | 'cards' | 'sectors' | 'services' | 'kits' | 'posts' | 'contact'
+  kind: 'links' | 'cards' | 'sectors' | 'services' | 'kits' | 'posts' | 'contact'
   items?: MenuLink[]
-  stats?: { value: string; label: string }[]
-  statLabel?: string
-  ventures?: string
+  /** Work panel only: the pill under the six project cards. */
+  all?: MenuLink
+  /** About panel only: the right-hand "our own ventures" block, two lines. */
+  ventures?: string[]
+  /** Industries panel only: the closing line under the eight sectors. */
+  footnote?: string
+}
+
+/**
+ * The resting panel — what the right-hand side shows before the cursor has
+ * touched a row. Verbatim from the export.
+ */
+export const MENU_REST = {
+  eyebrow: 'ROARS — SINCE 2005',
+  title: 'We create delightful experiences that matters.',
+  statLabel: '20 YEARS OF EXCELLENCE IN PRODUCT CONSULTING',
+  stats: [
+    { value: '20+', label: 'YEARS IN PRODUCT' },
+    { value: '250+', label: 'PROJECTS DELIVERED' },
+    { value: '96%', label: 'RETURNING CUSTOMERS' },
+  ],
+  hint: 'HOVER A SECTION TO EXPLORE',
+}
+
+/** The contact bar along the bottom of the overlay. */
+export const MENU_BAND = {
+  offices: [
+    { label: 'USA', value: '+1 (302) 505-1200', href: 'tel:+13025051200' },
+    { label: 'UK', value: '+44 (7537) 183399', href: 'tel:+447537183399' },
+  ],
+  email: { label: 'EMAIL', value: 'sales@roarsinc.com', href: 'mailto:sales@roarsinc.com' },
+  cta: { label: 'Book a discovery call', href: '/contact-us/' },
 }
 
 export const MENU: MenuItem[] = [
@@ -79,12 +108,6 @@ export const MENU: MenuItem[] = [
       { label: 'How we work', href: '/approach/' },
       { label: 'Selected work', href: '/work/' },
     ],
-    statLabel: '20 YEARS OF EXCELLENCE IN PRODUCT CONSULTING',
-    stats: [
-      { value: '20+', label: 'YEARS IN PRODUCT' },
-      { value: '250+', label: 'PROJECTS DELIVERED' },
-      { value: '96%', label: 'RETURNING CUSTOMERS' },
-    ],
   },
   {
     n: '02', label: 'about us', href: '/about-us/',
@@ -97,7 +120,7 @@ export const MENU: MenuItem[] = [
       { label: 'Leadership & team', href: '/about-us/' },
       { label: 'Brand guidelines', href: null },
     ],
-    ventures: 'Produit · Hostwala · UX Audit Pro · Microkopy · GetAuto',
+    ventures: ['Produit · Hostwala · UX Audit Pro', 'Microkopy · GetAutomation'],
   },
   {
     n: '03', label: 'approach', href: '/approach/',
@@ -109,6 +132,7 @@ export const MENU: MenuItem[] = [
       { label: 'Discovery', href: '/approach/', note: 'Workshops, market review, product definition' },
       { label: 'Design', href: '/approach/', note: 'Flows, prototypes, a tested interface' },
       { label: 'Build', href: '/approach/', note: 'Two-week sprints, demo every Friday' },
+      { label: 'Launch & scale', href: '/approach/', note: 'Release, measure, iterate on real usage' },
     ],
   },
   {
@@ -124,6 +148,7 @@ export const MENU: MenuItem[] = [
       { label: 'GISAID', href: '/work/gisaid-health-tech/', meta: 'HEALTHCARE' },
       { label: 'Advisee', href: '/work/advisee/', meta: 'SAAS' },
     ],
+    all: { label: 'All 23 projects', href: '/work/' },
   },
   {
     n: '05', label: 'industries', href: null, meta: '9 SECTORS',
@@ -131,15 +156,16 @@ export const MENU: MenuItem[] = [
     title: 'Sectors we already understand',
     kind: 'sectors',
     items: [
-      { label: 'Restaurant', href: '/industries/food-restaurant-app-development/' },
-      { label: 'Fitness', href: '/industries/on-demand-fitness-app-development/' },
-      { label: 'eCommerce', href: '/industries/retail-ecommerce-development/' },
-      { label: 'Travel', href: '/industries/travel-and-hospitality-app-development/' },
-      { label: 'Logistics', href: '/industries/logistics-transportation-app-development/' },
-      { label: 'Concierge', href: '/industries/concierge-app-development/' },
-      { label: 'SaaS', href: '/industries/saas-application-development-services/' },
-      { label: 'Healthcare', href: '/industries/healthcare-app-development-company/' },
+      { label: 'Restaurant', href: '/industries/food-restaurant-app-development/', meta: 'VIEW SECTOR' },
+      { label: 'Fitness', href: '/industries/on-demand-fitness-app-development/', meta: 'VIEW SECTOR' },
+      { label: 'eCommerce', href: '/industries/retail-ecommerce-development/', meta: 'VIEW SECTOR' },
+      { label: 'Travel', href: '/industries/travel-and-hospitality-app-development/', meta: 'VIEW SECTOR' },
+      { label: 'Logistics', href: '/industries/logistics-transportation-app-development/', meta: 'VIEW SECTOR' },
+      { label: 'SaaS', href: '/industries/saas-application-development-services/', meta: 'VIEW SECTOR' },
+      { label: 'Healthcare', href: '/industries/healthcare-app-development-company/', meta: 'VIEW SECTOR' },
+      { label: 'Concierge', href: '/industries/concierge-app-development/', meta: 'VIEW SECTOR' },
     ],
+    footnote: 'We build in sectors we already know, so discovery starts from something, not nothing.',
   },
   {
     n: '06', label: 'services', href: null, meta: '12 SERVICES',
