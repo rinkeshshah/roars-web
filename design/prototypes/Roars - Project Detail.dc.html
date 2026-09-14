@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; background:#FBFBF9; }
+  body { font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#FFD400; }
+</style>
+</helmet>
+
+<div data-roars-root="1" style="background:#FBFBF9;color:#0A0A0A;overflow-x:clip">
+
+<section data-screen-label="Top bar" style="position:relative;background:#07070A;height:clamp(150px,14.2vw,190px);overflow:hidden">
+  <div data-stars="1" style="position:absolute;inset:0;opacity:.85"></div>
+  <div style="position:relative;z-index:4;display:grid;grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px)">
+    <a href="Roars - Main.dc.html" data-logo="1" style="position:fixed;top:clamp(20px,2.6vw,40px);left:clamp(18px,2.1vw,30px);z-index:60;display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:999px;transition:background .45s ease,box-shadow .45s ease,transform .5s cubic-bezier(.16,1,.3,1)" style-hover="transform:scale(1.08)">
+      <span data-logo-ring="1" style="position:absolute;inset:0;border-radius:999px;background:conic-gradient(#FFD400 0turn,rgba(255,212,0,0) 0turn);mask:radial-gradient(circle,rgba(0,0,0,0) 61%,#000 63%);-webkit-mask:radial-gradient(circle,rgba(0,0,0,0) 61%,#000 63%);opacity:0;transition:opacity .45s ease"></span>
+      <img data-logo-img="1" src="brand/roars-mark.png" alt="Roars" style="position:relative;width:clamp(22px,1.8vw,26px);height:auto;display:block;transform-origin:50% 50%;transition:filter .5s ease,transform .7s cubic-bezier(.16,1,.3,1)" />
+    </a>
+    <div style="position:absolute;left:67.6%;top:clamp(30px,4vw,49px);display:flex;flex-direction:column;align-items:flex-start;gap:clamp(14px,1.9vw,26px);min-width:0">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:clamp(14px,1.9vw,26px);min-width:0">
+        <div style="display:flex;align-items:center;gap:5px;min-width:0;max-width:100%">
+          <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:linear-gradient(140deg,#4a4a4a,#1d1d1d);border:1.5px solid rgba(255,255,255,.9)">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="width:100%;height:100%;object-fit:cover;display:block" />
+          </div>
+          <a href="https://www.roarsinc.com/contact-us/" style="display:inline-flex;align-items:center;justify-content:space-between;min-width:0;flex:1 1 auto;width:clamp(180px,17vw,205px);height:34px;gap:12px;padding:0 14px 0 18px;border:1px solid rgba(255,255,255,.3);border-radius:999px;color:#F2F2EC;font-size:clamp(12.5px,1.1vw,15px);font-weight:500;background:rgba(12,12,14,.35);backdrop-filter:blur(8px)" style-hover="background:#FFD400;color:#0A0A0A;border-color:#FFD400">
+            <span style="white-space:nowrap">Contact Now</span>
+            <span style="display:flex;gap:4px;flex:0 0 auto"><span style="width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.45"></span><span style="width:8px;height:8px;border-radius:50%;background:currentColor"></span></span>
+          </a>
+        </div>
+        <div style="font-size:clamp(13px,1.25vw,17px);line-height:1.42;color:#A8A8A0;white-space:nowrap">Reach out to start<br />your project</div>
+      </div>
+      <button aria-label="Menu" data-menu-btn="1" onClick="{{ toggleMenu }}" style="position:fixed;top:clamp(20px,2.6vw,40px);right:clamp(18px,2.1vw,30px);z-index:80;display:flex;align-items:center;justify-content:center;gap:6px;width:52px;height:52px;background:none;border:none;cursor:pointer">
+        <span data-mline="1" style="display:block;width:8px;height:8px;border-radius:50%;background:#F2F2EC;transition:transform .45s cubic-bezier(.2,.9,.2,1),opacity .3s ease"></span>
+        <span data-mline="1" style="display:block;width:8px;height:8px;border-radius:50%;background:#F2F2EC;transition:transform .45s cubic-bezier(.2,.9,.2,1),opacity .3s ease"></span>
+        <span data-mline="1" style="display:block;width:8px;height:8px;border-radius:50%;background:#F2F2EC;transition:transform .45s cubic-bezier(.2,.9,.2,1),opacity .3s ease"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Project title" style="background:#FBFBF9;padding:clamp(56px,7.9vw,95px) 0 0">
+  <div style="max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px)">
+    <div data-rv="up" style="display:flex;margin-bottom:clamp(22px,2.6vw,32px)">
+      <div style="margin-left:67.6%;display:flex;align-items:flex-start;gap:20px">
+        <div style="display:grid;grid-template-columns:repeat(2,34px);gap:5px">
+          <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;background:#E8E8E0"><img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+          <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;background:#E8E8E0"><img src="https://www.roarsinc.com/wp-content/uploads/2022/07/suzanne.webp" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+          <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;background:#E8E8E0"><img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Chetna.webp" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+          <div style="width:34px;height:34px;border-radius:50%;background:#E8E8E0"></div>
+          <div style="grid-column:2;width:34px;height:34px;border-radius:50%;background:#E8E8E0"></div>
+        </div>
+        <div style="font-size:clamp(13px,1.25vw,17px);line-height:1.42;color:#0A0A0A;white-space:nowrap">Team Members<br />Involved</div>
+      </div>
+    </div>
+    <div style="position:relative">
+      <a href="Roars - Projects.dc.html" data-rv="up" style="position:absolute;left:0;top:clamp(6px,1.3vw,17px);display:inline-flex;align-items:center;gap:14px;font-size:clamp(14px,1.35vw,19px);font-weight:400;white-space:nowrap">
+        <span>See all Projects</span>
+        <span style="display:flex;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#0A0A0A;opacity:.3"></span><span style="width:8px;height:8px;border-radius:50%;background:#0A0A0A"></span></span>
+      </a>
+      <div style="margin-left:35.5%">
+        <h1 data-rv="up" style="margin:0;font-size:clamp(46px,9.5vw,138px);line-height:.88;font-weight:700;letter-spacing:-.045em">Snowman Logistics</h1>
+        <div data-rv="up" data-rvd="120" style="margin-top:clamp(20px,3.2vw,42px);font-size:clamp(15px,1.55vw,21px);font-weight:400;color:#0A0A0A">12 Feb, 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Hero image" style="background:#FBFBF9;padding:0 0 clamp(56px,8vw,120px)">
+  <div style="max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px)">
+    <div data-rv="up" style="position:relative;width:100%;aspect-ratio:16/8.1;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(52deg,#E7E7E0 0 12px,#EFEFE8 12px 24px)">
+      <img data-src="https://www.roarsinc.com/wp-content/uploads/2026/02/snowman-logistics-app.png" alt="Snowman Logistics" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="About" style="background:#FBFBF9;padding:0 0 clamp(56px,8vw,120px)">
+  <div style="display:grid;grid-template-columns:minmax(0,35.5%) minmax(0,48.5%);column-gap:0;row-gap:clamp(24px,3vw,40px);max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px);align-items:start">
+    <div style="grid-column:1;font-size:clamp(12.5px,1.15vw,19px);color:#9A9A92">About:</div>
+    <div style="grid-column:2;display:flex;flex-direction:column;gap:clamp(30px,4vw,68px)">
+      <p data-rv="up" style="margin:0;font-size:clamp(18px,1.62vw,30px);line-height:1.5;font-weight:600;letter-spacing:-.012em;text-wrap:pretty">A compliance-first warehouse operations app for India&rsquo;s largest cold-chain network &mdash; pairing field-ready checklists with real-time oversight. From audit mapping to rollout, we built a product that keeps every facility inspection-ready.</p>
+      <div data-rv="up" data-rvd="100" style="max-width:900px;border-bottom:1px solid #C7C7BE">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:20px;padding:16px 0;border-top:1px solid #C7C7BE;font-size:clamp(13px,1.05vw,15px)"><span style="color:#9A9A92">Year</span><span style="font-weight:500">2026</span></div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:20px;padding:16px 0;border-top:1px solid #C7C7BE;font-size:clamp(13px,1.05vw,15px)"><span style="color:#9A9A92">Client</span><span style="font-weight:500">Snowman Logistics</span></div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:20px;padding:16px 0;border-top:1px solid #C7C7BE;font-size:clamp(13px,1.05vw,15px)"><span style="color:#9A9A92">Services</span><span style="font-weight:500">Product Consulting</span></div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:20px;padding:16px 0;border-top:1px solid #C7C7BE;font-size:clamp(13px,1.05vw,15px)"><span style="color:#9A9A92">Industry</span><span style="font-weight:500">Cold-chain Logistics</span></div>
+      </div>
+      <a href="https://www.roarsinc.com/work/warehouse-compliance-checklist-app/" data-rv="up" data-rvd="160" style="align-self:flex-start;display:inline-flex;align-items:center;justify-content:space-between;min-width:min(210px,60vw);gap:26px;padding:15px 18px 15px 26px;background:#0A0A0A;color:#F4F4EE;border-radius:999px;font-size:clamp(12.5px,1.02vw,15px);font-weight:500" style-hover="background:#FFD400;color:#0A0A0A">
+        <span>Live Version</span>
+        <span style="display:flex;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45"></span><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Image pair" style="background:#FBFBF9;padding:0 0 clamp(56px,8vw,120px)">
+  <div style="max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,1.7vw,24px)">
+    <div data-rv="up" style="position:relative;width:100%;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(52deg,#E7E7E0 0 12px,#EFEFE8 12px 24px)">
+      <img data-src="https://www.roarsinc.com/wp-content/uploads/2025/07/parqly-mobile-app.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
+    </div>
+    <div data-rv="up" data-rvd="120" style="position:relative;width:100%;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(52deg,#E7E7E0 0 12px,#EFEFE8 12px 24px)">
+      <img data-src="https://www.roarsinc.com/wp-content/uploads/2025/07/ai-concierges-mobile-app.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Goals" style="background:#FBFBF9;padding:clamp(48px,8vw,110px) 0 clamp(70px,13vw,170px)">
+  <div style="display:grid;grid-template-columns:minmax(0,35.5%) minmax(0,48.5%);column-gap:0;row-gap:clamp(18px,2.4vw,32px);max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px);align-items:start">
+    <div style="grid-column:1;font-size:clamp(12.5px,1.15vw,19px);color:#9A9A92">Goals of the Project:</div>
+    <div style="grid-column:2">
+      <p data-rv="up" style="margin:0;font-size:clamp(18px,1.55vw,26px);line-height:1.3;font-weight:600;letter-spacing:-.02em;text-wrap:pretty">Our goal was to replace paper audits with a single digital system that supervisors could actually use on the floor &mdash; offline-capable, photo-backed, and fast enough to finish a full facility round without slowing operations down.</p>
+      <p data-rv="up" data-rvd="120" style="margin:clamp(30px,3.2vw,46px) 0 0;font-size:clamp(14px,1.18vw,17px);line-height:1.45;color:#919090">To standardise inspections across every warehouse, cut reporting lag from days to minutes, and give leadership one live view of compliance health.</p>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Gallery" style="background:#FBFBF9;padding:0 0 clamp(56px,8vw,120px)">
+  <div style="max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px);display:flex;flex-direction:column;gap:clamp(14px,1.7vw,24px)">
+    <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="3">
+      <div data-rv="up" style="position:relative;width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(52deg,#E7E7E0 0 14px,#EFEFE8 14px 28px);display:flex;align-items:center;justify-content:center">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;color:#8A8A82;text-transform:uppercase">{{ g.label }}</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="Outcome" style="background:#FBFBF9;padding:clamp(48px,8vw,110px) 0 clamp(70px,13vw,170px)">
+  <div style="display:grid;grid-template-columns:minmax(0,35.5%) minmax(0,48.5%);column-gap:0;row-gap:clamp(18px,2.4vw,32px);max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px);align-items:start">
+    <div style="grid-column:1;font-size:clamp(12.5px,1.15vw,19px);color:#9A9A92">Outcome:</div>
+    <div style="grid-column:2">
+      <p data-rv="up" style="margin:0;font-size:clamp(18px,1.62vw,30px);line-height:1.5;font-weight:600;letter-spacing:-.012em;text-wrap:pretty">Supervisors now complete a facility round in a fraction of the time, with photo evidence attached at every step. Compliance reporting is continuous instead of monthly, and leadership can see which sites need attention the same day.</p>
+      <p data-rv="up" data-rvd="120" style="margin:clamp(26px,3.1vw,58px) 0 0;font-size:clamp(15px,1.22vw,20px);line-height:1.6;color:#8A8A82">A field-ready checklist app with offline sync, role-based oversight, and a live compliance dashboard rolled out across the network.</p>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Next project" style="background:#F2F2EE;padding:clamp(48px,6.4vw,104px) 0">
+  <div style="display:grid;grid-template-columns:minmax(0,.9fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);row-gap:clamp(22px,2.8vw,40px);max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px);align-items:end">
+    <div style="grid-column:1;display:flex;flex-direction:column;gap:clamp(14px,1.8vw,26px)">
+      <span style="font-size:clamp(16px,1.4vw,22px);line-height:1">&#10038;</span>
+      <span style="font-size:clamp(12px,1.02vw,15px);color:#6E6E68">Next project</span>
+    </div>
+    <a href="https://www.roarsinc.com/work/parqly-parking-solution/" data-rv="up" data-rvd="100" style="grid-column:2 / span 4;display:flex;align-items:flex-end;gap:clamp(16px,2vw,34px);border-top:1px solid #C7C7BE;padding-top:clamp(20px,2.4vw,34px)">
+      <span style="font-size:clamp(24px,3.2vw,54px);line-height:1;font-weight:700;letter-spacing:-.04em;flex:0 0 auto">Parqly</span>
+      <span style="flex:1 1 auto;min-width:0;font-size:clamp(11px,.95vw,14px);line-height:1.5;letter-spacing:-.01em;color:#6E6E68;max-width:34ch;text-wrap:pretty">A smart parking platform that turns live bay availability into bookable, cashless spaces.</span>
+      <span style="display:flex;gap:5px;flex:0 0 auto;padding-bottom:.35em"><span style="width:7px;height:7px;border-radius:50%;background:#0A0A0A;opacity:.4"></span><span style="width:7px;height:7px;border-radius:50%;background:#0A0A0A"></span></span>
+    </a>
+  </div>
+</section>
+
+<footer data-screen-label="Footer" id="contact" style="position:relative;background:#08080B;color:#F2F2EC;padding:clamp(64px,8vw,132px) 0 clamp(26px,3vw,46px);overflow-x:clip">
+  <div data-stars="1" style="position:absolute;inset:0;opacity:.75"></div>
+  <div data-px="-50" style="position:absolute;left:-4%;bottom:6%;width:70%;height:70%;background:radial-gradient(42% 42% at 50% 50%, rgba(200,160,110,.26), rgba(0,0,0,0) 70%);pointer-events:none"></div>
+  <div data-px="-24" style="position:absolute;right:4%;top:8%;width:40%;height:40%;background:radial-gradient(50% 50% at 50% 50%, rgba(255,212,0,.1), rgba(0,0,0,0) 70%);pointer-events:none"></div>
+
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);max-width:1560px;margin:0 auto;padding:0 clamp(18px,2.1vw,30px)">
+    <div style="grid-column:1;font-size:17px;line-height:1;color:#E8E8E2">&#10038;</div>
+    <div data-rv="up" style="grid-column:2 / span 2;padding-right:clamp(12px,2vw,32px)">
+      <div style="font-size:clamp(15px,1.32vw,21px);line-height:1.5;text-wrap:pretty"><span style="color:#8B8B84">Find how we can help you get from A to B.</span> Our love for innovation design and technology is evident in all our work. No detail is too small.</div>
+      <div style="margin-top:clamp(24px,3vw,48px);display:flex;align-items:center;gap:14px">
+        <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:linear-gradient(140deg,#8f8880,#403c37)">
+          <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="width:100%;height:100%;object-fit:cover;display:block" />
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:500">Riinkesh A Sshah</div>
+          <div style="font-size:12.5px;color:#8B8B84">CEO/ Founder</div>
+        </div>
+      </div>
+    </div>
+    <div data-rv="up" data-rvd="120" style="grid-column:4 / span 2;font-size:clamp(14px,1.2vw,18px);line-height:1.35;color:#E4E4DE">Space of Creative<br />Solutions<span style="color:#FFD400">*</span></div>
+  </div>
+
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);max-width:1560px;margin:clamp(56px,8vw,150px) auto 0;padding:0 clamp(18px,2.1vw,30px);row-gap:clamp(30px,4vw,60px)">
+    <div data-rv="up" style="grid-column:1">
+      <div style="width:16px;height:2px;background:rgba(255,255,255,.55);margin-bottom:clamp(20px,2.8vw,44px)"></div>
+      <div style="font-size:13px;color:#8B8B84">USA +1 (302) 505-1200</div>
+      <div style="font-size:13px;color:#8B8B84;margin-top:4px">UK +44 (7537) 183399</div>
+      <a href="mailto:sales@roarsinc.com" style="display:block;font-size:clamp(14px,1.2vw,17px);font-weight:600;margin-top:10px">sales@roarsinc.com</a>
+    </div>
+
+    <div data-rv="up" data-rvd="80" style="grid-column:2">
+      <div style="font-size:13px;color:#8B8B84">Navigation</div>
+      <div style="width:16px;height:2px;background:rgba(255,255,255,.55);margin:12px 0 clamp(20px,2.6vw,40px)"></div>
+      <div style="display:flex;flex-direction:column;gap:clamp(9px,1vw,15px);font-size:clamp(16px,1.74vw,25px);font-weight:500;letter-spacing:-.02em;line-height:1">
+        <a href="Roars - Main.dc.html">Home</a>
+        <a href="Roars - About.dc.html">About us</a>
+        <a href="https://www.roarsinc.com/approach/">Approach</a>
+        <a href="Roars - Projects.dc.html">Our work</a>
+        <a href="https://www.roarsinc.com/contact-us/">Contact</a>
+      </div>
+    </div>
+
+    <div data-rv="up" data-rvd="140" style="grid-column:3;padding-top:clamp(38px,4.8vw,69px)">
+      <div style="display:flex;flex-direction:column;gap:clamp(8px,.95vw,13px);font-size:15px;color:#8B8B84;line-height:1">
+        <a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./">LinkedIn</a>
+        <a href="https://www.instagram.com/roarstech">Instagram</a>
+        <a href="https://www.twitter.com/roarstech">Twitter</a>
+        <a href="https://www.facebook.com/roarstech/">Facebook</a>
+      </div>
+    </div>
+
+    <div data-rv="up" data-rvd="200" style="grid-column:4 / span 2">
+      <div style="font-size:13px;color:#8B8B84">Subscribe to our News</div>
+      <div style="width:16px;height:2px;background:rgba(255,255,255,.55);margin:12px 0 clamp(20px,2.6vw,40px)"></div>
+      <div style="display:flex;flex-direction:column;gap:clamp(22px,2.6vw,36px)">
+        <input placeholder="Your name *" style="background:none;border:none;border-bottom:1px solid rgba(255,255,255,.3);padding:0 0 10px;color:#F2F2EC;font-family:inherit;font-size:14px;outline:none;width:100%" />
+        <input placeholder="Email *" style="background:none;border:none;border-bottom:1px solid rgba(255,255,255,.3);padding:0 0 10px;color:#F2F2EC;font-family:inherit;font-size:14px;outline:none;width:100%" />
+        <button style="align-self:flex-start;display:inline-flex;align-items:center;justify-content:space-between;min-width:min(196px,100%);gap:28px;padding:10px 14px 10px 22px;background:none;border:1px solid rgba(255,255,255,.32);border-radius:999px;color:#F2F2EC;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:#FFD400;color:#0A0A0A;border-color:#FFD400">
+          <span>Subscribe</span>
+          <span style="display:flex;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45"></span><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative;display:flex;justify-content:center;max-width:1560px;margin:clamp(60px,9vw,170px) auto 0;padding:0 clamp(18px,2.1vw,30px)">
+    <div style="display:flex;align-items:flex-start">
+      <span data-px="-30" style="font-size:clamp(70px,12.9vw,190px);line-height:.8;padding-bottom:.08em;font-weight:700;letter-spacing:-.055em;color:#F4F4EE">roars</span>
+      <span style="font-size:clamp(12px,1.25vw,20px);font-weight:600;color:#FFD400;margin-left:.14em;margin-top:.2em">&reg;</span>
+    </div>
+  </div>
+
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);max-width:1560px;margin:clamp(40px,5.5vw,90px) auto 0;padding:0 clamp(18px,2.1vw,30px);row-gap:clamp(14px,2vw,30px);font-size:12.5px;color:#8B8B84;line-height:1.7">
+    <div style="grid-column:1">&copy; 2026<br />Roars Technologies</div>
+    <div style="grid-column:2;display:flex;flex-direction:column"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="https://link.roars.in/F39Mv">Company Profile</a></div>
+    <div style="grid-column:3">Built for<br /><span style="color:#E4E4DE">startups &amp; SMEs</span></div>
+    <div style="grid-column:4 / span 2">Offices<br /><span style="color:#E4E4DE">USA &middot; UK &middot; India</span></div>
+  </div>
+</footer>
+
+<div data-menu-overlay="1" style="position:fixed;inset:0;z-index:70;background:#07070A;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;justify-content:center;padding:clamp(60px,9vw,140px) clamp(18px,2.1vw,30px)">
+  <div style="display:flex;flex-direction:column;gap:clamp(4px,.9vw,14px);max-width:1560px;width:100%;margin:0 auto">
+    <a data-mitem="1" href="Roars - Main.dc.html" style="display:inline-flex;align-items:baseline;gap:clamp(12px,1.6vw,26px);color:#F4F4EE;font-size:clamp(34px,7vw,104px);line-height:1.02;font-weight:700;letter-spacing:-.045em;opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.16,1,.3,1) 0ms,transform .7s cubic-bezier(.16,1,.3,1) 0ms" style-hover="color:#FFD400"><span style="font-size:clamp(11px,.9vw,13px);font-weight:500;color:#6E6E68;letter-spacing:0">01</span><span>Home</span></a>
+    <a data-mitem="1" href="Roars - About.dc.html" style="display:inline-flex;align-items:baseline;gap:clamp(12px,1.6vw,26px);color:#F4F4EE;font-size:clamp(34px,7vw,104px);line-height:1.02;font-weight:700;letter-spacing:-.045em;opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.16,1,.3,1) 60ms,transform .7s cubic-bezier(.16,1,.3,1) 60ms" style-hover="color:#FFD400"><span style="font-size:clamp(11px,.9vw,13px);font-weight:500;color:#6E6E68;letter-spacing:0">02</span><span>About us</span></a>
+    <a data-mitem="1" href="https://www.roarsinc.com/approach/" style="display:inline-flex;align-items:baseline;gap:clamp(12px,1.6vw,26px);color:#F4F4EE;font-size:clamp(34px,7vw,104px);line-height:1.02;font-weight:700;letter-spacing:-.045em;opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.16,1,.3,1) 120ms,transform .7s cubic-bezier(.16,1,.3,1) 120ms" style-hover="color:#FFD400"><span style="font-size:clamp(11px,.9vw,13px);font-weight:500;color:#6E6E68;letter-spacing:0">03</span><span>Approach</span></a>
+    <a data-mitem="1" href="Roars - Projects.dc.html" style="display:inline-flex;align-items:baseline;gap:clamp(12px,1.6vw,26px);color:#F4F4EE;font-size:clamp(34px,7vw,104px);line-height:1.02;font-weight:700;letter-spacing:-.045em;opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.16,1,.3,1) 180ms,transform .7s cubic-bezier(.16,1,.3,1) 180ms" style-hover="color:#FFD400"><span style="font-size:clamp(11px,.9vw,13px);font-weight:500;color:#6E6E68;letter-spacing:0">04</span><span>Our work</span></a>
+    <a data-mitem="1" href="https://www.roarsinc.com/contact-us/" style="display:inline-flex;align-items:baseline;gap:clamp(12px,1.6vw,26px);color:#F4F4EE;font-size:clamp(34px,7vw,104px);line-height:1.02;font-weight:700;letter-spacing:-.045em;opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.16,1,.3,1) 240ms,transform .7s cubic-bezier(.16,1,.3,1) 240ms" style-hover="color:#FFD400"><span style="font-size:clamp(11px,.9vw,13px);font-weight:500;color:#6E6E68;letter-spacing:0">05</span><span>Contact</span></a>
+  </div>
+  <div data-mitem="1" style="max-width:1560px;width:100%;margin:clamp(34px,5vw,80px) auto 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,54px);font-size:13px;color:#8B8B84;opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.16,1,.3,1) 360ms,transform .7s cubic-bezier(.16,1,.3,1) 360ms">
+    <a href="mailto:sales@roarsinc.com">sales@roarsinc.com</a>
+    <span>USA +1 (302) 505-1200</span>
+    <span>UK +44 (7537) 183399</span>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Heavy&quot;,&quot;Subtle&quot;],&quot;default&quot;:&quot;Heavy&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;stars&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  META = [
+    ['Year', '2026'],
+    ['Client', 'Snowman Logistics'],
+    ['Services', 'Product Consulting'],
+    ['Industry', 'Cold-chain Logistics']
+  ];
+
+  GALLERY = [
+    { label: 'Checklist flow — mobile screens' },
+    { label: 'Compliance dashboard — desktop' },
+    { label: 'Field use — warehouse photography' }
+  ];
+
+  componentDidMount() {
+    this.io = [];
+    this.hydrateImgs();
+    requestAnimationFrame(() => { this.setupMotion(); this.setupLogo(); });
+  }
+
+  componentDidUpdate() { this.hydrateImgs(); }
+
+  toggleMenu = (e) => {
+    if (e) e.preventDefault();
+    this.menuOpen = !this.menuOpen;
+    const ov = document.querySelector('[data-menu-overlay]');
+    const btn = document.querySelector('[data-menu-btn]');
+    if (!ov || !btn) return;
+    const lines = btn.querySelectorAll('[data-mline]');
+    const open = this.menuOpen;
+    ov.style.opacity = open ? '1' : '0';
+    ov.style.pointerEvents = open ? 'auto' : 'none';
+    ov.querySelectorAll('[data-mitem]').forEach(el => {
+      el.style.opacity = open ? '1' : '0';
+      el.style.transform = open ? 'none' : 'translateY(26px)';
+    });
+    lines[0].style.transform = open ? 'translate(13px,0) scale(.8)' : 'none';
+    lines[1].style.opacity = open ? '0' : '1';
+    lines[1].style.transform = open ? 'scale(.2)' : 'none';
+    lines[2].style.transform = open ? 'translate(-13px,0) scale(.8)' : 'none';
+    lines.forEach(l => { l.style.background = open ? '#F2F2EC' : l.style.background; });
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  setupLogo() {
+    const a = document.querySelector('[data-logo]');
+    if (!a) return;
+    const ring = a.querySelector('[data-logo-ring]');
+    const img = a.querySelector('[data-logo-img]');
+    const band = document.querySelector('[data-screen-label="Top bar"]');
+    const tick = () => {
+      const doc = document.documentElement;
+      const max = Math.max(1, doc.scrollHeight - innerHeight);
+      const p = Math.min(1, Math.max(0, scrollY / max));
+      ring.style.background = 'conic-gradient(#FFD400 ' + p.toFixed(4) + 'turn, rgba(255,212,0,.14) 0turn)';
+      const onLight = band ? (band.getBoundingClientRect().bottom < 34) : scrollY > 120;
+      ring.style.opacity = onLight ? '1' : '0';
+      a.style.background = onLight ? '#FBFBF9' : 'transparent';
+      a.style.boxShadow = onLight ? '0 1px 0 rgba(10,10,10,.06)' : 'none';
+      img.style.filter = onLight
+        ? 'brightness(0)'
+        : 'brightness(0) invert(84%) sepia(72%) saturate(1400%) hue-rotate(357deg) brightness(104%)';
+      img.style.transform = onLight ? 'rotate(45deg) scale(.92)' : 'rotate(0deg) scale(1)';
+      this.logoRaf = 0;
+    };
+    this.onLogoScroll = () => { if (!this.logoRaf) this.logoRaf = requestAnimationFrame(tick); };
+    addEventListener('scroll', this.onLogoScroll, { passive: true });
+    addEventListener('resize', this.onLogoScroll, { passive: true });
+    this.onEsc = (ev) => { if (ev.key === 'Escape' && this.menuOpen) this.toggleMenu(); };
+    addEventListener('keydown', this.onEsc);
+    tick();
+    const img0 = a.querySelector('[data-logo-img]');
+    if (img0 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      img0.animate(
+        [{ transform: 'scale(.2) rotate(-90deg)', opacity: 0.001 }, { transform: 'scale(1.12) rotate(8deg)', opacity: 1, offset: 0.62 }, { transform: 'scale(1) rotate(0deg)', opacity: 1 }],
+        { duration: 1100, delay: 300, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' }
+      );
+    }
+  }
+
+  hydrateImgs() {
+    document.querySelectorAll('img[data-src]').forEach(el => {
+      const u = el.getAttribute('data-src');
+      if (u && !u.includes('{{') && el.getAttribute('src') !== u) el.setAttribute('src', u);
+    });
+  }
+
+  componentWillUnmount() {
+    (this.io || []).forEach(o => o.disconnect());
+    if (this.onScroll) removeEventListener('scroll', this.onScroll);
+    if (this.onEsc) removeEventListener('keydown', this.onEsc);
+    if (this.onLogoScroll) { removeEventListener('scroll', this.onLogoScroll); removeEventListener('resize', this.onLogoScroll); }
+  }
+
+  setupMotion() {
+    const root = document.querySelector('[data-roars-root]');
+    if (!root) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const heavy = (this.props.motion ?? 'Heavy') === 'Heavy';
+
+    if (this.props.stars !== false) {
+      const mk = (n, max) => {
+        let s = [];
+        for (let i = 0; i < n; i++) {
+          const x = (Math.random() * 100).toFixed(2), y = (Math.random() * 100).toFixed(2);
+          const r = (Math.random() * max + 0.4).toFixed(2);
+          const a = (Math.random() * 0.55 + 0.25).toFixed(2);
+          s.push('radial-gradient(' + r + 'px ' + r + 'px at ' + x + '% ' + y + '%, rgba(255,255,250,' + a + ') 0, rgba(255,255,250,0) 100%)');
+        }
+        return s.join(',');
+      };
+      root.querySelectorAll('[data-stars]').forEach(el => {
+        el.style.backgroundImage = mk(170, 1.1);
+        el.style.backgroundRepeat = 'no-repeat';
+      });
+    }
+
+    if (reduce) return;
+
+    const vh = innerHeight;
+    const items = Array.from(root.querySelectorAll('[data-rv]'));
+    items.forEach(el => {
+      if (el.getBoundingClientRect().top > vh * 0.88) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(' + (heavy ? 44 : 22) + 'px)';
+        el.style.willChange = 'opacity,transform';
+        el.dataset.rvHidden = '1';
+      }
+    });
+    const ro = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        if (el.dataset.rvHidden === '1') {
+          const d = +(el.dataset.rvd || 0);
+          setTimeout(() => {
+            el.style.transition = 'opacity .85s cubic-bezier(.16,1,.3,1), transform ' + (heavy ? 1.15 : .8) + 's cubic-bezier(.16,1,.3,1)';
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+          }, d);
+          el.dataset.rvHidden = '0';
+        }
+        ro.unobserve(e.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    items.forEach(el => ro.observe(el));
+    this.io.push(ro);
+
+    const px = Array.from(root.querySelectorAll('[data-px]')).map(el => ({ el, k: +el.dataset.px * (heavy ? 1 : 0.45) }));
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      const h = innerHeight;
+      px.forEach(({ el, k }) => {
+        const r = el.getBoundingClientRect();
+        const p = (r.top + r.height / 2 - h / 2) / h;
+        el.style.transform = 'translate3d(0,' + (p * k).toFixed(2) + 'px,0)';
+      });
+    };
+    this.onScroll = () => { if (!raf) raf = requestAnimationFrame(apply); };
+    addEventListener('scroll', this.onScroll, { passive: true });
+    apply();
+  }
+
+  renderVals() {
+    return { gallery: this.GALLERY, toggleMenu: this.toggleMenu };
+  }
+}
+</script>
+</body>
+</html>

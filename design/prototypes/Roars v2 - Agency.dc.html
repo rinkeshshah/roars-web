@@ -18,6 +18,8 @@
   * { box-sizing:border-box; }
   a { color:inherit; text-decoration:none; }
   a:hover { color:#FFD400; }
+  @keyframes rDriftA { 0%,100% { transform:translate3d(0,0,0) scale(1); } 50% { transform:translate3d(-110px,40px,0) scale(1.13); } }
+  @keyframes rDriftB { 0%,100% { transform:translate3d(0,0,0) scale(1.08); } 50% { transform:translate3d(120px,-46px,0) scale(1); } }
 </style>
 </helmet>
 
@@ -62,8 +64,11 @@
 
   <!-- hero -->
   <section data-mdark="1" style="position:relative;padding:96px 20px 44px;background:#000;overflow:hidden;display:flex;flex-direction:column;gap:34px">
-    <img src="assets/space.jpg" alt="" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover" />
-    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.3) 40%,rgba(0,0,0,.75) 100%)"></div>
+    <div data-norev="1" style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;background:linear-gradient(100deg,#0C0C0B 0%,#121110 46%,#16140D 78%,#0A0A0A 100%)">
+    <div data-dur="34" style="position:absolute;left:-14%;top:-26%;width:84%;height:132%;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.12) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 34s ease-in-out infinite;will-change:transform"></div>
+    <div data-dur="42" style="position:absolute;left:56%;top:-18%;width:72%;height:122%;border-radius:50%;background:radial-gradient(circle,rgba(255,232,115,.07) 0%,rgba(255,232,115,0) 60%);animation:rDriftB 42s ease-in-out infinite;will-change:transform"></div>
+    <canvas data-grain="1" width="760" height="1100" style="position:absolute;left:0;top:0;width:100%;height:100%;display:block;mix-blend-mode:overlay;opacity:.32;pointer-events:none"></canvas>
+  </div>
     <div style="position:relative;display:flex;flex-direction:column;gap:34px">
       <div data-mrev="1" style="display:flex;flex-direction:column;gap:16px">
         <div style="display:flex;align-items:center;gap:12px">
@@ -190,7 +195,11 @@
 
   <!-- footer -->
   <section data-mdark="1" style="position:relative;padding:56px 20px 40px;background:rgb(11,11,11);overflow:hidden;display:flex;flex-direction:column;gap:34px">
-    <img src="assets/space.jpg" alt="" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform:scaleY(-1);opacity:.55" />
+    <div data-norev="1" style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;background:linear-gradient(100deg,#0D0D0C 0%,#121110 46%,#17150E 78%,#0A0A0A 100%)">
+    <div data-dur="32" style="position:absolute;left:-10%;top:-34%;width:90%;height:127%;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.13) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 32s ease-in-out infinite;will-change:transform"></div>
+    <div data-dur="40" style="position:absolute;left:57%;top:-11%;width:70%;height:109%;border-radius:50%;background:radial-gradient(circle,rgba(255,232,115,.07) 0%,rgba(255,232,115,0) 60%);animation:rDriftB 40s ease-in-out infinite;will-change:transform"></div>
+    <canvas data-grain="1" width="760" height="1100" style="position:absolute;left:0;top:0;width:100%;height:100%;display:block;mix-blend-mode:overlay;opacity:.34;pointer-events:none"></canvas>
+  </div>
     <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(11,11,11,.6) 0%,rgba(11,11,11,.9) 100%)"></div>
     <div style="position:relative;display:flex;flex-direction:column;gap:34px">
       <div data-mrev="1" style="display:flex;flex-direction:column;gap:18px">
@@ -250,8 +259,11 @@
 
 <!-- ════════ HEADER  (0) ════════ -->
 <div data-screen-label="Header" style="position:absolute;left:0;top:0;width:1440px;height:802px;overflow:hidden;background:rgb(0,0,0)">
-  <img src="assets/space.jpg" alt="" style="position:absolute;left:0;top:0;width:1440px;height:802px;object-fit:cover" />
-  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.45) 100%)"></div>
+  <div data-norev="1" style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;background:linear-gradient(100deg,#0C0C0B 0%,#121110 46%,#16140D 78%,#0A0A0A 100%)">
+    <div data-dur="34" style="position:absolute;left:-14%;top:-26%;width:84%;height:132%;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.12) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 34s ease-in-out infinite;will-change:transform"></div>
+    <div data-dur="42" style="position:absolute;left:56%;top:-18%;width:72%;height:122%;border-radius:50%;background:radial-gradient(circle,rgba(255,232,115,.07) 0%,rgba(255,232,115,0) 60%);animation:rDriftB 42s ease-in-out infinite;will-change:transform"></div>
+    <canvas data-grain="1" width="1440" height="802" style="position:absolute;left:0;top:0;width:100%;height:100%;display:block;mix-blend-mode:overlay;opacity:.32;pointer-events:none"></canvas>
+  </div>
 
   <!-- quote, top left -->
   <div style="position:absolute;left:39px;top:96px;width:384px;height:232px">
@@ -413,7 +425,11 @@
 
 <!-- ════════ FOOTER  (11860) ════════ -->
 <div data-screen-label="Footer" style="position:absolute;left:0;top:5074px;width:1440px;height:1105px;background:rgb(11,11,11);overflow:hidden">
-  <img src="assets/space.jpg" alt="" style="position:absolute;left:-37px;top:-10px;width:1672.305px;height:1115.006px;object-fit:cover;transform:scaleY(-1)" />
+  <div data-norev="1" style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;background:linear-gradient(100deg,#0D0D0C 0%,#121110 46%,#17150E 78%,#0A0A0A 100%)">
+    <div data-dur="32" style="position:absolute;left:-10%;top:-34%;width:90%;height:127%;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.13) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 32s ease-in-out infinite;will-change:transform"></div>
+    <div data-dur="40" style="position:absolute;left:57%;top:-11%;width:70%;height:109%;border-radius:50%;background:radial-gradient(circle,rgba(255,232,115,.07) 0%,rgba(255,232,115,0) 60%);animation:rDriftB 40s ease-in-out infinite;will-change:transform"></div>
+    <canvas data-grain="1" width="1440" height="1105" style="position:absolute;left:0;top:0;width:100%;height:100%;display:block;mix-blend-mode:overlay;opacity:.34;pointer-events:none"></canvas>
+  </div>
 
   <!-- topline -->
   <div style="position:absolute;left:44px;top:61px;width:1073px;height:192px;overflow:hidden">
@@ -497,7 +513,47 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
+  initGrain() {
+    this.gio = new IntersectionObserver(es => es.forEach(e => { e.target.__on = e.isIntersecting; }), { rootMargin: '200px' });
+    document.querySelectorAll('canvas[data-grain]').forEach(c => {
+      const W = c.width, H = c.height;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      c.width = W * dpr; c.height = H * dpr;
+      const ctx = c.getContext('2d');
+      ctx.scale(dpr, dpr);
+      this.gio.observe(c); c.__on = true;
+      const tile = document.createElement('canvas');
+      tile.width = 180; tile.height = 180;
+      const tc = tile.getContext('2d');
+      const img = tc.createImageData(180, 180);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = 90 + Math.random() * 165;
+        img.data[i] = v; img.data[i + 1] = v; img.data[i + 2] = v; img.data[i + 3] = 255;
+      }
+      tc.putImageData(img, 0, 0);
+      const pat = ctx.createPattern(tile, 'repeat');
+      let last = 0;
+      const step = () => {
+        if (c.__on !== false) {
+          const now = performance.now();
+          if (now - last >= 84) {
+            last = now;
+            ctx.clearRect(0, 0, W, H);
+            ctx.save();
+            ctx.translate(-Math.floor(Math.random() * 180), -Math.floor(Math.random() * 180));
+            ctx.fillStyle = pat;
+            ctx.fillRect(0, 0, W + 180, H + 180);
+            ctx.restore();
+          }
+        }
+        this._graf = requestAnimationFrame(step);
+      };
+      step();
+    });
+  }
+
   componentDidMount() {
+    this.initGrain();
     this.mq = matchMedia('(max-width: 760px)');
     this.fit = () => {
       const wrap = document.querySelector('[data-fit]');

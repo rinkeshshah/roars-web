@@ -18,6 +18,8 @@
   * { box-sizing:border-box; }
   a { color:inherit; text-decoration:none; }
   a:hover { color:#FFD400; }
+  @keyframes rDriftA { 0%,100% { transform:translate3d(0,0,0) scale(1); } 50% { transform:translate3d(-110px,40px,0) scale(1.13); } }
+  @keyframes rDriftB { 0%,100% { transform:translate3d(0,0,0) scale(1.08); } 50% { transform:translate3d(120px,-46px,0) scale(1); } }
 </style>
 </helmet>
 
@@ -39,10 +41,10 @@
         </a>
       </div>
     </div>
-    <div style="position:absolute;left:1340px;top:18px;width:26px;height:6px;display:flex;flex-direction:column;justify-content:space-between">
-      <span data-fill="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255)"></span>
-      <span data-fill="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255)"></span>
-    </div>
+    <a href="Roars v2 - Menu.dc.html" aria-label="Open menu" style="position:absolute;left:1340px;top:6px;width:26px;height:30px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:6px">
+      <span data-fill="1" style="display:block;width:26px;height:2px;background:rgb(255,255,255);transition:width .25s ease"></span>
+      <span data-fill="1" style="display:block;width:18px;height:2px;background:rgb(255,255,255);transition:width .25s ease" style-hover="width:26px"></span>
+    </a>
   </div>
 </div>
 
@@ -61,17 +63,19 @@
 <div data-mobile="1" style="display:none;width:100%;overflow:hidden;background:#FFFFFF">
 
   <!-- hero -->
-  <section data-mdark="1" style="position:relative;min-height:88vh;padding:120px 20px 44px;background:#000;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
-    <img src="assets/space.jpg" alt="" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform:scaleY(-1)" />
-    <div style="position:absolute;left:0;right:0;bottom:0;height:70%;background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.55) 55%,rgba(0,0,0,.92) 100%)"></div>
+  <section style="position:relative;min-height:88vh;padding:120px 20px 44px;background:#FFD400;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
+    <div style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;background:linear-gradient(150deg,#FFE45C 0%,#FFD400 52%,#F8C400 100%)">
+      <div data-dur="28" style="position:absolute;left:-30%;top:-20%;width:120%;height:80%;border-radius:50%;background:radial-gradient(circle,rgba(255,249,210,.6) 0%,rgba(255,212,0,0) 66%);animation:rDriftA 28s ease-in-out infinite;will-change:transform"></div>
+      <canvas data-grain="1" width="760" height="1100" style="position:absolute;left:0;top:0;width:100%;height:100%;display:block;mix-blend-mode:overlay;opacity:.3;pointer-events:none"></canvas>
+    </div>
     <div style="position:relative;display:flex;flex-direction:column;gap:22px">
-      <span data-mrev="1" style="font-size:19px;font-weight:500;line-height:26px;letter-spacing:-0.02em;color:rgb(255,255,255)">Space of Product<br />Solutions<span style="color:#FFD400">*</span></span>
-      <div data-mrev="1" style="display:flex;align-items:flex-start;gap:8px">
-        <span style="font-size:92px;font-weight:600;line-height:76px;letter-spacing:-0.04em;color:rgb(251,251,251)">roars</span>
-        <span style="width:24px;height:24px;border-radius:60px;background:#FFD400;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:rgb(31,31,31);margin-top:6px">&reg;</span>
+      <span data-mrev="1" style="font-size:19px;font-weight:500;line-height:26px;letter-spacing:-0.02em;color:rgba(11,11,11,.72)">Space of Product<br />Solutions*</span>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:62px;font-weight:600;line-height:58px;letter-spacing:-0.05em;color:#0B0B0B">Ship product that <span data-rotate="1" data-words="works|scales|lasts|earns" style="display:inline-block">works</span></span>
       </div>
-      <span data-mrev="1" style="font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.03em;color:rgb(255,255,255)">Product Development<br />for Startups &amp; SMEs</span>
-      <div data-mrev="1" style="display:flex;flex-direction:column;gap:2px;padding-top:14px;border-top:1px solid rgba(255,255,255,.25);font-size:14px;font-weight:600;line-height:24px;letter-spacing:-0.05em;color:rgba(255,255,255,.9)">
+      <span data-mrev="1" style="font-size:17px;font-weight:500;line-height:26px;letter-spacing:-0.03em;color:rgba(11,11,11,.8)">Roars is a product studio working out of the USA, UK and India. 250 products shipped since 2005.</span>
+      <a data-mrev="1" href="Roars v2 - Contact.dc.html" style="display:inline-flex;align-items:center;gap:10px;height:50px;width:fit-content;padding:0 26px;border-radius:60px;background:#0B0B0B;color:#FFFFFF;font-size:15px;font-weight:600;letter-spacing:-0.03em">Start a project<span style="width:7px;height:7px;border-radius:50%;background:#FFD400"></span></a>
+      <div data-mrev="1" style="display:flex;flex-direction:column;gap:2px;padding-top:14px;border-top:1px solid rgba(11,11,11,.25);font-size:14px;font-weight:600;line-height:24px;letter-spacing:-0.05em;color:rgba(11,11,11,.82)">
         <span>Product Development</span><span>UI/UX and Product Design</span><span>Mobile App Development</span><span>AI Automation</span>
       </div>
     </div>
@@ -198,7 +202,10 @@
 
   <!-- projects -->
   <section data-mdark="1" style="position:relative;padding:56px 20px 64px;background:#000;overflow:hidden;display:flex;flex-direction:column;gap:28px">
-    <img src="assets/space.jpg" alt="" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform:scaleY(-1);opacity:.9" />
+    <div style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;background:linear-gradient(150deg,#0C0C0B 0%,#121110 52%,#0A0A0A 100%)">
+      <div data-dur="34" style="position:absolute;left:-20%;top:-10%;width:110%;height:70%;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.12) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 34s ease-in-out infinite;will-change:transform"></div>
+      <canvas data-grain="1" width="760" height="1100" style="position:absolute;left:0;top:0;width:100%;height:100%;display:block;mix-blend-mode:overlay;opacity:.34;pointer-events:none"></canvas>
+    </div>
     <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.75) 100%)"></div>
     <div style="position:relative;display:flex;flex-direction:column;gap:28px">
       <span data-mrev="1" style="font-size:56px;font-weight:600;line-height:56px;letter-spacing:-0.04em;color:rgb(251,251,251)">Projects</span>
@@ -411,7 +418,10 @@
 
   <!-- footer -->
   <section data-mdark="1" style="position:relative;padding:56px 20px 40px;background:rgb(11,11,11);overflow:hidden;display:flex;flex-direction:column;gap:34px">
-    <img src="assets/space.jpg" alt="" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform:scaleY(-1);opacity:.55" />
+    <div style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;background:linear-gradient(150deg,#0D0D0C 0%,#121110 52%,#0A0A0A 100%)">
+      <div data-dur="32" style="position:absolute;left:-20%;top:-10%;width:110%;height:70%;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.13) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 32s ease-in-out infinite;will-change:transform"></div>
+      <canvas data-grain="1" width="760" height="1100" style="position:absolute;left:0;top:0;width:100%;height:100%;display:block;mix-blend-mode:overlay;opacity:.34;pointer-events:none"></canvas>
+    </div>
     <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(11,11,11,.6) 0%,rgba(11,11,11,.9) 100%)"></div>
     <div style="position:relative;display:flex;flex-direction:column;gap:34px">
       <div data-mrev="1" style="display:flex;flex-direction:column;gap:18px">
@@ -635,11 +645,15 @@
 
 <!-- ════════ FOOTER  (11860) ════════ -->
 <div data-screen-label="Footer" style="position:absolute;left:0;top:8917px;width:1440px;height:1105px;background:rgb(11,11,11);overflow:hidden">
-  <img src="assets/space.jpg" alt="" style="position:absolute;left:-37px;top:-10px;width:1672.305px;height:1115.006px;object-fit:cover;transform:scaleY(-1)" />
+  <div data-norev="1" style="position:absolute;left:0;top:0;width:1440px;height:1105px;overflow:hidden;background:linear-gradient(100deg,#0D0D0C 0%,#121110 46%,#17150E 78%,#0A0A0A 100%)">
+    <div data-dur="32" style="position:absolute;left:-140px;top:-380px;width:1300px;height:1400px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.13) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 32s ease-in-out infinite;will-change:transform"></div>
+    <div data-dur="40" style="position:absolute;left:820px;top:-120px;width:1000px;height:1200px;border-radius:50%;background:radial-gradient(circle,rgba(255,232,115,.07) 0%,rgba(255,232,115,0) 60%);animation:rDriftB 40s ease-in-out infinite;will-change:transform"></div>
+    <canvas data-grain="1" width="1440" height="1105" style="position:absolute;left:0;top:0;width:1440px;height:1105px;display:block;mix-blend-mode:overlay;opacity:.34;pointer-events:none"></canvas>
+  </div>
 
   <!-- topline -->
   <div style="position:absolute;left:44px;top:61px;width:1073px;height:192px;overflow:hidden">
-    <img src="assets/mark.svg" alt="Roars" style="position:absolute;left:0;top:0;width:21px;height:21px;filter:invert(1)" />
+    <img src="brand/roars-mark.png" alt="Roars" style="position:absolute;left:0;top:0;width:24px;height:auto;filter:invert(1)" />
     <div style="position:absolute;left:458px;top:5px;width:384px;height:187px;overflow:hidden">
       <span style="position:absolute;left:0;top:0;width:384px;height:120px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgb(147,147,147)">Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.</span>
       <div style="position:absolute;left:0;top:145px;width:170px;height:42px">
@@ -693,17 +707,13 @@
   <!-- bottom part -->
   <div style="position:absolute;left:43px;top:734px;width:1053px;height:310px;overflow:hidden">
     <div style="position:absolute;left:459px;top:0;width:594px;height:186px;overflow:hidden">
-      <img src="assets/asteroids.svg" alt="" style="position:absolute;left:5px;top:61px;width:58px;height:7px;filter:invert(1);transform:rotate(6.7deg);transform-origin:0 0" />
       <span style="position:absolute;left:0;top:0;width:555px;height:186px;font-size:182px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:rgb(255,255,255);white-space:nowrap">roars</span>
-      <div style="position:absolute;left:443px;top:28px;width:31px;height:31px;border-radius:60px;background:#FFD400">
-        <span style="position:absolute;left:0;top:0;width:31px;height:31px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;line-height:1;letter-spacing:0;color:rgb(31,31,31)">&reg;</span>
-      </div>
     </div>
 
     <div style="position:absolute;left:0;top:238px;width:1053px;height:72px;overflow:hidden">
       <span style="position:absolute;left:0;top:5px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">&copy; 2026</span>
       <span style="position:absolute;left:0;top:27px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Roars Technologies</span>
-      <div style="position:absolute;left:459px;top:0;width:247px;height:72px;font-size:12px;font-weight:500;line-height:21px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);display:flex;flex-direction:column">
+      <div style="position:absolute;left:459px;top:0;width:210px;height:72px;font-size:12px;font-weight:500;line-height:21px;letter-spacing:-0.04em;color:rgba(255,255,255,.8);display:flex;flex-direction:column">
         <a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="https://link.roars.in/F39Mv">Company Profile</a>
       </div>
       <span style="position:absolute;left:692px;top:3px;font-size:12px;font-weight:500;line-height:17px;letter-spacing:-0.04em;color:rgba(255,255,255,.5);white-space:nowrap">Offices</span>
@@ -788,7 +798,10 @@
 
 <!-- ════════ PROJECTS  (3339) ════════ -->
 <div data-screen-label="Projects" style="position:absolute;left:0;top:3339px;width:1440px;height:1340px;background:rgb(0,0,0);overflow:hidden">
-  <img src="assets/space.jpg" alt="" style="position:absolute;left:-78.809px;top:0;width:1553.732px;height:1605px;object-fit:cover;transform:scaleY(-1)" />
+  <div data-norev="1" style="position:absolute;left:0;top:0;width:1440px;height:1340px;overflow:hidden;background:linear-gradient(100deg,#0C0C0B 0%,#121110 46%,#16140D 78%,#0A0A0A 100%)">
+    <div data-dur="34" style="position:absolute;left:-200px;top:-300px;width:1200px;height:1400px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.11) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 34s ease-in-out infinite;will-change:transform"></div>
+    <canvas data-grain="1" width="1440" height="1340" style="position:absolute;left:0;top:0;width:1440px;height:1340px;display:block;mix-blend-mode:overlay;opacity:.34;pointer-events:none"></canvas>
+  </div>
 
   <!-- header -->
   <div style="position:absolute;left:501px;top:129px;width:489px;height:251px;overflow:hidden">
@@ -933,49 +946,28 @@
 </div>
 
 <!-- ════════ HEADER  (0) ════════ -->
-<div data-screen-label="Header" style="position:absolute;left:0;top:0;width:1440px;height:900px;overflow:hidden;background:rgb(255,255,255)">
-  <img src="assets/space.jpg" alt="" style="position:absolute;left:433px;top:-106px;width:1553.732px;height:1035.948px;object-fit:cover;transform:scaleY(-1)" />
-  <div style="position:absolute;left:330px;top:0;width:190px;height:900px;background:linear-gradient(90deg,rgb(255,255,255) 0%,rgba(255,255,255,.92) 32%,rgba(255,255,255,0) 100%)"></div>
-
-  <!-- starbelt over the light side -->
-  <div style="position:absolute;left:-130px;top:367px;width:523px;height:62px;overflow:hidden">
-    <div style="position:absolute;left:23px;top:12px;width:471px;height:1px;background:rgb(23,23,23);transform:rotate(2.7deg);transform-origin:0 0"></div>
-    <div style="position:absolute;left:0;top:54px;width:523px;height:1px;background:rgb(23,23,23);transform:rotate(-2.8deg);transform-origin:0 0"></div>
-    <img src="assets/asteroids.svg" alt="" style="position:absolute;left:106px;top:54px;width:48px;height:7px;transform:rotate(181.3deg);transform-origin:0 0" />
-    <img src="assets/asteroids-2.svg" alt="" style="position:absolute;left:124px;top:0;width:107px;height:10px;transform:rotate(6.2deg);transform-origin:0 0" />
+<div data-screen-label="Header" style="position:absolute;left:0;top:0;width:1440px;height:900px;overflow:hidden;background:#FFD400">
+  <div data-norev="1" style="position:absolute;left:0;top:0;width:1440px;height:900px;overflow:hidden;background:linear-gradient(100deg,#FFE45C 0%,#FFD400 46%,#F8C400 100%)">
+    <div data-dur="28" style="position:absolute;left:-160px;top:-220px;width:1100px;height:1100px;border-radius:50%;background:radial-gradient(circle,rgba(255,248,205,.6) 0%,rgba(255,212,0,0) 66%);animation:rDriftA 28s ease-in-out infinite;will-change:transform"></div>
+    <div data-dur="36" style="position:absolute;left:760px;top:-160px;width:960px;height:1100px;border-radius:50%;background:radial-gradient(circle,rgba(20,16,4,.13) 0%,rgba(20,16,4,0) 64%);animation:rDriftB 36s ease-in-out infinite;will-change:transform"></div>
+    <canvas data-grain="1" width="1440" height="900" style="position:absolute;left:0;top:0;width:1440px;height:900px;display:block;mix-blend-mode:overlay;opacity:.3;pointer-events:none"></canvas>
   </div>
 
-  <!-- planet -->
-  <div style="position:absolute;left:395px;top:258px;width:89px;height:78px;overflow:hidden">
-    <div style="position:absolute;left:0;top:3px;width:75px;height:75px;border-radius:60px;background:radial-gradient(52.9% 52.9% at 90.36% 15.66%, rgb(78,73,72) 0%, rgb(0,0,0) 100%)"></div>
-    <img src="assets/asteroids-2.svg" alt="" style="position:absolute;left:3px;top:26px;width:29px;height:5px;opacity:.78;filter:invert(1)" />
-    <div style="position:absolute;left:75px;top:0;width:14px;height:14px;border-radius:60px;background:rgb(6,6,6)"></div>
-  </div>
+  <div style="position:absolute;left:39px;top:200px;width:1180px;font-size:144px;font-weight:600;line-height:130px;letter-spacing:-0.055em;color:#0B0B0B">Ship product<br />that <span data-rotate="1" data-words="works|scales|lasts|earns" style="display:inline-block;min-width:360px">works</span></div>
 
-  <!-- main logo block -->
-  <div style="position:absolute;left:488.849px;top:477px;width:682.151px;height:323px;overflow:hidden">
-    <div style="position:absolute;left:0;top:75px;width:568.151px;height:186px;overflow:hidden">
-      <img src="assets/union.svg" alt="" style="position:absolute;left:1px;top:51px;width:73.4px;height:9px;filter:invert(1);transform:rotate(6.7deg);transform-origin:0 0" />
-      <span style="position:absolute;left:13.151px;top:0;width:555px;height:186px;font-size:212px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">roars</span>
-      <div style="position:absolute;left:521.151px;top:19px;width:31px;height:31px;border-radius:60px;background:#FFD400;overflow:hidden">
-        <span style="position:absolute;left:0;top:0;width:31px;height:31px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;line-height:1;letter-spacing:0;color:rgb(31,31,31)">&reg;</span>
-      </div>
-    </div>
-    <span style="position:absolute;left:246.151px;top:281px;width:220px;height:48px;font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.03em;color:rgb(255,255,255)">Product Development<br />for Startups &amp; SMEs</span>
-    <span style="position:absolute;left:479.151px;top:0;width:210px;height:64px;font-size:24px;font-weight:500;line-height:32px;letter-spacing:-0.02em;color:rgb(255,255,255)">Space of Product<br />Solutions</span>
-  </div>
+  <div style="position:absolute;left:39px;top:520px;width:600px;font-size:24px;font-weight:500;line-height:34px;letter-spacing:-0.04em;color:rgba(11,11,11,.78)">Roars is a product studio working out of the USA, UK and India. 250 products shipped for startups and SMEs since 2005.</div>
 
-  <!-- services rail (dark type on the light side) -->
-  <div style="position:absolute;left:39px;top:600px;width:249px;height:96px;overflow:hidden">
-    <div style="position:absolute;left:0;top:0;width:200px;height:96px;font-size:14px;font-weight:600;line-height:24px;letter-spacing:-0.05em;color:rgb(0,0,0);white-space:nowrap">Product Development<br />UI/UX and Product Design<br />Mobile App Development<br />AI Automation</div>
-    <div style="position:absolute;left:233px;top:13px;width:16px;height:73px;display:flex;flex-direction:column;justify-content:space-between">
-      <span style="display:block;width:16px;height:1px;background:rgb(0,0,0)"></span>
-      <span style="display:block;width:16px;height:1px;background:rgb(0,0,0)"></span>
-      <span style="display:block;width:16px;height:1px;background:rgb(0,0,0)"></span>
-      <span style="display:block;width:16px;height:1px;background:rgb(0,0,0)"></span>
-    </div>
-  </div>
+  <a href="Roars v2 - Contact.dc.html" style="position:absolute;left:39px;top:648px;display:inline-flex;align-items:center;gap:11px;height:52px;padding:0 30px;border-radius:60px;background:#0B0B0B;color:#FFFFFF;font-size:15px;font-weight:600;letter-spacing:-0.03em">Start a project<span style="width:7px;height:7px;border-radius:50%;background:#FFD400"></span></a>
 
+  <div style="position:absolute;left:39px;top:774px;width:1362px;height:1px;background:rgba(11,11,11,.22)"></div>
+
+  <div style="position:absolute;left:39px;top:798px;width:1362px;display:flex;justify-content:space-between;font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.72)">
+    <span>Product development</span>
+    <span>UI/UX &amp; product design</span>
+    <span>Mobile apps</span>
+    <span>MVP in 12 weeks</span>
+    <span>AI automation</span>
+  </div>
 </div>
 
 <!-- ════════ ABOUT  (900) ════════ -->
@@ -1099,7 +1091,7 @@ class Component extends DCLogic {
       if (this.slide) this.slide();
     };
     // the bar flips ink depending on the section behind it
-    const DARK = [[0, 900], [3339, 4679], [8917, 10022]];
+    const DARK = [[3339, 4679], [8917, 10022]];
     this.tint = () => {
       const wrap = document.querySelector('[data-fit]');
       const bar = document.querySelector('[data-topbar]');
@@ -1128,12 +1120,13 @@ class Component extends DCLogic {
         const max = Math.max(1, doc.scrollHeight - innerHeight);
         const prog = Math.min(1, Math.max(0, scrollY / max));
         const onLight = !onDark;
+        const onField = yy < 900; // grain hero: no chip, no yellow ring
         if (ring) {
           ring.style.background = 'conic-gradient(#FFD400 ' + prog.toFixed(4) + 'turn, rgba(255,212,0,.14) 0turn)';
-          ring.style.opacity = onLight ? '1' : '0';
+          ring.style.opacity = (onLight && !onField) ? '1' : '0';
         }
-        mark.style.background = onLight ? '#FBFBF9' : 'transparent';
-        mark.style.boxShadow = onLight ? '0 1px 0 rgba(10,10,10,.06)' : 'none';
+        mark.style.background = (onLight && !onField) ? '#FBFBF9' : 'transparent';
+        mark.style.boxShadow = (onLight && !onField) ? '0 1px 0 rgba(10,10,10,.06)' : 'none';
         if (img) {
           img.style.filter = onLight
             ? 'brightness(0)'
@@ -1180,6 +1173,8 @@ class Component extends DCLogic {
     this.logoIntro();
     this.tint();
     this.slide();
+    this.initGrain();
+    this.initRotate();
     addEventListener('scroll', this.onScroll, { passive: true });
     // subtle scroll reveal: direct blocks of each section rise and fade in once
     this.reveal = () => {
@@ -1190,6 +1185,7 @@ class Component extends DCLogic {
         [...sec.children].forEach(el => {
           if (el.tagName === 'IMG' && el.parentElement === sec) return;
           if (el.dataset.slide !== undefined || el.dataset.slideA !== undefined) return;
+          if (el.dataset.norev !== undefined) return;
           if (!el.style || el.style.position !== 'absolute') return;
           el.style.willChange = 'transform,opacity';
           el.style.transition = 'transform .72s cubic-bezier(.22,.68,.28,1), opacity .62s ease';
@@ -1406,6 +1402,71 @@ class Component extends DCLogic {
     { q: 'Can you take over an existing product?', a: 'Yes. We start with a technical and design audit, then agree a plan to stabilise what exists before extending it.' },
     { q: 'Do you work with pre-seed startups?', a: 'Regularly. Much of our work is with founders building a first version, and we scope to the funding available.' }
   ];
+
+  initGrain() {
+    this._grainRaf = [];
+    this.gio = new IntersectionObserver(es => es.forEach(e => { e.target.__on = e.isIntersecting; }), { rootMargin: '200px' });
+    document.querySelectorAll('canvas[data-grain]').forEach(c => {
+      const W = c.width, H = c.height;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      c.width = W * dpr; c.height = H * dpr;
+      const ctx = c.getContext('2d');
+      ctx.scale(dpr, dpr);
+      this.gio.observe(c); c.__on = true;
+      const tile = document.createElement('canvas');
+      tile.width = 180; tile.height = 180;
+      const tc = tile.getContext('2d');
+      const img = tc.createImageData(180, 180);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = 90 + Math.random() * 165;
+        img.data[i] = v; img.data[i + 1] = v; img.data[i + 2] = v; img.data[i + 3] = 255;
+      }
+      tc.putImageData(img, 0, 0);
+      const pat = ctx.createPattern(tile, 'repeat');
+      let last = 0;
+      const step = () => {
+        if (c.__on !== false) {
+          const now = performance.now();
+          if (now - last >= 84) {
+            last = now;
+            ctx.clearRect(0, 0, W, H);
+            ctx.save();
+            ctx.translate(-Math.floor(Math.random() * 180), -Math.floor(Math.random() * 180));
+            ctx.fillStyle = pat;
+            ctx.fillRect(0, 0, W + 180, H + 180);
+            ctx.restore();
+          }
+        }
+        this._graf = requestAnimationFrame(step);
+      };
+      step();
+    });
+  }
+
+  initRotate() {
+    this._rotTos = [];
+    document.querySelectorAll('[data-rotate]').forEach(el => {
+      const words = (el.dataset.words || '').split('|');
+      if (words.length < 2) return;
+      let i = 0;
+      const iv = setInterval(() => {
+        i = (i + 1) % words.length;
+        try {
+          el.animate([{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-12px)' }],
+            { duration: 260, easing: 'cubic-bezier(.4,0,.7,.2)', fill: 'forwards' });
+        } catch (e) { }
+        this._rotTos.push(setTimeout(() => {
+          el.textContent = words[i];
+          try {
+            el.animate([{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'translateY(0)' }],
+              { duration: 380, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' });
+          } catch (e) { }
+        }, 270));
+      }, 3600);
+      this._rotIv = this._rotIv || [];
+      this._rotIv.push(iv);
+    });
+  }
 
   renderVals() {
     const xs = ['39px', '503px', '967px'];

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="design_doc_mode" content="canvas" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; background:#FFFFFF; }
+  body { font-family:Inter,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:#141414; text-decoration:none; }
+  a:hover { color:#B99A00; }
+  @keyframes rDriftA { 0%,100% { transform:translate3d(0,0,0) scale(1); } 50% { transform:translate3d(-110px,38px,0) scale(1.13); } }
+  @keyframes rDriftB { 0%,100% { transform:translate3d(0,0,0) scale(1.08); } 50% { transform:translate3d(120px,-44px,0) scale(1); } }
+</style>
+</helmet>
+
+<div style="width:100%;background:#FFFFFF;padding:44px 0 96px">
+
+  <div style="max-width:1180px;margin:0 auto;padding:0 28px 34px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#919191">Turn 5 · inner page headers</div>
+    <div style="font-size:48px;font-weight:600;letter-spacing:-0.05em;line-height:1.02;color:#141414;margin-top:14px;max-width:820px;text-wrap:pretty">Five header types cover every inner page</div>
+    <div style="font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.03em;color:#474747;margin-top:14px;max-width:680px;text-wrap:pretty">All five are the same object as the 4a hero, cut shorter: a grained field band under the white nav bar. Light field carries black ink, dark field carries white. Each frame shows the band plus the first rows of white content so the handoff reads. Badges: <a href="#5a">5a</a> <a href="#5b">5b</a> <a href="#5c">5c</a> <a href="#5d">5d</a> <a href="#5e">5e</a>.</div>
+    <div style="margin-top:22px;padding:18px 22px;border:1px solid #E4E4E4;border-radius:10px;max-width:680px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#919191">Where grain goes</div>
+      <div style="font-size:15px;font-weight:500;line-height:23px;letter-spacing:-0.03em;color:#333333;margin-top:8px;text-wrap:pretty">Home hero · inner page header bands · CTA band · footer · full-bleed stat or quote bands. Nowhere else — white content sections, cards and tables stay clean, so the grain reads as the brand's one texture rather than a filter over the whole site.</div>
+    </div>
+  </div>
+
+  <section style="display:flex;flex-direction:column;gap:72px;max-width:1180px;margin:0 auto;padding:0 28px">
+
+    <!-- ───── 5a · section header, light field ───── -->
+    <div id="5a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">5a</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Section header · light field</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">Agency · Approach · Industries · AI Automation</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:680px">Band 380px, grained yellow field, black ink. Breadcrumb, 76px title, one-line intro on the right half so the title keeps the left column clear. Four-item anchor rail sits on the band's bottom edge and sticks on scroll.</div>
+      </sc-if>
+      <div data-frame data-h="660" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:660px;transform-origin:0 0;background:#FFFFFF">
+          <div style="position:absolute;left:0;top:92px;width:1440px;height:380px;overflow:hidden;background:linear-gradient(100deg,#FFE45C 0%,#FFD400 46%,#F8C400 100%)">
+            <div data-dur="28" style="position:absolute;left:-140px;top:-320px;width:1000px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(255,247,190,.5) 0%,rgba(255,212,0,0) 66%);animation:rDriftA 28s ease-in-out infinite;will-change:transform"></div>
+            <div data-dur="36" style="position:absolute;left:820px;top:-260px;width:860px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(20,16,4,.12) 0%,rgba(20,16,4,0) 64%);animation:rDriftB 36s ease-in-out infinite;will-change:transform"></div>
+            <canvas data-grain width="1440" height="380" style="position:absolute;left:0;top:0;width:1440px;height:380px;display:block;mix-blend-mode:overlay;opacity:.3;pointer-events:none"></canvas>
+            <div style="position:absolute;left:39px;top:58px;font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.7)">Home &nbsp;/&nbsp; Agency</div>
+            <div style="position:absolute;left:39px;top:96px;width:700px;font-size:76px;font-weight:600;line-height:78px;letter-spacing:-0.05em;color:#0B0B0B">The agency</div>
+            <div style="position:absolute;left:800px;top:104px;width:601px;font-size:22px;font-weight:500;line-height:32px;letter-spacing:-0.04em;color:rgba(11,11,11,.8);text-wrap:pretty">A product studio of twenty, working across the USA, UK and India. We scope, design, build and keep software alive after release.</div>
+          </div>
+          <div style="position:absolute;left:0;top:472px;width:1440px;height:66px;background:#FFFFFF;border-bottom:1px solid #E4E4E4;display:flex;align-items:center;padding:0 39px;gap:30px">
+            <a href="#5a" style="font-size:15px;font-weight:600;letter-spacing:-0.03em;color:#0B0B0B;border-bottom:2px solid #FFD400;padding-bottom:4px">Who we are</a>
+            <a href="#5a" style="font-size:15px;font-weight:500;letter-spacing:-0.03em;color:#6A6A6A">How we work</a>
+            <a href="#5a" style="font-size:15px;font-weight:500;letter-spacing:-0.03em;color:#6A6A6A">The team</a>
+            <a href="#5a" style="font-size:15px;font-weight:500;letter-spacing:-0.03em;color:#6A6A6A">Ventures</a>
+            <span style="margin-left:auto;font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#919191">Since 2005</span>
+          </div>
+          <div style="position:absolute;left:39px;top:586px;width:660px;font-size:34px;font-weight:600;line-height:42px;letter-spacing:-0.05em;color:#141414">Twenty years of shipping other people's ideas</div>
+          <div style="position:absolute;left:800px;top:592px;width:601px;font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.03em;color:#4A4A4A">We started as three people building for founders who could not find a team that would ship. That is still the job.</div>
+          <div style="position:absolute;left:0;top:0;width:1440px;height:92px;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;padding:0 39px">
+            <span style="font-size:26px;font-weight:700;letter-spacing:-0.045em;color:#0B0B0B">Roars<span style="color:#C9A400">&reg;</span></span>
+            <div style="display:flex;align-items:center;gap:34px">
+              <a href="#5a" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Case studies</a>
+              <a href="#5a" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Services</a>
+              <a href="#5a" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">UX audits</a>
+              <a href="#5a" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Insights</a>
+              <a href="#5a" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">About</a>
+              <span style="width:1px;height:34px;background:#DEDEDE"></span>
+              <a href="#5a" style="display:inline-flex;align-items:center;height:48px;padding:0 26px;border-radius:60px;background:#0B0B0B;color:#FFFFFF;font-size:15px;font-weight:600;letter-spacing:-0.03em">Get in touch</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 5b · index header, dark field ───── -->
+    <div id="5b" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">5b</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Index header · dark field</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">Projects · Insights · Guides · Resources</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:680px">Dark grained field so the white cards below read as a separate plane. Count sits against the title as a yellow superscript, filters live on the field as ghost pills — the active one goes solid yellow.</div>
+      </sc-if>
+      <div data-frame data-h="660" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:660px;transform-origin:0 0;background:#FFFFFF">
+          <div style="position:absolute;left:0;top:92px;width:1440px;height:400px;overflow:hidden;background:linear-gradient(100deg,#0D0D0C 0%,#121110 46%,#17150E 78%,#0A0A0A 100%)">
+            <div data-dur="32" style="position:absolute;left:-120px;top:-300px;width:1100px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.1) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 32s ease-in-out infinite;will-change:transform"></div>
+            <div data-dur="40" style="position:absolute;left:880px;top:-200px;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(255,232,115,.06) 0%,rgba(255,232,115,0) 60%);animation:rDriftB 40s ease-in-out infinite;will-change:transform"></div>
+            <canvas data-grain width="1440" height="400" style="position:absolute;left:0;top:0;width:1440px;height:400px;display:block;mix-blend-mode:overlay;opacity:.34;pointer-events:none"></canvas>
+            <div style="position:absolute;left:39px;top:52px;font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,.62)">Home &nbsp;/&nbsp; Projects</div>
+            <div style="position:absolute;left:39px;top:88px;display:flex;align-items:flex-start;gap:16px">
+              <span style="font-size:76px;font-weight:600;line-height:78px;letter-spacing:-0.05em;color:#FBFBFB">Projects</span>
+              <span style="font-size:22px;font-weight:600;letter-spacing:-0.02em;color:#FFD400;margin-top:10px">250</span>
+            </div>
+            <div style="position:absolute;left:800px;top:96px;width:601px;font-size:20px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.76);text-wrap:pretty">Work we can talk about. Logistics, fitness, parking, loyalty, public health and legal — built for founders and small teams.</div>
+            <div style="position:absolute;left:39px;top:296px;width:1362px;display:flex;align-items:center;gap:10px">
+              <span style="display:inline-flex;align-items:center;height:40px;padding:0 20px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:14px;font-weight:600;letter-spacing:-0.03em">All work</span>
+              <span style="display:inline-flex;align-items:center;height:40px;padding:0 20px;border-radius:60px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3);color:#FBFBFB;font-size:14px;font-weight:500;letter-spacing:-0.03em">Product</span>
+              <span style="display:inline-flex;align-items:center;height:40px;padding:0 20px;border-radius:60px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3);color:#FBFBFB;font-size:14px;font-weight:500;letter-spacing:-0.03em">Mobile</span>
+              <span style="display:inline-flex;align-items:center;height:40px;padding:0 20px;border-radius:60px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3);color:#FBFBFB;font-size:14px;font-weight:500;letter-spacing:-0.03em">AI automation</span>
+              <span style="display:inline-flex;align-items:center;height:40px;padding:0 20px;border-radius:60px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3);color:#FBFBFB;font-size:14px;font-weight:500;letter-spacing:-0.03em">MVP</span>
+              <span style="margin-left:auto;font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,.55)">Newest first</span>
+            </div>
+          </div>
+          <div style="position:absolute;left:39px;top:532px;width:1362px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+            <div style="height:96px;border:1px solid #E4E4E4;border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between">
+              <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#919191">Logistics · 2025</span>
+              <span style="font-size:24px;font-weight:600;letter-spacing:-0.045em;color:#141414">Snowman Logistics</span>
+            </div>
+            <div style="height:96px;border:1px solid #E4E4E4;border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between">
+              <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#919191">Fitness · 2025</span>
+              <span style="font-size:24px;font-weight:600;letter-spacing:-0.045em;color:#141414">GymBait.AI</span>
+            </div>
+            <div style="height:96px;border:1px solid #E4E4E4;border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between">
+              <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#919191">Mobility · 2024</span>
+              <span style="font-size:24px;font-weight:600;letter-spacing:-0.045em;color:#141414">Parqly</span>
+            </div>
+          </div>
+          <div style="position:absolute;left:0;top:0;width:1440px;height:92px;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;padding:0 39px">
+            <span style="font-size:26px;font-weight:700;letter-spacing:-0.045em;color:#0B0B0B">Roars<span style="color:#C9A400">&reg;</span></span>
+            <div style="display:flex;align-items:center;gap:34px">
+              <a href="#5b" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Case studies</a>
+              <a href="#5b" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Services</a>
+              <a href="#5b" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">UX audits</a>
+              <a href="#5b" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Insights</a>
+              <a href="#5b" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">About</a>
+              <span style="width:1px;height:34px;background:#DEDEDE"></span>
+              <a href="#5b" style="display:inline-flex;align-items:center;height:48px;padding:0 26px;border-radius:60px;background:#0B0B0B;color:#FFFFFF;font-size:15px;font-weight:600;letter-spacing:-0.03em">Get in touch</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 5c · article header ───── -->
+    <div id="5c" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">5c</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Article header</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">Insight detail · Guide detail</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:680px">Narrow measure — title capped at 860px so it reads as an article, not a landing page. Byline row on the field, and the lead image crosses the band edge so the grain sits behind it. Progress rule at the very bottom of the band fills as you read.</div>
+      </sc-if>
+      <div data-frame data-h="720" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:720px;transform-origin:0 0;background:#FFFFFF">
+          <div style="position:absolute;left:0;top:92px;width:1440px;height:400px;overflow:hidden;background:linear-gradient(100deg,#0C0C0B 0%,#121110 48%,#16140D 78%,#0A0A0A 100%)">
+            <div data-dur="34" style="position:absolute;left:-200px;top:-280px;width:1000px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.09) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 34s ease-in-out infinite;will-change:transform"></div>
+            <canvas data-grain width="1440" height="400" style="position:absolute;left:0;top:0;width:1440px;height:400px;display:block;mix-blend-mode:overlay;opacity:.34;pointer-events:none"></canvas>
+            <div style="position:absolute;left:39px;top:48px;display:flex;align-items:center;gap:14px">
+              <span style="display:inline-flex;align-items:center;height:30px;padding:0 14px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase">Insight</span>
+              <span style="font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,.6)">Product strategy · 8 min read</span>
+            </div>
+            <div style="position:absolute;left:39px;top:100px;width:860px;font-size:50px;font-weight:600;line-height:58px;letter-spacing:-0.045em;color:#FBFBFB;text-wrap:balance">What an MVP costs when you count the parts nobody quotes for</div>
+            <div style="position:absolute;left:39px;top:322px;display:flex;align-items:center;gap:14px">
+              <span style="width:44px;height:44px;border-radius:60px;background:#FFD400"></span>
+              <span style="display:flex;flex-direction:column">
+                <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:#FBFBFB">Riinkesh A Sshah</span>
+                <span style="font-size:13px;font-weight:500;letter-spacing:-0.02em;color:rgba(255,255,255,.6)">Founder · 14 March 2026</span>
+              </span>
+            </div>
+            <div style="position:absolute;left:0;top:398px;width:1440px;height:2px;background:rgba(255,255,255,.18)"></div>
+            <div style="position:absolute;left:0;top:398px;width:380px;height:2px;background:#FFD400"></div>
+          </div>
+          <div style="position:absolute;left:39px;top:416px;width:900px;height:220px;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(135deg,#F2F2F2 0 12px,#E8E8E8 12px 24px);display:flex;align-items:flex-end;padding:16px">
+            <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#7A7A7A">lead image · 1800×880 · drop real photography here</span>
+          </div>
+          <div style="position:absolute;left:39px;top:664px;width:900px;font-size:22px;font-weight:500;line-height:34px;letter-spacing:-0.04em;color:#333333">Most MVP quotes cover build and nothing else. Here is the rest of the invoice.</div>
+          <div style="position:absolute;left:985px;top:420px;width:416px;border-left:1px solid #E4E4E4;padding-left:24px;display:flex;flex-direction:column;gap:12px">
+            <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#919191">In this piece</span>
+            <span style="font-size:16px;font-weight:600;letter-spacing:-0.04em;color:#141414">The quoted part</span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.04em;color:#6A6A6A">Infrastructure and QA</span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.04em;color:#6A6A6A">The first six weeks after launch</span>
+          </div>
+          <div style="position:absolute;left:0;top:0;width:1440px;height:92px;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;padding:0 39px">
+            <span style="font-size:26px;font-weight:700;letter-spacing:-0.045em;color:#0B0B0B">Roars<span style="color:#C9A400">&reg;</span></span>
+            <div style="display:flex;align-items:center;gap:34px">
+              <a href="#5c" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Case studies</a>
+              <a href="#5c" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Services</a>
+              <a href="#5c" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">UX audits</a>
+              <a href="#5c" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Insights</a>
+              <a href="#5c" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">About</a>
+              <span style="width:1px;height:34px;background:#DEDEDE"></span>
+              <a href="#5c" style="display:inline-flex;align-items:center;height:48px;padding:0 26px;border-radius:60px;background:#0B0B0B;color:#FFFFFF;font-size:15px;font-weight:600;letter-spacing:-0.03em">Get in touch</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 5d · case study header ───── -->
+    <div id="5d" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">5d</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Case study header</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">Project detail</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:680px">Light field, client name at hero scale, and a four-column meta strip on the band bottom — client, year, scope, platform — so the facts are readable before any prose. Result numbers sit in black on the yellow, the highest-contrast pairing in the system.</div>
+      </sc-if>
+      <div data-frame data-h="720" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:720px;transform-origin:0 0;background:#FFFFFF">
+          <div style="position:absolute;left:0;top:92px;width:1440px;height:452px;overflow:hidden;background:linear-gradient(100deg,#FFE45C 0%,#FFD400 44%,#F8C400 100%)">
+            <div data-dur="30" style="position:absolute;left:-160px;top:-300px;width:1000px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(255,248,200,.5) 0%,rgba(255,212,0,0) 66%);animation:rDriftA 30s ease-in-out infinite;will-change:transform"></div>
+            <div data-dur="38" style="position:absolute;left:860px;top:-240px;width:820px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(22,18,5,.12) 0%,rgba(22,18,5,0) 64%);animation:rDriftB 38s ease-in-out infinite;will-change:transform"></div>
+            <canvas data-grain width="1440" height="452" style="position:absolute;left:0;top:0;width:1440px;height:452px;display:block;mix-blend-mode:overlay;opacity:.3;pointer-events:none"></canvas>
+            <div style="position:absolute;left:39px;top:50px;font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.7)">Home &nbsp;/&nbsp; Projects &nbsp;/&nbsp; Snowman Logistics</div>
+            <div style="position:absolute;left:39px;top:86px;width:900px;font-size:86px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:#0B0B0B">Snowman<br />Logistics</div>
+            <div style="position:absolute;left:1000px;top:96px;width:401px;font-size:20px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(11,11,11,.82);text-wrap:pretty">Cold chain operations moved off spreadsheets and onto one platform used by 3,000 drivers.</div>
+            <div style="position:absolute;left:39px;top:340px;width:1362px;height:1px;background:rgba(11,11,11,.24)"></div>
+            <div style="position:absolute;left:39px;top:364px;width:1362px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.6)">Client</span>
+                <span style="font-size:20px;font-weight:600;letter-spacing:-0.045em;color:#0B0B0B">Snowman Logistics</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.6)">Year</span>
+                <span style="font-size:20px;font-weight:600;letter-spacing:-0.045em;color:#0B0B0B">2025</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.6)">Scope</span>
+                <span style="font-size:20px;font-weight:600;letter-spacing:-0.045em;color:#0B0B0B">Product · UX · Build</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.6)">Platform</span>
+                <span style="font-size:20px;font-weight:600;letter-spacing:-0.045em;color:#0B0B0B">Web · iOS · Android</span>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;left:39px;top:588px;width:1362px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:56px;font-weight:600;letter-spacing:-0.05em;line-height:1;color:#141414">3,000</span>
+              <span style="font-size:14px;font-weight:600;letter-spacing:-0.03em;color:#6A6A6A">drivers on the platform</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:56px;font-weight:600;letter-spacing:-0.05em;line-height:1;color:#141414">41%</span>
+              <span style="font-size:14px;font-weight:600;letter-spacing:-0.03em;color:#6A6A6A">less time per dispatch</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:56px;font-weight:600;letter-spacing:-0.05em;line-height:1;color:#141414">14 wks</span>
+              <span style="font-size:14px;font-weight:600;letter-spacing:-0.03em;color:#6A6A6A">to first release</span>
+            </div>
+          </div>
+          <div style="position:absolute;left:0;top:0;width:1440px;height:92px;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;padding:0 39px">
+            <span style="font-size:26px;font-weight:700;letter-spacing:-0.045em;color:#0B0B0B">Roars<span style="color:#C9A400">&reg;</span></span>
+            <div style="display:flex;align-items:center;gap:34px">
+              <a href="#5d" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Case studies</a>
+              <a href="#5d" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Services</a>
+              <a href="#5d" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">UX audits</a>
+              <a href="#5d" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Insights</a>
+              <a href="#5d" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">About</a>
+              <span style="width:1px;height:34px;background:#DEDEDE"></span>
+              <a href="#5d" style="display:inline-flex;align-items:center;height:48px;padding:0 26px;border-radius:60px;background:#0B0B0B;color:#FFFFFF;font-size:15px;font-weight:600;letter-spacing:-0.03em">Get in touch</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── 5e · contact header ───── -->
+    <div id="5e" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">5e</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Contact header · split field</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">Contact · UX audit enquiry</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:680px">The only header where the grain does not span full width: the field takes the left two thirds and the form sits on white beside it, so the first input is visible without scrolling. Details go on the field in black.</div>
+      </sc-if>
+      <div data-frame data-h="620" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:620px;transform-origin:0 0;background:#FFFFFF">
+          <div style="position:absolute;left:0;top:92px;width:880px;height:528px;overflow:hidden;background:linear-gradient(120deg,#FFE45C 0%,#FFD400 50%,#F8C400 100%)">
+            <div data-dur="30" style="position:absolute;left:-180px;top:-260px;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(255,249,210,.5) 0%,rgba(255,212,0,0) 66%);animation:rDriftA 30s ease-in-out infinite;will-change:transform"></div>
+            <div data-dur="38" style="position:absolute;left:420px;top:120px;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(24,19,6,.1) 0%,rgba(24,19,6,0) 62%);animation:rDriftB 38s ease-in-out infinite;will-change:transform"></div>
+            <canvas data-grain width="880" height="528" style="position:absolute;left:0;top:0;width:880px;height:528px;display:block;mix-blend-mode:overlay;opacity:.3;pointer-events:none"></canvas>
+            <div style="position:absolute;left:39px;top:54px;font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.7)">Home &nbsp;/&nbsp; Contact</div>
+            <div style="position:absolute;left:39px;top:92px;width:760px;font-size:72px;font-weight:600;line-height:74px;letter-spacing:-0.05em;color:#0B0B0B">Start a<br />conversation</div>
+            <div style="position:absolute;left:39px;top:300px;width:660px;font-size:20px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(11,11,11,.82);text-wrap:pretty">Tell us what you are building and who it is for. We reply inside one working day, usually with questions.</div>
+            <div style="position:absolute;left:39px;top:396px;width:760px;height:1px;background:rgba(11,11,11,.24)"></div>
+            <div style="position:absolute;left:39px;top:424px;width:760px;display:flex;gap:52px">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.6)">Email</span>
+                <span style="font-size:20px;font-weight:600;letter-spacing:-0.045em;color:#0B0B0B">sales@roarsinc.com</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.6)">USA</span>
+                <span style="font-size:20px;font-weight:600;letter-spacing:-0.045em;color:#0B0B0B">+1 (302) 505-1200</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(11,11,11,.6)">UK</span>
+                <span style="font-size:20px;font-weight:600;letter-spacing:-0.045em;color:#0B0B0B">+44 (7537) 183399</span>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;left:920px;top:148px;width:481px;display:flex;flex-direction:column;gap:18px">
+            <span style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#919191">Project enquiry</span>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:13px;font-weight:600;letter-spacing:-0.03em;color:#6A6A6A">Your name</span>
+              <div style="height:52px;border:1px solid #DEDEDE;border-radius:8px"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:13px;font-weight:600;letter-spacing:-0.03em;color:#6A6A6A">Work email</span>
+              <div style="height:52px;border:1px solid #DEDEDE;border-radius:8px"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <span style="font-size:13px;font-weight:600;letter-spacing:-0.03em;color:#6A6A6A">What are you building?</span>
+              <div style="height:96px;border:1px solid #DEDEDE;border-radius:8px"></div>
+            </div>
+            <a href="#5e" style="display:inline-flex;align-items:center;gap:11px;height:52px;width:fit-content;padding:0 30px;border-radius:60px;background:#0B0B0B;color:#FFFFFF;font-size:15px;font-weight:600;letter-spacing:-0.03em">Send enquiry<span style="width:7px;height:7px;border-radius:50%;background:#FFD400"></span></a>
+          </div>
+          <div style="position:absolute;left:0;top:0;width:1440px;height:92px;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;padding:0 39px">
+            <span style="font-size:26px;font-weight:700;letter-spacing:-0.045em;color:#0B0B0B">Roars<span style="color:#C9A400">&reg;</span></span>
+            <div style="display:flex;align-items:center;gap:34px">
+              <a href="#5e" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Case studies</a>
+              <a href="#5e" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Services</a>
+              <a href="#5e" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">UX audits</a>
+              <a href="#5e" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">Insights</a>
+              <a href="#5e" style="font-size:16px;font-weight:500;letter-spacing:-0.03em;color:#0B0B0B">About</a>
+              <span style="width:1px;height:34px;background:#DEDEDE"></span>
+              <a href="#5e" style="display:inline-flex;align-items:center;height:48px;padding:0 26px;border-radius:60px;background:#0B0B0B;color:#FFFFFF;font-size:15px;font-weight:600;letter-spacing:-0.03em">Get in touch</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Doc&quot;},&quot;motionSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.25,&quot;max&quot;:2,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;grainAmount&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:1.6,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    this._rafs = []; this._tos = [];
+    this.fit = () => {
+      document.querySelectorAll('[data-frame]').forEach(w => {
+        const inner = w.firstElementChild;
+        if (!inner) return;
+        const s = w.clientWidth / 1440;
+        inner.style.transform = 'scale(' + s + ')';
+        w.style.height = Math.round(parseFloat(w.dataset.h || 660) * s) + 'px';
+      });
+    };
+    this.fit();
+    window.addEventListener('resize', this.fit);
+    this._tos.push(setTimeout(this.fit, 400), setTimeout(this.fit, 1400));
+    this.io = new IntersectionObserver(es => es.forEach(e => { e.target.__on = e.isIntersecting; }), { rootMargin: '240px' });
+    this.applySpeed();
+    this.initGrain();
+  }
+  componentDidUpdate() { this.applySpeed(); }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.fit);
+    this._rafs.forEach(id => cancelAnimationFrame(id));
+    this._tos.forEach(id => clearTimeout(id));
+    if (this.io) this.io.disconnect();
+  }
+  applySpeed() {
+    const sp = this.props.motionSpeed ?? 1;
+    document.querySelectorAll('[data-dur]').forEach(el => {
+      const base = parseFloat(el.getAttribute('data-dur'));
+      if (base) el.style.animationDuration = (base / sp) + 's';
+    });
+  }
+  initGrain() {
+    const amt = this.props.grainAmount ?? 1;
+    document.querySelectorAll('canvas[data-grain]').forEach(c => {
+      const W = c.width, H = c.height;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      c.width = W * dpr; c.height = H * dpr;
+      const ctx = c.getContext('2d');
+      ctx.scale(dpr, dpr);
+      this.io.observe(c); c.__on = true;
+      const tile = document.createElement('canvas');
+      tile.width = 180; tile.height = 180;
+      const tc = tile.getContext('2d');
+      const img = tc.createImageData(180, 180);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = 90 + Math.random() * 165;
+        img.data[i] = v; img.data[i + 1] = v; img.data[i + 2] = v; img.data[i + 3] = 255;
+      }
+      tc.putImageData(img, 0, 0);
+      const pat = ctx.createPattern(tile, 'repeat');
+      c.style.opacity = String(parseFloat(c.style.opacity || 0.5) * amt);
+      let last = 0;
+      const step = () => {
+        if (c.__on !== false) {
+          const sp = this.props.motionSpeed ?? 1;
+          const now = performance.now();
+          if (now - last >= 84 / sp) {
+            last = now;
+            ctx.clearRect(0, 0, W, H);
+            ctx.save();
+            ctx.translate(-Math.floor(Math.random() * 180), -Math.floor(Math.random() * 180));
+            ctx.fillStyle = pat;
+            ctx.fillRect(0, 0, W + 180, H + 180);
+            ctx.restore();
+          }
+        }
+        this._rafs.push(requestAnimationFrame(step));
+        if (this._rafs.length > 300) this._rafs = this._rafs.slice(-30);
+      };
+      step();
+    });
+  }
+  renderVals() {
+    return { showNotes: this.props.showNotes ?? true };
+  }
+}
+
+</script>
+</body>
+</html>

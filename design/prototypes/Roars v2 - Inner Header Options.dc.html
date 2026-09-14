@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; background:#FFFFFF; }
+  body { font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#B99A00; }
+  @keyframes rDriftA { 0%,100% { transform:translate3d(0,0,0) scale(1); } 50% { transform:translate3d(-110px,38px,0) scale(1.13); } }
+  @keyframes rDriftB { 0%,100% { transform:translate3d(0,0,0) scale(1.08); } 50% { transform:translate3d(120px,-44px,0) scale(1); } }
+</style>
+</helmet>
+
+<section style="width:100%;background:#FFFFFF;padding:44px 0 72px;border-bottom:1px solid #E4E4E4">
+
+  <div style="max-width:1180px;margin:0 auto;padding:0 28px 34px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#919191">Turn 8 · one idea, four cuts</div>
+    <div style="font-size:48px;font-weight:600;letter-spacing:-0.05em;line-height:1.02;color:#141414;margin-top:14px;max-width:900px;text-wrap:pretty">The page name at masthead scale, held by one rule</div>
+    <div style="font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.03em;color:#474747;margin-top:14px;max-width:720px;text-wrap:pretty">One concept, not four. The homepage gets its scale from a 212px wordmark on yellow; inner pages get theirs from the page name itself &mdash; 200 to 300px, Inter 600 at &minus;0.055em, cropped or flush to a gutter, with a single rule as the spine everything else hangs off. Nothing here invents a colour, a typeface or an effect the system does not already have. Two structures &times; two grounds: <a href="#8a">8a</a> <a href="#8b">8b</a> <a href="#8c">8c</a> <a href="#8d">8d</a>.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:72px;max-width:1180px;margin:0 auto;padding:0 28px">
+
+    <div id="8a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">8a</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Crop &middot; dark</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">300px name, bled left, cut by the band edge</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">The name runs off the left gutter at 300px and the band cuts its baseline, so the word continues past the page. A yellow hairline spine at 500 carries the stat row on its left and the quote sits above it on the right. The scale is the effect &mdash; no glow needed.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#0A0A0A">
+          <div data-dur="34" style="position:absolute;left:-260px;top:240px;width:1100px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.13) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 34s ease-in-out infinite;will-change:transform"></div>
+          <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:overlay;opacity:.36;pointer-events:none"></canvas>
+
+          <span style="position:absolute;left:-38px;top:520px;font-size:300px;font-weight:600;line-height:300px;letter-spacing:-0.055em;color:#FBFBFB;white-space:nowrap">Projects</span>
+
+          <div style="position:absolute;left:39px;top:96px;width:62px;height:24px">
+            <span style="position:absolute;left:0;top:4px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:#FFD400;white-space:nowrap">roars</span>
+            <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px;filter:invert(1)" />
+          </div>
+
+          <div style="position:absolute;left:1017px;top:96px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.95);white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.6);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.5;filter:invert(1)" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:0;top:500px;width:1440px;height:1px;background:linear-gradient(90deg,#FFD400 0%,rgba(255,212,0,.45) 42%,rgba(255,212,0,.12) 100%)"></div>
+
+          <div style="position:absolute;left:39px;top:432px;width:299px;height:43px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:#FFD400">
+              <span style="position:absolute;left:5px;top:8px;width:33px;height:24px;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">250</span>
+            </div>
+            <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.8)">Products delivered</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="8b" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">8b</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Crop &middot; light</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">same object on paper, black ink</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">Identical geometry to 8a on the paper ground the system already uses for Services and FAQ. Black name, yellow spine, and the band hands straight into the white content below with no tonal jump &mdash; the quiet twin, and the easier one to live with on every page.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#F2F1ED">
+          <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:multiply;opacity:.13;pointer-events:none"></canvas>
+
+          <span style="position:absolute;left:-38px;top:520px;font-size:300px;font-weight:600;line-height:300px;letter-spacing:-0.055em;color:#0B0B0B;white-space:nowrap">Projects</span>
+
+          <div style="position:absolute;left:39px;top:96px;width:62px;height:24px">
+            <span style="position:absolute;left:0;top:4px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">roars</span>
+            <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px" />
+          </div>
+
+          <div style="position:absolute;left:1017px;top:96px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:#0B0B0B;white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(11,11,11,.6);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.35" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(11,11,11,.88)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:0;top:500px;width:1440px;height:1.5px;background:linear-gradient(90deg,#FFD400 0%,#FFD400 34%,rgba(11,11,11,.18) 34%,rgba(11,11,11,.18) 100%)"></div>
+
+          <div style="position:absolute;left:39px;top:432px;width:299px;height:43px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:#0B0B0B">
+              <span style="position:absolute;left:5px;top:8px;width:33px;height:24px;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:#FFFFFF;white-space:nowrap">250</span>
+            </div>
+            <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(11,11,11,.7)">Products delivered</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="8c" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">8c</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Spine &middot; dark</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">200px name flush to the right gutter, vertical spine at 503</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">Uses the layout's own 503 column as a vertical yellow spine. The name is flush right against the 1401 gutter at 200px, the quote holds the 464 rail on the left, and the count sits on the spine at 84px &mdash; the big-stat size from the system. Reads as a masthead, and every page name lands on the same right edge.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#0A0A0A">
+          <div data-dur="36" style="position:absolute;left:420px;top:-200px;width:1100px;height:1100px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.12) 0%,rgba(255,212,0,0) 62%);animation:rDriftB 36s ease-in-out infinite;will-change:transform"></div>
+          <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:overlay;opacity:.36;pointer-events:none"></canvas>
+
+          <div style="position:absolute;left:503px;top:0;width:1.5px;height:780px;background:linear-gradient(180deg,rgba(255,212,0,0) 0%,#FFD400 26%,rgba(255,212,0,.3) 100%)"></div>
+
+          <div style="position:absolute;left:39px;top:96px;width:62px;height:24px">
+            <span style="position:absolute;left:0;top:4px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:#FFD400;white-space:nowrap">roars</span>
+            <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px;filter:invert(1)" />
+          </div>
+
+          <span style="position:absolute;left:503px;top:392px;width:898px;text-align:right;font-size:200px;font-weight:600;line-height:200px;letter-spacing:-0.055em;color:#FBFBFB;white-space:nowrap">Projects</span>
+
+          <div style="position:absolute;left:39px;top:214px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.95);white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.6);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.5;filter:invert(1)" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:539px;top:186px;width:400px;height:104px">
+            <span style="position:absolute;left:0;top:0;font-size:84px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:#FFD400;white-space:nowrap">250</span>
+            <span style="position:absolute;left:4px;top:96px;font-size:14px;font-weight:600;line-height:19px;letter-spacing:-0.06em;color:rgba(255,255,255,.72);white-space:nowrap">Products delivered</span>
+          </div>
+
+          <div style="position:absolute;left:1257px;top:648px;width:93px;height:42px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="8d" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">8d</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Spine &middot; light</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">same masthead on paper, count in yellow</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">The 8c structure on paper: black spine, black name, and the count in yellow at 84px as the single accent. The lightest of the four and the most editorial &mdash; closest in feel to the Services and FAQ sections, so the inner pages hold together as a set distinct from the yellow homepage.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#F2F1ED">
+          <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:multiply;opacity:.13;pointer-events:none"></canvas>
+
+          <div style="position:absolute;left:503px;top:0;width:1.5px;height:780px;background:linear-gradient(180deg,rgba(255,212,0,0) 0%,#FFD400 18%,#0B0B0B 34%,rgba(11,11,11,.25) 100%)"></div>
+
+          <div style="position:absolute;left:39px;top:96px;width:62px;height:24px">
+            <span style="position:absolute;left:0;top:4px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">roars</span>
+            <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px" />
+          </div>
+
+          <span style="position:absolute;left:503px;top:392px;width:898px;text-align:right;font-size:200px;font-weight:600;line-height:200px;letter-spacing:-0.055em;color:#0B0B0B;white-space:nowrap">Projects</span>
+
+          <div style="position:absolute;left:39px;top:214px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:#0B0B0B;white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(11,11,11,.6);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.35" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(11,11,11,.88)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:539px;top:186px;width:400px;height:104px">
+            <span style="position:absolute;left:0;top:0;font-size:84px;font-weight:600;line-height:86px;letter-spacing:-0.05em;color:#0B0B0B;white-space:nowrap">250</span>
+            <span style="position:absolute;left:4px;top:96px;font-size:14px;font-weight:600;line-height:19px;letter-spacing:-0.06em;color:rgba(11,11,11,.66);white-space:nowrap">Products delivered</span>
+          </div>
+
+          <div style="position:absolute;left:1257px;top:648px;width:93px;height:42px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section style="width:100%;background:#FFFFFF;padding:44px 0 72px;border-bottom:1px solid #E4E4E4">
+
+  <div style="max-width:1180px;margin:0 auto;padding:0 28px 34px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#919191">Turn 7 · inner header, own identity</div>
+    <div style="font-size:48px;font-weight:600;letter-spacing:-0.05em;line-height:1.02;color:#141414;margin-top:14px;max-width:900px;text-wrap:pretty">Four fields that stop borrowing the homepage</div>
+    <div style="font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.03em;color:#474747;margin-top:14px;max-width:720px;text-wrap:pretty">The homepage hero is a yellow wash &mdash; so an inner header built the same way reads as a smaller homepage. These four each take a different structural idea instead: paper and rules, a black plate, type as the aperture, and a hard vertical split. Same content, same positions. <a href="#7a">7a</a> <a href="#7b">7b</a> <a href="#7c">7c</a> <a href="#7d">7d</a>.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:72px;max-width:1180px;margin:0 auto;padding:0 28px">
+
+    <div id="7a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">7a</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Paper and rules</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">warm paper, the 1440 grid drawn, one yellow chip</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">No wash at all. Warm paper ground with the page's own column rules (39 / 503 / 967 / 1401) drawn as hairlines and the grain dialled right down, so the field reads as a measured register rather than a hero. The yellow survives as one object: the count chip.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#F2F1ED">
+          <div style="position:absolute;left:0;top:0;width:1440px;height:780px;overflow:hidden">
+            <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:multiply;opacity:.14;pointer-events:none"></canvas>
+            <div style="position:absolute;left:39px;top:0;width:1px;height:780px;background:rgba(11,11,11,.11)"></div>
+            <div style="position:absolute;left:503px;top:0;width:1px;height:780px;background:rgba(11,11,11,.11)"></div>
+            <div style="position:absolute;left:967px;top:0;width:1px;height:780px;background:rgba(11,11,11,.11)"></div>
+            <div style="position:absolute;left:1401px;top:0;width:1px;height:780px;background:rgba(11,11,11,.11)"></div>
+            <div style="position:absolute;left:0;top:408px;width:1440px;height:1px;background:rgba(11,11,11,.14)"></div>
+            <div style="position:absolute;left:0;bottom:0;width:1440px;height:1.5px;background:rgba(11,11,11,.22)"></div>
+          </div>
+
+          <div style="position:absolute;left:39px;top:96px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:#0B0B0B;white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(11,11,11,.6);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.35" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(11,11,11,.88)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:488.849px;top:440px;width:778.151px;height:253px">
+            <div style="position:absolute;left:0;top:23px;width:465.152px;height:157.176px">
+              <span style="position:absolute;left:6.151px;top:52px;width:459px;height:86px;font-size:124px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">Projects</span>
+              <div style="position:absolute;left:13.152px;top:0;width:62px;height:24px">
+                <span style="position:absolute;left:0;top:4px;width:59px;height:20px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">roars</span>
+                <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px" />
+              </div>
+            </div>
+            <div style="position:absolute;left:479.151px;top:0;width:299px;height:43px">
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:#FFD400">
+                <span style="position:absolute;left:5px;top:8px;width:33px;height:24px;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">250</span>
+              </div>
+              <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(11,11,11,.7)">Products delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="7b" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">7b</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Black plate, yellow keyline</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">flat ink, no glow, a framed band</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">The opposite move to a glow: a dead-flat black plate, grain only, and a 2px yellow keyline inset 22px that turns the header into a framed plate. The title crosses the keyline at the baseline so the frame reads as construction, not decoration.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#070707">
+          <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:overlay;opacity:.4;pointer-events:none"></canvas>
+          <div style="position:absolute;left:22px;top:22px;width:1396px;height:736px;box-shadow:inset 0 0 0 2px #FFD400;pointer-events:none"></div>
+          <div style="position:absolute;left:22px;top:526px;width:1396px;height:2px;background:#FFD400;opacity:.45"></div>
+
+          <div style="position:absolute;left:39px;top:96px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.95);white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.6);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.5;filter:invert(1)" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:488.849px;top:440px;width:778.151px;height:253px">
+            <div style="position:absolute;left:0;top:23px;width:465.152px;height:157.176px">
+              <span style="position:absolute;left:6.151px;top:52px;width:459px;height:86px;font-size:124px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:#FBFBFB;white-space:nowrap">Projects</span>
+              <div style="position:absolute;left:13.152px;top:0;width:62px;height:24px">
+                <span style="position:absolute;left:0;top:4px;width:59px;height:20px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:#FFD400;white-space:nowrap">roars</span>
+                <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px;filter:invert(1)" />
+              </div>
+            </div>
+            <div style="position:absolute;left:479.151px;top:0;width:299px;height:43px">
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:#FFD400">
+                <span style="position:absolute;left:5px;top:8px;width:33px;height:24px;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">250</span>
+              </div>
+              <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.8)">Products delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="7c" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">7c</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Type as the aperture</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">the yellow field only exists inside the word</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">The band is black; the yellow field is clipped to the letterforms of the page name, so the brand colour arrives through the type instead of behind it. Every page gets a different shape for free &mdash; "Projects", "Agency", "Insights" all cut a different aperture. Most distinctive, and the one that looks least like anything else on the site.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#0A0A0A">
+          <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:overlay;opacity:.36;pointer-events:none"></canvas>
+          <div data-dur="34" style="position:absolute;left:340px;top:180px;width:1000px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.16) 0%,rgba(255,212,0,0) 62%);animation:rDriftA 34s ease-in-out infinite;will-change:transform"></div>
+          <div style="position:absolute;left:0;bottom:0;width:1440px;height:1.5px;background:linear-gradient(90deg,rgba(255,212,0,0) 0%,rgba(255,212,0,.6) 40%,rgba(255,212,0,0) 100%)"></div>
+
+          <div style="position:absolute;left:39px;top:96px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.95);white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.6);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.5;filter:invert(1)" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:488.849px;top:440px;width:778.151px;height:253px">
+            <div style="position:absolute;left:0;top:23px;width:465.152px;height:157.176px">
+              <span style="position:absolute;left:6.151px;top:52px;width:459px;height:86px;font-size:124px;font-weight:600;line-height:86px;letter-spacing:-0.04em;white-space:nowrap;background:linear-gradient(100deg,#FFF3A8 0%,#FFD400 44%,#F4B400 78%,#FFE873 100%);-webkit-background-clip:text;background-clip:text;color:transparent">Projects</span>
+              <div style="position:absolute;left:13.152px;top:0;width:62px;height:24px">
+                <span style="position:absolute;left:0;top:4px;width:59px;height:20px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">roars</span>
+                <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px;filter:invert(1)" />
+              </div>
+            </div>
+            <div style="position:absolute;left:479.151px;top:0;width:299px;height:43px">
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:rgb(255,255,255)">
+                <span style="position:absolute;left:5px;top:8px;width:33px;height:24px;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgb(0,0,0);white-space:nowrap">250</span>
+              </div>
+              <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(255,255,255,.8)">Products delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="7d" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">7d</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Hard split</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">yellow rail, white page, one vertical edge</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">The 464px rail from the layout system becomes the field: yellow and grained, carrying the quote block. Everything right of it is plain white, so the title and the avatar row read as the start of the page rather than as hero furniture. Gives every inner page the same recognisable edge, and nothing like it appears on the homepage.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#FFFFFF">
+          <div style="position:absolute;left:0;top:0;width:464px;height:780px;overflow:hidden;background:linear-gradient(160deg,#FFE873 0%,#FFD400 52%,#F4B400 100%)">
+            <div data-dur="30" style="position:absolute;left:-220px;top:-180px;width:820px;height:820px;border-radius:50%;background:radial-gradient(circle,rgba(255,252,224,.7) 0%,rgba(255,212,0,0) 66%);animation:rDriftA 30s ease-in-out infinite;will-change:transform"></div>
+            <div data-dur="38" style="position:absolute;left:120px;top:320px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(24,19,6,.14) 0%,rgba(24,19,6,0) 62%);animation:rDriftB 38s ease-in-out infinite;will-change:transform"></div>
+            <canvas data-grain="1" width="464" height="780" style="position:absolute;left:0;top:0;width:464px;height:780px;display:block;mix-blend-mode:overlay;opacity:.32;pointer-events:none"></canvas>
+          </div>
+          <div style="position:absolute;left:464px;top:0;width:1.5px;height:780px;background:#0B0B0B"></div>
+          <div style="position:absolute;left:464px;bottom:0;width:976px;height:1.5px;background:rgba(11,11,11,.18)"></div>
+
+          <div style="position:absolute;left:39px;top:96px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:#0B0B0B;white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(11,11,11,.62);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.4" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(11,11,11,.9)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:488.849px;top:440px;width:778.151px;height:253px">
+            <div style="position:absolute;left:0;top:23px;width:465.152px;height:157.176px">
+              <span style="position:absolute;left:6.151px;top:52px;width:459px;height:86px;font-size:124px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">Projects</span>
+              <div style="position:absolute;left:13.152px;top:0;width:62px;height:24px">
+                <span style="position:absolute;left:0;top:4px;width:59px;height:20px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">roars</span>
+                <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px" />
+              </div>
+            </div>
+            <div style="position:absolute;left:479.151px;top:0;width:299px;height:43px">
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:#0B0B0B">
+                <span style="position:absolute;left:5px;top:8px;width:33px;height:24px;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:#FFFFFF;white-space:nowrap">250</span>
+              </div>
+              <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(11,11,11,.7)">Products delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section style="width:100%;background:#FFFFFF;padding:44px 0 96px">
+
+  <div style="max-width:1180px;margin:0 auto;padding:0 28px 34px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#919191">Turn 6 · inner page header field</div>
+    <div style="font-size:48px;font-weight:600;letter-spacing:-0.05em;line-height:1.02;color:#141414;margin-top:14px;max-width:860px;text-wrap:pretty">Three fields for the inner header, same content in the same places</div>
+    <div style="font-size:16px;font-weight:500;line-height:24px;letter-spacing:-0.03em;color:#474747;margin-top:14px;max-width:700px;text-wrap:pretty">The Projects header at 1440&times;780, every element left exactly where it sits today. Only the field under it changes &mdash; and the ink flips where it has to. <a href="#6a">6a</a> <a href="#6b">6b</a> <a href="#6c">6c</a>. The current build is the flat dark field; the homepage reads better because it is bright, has a light source and shows the grain.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:72px;max-width:1180px;margin:0 auto;padding:0 28px">
+
+    <div id="6a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">6a</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Yellow field, black ink</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">the homepage hero, cut to header height</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">Same field as the home hero: grained yellow, one warm light source top left, one soft shadow right. Ink goes black, the mark and rule stop being inverted, avatars stay as they are. Loudest of the three and the closest match to the homepage.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#FFD400">
+          <div style="position:absolute;left:0;top:0;width:1440px;height:780px;overflow:hidden;background:linear-gradient(100deg,#FFE873 0%,#FFD400 46%,#F8C400 100%)">
+            <div data-dur="28" style="position:absolute;left:-160px;top:-240px;width:1120px;height:1120px;border-radius:50%;background:radial-gradient(circle,rgba(255,250,214,.72) 0%,rgba(255,212,0,0) 66%);animation:rDriftA 28s ease-in-out infinite;will-change:transform"></div>
+            <div data-dur="36" style="position:absolute;left:780px;top:-160px;width:960px;height:1060px;border-radius:50%;background:radial-gradient(circle,rgba(20,16,4,.14) 0%,rgba(20,16,4,0) 64%);animation:rDriftB 36s ease-in-out infinite;will-change:transform"></div>
+            <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:overlay;opacity:.3;pointer-events:none"></canvas>
+          </div>
+
+          <div style="position:absolute;left:39px;top:96px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:#0B0B0B;white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(11,11,11,.62);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.4" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(11,11,11,.88)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:488.849px;top:440px;width:778.151px;height:253px">
+            <div style="position:absolute;left:0;top:23px;width:465.152px;height:157.176px">
+              <span style="position:absolute;left:6.151px;top:52px;width:459px;height:86px;font-size:124px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">Projects</span>
+              <div style="position:absolute;left:13.152px;top:0;width:62px;height:24px">
+                <span style="position:absolute;left:0;top:4px;width:59px;height:20px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:#0B0B0B;white-space:nowrap">roars</span>
+                <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px" />
+              </div>
+            </div>
+            <div style="position:absolute;left:479.151px;top:0;width:299px;height:43px">
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:#0B0B0B">
+                <span style="position:absolute;left:5px;top:8px;width:33px;height:24px;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:#FFFFFF;white-space:nowrap">250</span>
+              </div>
+              <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgba(11,11,11,.72)">Products delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="6b" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">6b</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Ramp field</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">yellow at the quote, black under the title</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">One diagonal ramp from yellow to near-black across the band, so the quote block sits on light and the 124px title sits on dark &mdash; both keep the ink they have today. Brightest field of the three at the top of the page, and it hands off into the white section below without a hard edge.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#0A0A0A">
+          <div style="position:absolute;left:0;top:0;width:1440px;height:780px;overflow:hidden;background:linear-gradient(104deg,#FFE873 0%,#FFD400 22%,#E9B000 38%,#3A2E08 62%,#141208 78%,#0A0A0A 100%)">
+            <div data-dur="30" style="position:absolute;left:-200px;top:-260px;width:1060px;height:1060px;border-radius:50%;background:radial-gradient(circle,rgba(255,250,214,.6) 0%,rgba(255,212,0,0) 64%);animation:rDriftA 30s ease-in-out infinite;will-change:transform"></div>
+            <div data-dur="40" style="position:absolute;left:700px;top:-120px;width:1040px;height:1100px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.16) 0%,rgba(255,212,0,0) 62%);animation:rDriftB 40s ease-in-out infinite;will-change:transform"></div>
+            <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:overlay;opacity:.32;pointer-events:none"></canvas>
+          </div>
+
+          <div style="position:absolute;left:39px;top:96px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:#0B0B0B;white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(11,11,11,.62);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.4" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(11,11,11,.88)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:488.849px;top:440px;width:778.151px;height:253px">
+            <div style="position:absolute;left:0;top:23px;width:465.152px;height:157.176px">
+              <span style="position:absolute;left:6.151px;top:52px;width:459px;height:86px;font-size:124px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">Projects</span>
+              <div style="position:absolute;left:13.152px;top:0;width:62px;height:24px">
+                <span style="position:absolute;left:0;top:4px;width:59px;height:20px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">roars</span>
+                <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px;filter:invert(1)" />
+              </div>
+            </div>
+            <div style="position:absolute;left:479.151px;top:0;width:299px;height:43px">
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:rgb(255,255,255)">
+                <span style="position:absolute;left:5px;top:8px;width:33px;height:24px;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgb(0,0,0);white-space:nowrap">250</span>
+              </div>
+              <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgb(255,255,255);opacity:.8">Products delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="6c" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;justify-content:center;height:22px;padding:0 9px;border-radius:60px;background:#FFD400;color:#0B0B0B;font-size:11px;font-weight:600;letter-spacing:0.02em">6c</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.045em;color:#141414">Dark field, yellow horizon</span>
+        <span style="font-size:13px;font-weight:500;letter-spacing:-0.03em;color:#919191">what is there now, given a light source</span>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:14px;font-weight:500;line-height:21px;letter-spacing:-0.03em;color:#474747;max-width:700px">Keeps the dark field and all current ink. The fixes are the three things the flat version is missing: a real yellow glow behind the title instead of an even wash, a warm horizon at the band&rsquo;s bottom edge where it meets the white section, and grain at homepage strength so the field has a surface.</div>
+      </sc-if>
+      <div data-frame data-h="780" style="position:relative;width:100%;overflow:hidden;background:#FFFFFF">
+        <div style="position:absolute;left:0;top:0;width:1440px;height:780px;transform-origin:0 0;overflow:hidden;background:#0A0A0A">
+          <div style="position:absolute;left:0;top:0;width:1440px;height:780px;overflow:hidden;background:linear-gradient(100deg,#0E0E0C 0%,#131109 46%,#1E1805 78%,#0A0A0A 100%)">
+            <div data-dur="32" style="position:absolute;left:180px;top:-80px;width:1160px;height:1160px;border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.26) 0%,rgba(255,212,0,0) 60%);animation:rDriftA 32s ease-in-out infinite;will-change:transform"></div>
+            <div data-dur="42" style="position:absolute;left:-260px;top:-300px;width:900px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(255,232,115,.12) 0%,rgba(255,232,115,0) 62%);animation:rDriftB 42s ease-in-out infinite;will-change:transform"></div>
+            <div style="position:absolute;left:0;bottom:0;width:1440px;height:220px;background:linear-gradient(0deg,rgba(255,212,0,.3) 0%,rgba(255,212,0,.07) 44%,rgba(255,212,0,0) 100%)"></div>
+            <div style="position:absolute;left:0;bottom:0;width:1440px;height:2px;background:linear-gradient(90deg,rgba(255,212,0,0) 0%,#FFD400 34%,rgba(255,212,0,.5) 72%,rgba(255,212,0,0) 100%)"></div>
+            <canvas data-grain="1" width="1440" height="780" style="position:absolute;left:0;top:0;width:1440px;height:780px;display:block;mix-blend-mode:overlay;opacity:.4;pointer-events:none"></canvas>
+          </div>
+
+          <div style="position:absolute;left:39px;top:96px;width:384px;height:232px">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+            <span style="position:absolute;left:56px;top:6px;font-size:14px;font-weight:600;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.95);white-space:nowrap">Riinkesh A Sshah</span>
+            <span style="position:absolute;left:56px;top:25px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.05em;color:rgba(255,255,255,.6);white-space:nowrap">CEO</span>
+            <img src="assets/quote.svg" alt="" style="position:absolute;left:0;top:64px;width:32px;height:27px;opacity:.55" />
+            <span style="position:absolute;left:0;top:74px;width:384px;height:150px;font-size:22px;font-weight:500;line-height:30px;letter-spacing:-0.04em;color:rgba(255,255,255,.92)">&emsp;&emsp;&ensp;250 products delivered since 2005, across logistics, fitness, health-tech, hospitality, legal and SaaS.</span>
+          </div>
+
+          <div style="position:absolute;left:488.849px;top:440px;width:778.151px;height:253px">
+            <div style="position:absolute;left:0;top:23px;width:465.152px;height:157.176px">
+              <span style="position:absolute;left:6.151px;top:52px;width:459px;height:86px;font-size:124px;font-weight:600;line-height:86px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">Projects</span>
+              <div style="position:absolute;left:13.152px;top:0;width:62px;height:24px">
+                <span style="position:absolute;left:0;top:4px;width:59px;height:20px;font-size:20px;font-weight:600;line-height:20px;letter-spacing:-0.04em;color:rgb(251,251,251);white-space:nowrap">roars</span>
+                <img src="assets/star-5.svg" alt="" style="position:absolute;left:52px;top:0;width:10px;height:10px;filter:invert(1)" />
+              </div>
+            </div>
+            <div style="position:absolute;left:479.151px;top:0;width:299px;height:43px">
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Abhishek.webp" alt="" style="position:absolute;left:0;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Atul.webp" alt="" style="position:absolute;left:51px;top:0;width:42px;height:42px;border-radius:60px;object-fit:cover" />
+              <div style="position:absolute;left:103px;top:1px;width:42px;height:42px;border-radius:60px;background:rgb(255,255,255)">
+                <span style="position:absolute;left:5px;top:8px;width:33px;height:24px;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-0.04em;color:rgb(0,0,0);white-space:nowrap">250</span>
+              </div>
+              <span style="position:absolute;left:172px;top:2px;width:127px;height:40px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-0.04em;color:rgb(255,255,255);opacity:.75">Products delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Doc&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    this._tos = [];
+    this.fit = () => {
+      document.querySelectorAll('[data-frame]').forEach(w => {
+        const inner = w.firstElementChild;
+        if (!inner) return;
+        const s = w.clientWidth / 1440;
+        inner.style.transform = 'scale(' + s + ')';
+        w.style.height = Math.round(parseFloat(w.dataset.h || 780) * s) + 'px';
+      });
+    };
+    this.fit();
+    window.addEventListener('resize', this.fit);
+    this._tos.push(setTimeout(this.fit, 400), setTimeout(this.fit, 1400));
+    this.initGrain();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.fit);
+    this._tos.forEach(t => clearTimeout(t));
+    if (this._graf) cancelAnimationFrame(this._graf);
+    if (this.gio) this.gio.disconnect();
+  }
+  initGrain() {
+    this.gio = new IntersectionObserver(es => es.forEach(e => { e.target.__on = e.isIntersecting; }), { rootMargin: '200px' });
+    document.querySelectorAll('canvas[data-grain]').forEach(c => {
+      const W = c.width, H = c.height;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      c.width = W * dpr; c.height = H * dpr;
+      const ctx = c.getContext('2d');
+      ctx.scale(dpr, dpr);
+      this.gio.observe(c); c.__on = true;
+      const tile = document.createElement('canvas');
+      tile.width = 180; tile.height = 180;
+      const tc = tile.getContext('2d');
+      const img = tc.createImageData(180, 180);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = 90 + Math.random() * 165;
+        img.data[i] = v; img.data[i + 1] = v; img.data[i + 2] = v; img.data[i + 3] = 255;
+      }
+      tc.putImageData(img, 0, 0);
+      const pat = ctx.createPattern(tile, 'repeat');
+      let last = 0;
+      const step = () => {
+        if (c.__on !== false) {
+          const now = performance.now();
+          if (now - last >= 84) {
+            last = now;
+            ctx.clearRect(0, 0, W, H);
+            ctx.save();
+            ctx.translate(-Math.floor(Math.random() * 180), -Math.floor(Math.random() * 180));
+            ctx.fillStyle = pat;
+            ctx.fillRect(0, 0, W + 180, H + 180);
+            ctx.restore();
+          }
+        }
+        this._graf = requestAnimationFrame(step);
+      };
+      step();
+    });
+  }
+  renderVals() {
+    return { showNotes: this.props.showNotes ?? true };
+  }
+}
+
+</script>
+</body>
+</html>

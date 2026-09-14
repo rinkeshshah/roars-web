@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; background:#0A0A0A; }
+  body { font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#FFD400; }
+</style>
+</helmet>
+
+<div data-roars-root="1" style="background:#FBFBF9;color:#0A0A0A;overflow-x:clip">
+
+<!-- ── 1. HERO ──────────────────────────────────────── -->
+<section data-screen-label="Projects Hero" style="position:relative;height:clamp(760px,62vw,1300px);background:#07070A;overflow:hidden">
+  <div data-stars="1" style="position:absolute;inset:-8% 0 0 0;height:118%;opacity:.9"></div>
+  <div data-px="-90" style="position:absolute;right:-6%;top:-20%;width:78%;height:98%;background:radial-gradient(45% 45% at 52% 50%, rgba(190,150,105,.30), rgba(120,90,60,.14) 42%, rgba(0,0,0,0) 72%);filter:blur(6px);pointer-events:none"></div>
+  <div data-px="-40" style="position:absolute;left:-8%;bottom:-14%;width:52%;height:56%;background:radial-gradient(50% 50% at 50% 50%, rgba(255,212,0,.11), rgba(0,0,0,0) 70%);pointer-events:none"></div>
+
+  <div style="position:relative;z-index:6;display:grid;grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);max-width:1560px;margin:0 auto;padding:clamp(20px,2.6vw,40px) clamp(20px,3vw,56px) 0">
+    <a href="Roars - Main.dc.html" style="position:fixed;top:clamp(16px,2.2vw,32px);left:clamp(20px,3vw,56px);z-index:60;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:999px;background:rgba(10,10,12,.5);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.22)">
+      <img src="brand/roars-mark.png" alt="Roars" style="width:clamp(22px,1.8vw,26px);height:auto;display:block" />
+    </a>
+    <div style="grid-column:4 / span 2;display:flex;align-items:flex-start;justify-content:space-between;gap:clamp(14px,2vw,30px)">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-width:0">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:linear-gradient(140deg,#4a4a4a,#1d1d1d);border:1px solid rgba(255,255,255,.28)">
+            <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="width:100%;height:100%;object-fit:cover;display:block" />
+          </div>
+          <a href="https://www.roarsinc.com/contact-us/" style="display:inline-flex;align-items:center;justify-content:space-between;min-width:min(238px,52vw);gap:26px;padding:11px 16px 11px 24px;border:1px solid rgba(255,255,255,.3);border-radius:999px;color:#F2F2EC;font-size:14px;font-weight:500;background:rgba(12,12,14,.35);backdrop-filter:blur(8px)" style-hover="background:#FFD400;color:#0A0A0A;border-color:#FFD400">
+            <span>Contact Now</span>
+            <span style="display:flex;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.45"></span><span style="width:7px;height:7px;border-radius:50%;background:currentColor"></span></span>
+          </a>
+        </div>
+        <div style="font-size:clamp(13px,1.08vw,15.5px);line-height:1.45;color:#A8A8A0">Reach out to start<br />your project</div>
+      </div>
+      <button aria-label="Menu" style="position:fixed;top:clamp(16px,2.2vw,32px);right:clamp(20px,3vw,56px);z-index:60;display:flex;flex-direction:column;justify-content:center;gap:5px;width:46px;height:46px;padding:0 11px;background:rgba(10,10,12,.5);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.22);border-radius:999px;cursor:pointer" style-hover="background:#FFD400;border-color:#FFD400">
+        <span style="display:block;height:1.5px;width:100%;background:#F2F2EC;border-radius:2px"></span>
+        <span style="display:block;height:1.5px;width:100%;background:#F2F2EC;border-radius:2px"></span>
+        <span style="display:block;height:1.5px;width:70%;background:#F2F2EC;border-radius:2px"></span>
+      </button>
+    </div>
+  </div>
+
+  <div data-rv="up" data-rvd="120" style="position:absolute;left:clamp(20px,3vw,56px);top:16%;z-index:5;display:flex;align-items:center;gap:clamp(12px,1.6vw,26px)">
+    <div style="width:clamp(56px,6.6vw,96px);height:clamp(56px,6.6vw,96px);border-radius:50%;overflow:hidden;flex:0 0 auto;border:1px solid rgba(255,255,255,.25)">
+      <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="width:100%;height:100%;object-fit:cover;display:block" />
+    </div>
+    <div>
+      <div style="font-size:clamp(13px,1.18vw,18px);color:#EDEDE6">Riinkesh A Sshah</div>
+      <div style="font-size:clamp(13px,1.18vw,18px);color:#8B8B84;margin-top:4px">CEO/ Founder</div>
+    </div>
+  </div>
+
+  <div data-rv="up" data-rvd="220" style="position:absolute;left:clamp(20px,3vw,56px);top:31%;z-index:5;width:min(640px,25vw);font-size:clamp(15px,1.4vw,36px);line-height:1.28;color:#F2F2EC;text-wrap:pretty">
+    <span style="padding-left:32%;display:inline-block"></span>See what we have done for our clients. We combine thorough research with years of experience to design and deliver scalable products, and help you implement them along the way.
+  </div>
+
+  <div data-rv="up" data-rvd="320" style="position:absolute;right:clamp(20px,14.5%,340px);top:46%;z-index:5;display:flex;align-items:center;gap:clamp(12px,1.4vw,22px)">
+    <div style="display:flex">
+      <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid #07070A"><img src="https://www.roarsinc.com/wp-content/uploads/2022/07/suzanne.webp" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid #07070A;margin-left:-13px"><img src="https://www.roarsinc.com/wp-content/uploads/2022/07/Chetna.webp" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <div style="width:40px;height:40px;border-radius:50%;background:#FFD400;border:2px solid #07070A;margin-left:-13px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0A0A0A">75<span style="font-size:8px;vertical-align:super">+</span></div>
+    </div>
+    <div style="font-size:clamp(11px,1.02vw,14px);line-height:1.4;color:#A8A8A0;white-space:nowrap;min-width:96px">Trusted by our<br />Clients</div>
+  </div>
+
+  <div style="position:absolute;left:50%;transform:translateX(-50%);top:58%;z-index:4">
+    <div data-rv="up" style="display:flex;align-items:flex-start;font-size:clamp(12px,1.3vw,19px);font-weight:500;color:#F2F2EC;margin-bottom:clamp(6px,.9vw,14px)">
+      <span>Roars</span><span style="font-size:.55em;margin-left:.25em;margin-top:.05em;color:#FFD400">&#10038;</span>
+    </div>
+    <div data-hero-word="1" style="display:flex;align-items:flex-start">
+      <span style="font-size:clamp(56px,8.2vw,210px);line-height:.82;font-weight:700;letter-spacing:-.055em;color:#F4F4EE">Projects</span>
+      <span style="font-size:clamp(11px,1.05vw,16px);font-weight:600;color:#FFD400;margin-left:.12em;margin-top:.25em">&reg;</span>
+    </div>
+    <div data-rv="up" data-rvd="420" style="margin-top:clamp(26px,3.6vw,92px);text-align:center;font-size:clamp(12px,1.05vw,26px);line-height:1.34;color:#D8D8D2;font-weight:400">Case Studies from<br />Our Product Studio</div>
+  </div>
+</section>
+
+<!-- ── 2. FILTERS ───────────────────────────────────── -->
+<section data-screen-label="Filters" style="background:#FBFBF9;padding:clamp(56px,7vw,100px) 0 clamp(64px,9.6vw,150px)">
+  <div style="display:grid;grid-template-columns:minmax(0,.9fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);max-width:1560px;margin:0 auto;padding:0 clamp(20px,3vw,56px)">
+    <div style="grid-column:1;display:flex;align-items:flex-start;gap:7px;font-size:17px;line-height:1"><span>&#10038;</span><span>&#10038;</span></div>
+    <div data-rv="up" style="grid-column:3 / span 2;display:flex;flex-direction:column">{{ filterRows }}</div>
+  </div>
+</section>
+
+<!-- ── 3. PROJECT LIST ──────────────────────────────── -->
+<section data-screen-label="Project list" style="background:#FBFBF9;padding:0 0 clamp(56px,7vw,116px)">
+  <div style="max-width:1560px;margin:0 auto;padding:0 clamp(20px,3vw,56px);display:flex;flex-direction:column;gap:clamp(32px,4vw,58px)">
+    <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
+      <a href="{{ p.href }}" data-rv="up" style="display:grid;grid-template-columns:minmax(64px,.55fr) minmax(0,6.2fr) minmax(78px,.6fr);column-gap:clamp(14px,2.2vw,32px);align-items:start">
+        <div style="grid-column:1;padding-top:2px">
+          <div style="font-size:clamp(15px,1.4vw,36px);font-weight:600;letter-spacing:-.015em">{{ p.date }}</div>
+          <div style="width:100%;height:1.5px;background:#0A0A0A;margin:clamp(10px,1vw,22px) 0 clamp(10px,1vw,22px)"></div>
+          <div style="font-size:clamp(12px,1.05vw,26px);color:#9A9A92">{{ p.year }}</div>
+        </div>
+        <div style="grid-column:2;position:relative;width:100%;aspect-ratio:16/9.3;border-radius:8px;overflow:hidden;background:repeating-linear-gradient(52deg,#E7E7E0 0 12px,#EFEFE8 12px 24px)">
+          <img data-src="{{ p.img }}" alt="{{ p.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(8,8,11,.42) 0%, rgba(8,8,11,.10) 34%, rgba(8,8,11,0) 58%)"></div>
+          <div style="position:absolute;left:0;right:0;bottom:12%;display:flex;justify-content:center;padding:0 clamp(16px,2vw,32px)">
+            <span style="font-size:clamp(18px,2vw,52px);font-weight:600;letter-spacing:-.03em;color:#FFFFFF;text-align:center">{{ p.name }}</span>
+          </div>
+          <div style="position:absolute;right:clamp(14px,1.9vw,34px);top:clamp(14px,1.9vw,34px);display:flex;gap:6px">
+            <span style="width:clamp(6px,.55vw,14px);height:clamp(6px,.55vw,14px);border-radius:50%;background:#FFFFFF;opacity:.5"></span>
+            <span style="width:clamp(6px,.55vw,14px);height:clamp(6px,.55vw,14px);border-radius:50%;background:#FFFFFF"></span>
+          </div>
+        </div>
+        <div style="grid-column:3;display:flex;flex-direction:column;gap:8px;padding-top:2px">
+          <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="3">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#6E6E68;line-height:1.4">{{ t }}</div>
+          </sc-for>
+          <div style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;font-size:12.5px;font-weight:600">
+            <span>View</span>
+            <span style="display:flex;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#0A0A0A;opacity:.4"></span><span style="width:6px;height:6px;border-radius:50%;background:#0A0A0A"></span></span>
+          </div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</section>
+
+<!-- ── 4. CTA ───────────────────────────────────────── -->
+<section data-screen-label="CTA" style="background:#F2F2EE;padding:clamp(56px,7vw,116px) 0">
+  <div style="display:grid;grid-template-columns:minmax(0,.9fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);row-gap:clamp(24px,3vw,44px);max-width:1560px;margin:0 auto;padding:0 clamp(20px,3vw,56px);align-items:start">
+    <div style="grid-column:1;display:flex;align-items:flex-start;gap:8px;font-size:clamp(16px,1.4vw,22px);line-height:1"><span>&#10038;</span><span>&#10038;</span></div>
+    <div data-rv="up" style="grid-column:2 / span 3;padding-right:clamp(16px,3vw,60px);font-size:clamp(17px,1.5vw,24px);line-height:1.5;font-weight:500;text-wrap:pretty">
+      <span style="font-weight:700">Let&rsquo;s get your project started.</span> Our love for innovation design and technology is evident in all our works. No details are too small. Together, we&rsquo;ll make your business grow manifold.
+    </div>
+    <div data-rv="up" data-rvd="100" style="grid-column:5;padding-top:2px">
+      <a href="https://www.roarsinc.com/contact-us/" style="display:inline-flex;align-items:center;justify-content:space-between;width:100%;min-width:min(168px,42vw);gap:20px;padding:18px 22px 18px 30px;background:#0A0A0A;color:#F4F4EE;border-radius:999px;font-size:clamp(13px,1.06vw,16px);font-weight:500" style-hover="background:#FFD400;color:#0A0A0A">
+        <span>Shall we chat?</span>
+        <span style="display:flex;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45"></span><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 5. FOOTER ───────────────────────────────────── -->
+<footer data-screen-label="Footer" id="contact" style="position:relative;background:#08080B;color:#F2F2EC;padding:clamp(64px,8vw,132px) 0 clamp(26px,3vw,46px);overflow-x:clip">
+  <div data-stars="1" style="position:absolute;inset:0;opacity:.75"></div>
+  <div data-px="-50" style="position:absolute;left:-4%;bottom:6%;width:70%;height:70%;background:radial-gradient(42% 42% at 50% 50%, rgba(200,160,110,.26), rgba(0,0,0,0) 70%);pointer-events:none"></div>
+  <div data-px="-24" style="position:absolute;right:4%;top:8%;width:40%;height:40%;background:radial-gradient(50% 50% at 50% 50%, rgba(255,212,0,.1), rgba(0,0,0,0) 70%);pointer-events:none"></div>
+
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);max-width:1560px;margin:0 auto;padding:0 clamp(20px,3vw,56px)">
+    <div style="grid-column:1;font-size:17px;line-height:1;color:#E8E8E2">&#10038;</div>
+    <div data-rv="up" style="grid-column:2 / span 2;padding-right:clamp(12px,2vw,32px)">
+      <div style="font-size:clamp(15px,1.32vw,21px);line-height:1.5;text-wrap:pretty"><span style="color:#8B8B84">Find how we can help you get from A to B.</span> Our love for innovation design and technology is evident in all our work. No detail is too small.</div>
+      <div style="margin-top:clamp(24px,3vw,48px);display:flex;align-items:center;gap:14px">
+        <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:linear-gradient(140deg,#8f8880,#403c37)">
+          <img src="https://www.roarsinc.com/wp-content/uploads/elementor/thumbs/rinkesh-shah-r1yz7f0mes7oppcabus8b850ve7xiekiv4lpok466c.webp" alt="Riinkesh A Sshah" style="width:100%;height:100%;object-fit:cover;display:block" />
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:500">Riinkesh A Sshah</div>
+          <div style="font-size:12.5px;color:#8B8B84">CEO/ Founder</div>
+        </div>
+      </div>
+    </div>
+    <div data-rv="up" data-rvd="120" style="grid-column:4 / span 2;font-size:clamp(14px,1.2vw,18px);line-height:1.35;color:#E4E4DE">Space of Creative<br />Solutions<span style="color:#FFD400">*</span></div>
+  </div>
+
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);max-width:1560px;margin:clamp(56px,8vw,150px) auto 0;padding:0 clamp(20px,3vw,56px);row-gap:clamp(30px,4vw,60px)">
+    <div data-rv="up" style="grid-column:1">
+      <div style="width:16px;height:2px;background:rgba(255,255,255,.55);margin-bottom:clamp(20px,2.8vw,44px)"></div>
+      <div style="font-size:13px;color:#8B8B84">USA +1 (302) 505-1200</div>
+      <div style="font-size:13px;color:#8B8B84;margin-top:4px">UK +44 (7537) 183399</div>
+      <a href="mailto:sales@roarsinc.com" style="display:block;font-size:clamp(14px,1.2vw,17px);font-weight:600;margin-top:10px">sales@roarsinc.com</a>
+    </div>
+
+    <div data-rv="up" data-rvd="80" style="grid-column:2">
+      <div style="font-size:13px;color:#8B8B84">Navigation</div>
+      <div style="width:16px;height:2px;background:rgba(255,255,255,.55);margin:12px 0 clamp(20px,2.6vw,40px)"></div>
+      <div style="display:flex;flex-direction:column;gap:clamp(9px,1vw,15px);font-size:clamp(16px,1.74vw,25px);font-weight:500;letter-spacing:-.02em;line-height:1">
+        <a href="Roars - Main.dc.html">Home</a>
+        <a href="Roars - About.dc.html">About us</a>
+        <a href="https://www.roarsinc.com/approach/">Approach</a>
+        <a href="https://www.roarsinc.com/work/">Our work</a>
+        <a href="https://www.roarsinc.com/contact-us/">Contact</a>
+      </div>
+    </div>
+
+    <div data-rv="up" data-rvd="140" style="grid-column:3;padding-top:clamp(38px,4.8vw,69px)">
+      <div style="display:flex;flex-direction:column;gap:clamp(8px,.95vw,13px);font-size:15px;color:#8B8B84;line-height:1">
+        <a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./">LinkedIn</a>
+        <a href="https://www.instagram.com/roarstech">Instagram</a>
+        <a href="https://www.twitter.com/roarstech">Twitter</a>
+        <a href="https://www.facebook.com/roarstech/">Facebook</a>
+      </div>
+    </div>
+
+    <div data-rv="up" data-rvd="200" style="grid-column:4 / span 2">
+      <div style="font-size:13px;color:#8B8B84">Subscribe to our News</div>
+      <div style="width:16px;height:2px;background:rgba(255,255,255,.55);margin:12px 0 clamp(20px,2.6vw,40px)"></div>
+      <div style="display:flex;flex-direction:column;gap:clamp(22px,2.6vw,36px)">
+        <input placeholder="Your name *" style="background:none;border:none;border-bottom:1px solid rgba(255,255,255,.3);padding:0 0 10px;color:#F2F2EC;font-family:inherit;font-size:14px;outline:none;width:100%" />
+        <input placeholder="Email *" style="background:none;border:none;border-bottom:1px solid rgba(255,255,255,.3);padding:0 0 10px;color:#F2F2EC;font-family:inherit;font-size:14px;outline:none;width:100%" />
+        <button style="align-self:flex-start;display:inline-flex;align-items:center;justify-content:space-between;min-width:min(196px,100%);gap:28px;padding:10px 14px 10px 22px;background:none;border:1px solid rgba(255,255,255,.32);border-radius:999px;color:#F2F2EC;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:#FFD400;color:#0A0A0A;border-color:#FFD400">
+          <span>Subscribe</span>
+          <span style="display:flex;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45"></span><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative;display:flex;justify-content:center;max-width:1560px;margin:clamp(60px,9vw,170px) auto 0;padding:0 clamp(20px,3vw,56px)">
+    <div style="display:flex;align-items:flex-start">
+      <span data-px="-30" style="font-size:clamp(70px,12.9vw,190px);line-height:.8;padding-bottom:.08em;font-weight:700;letter-spacing:-.055em;color:#F4F4EE">roars</span>
+      <span style="font-size:clamp(12px,1.25vw,20px);font-weight:600;color:#FFD400;margin-left:.14em;margin-top:.2em">&reg;</span>
+    </div>
+  </div>
+
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr));column-gap:clamp(14px,2.2vw,32px);max-width:1560px;margin:clamp(40px,5.5vw,90px) auto 0;padding:0 clamp(20px,3vw,56px);row-gap:clamp(14px,2vw,30px);font-size:12.5px;color:#8B8B84;line-height:1.7">
+    <div style="grid-column:1">&copy; 2026<br />Roars Technologies</div>
+    <div style="grid-column:2;display:flex;flex-direction:column"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="https://link.roars.in/F39Mv">Company Profile</a></div>
+    <div style="grid-column:3">Built for<br /><span style="color:#E4E4DE">startups &amp; SMEs</span></div>
+    <div style="grid-column:4 / span 2">Offices<br /><span style="color:#E4E4DE">USA &middot; UK &middot; India</span></div>
+  </div>
+</footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Heavy&quot;,&quot;Subtle&quot;],&quot;default&quot;:&quot;Heavy&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;stars&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { filter: 'Recent Projects' };
+
+  FILTERS = ['Recent Projects', 'Product Consulting', 'UX & Product Design', 'Branding & Creative', 'Strategy & Technology'];
+
+  PROJECTS = [
+    { name: 'Snowman Logistics', date: '12 Feb', year: '2026', href: 'https://www.roarsinc.com/work/warehouse-compliance-checklist-app/', img: 'https://www.roarsinc.com/wp-content/uploads/2026/02/snowman-logistics-app.png', tags: ['PRODUCT CONSULTING', 'STRATEGY', 'TECHNOLOGY'], cats: ['Product Consulting', 'Strategy & Technology'] },
+    { name: 'Parqly', date: '24 Jul', year: '2025', href: 'https://www.roarsinc.com/work/parqly-parking-solution/', img: 'https://www.roarsinc.com/wp-content/uploads/2025/07/parqly-mobile-app.jpg', tags: ['PRODUCT CONSULTING', 'STRATEGY', 'TECHNOLOGY'], cats: ['Product Consulting', 'UX & Product Design', 'Strategy & Technology'] },
+    { name: 'Concierges', date: '09 Jul', year: '2025', href: 'https://www.roarsinc.com/work/concierge-loyalty-program/', img: 'https://www.roarsinc.com/wp-content/uploads/2025/07/ai-concierges-mobile-app.jpg', tags: ['CONSULTING', 'STRATEGY', 'TECHNOLOGY'], cats: ['Product Consulting', 'Strategy & Technology'] },
+    { name: 'Advisee', date: '18 Mar', year: '2025', href: 'https://www.roarsinc.com/work/advisee/', img: 'https://www.roarsinc.com/wp-content/uploads/2025/03/advisee-finance-featured.jpg', tags: ['BRANDING', 'CREATIVE', 'USER EXPERIENCE'], cats: ['Branding & Creative', 'UX & Product Design'] },
+    { name: 'Company Guru', date: '05 Mar', year: '2025', href: 'https://www.roarsinc.com/work/companyguru/', img: 'https://www.roarsinc.com/wp-content/uploads/2025/03/companyguru.jpg', tags: ['CREATIVE', 'STRATEGY', 'TECHNOLOGY'], cats: ['Branding & Creative', 'Strategy & Technology'] },
+    { name: 'GymBait.AI', date: '21 Jul', year: '2024', href: 'https://www.roarsinc.com/work/gymbait/', img: 'https://www.roarsinc.com/wp-content/uploads/2024/07/gymbait-ai-fitness-1.png', tags: ['CREATIVE', 'STRATEGY', 'TECHNOLOGY'], cats: ['Branding & Creative', 'Strategy & Technology'] },
+    { name: 'Ventura Law Firm', date: '14 Feb', year: '2023', href: 'https://www.roarsinc.com/work/ventura-law-firm/', img: 'https://www.roarsinc.com/wp-content/uploads/2023/02/ventura-law-header-12.jpg', tags: ['CREATIVE', 'STRATEGY', 'TECHNOLOGY'], cats: ['Branding & Creative', 'UX & Product Design'] },
+    { name: 'GISAID', date: '30 Aug', year: '2022', href: 'https://www.roarsinc.com/work/gisaid-health-tech/', img: 'https://www.roarsinc.com/wp-content/uploads/2022/08/GISAID-work-python.jpeg', tags: ['STRATEGY', 'TECHNOLOGY'], cats: ['Strategy & Technology'] }
+  ];
+
+  componentDidMount() {
+    this.io = [];
+    this.hydrateImgs();
+    requestAnimationFrame(() => this.setupMotion());
+  }
+
+  componentDidUpdate() { this.hydrateImgs(); }
+
+  hydrateImgs() {
+    document.querySelectorAll('img[data-src]').forEach(el => {
+      const u = el.getAttribute('data-src');
+      if (u && !u.includes('{{') && el.getAttribute('src') !== u) el.setAttribute('src', u);
+    });
+  }
+
+  componentWillUnmount() {
+    (this.io || []).forEach(o => o.disconnect());
+    if (this.onScroll) removeEventListener('scroll', this.onScroll);
+  }
+
+  setupMotion() {
+    const root = document.querySelector('[data-roars-root]');
+    if (!root) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const heavy = (this.props.motion ?? 'Heavy') === 'Heavy';
+
+    if (this.props.stars !== false) {
+      const mk = (n, max) => {
+        let s = [];
+        for (let i = 0; i < n; i++) {
+          const x = (Math.random() * 100).toFixed(2), y = (Math.random() * 100).toFixed(2);
+          const r = (Math.random() * max + 0.4).toFixed(2);
+          const a = (Math.random() * 0.55 + 0.25).toFixed(2);
+          s.push('radial-gradient(' + r + 'px ' + r + 'px at ' + x + '% ' + y + '%, rgba(255,255,250,' + a + ') 0, rgba(255,255,250,0) 100%)');
+        }
+        return s.join(',');
+      };
+      root.querySelectorAll('[data-stars]').forEach(el => {
+        el.style.backgroundImage = mk(170, 1.1);
+        el.style.backgroundRepeat = 'no-repeat';
+      });
+    }
+
+    if (reduce) return;
+
+    const vh = innerHeight;
+    const items = Array.from(root.querySelectorAll('[data-rv]'));
+    items.forEach(el => {
+      if (el.getBoundingClientRect().top > vh * 0.88) {
+        el.style.opacity = '0';
+        el.style.transform = el.dataset.rv === 'mask' ? 'translateY(108%)' : 'translateY(' + (heavy ? 44 : 22) + 'px)';
+        el.style.willChange = 'opacity,transform';
+        el.dataset.rvHidden = '1';
+      }
+    });
+    const ro = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target.__rvTarget || e.target;
+        if (el.dataset.rvHidden === '1') {
+          const d = +(el.dataset.rvd || 0);
+          setTimeout(() => {
+            el.style.transition = 'opacity .85s cubic-bezier(.16,1,.3,1), transform ' + (heavy ? 1.15 : .8) + 's cubic-bezier(.16,1,.3,1)';
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+          }, d);
+          el.dataset.rvHidden = '0';
+        }
+        ro.unobserve(e.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    items.forEach(el => {
+      const watch = el.dataset.rv === 'mask' && el.parentElement ? el.parentElement : el;
+      if (watch !== el) watch.__rvTarget = el;
+      ro.observe(watch);
+    });
+    this.io.push(ro);
+
+    const px = Array.from(root.querySelectorAll('[data-px]')).map(el => ({ el, k: +el.dataset.px * (heavy ? 1 : 0.45) }));
+    const words = Array.from(root.querySelectorAll('[data-hero-word]'));
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      const y = scrollY, h = innerHeight;
+      px.forEach(({ el, k }) => {
+        const r = el.getBoundingClientRect();
+        const p = (r.top + r.height / 2 - h / 2) / h;
+        el.style.transform = 'translate3d(0,' + (p * k).toFixed(2) + 'px,0)';
+      });
+      const hp = Math.min(1, Math.max(0, y / h));
+      words.forEach(el => {
+        el.style.transform = 'translate3d(0,' + (hp * (heavy ? 110 : 46)).toFixed(1) + 'px,0)';
+        el.style.opacity = String(Math.max(0, 1 - hp * 1.25));
+      });
+    };
+    this.onScroll = () => { if (!raf) raf = requestAnimationFrame(apply); };
+    addEventListener('scroll', this.onScroll, { passive: true });
+    apply();
+  }
+
+  renderVals() {
+    const R = React.createElement;
+    const active = this.state.filter;
+
+    const filterRows = this.FILTERS.map((f, i) => R('button', {
+      key: f,
+      onClick: () => this.setState({ filter: f }),
+      style: {
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24,
+        background: 'none', border: 'none', borderTop: i === 0 ? 'none' : '1px solid #DCDCD4',
+        padding: '13px 0', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
+        fontSize: 'clamp(12.5px,1.02vw,15.5px)', fontWeight: f === active ? 600 : 400,
+        color: f === active ? '#0A0A0A' : '#6E6E68'
+      }
+    },
+      R('span', null, f),
+      R('span', { style: { width: f === active ? 22 : 12, height: 2, background: f === active ? '#0A0A0A' : '#C2C2BA', transition: 'width .25s ease' } })
+    ));
+
+    const list = active === 'Recent Projects' ? this.PROJECTS : this.PROJECTS.filter(p => p.cats.includes(active));
+    const projects = list.map((p, i) => Object.assign({}, p, { index: '/' + String(i + 1).padStart(2, '0') }));
+
+    return { filterRows, projects };
+  }
+}
+
+</script>
+</body>
+</html>
