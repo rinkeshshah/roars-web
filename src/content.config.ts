@@ -295,10 +295,146 @@ const services = defineCollection({
   }),
 })
 
+/**
+ * The industry page's sections, as data.
+ *
+ * /industries/[slug]/ is ONE template for nine routes, same arrangement as
+ * /s/[slug]/: the layout lives in the page, the words live here, every field
+ * is optional and every section renders only when its data is present. An
+ * industry with nothing but prose still gets the header, the body and the
+ * close.
+ *
+ * Shapes are taken from the Industries v2 export, shown as food & restaurant.
+ */
+const industryLayout = {
+  eyebrow: z.string().max(48).optional(),
+  headline: z.object({ small: z.string().max(24), large: z.string().max(24) }).optional(),
+  standfirst: z.string().max(90).optional(),
+  hero: z
+    .object({
+      statement: z.string().max(160),
+      sub: z.string().max(120).optional(),
+      ctaLabel: z.string().max(24).optional(),
+      ctaHref: z.string().optional(),
+      /** The panel beside the masthead. On food & restaurant it is a printed
+       *  order; another sector puts its own artefact here. */
+      receipt: z
+        .object({
+          title: z.string().max(20),
+          time: z.string().max(12).optional(),
+          meta: z.array(z.string().max(32)).max(2).default([]),
+          lines: z.array(z.object({ k: z.string().max(28), v: z.string().max(10) })).min(1).max(6),
+          note: z.string().max(40).optional(),
+          totalLabel: z.string().max(12).default('TOTAL'),
+          total: z.string().max(12),
+          paid: z.string().max(20).optional(),
+          statusLabel: z.string().max(12).default('STATUS'),
+          /**
+           * The order's states, in order. The ticket cycles them in the
+           * browser and one tick lights per state, so the list is content and
+           * the strip length follows from it — there is no separate count to
+           * keep in step.
+           */
+          statuses: z.array(z.string().max(20)).min(2).max(6),
+          /** Which state is server-rendered, 0-based. Where a crawler lands. */
+          statusIndex: z.number().int().min(0).default(0),
+          footnote: z.string().max(32).optional(),
+        })
+        .optional(),
+    })
+    .optional(),
+  /** The numbered sequence down the spine. */
+  journey: z
+    .object({
+      label: z.string().max(32),
+      heading: z.string().max(80),
+      intro: z.string().max(220).optional(),
+      note: z.string().max(220).optional(),
+      moments: z
+        .array(
+          z.object({
+            n: z.string().max(4),
+            name: z.string().max(24),
+            lead: z.string().max(90),
+            body: z.string().max(260),
+            tags: z.array(z.string().max(24)).max(3).default([]),
+          }),
+        )
+        .min(1),
+    })
+    .optional(),
+  /** The tabbed surfaces block. */
+  surfaces: z
+    .object({
+      label: z.string().max(32),
+      heading: z.string().max(40),
+      sub: z.string().max(60).optional(),
+      tabs: z
+        .array(
+          z.object({
+            n: z.string().max(4),
+            name: z.string().max(20),
+            heading: z.string().max(80),
+            points: z.array(z.string().max(60)).min(1).max(5),
+            note: z.string().max(40).optional(),
+          }),
+        )
+        .min(2)
+        .max(4),
+    })
+    .optional(),
+  proof: z
+    .object({
+      label: z.string().max(32),
+      heading: z.string().max(60),
+      stats: z
+        .array(
+          z.object({
+            n: z.string().max(6),
+            suffix: z.string().max(4).optional(),
+            pct: z.boolean().default(false),
+            label: z.string().max(40),
+          }),
+        )
+        .max(3)
+        .default([]),
+      featured: z
+        .object({
+          label: z.string().max(24).default('FEATURED WORK'),
+          client: z.string().max(40),
+          body: z.string().max(220),
+          meta: z.array(z.object({ k: z.string().max(20), v: z.string().max(56) })).max(2).default([]),
+          href: z.string(),
+          ctaLabel: z.string().max(24).default('View Project'),
+        })
+        .optional(),
+    })
+    .optional(),
+  /** The other sectors. Hrefs must be real /industries/ routes. */
+  sectors: z
+    .object({
+      label: z.string().max(32),
+      heading: z.string().max(40),
+      intro: z.string().max(160).optional(),
+      items: z
+        .array(
+          z.object({
+            n: z.string().max(4),
+            name: z.string().max(24),
+            blurb: z.string().max(90),
+            href: z.string(),
+          }),
+        )
+        .min(1),
+    })
+    .optional(),
+}
+
 const industries = defineCollection({
   loader: glob({ base: './src/content/industries', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     ...base,
+    ...industryLayout,
     serviceType: z.string(),
     /**
      * An industry page with no case study is a noun swap, which is exactly the

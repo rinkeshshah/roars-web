@@ -138,6 +138,19 @@ const ACCEPTED = [
   { match: /^(Tell us what you are building|Tell us what is broken|A 30-minute call\. We tell you honestly)/, why: 'per-page footer CTA description' },
   { match: /^(user experience matters|250 products since 2005|problem first, always|automation that earns its place)$/, why: 'per-page footer tagline' },
 
+  /* The closing grey band is REMOVED, on the service template and now on the
+     industry template too. The export draws one at 5680 repeating the offer
+     the footer makes 340px later, which is the duplication the CTA decision
+     above exists to end. Its strings are therefore MISSING on every industry
+     page, by decision.
+     NOTE THE KNOCK-ON: the build then has one section fewer than the export,
+     and the harness joins sections BY ORDINAL, so the export's Footer pairs
+     with nothing and every footer string reports MISSING and EXTRA at once.
+     Those rows are an artefact of the join, not of the footer — the footer is
+     there, 340px higher. Do not close them by restoring the band. */
+  { match: /^Bring unique .* ideas to life with our unique solutions!$/, why: 'closing grey band removed; the footer carries the page CTA' },
+  { match: /^Fill up form and schedule free consultation$/, why: 'closing grey band removed, see above' },
+
   /* REMOVED: four entries excusing the Services normalisation — "row name in
      the left rail on every row" and "mock drift on row 3, normalised". Both
      described a build that had flattened the export's alternating indent, and

@@ -160,6 +160,11 @@ CSS change is what made this session slow — fifteen runs at two minutes each.
   put it back and the visual diff will never object, because it carries no
   text. Do not restore it on any inner page.
 
+  The industry hero is an inner page: the export draws the same scribble under
+  "food &" at 6,112 with a `swoosh` keyframe, and it is NOT in the build. The
+  star mark beside "roars" IS — that is `star-5.svg`, a different asset and a
+  different decision.
+
 The lesson generalises: an addition that resembles something the client
 already rejected is not an addition, it is a regression with a comment on it.
 
@@ -180,6 +185,26 @@ already rejected is not an addition, it is a regression with a comment on it.
 - **69 of 194 inventory URLs build**, plus 4 covered by redirect: home, about,
   approach, contact, work + 23 project pages, 9 industries, 12 services,
   resources, legal.
+- **Industry template** — `/industries/food-restaurant-app-development/`,
+  built from `Roars v2 - Industries v2`. Table **232 → 109**, and ~79 of the
+  109 are one artefact: the build has six sections where the export has seven
+  (the closing grey band is removed, §5), and `visual-diff.mjs` joins sections
+  BY ORDINAL, so the export's Footer pairs with nothing and every footer
+  string reports MISSING and EXTRA at once. Nothing real is over 7px except
+  the band itself and the shared top bar's right rail.
+  Three things the geometry tree alone would not have given:
+  the journey is **three** columns, not two — the tags are a column of their
+  own at 1022 with a hairline of their own, not a strip under the body copy;
+  the surfaces panels are **stacked**, all four in one 742x300 box, so the
+  section height never moves when a seat is picked; and the selected tab
+  steps 10px right and lights a dot at 504. Only the side-by-side showed the
+  last one.
+- **The receipt is live.** `src/scripts/ticket.ts`: the clock runs and the
+  order walks its five states, as the export does — but only while the ticket
+  is on screen, which on a 6800px page is the first screenful and nothing
+  after it. The states are content (`statuses` in the entry) and
+  `statusIndex` is server-rendered, so a crawler and a reduced-motion reader
+  both get a real printed ticket rather than a stopped animation.
 - **Search Console analysis** — `docs/search-console/FINDINGS.md`. Three
   findings that matter more than any layout delta; see §8.
 - **Star marks as CSS masks.** The SVGs ship `fill="currentColor"`, which is

@@ -130,6 +130,8 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
       import { initRotate } from '../scripts/rotate'
       import { initMedia } from '../scripts/media'
       import { initSpine } from '../scripts/spine'
+      import { initTabs } from '../scripts/tabs'
+      import { initTicket } from '../scripts/ticket'
 
       initReveal()
       initTopbar()
@@ -141,6 +143,8 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
       initRotate()
       initMedia()
       initSpine()
+      initTabs()
+      initTicket()
     </script>
 
     {!ALLOW_INDEXING && (
