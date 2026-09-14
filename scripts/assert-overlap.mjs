@@ -57,6 +57,10 @@ const PAGES = [
   ['contact', '/contact-us/'], ['work', '/work/'], ['resources', '/resources/'],
   ['guides', '/resources/guides/'],
   ['industry', '/industries/food-restaurant-app-development/'],
+  /* One MIGRATED industry page as well as the hand-built one. Their copy is
+     longer than the design assumed — a capability name where the design has a
+     single word — and that only shows up on a page built from the real text. */
+  ['industry-m', '/industries/healthcare-app-development-company/'],
   ['service', '/s/ai-automation-services/'],
   ['pending', '/s/product-development-company/'],
   ['project', '/work/warehouse-compliance-checklist-app/'],

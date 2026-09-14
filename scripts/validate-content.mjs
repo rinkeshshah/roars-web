@@ -114,6 +114,44 @@ function prose(body) {
 }
 
 /** Trigram overlap. Template boilerplate counts, which is the point. */
+/**
+ * Everything the page actually says, not just its markdown body.
+ *
+ * The industry and service templates carry most of their copy in structured
+ * front matter — the hero statement, the six journey moments, the surfaces
+ * tabs, the featured project, the closing CTA. All of it is rendered. Counting
+ * only the markdown body measured a fraction of the page and called four real
+ * pages thin while their word count was double the floor.
+ *
+ * Machinery is excluded: URLs, labels, tag lists and the sector navigation,
+ * which is identical on every page and would flatter the uniqueness ratio.
+ */
+const SKIP_KEYS = new Set([
+  'href', 'ctaHref', 'ctaLabel', 'label', 'footerTagline', 'n', 'suffix',
+  'primaryIntent', 'schemaType', 'eyebrow', 'sectors', 'tags', 'time',
+  'statuses', 'statusLabel', 'totalLabel', 'footnote', 'paid', 'meta',
+])
+function frontMatterProse(data) {
+  const out = []
+  const walk = (v, key) => {
+    if (SKIP_KEYS.has(key)) return
+    if (typeof v === 'string') {
+      // A word with a space in it is copy; a slug or a token is not.
+      if (v.includes(' ')) out.push(v)
+      return
+    }
+    if (Array.isArray(v)) return v.forEach((x) => walk(x, key))
+    if (v && typeof v === 'object') {
+      for (const [k, x] of Object.entries(v)) walk(x, k)
+    }
+  }
+  for (const k of ['headline', 'standfirst', 'hero', 'journey', 'surfaces', 'proof', 'cta']) {
+    if (data[k] !== undefined) walk(data[k], k)
+  }
+  return out.join(' ')
+}
+const pageText = (data, body) => `${frontMatterProse(data)} ${prose(body)}`.trim()
+
 function uniqueRatio(text, siblings) {
   const shingles = (s) => {
     const w = meaningful(s)
@@ -213,7 +251,7 @@ for (const e of entries) {
   }
 
   // --- Body ---
-  const text = prose(body)
+  const text = pageText(data, body)
   const count = words(text).length
   if (count < MIN_WORDS) {
     /* needsRewrite is the flag for exactly this: high impressions, near-zero
@@ -271,8 +309,30 @@ for (const e of entries) {
 for (const [collection, group] of byCollection) {
   if (group.length < 2) continue
   for (const e of group) {
-    const siblings = group.filter((o) => o !== e).map((o) => prose(o.body))
-    const ratio = uniqueRatio(prose(e.body), siblings)
+    const siblings = group.filter((o) => o !== e).map((o) => pageText(o.data, o.body))
+    const ratio = uniqueRatio(pageText(e.data, e.body), siblings)
+
+    /* The prose on its own, as well as the whole page.
+     *
+     * Counting the structured front matter is right for the page as a crawler
+     * sees it, but it also lifts two pages whose PROSE is nearly identical
+     * over the line, because their journey and surfaces blocks differ. That is
+     * how /travel-and-hospitality/ and /retail-ecommerce/ — 29% and 34% unique
+     * against each other in body copy alone — stopped being reported the
+     * moment the measurement got more generous. Both numbers stay visible. */
+    const bodyRatio = uniqueRatio(
+      prose(e.body),
+      group.filter((o) => o !== e).map((o) => prose(o.body)),
+    )
+    if (bodyRatio < UNIQUE_WARN && e.body.trim()) {
+      warn(
+        e.file,
+        'near-duplicate prose',
+        `body copy is ${Math.round(bodyRatio * 100)}% unique versus other ${collection} ` +
+          `(whole page ${Math.round(ratio * 100)}%). Two pages that say the same thing ` +
+          'in different slots are still two pages that say the same thing.',
+      )
+    }
     if (ratio < UNIQUE_BLOCK) {
       fail(e.file, 'not unique enough', `${Math.round(ratio * 100)}% unique versus other ${collection}. Needs over ${UNIQUE_BLOCK * 100}%. If the only difference is a noun swap, it should be one page.`)
     } else if (ratio < UNIQUE_WARN) {

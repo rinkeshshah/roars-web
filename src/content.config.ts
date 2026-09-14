@@ -84,7 +84,11 @@ const cta = z
     footerTitle: z
       .string()
       .min(8, 'cta.footerTitle is too short to be a title.')
-      .max(64, 'cta.footerTitle over 64 characters stops reading as a title.')
+      /* 80, up from 64. The industry pages' real CTA titles run to 75 — "Bring
+         unique food & restaurant app ideas to life with our unique solutions!"
+         — and the choice was between raising the cap and cutting somebody's
+         sentence in half to satisfy a number I picked. */
+      .max(80, 'cta.footerTitle over 80 characters stops reading as a title.')
       .optional(),
     /** The footer's tagline slot, beside the closing CTA. Two or three words;
      *  the house line is the fallback. */
@@ -431,7 +435,10 @@ const industryLayout = {
           z.object({
             n: z.string().max(4),
             name: z.string().max(24),
-            lead: z.string().max(90),
+            /* Optional, like every other slot on this page. A migrated
+               capability is often one sentence: forcing a lead line out of it
+               meant printing the same sentence twice, once trimmed. */
+            lead: z.string().max(90).optional(),
             body: z.string().max(260),
             tags: z.array(z.string().max(24)).max(3).default([]),
           }),
@@ -511,6 +518,13 @@ const industries = defineCollection({
   schema: z.object({
     ...base,
     ...industryLayout,
+    /* Migrated pages keep the live site's own rank_math title and
+       description. They run long — the healthcare one is 205 characters —
+       and the choice was between shipping the real metadata over target or
+       writing new metadata for nine commercial pages. validate-content warns
+       on each so the debt stays visible. Same arrangement as the journal. */
+    seo: z.union([seo, seoMigrated]),
+    migrated: z.boolean().default(false),
     serviceType: z.string(),
     /**
      * An industry page with no case study is a noun swap, which is exactly the
