@@ -14,6 +14,7 @@ import Section from '../../components/Section.astro'
 import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
 import { PORTRAIT } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { clientFor } from '../../lib/projects'
@@ -73,15 +74,19 @@ const faces = (d?.team ?? [])
     <TopBar slot="topbar" cta="contact" />
     <NavOverlay />
 
-    {/* ── Banner, 1440x196. A crop of the hero under a 0.35 wash, which is
-        what the export puts behind the fixed top bar. ─────────────────── */}
-    {d.heroImage && (
-      <Section ground="dark" bleed>
-        <div class="pb" aria-hidden="true">
-          <img src={d.heroImage} alt="" width="1440" height="196" />
-        </div>
-      </Section>
-    )}
+    {/* ── Banner, 1440x196 ──────────────────────────────────────
+        The export crops the project's own photo into this strip under a 0.35
+        wash. At 196px that is a sliver of a picture — you cannot read it, and
+        it competes with the same photo shown properly 250px lower.
+        So it takes the ground every other inner page opens on instead: the
+        warm dark gradient, the drift and the grain, at the export's height.
+        The project image is then shown once, large, with nothing arguing
+        with it. ────────────────────────────────────────────────────────── */}
+    <Section ground="dark" bleed>
+      <div class="pb">
+        <GrainField tone="dark" second />
+      </div>
+    </Section>
 
     {/* ── The case study, 1440x5534 in the export ──────────────────────── */}
     <Section ground="light">
@@ -180,10 +185,16 @@ const faces = (d?.team ?? [])
 
         {/* The migrated body. The export has no slot for it; a case study with
             four sentences is not a case study, and this is the page that has
-            to answer "have they done logistics". */}
-        <div class="pd__prose" data-reveal>
-          {Content && <Content />}
-        </div>
+            to answer "have they done logistics". Given its own header and
+            numbered sections so it reads as part of the page rather than as
+            text that got appended to it. */}
+        {Content && (
+          <div class="pd__long" data-reveal>
+            <span class="pd__long-tick" aria-hidden="true"></span>
+            <span class="pd__long-eyebrow">THE LONG VERSION</span>
+            <div class="pd__prose"><Content /></div>
+          </div>
+        )}
       </div>
     </Section>
 
@@ -214,8 +225,6 @@ const faces = (d?.team ?? [])
 <style>
   /* ── banner ─────────────────────────────────────────────── */
   .pb { position: relative; height: 196px; overflow: hidden; background: var(--c-black); }
-  .pb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .pb::after { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); }
 
   /* ── the case study ─────────────────────────────────────── */
   .pd { position: relative; padding-block: 102px 120px; }
@@ -333,18 +342,65 @@ const faces = (d?.team ?? [])
     letter-spacing: -0.03em; color: rgba(71, 71, 71, 0.85);
   }
 
-  /* ── the migrated body ──────────────────────────────────── */
-  .pd__prose { margin: 96px 0 0 461px; max-width: 707px; }
+  /* ── the migrated body ──────────────────────────────────────
+     The page has one rhythm — label left at 0, prose right at 461 — and
+     Goals and Outcome both use it. Left in a single column the body ignored
+     it and ran as one slab against an empty rail.
+     Each heading FLOATS back into that rail with a negative margin, so it
+     lines up with the paragraph it belongs to instead of sitting above it.
+     That is the only way to get the pairing out of plain markdown, which has
+     no element to wrap a section in. `clear: left` keeps one section's
+     heading from riding up beside the previous one's. */
+  .pd__long { margin-top: 104px; }
+  .pd__long-tick { display: block; width: 16px; height: 1.5px; background: var(--c-rule-strong); }
+  .pd__long-eyebrow {
+    display: block; margin-top: 20px;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
+  }
+  .pd__prose { counter-reset: sec; margin: 56px 0 0 461px; max-width: 707px; }
   .pd__prose :global(h2) {
-    margin: 52px 0 0;
+    float: left; clear: left; width: 380px;
+    margin: 0 0 0 -461px;
     font-size: 26px; line-height: 37px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
-  .pd__prose :global(h2:first-child) { margin-top: 0; }
+  /* Numbered by CSS counter, because markdown gives no element to hang a
+     number on and the copy should not carry one — "01" is presentation.
+     Set LARGE, because the rail is otherwise empty for the whole depth of
+     each section and a 11px label left it looking like a mistake. The big
+     tinted numeral is the same device the proof stats use. */
+  .pd__prose :global(h2)::before {
+    counter-increment: sec;
+    content: '0' counter(sec);
+    display: block; margin-bottom: 14px;
+    font-size: 52px; line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgba(20, 20, 20, 0.18);
+  }
   .pd__prose :global(p) {
-    margin: 18px 0 0;
+    margin: 0;
     font-size: 18px; line-height: 28px; font-weight: var(--fw-medium);
     letter-spacing: -0.03em; color: rgba(71, 71, 71, 0.85);
+  }
+  .pd__prose :global(p + p) { margin-top: 20px; }
+
+  /* `h2 + p` only, not `h2 ~ p` — the general sibling was killing the gap
+     between every later paragraph too, which ran section 01 together. */
+  .pd__prose :global(h2 + p) { position: relative; margin-top: 0; }
+
+  /* THE HEADING AND ITS PARAGRAPH MUST GET THE SAME GAP. A float does not
+     take the following sibling's margin, so giving the paragraph 96px of air
+     and the heading none left the heading floating at the top of the gap with
+     the rule cutting through it. Both carry 96. */
+  .pd__prose :global(h2:not(:first-child)) { margin-top: 96px; }
+  .pd__prose :global(h2:not(:first-child) + p) { margin-top: 96px; }
+  /* A hairline opens each section, drawn from the page gutter rather than
+     from the text column, so it reads as a section break and not as a rule
+     over a paragraph. It hangs off the first paragraph because the heading is
+     floated and cannot carry a full-width border. */
+  .pd__prose :global(h2:not(:first-child) + p)::before {
+    content: ''; position: absolute; left: -461px; right: 0; top: -50px;
+    height: 0.5px; background: var(--c-rule-soft);
   }
 
   /* ── below the design grid ──────────────────────────────── */
@@ -374,6 +430,13 @@ const faces = (d?.team ?? [])
     .pd__block { margin-top: 56px; }
     .pd__block-h { position: static; width: auto; }
     .pd__block-body { margin: 18px 0 0; max-width: 620px; }
-    .pd__prose { margin: 56px 0 0; max-width: 620px; }
+    .pd__long { margin-top: 64px; }
+    .pd__prose { margin: 40px 0 0; max-width: 620px; }
+    .pd__prose :global(h2) { float: none; width: auto; margin: 44px 0 14px; }
+    .pd__prose :global(h2:first-child) { margin-top: 0; }
+    .pd__prose :global(h2:not(:first-child) + p) { margin-top: 0; }
+    .pd__prose :global(h2:not(:first-child)) { margin-top: 44px; }
+    .pd__prose :global(h2:not(:first-child) + p)::before { left: 0; top: -22px; }
+    .pd__prose :global(h2)::before { font-size: 32px; margin-bottom: 8px; }
   }
 </style>

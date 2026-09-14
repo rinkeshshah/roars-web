@@ -38,10 +38,6 @@ seo:
   schemaType: "CreativeWork"
 ---
 
-A centralised warehouse operations system for Snowman Logistics, replacing
-manual checklists and fragmented reporting with real-time visibility,
-structured compliance and scalable control across every site.
-
 ## The problem with a clipboard
 
 Compliance in a cold chain is not a paperwork exercise. It is a series of
