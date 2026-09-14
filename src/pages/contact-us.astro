@@ -108,7 +108,11 @@ const schema = [
     <div class="cg">
       <span class="c-rule" aria-hidden="true"></span>
       <span class="c-label">Contact</span>
-      <h2 class="cg__h">get in touch</h2>
+      {/* Two lines by choice, not by wrapping: an explicit break sets where
+          it falls instead of leaving it to whatever width the box happens to
+          be. The band has room — two 110px lines from 150 end at 370, and the
+          hairline under them sits at 400. */}
+      <h2 class="cg__h">get in<br />touch</h2>
       <div class="cg__intro" data-reveal>
         <p class="cg__intro-a">
           Whether you are just interested to know more about what we do or would like to
