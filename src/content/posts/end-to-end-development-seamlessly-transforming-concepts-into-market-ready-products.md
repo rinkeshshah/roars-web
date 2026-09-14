@@ -58,11 +58,11 @@ One of the most common challenges in **end-to-end product development** is misal
 
 To overcome this:
 
- 	- Start by clearly defining project objectives and roles
+- Start by clearly defining project objectives and roles
 
- 	- Conduct regular sync-up meetings and collaborative workshops
+- Conduct regular sync-up meetings and collaborative workshops
 
- 	- Use shared project tools or dashboards to track progress and maintain visibility
+- Use shared project tools or dashboards to track progress and maintain visibility
 
 Consistent communication fosters clarity, promotes accountability, and ensures everyone is aligned on delivering a cohesive product.
 

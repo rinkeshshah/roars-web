@@ -1483,31 +1483,251 @@ const schema = [
   /* responsive --------------------------------------------------------- */
   @media (max-width: 1040px) {
     .hero__inner { grid-template-columns: 1fr; padding-block: 180px 80px; row-gap: var(--sp-6); }
-    .about { grid-template-columns: 1fr; padding-block: var(--sp-7); }
+    /* minmax(0, 1fr): see the ≤760 block. `1fr` floors at the widest child's
+       min-content, which the logo marquee sets to 914px. */
+    .about { grid-template-columns: minmax(0, 1fr); }
+    .about > * { min-width: 0; }
     .about__stats, .about__est, .about__who, .about__right { grid-column: 1 / -1; }
-    .svc .display, .svc__foot, .proj__head, .proj__foot,
-    .say .display, .say__score,
-    .ind .display, .ind__label, .ind__sub, .ind__intro, .ind__grid, .ind__foot,
-    .ins .display, .ins__who, .ins__role, .ins__intro, .ins__grid, .ins__foot,
-    .faq .display, .faq__who, .faq__role, .faq__intro, .faq__foot { margin-left: 0; }
+    /* Every 464px rail indent, from the declarations that actually set one.
+       The earlier list was written from memory and named .ins__who and
+       .faq__who, which never had a margin, while missing .ins__head — which
+       did, and which therefore kept a 464px indent inside a 350px page and
+       collapsed to zero width. */
+    .svc .display, .svc__foot,
+    .proj__head, .proj__foot,
+    .say .display, .say__score, .say__foot,
+    .ind .display, .ind__intro, .ind__grid, .ind__foot,
+    .ins .display, .ins__head, .ins__foot,
+    .faq .display, .faq__foot { margin-left: 0; }
     .faq :global(.acc) { margin-left: 0; }
     .svc__grid { grid-template-columns: 1fr 1fr; }
     .svc__foot { grid-template-columns: 1fr; }
-    .say__list { grid-template-columns: 1fr 1fr; }
+    .say__list { grid-template-columns: 1fr 1fr; min-height: 0; gap: 40px 24px; }
+    /* Each card names its own column and its own top offset, which is how the
+       prototype staggers them across a seven-track row. Narrowing the track
+       list does not clear those: an item still asking for column 5 makes the
+       grid grow an implicit column to hold it. They flow in order instead. */
+    .say__item { grid-column: auto; grid-row: auto; margin-top: 0; }
     .ind__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .ins__grid { grid-template-columns: 1fr; }
+
+    /*
+     * Unstacking the fixed tracks starts HERE, not at 760.
+     *
+     * The desktop layout is a 1362 canvas, so the section feet and heads are
+     * two-column grids with a 232px rail and an absolute-positioned side rail
+     * at a fixed top offset. Those do not fit a tablet either. Leaving them
+     * until 760 left an 800px-wide phone in landscape, and every tablet,
+     * rendering the desktop geometry into a box too small for it — which is
+     * the same clipping bug one breakpoint up.
+     *
+     * The ≤760 block below is then only what is genuinely phone-specific:
+     * type scale, single columns, and the two blocks whose absolute
+     * placements are tied to an 84px numeral.
+     */
+    .proj__head, .proj__foot,
+    .say__foot, .ind__foot, .ins__head, .ins__foot, .faq__foot {
+      display: flex; flex-direction: column; align-items: stretch;
+      grid-template-columns: none;
+    }
+    /* stretch, not flex-start: a flex item aligned to the start shrinks to
+       max-content, which left the project legend and the section intros
+       sized to their longest line and hanging off the page. The pills are
+       the exception — they are a fixed 204 and should not run the width. */
+    .proj__head > a, .proj__foot > a, .say__foot > a,
+    .ind__foot > a, .ins__foot > a, .faq__foot > a,
+    .proj__head :global(.btn), .proj__foot :global(.btn), .say__foot :global(.btn),
+    .ind__foot :global(.btn), .ins__foot :global(.btn), .faq__foot :global(.btn) {
+      align-self: flex-start;
+    }
+    .proj__head, .ins__head { gap: 20px; }
+    .proj__foot, .say__foot, .ind__foot, .ins__foot, .faq__foot { gap: 18px; }
+    /* Side rails placed at a fixed top offset against a fixed section height. */
+    .ind__rail, .faq__rail { position: static; width: auto; margin-top: var(--sp-4); }
+    /* Widths measured off the 1362 box.
+       100%, not none: these sit in flex columns aligned to the start, so
+       `none` lets them size to max-content and run past the page edge. */
+    .ind__intro, .ins__intro, .faq__intro, .ins__title, .faq__ask, .say__meta,
+    .svc__foot .intro, .svc__stages, .svc__clients { max-width: 100%; }
+    /* The service rows are five and six fr tracks on the 1362 canvas. fr does
+       not wrap, so at tablet width the rule, the count and the toggle were
+       all painting past the section edge. */
+    .svc__row, .svc__row--inner {
+      display: flex; flex-direction: column; align-items: stretch; gap: 10px;
+      grid-template-columns: none;
+    }
+    /* 229px of left margin measured off the 1362 canvas. */
+    .proj__legend { margin-left: 0; }
+    .proj__legend li { grid-template-columns: minmax(0, 1fr) 16px; }
+    .say__nav { width: auto; }
+
+    /* Section rhythm. Every vertical gap on this page was measured off the
+       1440 canvas, where a section is a tenth of the page. Kept as-is they
+       are a fifth of a small screen each, and the page reads as a run of
+       empty panels with a paragraph in the middle of each. The spec's mobile
+       sections are 56-64px of padding and 32-40px between blocks. */
+    .about { padding-block: 56px; }
+    .svc { padding-block: 56px 72px; }
+    .svc__list { margin-top: 40px; }
+    .svc__foot { margin-top: 48px; }
+    .proj__inner { padding-block: 56px 64px; }
+    .proj__stage { margin-top: 40px; }
+    .proj__foot { margin-top: 40px; }
+    .say { padding-block: 56px 64px; }
+    .say__list { margin-top: 32px; }
+    .ind { padding-block: 56px 64px; }
+    .ind__grid { margin-top: 44px; gap: 36px 20px; }
+    .ins { padding-block: 56px 64px; }
+    .faq { padding-block: 56px 72px; }
+    .faq :global(.acc) { margin-top: 36px; }
+    .about__pitch { margin-top: 40px; }
   }
 
+  /*
+   * ≤760: the documented mobile stack.
+   *
+   * One DOM, reflowed. The prototype ships a second markup tree and toggles
+   * the two with display:none; that doubles the document and lets the two
+   * versions drift apart, which is how a fix lands on desktop and not on a
+   * phone. Everything below re-flows the same elements.
+   *
+   * Type sizes and stacking come from design/specs/Main.md, "Mobile layout
+   * (≤760px)", sections M1-M9. Where the shipped page has moved past the
+   * prototype — the hero is the yellow "Ship product that scales" lockup, not
+   * the prototype's dark wordmark — the shipped content wins and only the
+   * scale comes from the spec.
+   *
+   * THE RECURRING BUG this fixes: the desktop layout is a 1362 canvas, so
+   * almost every block carries a fixed or fr-based grid. `fr` tracks do not
+   * collapse — 435fr 29fr 435fr stays 3 columns at 390px and simply overflows
+   * — and the sections clip with overflow:hidden, so the content did not
+   * scroll sideways, it vanished. 105 elements were painting off-screen.
+   */
   @media (max-width: 760px) {
+    .display { font-size: 56px; line-height: 56px; }
+    .intro { font-size: 19px; line-height: 28px; }
+
+
+    /* hero ------------------------------------------------------------- */
     .hero { min-height: 0; }
-    .hero__inner { padding-block: 140px 60px; }
-    .hero__rail { order: 2; }
-    .about__stats { grid-template-columns: 1fr; }
+    .hero__inner { padding-block: 128px 56px; }
+    /* The 130px line-height was fixed while the size clamped down to 56,
+       which left two thirds of a line of air between every line. */
+    .hero__h1 { font-size: clamp(44px, 13vw, 72px); line-height: 1.06; letter-spacing: -0.045em; }
+    /* 360px of reserved width does not fit a 350px content box. The word
+       swap shifts the line on a phone; that is better than a scrollbar. */
+    .hero__rotate { min-width: 0; }
+    .hero__lede { margin-top: 32px; font-size: 17px; line-height: 26px; }
+    .hero__cta { margin-top: 24px; }
+    .hero__rule { margin-top: 44px; }
+    /* Four labels across 350px is four stacked characters per column. */
+    .hero__labels {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px;
+      margin-top: 20px; font-size: 11px;
+    }
+
+    /* about ------------------------------------------------------------ */
+    /* minmax(0, 1fr), not 1fr. A bare `1fr` is minmax(auto, 1fr), so the
+       track cannot shrink below its widest child's min-content — and the
+       logo marquee is `width: max-content`, which made that 914px. The whole
+       About column was sized by the marquee and clipped at the section edge.
+       min-width on the children is the same guard one level down. */
+    .about { grid-template-columns: minmax(0, 1fr); row-gap: 48px; padding-block: 56px; }
+    .about > * { min-width: 0; }
+    .about__stars { position: static; margin-bottom: 8px; }
+    .about__stats, .about__stat-pair {
+      display: flex; flex-direction: column; gap: 36px;
+      grid-template-columns: none; grid-template-rows: none; min-height: 0;
+    }
+    .about__est, .about__who, .about__team, .about__right { grid-column: 1 / -1; }
+    .about__stat-row, .about__est-row {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+      margin-top: 10px;
+    }
+    /* The + and % are absolutely placed against an 84px numeral on desktop.
+       At 72px those offsets land in the middle of the digits, so they go
+       back to being what they read as: the next character along. */
+    .about__stat-num { font-size: 72px; line-height: 72px; }
+    .about__plus, .about__pct {
+      position: static; margin-left: 6px; line-height: normal;
+    }
+    .about__plus { font-size: 32px; }
+    .about__pct { font-size: 26px; }
+    .about__stat-name { font-size: 20px; }
+    .about__stat-note, .about__est-note { max-width: none; font-size: 15px; line-height: 21px; }
+    .about__est-num { line-height: 72px; }
+    .about__est-side { margin-top: 0; }
+    .about__team-name { font-size: 22px; }
+    /* The cluster is four absolutely-placed faces in a 145x143 box, which on
+       a phone reads as scattered grey circles. The spec's mobile row is the
+       same faces shingled behind the counter. */
+    .about__cluster { display: flex; align-items: center; width: auto; height: auto; margin-top: 24px; }
+    .about__face, .about__team-count { position: static; margin-left: -10px; box-shadow: 0 0 0 3px var(--c-white); }
+    .about__team-count { order: -1; margin-left: 0; box-shadow: none; }
+    /* Placed at 10,8 on a 43px leading against the desktop disc. In a flex
+       row that reads as a numeral falling out of its circle. */
+    .about__team-count > span {
+      position: static; display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 100%; line-height: 1;
+    }
+    .about__who-face { margin-top: 20px; }
+    .about__who-name, .about__who-sub { font-size: 22px; line-height: 26px; }
+    .about__pitch p { max-width: none; font-size: 19px; line-height: 28px; }
+    /* The fade edges assume the strip is inset from the page. At full bleed
+       they would sit over the marks themselves. */
+    .about__logos { width: 100%; margin: 44px 0 0; }
+    .about__logos::before, .about__logos::after { width: 24px; }
+
+    /* services --------------------------------------------------------- */
     .svc__grid { grid-template-columns: 1fr; gap: var(--sp-4); }
+    .svc__name { font-size: 22px; line-height: 28px; }
+    .svc__body { font-size: 15px; line-height: 22px; }
+    .svc__media { position: relative; display: flex; align-items: center; gap: 10px; height: auto; }
+    .svc__disc { position: static; width: 96px; height: 96px; }
+    .svc__disc--sm { position: static; width: 40px; height: 40px; }
+    .svc__stages { font-size: 14px; line-height: 19px; }
+    .svc__foot { row-gap: var(--sp-4); }
+
+    /* projects --------------------------------------------------------- */
+    .proj__slide { grid-template-columns: 1fr; }
+    /* Centred on a 50% offset, which at 350px puts the name off the card. */
+    .proj__name {
+      position: static; transform: none; margin-top: 12px;
+      font-size: 28px; line-height: 34px;
+    }
+    .proj__faces { position: static; flex-direction: row; margin-top: 12px; }
+    /* The slides are absolute so they can cross-fade over one another, which
+       means the stage carries the height — 580px, measured on the two-column
+       desktop card. Stacked to one column the card is taller than that and
+       ran out of the section.
+       Same cell, still stacked, but as a grid so the stage sizes itself to
+       the tallest slide. The island keeps working untouched: it only sets
+       opacity, transform and visibility. */
+    .proj__stage { min-height: 0; display: grid; }
+    .proj__slide { position: relative; inset: auto; grid-area: 1 / 1; }
+
+    /* people say ------------------------------------------------------- */
     .say__list { grid-template-columns: 1fr; }
     .say__item .say__quote { font-size: 18px !important; line-height: 26px !important; }
+
+    /* industries ------------------------------------------------------- */
     .ind__grid { grid-template-columns: 1fr; }
-    .proj__slide { grid-template-columns: 1fr; }
-    .proj__name { left: var(--sp-4); bottom: var(--sp-4); font-size: var(--fs-item); line-height: var(--lh-item); }
+    .ind__foot { margin-top: 48px; }
+
+    /* insights --------------------------------------------------------- */
+    .ins__head, .ins__foot { margin-top: 40px; }
+    .ins__grid { grid-template-columns: 1fr; margin-top: 48px; gap: 40px; }
+    /* The card puts the day and the month in ONE cell, the month pushed
+       across by a 55px margin, and the title in the second column. Collapse
+       the columns and all three land on top of each other. Day and month get
+       a track each; the disc, the rule and the title span both. */
+    .ins__card { grid-template-columns: auto minmax(0, 1fr); }
+    .ins__ph, .ins__rule { grid-column: 1 / -1; }
+    .ins__day { grid-column: 1; margin-top: 10px; }
+    .ins__month { grid-column: 2; margin: 10px 0 0 8px; justify-self: start; }
+    .ins__title { grid-column: 1 / -1; grid-row: 4; margin-top: 4px; }
+
+    /* faq -------------------------------------------------------------- */
+    .faq__rail { margin-top: var(--sp-4); }
   }
 </style>

@@ -32,7 +32,7 @@ Once customers were comfortable using the base MVP, they started introducing add
 An MVP can be a simple interface that presents your idea to your target market. It need not be feature-rich but it should be functional and usable.
 Got an idea that needs an MVP. We can build one for you in as little as 30 days. To learn more, get in touch with us,[ here](https://www.roarsinc.com/contact-us/).
 
- 	Image Source: Artificial Intelligence in Motion
+Image Source: Artificial Intelligence in Motion
 
 Once customers were comfortable using the base MVP, they started introducing added features such as City Guides and Recommendation, in the subsequent years.
 An MVP can be a simple interface that presents your idea to your target market. It need not be feature-rich but it should be functional and usable.

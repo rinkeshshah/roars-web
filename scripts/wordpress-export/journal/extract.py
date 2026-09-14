@@ -102,6 +102,15 @@ def to_markdown(h):
     h = re.sub(r'<[^>]+>', '', h)
     h = html.unescape(h)
     h = re.sub(r'[ \t]+\n', '\n', h)
+    # Strip leading horizontal whitespace from every line.
+    #
+    # WXR bodies indent their <li> elements, and that indentation survives the
+    # tag stripping, so a list item came out as "\t- text". Four columns of
+    # indent is a Markdown code block, which is how ten paragraphs of prose in
+    # one post rendered as syntax-highlighted code. Nothing this extractor
+    # produces relies on indentation: lists are flattened to one level and
+    # there is no code, so removing it cannot lose meaning.
+    h = re.sub(r'^[ \t]+', '', h, flags=re.M)
     h = re.sub(r'\n{3,}', '\n\n', h)
     return h.strip()
 

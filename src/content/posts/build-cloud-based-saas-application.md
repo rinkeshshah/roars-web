@@ -26,7 +26,7 @@ So, let’s start!
 
 ## **Steps To Build A Cloud-based SaaS Application**
 
- 	- ### **Customer’s Priority**
+- ### **Customer’s Priority**
 
 The first thing that you need to keep in mind while developing a SaaS application is to prioritize your customers' needs.
 
@@ -34,11 +34,11 @@ The users will only invest in your product/service if they feel that it is worth
 
 You can offer a free trial to your end-users to have a clear idea about your digital product. They can decide whether to invest their time and money without any regret.
 
- 	- ### ** Competition Analysis**
+- ### ** Competition Analysis**
 
 When you are in the business, you need to watch what your competitors are doing. If your product is better than your competitors, you can win the hearts of your customers. And, it is only possible when you have done good market research about your competitor, services they offer, features and functionalities they have in their SaaS application, etc.
 
- 	- ### ** Requirements Related To Projects**
+- ### ** Requirements Related To Projects**
 
 When developing any project, you need to keep certain project requirements in mind to get better results.
 
@@ -52,7 +52,7 @@ Next, some eye-catching features should be present in applications to clearly gr
 
 Here, Management plays a vital role. Improper Management may lead to discrepancies.
 
- 	- ### ** UI/UX Design**
+- ### ** UI/UX Design**
 
 For any application, its user interface plays a crucial role. The design of your SaaS application must be eye-catching, user-friendly, and easy to use.
 

@@ -446,5 +446,10 @@ const schema = [
     .agb__rest { width: auto; height: auto; padding-top: 210px; }
     .agh__intro, .agh__quote { margin-left: 0; }
     .agh__founder { width: auto; }
+    /* Both measured off the 1362 canvas: a 384px intro and a 433px rule in a
+       350px page. The sections clip, so neither scrolled — they just painted
+       past the edge and lost their last words. */
+    .agh__intro { width: 100%; }
+    .agb__stat-rule { width: 100%; }
   }
 </style>

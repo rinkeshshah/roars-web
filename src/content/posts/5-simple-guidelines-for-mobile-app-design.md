@@ -24,11 +24,11 @@ An app that has been carefully planned is more than just a pretty face. It conne
 
 This is why design is so important:
 
- 	- **First impressions are very important** - Users will make a decision about your app in a matter of seconds. They'll leave quickly if it doesn't look polished.
+- **First impressions are very important** - Users will make a decision about your app in a matter of seconds. They'll leave quickly if it doesn't look polished.
 
- 	- **User engagement goes up** - A well-designed mobile app makes users want to explore its features and spend more time in it.
+- **User engagement goes up** - A well-designed mobile app makes users want to explore its features and spend more time in it.
 
- 	- **mobile application design** - Apps that are easy to use often become daily companions.
+- **mobile application design** - Apps that are easy to use often become daily companions.
 
 This means that businesses must invest in good design if they want to build trust and stand out in a crowded market.
 
@@ -48,9 +48,9 @@ You are more likely to make an app that people love if the **mobile application 
 
 One of the most important rules for designing apps is to keep them simple. When menus are hard to read, buttons are hard to find, or scrolling never ends, users get angry. Instead, focus on being clear and consistent.
 
- 	- Check that everyone can see the icons.
+- Check that everyone can see the icons.
 
- 	- Limit the number of steps you need to take to finish important tasks.
+- Limit the number of steps you need to take to finish important tasks.
 
 Why It's Important:
 
@@ -68,11 +68,11 @@ Keep in mind that readability is very important when you **design a mobile app**
 
 People want apps to work right away. Even the nicest design won't work if the app is slow. So, making sure that an app works well is a really vital part of **mobile app design**.
 
- 	- Make sure your images and animations are the right size so that they load quickly.
+- Make sure your images and animations are the right size so that they load quickly.
 
- 	- Cut down on background processes that make devices run slower.
+- Cut down on background processes that make devices run slower.
 
- 	- To avoid performance problems, test often on different devices.
+- To avoid performance problems, test often on different devices.
 
 A fast, responsive, and light app gets better reviews and makes users happier.
 
@@ -80,11 +80,11 @@ A fast, responsive, and light app gets better reviews and makes users happier.
 
 Accessibility means that anyone, no matter their physical or mental ability, can use your app. Not only is it right to **mobile app design** that is accessible to everyone, but it also lets more people use them.
 
- 	- Offer color choices that stand out.
+- Offer color choices that stand out.
 
- 	- Let people choose between voice controls and text-to-speech.
+- Let people choose between voice controls and text-to-speech.
 
- 	- Allow users to modify the font size to make it simpler to read.
+- Allow users to modify the font size to make it simpler to read.
 
 When you build **app design principles** in mind, you show consumers that your business cares about fairness and inclusiveness. This may make your reputation much better.
 
@@ -94,11 +94,11 @@ When you build **app design principles** in mind, you show consumers that your b
 
 There are more than five main techniques to make your app better:
 
- 	- Responsive layouts: Your site should work on a wide range of devices and screen sizes.
+- Responsive layouts: Your site should work on a wide range of devices and screen sizes.
 
- 	- Feedback all the time: Get feedback from users and make changes often.
+- Feedback all the time: Get feedback from users and make changes often.
 
- 	- Find a balance between function and creativity.  Too many details in a design may appear good, but they also make things hard for consumers.
+- Find a balance between function and creativity.  Too many details in a design may appear good, but they also make things hard for consumers.
 
 These methods assist make sure that your **mobile app design** stays up to date with what your consumers need as their needs evolve.
 
@@ -106,11 +106,11 @@ These methods assist make sure that your **mobile app design** stays up to date 
 
 Good design leads to success, but mistakes can quickly ruin the experience for users. A few common mistakes are:
 
- 	- Putting too much content or too many features on screens.
+- Putting too much content or too many features on screens.
 
- 	- Not paying attention to beta user feedback while testing.
+- Not paying attention to beta user feedback while testing.
 
- 	- Small fonts or low color contrast make it hard to read.
+- Small fonts or low color contrast make it hard to read.
 
 Your **mobile application design** stays polished, functional, and easy to use if you avoid these mistakes.
 

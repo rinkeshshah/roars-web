@@ -544,7 +544,11 @@ const schema = [
   /* ── below the design grid ──────────────────────────────── */
   @media (max-width: 1360px) {
     .ch__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 120px 72px; row-gap: 36px; }
-    .ch__rail, .ch__mast, .ch__count { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 0; width: auto; }
+    /* position too, not only the grid placement: .ch__count is absolute at
+       left 68.209%, which a grid-column override does not touch, so it stayed
+       two thirds of the way across a 350px page. */
+    .ch__rail, .ch__mast, .ch__count { position: static; grid-column: 1; grid-row: auto; justify-self: start; margin-top: 0; width: auto; }
+    .ch__count-label { width: auto; }
     .ch__statement { width: auto; max-width: 440px; }
     .ch__large { line-height: 1.04; margin-left: 0; }
     .ch__look { margin: 20px 0 0; }
@@ -552,7 +556,12 @@ const schema = [
     .cg { padding-block: 64px 72px; min-height: 0; }
     .cg__h { line-height: 1.06; margin-left: 0; }
     .cg__intro, .cg__intro-b { position: static; width: auto; max-width: 560px; margin-top: 28px; }
-    .cg__ways { position: static; margin-top: 56px; grid-template-columns: 1fr; row-gap: 40px; }
+    /* minmax(0, 1fr), and the address comes down with it. `1fr` floors at
+       the widest child's min-content, and "sales@roarsinc.com" set at
+       --fs-stat is one 378px word that cannot break — so the single column
+       stayed 378 wide inside a 350px page. */
+    .cg__ways { position: static; margin-top: 56px; grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
+    .cg__email { font-size: clamp(24px, 7.6vw, 42px); line-height: 1.2; overflow-wrap: anywhere; }
     .cg__ways::before { position: static; display: block; margin-bottom: 40px; }
 
     .co { padding-block: 64px 72px; min-height: 0; }

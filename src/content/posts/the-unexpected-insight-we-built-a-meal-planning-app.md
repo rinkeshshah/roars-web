@@ -29,23 +29,23 @@ The Scale Breaking Point: What Works at 5K Fails at 50K
 
 **At 5,000 users:**
 
- 	- Simple search worked fine
+- Simple search worked fine
 
- 	- MongoDB handled everything
+- MongoDB handled everything
 
- 	- Load time: 0.8 seconds
+- Load time: 0.8 seconds
 
- 	- Basic recommendation: "popular recipes"
+- Basic recommendation: "popular recipes"
 
 **At 50,000 users:**
 
- 	- Search became frustrating (5,000 recipes vs 50)
+- Search became frustrating (5,000 recipes vs 50)
 
- 	- Database lag became unacceptable (4.2 seconds)
+- Database lag became unacceptable (4.2 seconds)
 
- 	- Users with raw chicken don't wait
+- Users with raw chicken don't wait
 
- 	- "Popular" meant nothing to vegan users
+- "Popular" meant nothing to vegan users
 
 The team rebuilt: Elasticsearch, PostgreSQL + Redis, CDN integration, ML-based personalization.
 
@@ -67,11 +67,11 @@ At 100,000 users, FreshPlate crashed during dinner time. The culprit? A week-two
 
 The team spent 2 months on zero new features, just refactoring:
 
- 	- Queue-based notification system
+- Queue-based notification system
 
- 	- Microservices for critical functions
+- Microservices for critical functions
 
- 	- Proper monitoring and CI/CD
+- Proper monitoring and CI/CD
 
 No user saw new features, but everyone benefited from stability.
 
@@ -88,25 +88,25 @@ No user saw new features, but everyone benefited from stability.
 
 They don't have the best initial idea. They have the best evolution strategy:
 
- 	- Start simple, build flexible
+- Start simple, build flexible
 
- 	- Instrument everything from day one
+- Instrument everything from day one
 
- 	- Listen to data, not just opinions
+- Listen to data, not just opinions
 
- 	- Schedule refactoring (FreshPlate: 20% of every sprint)
+- Schedule refactoring (FreshPlate: 20% of every sprint)
 
- 	- Accept that v1.0 is just the seed
+- Accept that v1.0 is just the seed
 
 #### **The Cost of Not Iterating**
 
- 	- User attrition (competitors who iterate win)
+- User attrition (competitors who iterate win)
 
- 	- Technical collapse (systems buckle under unplanned load)
+- Technical collapse (systems buckle under unplanned load)
 
- 	- Team burnout (constant firefighting)
+- Team burnout (constant firefighting)
 
- 	- Market irrelevance (solving yesterday's problems)
+- Market irrelevance (solving yesterday's problems)
 
 Today, FreshPlate has community sharing, grocery delivery integration, smart kitchen connectivity, and AI-powered suggestions. Features Sarah never imagined in 2021.
 
