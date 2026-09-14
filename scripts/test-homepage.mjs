@@ -93,20 +93,25 @@ const opacities = await page.$$eval('[data-slide]', (els) =>
 const sum = opacities.reduce((a, b) => a + b, 0)
 ok('cross-fade opacities sum to 1', Math.abs(sum - 1) < 0.02, sum.toFixed(3))
 
-/* The hero is a LIGHT section whose right two thirds are a photograph, and
-   the bar sits entirely over that, so it must carry light ink at rest. The
-   generic ink test in test-components.mjs runs on /components/, whose hero is
-   light all the way across, so it cannot catch a regression here. */
+/* Export 2 grounds the hero in #FFD400 with black display type, so the bar
+   carries DARK ink at rest. This asserted light ink for the previous hero,
+   which was a photograph; the change is the design's, not a regression. The
+   prototype's own computed value for this string is rgb(15, 15, 15). */
 await page.evaluate(() => window.scrollTo(0, 0))
 await page.waitForTimeout(300)
 const barLight = await page.locator('[data-topbar]').evaluate((el) =>
   el.classList.contains('is-light'),
 )
-ok('top bar carries light ink over the hero photo', barLight === false)
+ok('top bar carries dark ink over the yellow hero', barLight === true)
 const noteColor = await page
   .locator('[data-topbar-note]')
   .evaluate((el) => getComputedStyle(el).color)
-ok('top bar note is legible on the photo', noteColor === 'rgb(255, 255, 255)', noteColor)
+ok('top bar note matches the prototype ink', noteColor === 'rgb(15, 15, 15)', noteColor)
+
+/* The hero is the LCP element and it is now type on a gradient, so nothing
+   in it may load a raster. space.jpg was removed from the export entirely. */
+const heroImgs = await page.locator('.hero img').count()
+ok('hero ships no raster image', heroImgs === 0, `${heroImgs}`)
 
 await ctx.close()
 await browser.close()

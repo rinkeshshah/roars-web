@@ -156,6 +156,16 @@
   --ring:       var(--c-ring-light);
 }
 
+/* Export 2 grounds the homepage hero in the accent. CLAUDE.md allows this
+   only where the prototype does it; it is not a general-purpose ground. */
+[data-ground='accent'] {
+  --ground:     var(--c-accent);
+  --ink:        var(--c-footer);
+  --ink-muted:  rgba(11, 11, 11, 0.78);
+  --rule:       rgba(11, 11, 11, 0.22);
+  --ring:       rgba(11, 11, 11, 0.28);
+}
+
 [data-ground='surface'] {
   --ground:     var(--c-surface);
   --ink:        var(--c-ink-heading);

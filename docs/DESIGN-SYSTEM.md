@@ -73,7 +73,7 @@ Everything skips under `prefers-reduced-motion`. Anything beyond these four need
 
 ## The one open question
 
-`space.jpg` carries the art direction on every dark section and the footer. It came from the Astra template the structure was derived from, where cosmic imagery was that template's concept. It is not Roars'.
+~~`space.jpg` carries the art direction on every dark section and the footer.~~ **Resolved in export 2:** the photograph is gone from the prototypes entirely, 6 usages to 0. Dark sections and the footer are now a warm dark gradient with an overlay grain, and the hero is a full-bleed yellow ground. `src/components/GrainField.astro` is the single implementation. The concern that the imagery came from the Astra template rather than from Roars no longer applies.
 
 It is also the single easiest element on the site for another agency to reproduce.
 

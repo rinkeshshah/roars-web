@@ -12,31 +12,17 @@
  * Shipping a form that silently swallows submissions is worse than one that
  * plainly is not ready.
  */
-import { Picture } from 'astro:assets'
 import { site } from '../lib/site'
 import { FOOTER_NAV, SOCIAL, LEGAL } from '../lib/nav'
-import space2000 from '../assets/space-2000.jpg'
+import GrainField from './GrainField.astro'
 import mark from '../assets/roars-mark.png'
 
 const year = new Date().getFullYear()
 ---
 
 <footer class="ft" data-ground="dark">
-  {/* The prototype's footer is a legible space photograph, not a black band.
-      It is flipped to match the hero and sits under a light scrim that only
-      has to buy contrast for the type, so the picture still reads. */}
-  <Picture
-    class="ft__bg"
-    src={space2000}
-    formats={['avif', 'webp']}
-    widths={[900, 1440, 2000]}
-    sizes="100vw"
-    quality={58}
-    alt=""
-    loading="lazy"
-    decoding="async"
-  />
-  <div class="ft__scrim"></div>
+  {/* Export 2: warm dark grain, not a photograph. */}
+  <GrainField tone="dark" second />
   <div class="wrap">
     <div class="ft__grid ft__top">
       {/* The real mark, masked so it reads white on the dark ground. */}
@@ -139,24 +125,6 @@ const year = new Date().getFullYear()
     color: var(--c-on-dark);
     padding-block: 61px 35px;
     overflow: hidden;
-  }
-  .ft__bg {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transform: scaleY(-1);
-  }
-  /* Enough to hold the type, not enough to bury the photograph. The nebula
-     runs bright through the middle, which is exactly where the 50%-opacity
-     legal type sits, so this is set by contrast rather than by taste. */
-  .ft__scrim {
-    position: absolute; inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(11, 11, 11, 0.42) 0%,
-      rgba(11, 11, 11, 0.58) 46%,
-      rgba(11, 11, 11, 0.72) 100%
-    );
   }
   .ft > .wrap { position: relative; z-index: 1; }
   .ft__grid {

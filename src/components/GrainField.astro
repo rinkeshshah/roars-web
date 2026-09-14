@@ -1,0 +1,90 @@
+---
+/**
+ * The export-2 ground: a gradient, one or two slow radial drifts, and an
+ * overlay grain. Used by the hero (yellow), the Projects band and the footer
+ * (both warm dark). One component so the three cannot drift apart.
+ *
+ * THE GRAIN IS STATIC. The prototypes paint a full-size <canvas> of noise per
+ * section and animate nothing on it, which costs a 1440x900 pixel loop on the
+ * page's LCP neighbourhood for a texture that never changes. This repeats one
+ * 128px tile rendered once at build time. Same overlay, no canvas.
+ *
+ * THE DRIFTS respect prefers-reduced-motion, and `will-change` is applied only
+ * for the first pass and dropped after: leaving it on pins a compositor layer
+ * for the life of the page.
+ */
+import grain from '../assets/grain.png'
+
+interface Props {
+  /** yellow: the homepage hero. dark: Projects and the footer. */
+  tone: 'yellow' | 'dark'
+  /** Second drift. The footer has two, the Projects band one. */
+  second?: boolean
+  grainOpacity?: number
+}
+const { tone, second = false, grainOpacity = tone === 'yellow' ? 0.3 : 0.34 } = Astro.props
+---
+
+<div class={`gf gf--${tone}`} aria-hidden="true">
+  <span class="gf__drift gf__drift--a"></span>
+  {second && <span class="gf__drift gf__drift--b"></span>}
+  <span
+    class="gf__grain"
+    style={`--grain:url(${grain.src});--grain-o:${grainOpacity}`}
+  ></span>
+</div>
+
+<style>
+  .gf { position: absolute; inset: 0; overflow: hidden; }
+  .gf--yellow { background: linear-gradient(100deg, #FFE45C 0%, #FFD400 46%, #F8C400 100%); }
+  .gf--dark   { background: linear-gradient(100deg, #0D0D0C 0%, #121110 46%, #17150E 78%, #0A0A0A 100%); }
+
+  .gf__drift {
+    position: absolute; display: block; border-radius: 50%;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+  .gf--yellow .gf__drift--a {
+    left: -11.1%; top: -24.4%; width: 76.4%; height: 122%;
+    background: radial-gradient(circle, rgba(255, 248, 205, 0.6) 0%, rgba(255, 212, 0, 0) 66%);
+    animation: gfDriftA 28s ease-in-out infinite;
+  }
+  .gf--yellow .gf__drift--b {
+    left: 52.8%; top: -17.8%; width: 66.7%; height: 122%;
+    background: radial-gradient(circle, rgba(20, 16, 4, 0.13) 0%, rgba(20, 16, 4, 0) 64%);
+    animation: gfDriftB 36s ease-in-out infinite;
+  }
+  .gf--dark .gf__drift--a {
+    left: -9.7%; top: -34.4%; width: 90.3%; height: 127%;
+    background: radial-gradient(circle, rgba(255, 212, 0, 0.12) 0%, rgba(255, 212, 0, 0) 62%);
+    animation: gfDriftA 33s ease-in-out infinite;
+  }
+  .gf--dark .gf__drift--b {
+    left: 56.9%; top: -10.9%; width: 69.4%; height: 109%;
+    background: radial-gradient(circle, rgba(255, 232, 115, 0.07) 0%, rgba(255, 232, 115, 0) 60%);
+    animation: gfDriftB 40s ease-in-out infinite;
+  }
+
+  @keyframes gfDriftA {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-110px, 40px, 0) scale(1.13); }
+  }
+  @keyframes gfDriftB {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1.08); }
+    50% { transform: translate3d(120px, -46px, 0) scale(1); }
+  }
+
+  .gf__grain {
+    position: absolute; inset: 0; display: block;
+    background: var(--grain) repeat;
+    background-size: 128px 128px;
+    mix-blend-mode: overlay;
+    opacity: var(--grain-o);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gf__drift { animation: none; will-change: auto; }
+  }
+</style>

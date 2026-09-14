@@ -127,6 +127,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
       import { initFilters } from '../scripts/filters'
       import { initCrossfade } from '../scripts/crossfade'
       import { initForms } from '../scripts/form'
+      import { initRotate } from '../scripts/rotate'
 
       initReveal()
       initTopbar()
@@ -135,6 +136,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
       initFilters()
       initCrossfade()
       initForms()
+      initRotate()
     </script>
 
     {!ALLOW_INDEXING && (
