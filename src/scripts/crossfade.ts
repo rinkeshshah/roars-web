@@ -1,22 +1,48 @@
 /**
- * Projects: one project at a time, advanced by scroll. Approved island 4 of 4.
+ * Projects: the cards hand over on scroll. Approved island 4 of 4.
  *
- * This used to hold the two slides at opacities summing to 1 across the
- * section's scroll range, on the reasoning that the slot is then never empty
- * and never double-exposed. It was wrong: at any point mid-range BOTH slides
- * were partly opaque, so both titles and both dates rendered on top of each
- * other. "02 Oct" drew through "15 Oct" and "Snowman Logistics." through
- * "Parqly." A cross-fade between two pieces of text is always a collision.
+ * THE HISTORY, because this has now been built three ways.
  *
- * So the switch is now discrete. Exactly one slide is visible at a time; every
- * other slide is visibility:hidden, which takes it out of the paint AND out of
- * the accessibility tree, so nothing can overlap even during the fade.
+ * It started as a true cross-fade, both slides holding opacities that summed
+ * to 1 across the range. That was wrong, but not quite for the reason that
+ * was recorded: mid-range both slides were partly opaque, so both titles and
+ * both dates painted through each other — "02 Oct" through "15 Oct",
+ * "Snowman Logistics." through "Parqly." A cross-fade between two pieces of
+ * TEXT is always a collision.
+ *
+ * The fix was to make the switch discrete: one slide visible, the rest
+ * visibility:hidden. That removed the collision, and the motion with it. The
+ * section became a slideshow that cuts, and the export's actual device — the
+ * incoming card riding up over the outgoing one — was gone.
+ *
+ * So the LAYERS are separated now, which is what the problem wanted all
+ * along:
+ *
+ *   - The CARD moves and fades continuously. Two images overlapping at part
+ *     opacity is the effect, not the defect.
+ *   - The TEXT switches discretely at the halfway point, and the outgoing
+ *     text is visibility:hidden, so it leaves the paint AND the accessibility
+ *     tree. Two dates are never on screen together at any opacity.
+ *
+ * Opacity stays on [data-slide] so neighbouring slides still sum to 1 and the
+ * slot is never empty — scripts/test-homepage.mjs asserts exactly that.
+ *
+ * Geometry is the export's: translateY(-56 * d), scale down by .04, across
+ * 620px of scroll, eased p²(3-2p).
  *
  * Never reads scrollY per event: an IntersectionObserver decides whether the
  * section is on screen at all, and only while it is does a rAF-throttled
  * handler sample the rect. Off screen it costs nothing. Under
  * prefers-reduced-motion the first slide simply stays put.
  */
+
+/** Scroll distance the handover takes, from the export. */
+const RANGE = 620
+/** How far the outgoing card lifts, from the export. */
+const LIFT = 56
+/** How far it shrinks, from the export. */
+const SHRINK = 0.04
+
 export function initCrossfade(): void {
   const stage = document.querySelector<HTMLElement>('[data-crossfade]')
   if (!stage) return
@@ -24,17 +50,23 @@ export function initCrossfade(): void {
   const slides = Array.from(stage.querySelectorAll<HTMLElement>('[data-slide]'))
   if (slides.length < 2) return
 
-  const show = (i: number) => {
+  /** The discrete half: only the active slide's text exists at all. */
+  const setActive = (i: number) => {
     slides.forEach((s, n) => {
       const on = n === i
-      s.style.opacity = on ? '1' : '0'
-      s.style.visibility = on ? 'visible' : 'hidden'
       s.setAttribute('aria-hidden', String(!on))
+      /* A half-faded card must not be clickable, or the link under the cursor
+         is whichever one happens to be painted on top. */
+      s.style.pointerEvents = on ? '' : 'none'
     })
   }
 
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    show(0)
+    slides.forEach((s, n) => {
+      s.style.opacity = n === 0 ? '1' : '0'
+      s.style.transform = ''
+    })
+    setActive(0)
     return
   }
 
@@ -42,14 +74,29 @@ export function initCrossfade(): void {
   let frame = 0
   let current = -1
 
+  const smooth = (x: number) => x * x * (3 - 2 * x)
+
   const sample = () => {
     const r = stage.getBoundingClientRect()
-    /* Progress of the stage through the viewport, 0 as it arrives at the
-       bottom, 1 as it leaves the top. */
-    const span = r.height + innerHeight
-    const p = Math.min(1, Math.max(0, (innerHeight - r.top) / span))
-    const i = Math.min(slides.length - 1, Math.floor(p * slides.length))
-    if (i !== current) { current = i; show(i) }
+    /* Zero when the stage sits at 62% of the viewport, one after RANGE more
+       pixels of scroll. Anchored to the stage's own rect rather than a page
+       offset, so it stays correct when the content above it changes length —
+       which is the trap the hard-coded pixel bands fell into. */
+    const raw = (innerHeight * 0.62 - r.top) / RANGE
+    const p = smooth(Math.min(1, Math.max(0, raw)))
+    const pos = p * (slides.length - 1)
+
+    for (let n = 0; n < slides.length; n++) {
+      const s = slides[n]
+      const d = pos - n
+      const away = Math.min(1, Math.abs(d))
+      s.style.opacity = String(Math.max(0, 1 - Math.abs(d)))
+      s.style.transform =
+        `translateY(${(-LIFT * d).toFixed(2)}px) scale(${(1 - SHRINK * away).toFixed(4)})`
+    }
+
+    const i = Math.round(pos)
+    if (i !== current) { current = i; setActive(i) }
   }
 
   const onScroll = () => {
@@ -63,7 +110,7 @@ export function initCrossfade(): void {
   })
   io.observe(stage)
 
-  show(0)
+  sample()
   addEventListener('scroll', onScroll, { passive: true })
   addEventListener('resize', onScroll, { passive: true })
 }

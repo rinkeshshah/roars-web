@@ -403,21 +403,33 @@ const schema = [
           </p>
         </div>
 
-        {/* Client logos. The files live on the WordPress install and arrive
-            with the Phase 5 uploads import; CLAUDE.md forbids hot-linking the
-            live site, so the row holds its 44px height and its edge fades
-            until then and is listed in the build report. */}
+        {/* Client logos.
+
+            DELIBERATE CHANGE FROM THE EXPORT, asked for directly. The export
+            draws a static flex row inside a 629px overflow:hidden box, so
+            with the real files at their drawn heights only Samsung, TATA and
+            GISAID ever appear and Forbes, Reliance and DDB are clipped off
+            the right edge — six marks paid for, three seen. It rotates now,
+            and the marks are smaller so more of the strip reads at once.
+
+            The row is duplicated and the track travels -50%, which is what
+            makes the loop seamless; the export's own edge fades cover both
+            entry and exit. The clone is aria-hidden with empty alts so the
+            six brands are announced once. */}
         <div class="about__logos" data-reveal>
-          <div class="about__logo-row">
-            {CLIENT_LOGOS.map((l, i) => (
-              <img
-                src={l.src}
-                alt={l.alt}
-                height={l.h}
-                style={`--i:${i}`}
-                loading="lazy"
-                decoding="async"
-              />
+          <div class="about__logo-track">
+            {[false, true].map((clone) => (
+              <div class="about__logo-row" aria-hidden={clone ? 'true' : undefined}>
+                {CLIENT_LOGOS.map((l, i) => (
+                  <img
+                    src={l.src}
+                    alt={clone ? '' : l.alt}
+                    style={`--logo-h:${l.h}px;--i:${i}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ))}
+              </div>
             ))}
           </div>
         </div>
@@ -562,12 +574,16 @@ const schema = [
         </ul>
       </div>
 
+      {/* No inline visibility on the slides: each card has to stay paintable
+          so the incoming image can ride up OVER the outgoing one, which is
+          the whole device. Only the text hides, and it hides discretely — see
+          .proj__slide[aria-hidden] below and scripts/crossfade.ts. */}
       <div class="proj__stage" data-crossfade>
         {featured.map((f, i) => (
           <article
             class="proj__slide"
             data-slide
-            style={`opacity:${i === 0 ? 1 : 0};visibility:${i === 0 ? 'visible' : 'hidden'}`}
+            style={`opacity:${i === 0 ? 1 : 0}`}
             aria-hidden={i === 0 ? undefined : 'true'}
           >
             <div class="proj__date">
@@ -981,34 +997,56 @@ const schema = [
   }
   .about__logos::before { left: 0; background: linear-gradient(270deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
   .about__logos::after { right: 0; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
-  /* One treatment for every mark, which is the point of the row: grayscale,
-     62%, and the height each file needs to sit on the same optical baseline
-     (22/27/24/22/27/22 — they are not the same number and forcing one makes
-     TATA and Reliance look small). All from the export.
+  /* One treatment for every mark, which is the point of the row: grayscale at
+     62%, full colour under the cursor. The heights keep the export's relative
+     proportions (22/27/24/22/27/22 — not one number, because forcing one
+     makes TATA and Reliance look small) scaled to 0.73, which is the "make
+     them smaller" half of the request.
 
-     The motion is an ADDITION, not fidelity: the export's row is static.
-     Each mark fades up in turn as the row arrives, and comes to full colour
-     under the cursor. Staggered off --i so it reads as one row moving rather
-     than six things appearing. */
-  .about__logo-row { display: flex; align-items: center; gap: 44px; height: 44px; padding-inline: 6px; }
+     THE ROTATION IS A DELIBERATE CHANGE, not fidelity. See the markup. The
+     track is two identical rows and travels exactly -50%, so the moment it
+     wraps, row two is where row one began and the loop is invisible. Duration
+     scales with the content, not the clock: 6 marks at ~5s each. */
+  .about__logo-track {
+    display: flex;
+    width: max-content;
+    animation: logoMarquee 30s linear infinite;
+  }
+  .about__logos:hover .about__logo-track,
+  .about__logos:focus-within .about__logo-track { animation-play-state: paused; }
+  @keyframes logoMarquee {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+  .about__logo-row {
+    display: flex; align-items: center; gap: 36px;
+    height: 44px; padding-inline: 18px;
+  }
+  /* The entrance stagger is KEPT alongside the rotation. The two do not fight:
+     the stagger is a Y lift and a fade on each mark, the marquee an X
+     translate on the track above them, so they compose. The row still arrives
+     as one thing moving rather than six things appearing, and then it turns. */
   .about__logo-row img {
     flex: 0 0 auto;
     width: auto;
+    height: calc(var(--logo-h, 22px) * 0.73);
     filter: grayscale(1);
     opacity: 0.62;
     translate: 0 6px;
     transition:
-      filter var(--dur-mid) ease,
+      filter var(--dur-fast) ease,
       opacity var(--dur-mid) ease calc(var(--i) * 70ms),
       translate var(--dur-mid) cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 70ms);
   }
   /* Visible by default. Gating opacity on .is-in meant that if the observer
-     never fired the row simply was not there — which is exactly how it
-     looked. The reveal now only supplies the lift. */
+     never fired the row simply was not there. The reveal supplies the lift. */
   .about__logos.is-in .about__logo-row img { translate: 0 0; }
   .about__logo-row img:hover { filter: grayscale(0); opacity: 1; }
 
+  /* A strip that moves on its own is exactly what this switches off. It still
+     clips at 629, so the export's own three-and-a-bit is what shows. */
   @media (prefers-reduced-motion: reduce) {
+    .about__logo-track { animation: none; }
     .about__logo-row img { translate: 0 0; transition: filter var(--dur-fast) ease; }
   }
 
@@ -1070,6 +1108,15 @@ const schema = [
        40, 43, 58, 0. Set per row from the data. */
     padding-bottom: var(--svc-pad, 43px);
   }
+  /* Those four numbers were measured with ROW 1 open, so they belong to that
+     state, not to those positions. Bound to the index alone, opening row 3
+     gave the tall open row the 58px gap meant for a short closed one and left
+     row 1 holding the open row's 40 — the rhythm inverted and the section
+     shuffled on every click. The gap follows the STATE: the open row takes 40
+     and the last row closes at 0, whichever rows those are. In the default
+     state this still resolves to exactly 40 / 43 / 58 / 0. */
+  .svc__row[data-open='true'] { padding-bottom: 40px; }
+  .svc__row:last-child { padding-bottom: 0; }
   /* An indented CLOSED row: an empty 463px rail, then the same four tracks. */
   .svc__row--inner { grid-template-columns: 463px 465px 232px 166px 36px; }
   /* The OPEN row is the only six-track row. */
@@ -1198,7 +1245,10 @@ const schema = [
   .svc__row[data-open='true'] .svc__icon::after { opacity: 0; }
   .svc__icon:hover { background: var(--c-accent); }
 
-  .svc__clients { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: var(--fs-body); font-weight: var(--fw-semi); line-height: 22px; letter-spacing: var(--ls-item); }
+  /* Opens at 26 like the description beside it, not hard against the rule,
+     and the three names sit on a plain 22px leading. The 10px gap made the
+     steps 32 and pushed "+ 11" past the block the export draws it in. */
+  .svc__clients { list-style: none; margin: 0; padding: 26px 0 0; display: flex; flex-direction: column; font-size: var(--fs-body); font-weight: var(--fw-semi); line-height: 22px; letter-spacing: var(--ls-item); }
   .svc__more { font-weight: var(--fw-medium); color: rgb(145, 144, 142); }
 
   .svc__foot {
@@ -1233,8 +1283,19 @@ const schema = [
     position: absolute; inset: 0;
     display: grid; grid-template-columns: 120px minmax(0, 1fr);
     gap: var(--sp-4);
-    transition: opacity .3s linear;
+    transform-origin: 50% 100%;
+    will-change: opacity, transform;
+    /* NO transition. The opacity and transform are sampled from the scroll
+       position every frame; a transition on top of that lags behind the
+       pointer and makes the handover feel elastic instead of tied to the
+       wheel. */
   }
+  /* The card overlaps. The TEXT does not: the outgoing date and title leave
+     the paint and the accessibility tree outright, so two dates are never on
+     screen together at any opacity. That collision is why this motion was
+     removed once already. */
+  .proj__slide[aria-hidden='true'] .proj__date,
+  .proj__slide[aria-hidden='true'] .proj__name { visibility: hidden; }
   .proj__slide:first-child { position: relative; }
   .proj__day { font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: #fbfbfb; }
   .proj__date .rule { margin-block: var(--sp-3); width: 85px; }
