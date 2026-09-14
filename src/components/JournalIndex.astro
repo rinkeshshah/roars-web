@@ -1,0 +1,310 @@
+---
+/**
+ * /our-journal/ — the writing. 115 posts.
+ *
+ * Built against design/prototypes/Roars v2 - Insights.dc.html.
+ * Canvas, section-relative: Header 780, Insights 1620.
+ *
+ * DRIVEN BY THE INVENTORY, NOT THE COLLECTION. src/content/posts/ is empty —
+ * the WXR export has not landed — and an index that waits for it is an index
+ * that links nothing. Every one of the 115 post URLs is live, indexed and
+ * earning impressions today, and thirteen of them are the only crawl path to
+ * work that is otherwise orphaned. So the cards come from the CSV and carry
+ * the name already in the URL. When the bodies migrate the entry wins and the
+ * card gains its date, its image and its excerpt.
+ *
+ * NO DATES YET, which is why the card draws without one. The CSV's lastmod is
+ * a WordPress `modified` value and 37 posts share a single bulk-edit date;
+ * printing those as publish dates would be manufactured freshness, which is a
+ * spam signal. See CLAUDE.md, known landmines.
+ *
+ * NO HERO CARD YET. The export opens on one full-width feature at 1362x536.
+ * It needs an image and an editor's choice of which post leads, and neither
+ * exists. It returns with the migration rather than featuring whatever sorts
+ * first.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from './Section.astro'
+import TopBar from './TopBar.astro'
+import NavOverlay from './NavOverlay.astro'
+import SiteFooter from './SiteFooter.astro'
+import GrainField from './GrainField.astro'
+import { PORTRAIT } from '../lib/media'
+import { site } from '../lib/site'
+import star5 from '../assets/star-5.svg'
+
+interface Props {
+  posts: { slug: string; href: string; name: string; date?: string }[]
+  page: number
+  lastPage: number
+  total: number
+}
+const { posts, page, lastPage, total } = Astro.props
+
+const path = page === 1 ? '/our-journal/' : `/our-journal/page/${page}/`
+const pageUrl = (n: number) => (n === 1 ? '/our-journal/' : `/our-journal/page/${n}/`)
+
+/* A window of five around the current page, so 10 pages do not become 10
+   numbers on a row that then wraps. */
+const window = Array.from({ length: lastPage }, (_, i) => i + 1).filter(
+  (n) => n === 1 || n === lastPage || Math.abs(n - page) <= 1,
+)
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${site.url}${path}#collection`,
+    name: 'Insights',
+    isPartOf: { '@id': `${site.url}/#website` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Insights' },
+    ],
+  },
+]
+---
+
+<BaseLayout
+  title="Insights: Product Work, Process and Nuance | Roars"
+  description="We have a lot to say about product work, how we approach the process, and the nuances of building for founders. Twenty years of it, written down."
+  path={path}
+  schema={schema}
+  noindex={page > 1}
+>
+  <TopBar slot="topbar" cta="contact" />
+  <NavOverlay />
+
+  {/* ── Header, 1440x780 ───────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="jh">
+      <GrainField tone="dark" second />
+      <div class="wrap jh__inner">
+        <div class="jh__rail" data-reveal>
+          <span class="jh__who">
+            <img src={PORTRAIT.founder} alt="" width="42" height="42" />
+            <span class="jh__name">Rinkesh A Shah</span>
+            <span class="jh__role">Founder</span>
+          </span>
+          <p class="jh__statement">
+            We have a lot to say about product work, how we approach the process, and the
+            nuances of building for founders.
+          </p>
+        </div>
+
+        <div class="jh__mast" data-reveal>
+          <span class="jh__chip">
+            <span>roars</span>
+            <span class="starmark jh__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+          </span>
+          <h1 class="jh__large">Insights</h1>
+        </div>
+
+        <div class="jh__count" data-reveal>
+          <span class="jh__disc">{total}</span>
+          <span class="jh__count-label">Pieces written</span>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── The list, three across ─────────────────────────────── */}
+  <Section ground="light">
+    <div class="jl">
+      <span class="jl__rule" aria-hidden="true"></span>
+      <span class="jl__eyebrow">
+        {page === 1 ? `ALL INSIGHTS / ${total}` : `PAGE ${page} OF ${lastPage} / ${total} PIECES`}
+      </span>
+
+      <ul class="jl__grid">
+        {posts.map((p, i) => (
+          <li data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
+            <a href={p.href}>
+              {/* The export's circular thumbnail. Drawn, not sourced: post
+                  imagery arrives with the bodies, and a circle of flat tint
+                  is honest where a stock photo would not be. */}
+              <span class="jl__disc" aria-hidden="true"></span>
+              <span class="jl__hair" aria-hidden="true"></span>
+              <span class="jl__title">{p.name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {lastPage > 1 && (
+        <nav class="jl__pager" aria-label="Insights pages">
+          <a
+            class="jl__step"
+            href={page > 1 ? pageUrl(page - 1) : undefined}
+            aria-disabled={page === 1 ? 'true' : undefined}
+            rel="prev"
+          >← Previous</a>
+
+          <span class="jl__nums">
+            {window.map((n, i) => (
+              <>
+                {i > 0 && window[i - 1] !== n - 1 && <span class="jl__gap" aria-hidden="true">…</span>}
+                <a
+                  href={pageUrl(n)}
+                  aria-current={n === page ? 'page' : undefined}
+                >{n}</a>
+              </>
+            ))}
+          </span>
+
+          <a
+            class="jl__step"
+            href={page < lastPage ? pageUrl(page + 1) : undefined}
+            aria-disabled={page === lastPage ? 'true' : undefined}
+            rel="next"
+          >Next →</a>
+        </nav>
+      )}
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    blurbTitle="Reading is cheaper than learning it twice."
+    blurb="Most of what is here we worked out the expensive way. If one of these is the problem in front of you, we can go deeper than the post does."
+    tagline="twenty years, written down"
+    ctaLabel="Shall we chat?"
+    ctaHref="https://meet.roarsinc.com/sales"
+  />
+</BaseLayout>
+
+<style>
+  /* ── header ─────────────────────────────────────────────── */
+  .jh { position: relative; }
+  .jh__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 449px minmax(0, 1fr);
+    align-content: start; padding-block: 96px 0; min-height: 780px;
+  }
+  .jh__rail { grid-column: 1; grid-row: 1; width: 384px; }
+  .jh__who { position: relative; display: block; height: 42px; }
+  .jh__who img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: rgba(255, 255, 255, 0.12); }
+  .jh__name, .jh__role {
+    position: absolute; left: 56px;
+    font-size: var(--fs-label); line-height: 20px; letter-spacing: -0.05em;
+  }
+  .jh__name { top: 6px; font-weight: var(--fw-semi); color: rgba(255, 255, 255, 0.95); }
+  .jh__role { top: 25px; font-weight: var(--fw-medium); color: rgba(255, 255, 255, 0.6); }
+  .jh__statement {
+    margin: 32px 0 0; width: 384px;
+    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.92);
+  }
+
+  .jh__mast { grid-column: 2; grid-row: 1; margin-top: 367px; }
+  .jh__chip { position: relative; display: flex; align-items: flex-start; height: 24px; margin-left: 13px; }
+  .jh__chip > span:first-child {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(251, 251, 251); padding-top: 4px;
+  }
+  .jh__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: rgb(251, 251, 251); }
+  .jh__large {
+    margin: 28px 0 0 6px;
+    font-size: clamp(56px, 8.62vw, 124px); line-height: 86px; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: rgb(251, 251, 251);
+  }
+  .jh__count {
+    grid-column: 2; grid-row: 1; justify-self: end; align-self: start;
+    display: flex; align-items: center; gap: 28px; margin-top: 344px;
+  }
+  .jh__disc {
+    display: flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 50%; background: var(--c-white);
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .jh__count-label {
+    width: 127px;
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ── the list ───────────────────────────────────────────── */
+  .jl { padding-block: 80px 110px; }
+  .jl__rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+  .jl__eyebrow {
+    display: block; margin-top: 24px;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
+  }
+
+  /* The export's card: a 138px disc on the right, a rule under it, then the
+     date and the title. 435x300, three across. */
+  .jl__grid {
+    list-style: none; margin: 80px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, 435fr); column-gap: 26px; row-gap: 60px;
+  }
+  .jl__grid a { position: relative; display: block; min-height: 300px; }
+  .jl__disc {
+    position: absolute; left: 234px; top: 0;
+    width: 138px; height: 138px; border-radius: 50%;
+    background: rgb(241, 241, 239);
+    transition: background var(--dur-fast) ease;
+  }
+  .jl__grid a:hover .jl__disc { background: var(--c-accent); }
+  .jl__hair { position: absolute; left: 2px; top: 174px; width: 433px; height: 1px; background: rgba(153, 152, 149, 0.7); }
+  /* The export sets the date at 42px on the left and the title in a 200px
+     column beside it. With no date the title takes the whole card rather than
+     sitting in a narrow column next to an empty one. It moves back when the
+     bodies migrate and bring real dates with them. */
+  .jl__title {
+    position: absolute; left: 0; top: 196px; width: 400px;
+    font-size: 18px; line-height: 27px; font-weight: var(--fw-medium);
+    letter-spacing: -0.03em; color: rgb(20, 20, 20);
+    transition: color var(--dur-fast) ease;
+  }
+  .jl__grid a:hover .jl__title { color: var(--c-black); }
+
+  /* ── pager ──────────────────────────────────────────────── */
+  .jl__pager {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 90px; padding-top: 28px; border-top: 0.5px solid var(--c-rule-soft);
+  }
+  .jl__nums { display: flex; align-items: center; gap: 6px; }
+  .jl__nums a, .jl__step {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 40px; height: 40px; padding: 0 14px; border-radius: var(--r-pill);
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-button); color: rgb(20, 20, 20);
+    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.16);
+    transition: background var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  }
+  .jl__nums a:hover, .jl__step:hover { box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.4); }
+  .jl__nums a[aria-current='page'] { background: var(--c-accent); box-shadow: none; }
+  /* The ends are not links at the ends. A disabled step keeps its place in
+     the row so the numbers do not shift between pages. */
+  .jl__step[aria-disabled='true'] {
+    color: rgba(20, 20, 20, 0.3); box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.08);
+    pointer-events: none;
+  }
+  .jl__gap { padding: 0 4px; font-size: var(--fs-label); color: var(--c-ink-label); }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .jh__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 120px 72px; row-gap: 36px; }
+    .jh__rail, .jh__mast, .jh__count { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 0; width: auto; }
+    .jh__statement { width: auto; max-width: 440px; }
+    .jh__large { line-height: 1.04; margin-left: 0; }
+
+    .jl { padding-block: 64px 72px; }
+    .jl__grid { margin-top: 48px; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 40px; }
+    .jl__grid a { min-height: 0; padding-top: 18px; }
+    .jl__disc, .jl__hair, .jl__title { position: static; }
+    .jl__disc { width: 88px; height: 88px; }
+    .jl__hair { width: 100%; margin: 18px 0; }
+    .jl__title { width: auto; }
+    .jl__pager { flex-wrap: wrap; gap: 16px; margin-top: 56px; }
+  }
+  @media (max-width: 680px) {
+    .jl__grid { grid-template-columns: 1fr; }
+  }
+</style>

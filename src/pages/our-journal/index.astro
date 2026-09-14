@@ -1,0 +1,16 @@
+---
+/**
+ * /our-journal/ — page one. A real inventory URL, marked "index page".
+ *
+ * Page 2+ lives at /our-journal/page/N/ and carries noindex, per
+ * docs/SEO-SPEC.md section 6: paginated views beyond page 1 are excluded from
+ * the sitemap and the index. That does NOT orphan anything — every one of the
+ * 115 posts is its own sitemap entry, so the crawl path never runs through a
+ * paginated page. This is the difference from /work/, where pagination was
+ * rejected: there the index was the only path to the case studies.
+ */
+import JournalIndex from '../../components/JournalIndex.astro'
+import { JOURNAL, LAST_PAGE, pageItems } from '../../lib/journal'
+---
+
+<JournalIndex posts={pageItems(1)} page={1} lastPage={LAST_PAGE} total={JOURNAL.length} />

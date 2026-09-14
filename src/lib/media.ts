@@ -43,15 +43,24 @@ export const CLIENT_LOGOS = [
   { src: `${U}/2022/07/home-brand06.png`, alt: 'DDB', h: 22 },
 ] as const
 
-/** Case-study imagery. */
+/**
+ * Case-study imagery.
+ *
+ * The five the /work/ index draws are taken from design/specs/Projects.md, in
+ * its row order, because that export is the authority for that page. Three of
+ * them pointed at different live files carried over from an earlier session —
+ * also real, also on the server, but not the ones the design uses. Where a
+ * future page needs a different shot of the same client it gets its own key
+ * rather than editing one of these.
+ */
 export const WORK = {
   parqly: `${U}/2025/07/parqly-parking-mobile-app.jpg`,
   snowman: `${U}/2026/02/Snowman-Logistics-app-solution.jpg`,
-  gymbait: `${U}/2024/07/gymbait-ai-fitness-1.png`,
-  gisaid: `${U}/2022/08/GISAID-work-python.jpeg`,
+  gymbait: `${U}/2025/07/ai-fitness-home.jpg`,
+  gisaid: `${U}/2025/07/health-tech-covid.jpg`,
   advisee: `${U}/2025/03/advisee-finance-featured.jpg`,
   companyguru: `${U}/2025/03/companyguru.jpg`,
-  concierge: `${U}/2025/07/ai-concierges-mobile-app.jpg`,
+  concierge: `${U}/2025/07/concierge-ai-home.jpg`,
   ventura: `${U}/2023/02/ventura-law-header-12.jpg`,
   clubSocial: `${U}/2022/08/club-social.jpg`,
 } as const
