@@ -361,7 +361,12 @@ const schema = [
   /* Row two is one card under column two, and the counter under column four.
      Columns 1 and 3 are empty by design. */
   .agb__grid > :nth-child(5) { grid-column: 2; }
-  .agb__grid > .agb__rest { grid-column: 4; grid-row: 2; }
+  /* Spans the last two columns, not the fourth.
+     The block is 437px in the export — a 198px disc with the label set beside
+     it — but pinned to one 198px column the label's 54.691% offset landed at
+     108px, inside the disc, and "The rest of the Roars Fam" typed straight
+     over the 25. Column 3 is empty on this row, so the block takes both. */
+  .agb__grid > .agb__rest { grid-column: 3 / -1; grid-row: 2; justify-self: end; }
 
   .agb__person { width: 198px; }
   .agb__disc { display: block; width: 198px; height: 198px; border-radius: 50%; overflow: hidden; background: rgb(217, 217, 217); }

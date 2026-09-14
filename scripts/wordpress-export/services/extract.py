@@ -184,6 +184,17 @@ def build(path):
     pairs = pairs_of(blocks)
     proc = [(h, p) for i, h, p in pairs if i < work_at][:5]
     offer = [(h, p) for i, h, p in pairs if i > work_at][:6]
+    # Not every page has a featured project — mobile-app-development has no
+    # /work/ link at all — and without one the split put every block into the
+    # process and left the page with no offer section, ending after four
+    # steps. Split the run instead: the first four describe how the work goes,
+    # the rest describe what is on offer.
+    if not offer and len(proc) > 3:
+        proc, offer = proc[:4], proc[4:]
+    if not offer:
+        all_pairs = [(h, p) for _, h, p in pairs]
+        if len(all_pairs) > 5:
+            proc, offer = all_pairs[:4], all_pairs[4:10]
     used = {h for h, _ in proc} | {h for h, _ in offer}
 
     small, large = HEADLINE[slug]

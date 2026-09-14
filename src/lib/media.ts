@@ -68,17 +68,25 @@ export const WORK = {
 } as const
 
 /**
- * The photograph at the top of a /work/[slug]/ page, by slug.
+ * THE PHOTOGRAPH AT THE TOP OF A /work/[slug]/ PAGE, by slug.
  *
- * Read off PROJECTS rather than kept as a second list. Every project already
- * names its own art there, and that is what the /work/ index draws; a
- * separate map beside it went stale the moment a band credited a project it
- * had never heard of. It had exactly one entry — club-social — so the
- * featured block on eight industry pages drew nothing.
+ * One value, two readers: the work page draws it as its own header, and any
+ * band that credits that project draws the same file. That is the point — a
+ * featured band is meant to show the project's header, so it must not be able
+ * to show anything else.
  *
- * A project with no `image` returns undefined and the caller draws no image.
- * That is deliberate: the live paths are not derivable (the /YYYY/MM/ segment
- * is whatever month the file was uploaded), and a guessed one is a 404 that
+ * Read off PROJECTS rather than kept as a second list. A separate map beside
+ * it went stale the moment a band credited a project it had never heard of:
+ * it had exactly one entry, club-social, so the featured block on eight
+ * industry pages drew nothing at all.
+ *
+ * Where a project has a content file with its own heroImage, that wins and
+ * this is the fallback. scripts/validate-content.mjs fails the build if the
+ * two ever disagree, so the work page and the bands cannot drift apart.
+ *
+ * A project with no art returns undefined and the caller draws no image. That
+ * is deliberate: the live paths are not derivable (the /YYYY/MM/ segment is
+ * whatever month the file was uploaded), and a guessed one is a 404 that
  * looks like a bug rather than a gap.
  */
 export const workHeroFor = (href: string): string | undefined => {

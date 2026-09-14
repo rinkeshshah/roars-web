@@ -22,8 +22,14 @@ process:
       body: "Once the pre-design stage is completed, we adapt the full recommendation approach to move on to your application’s UI & UX design by ensuring that it is entirely conceived. In short, we start making a wireframe of your product with a detailed analysis of the prototype if required."
     - name: "Development"
       body: "After the pre-design and design stage, we allocate our skilled and experienced mobile app resources to develop a successful digital product. Once your app is ready to appear, our developers will help you deploy it on the app store or play store."
-    - name: "Expert Mobile App development company"
-      body: "We provide full-cycle mobile app development solutions right from business analysis to your mobile app’s design and development. As a expert mobile app development company, We will help you build mobile apps as per your business requirements, in the budget, and as your timeline."
+bands:
+  - key: "capabilities"
+    label: "WHAT WE DO"
+    heading: "Expert Mobile App development company"
+    items:
+      - tag: "EXPERT"
+        name: "Expert Mobile App development company"
+        body: "We provide full-cycle mobile app development solutions right from business analysis to your mobile app’s design and development. As a expert mobile app development company, We will help you build mobile apps as per your business requirements, in the budget, and as your timeline."
 cta:
   label: "Start here"
   heading: "Let’s talk about your mobile app idea and get started on your project today!"

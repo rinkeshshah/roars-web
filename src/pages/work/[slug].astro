@@ -15,7 +15,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
-import { PORTRAIT } from '../../lib/media'
+import { PORTRAIT, workHeroFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { clientFor } from '../../lib/projects'
 import { site } from '../../lib/site'
@@ -64,6 +64,22 @@ const d = entry?.data
    today; the rest keep the pending state, which is noindex, rather than a
    layout wrapped around a client name. */
 const designed = Boolean(d?.about)
+
+/* The header photo. One value shared with every band that credits this
+   project, so what a reader sees on an industry page is what they get when
+   they follow the link.
+   A content file's own heroImage wins; the registry is the fallback, and the
+   two must not disagree — a band showing one photo and the page showing
+   another is the bug this is here to prevent. */
+const registryHero = workHeroFor(`/work/${slug}/`)
+if (d?.heroImage && registryHero && d.heroImage !== registryHero) {
+  throw new Error(
+    `work/${slug}: heroImage is "${d.heroImage}" but src/lib/projects.ts says ` +
+      `"${registryHero}". The work page header and the featured bands that ` +
+      'credit this project must show the same photograph. Fix one of them.',
+  )
+}
+const heroSrc = d?.heroImage ?? registryHero
 const faces = (d?.team ?? [])
   .map((k) => PORTRAIT[k as keyof typeof PORTRAIT])
   .filter(Boolean)
@@ -114,9 +130,13 @@ const faces = (d?.team ?? [])
           )}
         </div>
 
-        {d.heroImage && (
+        {heroSrc && (
           <div class="pd__hero" data-reveal>
-            <img src={d.heroImage} alt={d.heroAlt || ''} width="1358" height="737" loading="lazy" decoding="async" />
+            <img
+              src={heroSrc}
+              alt={d.heroAlt || ''}
+              width="1358" height="737" loading="lazy" decoding="async"
+            />
           </div>
         )}
 

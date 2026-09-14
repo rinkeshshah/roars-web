@@ -214,7 +214,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
             {d.journey.moments.map((m) => (
               <li class="ij__moment" data-reveal>
                 <span class="ij__n">{m.n}</span>
-                <h3 class="ij__name">{m.name}</h3>
+                <h3 class:list={['ij__name', m.name.length > 12 && 'ij__name--long']}>{m.name}</h3>
                 {m.lead && <p class="ij__lead">{m.lead}</p>}
                 <div class="ij__detail"><p>{m.body}</p></div>
                 {m.tags.length > 0 && (
@@ -549,12 +549,20 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
      never needed a width. Migrated pages name a capability instead ("HIPAA
      Compliant Apps"), which at 60px reached across into the body column at
      620. Capped to the rail it belongs to, and allowed to wrap. */
+  /* The name, the lead and the body are each absolutely placed at a fixed
+     top — 26, 104 and 152 — so the name has exactly 78px and cannot take a
+     second line. The design's names are one word and never did. A migrated
+     page names a capability instead, and "Custom eCommerce" at 60px wrapped
+     straight down through the lead beneath it.
+     Long names come down to 40px, which keeps any name the extractor can
+     produce (18 characters) on one line inside the 470px rail. */
   .ij__name {
     position: absolute; left: 74px; top: 26px; margin: 0; max-width: 470px;
     font-size: 60px; line-height: 66px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
-    overflow-wrap: break-word;
+    white-space: nowrap;
   }
+  .ij__name--long { font-size: 40px; line-height: 46px; }
   .ij__lead {
     position: absolute; left: 78px; top: 104px; width: 400px;
     font-size: 20px; line-height: 28px; font-weight: var(--fw-medium);
@@ -737,8 +745,11 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   /* ── other sectors ──────────────────────────────────────── */
   .isc { position: relative; padding-block: 80px 60px; min-height: 980px; }
   .isc .i-eyebrow { margin-top: 24px; }
+  /* Capped short of .isc__intro at 67.695%. The heading is a block, so
+     without a cap its box runs the full 1362 and sits under that column —
+     the same shape of bug as the service page's featured client name. */
   .isc__h {
-    margin: 22px 0 0 -7px;
+    margin: 22px 0 0 -7px; max-width: 62%;
     font-size: clamp(46px, 5.84vw, var(--fs-display)); line-height: 86px;
     font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading);
   }

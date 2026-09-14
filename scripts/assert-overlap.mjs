@@ -133,7 +133,14 @@ for (const [name, url] of PAGES) for (const width of WIDTHS) {
       const c = getComputedStyle(el)
       if (c.visibility === 'hidden' || c.display === 'none' || parseFloat(c.opacity) < 0.05) return false
       if (c.display === 'inline') return false
-      if (c.position === 'absolute' || c.position === 'fixed') return false
+      /* Absolutely placed boxes are IN, fixed ones are out.
+         Skipping absolute boxes was how three real collisions got past this:
+         a 60px capability name wrapping down through the lead under it, a
+         featured client name reaching into the paragraph beside it, and a
+         section heading sitting under an absolutely placed intro. Half this
+         site's layouts are absolute — excluding them excluded the bugs.
+         `fixed` stays out: the top bar is meant to sit over the page. */
+      if (c.position === 'fixed') return false
       const r = el.getBoundingClientRect()
       if (r.width <= 4 || r.height <= 4) return false
       if (clipped(el, r)) return false
@@ -143,8 +150,33 @@ for (const [name, url] of PAGES) for (const width of WIDTHS) {
       }
       return true
     })
-    const box = el => { const r = el.getBoundingClientRect(); return { l: r.left, t: r.top + scrollY, r: r.right, b: r.bottom + scrollY, el } }
-    const bs = els.map(box)
+    /* INK, not the element box.
+     *
+     * A block-level heading's box is the full column width whatever the
+     * words are, so every short heading "overlaps" anything absolutely
+     * placed beside it — dozens of reports where not a pixel of type
+     * touches. A Range over the element's own text nodes returns one rect
+     * per line of actual glyphs, which is what a reader sees.
+     *
+     * The rects are unioned per element. Comparing line by line would be
+     * more precise still and would also start reporting the descender of
+     * one line against the ascender of the next in a tight setting. */
+    const box = (el) => {
+      const range = document.createRange()
+      let l = Infinity, t = Infinity, r = -Infinity, b = -Infinity
+      for (const n of el.childNodes) {
+        if (n.nodeType !== 3 || !n.textContent.trim()) continue
+        range.selectNodeContents(n)
+        for (const q of range.getClientRects()) {
+          if (q.width < 1 || q.height < 1) continue
+          l = Math.min(l, q.left); t = Math.min(t, q.top)
+          r = Math.max(r, q.right); b = Math.max(b, q.bottom)
+        }
+      }
+      if (l === Infinity) return null
+      return { l, t: t + scrollY, r, b: b + scrollY, el }
+    }
+    const bs = els.map(box).filter(Boolean)
     const hits = []
     for (let i = 0; i < bs.length; i++) for (let j = i + 1; j < bs.length; j++) {
       const a = bs[i], c = bs[j]
