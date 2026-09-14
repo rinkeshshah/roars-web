@@ -87,16 +87,27 @@ import mark from '../assets/roars-mark.png'
     pointer-events: none;
   }
 
+  /* THE MARK IS ONE COLOUR AT ALL TIMES. It does not interpolate.
+     Transitioning the ink meant half a second of values between yellow and
+     black — rgb(151,127,5) and the like — and a dark gold at 26px reads as
+     red-brown, which is what was showing on every ground change. Moving the
+     interpolation to oklab held the hue but did not fix it, because the
+     problem is the intermediate value existing at all, not its hue.
+     So the ink SWITCHES. The mark is #FFD400, #0B0B0B or #FFFFFF and nothing
+     between. The motion is the progress ring and the intro; the ink is a
+     state, and states do not need to be animated to feel alive.
+     `--mark-ink` stays a registered property so it holds a real colour value
+     rather than a string. */
   .chip__mark {
     position: relative;
     display: block;
     width: 26px;
     height: 33px;
-    background: var(--c-accent);
+    --mark-ink: var(--c-accent);
+    background: var(--mark-ink);
     -webkit-mask: var(--mark) center / contain no-repeat;
     mask: var(--mark) center / contain no-repeat;
-    /* .5s, matching the export's filter transition. */
-    transition: background 0.5s ease;
+    /* No transition on the ink. See the note above. */
     /* The export's own intro: a quarter turn and a slight overshoot as the
        page opens, 1100ms on a 300ms delay. It settles to nothing, so it costs
        one animation and no layout. */
@@ -111,11 +122,11 @@ import mark from '../assets/roars-mark.png'
 
   /* Light ground. The observer sets this on the top bar. */
 
-  :global(.topbar.is-light) .chip__mark { background: var(--c-footer); }
+  :global(.topbar.is-light) .chip__mark { --mark-ink: var(--c-footer); }
   /* brightness(0) in the export: the mark goes to ink on hover, from either
      ground, over the same half second. */
-  .chip:hover .chip__mark { background: var(--c-footer); }
-  :global(.topbar:not(.is-light)) .chip:hover .chip__mark { background: var(--c-white); }
+  .chip:hover .chip__mark { --mark-ink: var(--c-footer); }
+  :global(.topbar:not(.is-light)) .chip:hover .chip__mark { --mark-ink: var(--c-white); }
 
   @media (prefers-reduced-motion: reduce) {
     .chip__mark { transition: none; }

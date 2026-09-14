@@ -27,10 +27,12 @@ import { PORTRAIT } from '../lib/media'
 import mark from '../assets/roars-mark.png'
 
 interface Props {
-  /** This page's closing line. Omit for the shipped default. */
+  /** The closing CTA's two parts. Omit either for the shipped default. */
+  blurbTitle?: string
   blurb?: string
 }
 const {
+  blurbTitle = 'Let’s get your project started.',
   blurb = 'Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.',
 } = Astro.props
 
@@ -45,7 +47,8 @@ const year = new Date().getFullYear()
       {/* The real mark, masked so it reads white on the dark ground. */}
       <span class="ft__mark" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
       <div class="ft__blurb">
-        <p>{blurb}</p>
+        <p class="ft__blurb-title">{blurbTitle}</p>
+        <p class="ft__blurb-body">{blurb}</p>
         <div class="ft__by">
           <img class="ft__face" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
           <span class="ft__by-text">
@@ -152,7 +155,19 @@ const year = new Date().getFullYear()
     mask: var(--mark) center / contain no-repeat;
   }
   .ft__blurb { grid-column: 2 / 4; max-width: 384px; }
-  .ft__blurb p {
+  /* Two parts, not one paragraph. The export draws only the description here;
+     the title is the live site's, and without it the block is a statement
+     with nothing to act on. Both are existing steps — 24 and 22 — so this
+     adds a line, not an eleventh size. */
+  .ft__blurb-title {
+    font-size: var(--fs-item);
+    line-height: 1.28;
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item);
+    color: var(--c-white);
+    margin-bottom: var(--sp-3);
+  }
+  .ft__blurb-body {
     font-size: var(--fs-intro);
     line-height: 1.36;
     letter-spacing: var(--ls-item);

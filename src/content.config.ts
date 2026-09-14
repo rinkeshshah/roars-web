@@ -80,8 +80,14 @@ const cta = z
       .optional(),
     ctaLabel: z.string().min(2).max(32).optional(),
     ctaHref: z.string().min(1).optional(),
-    /** The footer's closing line for this entry. One sentence: the block is
-     *  drawn 384 wide at 22/30, so roughly four lines is the ceiling. */
+    /** The footer CTA's title for this entry. One short line. */
+    footerTitle: z
+      .string()
+      .min(8, 'cta.footerTitle is too short to be a title.')
+      .max(64, 'cta.footerTitle over 64 characters stops reading as a title.')
+      .optional(),
+    /** Its description. The block is drawn 384 wide at 22/30, so roughly four
+     *  lines is the ceiling. */
     footerBlurb: z
       .string()
       .min(12, 'cta.footerBlurb is too short to be a closing line.')

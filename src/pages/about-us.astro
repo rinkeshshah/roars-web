@@ -256,7 +256,14 @@ const schema = [
     </div>
   </Section>
 
-  <SiteFooter slot="footer" />
+  {/* This page's own close. The default is a real sentence, but a visitor who
+      has just read twenty years of history should be answered in those terms
+      rather than with the generic line. */}
+  <SiteFooter
+    slot="footer"
+    blurbTitle="Want the team behind 250 products?"
+    blurb="Tell us what you are building. We will tell you honestly whether we are the right fit, and what it would take."
+  />
 </BaseLayout>
 
 <style>

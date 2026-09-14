@@ -38,8 +38,9 @@ interface Props {
     body?: string
     ctaLabel?: string
     ctaHref?: string
-    /** The footer's closing line. Separate from the band's copy because the
-     *  band is a paragraph and this is one sentence. */
+    /** The footer's closing CTA, in two parts. Separate from the band's copy:
+     *  the band is a headline plus a paragraph, this is its own pair. */
+    footerTitle?: string
     footerBlurb?: string
   }
   /** Top bar call to action. See TopBar.astro for which prototype uses which. */
@@ -92,8 +93,8 @@ const {
     </Section>
   )}
 
-  {cta && <CtaBand {...({ ...(ctaCopy ?? {}), footerBlurb: undefined })} />}
-  <SiteFooter slot="footer" blurb={ctaCopy?.footerBlurb} />
+  {cta && <CtaBand {...({ ...(ctaCopy ?? {}), footerTitle: undefined, footerBlurb: undefined })} />}
+  <SiteFooter slot="footer" blurbTitle={ctaCopy?.footerTitle} blurb={ctaCopy?.footerBlurb} />
 </BaseLayout>
 
 <style>

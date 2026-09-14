@@ -100,3 +100,17 @@ img.is-missing { object-fit: fill; }
   -webkit-mask: var(--m) center / contain no-repeat;
   mask: var(--m) center / contain no-repeat;
 }
+
+/*
+ * The logo mark's ink, as a REGISTERED property so it interpolates in oklab.
+ * An unregistered custom property is a string and does not animate at all; a
+ * plain background-color transition animates in sRGB, and #FFD400 to #0B0B0B
+ * in sRGB passes through roughly rgb(133,111,5) — a muddy orange that reads
+ * as a red flash at 26px on every ground change. In oklab the same pair just
+ * darkens: hue holds, chroma falls. See src/components/LogoChip.astro.
+ */
+@property --mark-ink {
+  syntax: '<color>';
+  initial-value: #ffd400;
+  inherits: false;
+}
