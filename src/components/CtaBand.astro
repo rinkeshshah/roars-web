@@ -5,28 +5,27 @@
  */
 import Section from './Section.astro'
 import Button from './Button.astro'
-import Reveal from './Reveal.astro'
 import { site } from '../lib/site'
 ---
 
 <Section ground="dark" class="cta">
   <div class="cta__grid">
-    <Reveal class="cta__left">
+    <div data-reveal class="cta__left">
       <div class="cta__rule"></div>
       <span class="cta__label">A to B</span>
       <p class="cta__head">Find how we can help you get from A to B</p>
       <p class="cta__phones">
         USA {site.phones.US.display} &middot; UK {site.phones.UK.display}
       </p>
-    </Reveal>
-    <Reveal class="cta__right" delay={80}>
+    </div>
+    <div data-reveal class="cta__right" style="transition-delay:80ms">
       <p class="cta__body">
         Our love for innovation design and technology is evident in all our
         works. No detail is too small. Together, we&rsquo;ll make your business
         grow, manifold.
       </p>
       <Button href={site.booking} label="Request a Callback" variant="light" external />
-    </Reveal>
+    </div>
   </div>
 </Section>
 

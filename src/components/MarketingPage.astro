@@ -15,7 +15,6 @@ import TopBar from './TopBar.astro'
 import NavOverlay from './NavOverlay.astro'
 import SiteFooter from './SiteFooter.astro'
 import CtaBand from './CtaBand.astro'
-import Reveal from './Reveal.astro'
 
 interface Props {
   title: string
@@ -74,7 +73,7 @@ const {
     </Section>
   ) : (
     <Section ground="light">
-      <Reveal class="prose"><slot /></Reveal>
+      <div data-reveal class="prose"><slot /></div>
     </Section>
   )}
 

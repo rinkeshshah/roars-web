@@ -22,7 +22,6 @@ import TopBar from '../components/TopBar.astro'
 import NavOverlay from '../components/NavOverlay.astro'
 import CtaBand from '../components/CtaBand.astro'
 import SiteFooter from '../components/SiteFooter.astro'
-import Reveal from '../components/Reveal.astro'
 import { site } from '../lib/site'
 
 /** Real team names, from the brand guidelines content facts. No images yet. */
@@ -170,7 +169,7 @@ const faq = [
       <h2 class="ex__h">Reveal on intersect</h2>
       <div class="ex__reveals">
         {[0, 1, 2, 3].map((i) => (
-          <Reveal delay={i * 90} class="ex__tile">Tile {i + 1}</Reveal>
+          <div data-reveal class="ex__tile" style={`transition-delay:${i * 90}ms`}>Tile {i + 1}</div>
         ))}
       </div>
       <p class="ex__note">

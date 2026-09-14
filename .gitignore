@@ -10,3 +10,4 @@ dist/
 # Never commit a filled form config. The real one lives outside the docroot.
 public/api/contact-config.php
 exports/
+.compare/

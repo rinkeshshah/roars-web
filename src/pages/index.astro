@@ -20,10 +20,17 @@ import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import Button from '../components/Button.astro'
 import Accordion from '../components/Accordion.astro'
-import Reveal from '../components/Reveal.astro'
 import { Picture } from 'astro:assets'
 import { site } from '../lib/site'
 import space2000 from '../assets/space-2000.jpg'
+/* Decorative furniture. These carry the hero's art direction, so they are
+   part of the design rather than ornament, and they are aria-hidden because
+   they say nothing a screen reader needs. */
+import asteroids from '../assets/asteroids.svg'
+import asteroids2 from '../assets/asteroids-2.svg'
+import union from '../assets/union.svg'
+import star3 from '../assets/star-3.svg'
+import star5 from '../assets/star-5.svg'
 
 /* ------------------------------------------------------------ content */
 
@@ -252,22 +259,45 @@ const schema = [
 
   {/* ── 1. Header ───────────────────────────────────────────── */}
   <Section ground="light" class="hero" bleed>
-    {/* The LCP element. AVIF first, WebP fallback, eager and high priority,
-        with explicit dimensions so it reserves its own space. A raw <img>
-        here shipped the untouched 276KB JPEG and pushed LCP past budget. */}
-    <Picture
-      class="hero__bg"
-      src={space2000}
-      formats={['avif', 'webp']}
-      widths={[900, 1440, 2000]}
-      sizes="100vw"
-      quality={62}
-      alt=""
-      loading="eager"
-      fetchpriority="high"
-      decoding="sync"
-    />
+    {/* The photograph is a PANEL on the right, not a full bleed: it starts at
+        30% of the width and the left third stays white, which is what lets the
+        services rail read as dark type on paper. The LCP element. AVIF first,
+        eager and high priority. A raw <img> here shipped the untouched 276KB
+        JPEG and pushed LCP past budget. */}
+    <div class="hero__panel">
+      <Picture
+        class="hero__bg"
+        src={space2000}
+        formats={['avif', 'webp']}
+        widths={[900, 1440, 2000]}
+        sizes="70vw"
+        quality={62}
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+      />
+    </div>
+    {/* Wash across the seam, so the panel's left edge feathers into the paper
+        instead of cutting it. */}
     <div class="hero__veil"></div>
+
+    {/* Art direction. Absolutely positioned because it is decoration floating
+        over the composition, not layout: nothing below depends on it, and it
+        is removed from the accessibility tree entirely. */}
+    <div class="hero__deco" aria-hidden="true">
+      <div class="hero__belt">
+        <i class="hero__belt-a"></i>
+        <i class="hero__belt-b"></i>
+        <img class="hero__belt-1" src={asteroids.src} alt="" width="48" height="7" />
+        <img class="hero__belt-2" src={asteroids2.src} alt="" width="107" height="10" />
+      </div>
+      <div class="hero__planet">
+        <span class="hero__planet-body"></span>
+        <img class="hero__planet-dust" src={asteroids2.src} alt="" width="29" height="5" />
+        <span class="hero__planet-moon"></span>
+      </div>
+    </div>
 
     <div class="wrap hero__inner">
       <div class="hero__rail">
@@ -283,6 +313,7 @@ const schema = [
       <div class="hero__col">
         <p class="hero__kicker">Space of Product<br />Solutions</p>
         <h1 class="hero__wordmark">
+          <img class="hero__mark" src={union.src} alt="" width="73" height="9" aria-hidden="true" />
           roars<span class="hero__badge" aria-hidden="true">&reg;</span>
         </h1>
         <p class="hero__sub">Product Development<br />for Startups &amp; SMEs</p>
@@ -293,7 +324,7 @@ const schema = [
   {/* ── 2. About ────────────────────────────────────────────── */}
   <Section ground="light">
     <div class="about">
-      <Reveal class="about__stats">
+      <div data-reveal class="about__stats">
         <div class="about__stat">
           <p class="about__stat-name">Projects Delivered</p>
           <div class="rule"></div>
@@ -310,9 +341,9 @@ const schema = [
             <span class="about__stat-note">Clients who return for their next product</span>
           </div>
         </div>
-      </Reveal>
+      </div>
 
-      <Reveal class="about__est" delay={80}>
+      <div data-reveal class="about__est" style="transition-delay:80ms">
         <p class="about__est-name">Year of Establishment</p>
         <div class="rule"></div>
         <div class="about__est-row">
@@ -322,22 +353,22 @@ const schema = [
           </span>
           <span class="about__stat-num">2005</span>
         </div>
-      </Reveal>
+      </div>
 
-      <Reveal class="about__team" delay={120}>
+      <div data-reveal class="about__team" style="transition-delay:120ms">
         <p class="about__team-name">Team of Roars</p>
         <div class="rule rule--short"></div>
         <p class="about__team-count"><span>59</span></p>
-      </Reveal>
+      </div>
 
-      <Reveal class="about__who" delay={160}>
+      <div data-reveal class="about__who" style="transition-delay:160ms">
         <p class="about__who-name">Roars</p>
         <p class="about__who-sub">Product Company</p>
         <p class="about__who-person">Riinkesh A Sshah</p>
         <p class="about__who-role">CEO / Founder</p>
-      </Reveal>
+      </div>
 
-      <Reveal class="about__pitch" delay={200}>
+      <div data-reveal class="about__pitch" style="transition-delay:200ms">
         <p>
           We work with you as thinkers, creators, consultants, designers and
           implementers
@@ -348,7 +379,7 @@ const schema = [
             Our approach is simple — we bring clarity to complex situations.
           </span>
         </p>
-      </Reveal>
+      </div>
     </div>
   </Section>
 
@@ -452,11 +483,11 @@ const schema = [
 
       <ul class="say__list">
         {testimonials.map((t, i) => (
-          <Reveal as="li" class="say__item" delay={i * 70}>
+          <li data-reveal class="say__item" style={`transition-delay:${i * 70}ms`}>
             <p class="say__name">{t.name}</p>
             <p class="say__role">{t.role}</p>
             <blockquote class="say__quote">{t.quote}</blockquote>
-          </Reveal>
+          </li>
         ))}
       </ul>
 
@@ -477,13 +508,13 @@ const schema = [
 
       <ul class="ind__grid">
         {industries.map((s, i) => (
-          <Reveal as="li" delay={i * 50}>
+          <li data-reveal style={`transition-delay:${i * 50}ms`}>
             <a class="ind__card" href={s.href}>
               <span class="ind__letter" aria-hidden="true">{s.letter}</span>
               <span class="ind__name">{s.name}</span>
               <span class="ind__cta">View sector</span>
             </a>
-          </Reveal>
+          </li>
         ))}
       </ul>
 
@@ -507,14 +538,14 @@ const schema = [
 
       <ul class="ins__grid">
         {insights.map((p, i) => (
-          <Reveal as="li" delay={i * 70}>
+          <li data-reveal style={`transition-delay:${i * 70}ms`}>
             <a class="ins__card" href={p.href}>
               {/* Featured image arrives with the Phase 5 uploads import. */}
               <div class="ins__ph" aria-hidden="true"></div>
               <span class="ins__date">{p.day} {p.month}</span>
               <span class="ins__title">{p.title}</span>
             </a>
-          </Reveal>
+          </li>
         ))}
       </ul>
 
@@ -570,24 +601,72 @@ const schema = [
   }
 
   /* 1. hero ------------------------------------------------------------ */
-  .hero { min-height: 900px; display: flex; align-items: center; }
+  /* Geometry is expressed as percentages of the 1440 design width so it holds
+     at any viewport: the panel edge is 433/1440, the planet 395/1440, and so
+     on. Nothing here is a magic pixel. */
+  .hero { min-height: 900px; display: flex; align-items: center; background: var(--c-white); }
+
+  .hero__panel {
+    position: absolute; top: 0; bottom: 0;
+    left: 30.07%;              /* 433/1440 */
+    right: 0;
+    overflow: hidden;
+  }
   .hero__bg {
-    position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
     transform: scaleY(-1);
   }
-  /* The white wash on the left is what makes the rail legible over the
-     photograph. Straight from the spec's 90deg gradient. */
+  /* 330 -> 520 of 1440. White at the start, gone by the end, so the panel's
+     hard left edge dissolves rather than cuts. */
   .hero__veil {
-    position: absolute; inset: 0;
+    position: absolute; top: 0; bottom: 0;
+    left: 22.92%; width: 13.19%;
     background: linear-gradient(
       90deg,
       rgb(255, 255, 255) 0%,
-      rgba(255, 255, 255, 0.92) 26%,
-      rgba(255, 255, 255, 0) 58%
+      rgba(255, 255, 255, 0.92) 32%,
+      rgba(255, 255, 255, 0) 100%
     );
   }
+
+  /* decoration ---------------------------------------------------------- */
+  .hero__deco { position: absolute; inset: 0; pointer-events: none; }
+
+  /* The starbelt runs off the left edge, over the paper side. */
+  .hero__belt {
+    position: absolute;
+    left: -9.03%;              /* -130/1440 */
+    top: 40.78%;               /* 367/900   */
+    width: 36.32%;             /* 523/1440  */
+    height: 62px;
+  }
+  .hero__belt i { position: absolute; display: block; height: 1px; background: rgb(23, 23, 23); }
+  .hero__belt-a { left: 4.4%; top: 12px; width: 90.1%; transform: rotate(2.7deg); transform-origin: 0 0; }
+  .hero__belt-b { left: 0; top: 54px; width: 100%; transform: rotate(-2.8deg); transform-origin: 0 0; }
+  .hero__belt-1 { position: absolute; left: 20.3%; top: 54px; width: 48px; height: 7px; transform: rotate(181.3deg); transform-origin: 0 0; }
+  .hero__belt-2 { position: absolute; left: 23.7%; top: 0; width: 107px; height: 10px; transform: rotate(6.2deg); transform-origin: 0 0; }
+
+  /* The planet sits on the seam, half on paper and half on the photograph. */
+  .hero__planet {
+    position: absolute;
+    left: 27.43%;              /* 395/1440 */
+    top: 28.67%;               /* 258/900  */
+    width: 89px; height: 78px;
+  }
+  .hero__planet-body {
+    position: absolute; left: 0; top: 3px;
+    width: 75px; height: 75px; border-radius: var(--r-pill);
+    background: radial-gradient(
+      52.9% 52.9% at 90.36% 15.66%,
+      rgb(78, 73, 72) 0%,
+      rgb(0, 0, 0) 100%
+    );
+  }
+  .hero__planet-dust { position: absolute; left: 3px; top: 26px; width: 29px; height: 5px; opacity: 0.78; filter: invert(1); }
+  .hero__planet-moon { position: absolute; left: 75px; top: 0; width: 14px; height: 14px; border-radius: var(--r-pill); background: rgb(6, 6, 6); }
+
+  /* layout -------------------------------------------------------------- */
   .hero__inner {
     position: relative; z-index: 1;
     display: grid;
@@ -595,7 +674,8 @@ const schema = [
     align-items: end;
     padding-block: 260px 100px;
   }
-  .hero__rail { display: flex; gap: var(--sp-5); align-items: flex-start; }
+  /* The rail's baseline sits 104px above the wordmark block's, per the spec. */
+  .hero__rail { display: flex; gap: var(--sp-5); align-items: flex-start; margin-bottom: 104px; }
   .hero__services {
     list-style: none; margin: 0; padding: 0;
     font-size: var(--fs-label); font-weight: var(--fw-semi);
@@ -605,14 +685,19 @@ const schema = [
   .hero__ticks { display: flex; flex-direction: column; justify-content: space-between; height: 73px; margin-top: 13px; }
   .hero__ticks i { display: block; width: 16px; height: 1px; background: var(--c-black); }
 
-  .hero__col { position: relative; }
+  /* Kicker top right, wordmark left, sub indented under it. Three rows of a
+     grid, not three absolutely positioned boxes. */
+  .hero__col { position: relative; display: grid; justify-items: start; }
   .hero__kicker {
+    justify-self: end;
+    margin: 0;
     font-size: var(--fs-item); font-weight: var(--fw-medium);
     line-height: 32px; letter-spacing: -0.02em; color: var(--c-white);
   }
   .hero__wordmark {
+    position: relative;
     display: flex; align-items: flex-start; gap: var(--sp-2);
-    margin: var(--sp-4) 0 0;
+    margin: 75px 0 0;
     /* mix-blend-mode is deliberately NOT used. It is an extra compositing
        pass and a legibility gamble over an arbitrary photograph; the spec's
        own note flags it as a risk. Solid #FBFBFB is the documented fallback. */
@@ -622,6 +707,13 @@ const schema = [
     letter-spacing: var(--ls-item);
     color: #fbfbfb;
   }
+  /* The slash mark that cuts through the wordmark's baseline. */
+  .hero__mark {
+    position: absolute; left: 1px; top: 51px;
+    width: 73px; height: 9px;
+    filter: invert(1);
+    transform: rotate(6.7deg); transform-origin: 0 0;
+  }
   .hero__badge {
     display: flex; align-items: center; justify-content: center;
     width: 31px; height: 31px; margin-top: 19px;
@@ -630,7 +722,7 @@ const schema = [
     letter-spacing: 0; color: rgb(31, 31, 31);
   }
   .hero__sub {
-    margin-top: var(--sp-6);
+    margin: 95px 0 0 246px;
     font-size: var(--fs-body); font-weight: var(--fw-medium);
     line-height: 24px; letter-spacing: var(--ls-button); color: var(--c-white);
   }

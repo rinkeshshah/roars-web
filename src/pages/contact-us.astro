@@ -13,7 +13,6 @@ import Section from '../components/Section.astro'
 import TopBar from '../components/TopBar.astro'
 import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
-import Reveal from '../components/Reveal.astro'
 import { site } from '../lib/site'
 
 const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
@@ -65,7 +64,7 @@ const schema = [
 
   <Section ground="light">
     <div class="cx">
-      <Reveal class="cx__words">
+      <div data-reveal class="cx__words">
         <p class="cx__lead">
           Whether you are just interested to know more about what we do or would
           like to enroll our services to grow your business, we would love to
@@ -92,9 +91,9 @@ const schema = [
           <p class="cx__k">Offices</p>
           <p class="cx__v">India, the United States, the United Kingdom, Belgium and Germany.</p>
         </div>
-      </Reveal>
+      </div>
 
-      <Reveal class="cx__form" delay={80}>
+      <div data-reveal class="cx__form" style="transition-delay:80ms">
         <h2 class="cx__h2">Can we help you crack a complicated conundrum?</h2>
         <p class="cx__note">
           If you are interested in any of our products or services, we’d love to
@@ -151,7 +150,7 @@ const schema = [
             </p>
           </noscript>
         </form>
-      </Reveal>
+      </div>
     </div>
   </Section>
 
