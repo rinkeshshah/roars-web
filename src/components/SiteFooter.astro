@@ -226,7 +226,9 @@ const year = new Date().getFullYear()
     grid-column: 2 / 5;
     display: flex; align-items: flex-start; gap: var(--sp-2);
     font-size: clamp(var(--fs-wordmark-m), 12.6vw, var(--fs-wordmark));
-    font-weight: var(--fw-semi); line-height: 0.86;
+    /* 86px on a 182px wordmark in the export: a ratio, not 0.86. The box
+       was 70px too tall, which pushed the whole footer bottom down. */
+    font-weight: var(--fw-semi); line-height: 0.4725em;
     letter-spacing: var(--ls-item); color: var(--c-white);
   }
 

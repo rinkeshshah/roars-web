@@ -314,8 +314,8 @@ const schema = [
     <div class="about">
       {/* The paired star marks in the left rail. Decoration, so aria-hidden. */}
       <span class="about__stars" aria-hidden="true">
-        <img src={star3.src} alt="" width="20" height="20" />
-        <img src={star5.src} alt="" width="20" height="20" />
+        <span class="starmark" style={`--m:url(${star3.src});width:20px;height:20px`}></span>
+        <span class="starmark" style={`--m:url(${star5.src});width:20px;height:20px`}></span>
       </span>
       <div data-reveal class="about__stats">
         <div class="about__stat">
@@ -385,10 +385,17 @@ const schema = [
           the Phase 5 uploads import; CLAUDE.md forbids hot-linking the live
           site, so the row holds its 44px height and its edge fades until then
           and is listed in the build report. */}
-      <div class="about__logos">
+      <div class="about__logos" data-reveal>
         <div class="about__logo-row">
-          {CLIENT_LOGOS.map((l) => (
-            <img src={l.src} alt={l.alt} height={l.h} loading="lazy" decoding="async" />
+          {CLIENT_LOGOS.map((l, i) => (
+            <img
+              src={l.src}
+              alt={l.alt}
+              height={l.h}
+              style={`--i:${i}`}
+              loading="lazy"
+              decoding="async"
+            />
           ))}
         </div>
       </div>
@@ -553,8 +560,8 @@ const schema = [
 
       <div class="proj__foot">
         <span class="proj__stars" aria-hidden="true">
-          <img src={star3.src} alt="" width="17" height="17" />
-          <img src={star5.src} alt="" width="17" height="17" />
+          <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
+          <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
         </span>
         <Button href="/work/" label="All Projects" variant="light" />
       </div>
@@ -584,7 +591,7 @@ const schema = [
             <div class="say__rule"></div>
             <div class="say__stars" aria-label="Rated 5 out of 5">
               {[0, 1, 2, 3, 4].map(() => (
-                <img src={star5.src} alt="" width="14" height="14" aria-hidden="true" />
+                <span class="starmark" style={`--m:url(${star5.src});width:var(--st);height:var(--st)`} aria-hidden="true"></span>
               ))}
             </div>
             <blockquote class="say__quote">{t.quote}</blockquote>
@@ -643,8 +650,8 @@ const schema = [
 
       <div class="ind__foot">
         <span class="ind__stars" aria-hidden="true">
-          <img src={star3.src} alt="" width="17" height="17" />
-          <img src={star5.src} alt="" width="17" height="17" />
+          <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
+          <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
         </span>
         <Button href="/work/" label="See the work" />
       </div>
@@ -684,8 +691,8 @@ const schema = [
 
       <div class="ins__foot">
         <span class="ins__stars" aria-hidden="true">
-          <img src={star3.src} alt="" width="17" height="17" />
-          <img src={star5.src} alt="" width="17" height="17" />
+          <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
+          <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
         </span>
         <Button href="/our-journal/" label="All Insights" />
       </div>
@@ -795,11 +802,14 @@ const schema = [
     column-gap: 0;
     padding-block: 139px 123px;
   }
-  .about__stats { grid-column: 2 / 5; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 26px; }
+  /* Stats container at 139 in the section, and inside it: label 0, rule 43,
+     number 54, note 73. The 26px top margin put the whole block that far
+     below where the export has it. */
+  .about__stats { grid-column: 2 / 5; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
   .about__stat-name, .about__est-name {
-    font-size: var(--fs-intro); line-height: var(--lh-intro); font-weight: var(--fw-semi);
+    font-size: var(--fs-intro); line-height: 19px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-body); color: var(--c-black);
-    margin-bottom: 11px;
+    margin-bottom: 24px;
   }
   .about__stat-row {
     display: grid;
@@ -810,7 +820,7 @@ const schema = [
   .about__est-row { display: flex; align-items: flex-start; gap: var(--sp-5); margin-top: var(--sp-4); }
   .about__stat-num {
     font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display));
-    font-weight: var(--fw-semi); line-height: 1;
+    font-weight: var(--fw-semi); line-height: 43px;
     letter-spacing: var(--ls-display); color: var(--c-black);
   }
   .about__plus { font-size: 0.43em; font-weight: var(--fw-medium); }
@@ -862,8 +872,36 @@ const schema = [
   }
   .about__logos::before { left: 0; background: linear-gradient(270deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
   .about__logos::after { right: 0; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, var(--c-white) 100%); }
-  .about__logo-row { display: flex; align-items: center; gap: 44px; height: 44px; padding-inline: 6px; filter: grayscale(1); opacity: 0.62; }
-  .about__logo-row img { flex: 0 0 auto; width: auto; }
+  /* One treatment for every mark, which is the point of the row: grayscale,
+     62%, and the height each file needs to sit on the same optical baseline
+     (22/27/24/22/27/22 — they are not the same number and forcing one makes
+     TATA and Reliance look small). All from the export.
+
+     The motion is an ADDITION, not fidelity: the export's row is static.
+     Each mark fades up in turn as the row arrives, and comes to full colour
+     under the cursor. Staggered off --i so it reads as one row moving rather
+     than six things appearing. */
+  .about__logo-row { display: flex; align-items: center; gap: 44px; height: 44px; padding-inline: 6px; }
+  .about__logo-row img {
+    flex: 0 0 auto;
+    width: auto;
+    filter: grayscale(1);
+    opacity: 0.62;
+    translate: 0 6px;
+    transition:
+      filter var(--dur-mid) ease,
+      opacity var(--dur-mid) ease calc(var(--i) * 70ms),
+      translate var(--dur-mid) cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 70ms);
+  }
+  /* Visible by default. Gating opacity on .is-in meant that if the observer
+     never fired the row simply was not there — which is exactly how it
+     looked. The reveal now only supplies the lift. */
+  .about__logos.is-in .about__logo-row img { translate: 0 0; }
+  .about__logo-row img:hover { filter: grayscale(0); opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about__logo-row img { translate: 0 0; transition: filter var(--dur-fast) ease; }
+  }
 
   .about__who-face { display: block; width: 60px; height: 60px; margin-top: 21px; border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
   .about__who-person { margin-top: 12px; }
@@ -883,7 +921,9 @@ const schema = [
      row container at 306, foot at 1025 running to 1153. */
   .svc { padding-block: 121px 207px; }
   .svc .display { margin-left: var(--rail-width); }
-  .svc__list { list-style: none; margin: 98px 0 0; padding: 0; }
+  /* Rows start at 306 in the section. The title box lands at 121+86=207, so
+     the gap is 99 — not 98, and the 25px that was missing was here. */
+  .svc__list { list-style: none; margin: 123px 0 0; padding: 0; }
 
   /* ── Services rows ──────────────────────────────────────────────
      Measured off the export, container at 38,306 sized 1364x647:
@@ -1046,7 +1086,9 @@ const schema = [
 
   /* 4. projects -------------------------------------------------------- */
   .proj { position: relative; background: var(--c-black); }
-  .proj__inner { position: relative; z-index: 1; padding-block: 142px 68px; }
+  /* Section 1340 tall, the all-line ending at 1195: 145 below it. 68 left
+     the section 77 short once the all-line moved up to its measured y. */
+  .proj__inner { position: relative; z-index: 1; padding-block: 142px 145px; }
   .proj__head { margin-left: var(--rail-width); }
   .proj__count { margin-top: var(--sp-4); font-size: 40px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: rgb(236, 234, 228); }
   .proj__count span { font-size: 22px; font-weight: var(--fw-medium); }
@@ -1080,6 +1122,7 @@ const schema = [
   .proj__ph { aspect-ratio: 1129 / 579; background: rgb(30, 30, 30); border-radius: 12px; }
   .proj__name {
     position: absolute; left: 50%; bottom: 62px;
+    line-height: 42px;
     font-size: 36px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-white);
   }
