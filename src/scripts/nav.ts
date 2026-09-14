@@ -58,4 +58,36 @@ export function initNav(): void {
     setOpen(trigger.getAttribute('aria-expanded') !== 'true'),
   )
   close?.addEventListener('click', () => setOpen(false))
+
+  /**
+   * Mega-menu panel switching. Deliberately separate from the focus trap
+   * above: inactive panels stay `hidden`, and focusables() filters on
+   * offsetParent, so only the visible panel's links are ever tabbable and the
+   * trap does not need to know this exists.
+   *
+   * Switching on focus as well as hover is what makes it work for a keyboard.
+   * Without that, tabbing down the nav would leave the panel showing whatever
+   * the mouse last touched.
+   */
+  const rows = Array.from(overlay.querySelectorAll<HTMLElement>('[data-menu-row]'))
+  const rest = overlay.querySelector<HTMLElement>('[data-menu-pane="rest"]')
+  const panes = Array.from(
+    overlay.querySelectorAll<HTMLElement>('[data-menu-pane]:not([data-menu-pane="rest"])'),
+  )
+  if (rows.length && rows.length === panes.length) {
+    const show = (i: number) => {
+      if (rest) rest.hidden = i >= 0
+      panes.forEach((pane, n) => { pane.hidden = n !== i })
+      rows.forEach((row, n) => row.setAttribute('aria-current', String(n === i)))
+    }
+    rows.forEach((row, i) => {
+      row.addEventListener('pointerenter', () => show(i))
+      row.addEventListener('focus', () => show(i))
+      // A row with no route reveals its panel rather than navigating.
+      if (row.tagName === 'BUTTON') row.addEventListener('click', () => show(i))
+    })
+    /* Rest state on open: the statement panel, no row current. */
+    show(-1)
+    overlay.addEventListener('pointerleave', () => show(-1))
+  }
 }

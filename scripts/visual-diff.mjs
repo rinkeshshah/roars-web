@@ -103,8 +103,8 @@ const ACCEPTED = [
   /* The prototypes carry the corrupted spelling. The build carries the
      corrected one, so the diff reports it on both sides. See
      scripts/assert-attribution.mjs. */
-  { match: /^(Riinkesh A Sshah|Ankush A Sshah)$/, why: 'prototype ships the scrambled founder name; the build corrects it' },
-  { match: /^(Rinkesh A Shah|Ankush A Shah)$/, why: 'corrected founder name, see above' },
+  { match: /Riinkesh|Sshah/, why: 'prototype ships the scrambled founder name; the build corrects it' },
+  { match: /Rinkesh A Shah|Rinkesh, no pitch deck/, why: 'corrected founder name, see above' },
 ]
 /* An entry with `field` accepts only that measurement for that text; an entry
    without one accepts the element's presence or absence outright. */
@@ -116,7 +116,7 @@ const px = (v) => Math.round(parseFloat(v) * 10) / 10
 
 /** Runs in the page. Collects sections and text leaves with their metrics. */
 const COLLECT = (opts) => {
-  const { protoMode } = opts
+  const { protoMode, noScale } = opts
 
   /* The canvas transform scales rects but not computed type. */
   /**
@@ -127,7 +127,7 @@ const COLLECT = (opts) => {
    * style, so the ratio of rendered to authored height is the real scale.
    */
   let scale = 1
-  if (protoMode) {
+  if (protoMode && !noScale) {
     const samples = []
     for (const el of document.querySelectorAll('[data-screen-label][style*="height:"]')) {
       const m = el.getAttribute('style').match(/height:\s*([\d.]+)px/)
@@ -172,8 +172,21 @@ const COLLECT = (opts) => {
   }
   sections.sort((a, b) => a.y - b.y)
 
+  /* In overlay mode the prototype renders the page behind the menu as well.
+     Only the overlay is being compared, so scope the walk to it: the
+     full-viewport block with the near-black ground. */
+  let root = document
+  if (opts.overlayOnly) {
+    const candidates = [...document.querySelectorAll('div,section')].filter((el) => {
+      const r = el.getBoundingClientRect()
+      const c = getComputedStyle(el)
+      return r.width >= 1400 && r.height >= 900 && /rgb\(5, 5, 5\)|rgb\(11, 11, 11\)|rgb\(0, 0, 0\)/.test(c.backgroundColor)
+    })
+    if (candidates.length) root = candidates[candidates.length - 1]
+  }
+
   const text = []
-  for (const el of document.querySelectorAll('*')) {
+  for (const el of root.querySelectorAll('*')) {
     /* Leaf-ish: only elements whose own child text nodes carry the content,
        so a wrapper is not counted as a duplicate of its child. */
     const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join('')
@@ -220,12 +233,44 @@ async function walk(page) {
   await page.waitForTimeout(700)
 }
 
-async function capture(page, url, { protoMode, settle }) {
+async function capture(page, url, { protoMode, settle, openMenu }) {
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 }).catch(() => {})
   await page.setViewportSize({ width: 1440, height: 1200 })
   await page.waitForTimeout(settle)
+  /* The menu is an overlay, not a route. Open it before capturing so the
+     comparison is against what a visitor actually sees. */
+  if (openMenu) {
+    await page.click('[data-nav-trigger]').catch(() => {})
+    await page.waitForTimeout(500)
+    /* The prototype stacks all nine panel states in one place and shows them
+       simultaneously. A working mega-menu shows one. Comparing the two
+       directly would report eight panels "missing" that are simply not the
+       active state, so the build is captured once per row and the results
+       unioned — which also means every panel is actually checked, rather
+       than only whichever one happened to be open. */
+    if (!protoMode) {
+      const rows = await page.locator('[data-menu-row]').count()
+      const merged = { sections: null, text: [], scale: 1 }
+      for (let i = 0; i < rows; i++) {
+        await page.locator('[data-menu-row]').nth(i).focus()
+        await page.waitForTimeout(120)
+        const shot = await page.evaluate(COLLECT, { protoMode, noScale: true, overlayOnly: true })
+        if (!merged.sections) { merged.sections = shot.sections; merged.scale = shot.scale }
+        for (const t of shot.text) {
+          if (!merged.text.some((x) => x.t === t.t && Math.round(x.x) === Math.round(t.x) && Math.round(x.y) === Math.round(t.y))) {
+            merged.text.push(t)
+          }
+        }
+      }
+      return merged
+    }
+  }
   await walk(page)
-  return page.evaluate(COLLECT, { protoMode })
+  /* The menu overlay is position:fixed at the real viewport width, outside the
+     canvas transform, so the canvas scale must NOT be divided out of its
+     coordinates. Doing so inflated every y by 1.5% — about 11px at the foot of
+     the panel, which is five times the tolerance. */
+  return page.evaluate(COLLECT, { protoMode, noScale: openMenu, overlayOnly: openMenu })
 }
 
 /** Pair by normalised text, in document order within each duplicate group. */
@@ -260,9 +305,10 @@ function pairText(a, b) {
   return { pairs, missing, extra }
 }
 
-function diffPage(proto, build) {
+function diffPage(proto, build, opts = {}) {
   const rows = []
 
+  if (opts.textOnly) return textOnlyDiff(proto, build)
   const n = Math.max(proto.sections.length, build.sections.length)
   for (let i = 0; i < n; i++) {
     const p = proto.sections[i]
@@ -329,6 +375,55 @@ function diffPage(proto, build) {
   return rows
 }
 
+/* For the overlay there is no section band to anchor to, so y is compared
+   against the document rather than a section, and only text metrics matter. */
+function textOnlyDiff(proto, build) {
+  const rows = []
+  const accepted = []
+  const { pairs, missing, extra } = pairText(
+    proto.text.map((t) => ({ ...t, band: 0 })),
+    build.text.map((t) => ({ ...t, band: 0 })),
+  )
+  for (const e of missing) {
+    const why = acceptedReason(e.t)
+    if (why) { accepted.push({ what: e.t, side: 'prototype only', why }); continue }
+    rows.push({ kind: 'TEXT', what: e.t, field: 'MISSING in build', delta: Infinity, proto: `@${Math.round(e.y)}`, build: '' })
+  }
+  for (const e of extra) {
+    const why = acceptedReason(e.t)
+    if (why) { accepted.push({ what: e.t, side: 'build only', why }); continue }
+    rows.push({ kind: 'TEXT', what: e.t, field: 'EXTRA in build', delta: Infinity, proto: '', build: `@${Math.round(e.y)}` })
+  }
+  for (const [p, b] of pairs) {
+    for (const f of ['x', 'y']) {
+      const d = b[f] - p[f]
+      if (Math.abs(d) > GEO_TOL) {
+        const why = acceptedReason(p.t, f)
+        if (why) { accepted.push({ what: p.t, side: `${f} ${Math.round(d)}`, why }); continue }
+        rows.push({ kind: 'POS', what: p.t, field: f, delta: d, proto: Math.round(p[f]), build: Math.round(b[f]) })
+      }
+    }
+    for (const f of ['fs', 'lh', 'ls', 'fw', 'color']) {
+      if (p[f] === b[f]) continue
+      const pv = parseFloat(p[f]); const bv = parseFloat(b[f])
+      const d = Number.isFinite(pv) && Number.isFinite(bv) ? bv - pv : NaN
+      if (Number.isFinite(d) && Math.abs(d) < 0.51) continue
+      const why = acceptedReason(p.t, f)
+      if (why) { accepted.push({ what: p.t, side: `${f}`, why }); continue }
+      rows.push({ kind: 'TYPE', what: p.t, field: f, delta: d, proto: p[f], build: b[f] })
+    }
+  }
+  rows.accepted = accepted
+  rows.sort((a, b) => {
+    const av = Math.abs(a.delta), bv = Math.abs(b.delta)
+    if (Number.isNaN(av) && Number.isNaN(bv)) return 0
+    if (Number.isNaN(av)) return 1
+    if (Number.isNaN(bv)) return -1
+    return bv - av
+  })
+  return rows
+}
+
 function table(rows, label) {
   console.log('')
   console.log(`=== ${label} — ${rows.length} delta(s) ===`)
@@ -380,14 +475,15 @@ await page.route('https://unpkg.com/**', async (route) => {
 let worst = 0
 for (const [name, route] of wanted) {
   const protoUrl = `${SRC}/design/prototypes/${encodeURIComponent(`Roars v2 - ${name}.dc.html`)}`
+  const openMenu = name === 'Roars v2 - Menu' || name === 'Menu'
   const proto = await capture(page, protoUrl, { protoMode: true, settle: 4200 })
   if (!proto.sections.length) {
     console.error(`\n${name}: prototype rendered no sections. Is ${SRC} serving the repo root?`)
     process.exitCode = 1
     continue
   }
-  const build = await capture(page, `${BUILD}${route}`, { protoMode: false, settle: 1200 })
-  const rows = diffPage(proto, build)
+  const build = await capture(page, `${BUILD}${route}`, { protoMode: false, settle: 1200, openMenu })
+  const rows = diffPage(proto, build, { textOnly: openMenu })
   table(rows, `${name}  ->  ${route}   (canvas scale ${proto.scale.toFixed(4)})`)
   acceptedTable(rows)
   worst = Math.max(worst, rows.length)

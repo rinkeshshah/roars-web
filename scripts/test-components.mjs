@@ -42,6 +42,29 @@ await p.waitForTimeout(200)
 ok('overlay closes on Escape', await p.locator('[data-nav-overlay]').isHidden())
 ok('focus returned to trigger', await trig.evaluate((el) => el === document.activeElement))
 
+/* Mega-menu panels. This is the primary navigation on all 68 routes, so the
+   keyboard path matters more than the pointer one: a panel that only swaps on
+   hover leaves a keyboard user looking at whatever the mouse last touched. */
+await trig.click(); await p.waitForTimeout(250)
+const rows = p.locator('[data-menu-row]')
+const panes = p.locator('[data-menu-pane]:not([data-menu-pane="rest"])')
+ok('one panel per nav row', (await rows.count()) === (await panes.count()) && (await rows.count()) === 9)
+/* The menu opens on a resting statement panel, not on row one. */
+ok('rest panel visible at open', await p.locator('[data-menu-pane="rest"]').isVisible())
+await rows.nth(2).focus(); await p.waitForTimeout(200)
+ok('panel follows keyboard focus, not just hover',
+  (await panes.nth(2).isVisible()) &&
+  !(await p.locator('[data-menu-pane="rest"]').isVisible()))
+/* Only the visible panel may be reachable, or the trap would walk through
+   eight hidden ones. */
+const hiddenLinks = await p.locator('[data-menu-pane][hidden] a').count()
+const reachable = await p.locator('[data-menu-pane][hidden] a:visible').count()
+ok('hidden panels are unreachable', reachable === 0, `${hiddenLinks} links in hidden panes, ${reachable} reachable`)
+/* The two rows with no index route must not pretend to navigate. */
+const buttonRows = await p.locator('button[data-menu-row]').count()
+ok('routeless rows are buttons, not links', buttonRows === 2, `${buttonRows}`)
+await p.keyboard.press('Escape'); await p.waitForTimeout(250)
+
 /* Row 1 ships OPEN, as the Main prototype draws it. This used to click row 1
    and assert it opened, which now closes it — the assertion was testing the
    old contract, not a regression. */

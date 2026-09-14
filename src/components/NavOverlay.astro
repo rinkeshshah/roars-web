@@ -1,44 +1,222 @@
 ---
 /**
- * Full-screen navigation overlay. One of the four approved islands.
+ * Full-screen navigation overlay. One of the four approved islands, and the
+ * single highest-leverage component in the project: it appears on all 68
+ * routes, so it is worth more than any one page.
  *
- * Real dialog semantics: the trigger in TopBar carries aria-expanded and
- * aria-controls, the overlay traps focus while open, Escape closes it, and
- * focus returns to the trigger. src/scripts/nav.ts wires it.
+ * ACCESSIBILITY IS UNCHANGED FROM PHASE 1 and must stay that way. The trigger
+ * in TopBar carries aria-expanded and aria-controls, the overlay traps focus
+ * while open, Escape closes it, focus returns to the trigger, and the page
+ * behind is inert to scroll. src/scripts/nav.ts owns all of that and was not
+ * touched by the export-2 visual rebuild.
+ *
+ * Export 2 makes this a mega-menu: nine rows, each revealing its own panel on
+ * hover or focus. The panels are stacked in one place in the prototype and
+ * shown one at a time.
+ *
+ * Panel switching is deliberately NOT wired into the focus trap. Inactive
+ * panels are `hidden`, and nav.ts filters focusables on offsetParent, so only
+ * the visible panel's links are ever tabbable. Switching on focus as well as
+ * hover is what makes it work for a keyboard.
  *
  * Labels come from the design; URLs come from docs/URL-INVENTORY.csv. Where
- * they disagree the CSV wins, which is why "Projects" serves /work/ and
- * "Insights" serves /our-journal/. That is deliberate, per CLAUDE.md.
+ * they disagree the CSV wins, which is why "work" serves /work/ and
+ * "our journal" serves /our-journal/.
  */
 import { site } from '../lib/site'
-import { NAV } from '../lib/nav'
+import { MENU } from '../lib/nav'
 ---
 
 <div class="nav" id="nav-overlay" data-nav-overlay hidden>
   <div class="nav__panel" role="dialog" aria-modal="true" aria-label="Site navigation">
-    <div class="wrap nav__inner">
-      <div class="nav__head">
-        <span class="nav__label">Navigation</span>
-        <button class="nav__close" type="button" data-nav-close>
-          <span class="visually-hidden">Close menu</span>
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+    <button class="nav__close" type="button" data-nav-close>
+      <span class="visually-hidden">Close menu</span>
+      <span aria-hidden="true">CLOSE</span>
+    </button>
 
+    <div class="wrap nav__inner">
       <nav class="nav__nav" aria-label="Primary">
+        <p class="nav__label" id="nav-heading">NAVIGATION</p>
         <ul class="nav__list">
-          {NAV.map((item) => (
-            <li><a class="nav__link" href={item.href}>{item.label}</a></li>
+          {MENU.map((item, i) => (
+            <li>
+              {item.href ? (
+                <a
+                  class="nav__row"
+                  href={item.href}
+                  data-menu-row={i}
+                  aria-describedby={`nav-panel-${i}`}
+                >
+                  <span class="nav__n">{item.n}</span>
+                  <span class="nav__name">{item.label}</span>
+                  {item.meta && <span class="nav__meta-label">{item.meta}</span>}
+                  <span class="nav__arrow" aria-hidden="true">&rarr;</span>
+                </a>
+              ) : (
+                /* No index route exists for this one and CLAUDE.md forbids
+                   inventing a URL, so the row reveals its panel instead of
+                   navigating. The panel carries the real destinations. */
+                <button
+                  class="nav__row"
+                  type="button"
+                  data-menu-row={i}
+                  aria-controls={`nav-panel-${i}`}
+                >
+                  <span class="nav__n">{item.n}</span>
+                  <span class="nav__name">{item.label}</span>
+                  {item.meta && <span class="nav__meta-label">{item.meta}</span>}
+                  <span class="nav__arrow" aria-hidden="true">&rarr;</span>
+                </button>
+              )}
+            </li>
           ))}
         </ul>
       </nav>
 
-      <div class="nav__meta">
-        <a class="nav__email" href={`mailto:${site.email.sales}`}>{site.email.sales}</a>
-        <p class="nav__phones">
-          USA {site.phones.US.display}<br />UK {site.phones.UK.display}
-        </p>
+      <div class="nav__stage">
+        {/* The resting state, before any row is hovered or focused. The
+            prototype stacks this with the nine panels; it is what the menu
+            shows on open. */}
+        <section class="nav__pane nav__pane--rest" data-menu-pane="rest" aria-label="Roars">
+          <p class="nav__eyebrow">ROARS — SINCE 2005</p>
+          <p class="nav__statement">We create delightful experiences that matters.</p>
+        </section>
+        {MENU.map((item, i) => (
+          <section
+            class="nav__pane"
+            id={`nav-panel-${i}`}
+            data-menu-pane={i}
+            hidden
+            aria-label={item.label}
+          >
+            <p class="nav__eyebrow">{item.eyebrow}</p>
+            <p class="nav__title">{item.title}</p>
+            {item.body && <p class="nav__body">{item.body}</p>}
+
+            {item.kind === 'links' && (
+              <ul class="nav__sub nav__sub--links">
+                {item.items?.map((l) => (
+                  <li>
+                    {l.href
+                      ? <a href={l.href}>{l.label}<span aria-hidden="true">&rarr;</span></a>
+                      : <span class="nav__soon">{l.label}</span>}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {item.kind === 'services' && (
+              <ul class="nav__sub nav__sub--rows">
+                {item.items?.map((l, n) => (
+                  <li>
+                    <a href={l.href!}>
+                      <span class="nav__sub-n">{String(n + 1).padStart(2, '0')}</span>
+                      <span class="nav__sub-name">{l.label}</span>
+                      <span class="nav__sub-note">{l.note}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {item.kind === 'cards' && (
+              <ul class="nav__sub nav__sub--cards">
+                {item.items?.map((l) => (
+                  <li>
+                    <a href={l.href!}>
+                      <span class="nav__sub-name">{l.label}</span>
+                      <span class="nav__sub-meta">{l.meta}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {item.kind === 'sectors' && (
+              <ul class="nav__sub nav__sub--sectors">
+                {item.items?.map((l, n) => (
+                  <li>
+                    <a href={l.href!}>
+                      <span class="nav__sub-n">{String(n + 1).padStart(2, '0')}</span>
+                      <span class="nav__sub-name">{l.label}</span>
+                      <span class="nav__sub-meta">VIEW SECTOR</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {item.kind === 'kits' && (
+              <ul class="nav__sub nav__sub--kits">
+                {item.items?.map((l) => (
+                  <li>
+                    <span class="nav__sub-meta">{l.meta}</span>
+                    {l.href
+                      ? <a class="nav__sub-name" href={l.href}>{l.label}</a>
+                      : <span class="nav__sub-name nav__soon">{l.label}</span>}
+                    <span class="nav__sub-note">{l.note}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {item.kind === 'posts' && (
+              <ul class="nav__sub nav__sub--posts">
+                {item.items?.map((l) => (
+                  <li>
+                    <a href={l.href!}>
+                      <span class="nav__sub-meta">{l.meta}</span>
+                      <span class="nav__sub-name">{l.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {item.kind === 'contact' && (
+              <div class="nav__sub nav__sub--contact">
+                <div><span class="nav__k">USA</span><a class="nav__big" href={`tel:${site.phones.US.tel}`}>{site.phones.US.display}</a></div>
+                <div><span class="nav__k">UK</span><a class="nav__big" href={`tel:${site.phones.UK.tel}`}>{site.phones.UK.display}</a></div>
+                <div><span class="nav__k">EMAIL</span><a class="nav__big" href={`mailto:${site.email.sales}`}>{site.email.sales}</a></div>
+                <a class="nav__cta" href={site.booking} rel="noopener" target="_blank">Book a call</a>
+              </div>
+            )}
+
+            {item.stats && (
+              <div class="nav__stats">
+                <p class="nav__k nav__stat-label">{item.statLabel}</p>
+                <ul>
+                  {item.stats.map((st) => (
+                    <li><span class="nav__stat-v">{st.value}</span><span class="nav__k">{st.label}</span></li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {item.ventures && (
+              <div class="nav__ventures">
+                <p class="nav__k">OUR OWN VENTURES</p>
+                <p class="nav__venture-list">{item.ventures}</p>
+              </div>
+            )}
+          </section>
+        ))}
       </div>
+    </div>
+
+    <div class="wrap nav__foot">
+      <div class="nav__contact">
+        <span class="nav__k">USA</span>
+        <a class="nav__v" href={`tel:${site.phones.US.tel}`}>{site.phones.US.display}</a>
+      </div>
+      <div class="nav__contact">
+        <span class="nav__k">UK</span>
+        <a class="nav__v" href={`tel:${site.phones.UK.tel}`}>{site.phones.UK.display}</a>
+      </div>
+      <div class="nav__contact">
+        <span class="nav__k">EMAIL</span>
+        <a class="nav__v" href={`mailto:${site.email.sales}`}>{site.email.sales}</a>
+      </div>
+      <a class="nav__cta" href={site.booking} rel="noopener" target="_blank">Book a discovery call</a>
     </div>
   </div>
 </div>
@@ -47,46 +225,184 @@ import { NAV } from '../lib/nav'
   .nav { position: fixed; inset: 0; z-index: 90; }
   .nav[hidden] { display: none; }
   .nav__panel {
-    position: absolute;
-    inset: 0;
-    background: var(--c-footer);
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    background: rgb(5, 5, 5);
     color: var(--c-on-dark);
-    overflow-y: auto;
     opacity: 0;
-    transition: opacity var(--dur-fast) ease;
+    transition: opacity var(--dur-fast) var(--ease-out);
+    overflow-y: auto;
   }
   .nav.is-open .nav__panel { opacity: 1; }
-  .nav__inner { padding-block: var(--sp-5) var(--sp-7); }
-  .nav__head { display: flex; align-items: center; justify-content: space-between; }
-  .nav__label {
-    font-size: var(--fs-label); line-height: var(--lh-label);
-    font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-body);
-    color: var(--c-ink-label);
+  /* The scrim the prototype lays over the ground. */
+  .nav__panel::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(5, 5, 5, 0.62) 0%, rgba(5, 5, 5, 0.86) 100%);
   }
+  .nav__panel > * { position: relative; }
+
   .nav__close {
-    width: 44px; height: 44px;
-    border: 0; background: none; cursor: pointer;
-    font-size: 28px; line-height: 1; color: var(--c-on-dark);
+    position: absolute; right: 39px; top: 46px; z-index: 2;
+    padding: 6px; border: 0; background: none; cursor: pointer;
+    font-size: 10px; font-weight: var(--fw-medium); line-height: var(--lh-micro);
+    letter-spacing: 0.14em; color: var(--c-on-dark-78);
   }
   .nav__close:hover { color: var(--c-accent); }
-  .nav__list { list-style: none; margin: var(--sp-7) 0 0; padding: 0; }
-  .nav__link {
-    display: block;
-    padding-block: var(--sp-2);
-    font-size: clamp(var(--fs-stat-m), 5.8vw, var(--fs-display));
-    font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-display);
-    line-height: 1.1;
-    color: var(--c-on-dark-90);
+
+  .nav__inner {
+    display: grid;
+    grid-template-columns: 464fr 898fr;
+    align-items: start;
+    padding-top: 290px;
   }
-  .nav__link:hover { color: var(--c-accent); }
-  .nav__meta { margin-top: var(--sp-7); display: flex; flex-direction: column; gap: var(--sp-3); }
-  .nav__email { font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-semi); letter-spacing: -0.02em; }
-  .nav__email:hover { color: var(--c-accent); }
-  .nav__phones { font-size: var(--fs-micro); line-height: 20px; color: var(--c-on-dark-50); }
-  .visually-hidden {
-    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+
+  .nav__label, .nav__eyebrow {
+    margin: 0 0 66px;
+    font-size: 11px; font-weight: var(--fw-medium); line-height: var(--lh-micro);
+    letter-spacing: 0.14em; color: var(--c-on-dark-50);
+  }
+  .nav__list { list-style: none; margin: 0; padding: 0; }
+  .nav__row {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto 20px;
+    align-items: baseline;
+    gap: 0 var(--sp-3);
+    width: 100%;
+    height: 60px;
+    padding: 0;
+    border: 0; background: none;
+    font-family: inherit; text-align: left; cursor: pointer;
+    color: var(--c-on-dark);
+  }
+  .nav__n { font-size: 10px; font-weight: var(--fw-medium); line-height: var(--lh-micro); letter-spacing: 0.14em; color: var(--c-on-dark-50); }
+  .nav__name { font-size: 32px; font-weight: var(--fw-semi); line-height: 40px; letter-spacing: var(--ls-item); }
+  .nav__meta-label { font-size: 10px; font-weight: var(--fw-medium); line-height: var(--lh-micro); letter-spacing: 0.14em; color: var(--c-on-dark-50); white-space: nowrap; }
+  .nav__arrow { font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-regular); color: var(--c-on-dark-50); transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) ease; }
+  .nav__row:hover .nav__name, .nav__row:focus-visible .nav__name,
+  .nav__row[aria-current='true'] .nav__name { color: var(--c-accent); }
+  .nav__row:hover .nav__arrow, .nav__row:focus-visible .nav__arrow { transform: translateX(6px); color: var(--c-accent); }
+
+  .nav__pane[hidden] { display: none; }
+  .nav__statement {
+    max-width: 900px; margin: 0;
+    font-size: 60px; font-weight: var(--fw-semi); line-height: 68px;
+    letter-spacing: var(--ls-display); color: var(--c-on-dark);
+  }
+  .nav__title {
+    max-width: 820px; margin: 0;
+    font-size: 44px; font-weight: var(--fw-semi); line-height: 52px;
+    letter-spacing: var(--ls-display); color: var(--c-on-dark);
+  }
+  .nav__body {
+    max-width: 640px; margin: 78px 0 0;
+    font-size: var(--fs-body); line-height: var(--lh-body);
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-body);
+    color: var(--c-on-dark-78);
+  }
+
+  /* Panel sub-content. Each `kind` is one of the layouts the export draws. */
+  .nav__sub { list-style: none; margin: 66px 0 0; padding: 0; }
+  .nav__sub a { color: var(--c-on-dark); }
+  .nav__sub a:hover .nav__sub-name { color: var(--c-accent); }
+  .nav__sub-n, .nav__sub-meta {
+    font-size: 10px; font-weight: var(--fw-medium); line-height: var(--lh-micro);
+    letter-spacing: 0.14em; color: var(--c-on-dark-50);
+  }
+  .nav__sub-name { font-weight: var(--fw-semi); letter-spacing: var(--ls-item); transition: color var(--dur-fast) ease; }
+  .nav__sub-note { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-on-dark-50); }
+  .nav__soon { color: var(--c-on-dark-50); }
+
+  .nav__sub--links li a { display: flex; justify-content: space-between; align-items: center; width: 390px; padding-block: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); font-size: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); }
+  .nav__sub--rows li a { display: grid; grid-template-columns: 44px 356px minmax(0, 1fr); align-items: baseline; padding-block: 19px; }
+  .nav__sub--rows .nav__sub-name { font-size: 26px; line-height: 32px; }
+  .nav__sub--cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 46px 44px; }
+  .nav__sub--cards li a { display: flex; flex-direction: column; gap: 14px; }
+  .nav__sub--cards .nav__sub-name { font-size: var(--fs-intro); line-height: 28px; }
+  .nav__sub--sectors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 62px 20px; }
+  .nav__sub--sectors li a { display: flex; flex-direction: column; gap: 10px; }
+  .nav__sub--sectors .nav__sub-name { font-size: 21px; line-height: 26px; }
+  .nav__sub--kits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; margin-top: 104px; }
+  .nav__sub--kits li { display: flex; flex-direction: column; gap: 14px; }
+  .nav__sub--kits .nav__sub-name { font-size: 26px; line-height: 32px; }
+  .nav__sub--posts li a { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: baseline; padding-block: 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+  .nav__sub--posts .nav__sub-name { font-size: 21px; line-height: 28px; }
+  .nav__sub--contact { display: grid; grid-template-columns: 300px 300px; gap: 44px 0; margin-top: 134px; align-items: end; }
+  .nav__sub--contact > div { display: flex; flex-direction: column; gap: 10px; }
+  .nav__big { font-size: var(--fs-intro); line-height: 28px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+  .nav__big:hover { color: var(--c-accent); }
+
+  .nav__stats { margin-top: 90px; }
+  .nav__stat-label { margin: 0 0 60px; }
+  .nav__stats ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 290px); }
+  .nav__stats li { display: flex; flex-direction: column; gap: 18px; }
+  .nav__stat-v { font-size: 56px; font-weight: var(--fw-semi); line-height: 56px; letter-spacing: var(--ls-display); color: var(--c-on-dark); }
+  .nav__ventures { margin-top: 60px; }
+  .nav__venture-list { margin: 10px 0 0; font-size: 18px; font-weight: var(--fw-medium); line-height: 26px; letter-spacing: var(--ls-body); color: var(--c-on-dark-78); }
+
+  .nav__foot {
+    display: grid;
+    grid-template-columns: 250px 250px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--sp-5);
+    margin-top: auto;
+    padding-block: 60px 48px;
+  }
+  .nav__contact { display: flex; flex-direction: column; gap: 4px; }
+  .nav__k { font-size: 10px; font-weight: var(--fw-medium); line-height: var(--lh-micro); letter-spacing: 0.14em; color: var(--c-on-dark-50); }
+  .nav__v { font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-on-dark); }
+  .nav__v:hover { color: var(--c-accent); }
+  .nav__cta {
+    justify-self: end;
+    font-size: var(--fs-micro); line-height: var(--lh-micro);
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-body);
+    color: var(--c-on-dark-78);
+  }
+  .nav__cta:hover { color: var(--c-accent); }
+
+  @media (max-width: 1040px) {
+    .nav__inner { grid-template-columns: 1fr; padding-top: 140px; row-gap: var(--sp-6); }
+    /* Panel sub-content. Each `kind` is one of the layouts the export draws. */
+  .nav__sub { list-style: none; margin: 66px 0 0; padding: 0; }
+  .nav__sub a { color: var(--c-on-dark); }
+  .nav__sub a:hover .nav__sub-name { color: var(--c-accent); }
+  .nav__sub-n, .nav__sub-meta {
+    font-size: 10px; font-weight: var(--fw-medium); line-height: var(--lh-micro);
+    letter-spacing: 0.14em; color: var(--c-on-dark-50);
+  }
+  .nav__sub-name { font-weight: var(--fw-semi); letter-spacing: var(--ls-item); transition: color var(--dur-fast) ease; }
+  .nav__sub-note { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-on-dark-50); }
+  .nav__soon { color: var(--c-on-dark-50); }
+
+  .nav__sub--links li a { display: flex; justify-content: space-between; align-items: center; width: 390px; padding-block: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); font-size: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); }
+  .nav__sub--rows li a { display: grid; grid-template-columns: 44px 356px minmax(0, 1fr); align-items: baseline; padding-block: 19px; }
+  .nav__sub--rows .nav__sub-name { font-size: 26px; line-height: 32px; }
+  .nav__sub--cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 46px 44px; }
+  .nav__sub--cards li a { display: flex; flex-direction: column; gap: 14px; }
+  .nav__sub--cards .nav__sub-name { font-size: var(--fs-intro); line-height: 28px; }
+  .nav__sub--sectors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 62px 20px; }
+  .nav__sub--sectors li a { display: flex; flex-direction: column; gap: 10px; }
+  .nav__sub--sectors .nav__sub-name { font-size: 21px; line-height: 26px; }
+  .nav__sub--kits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; margin-top: 104px; }
+  .nav__sub--kits li { display: flex; flex-direction: column; gap: 14px; }
+  .nav__sub--kits .nav__sub-name { font-size: 26px; line-height: 32px; }
+  .nav__sub--posts li a { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: baseline; padding-block: 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+  .nav__sub--posts .nav__sub-name { font-size: 21px; line-height: 28px; }
+  .nav__sub--contact { display: grid; grid-template-columns: 300px 300px; gap: 44px 0; margin-top: 134px; align-items: end; }
+  .nav__sub--contact > div { display: flex; flex-direction: column; gap: 10px; }
+  .nav__big { font-size: var(--fs-intro); line-height: 28px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+  .nav__big:hover { color: var(--c-accent); }
+
+  .nav__stats { margin-top: 90px; }
+  .nav__stat-label { margin: 0 0 60px; }
+  .nav__stats ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 290px); }
+  .nav__stats li { display: flex; flex-direction: column; gap: 18px; }
+  .nav__stat-v { font-size: 56px; font-weight: var(--fw-semi); line-height: 56px; letter-spacing: var(--ls-display); color: var(--c-on-dark); }
+  .nav__ventures { margin-top: 60px; }
+  .nav__venture-list { margin: 10px 0 0; font-size: 18px; font-weight: var(--fw-medium); line-height: 26px; letter-spacing: var(--ls-body); color: var(--c-on-dark-78); }
+
+  .nav__foot { grid-template-columns: 1fr 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav__panel, .nav__arrow { transition: none; }
   }
 </style>
