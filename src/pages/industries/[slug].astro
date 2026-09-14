@@ -500,11 +500,17 @@ const designed = Boolean(d?.hero)
     font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
   }
-  .ij__spine { position: absolute; left: 81px; top: 470px; width: 20px; height: 1420px; }
+  /* 17px LEFT of where the export puts it. The export runs the rule at 120,
+     which is inside the phase titles at 114 — the node lands on the P of
+     "Pay" and the stroke crosses the F of "Fire". It is wrong there and it
+     was worse here, because the node had grown to 19px. Node back to the
+     export's 13px, rule moved to 104, so it clears the titles by 3px and
+     still reads as the margin the phases hang off. */
+  .ij__spine { position: absolute; left: 64px; top: 470px; width: 20px; height: 1420px; }
   .ij__spine-line { position: absolute; left: 0; top: 0; width: 1px; height: 100%; background: rgba(153, 152, 149, 0.45); }
   .ij__spine-fill { position: absolute; left: 0; top: 0; width: 2px; height: 0; background: var(--c-accent); }
   .ij__node {
-    position: absolute; left: -9.5px; width: 19px; height: 19px; border-radius: 50%;
+    position: absolute; left: -6px; width: 13px; height: 13px; border-radius: 50%;
     background: var(--c-white); box-shadow: inset 0 0 0 1px rgba(153, 152, 149, 0.45);
   }
   .ij__node.is-on { background: var(--c-accent); box-shadow: none; }

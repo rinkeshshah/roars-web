@@ -84,7 +84,7 @@ const year = new Date().getFullYear()
           >
             <span>{ctaLabel}</span>
             <i class="ft__cta-dot ft__cta-dot--grey" aria-hidden="true"></i>
-            <i class="ft__cta-dot ft__cta-dot--white" aria-hidden="true"></i>
+            <i class="ft__cta-dot ft__cta-dot--accent" aria-hidden="true"></i>
           </a>
         )}
         {contact && <p class="ft__contact">{contact}</p>}
@@ -223,9 +223,17 @@ const year = new Date().getFullYear()
     transition: background var(--dur-fast) ease;
   }
   .ft__cta:hover { background: var(--c-accent); color: var(--c-footer); }
+  /* Grey then ACCENT, which is the pair every other button on the site draws
+     and the one piece of brand in the mark. It was near-black here, so the
+     button read as two smudges — worst on hover, where a yellow pill under a
+     grey and a black dot has no accent in it at all.
+     The accent cannot show on the yellow hover ground, so on hover the second
+     dot takes the footer ink instead: rest is white + grey/yellow, hover is
+     yellow + grey/ink, and neither state has a dot that vanishes. */
   .ft__cta-dot { position: absolute; top: 20px; width: 8px; height: 8px; border-radius: 50%; }
   .ft__cta-dot--grey { left: 167px; background: rgba(11, 11, 11, 0.28); }
-  .ft__cta-dot--white { left: 177px; background: var(--c-footer); }
+  .ft__cta-dot--accent { left: 177px; background: var(--c-accent); transition: background var(--dur-fast) ease; }
+  .ft__cta:hover .ft__cta-dot--accent { background: var(--c-footer); }
   .ft__contact {
     margin-top: var(--sp-4);
     font-size: 11px; font-weight: var(--fw-medium); letter-spacing: 0.16em;

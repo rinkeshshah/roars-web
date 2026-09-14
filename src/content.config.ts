@@ -406,6 +406,18 @@ const industryLayout = {
           meta: z.array(z.object({ k: z.string().max(20), v: z.string().max(56) })).max(2).default([]),
           href: z.string(),
           ctaLabel: z.string().max(24).default('View Project'),
+          /**
+           * The featured project's own shot, used as the band's ground.
+           * Path under src/assets/, e.g. "work/club-social.jpg".
+           *
+           * The export fills this band with a stock starfield. The featured
+           * work is a real project with real screens, and its own image says
+           * something the starfield does not. Absent until the file is in the
+           * repo: the band falls back to flat black, which is what it is now,
+           * rather than to a broken <img>.
+           */
+          image: z.string().max(120).optional(),
+          imageAlt: z.string().max(120).optional(),
         })
         .optional(),
     })
