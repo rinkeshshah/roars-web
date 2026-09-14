@@ -97,15 +97,44 @@ If a case study, stat, testimonial or client name is not in the specs or the mig
 - `prefers-reduced-motion` respected everywhere.
 - No dark mode. Dark grounds are a per-section device via `data-ground`, not a user preference.
 
-### Do not port from the prototypes
+### The rendered prototype is the visual target
 
-`design/prototypes/` are transform-scaled 1440px canvases with absolutely positioned children. A prototyping technique, not a layout system.
+**Render it and match it.** `design/prototypes/*.dc.html` is what the page is supposed to look like. Open it in a browser at 1440px, screenshot it, screenshot your build, and put them side by side. `scripts/compare-prototype.mjs` does exactly this.
+
+**How you achieve it is flow layout and tokens.** That is the whole rule. The prototype says what; the design system says how.
+
+This used to be a list of prohibitions with no positive instruction, and the homepage was built entirely from measurements in `design/specs/*.md` without anyone ever rendering `Main.dc.html`. Every dimension was defensible. The page was wrong: no accordion, no cascade, a full-bleed hero instead of a panel, and none of the art direction. Measurements are not a picture.
+
+The prohibitions still stand, because they are about technique, not about fidelity:
 
 - **Do not** copy `support.js` or the `transform: scale(vw/1440)` routine.
-- **Do not** use absolute positioning for layout.
+- **Do not** use absolute positioning for layout. Decoration floating over a composition is not layout: the hero's planet and starbelt are absolutely positioned and that is correct, because nothing below them depends on where they sit.
 - **Do not** port the hard-coded ink-inversion pixel bands. Drive it from IntersectionObserver on sections marked dark. Pixel bands break the moment content length changes.
 - **Do** treat coordinates as measurements. A child at `l:503` in a section at `l:39` means a 464px left rail.
 - **Do** use each spec's mobile section directly. It is already flow layout.
+
+**Read computed styles, not the static markup.** The prototypes render through React and Babel and fill template variables at runtime, so `font-size:{{ f.qSize }}` in the file tells you nothing. Query the live DOM.
+
+**When the prototype and a spec disagree, say so. Do not pick silently.** Same when the prototype disagrees with *itself*: the Services rows put the row name in the left rail twice and in the inner column twice, and one collapsed row is indented 463px for no reason. Normalise it, and write down which reading you took and why.
+
+**Decisions taken so far, so they are not relitigated:**
+
+| Conflict | Resolution |
+|---|---|
+| Accordion toggle: Brand Guidelines says a 36px dark circle on the left; the prototype renders a white disc at the right | Prototype wins. Brand doc unchanged. |
+| Footer nav: the Approach spec lists six items, Main lists five | Prototype wins, five, Approach out of the footer only. |
+| Offices: the Approach spec says five countries, Main shows three, the build showed five cities | Five countries. The slot is 234px; five countries measure 185px, five cities 234.05px, which is why they collided. A factual list is not a visual treatment. |
+| Top bar CTA: six prototypes say "Contact Now", eight say "Setup a Meeting" | Both are real. It is a `cta` prop on `TopBar`; Brand Guidelines' "Contact Now" is the default. |
+
+### Scoped CSS does not cross a component boundary
+
+A class handed to a component lands on an element the parent never scoped, so the parent's rule compiles to a selector that matches nothing — no error, no warning, CSS that is present and correct and inert.
+
+This cost the homepage its About grid and its hero height, through `<Reveal class="about__stats">` and `<Section class="hero">`. Both reviewed clean.
+
+- **Style an element the page itself owns.** If you want a wrapper's box styled, render the wrapper yourself.
+- **Do not add a `class` prop to a layout component.** `Section` deliberately has none.
+- `scripts/assert-styles.mjs` fails the build on any scoped rule that matches nothing in `dist/`. It runs in CI and in `npm run verify`. Never make it non-fatal.
 
 Breakpoints: desktop grid to ~1040px, documented mobile stack at 760px. Tablet was never designed. Propose before inventing.
 

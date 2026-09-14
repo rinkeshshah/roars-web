@@ -72,6 +72,14 @@ jobs:
         env:
           BUILD_PHASE: ${{ vars.BUILD_PHASE || '0' }}
 
+      # THE OTHER GUARD. A scoped rule that matches nothing is the one CSS
+      # failure with no error message: the stylesheet is present, correct and
+      # inert. It cost this project the homepage About grid and the hero's
+      # 900px min-height, both of which reviewed clean. Never make it
+      # non-fatal. scripts/assert-styles.mjs explains the mechanism.
+      - name: Assert every scoped style matches something
+        run: node scripts/assert-styles.mjs
+
       # --- browser assertions --------------------------------------------
       # Keyboard reachability, focus trap, one-open-at-a-time accordion,
       # filtering without a URL change, ink inversion, reduced motion, and
