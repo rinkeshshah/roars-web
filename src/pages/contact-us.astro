@@ -172,7 +172,7 @@ const schema = [
     column-gap: var(--sp-5); padding-block: 200px 120px;
   }
   .ch__rule { width: 16px; height: 1.5px; background: var(--c-hairline-dark); margin-bottom: var(--sp-4); }
-  .ch__label { font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
+  .ch__label { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
   .ch__h1 {
     margin: 0; font-size: clamp(var(--fs-heading-m), 6.4vw, 84px);
     font-weight: var(--fw-semi); line-height: 0.98;
@@ -191,7 +191,7 @@ const schema = [
   .cx__lead { font-size: var(--fs-intro); line-height: var(--lh-snug); letter-spacing: var(--ls-item); color: var(--c-ink-body); }
   .cx__body { margin-top: var(--sp-4); font-size: var(--fs-body); line-height: var(--lh-loose); color: var(--c-ink-muted); }
   .cx__block { margin-top: var(--sp-6); }
-  .cx__k { font-size: var(--fs-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); margin-bottom: var(--sp-2); }
+  .cx__k { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); margin-bottom: var(--sp-2); }
   .cx__v { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-ink-body); }
   .cx__email { font-size: 20px; font-weight: var(--fw-semi); letter-spacing: -0.02em; }
   .cx__email:hover, .cx__v a:hover { color: var(--c-accent); }
@@ -206,11 +206,11 @@ const schema = [
   /* Off-screen rather than display:none, which some bots skip. */
   .form__pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .form__row { display: flex; flex-direction: column; gap: var(--sp-2); }
-  .form__row label { font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-ink-body); }
+  .form__row label { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-ink-body); }
   .form__row input, .form__row textarea {
     padding: var(--sp-3) 0;
     border: 0; border-bottom: 1px solid var(--c-rule-soft);
-    background: none; font-family: inherit; font-size: var(--fs-body);
+    background: none; font-family: inherit; font-size: var(--fs-body); line-height: var(--lh-body);
     color: var(--c-ink-body); resize: vertical;
   }
   .form__row input:focus, .form__row textarea:focus { outline: 0; border-bottom-color: var(--c-accent); }
@@ -220,7 +220,7 @@ const schema = [
     padding-inline: 25px 27px; border: 0; border-radius: var(--r-pill);
     background: var(--c-black); color: var(--c-white);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: var(--fs-label); letter-spacing: var(--ls-button); cursor: pointer;
+    font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-button); cursor: pointer;
     transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
   }
   .form__submit:hover:not([disabled]) { background: var(--c-accent); color: var(--c-footer); }
@@ -230,7 +230,7 @@ const schema = [
   .form__dots i:first-child { background: rgba(153, 152, 149, 0.6); }
   .form__dots i:last-child { background: var(--c-white); }
   .form__status:empty { display: none; }
-  .form__status { font-size: var(--fs-label); letter-spacing: var(--ls-item); color: var(--c-ink-muted); }
+  .form__status { font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-item); color: var(--c-ink-muted); }
   .form__status[data-state='error'] { color: #9a1b1b; }
 
   @media (max-width: 1040px) {

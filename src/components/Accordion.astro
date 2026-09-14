@@ -23,8 +23,14 @@ interface Props {
   items: Item[]
   /** Unique per instance so ids do not collide when two are on a page. */
   name: string
+  /**
+   * Index of the row that ships open, or -1 for none. The Main prototype's
+   * FAQ renders the first answer visible, which is also what the Services
+   * accordion above it does, so 0 is the default.
+   */
+  open?: number
 }
-const { items, name } = Astro.props
+const { items, name, open = 0 } = Astro.props
 ---
 
 <div class="acc" data-accordion>
@@ -34,7 +40,7 @@ const { items, name } = Astro.props
         <button
           class="acc__trigger"
           type="button"
-          aria-expanded="false"
+          aria-expanded={i === open ? 'true' : 'false'}
           aria-controls={`${name}-panel-${i}`}
           id={`${name}-trigger-${i}`}
         >
@@ -47,7 +53,7 @@ const { items, name } = Astro.props
         id={`${name}-panel-${i}`}
         role="region"
         aria-labelledby={`${name}-trigger-${i}`}
-        hidden
+        hidden={i !== open}
       >
         <div class="acc__inner"><p>{item.answer}</p></div>
       </div>
@@ -112,6 +118,9 @@ const { items, name } = Astro.props
 
   .acc__panel { overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
   .acc__panel[hidden] { display: block; height: 0; }
+  /* A row that ships open needs a real height before any script runs. The
+     island overwrites this with a measured pixel height on first toggle. */
+  .acc__panel:not([hidden]) { height: auto; }
   .acc__inner { padding: 4px 0 var(--sp-5); }
   .acc__inner p {
     margin: 0;
