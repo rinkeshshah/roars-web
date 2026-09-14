@@ -126,6 +126,18 @@ const ACCEPTED = [
   { match: /^Read about /, why: 'accordion panels need a real link out; the prototype has none' },
   { match: /^Approach$/, why: 'footer nav is five items by decision; Approach stays in the overlay' },
 
+  /* The footer's closing CTA and its tagline are PER PAGE by decision. The
+     export prints one sentence and "Space of Product Solutions*" on all
+     fourteen routes; a visitor who read the CTA band then reached the footer
+     read the same line twice, and every page offered search engines the same
+     closing copy. So the export's strings are MISSING and each page's own are
+     EXTRA, on every page, forever. That is the decision working, not drift. */
+  { match: /^Find how we can help you get from A to B\. Our love/, why: 'footer CTA is per page; this is the default, not every page' },
+  { match: /^Space of ProductSolutions$/, why: 'footer tagline is per page; the house line is "user experience matters"' },
+  { match: /^(Let.s get your project started\.|Want the team behind 250 products\?|Got something that isn.t working\?|Bring us your least favourite part of the week\.)$/, why: 'per-page footer CTA title' },
+  { match: /^(Tell us what you are building|Tell us what is broken|A 30-minute call\. We tell you honestly)/, why: 'per-page footer CTA description' },
+  { match: /^(user experience matters|250 products since 2005|problem first, always|automation that earns its place)$/, why: 'per-page footer tagline' },
+
   /* REMOVED: four entries excusing the Services normalisation — "row name in
      the left rail on every row" and "mock drift on row 3, normalised". Both
      described a build that had flattened the export's alternating indent, and
