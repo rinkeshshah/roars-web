@@ -882,13 +882,14 @@ const schema = [
     font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
-  .svc__row--inner .svc__name { grid-column: 2; grid-row: 1; font-size: 32px; line-height: 40px; }
+  .svc__row--inner .svc__name { grid-column: 2; grid-row: 1; }
+  .svc__row--inner [aria-expanded='true'] .svc__name { font-size: 32px; line-height: 40px; }
   .svc__row--inner .svc__body { grid-column: 4; grid-row: 1; }
   .svc__row--inner .svc__count { grid-column: 5; grid-row: 1; }
   .svc__row--rail  .svc__name { grid-column: 1; grid-row: 1; }
 
   .svc__row--rail  .svc__body { grid-column: 2; grid-row: 1; }
-  .svc__body { font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(2, 2, 2); }
+  .svc__body { max-width: 191px; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(2, 2, 2); }
 
   .svc__row--rail  .svc__count { grid-column: 3; grid-row: 1; }
   .svc__count { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); color: var(--c-black); white-space: nowrap; }
@@ -916,8 +917,12 @@ const schema = [
      Sharing row 1 was an attempt to match the prototype's 195px open row; it
      drew the tag line straight through the row title. A taller row that reads
      correctly beats a short one with text on top of text. */
+  /* overflow:hidden belongs on the BASE rule. It was only on the rail
+     variant, so a closed inner row's panel sat at height 0 without clipping
+     and painted its photo and description straight over the row above. */
+  .svc__panel { overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
   .svc__row--inner .svc__panel { grid-row: 1; grid-column: 3 / 6; margin-top: 26px; }
-  .svc__row--rail .svc__panel { grid-column: 1 / -1; margin-top: 26px; overflow: hidden; height: 0; transition: height var(--dur-fast) ease; }
+  .svc__row--rail .svc__panel { grid-column: 1 / -1; margin-top: 26px; }
   .svc__panel[hidden] { display: block; height: 0; }
   /* Row one ships open, so it needs a real height before any script runs.
      The island overwrites this with a measured pixel height on first toggle. */
