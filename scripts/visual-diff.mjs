@@ -95,6 +95,11 @@ const ACCEPTED = [
   /* Row 3 of the Services accordion is indented 463px in the mock while rows
      2 and 4 sit at the gutter. Artboard drift, normalised to the other two. */
   { field: 'x', match: /^(35|Projects)$/, why: 'Services: mock drift on row 3, normalised to rows 2 and 4' },
+  /* The ten-step scale HOLDS. The prototypes use 46 sizes; collapsing them was
+     the point, so an 18px or 20px value snaps to the nearest step and the 2px
+     difference is accepted. A scale that grows to fit every prototype value
+     is not a scale. See CLAUDE.md, Design system. */
+  { field: 'fs', match: /./, why: 'ten-step type scale: prototype sizes snap to the nearest step, max 2px' },
 ]
 /* An entry with `field` accepts only that measurement for that text; an entry
    without one accepts the element's presence or absence outright. */
@@ -301,6 +306,8 @@ function diffPage(proto, build) {
       const bv = parseFloat(b[f])
       const d = Number.isFinite(pv) && Number.isFinite(bv) ? bv - pv : NaN
       if (Number.isFinite(d) && Math.abs(d) < 0.51) continue
+      const why = acceptedReason(p.t, f)
+      if (why) { accepted.push({ what: p.t, side: `${f} ${p[f]} -> ${b[f]}`, why }); continue }
       rows.push({ kind: 'TYPE', what: p.t, field: f, delta: d, proto: p[f], build: b[f] })
     }
   }

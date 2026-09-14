@@ -42,13 +42,17 @@ await p.waitForTimeout(200)
 ok('overlay closes on Escape', await p.locator('[data-nav-overlay]').isHidden())
 ok('focus returned to trigger', await trig.evaluate((el) => el === document.activeElement))
 
+/* Row 1 ships OPEN, as the Main prototype draws it. This used to click row 1
+   and assert it opened, which now closes it — the assertion was testing the
+   old contract, not a regression. */
 const accs = p.locator('[data-accordion] button[aria-expanded]')
-await accs.nth(0).click(); await p.waitForTimeout(350)
-ok('accordion row 1 opens', (await accs.nth(0).getAttribute('aria-expanded')) === 'true')
+ok('accordion row 1 ships open', (await accs.nth(0).getAttribute('aria-expanded')) === 'true')
 await accs.nth(1).click(); await p.waitForTimeout(350)
 ok('opening row 2 closes row 1',
   (await accs.nth(1).getAttribute('aria-expanded')) === 'true' &&
   (await accs.nth(0).getAttribute('aria-expanded')) === 'false')
+await accs.nth(1).click(); await p.waitForTimeout(350)
+ok('a row can be closed again', (await accs.nth(1).getAttribute('aria-expanded')) === 'false')
 
 const before = p.url()
 await p.locator('[data-filter="ux"]').click(); await p.waitForTimeout(150)
