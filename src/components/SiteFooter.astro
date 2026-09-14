@@ -37,12 +37,31 @@ interface Props {
    * the string, so a page never has to remember to type it.
    */
   tagline?: string
+  /**
+   * The closing action, when the page has one.
+   *
+   * A service page used to end on a grey band that said the same thing the
+   * footer says, one scroll apart — the same heading, the same paragraph, the
+   * same offer. The band went; its button and its contact line came here, so
+   * the page still closes on something to press.
+   *
+   * Optional: a page with no specific action does not grow a button.
+   */
+  ctaLabel?: string
+  ctaHref?: string
+  contact?: string
 }
 const {
   blurbTitle = 'Let’s get your project started.',
   blurb = 'Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.',
   tagline = 'user experience matters',
+  ctaLabel,
+  ctaHref,
+  contact,
 } = Astro.props
+
+/** Only leaves the site when it actually leaves the site. */
+const ctaExternal = ctaHref ? /^https?:\/\//.test(ctaHref) : false
 
 const year = new Date().getFullYear()
 ---
@@ -57,6 +76,18 @@ const year = new Date().getFullYear()
       <div class="ft__blurb">
         <p class="ft__blurb-title">{blurbTitle}</p>
         <p class="ft__blurb-body">{blurb}</p>
+        {ctaLabel && ctaHref && (
+          <a
+            class="ft__cta"
+            href={ctaHref}
+            {...(ctaExternal ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            <span>{ctaLabel}</span>
+            <i class="ft__cta-dot ft__cta-dot--grey" aria-hidden="true"></i>
+            <i class="ft__cta-dot ft__cta-dot--white" aria-hidden="true"></i>
+          </a>
+        )}
+        {contact && <p class="ft__contact">{contact}</p>}
         <div class="ft__by">
           <img class="ft__face" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
           <span class="ft__by-text">
@@ -180,6 +211,25 @@ const year = new Date().getFullYear()
     line-height: 1.36;
     letter-spacing: var(--ls-item);
     color: rgb(147, 147, 147);
+  }
+  /* Light on the dark ground, so it is the brightest thing in the block —
+     which is what a closing action should be. */
+  .ft__cta {
+    position: relative; display: inline-flex; align-items: center;
+    width: 204px; height: 47px; margin-top: var(--sp-5); padding-left: 25px;
+    border-radius: var(--r-pill); background: var(--c-white); color: var(--c-footer);
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-button);
+    transition: background var(--dur-fast) ease;
+  }
+  .ft__cta:hover { background: var(--c-accent); color: var(--c-footer); }
+  .ft__cta-dot { position: absolute; top: 20px; width: 8px; height: 8px; border-radius: 50%; }
+  .ft__cta-dot--grey { left: 167px; background: rgba(11, 11, 11, 0.28); }
+  .ft__cta-dot--white { left: 177px; background: var(--c-footer); }
+  .ft__contact {
+    margin-top: var(--sp-4);
+    font-size: 11px; font-weight: var(--fw-medium); letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.45);
   }
   .ft__by { display: flex; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
   .ft__face { width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); object-fit: cover; background: rgba(255, 255, 255, 0.22); }
