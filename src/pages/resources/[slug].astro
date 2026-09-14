@@ -365,10 +365,12 @@ const { Content } = entry ? await render(entry) : { Content: null }
     letter-spacing: -0.055em; color: rgb(251, 251, 251);
   }
 
-  .gh__preview { position: relative; grid-column: 3; grid-row: 1; width: 320px; height: 340px; margin-top: -4px; }
-  .gh__sheet { position: absolute; display: block; width: 288px; height: 266px; }
-  .gh__sheet--3 { left: 22px; top: 22px; background: rgba(251, 251, 249, 0.3); }
-  .gh__sheet--2 { left: 11px; top: 11px; background: rgba(251, 251, 249, 0.58); }
+  /* Fills its track rather than fixing 320px — see guides.astro. */
+  .gh__preview { position: relative; grid-column: 3; grid-row: 1; width: 100%; max-width: 320px; height: 340px; margin-top: -4px; }
+  /* Percentages of the preview — see guides.astro. */
+  .gh__sheet { position: absolute; display: block; width: 90%; height: 266px; }
+  .gh__sheet--3 { left: 6.875%; top: 22px; background: rgba(251, 251, 249, 0.3); }
+  .gh__sheet--2 { left: 3.438%; top: 11px; background: rgba(251, 251, 249, 0.58); }
   .gh__sheet--1 { left: 0; top: 0; background: rgb(251, 251, 249); border-top: 4px solid var(--c-accent); }
   .gh__cover { position: absolute; left: 16px; top: 26px; overflow: hidden; width: 256px; height: 186px; background: rgb(240, 240, 237); }
   .gh__cover img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -391,7 +393,7 @@ const { Content } = entry ? await render(entry) : { Content: null }
     font-size: 52px; line-height: 58px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
   }
-  .gr__body { position: absolute; left: 540px; top: 70px; width: 822px; }
+  .gr__body { position: absolute; left: 39.648%; top: 70px; width: 60.352%; }
   .gr__lead {
     margin: 0; width: 790px;
     font-size: 20px; line-height: 31px; font-weight: var(--fw-medium);
@@ -444,7 +446,7 @@ const { Content } = entry ? await render(entry) : { Content: null }
     font-size: var(--fs-item); line-height: 1; color: rgb(20, 20, 20);
   }
 
-  .gg__form { position: absolute; left: 540px; top: 174px; width: 822px; padding-top: 32px; }
+  .gg__form { position: absolute; left: 39.648%; top: 174px; width: 60.352%; padding-top: 32px; }
   .gg__form::before {
     content: ''; position: absolute; left: 0; top: 0;
     width: 100%; height: 1.5px; background: var(--c-rule-strong);
@@ -512,7 +514,7 @@ const { Content } = entry ? await render(entry) : { Content: null }
     transition: color var(--dur-fast) ease;
   }
   .gn__go {
-    position: absolute; left: 1290px; top: 20px;
+    position: absolute; left: 94.714%; top: 20px;
     font-size: var(--fs-item); line-height: 32px; letter-spacing: normal; color: rgba(20, 20, 20, 0.45);
     transition: transform var(--dur-fast) ease, color var(--dur-fast) ease;
   }

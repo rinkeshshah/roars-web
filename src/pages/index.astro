@@ -1118,10 +1118,13 @@ const schema = [
   .svc__row[data-open='true'] { padding-bottom: 40px; }
   .svc__row:last-child { padding-bottom: 0; }
   /* An indented CLOSED row: an empty 463px rail, then the same four tracks. */
-  .svc__row--inner { grid-template-columns: 463px 465px 232px 166px 36px; }
+  /* fr, not px. The five tracks sum to exactly 1362 — the content box at a
+     1440 viewport — so at 1440 fr resolves to the identical widths, and at
+     anything narrower it scales instead of hanging off the edge. */
+  .svc__row--inner { grid-template-columns: 463fr 465fr 232fr 166fr 36fr; }
   /* The OPEN row is the only six-track row. */
   .svc__row[data-open='true'] {
-    grid-template-columns: 463px 241px 223px 231px 167px 37px;
+    grid-template-columns: 463fr 241fr 223fr 231fr 167fr 37fr;
   }
 
   .svc__stub, .svc__rule { grid-row: 1; height: 1.5px; background: var(--c-rule-strong); }
