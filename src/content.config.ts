@@ -789,10 +789,23 @@ const resources = defineCollection({
     summary: z.string().max(300).optional(),
     /**
      * The chip this guide filters under. Free text rather than an enum: the
-     * four the export uses are its own, and validate-content checks that the
+     * ones the export uses are its own, and validate-content checks that the
      * set stays small rather than that it matches a list written here.
      */
     category: z.string().max(28).optional(),
+    /**
+     * Which of the live ARCHIVES this item appears on.
+     *
+     * /resource/staff-picks/ and /resource/tools/ are category archives over
+     * these same fifteen items, not separate pages with their own content,
+     * and an item can be on both: Innovation Flowchart and Web Redesign ROI
+     * Calculator are. Most items are on neither and appear only in the guide
+     * library.
+     *
+     * Read off the live pages. Enumerated, because a typo here would silently
+     * empty an archive rather than fail.
+     */
+    collections: z.array(z.enum(['staff-picks', 'tools'])).default([]),
     /** Three at most; they sit on one 420px row in the hero. */
     pills: z.array(z.string().max(20)).max(3).default([]),
     /**

@@ -1,18 +1,18 @@
 ---
-title: "Website Redesign ROI Calculator"
+title: "Web Redesign ROI Calculator"
 publishedAt: 2026-09-15
-category: "BUSINESS MODEL"
-summary: "Work out what a redesign would have to change in order to pay for itself, and decide whether that change is plausible, before the project is approved rather than after."
-pills: ["PDF", "ONE PAGE", "BUSINESS MODEL"]
+category: "STRATEGY"
+summary: "ROI Calculator can be helpful in finding out how much a lean web design can be helpful for you."
+pills: ["PDF", "ONE PAGE", "STRATEGY"]
 file: "website-redesign-roi-calculator.pdf"
+collections: ["tools", "staff-picks"]
 seo:
-  title: "Website Redesign ROI Calculator, Free Download"
+  title: "Web Redesign ROI Calculator, Free One Page Download"
   description: "Work out what a redesign would have to change in order to pay for itself, and decide whether that change is plausible, before the project is approved."
   primaryIntent: "website redesign roi calculator"
   schemaType: "WebPage"
-# Nothing on this page was migrated. The export carries no copy for these
-# five at all, so the title, the summary and the long read are all drafted
-# and all need checking against what is actually in the PDF.
+# Title, summary and category are the live card copy. The long read
+# below is still ours and still needs checking against the PDF.
 needsReview: true
 sections:
   - label: "01 / PURPOSE"

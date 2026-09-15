@@ -9,14 +9,10 @@
  * and /resources/guides/ are both additions, asked for directly. Guide detail
  * still lives at the flat form, as CLAUDE.md requires.
  *
- * GUIDES LINKS, THE OTHER TWO DO NOT, YET. Staff Picks and Tools are category
- * ARCHIVES at the singular /resource/<name>/, each with its own child items,
- * the same shape as /resources/guides/. The URLs are real and are now
- * inventory rows, but the CHILD LISTS are not in this repository: the crawl
- * that produced the inventory read the Squirrly sitemaps, and those carry no
- * taxonomy archives. Until the export in src/pages/resource/[archive].astro
- * describes lands, those two hold their URLs on the pending template and the
- * cards do not pretend to lead anywhere finished.
+ * ALL THREE SHELVES LINK. Staff Picks and Tools are category ARCHIVES at the
+ * singular /resource/<name>/, over the same fifteen items the guide library
+ * carries; an item can be on both. Their counts are computed from the items'
+ * own `collections`, so a card can never advertise a shelf that is empty.
  *
  * Canvas, section-relative: Hero 700, Collections 1020, Library 2740.
  *
@@ -34,10 +30,17 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import { getCollection } from 'astro:content'
 import { site } from '../../lib/site'
 import star5 from '../../assets/star-5.svg'
 
 const path = '/resources/'
+
+/* Shelf counts are computed, so a card cannot advertise a shelf that is empty
+   or out of date. Guides is the whole library; the other two are the items
+   that name that archive in their own `collections`. */
+const entries = await getCollection('resources')
+const countIn = (c: string) => entries.filter((e) => e.data.collections.includes(c as never)).length
 
 /* The export's own shelf copy, verbatim. Guides is the only one with items. */
 const shelves = [
@@ -47,20 +50,23 @@ const shelves = [
     name: 'Guides',
     body: 'Everything you need to know about innovation, in our free PDF guides, with examples, templates, agendas.',
     href: '/resources/guides/',
+    count: entries.length,
   },
   {
     n: '02 / MIXED',
     stamp: ['BOOKS', 'TOOLS', 'PODCASTS'],
     name: 'Staff Picks',
     body: 'A selection of our favorite books, tools, podcasts, guides, and more.',
-    href: null,
+    href: '/resource/staff-picks/',
+    count: countIn('staff-picks'),
   },
   {
     n: '03 / PDF',
     stamp: ['HANDS-ON', 'EASY TO USE', 'ACTIONABLE'],
     name: 'Tools',
     body: 'Actionable tools for change-makers. We’ve transformed a lot of boring innovation management theory into hands-on, easy-to-use, actionable innovation tools. Explore our library of PDFs, free for you to download.',
-    href: null,
+    href: '/resource/tools/',
+    count: countIn('tools'),
   },
 ]
 
@@ -73,10 +79,8 @@ const schema = [
     isPartOf: { '@id': `${site.url}/#website` },
     mainEntity: {
       '@type': 'ItemList',
-      /* Only the shelf that leads somewhere. An ItemList entry for a URL on
-         the pending template would offer search a page with nothing on it. */
-      numberOfItems: shelves.filter((s) => s.href).length,
-      itemListElement: shelves.filter((s) => s.href).map((s, i) => ({
+      numberOfItems: shelves.length,
+      itemListElement: shelves.map((s, i) => ({
         '@type': 'ListItem',
         position: i + 1,
         name: s.name,
@@ -159,11 +163,11 @@ const schema = [
             <h3 class="rc__name">{s.name}</h3>
             <p class="rc__body">{s.body}</p>
             <span class="rc__foot">
-              {s.href ? (
-                <a href={s.href}>See all {s.name.toLowerCase()}<span class="rc__go" aria-hidden="true">→</span></a>
-              ) : (
-                <em class="rc__soon">Not published yet</em>
-              )}
+              <a href={s.href}>
+                See all {s.name.toLowerCase()}
+                {s.count !== undefined && <em class="rc__ct">{s.count}</em>}
+                <span class="rc__go" aria-hidden="true">→</span>
+              </a>
             </span>
           </li>
         ))}
@@ -302,11 +306,11 @@ const schema = [
     transition: transform var(--dur-fast) ease;
   }
   .rc__foot a:hover .rc__go { transform: translateX(8px); }
-  /* No link, and it does not pretend to be one. */
-  .rc__soon {
-    display: block; font-style: normal;
-    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.4);
+  /* The item count, so a card says how big its shelf is before you click. */
+  .rc__ct {
+    margin-left: 8px; font-style: normal;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.1em; color: var(--c-ink-label);
   }
 
   /* ── below the design grid ──────────────────────────────── */

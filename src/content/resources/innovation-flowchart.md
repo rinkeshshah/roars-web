@@ -2,17 +2,17 @@
 title: "Innovation Flowchart"
 publishedAt: 2026-09-15
 category: "STRATEGY"
-summary: "One page that shows how an idea travels from the day somebody has it to the day it is funded, shelved or killed, and who decides at each turn."
+summary: "The Innovation Flowchart gives a detailed overview of the various stages in an innovation process, listing the activities, requirements and goals of each stage."
 pills: ["PDF", "ONE PAGE", "STRATEGY"]
 file: "innovation-flowchart.pdf"
+collections: ["tools", "staff-picks"]
 seo:
   title: "Innovation Flowchart Template, Free One Page Download"
   description: "How an idea travels from the day somebody has it to the day it is funded, shelved or killed, and who decides at each turn. One page, free to download."
   primaryIntent: "innovation flowchart template"
   schemaType: "WebPage"
-# Nothing on this page was migrated. The export carries no copy for these
-# five at all, so the title, the summary and the long read are all drafted
-# and all need checking against what is actually in the PDF.
+# Title, summary and category are the live card copy. The long read
+# below is still ours and still needs checking against the PDF.
 needsReview: true
 sections:
   - label: "01 / PURPOSE"

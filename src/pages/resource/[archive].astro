@@ -3,80 +3,397 @@
  * The two resource CATEGORY ARCHIVES: /resource/staff-picks/ and
  * /resource/tools/.
  *
- * THEY ARE ARCHIVES, NOT PAGES. Each one lists its own children, the same way
- * /resources/guides/ lists the guide items. That is the thing this file does
- * NOT yet have, so it holds the URL and says so.
+ * THEY ARE ARCHIVES OVER THE SAME FIFTEEN ITEMS. Not standalone pages, and
+ * not a separate set of content: each lists the /resources/<slug>/ guides
+ * filed under it, and an item can be on both. Innovation Flowchart and Web
+ * Redesign ROI Calculator are on both. Membership lives on the item, in
+ * `collections`, so a guide names its own shelves and nothing here holds a
+ * second list that could drift.
  *
- * WHAT WENT WRONG HERE, so nobody repeats it. An earlier version of this file
- * read the two shelf cards on /resources/ as two standalone pages and built
- * them: a hand-written "shortlist" for staff picks, and a re-cut of the
- * fifteen guide PDFs for tools. Both were wrong. Staff Picks and Tools are
- * categories with their own item pages underneath them, and nothing in this
- * repository lists those items.
+ * TOOLS GROUPS, STAFF PICKS DOES NOT. That is how the two live pages differ:
+ * Tools prints "All categories" with a Pitching/Strategy chip row and a
+ * heading per group, while Staff Picks runs its four straight down with no
+ * chips even though its items carry three different categories. Encoded per
+ * archive rather than derived, because it is a choice on the live site, not a
+ * rule.
  *
- * WHY THE CHILDREN ARE NOT IN THE INVENTORY. docs/URL-INVENTORY-FINDINGS.md
- * says the inventory came from the six live Squirrly sitemaps, crawled 13 Sep
- * 2026, and those sitemaps carry fifteen /resources/<slug>/ items and no
- * taxonomy archives at all. So the two category URLs were missing, and so is
- * every child under them. They are not absent because they do not exist; they
- * are absent because the crawl could not see them.
+ * SINGULAR /resource/, not /resources/. That is WordPress and it is not ours
+ * to tidy: both are marked KEEP with "migrate at the identical URL" in
+ * docs/migration/roars-url-decisions.csv, and design/specs/Resources.md links
+ * both absolute URLs from the shelf cards it draws. Neither was in
+ * docs/URL-INVENTORY.csv, which is why both rendered nothing for a while; the
+ * inventory was crawled from the Squirrly sitemaps and those carry no taxonomy
+ * archives at all.
  *
- * HOW TO FINISH THIS. Run scripts/wordpress-export/wp-rest-export.sh from a
- * machine that can reach the site. It now pulls every registered taxonomy,
- * every term, and the items filed under each. That gives the real child list
- * for both archives, and this file becomes the same shape as
- * /resources/guides/.
- *
- * The URLs themselves are real and are inventory rows: both are marked KEEP
- * with "migrate at the identical URL" in docs/migration/roars-url-decisions.csv,
- * and design/specs/Resources.md links both absolute URLs from the shelf cards
- * it draws. Note the SINGULAR /resource/, which is not a typo.
+ * Built in the v2 language of /resources/guides/, not as a copy of the live
+ * WordPress layout. Same shelf, same card, same chip row, so the section reads
+ * as one thing.
  */
-import MarketingPage from '../../components/MarketingPage.astro'
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
+import CanvasPlate from '../../components/CanvasPlate.astro'
+import { GUIDE_COVER } from '../../lib/media'
 import { site } from '../../lib/site'
+import star5 from '../../assets/star-5.svg'
 
-export function getStaticPaths() {
-  return [{ params: { archive: 'staff-picks' } }, { params: { archive: 'tools' } }]
-}
-
-const { archive } = Astro.params
-const path = `/resource/${archive}/`
-
-const META = {
+/** The export's own shelf copy for each, verbatim, minus the en dashes. */
+const ARCHIVES = {
   'staff-picks': {
     name: 'Staff Picks',
-    /* The export's own shelf copy, verbatim, which is the one thing about
-       these two that is real. */
-    blurb: 'A selection of our favorite books, tools, podcasts, guides, and more.',
+    standfirst: 'Books, tools, podcasts',
+    statement: 'A selection of our favorite books, tools, podcasts, guides, and more.',
+    /* Four items, three categories, no chip row on the live page. */
+    grouped: false,
+    intro:
+      'The ones we keep coming back to. Not the whole library, just the handful that get handed to somebody most often.',
+    seoTitle: 'Staff Picks: Our Favourite Free Templates | Roars',
+    seoDesc:
+      'A selection of our favourite one page templates: the innovation flowchart, the ROI calculator, the business plan and the prototype testing plan.',
+    blurbTitle: 'Got one we should read?',
+    blurb:
+      'The list is short because things come off it as well as going on. If something here changed how you work, tell us which and why.',
+    tagline: 'the ones we hand over most',
   },
   tools: {
     name: 'Tools',
-    blurb:
+    standfirst: 'Hands-on, easy to use, actionable',
+    statement:
       'Actionable tools for change-makers. We have transformed a lot of boring innovation management theory into hands-on, easy-to-use, actionable innovation tools. Explore our library of PDFs, free for you to download.',
+    grouped: true,
+    intro:
+      'One page each. Print it, fill it in, take it into the room. Grouped by what you are trying to get done.',
+    seoTitle: 'Free Innovation Tools for Change-Makers | Roars',
+    seoDesc:
+      'Hands-on, easy to use, actionable innovation tools as free one page PDFs: problem definition, pitching checklist, innovation flowchart, ROI calculator and more.',
+    blurbTitle: 'None of these quite fit?',
+    blurb:
+      'Tell us what you are trying to work out. If a page will do it we will point you at the page rather than at a proposal.',
+    tagline: 'hands-on, yours to download',
   },
 } as const
 
-const m = META[archive as keyof typeof META]
+export async function getStaticPaths() {
+  const entries = await getCollection('resources')
+  return (['staff-picks', 'tools'] as const).map((archive) => ({
+    params: { archive },
+    props: {
+      items: entries
+        .filter((e) => e.data.collections.includes(archive))
+        .map((e) => ({
+          slug: e.id,
+          href: `/resources/${e.id}/`,
+          name: e.data.title,
+          summary: e.data.summary,
+          category: e.data.category,
+          /* Absent for the ones whose live cover is a file named
+             placeholder. See src/lib/media.ts. */
+          cover: GUIDE_COVER[e.id],
+        })),
+    },
+  }))
+}
+
+const { archive } = Astro.params
+const { items } = Astro.props
+const a = ARCHIVES[archive as keyof typeof ARCHIVES]
+const path = `/resource/${archive}/`
+
+const key = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+
+/* Groups are built from what the items actually carry, in the order the live
+   page prints them, so a category nothing is filed under never gets a chip
+   and no chip can return an empty shelf. */
+const ORDER = ['PITCHING', 'STRATEGY', 'BUSINESS MODEL', 'OUR FAVOURITE', 'PROBLEM DISCOVERY']
+const rank = (c?: string) => {
+  const i = ORDER.indexOf(c ?? '')
+  return i === -1 ? ORDER.length : i
+}
+const categories = a.grouped
+  ? ORDER.filter((c) => items.some((i) => i.category === c))
+  : []
+const groups = a.grouped
+  ? categories.map((c) => ({ name: c, items: items.filter((i) => i.category === c) }))
+  : [{ name: '', items: [...items].sort((x, y) => rank(x.category) - rank(y.category)) }]
 
 const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${site.url}${path}#collection`,
+    name: a.name,
+    isPartOf: { '@id': `${site.url}/#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: items.length,
+      itemListElement: items.map((it, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: it.name,
+        url: `${site.url}${it.href}`,
+      })),
+    },
+  },
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
       { '@type': 'ListItem', position: 2, name: 'Resources', item: `${site.url}/resources/` },
-      { '@type': 'ListItem', position: 3, name: m.name },
+      { '@type': 'ListItem', position: 3, name: a.name },
     ],
   },
 ]
 ---
 
-<MarketingPage
-  title={`${m.name} | ${site.name}`}
-  description={m.blurb}
-  path={path}
-  label="Resources"
-  heading={m.name}
-  schema={schema}
-  pending
-/>
+<BaseLayout title={a.seoTitle} description={a.seoDesc} path={path} schema={schema}>
+  <TopBar slot="topbar" cta="meeting" />
+  <NavOverlay />
+
+  {/* ── Hero ───────────────────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="ah">
+      <GrainField tone="dark" second />
+      <div class="wrap ah__inner">
+        <div class="ah__rail" data-reveal>
+          <a class="ah__back" href="/resources/">← RESOURCES / {a.name.toUpperCase()}</a>
+          <span class="ah__tick" aria-hidden="true"></span>
+          <p class="ah__statement">{a.statement}</p>
+          <ul class="ah__pills">
+            <li>{items.length} {items.length === 1 ? 'ITEM' : 'ITEMS'}</li>
+            <li>PDF</li>
+            <li>FREE</li>
+          </ul>
+        </div>
+
+        <div class="ah__mast" data-reveal>
+          <span class="a-chip">
+            <span>roars</span>
+            <span class="starmark a-chip__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+          </span>
+          <h1 class="ah__large">{a.name}</h1>
+          <p class="ah__standfirst">{a.standfirst}</p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── The shelf ──────────────────────────────────────────── */}
+  <Section ground="light">
+    <div class="al">
+      <span class="a-rule" aria-hidden="true"></span>
+      <span class="a-eyebrow">{a.grouped ? 'ALL CATEGORIES' : 'THE SHORTLIST'}</span>
+      <h2 class="al__h">{a.grouped ? 'the workbench' : 'what we hand over'}</h2>
+      <p class="al__intro" data-reveal>{a.intro}</p>
+
+      {categories.length > 1 && (
+        <ul class="al__chips">
+          {categories.map((c) => <li><a href={`#${key(c)}`}>{c}</a></li>)}
+        </ul>
+      )}
+
+      {groups.map((g) => (
+        <div class="ag">
+          {g.name && (
+            <div class="ag__head" id={key(g.name)}>
+              <span class="ag__rule" aria-hidden="true"></span>
+              <h3 class="ag__name">{g.name}</h3>
+              <span class="ag__n">{g.items.length}</span>
+            </div>
+          )}
+          <ul class="al__grid">
+            {g.items.map((it, i) => (
+              <li class="al__card" data-reveal style={`transition-delay:${(i % 3) * 70}ms`}>
+                <a href={it.href}>
+                  <span class="al__cat">{it.category ?? 'GUIDE'}</span>
+                  <span class="al__thumb" aria-hidden="true">
+                    <CanvasPlate shape={it.category === 'OUR FAVOURITE' ? 'quad' : 'grid'} />
+                    {it.cover && (
+                      <img src={it.cover} alt="" width="434" height="200" loading="lazy" decoding="async" />
+                    )}
+                  </span>
+                  <span class="al__name">{it.name}</span>
+                  {it.summary && <span class="al__sum">{it.summary}</span>}
+                  <span class="al__dl">Download <span aria-hidden="true">↓</span></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <p class="al__all" data-reveal>
+        <a href="/resources/guides/">See the whole library<span aria-hidden="true"> →</span></a>
+      </p>
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    blurbTitle={a.blurbTitle}
+    blurb={a.blurb}
+    tagline={a.tagline}
+    ctaLabel="Shall we chat?"
+    ctaHref="https://meet.roarsinc.com/sales"
+  />
+</BaseLayout>
+
+<style>
+  /* ── shared ─────────────────────────────────────────────── */
+  .a-eyebrow {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
+  }
+  .a-rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+  .a-chip { position: relative; display: flex; align-items: flex-start; height: 24px; margin-left: 8px; }
+  .a-chip > span:first-child {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: #fbfbfb; padding-top: 4px;
+  }
+  .a-chip__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: #fbfbfb; }
+
+  /* ── hero ───────────────────────────────────────────────── */
+  .ah { position: relative; }
+  .ah__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 380px minmax(0, 1fr);
+    gap: 60px; padding-block: 170px 110px;
+  }
+  .ah__back {
+    display: block;
+    font-size: var(--fs-micro); font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.55);
+    transition: color var(--dur-fast) ease;
+  }
+  .ah__back:hover { color: rgba(255, 255, 255, 0.9); }
+  .ah__tick { display: block; width: 16px; height: 1.5px; margin-top: 19px; background: var(--c-accent); }
+  .ah__statement {
+    margin: 27px 0 0; max-width: 360px;
+    font-size: 18px; line-height: 28px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.62);
+  }
+  .ah__pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 0; padding: 0; list-style: none; }
+  .ah__pills li {
+    padding: 7px 13px; border-radius: 60px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+    font-size: 11px; font-weight: var(--fw-medium);
+    letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.88);
+  }
+  .ah__mast { align-self: end; }
+  .ah__large {
+    margin: 16px 0 0 -4px;
+    font-size: clamp(52px, 8.6vw, 124px); line-height: 1.02; font-weight: var(--fw-semi);
+    letter-spacing: -0.055em; color: rgb(251, 251, 251);
+  }
+  .ah__standfirst {
+    margin: 20px 0 0;
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ── the shelf ──────────────────────────────────────────── */
+  .al { padding-block: 84px 96px; }
+  .al__h {
+    margin: 30px 0 0 -3px;
+    font-size: clamp(38px, 4.4vw, 64px); line-height: 1.09; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(36, 36, 36);
+  }
+  .al__intro {
+    margin: 22px 0 0; max-width: 620px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.7);
+  }
+  /* Anchors, not filter buttons. Every group is on the page already, so a
+     chip that hid the others would be a filter pretending to be navigation. */
+  .al__chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 34px 0 0; padding: 0; list-style: none; }
+  .al__chips a {
+    display: block; padding: 8px 15px; border-radius: 60px;
+    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.18);
+    font-size: 11px; font-weight: var(--fw-medium);
+    letter-spacing: 0.12em; color: rgba(20, 20, 20, 0.7);
+    transition: box-shadow var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+  .al__chips a:hover { box-shadow: inset 0 0 0 1px var(--c-accent); color: var(--c-ink-heading); }
+
+  .ag__head {
+    display: flex; align-items: baseline; gap: 16px;
+    margin-top: 64px; padding-top: 22px; scroll-margin-top: 90px;
+  }
+  .ag__rule { position: absolute; left: 0; width: 100%; height: 2px; margin-top: -22px; background: var(--c-accent); }
+  .ag__head { position: relative; }
+  .ag__name {
+    margin: 0;
+    font-size: clamp(24px, 2.4vw, 34px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .ag__n {
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; color: var(--c-ink-label);
+  }
+
+  .al__grid {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 48px 32px; margin: 40px 0 0; padding: 0; list-style: none;
+  }
+  .al__card { min-width: 0; }
+  .al__card a { display: block; }
+  .al__cat {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.16em; color: var(--c-ink-label);
+  }
+  .al__thumb {
+    position: relative; display: block; margin-top: 14px; aspect-ratio: 434 / 200;
+    overflow: hidden; background: rgb(244, 244, 242);
+    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.1);
+  }
+  .al__thumb img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .al__name {
+    display: block; margin-top: 20px;
+    font-size: 24px; line-height: 30px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .al__sum {
+    display: block; margin-top: 10px;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  .al__dl {
+    display: block; margin-top: 16px;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(20, 20, 20, 0.45);
+    transition: color var(--dur-fast) ease;
+  }
+  .al__card a:hover .al__name { color: rgb(90, 90, 90); }
+  .al__card a:hover .al__dl { color: var(--c-ink-heading); }
+
+  .al__all {
+    margin: 72px 0 0; padding-top: 24px;
+    border-top: 1px solid rgba(153, 152, 149, 0.4);
+  }
+  .al__all a {
+    font-size: 20px; line-height: 26px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .al__all a:hover { color: rgb(90, 90, 90); }
+
+  @media (max-width: 1040px) {
+    .ah__inner { grid-template-columns: minmax(0, 1fr); gap: 48px; padding-block: 130px 72px; }
+    .ah__statement { max-width: 460px; }
+    .al { padding-block: 64px 72px; }
+    .al__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
+    .ag__head { margin-top: 52px; }
+  }
+  @media (max-width: 680px) {
+    .al__grid { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+  }
+</style>

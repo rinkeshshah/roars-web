@@ -5,6 +5,7 @@ category: "BUSINESS MODEL"
 summary: "A structured description of how you do what you do. The plan needs to articulate the problem the business proposes to solve, a vision for how that will be accomplished."
 pills: ["PDF", "ONE PAGE", "BUSINESS MODEL"]
 file: "business-plan.pdf"
+collections: ["staff-picks"]
 seo:
   title: "Business Plan Template, Free One Page Download"
   description: "A structured description of how you do what you do, articulating the problem the business proposes to solve and a vision for how that will be accomplished."

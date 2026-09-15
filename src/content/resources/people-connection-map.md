@@ -1,18 +1,18 @@
 ---
-title: "People Connection Map"
+title: "People & Connection Map"
 publishedAt: 2026-09-15
-category: "PROBLEM DISCOVERY"
-summary: "Who has to say yes, who can say no, and who nobody has spoken to yet. One page that puts the people around a decision in view before the decision needs them."
-pills: ["PDF", "ONE PAGE", "PROBLEM DISCOVERY"]
+category: "STRATEGY"
+summary: "The People and Connections Map is a quick and simple way to visualise exactly who you are trying to reach and how."
+pills: ["PDF", "ONE PAGE", "STRATEGY"]
 file: "people-connection-map.pdf"
+collections: ["tools"]
 seo:
-  title: "People Connection Map Template, Free One Page Download"
+  title: "People and Connection Map Template, Free Download"
   description: "Who has to say yes, who can say no, and who nobody has spoken to yet. One page that puts the people around a decision in view before it needs them."
   primaryIntent: "stakeholder map template"
   schemaType: "WebPage"
-# Nothing on this page was migrated. The export carries no copy for these
-# five at all, so the title, the summary and the long read are all drafted
-# and all need checking against what is actually in the PDF.
+# Title, summary and category are the live card copy. The long read
+# below is still ours and still needs checking against the PDF.
 needsReview: true
 sections:
   - label: "01 / PURPOSE"

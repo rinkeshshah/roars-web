@@ -1,18 +1,18 @@
 ---
 title: "Pitching Checklist"
 publishedAt: 2026-09-15
-category: "STRATEGY"
-summary: "What has to be in the room before you pitch, and what has to be out of it. A one page pass over the story, the evidence and the ask, for the day before rather than the morning of."
-pills: ["PDF", "ONE PAGE", "STRATEGY"]
+category: "PITCHING"
+summary: "If you want to sell a killer business idea, your pitch needs to pack a punch. This 5-part checklist is the best way to make sure your pitch hits home."
+pills: ["PDF", "ONE PAGE", "PITCHING"]
 file: "pitching-checklist.pdf"
+collections: ["tools"]
 seo:
   title: "Pitching Checklist Template, Free One Page Download"
   description: "What has to be in the room before you pitch and what has to be out of it. A one page pass over the story, the evidence and the ask, for the day before."
   primaryIntent: "pitching checklist template"
   schemaType: "WebPage"
-# Nothing on this page was migrated. The export carries no copy for these
-# five at all, so the title, the summary and the long read are all drafted
-# and all need checking against what is actually in the PDF.
+# Title, summary and category are the live card copy. The long read
+# below is still ours and still needs checking against the PDF.
 needsReview: true
 sections:
   - label: "01 / PURPOSE"

@@ -1,18 +1,18 @@
 ---
 title: "Problem Definition"
 publishedAt: 2026-09-15
-category: "PROBLEM DISCOVERY"
-summary: "Write the problem down before anybody proposes a solution. One page that holds who has the problem, what it costs them today, and how you will know when it is gone."
-pills: ["PDF", "ONE PAGE", "PROBLEM DISCOVERY"]
+category: "PITCHING"
+summary: "Problem Definition is a deceptively simple task. What at first seems to be the problem is often merely a symptom of a deeper problem. This tool works to both open a problem up, presenting it in a way that can be examined from a number of angles."
+pills: ["PDF", "ONE PAGE", "PITCHING"]
 file: "problem-definition.pdf"
+collections: ["tools"]
 seo:
   title: "Problem Definition Template, Free One Page Download"
   description: "Write the problem down before anybody proposes a solution. Who has it, what it costs them today, and how you will know when it is gone, on one page."
   primaryIntent: "problem definition template"
   schemaType: "WebPage"
-# Nothing on this page was migrated. The export carries no copy for these
-# five at all, so the title, the summary and the long read are all drafted
-# and all need checking against what is actually in the PDF.
+# Title, summary and category are the live card copy. The long read
+# below is still ours and still needs checking against the PDF.
 needsReview: true
 sections:
   - label: "01 / PURPOSE"
