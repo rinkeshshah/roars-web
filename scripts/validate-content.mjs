@@ -414,51 +414,56 @@ for (const [collection, group] of byCollection) {
 /* -------------------------------------------- the guide allowlist in PHP */
 
 /**
- * public/api/contact.php holds a hardcoded list of guide slugs. It is the only
- * thing standing between a POSTed string and a filename, so it has to be a
- * literal in the PHP — but a literal drifts, and a slug that falls off it is a
- * guide whose download silently stops working.
+ * The keys of public/api/guides.php are the guide allowlist: the only thing
+ * standing between a POSTed string and a filename. It is GENERATED from
+ * src/content/resources/*.md by scripts/build-email-manifest.mjs, which removes
+ * the drift a hand-kept literal had — but generated is not the same as correct,
+ * and a guide that falls out of it is a download that silently stops working.
  *
- * So it is checked against the inventory here, in both directions. This is the
- * same reasoning as assert-styles: the failure mode is silence, so something
- * has to fail loudly instead.
+ * So it is still checked against the inventory here, in both directions. Same
+ * reasoning as assert-styles: the failure mode is silence, so something has to
+ * fail loudly instead.
  */
-const ENDPOINT = join(ROOT, 'public/api/contact.php')
-if (existsSync(ENDPOINT)) {
-  const php = readFileSync(ENDPOINT, 'utf8')
-  const block = php.match(/const GUIDE_SLUGS = \[([\s\S]*?)\];/)
-  if (!block) {
+const MANIFEST = join(ROOT, 'public/api/guides.php')
+if (existsSync(MANIFEST)) {
+  const php = readFileSync(MANIFEST, 'utf8')
+  const inPhp = new Set([...php.matchAll(/^ {4}'([a-z0-9-]+)' => \[$/gm)].map((m) => m[1]))
+  if (inPhp.size === 0) {
     errors.push({
-      file: 'public/api/contact.php',
+      file: 'public/api/guides.php',
       rule: 'guide-allowlist',
-      msg: 'GUIDE_SLUGS is gone. The guide download resolves a filename from a POSTed slug and that list is what makes it safe.',
+      msg: 'No guides. The download resolves a filename from a POSTed slug and these keys are what make it safe.',
     })
-  } else {
-    const inPhp = new Set([...block[1].matchAll(/'([a-z0-9-]+)'/g)].map((m) => m[1]))
-    const inCsv = new Set(
-      [...inventoryPaths]
-        .filter((p) => /^\/resources\/[^/]+\/$/.test(p))
-        .map((p) => p.split('/')[2]),
-    )
-    for (const slug of inCsv) {
-      if (!inPhp.has(slug)) {
-        errors.push({
-          file: 'public/api/contact.php',
-          rule: 'guide-allowlist',
-          msg: `/resources/${slug}/ is in the inventory but not in GUIDE_SLUGS, so its download would be refused.`,
-        })
-      }
-    }
-    for (const slug of inPhp) {
-      if (!inCsv.has(slug)) {
-        errors.push({
-          file: 'public/api/contact.php',
-          rule: 'guide-allowlist',
-          msg: `GUIDE_SLUGS carries "${slug}", which is not a /resources/ row in the inventory.`,
-        })
-      }
+  }
+  const inCsv = new Set(
+    [...inventoryPaths]
+      .filter((p) => /^\/resources\/[^/]+\/$/.test(p))
+      .map((p) => p.split('/')[2]),
+  )
+  for (const slug of inCsv) {
+    if (!inPhp.has(slug)) {
+      errors.push({
+        file: 'public/api/guides.php',
+        rule: 'guide-allowlist',
+        msg: `/resources/${slug}/ is in the inventory but not in guides.php, so its download would be refused. Re-run scripts/build-email-manifest.mjs.`,
+      })
     }
   }
+  for (const slug of inPhp) {
+    if (!inCsv.has(slug)) {
+      errors.push({
+        file: 'public/api/guides.php',
+        rule: 'guide-allowlist',
+        msg: `guides.php carries "${slug}", which is not a /resources/ row in the inventory.`,
+      })
+    }
+  }
+} else {
+  errors.push({
+    file: 'public/api/guides.php',
+    rule: 'guide-allowlist',
+    msg: 'Missing. Run scripts/build-email-manifest.mjs — contact.php requires this file and will fatal without it.',
+  })
 }
 
 /* --------------------------------------------------------------- report */

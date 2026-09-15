@@ -8,6 +8,8 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "_prebuild": "guides.php is contact.php's allowlist AND the download email's copy, generated from the same resource records that build the guide pages. It has to be written before astro build so it is in public/ when dist/ is assembled.",
+    "prebuild": "node scripts/build-email-manifest.mjs",
     "build": "astro build",
     "_postbuild": "The 301 maps are part of the deployable output. Without this they are generated only when somebody remembers to run them by hand, and since dist/ is rebuilt from scratch every time, they never reached the server at all.",
     "postbuild": "node scripts/generate-nginx-redirects.mjs && node scripts/generate-journal-htaccess.mjs",

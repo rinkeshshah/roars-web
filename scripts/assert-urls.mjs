@@ -228,10 +228,17 @@ const metaRefresh = htmlFiles.filter((f) =>
   /<meta[^>]+http-equiv=["']?refresh/i.test(readFileSync(f, 'utf8')),
 )
 
-/** Directory format keeps trailing-slash URLs served without a rewrite. */
+/**
+ * Directory format keeps trailing-slash URLs served without a rewrite.
+ *
+ * api/ is exempt. The two files there are the transactional email bodies that
+ * contact.php reads off disk and mails — they are not routes, nothing links to
+ * them, and they are not in the inventory or the sitemap. They live beside the
+ * endpoint that renders them so there is one thing to deploy, not two.
+ */
 const flatPages = htmlFiles
   .map((f) => relative(DIST, f))
-  .filter((r) => !r.endsWith('index.html') && r !== '404.html')
+  .filter((r) => !r.endsWith('index.html') && r !== '404.html' && !r.startsWith('api/'))
 
 /* --------------------------------------------------------------- report */
 

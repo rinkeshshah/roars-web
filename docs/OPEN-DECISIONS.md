@@ -119,3 +119,50 @@ re-reviewing settled pages.
              /thankyou/, /404
   Not yet:   /, /contact-us/, /industries/*, /work/[slug] (the 23 detail
              pages)
+
+## The transactional emails — what the design asked for and the site cannot fill
+
+The two templates came from Claude Design ("Roars v2 — Email Templates") and
+are wired up in `public/api/contact.php`. Most fields resolve to real values.
+These did not, and were removed rather than filled with placeholders, invented
+values, or a plausible guess:
+
+  - **`{{company}}`** — no form on the site collects a company name. The row
+    now carries the **phone number**, which `/contact-us/` does collect, and it
+    disappears when that is empty.
+  - **`{{service}}`** — no form collects a service interest either. The row now
+    carries **which form was submitted** (Contact form / Newsletter / Callback
+    request), which is real and is the nearest true thing.
+  - **"our team in Birmingham"** — there is no Birmingham office. `src/lib/
+    site.ts` lists Bengaluru, Frisco, London, Heist op den Berg and München,
+    and nothing in the system says which one answers a given enquiry. The
+    sentence now names no city. Worth noting: Birmingham IS a target city —
+    two of the seven deferred UK landing pages are Birmingham ones — so the
+    design may have been reaching for a real presence the repo does not
+    record. If there is a Birmingham office, add it to `site.ts` and the city
+    can go back into the sentence.
+  - **`{{unsubscribe_url}}`** — these are transactional replies to a form the
+    person just submitted. There is no list to leave and no endpoint behind the
+    link. A dead Unsubscribe is worse than none, so the link is gone; the
+    sentence saying why they received it stays.
+  - **`{{resource_no}}`** — there is no catalogue number for the fifteen
+    guides. The line now reads LIBRARY + the **shelf** the guide sits on
+    (STRATEGY, PITCHING, …), which comes from its own `pills`.
+
+Two links in the exported footers pointed at URLs that do not exist:
+`roarsinc.com/projects` (the index is `/work/`) and a bare `roarsinc.com`
+(canonical is `https://www.roarsinc.com`). Both corrected.
+
+**Still to confirm with the owner:**
+
+  - `postal_address` defaults to the Bengaluru office. If the emails should
+    carry a different one, set `postal_address` in the private config; no code
+    change needed.
+  - `sales@roarsinc.com` is printed in both footers. It came from the design
+    and matches `notify_to` in the config example, but every office in
+    `site.ts` publishes `contact@roarsinc.com`. Worth deciding which address
+    the emails should show.
+  - Nothing has been sent through a real mail server yet. The templates render
+    and the MIME is built correctly, but **deliverability is untested** — SPF,
+    DKIM and DMARC for `noreply@roarsinc.com` need checking on the webspace
+    before these go live.
