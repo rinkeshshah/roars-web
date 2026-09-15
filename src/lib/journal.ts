@@ -61,10 +61,23 @@ export const JOURNAL: JournalItem[] = (await getCollection('posts'))
   })
   .sort((a, b) => b.sort.localeCompare(a.sort))
 
-/** The lead card on page one. The newest post. */
-export const FEATURED = JOURNAL[0]
-/** Everything else, featured removed so it is not printed twice. */
-export const REST = JOURNAL.filter((p) => p.slug !== FEATURED?.slug)
+/**
+ * The lead cards on page one: the two newest posts, cross-faded in place.
+ *
+ * TWO, NOT ONE. A single lead card gives the newest post a permanent slot and
+ * the runner-up nothing, which on a journal that publishes in bursts means two
+ * pieces land in the same week and only one is ever seen above the fold.
+ * Rotating the pair gives both the position.
+ *
+ * `slice` rather than an index, so a journal with one post still works and an
+ * empty one returns [] rather than [undefined].
+ */
+export const FEATURED = JOURNAL.slice(0, 2)
+
+/** Everything else. BOTH featured posts come out, or the second one would be
+ *  drawn in the lead card and again at the top of the list below it. */
+const featuredSlugs = new Set(FEATURED.map((p) => p.slug))
+export const REST = JOURNAL.filter((p) => !featuredSlugs.has(p.slug))
 
 export const LAST_PAGE = Math.max(1, Math.ceil(REST.length / PER_PAGE))
 

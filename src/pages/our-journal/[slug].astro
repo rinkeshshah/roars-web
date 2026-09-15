@@ -178,11 +178,18 @@ const month = iso ? MONTHS[Number(iso.slice(5, 7)) - 1] : ''
 
       {d.heroImage && (
         <div class="jp__hero" data-reveal>
+          {/* The journal heroes are all built at one size, 1000x425. These
+              attributes reserve the RATIO only — the CSS sets height:auto, so
+              the file's own dimensions decide the rendered size. Declaring the
+              true ratio means the space reserved matches what arrives and the
+              hero does not resettle once it loads. They were 1358x654, which
+              is a different shape and was the reservation the old fixed box
+              cropped to. */}
           <img
             src={d.heroImage}
             alt={d.heroAlt || ''}
-            width="1358"
-            height="654"
+            width="1000"
+            height="425"
             loading="eager"
             decoding="async"
           />
@@ -301,7 +308,16 @@ const month = iso ? MONTHS[Number(iso.slice(5, 7)) - 1] : ''
 
   /* ── hero ───────────────────────────────────────────────── */
   .jp__hero { margin-top: 78px; overflow: hidden; border-radius: 12px; background: rgb(30, 30, 30); }
-  .jp__hero img { display: block; width: 100%; height: 654px; object-fit: cover; }
+  /* THE IMAGE KEEPS ITS OWN SHAPE.
+     This was `height: 654px; object-fit: cover`, a fixed 1358x654 box at
+     2.08:1. Cover fills that box and throws away whatever hangs over, so any
+     hero that is not 2.08:1 lost its edges — and several of these are designed
+     composites with a title panel down one side, so what got cut was the
+     wording. `height: auto` uses the file's own ratio: nothing cropped,
+     nothing stretched, whatever shape it turns out to be.
+     The width/height ATTRIBUTES on the tag are a reservation only, and they
+     are a guess — see the comment beside them. */
+  .jp__hero img { display: block; width: 100%; height: auto; }
 
   /* ── byline ─────────────────────────────────────────────── */
   /* Spec draws the founder's portrait here. See the page header for why this
@@ -392,7 +408,6 @@ const month = iso ? MONTHS[Number(iso.slice(5, 7)) - 1] : ''
     .jp__top .jp__rail { margin-bottom: 34px; }
     .jp__read .jp__rail { margin-bottom: 34px; }
     .jp__hero { margin-top: 48px; }
-    .jp__hero img { height: auto; aspect-ratio: 1358 / 654; }
     .jp__body { max-width: 680px; }
     .jp__pn { margin-top: 72px; padding-bottom: 80px; }
   }

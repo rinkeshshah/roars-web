@@ -31,8 +31,9 @@ import star5 from '../assets/star-5.svg'
 import type { JournalItem } from '../lib/journal'
 interface Props {
   posts: JournalItem[]
-  /** The lead card. Page one only; page two onward opens straight on the grid. */
-  featured?: JournalItem
+  /** The lead cards, newest first. Page one only; page two onward opens
+   *  straight on the grid. One is drawn static, two or more cross-fade. */
+  featured?: JournalItem[]
   page: number
   lastPage: number
   total: number
@@ -124,22 +125,49 @@ const schema = [
         {page === 1 ? `ALL INSIGHTS / ${total}` : `PAGE ${page} OF ${lastPage} / ${total} PIECES`}
       </span>
 
-      {featured && (
-        <a class="jf" href={featured.href} data-reveal>
-          <span class="jf__shot">
-            {(featured.hero ?? JOURNAL_IMG[featured.slug]) && (
-              <img src={featured.hero ?? JOURNAL_IMG[featured.slug]} alt="" width="1362" height="536" loading="lazy" decoding="async" />
-            )}
-            <span class="jf__dot jf__dot--dim" aria-hidden="true"></span>
-            <span class="jf__dot jf__dot--lit" aria-hidden="true"></span>
-          </span>
-          <span class="jf__cap">
-            <span class="jf__date">
-              <b>{featured.day}</b><i>{featured.month}</i>
+      {featured && featured.length > 0 && (
+        /* The lead slot. Two posts stacked and cross-faded; the pips top-right
+           are the export's two dots, doing a job now instead of decorating.
+           NO TITLE OVER THE ART. The hero images carry their own headline
+           panel, so printing the post name on top of it set the title twice,
+           once in each typeface. The date stays, bottom-left, away from the
+           panel the artwork puts on the right. */
+        <div class="jf" data-reveal data-jf={featured.length > 1 ? '' : undefined}>
+          {featured.map((f, i) => (
+            <a
+              class:list={['jf__slide', i === 0 && 'is-on']}
+              href={f.href}
+              data-jf-slide
+              aria-hidden={i > 0 ? 'true' : undefined}
+              tabindex={i > 0 ? -1 : undefined}
+            >
+              <span class="jf__shot">
+                {(f.hero ?? JOURNAL_IMG[f.slug]) && (
+                  <img
+                    src={f.hero ?? JOURNAL_IMG[f.slug]}
+                    alt=""
+                    width="1000"
+                    height="425"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                )}
+              </span>
+              <span class="jf__cap">
+                <span class="jf__date">
+                  <b>{f.day}</b><i>{f.month}</i>
+                </span>
+              </span>
+            </a>
+          ))}
+          {featured.length > 1 && (
+            <span class="jf__pips" aria-hidden="true">
+              {featured.map((_, i) => (
+                <span class:list={['jf__dot', i === 0 && 'is-on']} data-jf-pip></span>
+              ))}
             </span>
-            <span class="jf__title">{featured.name}</span>
-          </span>
-        </a>
+          )}
+        </div>
       )}
 
       <ul class="jl__grid">
@@ -265,28 +293,49 @@ const schema = [
     letter-spacing: 0.18em; color: var(--c-ink-label);
   }
 
-  /* ── the featured card, 1362x536 ────────────────────────── */
-  .jf { position: relative; display: block; margin-top: 80px; }
+  /* ── the featured card ──────────────────────────────────── */
+  /* THE BOX IS THE SHAPE OF THE ARTWORK. It was a fixed 536px height on a
+     1362px card — 2.54:1 — with `object-fit: cover`. The heroes are all built
+     at 1000x425, which is 2.35:1, so cover filled the wider box and cut a
+     strip off the top and the bottom of every one. Matching the ratio means
+     the image lands exactly, uncropped and unstretched, and the box is still
+     a fixed reservation so nothing shifts while it loads. */
+  .jf { position: relative; display: block; margin-top: 80px; aspect-ratio: 1000 / 425; }
+  /* The slides stack. Only the one showing takes the pointer, so a click can
+     never land on the post underneath it. */
+  .jf__slide {
+    position: absolute; inset: 0; display: block;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.7s ease;
+  }
+  .jf__slide.is-on { opacity: 1; pointer-events: auto; }
   .jf__shot {
-    position: relative; display: block; height: 536px; overflow: hidden;
+    position: absolute; inset: 0; display: block; overflow: hidden;
     border-radius: 12px; background: rgb(30, 30, 30);
   }
   .jf__shot img {
     display: block; width: 100%; height: 100%; object-fit: cover;
     transition: transform var(--dur-slow) ease;
   }
-  .jf:hover .jf__shot img { transform: scale(1.03); }
-  /* The caption is white over the photo, so the photo has to be dark where
-     the caption is: a bottom-up wash over the lower 46%. */
+  .jf__slide:hover .jf__shot img { transform: scale(1.03); }
+  /* The date is white over the photo, so the photo has to be dark where the
+     date is: a bottom-up wash over the lower 46%. */
   .jf__shot::after {
     content: ''; position: absolute; inset: auto 0 0 0; height: 46%;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
   }
-  .jf__dot { position: absolute; top: 30px; width: 8px; height: 8px; border-radius: 50%; }
-  .jf__dot--dim { right: 74px; background: rgba(255, 255, 255, 0.55); }
-  .jf__dot--lit { right: 61px; background: var(--c-white); }
-  .jf__cap { position: absolute; left: 457px; bottom: 53px; right: 240px; display: block; }
-  .jf__date { position: absolute; left: 0; top: 0; display: block; width: 88px; }
+  /* The export's two dots, now the rotation indicator. They sit on the card
+     rather than inside a slide, so they do not fade with it. */
+  .jf__pips { position: absolute; top: 30px; right: 61px; z-index: 2; display: flex; gap: 5px; }
+  .jf__dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55); transition: background var(--dur-fast) ease;
+  }
+  .jf__dot.is-on { background: var(--c-white); }
+  /* Bottom-left, clear of the headline panel the artwork carries on its
+     right-hand side. */
+  .jf__cap { position: absolute; left: 44px; bottom: 40px; display: block; }
+  .jf__date { display: block; width: 88px; }
   .jf__date b {
     font-size: var(--fs-stat); line-height: 43px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-white);
@@ -296,12 +345,6 @@ const schema = [
     font-size: 18px; line-height: 43px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-display); color: var(--c-white);
   }
-  .jf__title {
-    display: block; margin-left: 472px; max-width: 430px; padding-top: 18px;
-    font-size: 20px; line-height: 26px; font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-item); color: var(--c-white);
-  }
-
   /* The export's card: a 138px disc on the right, a rule under it, then the
      date and the title. 435x300, three across. */
   .jl__grid {
@@ -330,8 +373,14 @@ const schema = [
   /* Title beside the date, as the export sets it. Only 34 of the 115 have a
      trustworthy date, so a card without one gives the title the full width
      rather than leaving a 234px hole where a number should be. */
+  /* THREE LINES, THEN AN ELLIPSIS. The card is absolutely laid out, so a
+     title is the one thing on it that can grow: the long ones ran to five and
+     six lines and pushed straight through the disc of the card below. Clamping
+     holds every card to the same height, which is what the grid assumes. */
   .jl__title {
     position: absolute; left: 234px; top: 198px; width: 200px;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+    overflow: hidden;
     font-size: 18px; line-height: 27px; font-weight: var(--fw-medium);
     letter-spacing: -0.03em; color: rgb(20, 20, 20);
     transition: color var(--dur-fast) ease;
@@ -374,10 +423,9 @@ const schema = [
     .jl__grid { margin-top: 48px; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 40px; }
     .jl__grid a { min-height: 0; padding-top: 18px; }
     .jf { margin-top: 48px; }
-    .jf__shot { height: auto; aspect-ratio: 1362 / 536; }
-    .jf__cap { left: 24px; right: 24px; bottom: 24px; }
-    .jf__date { position: static; width: auto; }
-    .jf__title { margin: 8px 0 0; padding: 0; max-width: none; }
+    .jf__pips { top: 20px; right: 24px; }
+    .jf__cap { left: 24px; bottom: 24px; }
+    .jf__date { width: auto; }
     .jl__disc, .jl__hair, .jl__date, .jl__title { position: static; }
     .jl__grid a:not(:has(.jl__date)) .jl__title { width: auto; }
     .jl__date { display: block; margin-top: 14px; }
