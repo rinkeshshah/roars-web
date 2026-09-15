@@ -262,7 +262,12 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
           {d.anchor.outcome && <p class="sv-anchor__out" data-reveal>{d.anchor.outcome}</p>}
           <a class="sv-ghost sv-anchor__cta" href={d.anchor.href}>
             {d.anchor.ctaLabel}
-            <span class="sv-dots" aria-hidden="true"><i></i><i></i></span>
+            {/* The two dots every other ghost button carries. This one asked
+                for `.sv-dots`, which is a class that exists nowhere in the
+                project — so the pair rendered as two empty <i> elements at
+                zero size and the button lost its dots. */}
+            <span class="sv-ghost__dot sv-ghost__dot--grey" aria-hidden="true"></span>
+            <span class="sv-ghost__dot sv-ghost__dot--accent" aria-hidden="true"></span>
           </a>
         </div>
       </Section>
