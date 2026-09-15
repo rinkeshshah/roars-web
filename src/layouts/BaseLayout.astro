@@ -7,6 +7,7 @@
  * there is no way for a tag to be injected late and no gap between what a
  * crawler sees and what a browser sees. Verify with `curl`, never DevTools.
  */
+import ThirdParty from '../components/ThirdParty.astro'
 import { site, abs, robotsFor, ALLOW_INDEXING } from '../lib/site'
 import '../styles/tokens.css'
 import '../styles/fonts.css'
@@ -112,6 +113,10 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
     {description && <meta name="twitter:description" content={description} />}
     <meta name="twitter:image" content={ogImageAbs} />
     <meta name="twitter:image:alt" content={imageAlt} />
+
+    {/* Analytics, feedback widget and site verification. One place, so no
+        route can be missed and no route can ship a second copy. */}
+    <ThirdParty />
 
     <slot name="head" />
 

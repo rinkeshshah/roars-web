@@ -56,12 +56,19 @@ Plesk is stronger than any of this and worth having as well.
 This is a launch-checklist step, not a code change:
 
 1. Set `PUBLIC_ALLOW_INDEXING=true` in the deploy workflow environment.
+1a. Set `PUBLIC_ENABLE_TRACKING=true` in the same place, at the same time.
+   Analytics and the Gleap widget are off by default for the same fail-safe
+   reason as indexing: until then every build, preview and local run would
+   post pageviews into the client's real property. See
+   `src/components/ThirdParty.astro`, which also records what is wrong with
+   the tags that were supplied.
 2. Remove the `X-Robots-Tag` nginx directive above.
 3. Remove basic auth, if it was set.
 4. Deploy, then **verify from outside** with curl, not DevTools:
    ```bash
    curl -s https://www.roarsinc.com/ | grep -E 'name="robots"|rel="canonical"'
    curl -s https://www.roarsinc.com/robots.txt
+   curl -s https://www.roarsinc.com/ | grep -c 'google-analytics.com'
    ```
    Expect `index,follow,max-snippet:-1,...` and a `Sitemap:` line.
 5. Only then submit the sitemap in Search Console.

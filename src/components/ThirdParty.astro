@@ -1,0 +1,144 @@
+---
+/**
+ * Third-party tags, on every page, from BaseLayout.
+ *
+ * ONE SWITCH, `PUBLIC_ENABLE_TRACKING`, same shape as PUBLIC_ALLOW_INDEXING in
+ * src/lib/site.ts and fail-safe the same way. Unset means no tag fires. That
+ * matters more here than it does for robots: every build of this site, every
+ * dev preview and every local run would otherwise post pageviews into the
+ * client's real analytics property and fire the client's real ad pixel. The
+ * numbers they use to make decisions would include us.
+ *
+ * Set it in the deploy environment when the site goes live. It is a launch
+ * checklist item, not a code change.
+ *
+ * The site verification meta is NOT behind the switch. It is inert markup with
+ * no request and no cookie, and Search Console needs it present to keep the
+ * property verified.
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * THREE PROBLEMS WITH THE SUPPLIED SNIPPETS. Two are carried as-is because
+ * they are the client's to decide; one is not carried at all.
+ *
+ * 1. THE GOOGLE ANALYTICS TAG IS DEAD. UA-50783352-1 is a Universal Analytics
+ *    property. Universal Analytics stopped processing new data in July 2023,
+ *    so analytics.js still loads and still sends a request, and nothing lands
+ *    anywhere anyone can read. It is carried because removing a tag nobody
+ *    asked to remove is not my call, but it should be replaced with a GA4
+ *    measurement ID (G-XXXXXXXXXX) on gtag.js. See ANALYTICS_ID below.
+ *
+ * 2. THE META PIXEL NEVER INITIALISES. The supplied snippet defines fbq and
+ *    loads fbevents.js, and then stops. A pixel does nothing without
+ *    fbq('init', '<PIXEL_ID>') and fbq('track', 'PageView'), and no pixel ID
+ *    appears anywhere in what was supplied. Both calls are written below and
+ *    the ID is the one value missing. Until PIXEL_ID is filled in, the loader
+ *    is skipped entirely rather than shipped as a script that downloads 70KB
+ *    and reports nothing.
+ *
+ * 3. THE FACEBOOK SIGNAL CONFIG IS NOT CARRIED. It is a WordPress plugin's
+ *    inline config: it points ajaxUrl at /wp-admin/admin-ajax.php, which will
+ *    not exist once WordPress is gone, and it carries a `signalsNonce` that is
+ *    a one-off WordPress nonce, expired the moment that page was generated.
+ *    Copying it across would ship a dead endpoint and a stale token to every
+ *    page. The pixel above is the part that does the work.
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * LOADING. Every tag waits for the load event and then an idle callback, so
+ * none of them competes with first paint or with the LCP the homepage test
+ * measures. Gleap's own loader already appends async; the others are given the
+ * same treatment rather than being trusted to behave.
+ */
+
+/** Google Search Console. Inert, no request, always present. */
+const SITE_VERIFICATION = 'aXxaXukTotkO1Dc0RqLpEQJLO6q8GEO4QkF64xC8OFU'
+
+/** See note 1. Replace with a GA4 id when there is one. */
+const ANALYTICS_ID = 'UA-50783352-1'
+
+/** Gleap feedback widget. A public client key, safe in markup. */
+const GLEAP_KEY = 'R8SQnj4KeBiXVrsZczEAQhdYij1U8eQr'
+
+/** See note 2. Empty means the pixel is not shipped at all. */
+const PIXEL_ID = ''
+
+const enabled = import.meta.env.PUBLIC_ENABLE_TRACKING === 'true'
+
+/* Each block is assembled HERE, at build time, and only when its id exists.
+   Two earlier attempts got this wrong in different ways: `define:vars`
+   alongside `set:html` produced an empty tag, because the directive wraps the
+   script body and set:html then replaces what it wrote; and guarding a block
+   with `if (${q(ID)})` at RUNTIME still shipped the whole block as dead code
+   when the id was empty. Deciding at build time means an absent id costs zero
+   bytes. */
+const q = (v: string) => JSON.stringify(v)
+
+const ga = ANALYTICS_ID
+  ? `
+    /* Google Analytics. See note 1: this is a Universal Analytics property
+       and UA no longer processes data. */
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) };
+      i[r].l = 1 * new Date();
+      a = s.createElement(o); m = s.getElementsByTagName(o)[0];
+      a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    window.ga('create', ${q(ANALYTICS_ID)}, 'auto');
+    window.ga('send', 'pageview');`
+  : ''
+
+const gleap = GLEAP_KEY
+  ? `
+    /* Gleap. Its own loader appends the SDK async. */
+    !function (Gleap, t, i) {
+      if (!(Gleap = window.Gleap = window.Gleap || []).invoked) {
+        for (window.GleapActions = [], Gleap.invoked = !0, Gleap.methods = ["identify", "clearIdentity", "attachCustomData", "setCustomData", "removeCustomData", "clearCustomData", "registerCustomAction", "logEvent", "sendSilentCrashReport", "startFeedbackFlow", "setAppBuildNumber", "setAppVersionCode", "preFillForm", "setApiUrl", "setFrameUrl", "isOpened", "open", "close", "on", "setLanguage", "setOfflineMode", "initialize"], Gleap.f = function (e) { return function () { var t = Array.prototype.slice.call(arguments); window.GleapActions.push({ e: e, a: t }) } }, t = 0; t < Gleap.methods.length; t++) Gleap[i = Gleap.methods[t]] = Gleap.f(i);
+        Gleap.load = function () { var t = document.getElementsByTagName("head")[0], i = document.createElement("script"); i.type = "text/javascript", i.async = !0, i.src = "https://sdk.gleap.io/latest/index.js", t.appendChild(i) };
+        Gleap.load();
+        Gleap.initialize(${q(GLEAP_KEY)});
+      }
+    }();`
+  : ''
+
+const pixel = PIXEL_ID
+  ? `
+    /* Meta Pixel. */
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    window.fbq('init', ${q(PIXEL_ID)});
+    window.fbq('track', 'PageView');`
+  : ''
+
+const tags = [ga, gleap, pixel].filter(Boolean).join(String.fromCharCode(10))
+
+/* Deferred to idle: nothing here is needed to render the page, and all of it
+   is on somebody else's server. */
+const script = `
+(function () {
+  var started = false;
+  function start() {
+    if (started) return;
+    started = true;
+${tags}
+  }
+  /* NOT (requestIdleCallback || setTimeout)(start, 1): the second argument to
+     requestIdleCallback is an options OBJECT, so passing 1 throws a TypeError
+     and no tag loads at all. They take different arguments and need
+     different calls. */
+  function queue() {
+    if (window.requestIdleCallback) window.requestIdleCallback(start, { timeout: 2000 });
+    else window.setTimeout(start, 1);
+  }
+  if (document.readyState === 'complete') queue();
+  else window.addEventListener('load', queue, { once: true });
+})();
+`
+---
+
+<meta name="google-site-verification" content={SITE_VERIFICATION} />
+
+{enabled && tags && <script is:inline set:html={script} />}
