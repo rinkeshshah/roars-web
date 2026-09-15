@@ -254,6 +254,16 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
           <div class:list={['icz__grid', d.cases.items.length === 1 && 'icz__grid--one']}>
             {d.cases.items.map((c, i) => (
               <article class="icz__case" data-reveal style={`transition-delay:${i * 90}ms`}>
+                {/* Its own project's photograph, not the band's. Two cases sit
+                    side by side here, so a single ground across the section
+                    would put one client's premises behind another client's
+                    name. Per case, or not at all — and not at all is what a
+                    case whose slug has no header file still gets. */}
+                {workHeroFor(c.href) && (
+                  <span class="icz__bg" aria-hidden="true">
+                    <img src={workHeroFor(c.href)} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+                  </span>
+                )}
                 <span class="icz__cut" aria-hidden="true"></span>
                 <h3 class="icz__client">{c.client}</h3>
                 <p class="icz__sit">{c.situation}</p>
@@ -688,11 +698,31 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     gap: 56px 60px; margin-top: 44px;
   }
   .icz__grid--one { grid-template-columns: minmax(0, 760px); }
-  .icz__case { position: relative; min-width: 0; padding-top: 30px; }
-  /* The stroke cuts ACROSS the case rather than boxing it in. Rounded cards
-     stay out; this is a structural line. */
+  /* 64px of top padding, not 34: the cut sits at 34 and the client name has to
+     clear it by the same 30px it cleared by when the case was bare text. */
+  .icz__case { position: relative; isolation: isolate; min-width: 0; padding: 64px 34px 38px; }
+  /* The case's own project photograph, amber dusk at the card exposure: the
+     client name, the situation and the CTA all sit ON it, so the ink runs
+     left-to-right under them exactly as it does on a /work/ card.
+     NOT clipped by .icz__case — the radius and the overflow live here, on the
+     picture, so .icz__cut can still overhang the left edge below. */
+  .icz__bg {
+    position: absolute; inset: 0; z-index: -1; display: block;
+    border-radius: 12px; overflow: hidden; background: rgb(24, 24, 24);
+  }
+  .icz__bg img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(var(--dusk-exposure-card));
+  }
+  .icz__bg::before,
+  .icz__bg::after { content: ''; position: absolute; inset: 0; }
+  .icz__bg::before { z-index: 1; background: var(--dusk-amber); }
+  .icz__bg::after { z-index: 2; background: var(--dusk-ink); }
+  /* The stroke still cuts ACROSS the case rather than boxing it in — it
+     overhangs the photograph's left edge, which is the same structural line
+     it always was, now with something to cut across. */
   .icz__cut {
-    position: absolute; left: -12px; top: 0; width: 120px; height: 3px;
+    position: absolute; left: -12px; top: 34px; width: 120px; height: 3px;
     background: var(--c-accent);
   }
   .icz__client {
@@ -1082,6 +1112,10 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
      tab list stacks above its panel rather than beside it. */
   @media (max-width: 1360px) {
     .ic, .ifl, .icz, .iap, .idm { padding-block: 64px; }
+    /* Same reasoning as .sv-anchor: keep the panel, spend less of a narrow
+       screen on its inset. The cut moves in with it. */
+    .icz__case { padding: 52px 20px 32px; }
+    .icz__cut { left: -8px; top: 26px; }
     .ic__h, .ifl__h, .iap__h, .idm__h { max-width: 100%; }
     .if__h { font-size: 27px; line-height: 34px; }
     .icz__grid--one { grid-template-columns: minmax(0, 1fr); }

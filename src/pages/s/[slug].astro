@@ -28,6 +28,7 @@ import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
 import Accordion from '../../components/Accordion.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
+import { workHeroFor } from '../../lib/media'
 import { site } from '../../lib/site'
 
 export async function getStaticPaths() {
@@ -108,6 +109,11 @@ const { Content } = entry ? await render(entry) : { Content: null }
 const designed = Boolean(d?.hero)
 const capabilities = d?.bands?.find((b) => b.key === 'capabilities')
 const engagements = d?.bands?.find((b) => b.key === 'engagements')
+
+/** The anchor case's own photograph, from the same resolver /work/ uses.
+ *  Undefined for a slug with no header file, and the band then reads as the
+ *  flat dark ground it was before. */
+const anchorShot = d?.anchor?.href ? workHeroFor(d.anchor.href) : undefined
 ---
 
 {designed && d ? (
@@ -253,6 +259,14 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     {d.anchor && (
       <Section ground="dark">
         <div class="sv-anchor">
+          {/* One case on this page, so its photograph can be the band's whole
+              ground rather than a panel — same shape as the industry proof
+              band. aria-hidden with an empty alt: it is a ground. */}
+          {anchorShot && (
+            <div class="sv-anchor__bg" aria-hidden="true">
+              <img src={anchorShot} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+            </div>
+          )}
           <span class="sv-eyebrow sv-eyebrow--dark">{d.anchor.label}</span>
           <h2 class="sv-anchor__client" data-reveal>{d.anchor.client}</h2>
           <p class="sv-anchor__sit" data-reveal>{d.anchor.situation}</p>
@@ -888,7 +902,28 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   }
 
   /* ── S4 anchor ──────────────────────────────────────────── */
-  .sv-anchor { padding-block: 64px 80px; max-width: 820px; }
+  /* Padded, because the ground behind it is now the case's own photograph and
+     the copy cannot sit on the picture's edge. A panel rather than a full-bleed
+     band: .sv-anchor is capped at 820px and left-aligned, so a 100vw child
+     would resolve `left: 50%` against THAT box, not the viewport — and a panel
+     is what .icz does on the industry pages, so the two read as one component
+     wherever a case appears. */
+  .sv-anchor { position: relative; isolation: isolate; padding: 54px 40px 62px; max-width: 900px; }
+  /* Amber dusk at the card exposure: the client name, the situation, the
+     bullets and the CTA all sit ON this photograph, and the copy runs down the
+     left, which is the direction --dusk-ink already points. */
+  .sv-anchor__bg {
+    position: absolute; inset: 0; z-index: -1;
+    border-radius: 12px; overflow: hidden; background: rgb(24, 24, 24);
+  }
+  .sv-anchor__bg img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(var(--dusk-exposure-card));
+  }
+  .sv-anchor__bg::before,
+  .sv-anchor__bg::after { content: ''; position: absolute; inset: 0; }
+  .sv-anchor__bg::before { z-index: 1; background: var(--dusk-amber); }
+  .sv-anchor__bg::after { z-index: 2; background: var(--dusk-ink); }
   .sv-anchor__client {
     margin: 26px 0 0 -5px;
     font-size: clamp(40px, 5vw, 72px); line-height: 1.06; font-weight: var(--fw-semi);
@@ -1120,6 +1155,9 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     .sv-hero__small { line-height: 1.05; }
 
     .sv-cost, .sv-eng, .sv-anchor, .sv-scope, .sv-shape, .sv-next { padding-block: 64px; }
+    /* 40px of inset on each side is a quarter of a 390px screen. The photograph
+       panel keeps its edge, the copy just stops paying so much for it. */
+    .sv-anchor { padding-inline: 20px; }
     .sv-eng__h, .sv-scope__h, .sv-shape__h, .sv-next__h { max-width: 100%; }
     .sv-frame__h { font-size: 26px; line-height: 33px; }
     .sv-band, .sv-band--tall, .sv-proc, .sv-rec, .sv-faq, .sv-feat {
