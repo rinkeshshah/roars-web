@@ -123,9 +123,9 @@ export const WORK = {
  * must not do I/O, and because a missing file should be a visible gap rather
  * than a silent one.
  *
- * The five absent — blelp, companyguru, gypsy, onus, super-social — keep
- * whatever /wp-content/uploads/ path their content file already carried. Of
- * those, only ONUS is on the /work/ index; the other four are held back.
+ * The four absent — blelp, companyguru, gypsy, super-social — keep whatever
+ * /wp-content/uploads/ path their content file already carried. All four are
+ * held back, so every card on the /work/ index is on the new photography.
  */
 const WORK_HEADER = new Set([
   'warehouse-compliance-checklist-app', 'parqly-parking-solution',
@@ -134,7 +134,7 @@ const WORK_HEADER = new Set([
   'les-concierges', 'reward-butler', 'concierge-loyalty-program', 'gymbait',
   'flowrow-fitness-app', 'tanishq-data-analytics', 'ventura-law-firm',
   'advisee', 'community-social-residential-community-app', 'club-social',
-  'go-champions-go', 'counter-cabinet',
+  'go-champions-go', 'counter-cabinet', 'onus',
 ])
 
 export const workHeroFor = (href: string): string | undefined => {

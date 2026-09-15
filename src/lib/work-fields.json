@@ -79,13 +79,21 @@
     "hue": 326,
     "field": "hsl(326 28% 16%)"
   },
-  "warehouse-compliance-checklist-app": {
-    "dominantHue": 26,
-    "accentHue": 196,
-    "share": 0.0078,
+  "onus": {
+    "dominantHue": 8,
+    "accentHue": 194,
+    "share": 0.2336,
     "usedAccent": true,
-    "hue": 196,
-    "field": "hsl(196 28% 16%)"
+    "hue": 194,
+    "field": "hsl(194 28% 16%)"
+  },
+  "warehouse-compliance-checklist-app": {
+    "dominantHue": 215,
+    "accentHue": 5,
+    "share": 0.1334,
+    "usedAccent": true,
+    "hue": 5,
+    "field": "hsl(5 28% 16%)"
   },
   "parqly-parking-solution": {
     "dominantHue": 27,

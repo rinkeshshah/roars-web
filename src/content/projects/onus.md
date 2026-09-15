@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-24
 dateLabel: "Aug 24, 2022"
 headline: "ONUS GLOBAL"
-heroImage: "/wp-content/uploads/elementor/thumbs/tuma-Fonts-typography-r1yz7f0pgf3xfr16orjuxw2vjihzscpwl6lgx9oe3o.webp"
+heroImage: "/work/onus.jpg"
 about: "Onus is a top ecommerce logistics solutions provider that utilizes the best of digital software applications to cater vast requirements for package delivery and travel."
 facts:
   - k: "Typography"

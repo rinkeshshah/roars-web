@@ -76,6 +76,10 @@ const BY_PREFIX = {
   '17': 'club-social',
   '18': 'go-champions-go',
   '19': 'counter-cabinet',
+  /* Supplied later, after the first eighteen. 01 is Snowman's OWN fleet in
+     front of their own cold store, replacing a stock trailer yard — a real
+     client photograph beats a lookalike. 20 is Onus. */
+  '20': 'onus',
 }
 
 const W = 2400
