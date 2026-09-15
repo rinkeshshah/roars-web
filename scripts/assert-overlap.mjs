@@ -81,6 +81,11 @@ const PAGES = [
      copy runs long paints over the next section's rule rather than pushing it
      down. Nothing on the shelf page would show that. */
   ['guide', '/resources/swot-analysis/'],
+  /* The two archives share one route and differ in which branch renders, so
+     both are listed: a grouped list of links on one, a grouped list of plain
+     blocks plus the draft notice on the other. */
+  ['arch-tools', '/resource/tools/'],
+  ['arch-picks', '/resource/staff-picks/'],
   ['hub-s', '/s/'],
   ['hub-ind', '/industries/'],
   ['industry', '/industries/food-restaurant-app-development/'],

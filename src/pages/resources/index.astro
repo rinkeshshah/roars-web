@@ -4,18 +4,19 @@
  *
  * TWO EXPORTS, ONE ROUTE. `Roars v2 - Resources` draws a three-shelf overview
  * (Guides / Staff Picks / Tools) whose shelves link onward; `Roars v2 - Guides`
- * draws the library those links lead to. The CSV has fifteen flat
- * /resources/<slug>/ rows and NOTHING ELSE — no index row, no /guides/,
- * /staff-picks/ or /tools/ — and CLAUDE.md already resolves guide detail to
- * the flat form. So the two designs stack on the one route that exists: the
- * shelves as the header, the library under them. Nothing is invented and no
- * shelf links to a page that is not there.
+ * draws the library the first of those links leads to. The CSV carries the
+ * fifteen flat /resources/<slug>/ rows and no index of any kind, so this page
+ * and /resources/guides/ are both additions, asked for directly. Guide detail
+ * still lives at the flat form, as CLAUDE.md requires.
  *
- * The shelves are DESCRIPTIVE, not links. Only Guides has items today; Staff
- * Picks and Tools have no content and no URLs, and a card that looks clickable
- * and is not is worse than one that does not pretend. Their copy is the
- * export's own, so it is real — it describes collections Roars intends to
- * have, and each becomes a link the moment one does.
+ * ALL THREE SHELVES ARE LINKS NOW. They were descriptive for a while because
+ * Staff Picks and Tools had no URL to point at: both live at the SINGULAR
+ * /resource/<name>/ and neither was in docs/URL-INVENTORY.csv, so there was
+ * nothing to link to and a card that looks clickable and is not is worse than
+ * one that does not pretend. The URLs turned out to be real — the decisions
+ * CSV marks both KEEP, and this page's own export links them absolutely — so
+ * they are back in the inventory and both pages are built. See
+ * src/lib/resource-archives.ts.
  *
  * Canvas, section-relative: Hero 700, Collections 1020, Library 2740.
  *
@@ -33,16 +34,10 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
-import { slugsOf } from '../../lib/inventory'
 import { site } from '../../lib/site'
 import star5 from '../../assets/star-5.svg'
 
 const path = '/resources/'
-
-/* Cards come from the INVENTORY, not the collection, so all fifteen live URLs
-   are reachable. Ten carry the export's copy; the other five have none written
-   anywhere and get their real name and no blurb rather than an invented one. */
-const guides = slugsOf('free_stuff')
 
 /* The export's own shelf copy, verbatim. Guides is the only one with items. */
 const shelves = [
@@ -51,21 +46,21 @@ const shelves = [
     stamp: ['EXAMPLES', 'TEMPLATES', 'AGENDAS'],
     name: 'Guides',
     body: 'Everything you need to know about innovation, in our free PDF guides, with examples, templates, agendas.',
-    count: guides.length,
+    href: '/resources/guides/',
   },
   {
     n: '02 / MIXED',
     stamp: ['BOOKS', 'TOOLS', 'PODCASTS'],
     name: 'Staff Picks',
     body: 'A selection of our favorite books, tools, podcasts, guides, and more.',
-    count: 0,
+    href: '/resource/staff-picks/',
   },
   {
     n: '03 / PDF',
     stamp: ['HANDS-ON', 'EASY TO USE', 'ACTIONABLE'],
     name: 'Tools',
     body: 'Actionable tools for change-makers. We’ve transformed a lot of boring innovation management theory into hands-on, easy-to-use, actionable innovation tools. Explore our library of PDFs, free for you to download.',
-    count: 0,
+    href: '/resource/tools/',
   },
 ]
 
@@ -78,10 +73,13 @@ const schema = [
     isPartOf: { '@id': `${site.url}/#website` },
     mainEntity: {
       '@type': 'ItemList',
-      numberOfItems: 1,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Guides', url: `${site.url}/resources/guides/` },
-      ],
+      numberOfItems: shelves.length,
+      itemListElement: shelves.map((s, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: s.name,
+        url: `${site.url}${s.href}`,
+      })),
     },
   },
   {
@@ -159,11 +157,7 @@ const schema = [
             <h3 class="rc__name">{s.name}</h3>
             <p class="rc__body">{s.body}</p>
             <span class="rc__foot">
-              {s.count > 0 ? (
-                <a href="/resources/guides/">See all {s.name.toLowerCase()}<span class="rc__go" aria-hidden="true">→</span></a>
-              ) : (
-                <em class="rc__soon">Not published yet</em>
-              )}
+              <a href={s.href}>See all {s.name.toLowerCase()}<span class="rc__go" aria-hidden="true">→</span></a>
             </span>
           </li>
         ))}
@@ -302,12 +296,6 @@ const schema = [
     transition: transform var(--dur-fast) ease;
   }
   .rc__foot a:hover .rc__go { transform: translateX(8px); }
-  /* No link, and it does not pretend to be one. */
-  .rc__soon {
-    display: block; font-style: normal;
-    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.4);
-  }
 
   /* ── below the design grid ──────────────────────────────── */
   @media (max-width: 1360px) {

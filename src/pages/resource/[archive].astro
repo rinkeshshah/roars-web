@@ -1,0 +1,378 @@
+---
+/**
+ * The two resource archives: /resource/staff-picks/ and /resource/tools/.
+ *
+ * ONE ROUTE, TWO PAGES, ON PURPOSE. They are the same shape — a dark hero
+ * with the shelf's own intro copy, then a grouped list — and Astro's scoped
+ * CSS does not cross component boundaries, so splitting them into two files
+ * would mean two copies of this stylesheet and a pile of rules that are inert
+ * in one of them. assert-styles fails the build on inert rules, correctly.
+ * Keeping both on one route keeps every rule live.
+ *
+ * SINGULAR /resource/, not /resources/. See src/lib/resource-archives.ts for
+ * why, and for where the URLs came from. Both are now inventory rows, so
+ * assert-urls covers them like everything else.
+ *
+ * Built to the shelf language of design/specs/Resources.md and the library on
+ * /resources/guides/: the rule, the eyebrow, the lowercase display heading.
+ * Neither archive has its own export, so nothing here is copied from a design
+ * that does not exist; it reuses the one the section already has.
+ *
+ * STAFF PICKS IS NOINDEX AND SAYS SO IN THE MARKUP. Its list is drafted
+ * placeholder copy. Tools is real: the same fifteen PDFs the library carries,
+ * cut by the job rather than by category, so it asserts nothing new.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
+import { getCollection } from 'astro:content'
+import { nameFromSlug } from '../../lib/inventory'
+import { TOOL_GROUPS, PICKS, STAFF_PICKS_ARE_DRAFT } from '../../lib/resource-archives'
+import { site } from '../../lib/site'
+import star5 from '../../assets/star-5.svg'
+
+export function getStaticPaths() {
+  return [{ params: { archive: 'staff-picks' } }, { params: { archive: 'tools' } }]
+}
+
+const { archive } = Astro.params
+const isTools = archive === 'tools'
+const path = `/resource/${archive}/`
+
+const entries = await getCollection('resources')
+const byId = new Map(entries.map((e) => [e.id, e]))
+
+/* Groups resolve against the collection so a card can never name a guide that
+   is not there. A slug with no entry would be a broken link on a live URL. */
+const groups = TOOL_GROUPS.map((g) => ({
+  ...g,
+  items: g.slugs.map((slug) => {
+    const d = byId.get(slug)?.data
+    return {
+      slug,
+      href: `/resources/${slug}/`,
+      name: d?.title ?? nameFromSlug(slug),
+      summary: d?.summary,
+    }
+  }),
+}))
+
+const PICK_ORDER = ['BOOK', 'TOOL', 'PODCAST'] as const
+const picks = PICK_ORDER.map((kind, i) => ({
+  n: String(i + 1).padStart(2, '0'),
+  kind,
+  label: kind === 'BOOK' ? 'Books' : kind === 'TOOL' ? 'Tools we use' : 'Podcasts',
+  items: PICKS.filter((p) => p.kind === kind),
+})).filter((g) => g.items.length > 0)
+
+const copy = isTools
+  ? {
+      eyebrow: '← RESOURCES / TOOLS',
+      mast: 'Tools',
+      standfirst: 'Hands-on, easy to use, actionable',
+      statement:
+        'Actionable tools for change-makers. We have transformed a lot of boring innovation management theory into hands-on, easy-to-use, actionable innovation tools. Explore our library of PDFs, free for you to download.',
+      pills: [`${groups.reduce((n, g) => n + g.items.length, 0)} TOOLS`, 'PDF', 'FREE'],
+      sectionEyebrow: 'BY THE JOB YOU ARE DOING',
+      h2: 'the workbench',
+      intro:
+        'The same library as the guides shelf, sorted by the week you are having rather than by what the file is called. Most people arrive knowing the problem, not the name of the template.',
+      title: 'Free Innovation Tools and Templates | Roars',
+      desc:
+        'Actionable one page PDF tools for change-makers, sorted by the job you are doing: framing the problem, deciding what to build, making the case, getting it moving.',
+      blurbTitle: 'None of these quite fit?',
+      blurb:
+        'Tell us what you are trying to work out. If a page will do it we will point you at the page rather than at a proposal.',
+      tagline: 'hands-on, yours to download',
+    }
+  : {
+      eyebrow: '← RESOURCES / STAFF PICKS',
+      mast: 'Staff Picks',
+      standfirst: 'Books, tools, podcasts',
+      statement: 'A selection of our favorite books, tools, podcasts, guides, and more.',
+      pills: ['BOOKS', 'TOOLS', 'PODCASTS'],
+      sectionEyebrow: 'WHAT WE PASS AROUND',
+      h2: 'the shortlist',
+      intro:
+        'Not a reading list, a shortlist. Things that changed how somebody here works, with the reason attached, because a title on its own tells you nothing about whether it is worth your evening.',
+      title: 'Staff Picks: Books, Tools and Podcasts | Roars',
+      desc:
+        'The books, tools and podcasts that changed how we work, each with the reason it is here rather than a blurb from the back cover.',
+      blurbTitle: 'Got one we should read?',
+      blurb:
+        'Send it over. The list is short because things come off it as well as going on, and the arguments about what stays are the good part.',
+      tagline: 'things worth your evening',
+    }
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${site.url}${path}#collection`,
+    name: copy.mast,
+    isPartOf: { '@id': `${site.url}/#website` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Resources', item: `${site.url}/resources/` },
+      { '@type': 'ListItem', position: 3, name: copy.mast },
+    ],
+  },
+]
+---
+
+<BaseLayout
+  title={copy.title}
+  description={copy.desc}
+  path={path}
+  schema={schema}
+  noindex={!isTools && STAFF_PICKS_ARE_DRAFT}
+>
+  <TopBar slot="topbar" cta="meeting" />
+  <NavOverlay />
+
+  {/* ── Hero ───────────────────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="ah">
+      <GrainField tone="dark" second />
+      <div class="wrap ah__inner">
+        <div class="ah__rail" data-reveal>
+          <a class="ah__back" href="/resources/">{copy.eyebrow}</a>
+          <span class="ah__tick" aria-hidden="true"></span>
+          <p class="ah__statement">{copy.statement}</p>
+          <ul class="ah__pills">{copy.pills.map((p) => <li>{p}</li>)}</ul>
+        </div>
+
+        <div class="ah__mast" data-reveal>
+          <span class="a-chip">
+            <span>roars</span>
+            <span class="starmark a-chip__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+          </span>
+          <h1 class="ah__large">{copy.mast}</h1>
+          <p class="ah__standfirst">{copy.standfirst}</p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── The shelf ──────────────────────────────────────────── */}
+  <Section ground="light">
+    <div class="al">
+      <span class="a-rule" aria-hidden="true"></span>
+      <span class="a-eyebrow">{copy.sectionEyebrow}</span>
+      <h2 class="al__h">{copy.h2}</h2>
+      <p class="al__intro" data-reveal>{copy.intro}</p>
+
+      {isTools ? (
+        <div class="al__groups">
+          {groups.map((g, i) => (
+            <section class="ag" data-reveal style={`transition-delay:${(i % 2) * 70}ms`}>
+              <span class="ag__rule" aria-hidden="true"></span>
+              <div class="ag__head">
+                <span class="ag__n">{g.n}</span>
+                <h3 class="ag__name">{g.name}</h3>
+                <p class="ag__when">{g.when}</p>
+              </div>
+              <ul class="ag__list">
+                {g.items.map((it) => (
+                  <li>
+                    <a href={it.href}>
+                      <b>{it.name}</b>
+                      {it.summary && <span class="ag__sum">{it.summary}</span>}
+                      <em>Download <span aria-hidden="true">↓</span></em>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div class="al__groups">
+          {/* The list is drafted. It says so on the page rather than only in
+              the source, because a placeholder that looks finished is how a
+              placeholder ends up shipped. */}
+          {STAFF_PICKS_ARE_DRAFT && (
+            <p class="al__draft" data-reveal>
+              <b>This shortlist is a placeholder.</b> The page is built and the real picks
+              are still to come from the team, so it is held out of search until they land.
+            </p>
+          )}
+          {picks.map((g, i) => (
+            <section class="ag" data-reveal style={`transition-delay:${(i % 2) * 70}ms`}>
+              <span class="ag__rule" aria-hidden="true"></span>
+              <div class="ag__head">
+                <span class="ag__n">{g.n}</span>
+                <h3 class="ag__name">{g.label}</h3>
+              </div>
+              <ul class="ag__list">
+                {g.items.map((p) => (
+                  <li>
+                    <div class="ap">
+                      <b>{p.name}</b>
+                      <span class="ap__by">{p.by}</span>
+                      <span class="ag__sum">{p.why}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      )}
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    blurbTitle={copy.blurbTitle}
+    blurb={copy.blurb}
+    tagline={copy.tagline}
+    ctaLabel="Shall we chat?"
+    ctaHref="https://meet.roarsinc.com/sales"
+  />
+</BaseLayout>
+
+<style>
+  /* ── shared ─────────────────────────────────────────────── */
+  .a-eyebrow {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
+  }
+  .a-rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+  .a-chip { position: relative; display: flex; align-items: flex-start; height: 24px; margin-left: 8px; }
+  .a-chip > span:first-child {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: #fbfbfb; padding-top: 4px;
+  }
+  .a-chip__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: #fbfbfb; }
+
+  /* ── hero ───────────────────────────────────────────────── */
+  .ah { position: relative; }
+  .ah__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 380px minmax(0, 1fr);
+    gap: 60px; padding-block: 170px 110px;
+  }
+  .ah__back {
+    display: block;
+    font-size: var(--fs-micro); font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.55);
+    transition: color var(--dur-fast) ease;
+  }
+  .ah__back:hover { color: rgba(255, 255, 255, 0.9); }
+  .ah__tick { display: block; width: 16px; height: 1.5px; margin-top: 19px; background: var(--c-accent); }
+  .ah__statement {
+    margin: 27px 0 0; max-width: 360px;
+    font-size: 18px; line-height: 28px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.62);
+  }
+  .ah__pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 0; padding: 0; list-style: none; }
+  .ah__pills li {
+    padding: 7px 13px; border-radius: 60px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+    font-size: 11px; font-weight: var(--fw-medium);
+    letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.88);
+  }
+  .ah__mast { align-self: end; }
+  .ah__large {
+    margin: 16px 0 0 -4px;
+    font-size: clamp(52px, 8.6vw, 124px); line-height: 1.02; font-weight: var(--fw-semi);
+    letter-spacing: -0.055em; color: rgb(251, 251, 251);
+  }
+  .ah__standfirst {
+    margin: 20px 0 0;
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ── the shelf ──────────────────────────────────────────── */
+  .al { padding-block: 84px 96px; }
+  .al__h {
+    margin: 30px 0 0 -3px;
+    font-size: clamp(38px, 4.4vw, 64px); line-height: 1.09; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(36, 36, 36);
+  }
+  .al__intro {
+    margin: 22px 0 0; max-width: 620px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.7);
+  }
+  .al__draft {
+    margin: 40px 0 0; padding: 18px 20px; max-width: 620px;
+    box-shadow: inset 0 0 0 1.5px var(--c-accent);
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.78);
+  }
+  .al__draft b { font-weight: var(--fw-semi); color: var(--c-ink-heading); }
+  .al__groups { margin-top: 56px; }
+
+  .ag {
+    display: grid; grid-template-columns: minmax(260px, 32%) minmax(0, 1fr);
+    gap: 32px 60px; padding-top: 26px; margin-top: 56px;
+  }
+  .ag:first-child { margin-top: 0; }
+  .ag__rule { grid-column: 1 / -1; height: 2px; margin-bottom: 4px; background: rgba(153, 152, 149, 0.4); }
+  .ag:first-child .ag__rule { background: var(--c-accent); }
+  .ag__n {
+    display: block;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; color: var(--c-ink-label);
+  }
+  .ag__name {
+    margin: 16px 0 0;
+    font-size: clamp(24px, 2.4vw, 34px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .ag__when {
+    margin: 16px 0 0; max-width: 360px;
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.66);
+  }
+  .ag__list { list-style: none; margin: 0; padding: 0; }
+  .ag__list li { border-bottom: 1px solid rgba(153, 152, 149, 0.28); }
+  .ag__list a, .ap { display: block; padding: 20px 0; }
+  .ag__list b {
+    display: block;
+    font-size: 20px; line-height: 26px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  /* Classed, not `.ag__list span`. That selector also caught the arrow inside
+     the download label and gave it display:block, which put it on its own
+     line under the word. */
+  .ag__sum {
+    display: block; margin-top: 6px; max-width: 560px;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  .ag__list em {
+    display: block; margin-top: 12px; font-style: normal;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(20, 20, 20, 0.45);
+    transition: color var(--dur-fast) ease;
+  }
+  .ag__list a:hover b { color: rgb(90, 90, 90); }
+  .ag__list a:hover em { color: var(--c-ink-heading); }
+  .ap__by {
+    display: block; margin-top: 4px;
+    font-size: var(--fs-micro); line-height: 18px; font-weight: var(--fw-medium);
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(20, 20, 20, 0.45);
+  }
+
+  @media (max-width: 1040px) {
+    .ah__inner { grid-template-columns: minmax(0, 1fr); gap: 48px; padding-block: 130px 72px; }
+    .ah__statement { max-width: 460px; }
+    .al { padding-block: 64px 72px; }
+    .al__groups { margin-top: 44px; }
+    .ag { grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 44px; }
+    .ag__when { max-width: 560px; }
+  }
+</style>
