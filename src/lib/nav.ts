@@ -136,7 +136,7 @@ export const MENU: MenuItem[] = [
     ],
   },
   {
-    n: '04', label: 'work', href: '/work/', meta: '23 PROJECTS',
+    n: '04', label: 'work', href: '/work/', meta: '11 PROJECTS',
     eyebrow: '04 — WORK',
     title: 'Selected projects',
     kind: 'cards',
@@ -148,7 +148,7 @@ export const MENU: MenuItem[] = [
       { label: 'GISAID', href: '/work/gisaid-health-tech/', meta: 'HEALTHCARE' },
       { label: 'Advisee', href: '/work/advisee/', meta: 'SAAS' },
     ],
-    all: { label: 'All 23 projects', href: '/work/' },
+    all: { label: 'All 11 projects', href: '/work/' },
   },
   {
     n: '05', label: 'industries', href: null, meta: '9 SECTORS',

@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 import mdx from '@astrojs/mdx'
 import { redirects } from './src/lib/redirects.mjs'
+import { isHeldBackWorkUrl } from './src/lib/held-back.mjs'
 import { existsSync, readdirSync } from 'node:fs'
 
 /** `npm run dev` sets this. `astro build` never does. */
@@ -71,6 +72,10 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/thankyou') &&
         !page.includes('/404') &&
+        /* Held-back case studies are noindex, so they must not be in the
+           sitemap either — a sitemap that lists a noindex URL is asking to be
+           crawled and then telling the crawler to go away. */
+        !isHeldBackWorkUrl(page) &&
         !/\/page\/[2-9]/.test(page) &&
         isMigratedJournalUrl(page),
     })] : []),

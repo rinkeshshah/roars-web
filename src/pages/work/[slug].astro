@@ -17,7 +17,7 @@ import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
 import { PORTRAIT, workHeroFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
-import { clientFor } from '../../lib/projects'
+import { clientFor, isHeldBack } from '../../lib/projects'
 import { site } from '../../lib/site'
 
 export async function getStaticPaths() {
@@ -32,6 +32,12 @@ export async function getStaticPaths() {
 const { slug } = Astro.params
 const { entry } = Astro.props
 const path = `/work/${slug}/`
+
+/* Built, but not offered: off the /work/ index and noindex here. The URL keeps
+   resolving to the real case study, so the named receipts that industry and
+   service pages carry for these projects still land somewhere true. See
+   HELD_BACK in src/lib/projects.ts for why this is not a redirect. */
+const heldBack = isHeldBack(slug as string)
 const client = entry?.data.client ?? clientFor(slug) ?? nameFromSlug(slug)
 
 const schema = entry
@@ -91,7 +97,7 @@ const faces = (d?.team ?? [])
     description={d.seo.description}
     path={path}
     schema={schema}
-    noindex={d.needsReview}
+    noindex={d.needsReview || heldBack}
   >
     <TopBar slot="topbar" cta="contact" />
     <NavOverlay />

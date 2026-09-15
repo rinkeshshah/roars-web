@@ -439,7 +439,10 @@ const schema = [
     .jl__disc, .jl__hair, .jl__date, .jl__title { position: static; }
     .jl__grid a:not(:has(.jl__date)) .jl__title { width: auto; }
     .jl__date { display: block; margin-top: 14px; }
-    .jl__disc { width: 88px; height: 88px; }
+    /* 132, not the 88 this started at. At 88 the thumbnail read as an icon
+       beside a two-line title rather than as the post's picture, and these
+       heroes carry their own headline panel, which at 88px was unreadable. */
+    .jl__disc { width: 132px; height: 132px; }
     .jl__hair { width: 100%; margin: 18px 0; }
     .jl__title { width: auto; }
     .jl__pager { flex-wrap: wrap; gap: 16px; margin-top: 56px; }

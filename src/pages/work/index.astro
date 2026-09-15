@@ -1,6 +1,7 @@
 ---
 /**
- * /work/ — the case study index. Twenty-three of them.
+ * /work/ — the case study index. Eleven listed; twelve more are built but
+ * held back (see HELD_BACK in src/lib/projects.ts).
  *
  * THE EXPORT'S DESIGN, FOR ALL TWENTY-THREE. `Roars v2 - Projects` draws one
  * full-height row per project and that is what ships, by decision, after a
@@ -34,7 +35,7 @@ import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
 import { getCollection } from 'astro:content'
-import { PROJECTS } from '../../lib/projects'
+import { LISTED_PROJECTS } from '../../lib/projects'
 import { workHeroFor, PORTRAIT } from '../../lib/media'
 import { site } from '../../lib/site'
 import star5 from '../../assets/star-5.svg'
@@ -101,8 +102,8 @@ const schema = [
     isPartOf: { '@id': `${site.url}/#website` },
     mainEntity: {
       '@type': 'ItemList',
-      numberOfItems: PROJECTS.length,
-      itemListElement: PROJECTS.map((p, i) => ({
+      numberOfItems: LISTED_PROJECTS.length,
+      itemListElement: LISTED_PROJECTS.map((p, i) => ({
         '@type': 'ListItem',
         position: i + 1,
         name: p.client,
@@ -123,7 +124,7 @@ const schema = [
 
 <BaseLayout
   title="Our Work: 250 Products Since 2005 | Roars"
-  description="Twenty-three case studies across logistics, fitness, health-tech, hospitality, legal and SaaS. What we built, who for, and what it had to survive."
+  description="Eleven case studies across logistics, fitness, health-tech, hospitality, legal and SaaS. What we built, who for, and what it had to survive."
   path={path}
   schema={schema}
 >
@@ -167,9 +168,9 @@ const schema = [
   <Section ground="light">
     <div class="wf">
       <span class="w-rule" aria-hidden="true"></span>
-      <span class="w-eyebrow">ALL PROJECTS / {PROJECTS.length}</span>
+      <span class="w-eyebrow">ALL PROJECTS / {LISTED_PROJECTS.length}</span>
       <ul class="wf__rows">
-        {PROJECTS.map((p) => (
+        {LISTED_PROJECTS.map((p) => (
           <li>
             <a href={`/work/${p.slug}/`}>
               {/* Day and month only. The year moved onto the card beside the

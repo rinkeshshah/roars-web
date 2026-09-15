@@ -1,3 +1,5 @@
+import { HELD_BACK_WORK } from './held-back.mjs'
+
 /**
  * The 23 case studies: inventory slug to client name.
  *
@@ -67,3 +69,19 @@ export const FEATURED_ORDER = [
   'concierge-loyalty-program',
   'gisaid-health-tech',
 ]
+
+/**
+ * NOT LISTED ON /work/, AND noindex ON THEIR OWN URL.
+ *
+ * Eleven case studies are shown for now; twelve are held back. They are still
+ * BUILT — src/lib/held-back.mjs carries the list and the reasoning, and it
+ * lives there rather than here because astro.config.mjs needs the same list to
+ * keep those URLs out of the sitemap and cannot import this module.
+ */
+const HELD_BACK = new Set(HELD_BACK_WORK)
+
+/** True for a case study that is built but not offered. */
+export const isHeldBack = (slug: string): boolean => HELD_BACK.has(slug)
+
+/** The case studies /work/ actually lists, in the same order as PROJECTS. */
+export const LISTED_PROJECTS = PROJECTS.filter((p) => !HELD_BACK.has(p.slug))
