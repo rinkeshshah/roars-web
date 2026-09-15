@@ -8,19 +8,55 @@
  */
 declare(strict_types=1);
 
-header('Content-Type: application/json');
-$fail = function (int $code, string $msg): never {
+/**
+ * TWO CALLERS, TWO REPLIES.
+ *
+ * src/scripts/form.ts posts with `Accept: application/json`, reads the result,
+ * fires generate_lead off it and then navigates to /thankyou/. It needs JSON.
+ *
+ * A NATIVE FORM POST DOES NOT SEND THAT HEADER, and it happens more often than
+ * it looks: JavaScript disabled, the island failing to load, a bot, or a
+ * browser that submitted before the bundle arrived. Those callers used to be
+ * shown a page of raw JSON. They now get a 303 to /thankyou/ — the same
+ * destination the island uses, so the conversion lands in the same place and
+ * the goal counts both.
+ */
+$wantsJson = str_contains((string) ($_SERVER['HTTP_ACCEPT'] ?? ''), 'application/json');
+
+/** Success, in whichever form the caller asked for. */
+$done = function (array $payload) use ($wantsJson): never {
+    if ($wantsJson) {
+        header('Content-Type: application/json');
+        exit(json_encode($payload));
+    }
+    /* 303, not 302: the browser must re-issue as GET, so a refresh on
+       /thankyou/ cannot repost the form. */
+    $form = isset($payload['form']) ? '?form=' . rawurlencode((string) $payload['form']) : '';
+    header('Location: /thankyou/' . $form, true, 303);
+    exit;
+};
+
+$fail = function (int $code, string $msg) use ($wantsJson): never {
     http_response_code($code);
     // Fixed strings only. User input is never echoed back.
-    exit(json_encode(['ok' => false, 'error' => $msg]));
+    if ($wantsJson) {
+        header('Content-Type: application/json');
+        exit(json_encode(['ok' => false, 'error' => $msg]));
+    }
+    /* Deliberately NOT a redirect to /thankyou/: a failure that lands on the
+       thank-you page would tell the visitor their message was sent when it was
+       not, and would count a conversion that never happened. */
+    header('Content-Type: text/plain; charset=utf-8');
+    exit($msg);
 };
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { $fail(405, 'Method not allowed.'); }
 
 $cfg = require '/var/www/vhosts/roarsinc.com/private/contact-config.php';
 
-// Honeypot: a field real people never see and never fill.
-if (($_POST['company_website'] ?? '') !== '') { exit(json_encode(['ok' => true])); }
+// Honeypot: a field real people never see and never fill. Answered exactly
+// like a success so a bot learns nothing from the difference.
+if (($_POST['company_website'] ?? '') !== '') { $done(['ok' => true]); }
 
 $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 
@@ -149,4 +185,4 @@ if ($guide !== null) {
 
 // generate_lead fires from THIS response, never from the submit handler.
 // Clicking is not converting.
-exit(json_encode(['ok' => true, 'event' => 'generate_lead', 'form' => $form]));
+$done(['ok' => true, 'event' => 'generate_lead', 'form' => $form]);
