@@ -7,7 +7,7 @@ migrated: true
 heroImage: "/wp-content/uploads/2026/05/20years-roars.jpg"
 seo:
   title: "20 Years of Roars: Built on Purpose, Driven by Impact | Roars"
-  description: "Roars turns 20. No highlight reel. Just the real lessons from two decades of building digital products — what worked, what didn't, and what we're still figuring out."
+  description: "Roars turns 20. No highlight reel. Just the real lessons from two decades of building digital products, what worked, what didn't, and what we're still figuring out."
   primaryIntent: "20 years of roars built on purpose driven by impact"
   schemaType: "BlogPosting"
 ---
@@ -49,7 +49,7 @@ A few years in, I was sitting with a founder smart guy, clear vision, well-funde
 
 I almost just said yes. Instead, I asked him one question.
 
-"If your user could only do one thing in this product — one thing that would make them come back tomorrow — what would it be?"
+"If your user could only do one thing in this product, one thing that would make them come back tomorrow, what would it be?"
 
 He paused for a long time. Then he said, "I don't actually know."
 
@@ -71,7 +71,7 @@ That's the game. And most products are losing it in places they're not even look
 
 Not the biggest logos. Not the fastest-growing companies. The ones who showed up with real problems and trusted us enough to be honest with them.
 
-The founder who built a beautiful product that nobody could figure out how to use — and let us rip it back to basics without flinching. The operations team running a logistics business on spreadsheets who'd been burned by two agencies before us and were openly skeptical the whole time. The healthcare startup that made us slow down and really think about what it means to design something when the person using it is scared.
+The founder who built a beautiful product that nobody could figure out how to use, and let us rip it back to basics without flinching. The operations team running a logistics business on spreadsheets who'd been burned by two agencies before us and were openly skeptical the whole time. The healthcare startup that made us slow down and really think about what it means to design something when the person using it is scared.
 
 Every one of those clients made us better. Not because the work was easy. Because it wasn't.
 
@@ -81,7 +81,7 @@ Every one of those clients made us better. Not because the work was easy. Becau
 
 We could have scaled faster. A few times, we chose not to. More headcount, more overhead, more projects you take because you need to cover salaries rather than because you believe in them. I've watched studios go that route. Some of them built impressive things. Some of them lost the thing that made them good.
 
-Staying focused — fewer clients, longer relationships, more ownership over what we build — that was a deliberate choice. It still is.
+Staying focused (fewer clients, longer relationships, more ownership over what we build) was a deliberate choice. It still is.
 
 It doesn't make for a dramatic growth story. But it means that when someone works with Roars, they're working with people who actually care whether the thing works. Not just whether it ships.
 
@@ -89,7 +89,7 @@ That distinction matters more than I can explain in a paragraph.
 
  
 
-## What's Coming — And Why I'm Actually Excited
+## What's Coming: And Why I'm Actually Excited
 
 Here's what I know about the next few years. AI is not coming for product designers and developers. It's coming for the parts of product development that were never the interesting parts anyway. The repetitive stuff. The boilerplate. The first draft of a hundred things.
 

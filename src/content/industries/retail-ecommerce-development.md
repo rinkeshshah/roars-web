@@ -3,7 +3,7 @@ title: "eCommerce"
 publishedAt: 2026-09-14
 serviceType: "eCommerce Development For Web And Mobile App Development"
 caseStudies: []
-eyebrow: "INDUSTRIES / 03 — 09"
+eyebrow: "INDUSTRIES / 03 OF 09"
 headline:
   small: "retail &"
   large: "ecommerce"

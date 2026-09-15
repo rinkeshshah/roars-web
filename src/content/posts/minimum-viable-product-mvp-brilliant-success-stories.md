@@ -1,5 +1,5 @@
 ---
-title: "Minimum Viable Product (MVP) – Brilliant Success Stories"
+title: "Minimum Viable Product (MVP), Brilliant Success Stories"
 publishedAt: 2022-08-09
 author: "Roars Technologies"
 categories: ["MVP", "Our Journal", "Product Development"]
@@ -7,7 +7,7 @@ migrated: true
 needsRewrite: true
 heroImage: "/wp-content/uploads/2022/08/MVP-1.jpg"
 seo:
-  title: "Minimum Viable Product (MVP) – Brilliant Success Stories | Roars"
+  title: "Minimum Viable Product (MVP), Brilliant Success Stories | Roars"
   description: "Read about the success stories that a simple MVP brought about for these multi-million dollar companies: Airbnb, Foursquare, Dropbox"
   primaryIntent: "minimum viable product mvp brilliant success stories"
   schemaType: "BlogPosting"

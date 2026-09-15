@@ -9,7 +9,7 @@ headline: "Snowman"
 heroImage: "/work/warehouse-compliance-checklist-app.jpg"
 heroAlt: "Snowman Logistics warehouse platform"
 team: ["founder", "abhishek", "chetna", "nitin", "suzanne"]
-about: "A centralised warehouse operations system for Snowman Logistics — replacing manual checklists and fragmented reporting with real-time visibility, structured compliance and scalable control across every site."
+about: "A centralised warehouse operations system for Snowman Logistics, replacing manual checklists and fragmented reporting with real-time visibility, structured compliance and scalable control across every site."
 facts:
   - k: "Industry"
     v: "Logistics & Cold Chain"
@@ -21,10 +21,10 @@ facts:
     v: "2026"
 blocks:
   - heading: "Goals of the Project:"
-    lead: "To give every site one source of truth — checklists on the floor, photo evidence attached, timestamped sign-off, and reporting that rolls up to regional and national views."
-    body: "To make compliance simple, fast and visually clear for the people doing it — so a problem surfaces while it can still be fixed."
+    lead: "To give every site one source of truth, checklists on the floor, photo evidence attached, timestamped sign-off, and reporting that rolls up to regional and national views."
+    body: "To make compliance simple, fast and visually clear for the people doing it, so a problem surfaces while it can still be fixed."
   - heading: "Outcome:"
-    lead: "Intuitive control at every level — an app built for gloves and cold storage, with large targets, offline capture and no typing where a tap will do."
+    lead: "Intuitive control at every level, an app built for gloves and cold storage, with large targets, offline capture and no typing where a tap will do."
     body: "A streamlined system that highlights what matters and drives stronger engagement, with clear navigation and exception-first reporting for managers."
 gallery:
   - src: "/wp-content/uploads/2026/04/aboutus-strategy.jpg"

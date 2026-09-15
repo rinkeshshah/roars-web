@@ -21,7 +21,7 @@ Month 3 of FreshPlate: Analytics showed users accessing recipes 3-4 times each. 
 
 ### The truth? They were cooking. In real-time. With messy hands.
 
-This insight led to hands-free cooking mode with voice commands—a feature that wasn't even on the roadmap but became core to retention.
+This insight led to hands-free cooking mode with voice commands, a feature that wasn't even on the roadmap but became core to retention.
 
 ### Lesson 1: Your initial assumptions are just hypotheses. Let data validate or invalidate them.
 
@@ -75,7 +75,7 @@ The team spent 2 months on zero new features, just refactoring:
 
 No user saw new features, but everyone benefited from stability.
 
-### Lesson 4: Sometimes the best "feature" is rebuilding the foundation. Technical debt isn't optional—it's mandatory maintenance.
+### Lesson 4: Sometimes the best "feature" is rebuilding the foundation. Technical debt isn't optional, it's mandatory maintenance.
 
 **Why Iteration Isn't Optional**
 **User expectations compound:** What's innovative in Year 1 is basic in Year 3. Competitors evolve, and so must you.

@@ -36,7 +36,7 @@ showcase:
     alt: ""
 needsRewrite: true
 seo:
-  title: "Ventura Law — The Accident Law Firm"
+  title: "Ventura Law: The Accident Law Firm"
   description: "Ventura Law firm is a leader in car accident cases in Connecticut and the tri-state area. This case study focuses on the design of the firm’s website and the challenges they faced in developing a user-friendly and efficient experience for their clients."
   primaryIntent: "ventura law firm"
   schemaType: "CreativeWork"

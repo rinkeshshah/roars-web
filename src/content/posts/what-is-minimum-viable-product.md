@@ -30,7 +30,7 @@ A Minimum Viable Product is often referred to as a base product or core artifac
 
 An idea cannot be tested by bouncing it off people. It is only when your product idea has a definite presence, however small, can you offer it to some possible customers and gather knowledge from their feedback. An MVP helps you do just that. By building a base product and releasing it to a limited subject of potential customers, you are creating an environment for beta testing your product. This process reduces the total time spent on iteration and also gives you a clear idea of who your target audience should be and what exactly are they looking for, in your product.
 
-## [Minimum Viable Product (MVP) – Brilliant Success Stories](https://medium.com/roars/minimum-viable-product-mvp-brilliant-success-stories-2923ccc209cc)
+## [Minimum Viable Product (MVP), Brilliant Success Stories](https://medium.com/roars/minimum-viable-product-mvp-brilliant-success-stories-2923ccc209cc)
 
 There are many benefits of a Minimum Viable Product. If you are looking to build one for your product idea, we would be happy to help you with it. Through Produit™, our MVP offering, we provide you with a product scope in just 2 business days and an MVP in just 30 days. [Contact us](https://www.roarsinc.com/contact-us/) now to get started on your MVP.
 

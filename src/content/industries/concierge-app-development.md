@@ -3,7 +3,7 @@ title: "Concierge"
 publishedAt: 2026-09-14
 serviceType: "On Demand Mobile Concierge App Development Company"
 caseStudies: []
-eyebrow: "INDUSTRIES / 04 — 09"
+eyebrow: "INDUSTRIES / 04 OF 09"
 headline:
   small: "members &"
   large: "concierge"

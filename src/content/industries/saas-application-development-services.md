@@ -3,7 +3,7 @@ title: "SaaS"
 publishedAt: 2026-09-14
 serviceType: "SaaS Application Development Services"
 caseStudies: []
-eyebrow: "INDUSTRIES / 07 — 09"
+eyebrow: "INDUSTRIES / 07 OF 09"
 headline:
   small: "cloud &"
   large: "saas"

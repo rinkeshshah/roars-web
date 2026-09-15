@@ -3,7 +3,7 @@ title: "Restaurant"
 publishedAt: 2026-09-13
 serviceType: "Food and Restaurant App Development"
 caseStudies: []
-eyebrow: "INDUSTRIES / 01 — 08"
+eyebrow: "INDUSTRIES / 01 OF 08"
 headline:
   small: "food &"
   large: "restaurant"
@@ -60,7 +60,7 @@ journey:
     - n: "03"
       name: "Pay"
       lead: "Settled before the plate leaves the pass."
-      body: "Cards, wallets, net banking, promo codes and split bills — with the failure states designed, not left to chance."
+      body: "Cards, wallets, net banking, promo codes and split bills, with the failure states designed, not left to chance."
       tags: ["PAYMENTS", "COUPONS"]
     - n: "04"
       name: "Fire"
@@ -75,12 +75,12 @@ journey:
     - n: "06"
       name: "Return"
       lead: "The second visit is the cheapest one."
-      body: "Ratings, loyalty points and offers built from what they actually ordered — not from a generic blast to the whole list."
+      body: "Ratings, loyalty points and offers built from what they actually ordered, not from a generic blast to the whole list."
       tags: ["LOYALTY", "PUSH & CRM"]
 surfaces:
   label: "SURFACES"
   heading: "four apps"
-  sub: "one kitchen — pick a seat"
+  sub: "one kitchen, pick a seat"
   tabs:
     - n: "01"
       name: "Diner"

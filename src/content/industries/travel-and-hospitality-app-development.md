@@ -3,7 +3,7 @@ title: "Travel"
 publishedAt: 2026-09-14
 serviceType: "Travel & Hospitality App Development Company in USA"
 caseStudies: []
-eyebrow: "INDUSTRIES / 05 — 09"
+eyebrow: "INDUSTRIES / 05 OF 09"
 headline:
   small: "travel &"
   large: "hospitality"

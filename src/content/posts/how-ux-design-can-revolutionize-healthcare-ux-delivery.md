@@ -25,7 +25,7 @@ The term “Healthcare UX” is used to describe the practice of designing user 
 
 ### UX Design for an Aging Population
 
-The design of healthcare UX must consider the needs of all populations—including the aging population. As people age, they often experience physical and cognitive changes that can affect the way they interact with digital products. To help ensure the safety and wellbeing of this population, UX designers must consider factors such as reducing complexity, increasing legibility, and adding features such as voice recognition and adjustable font sizes. In addition, it’s important to design with accessibility in mind—including providing support for screen readers, accessibility settings, and keyboard navigation. By taking these measures, UX designers can ensure they create products that are safe, usable, and enjoyable for everyone.
+The design of healthcare UX must consider the needs of all populations, including the aging population. As people age, they often experience physical and cognitive changes that can affect the way they interact with digital products. To help ensure the safety and wellbeing of this population, UX designers must consider factors such as reducing complexity, increasing legibility, and adding features such as voice recognition and adjustable font sizes. In addition, it’s important to design with accessibility in mind, including support for screen readers, accessibility settings, and keyboard navigation. By taking these measures, UX designers can ensure they create products that are safe, usable, and enjoyable for everyone.
 
 ### UX Design for Big Data in Healthcare
 

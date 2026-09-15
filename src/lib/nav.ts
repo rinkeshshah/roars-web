@@ -75,7 +75,7 @@ export interface MenuItem {
  * touched a row. Verbatim from the export.
  */
 export const MENU_REST = {
-  eyebrow: 'ROARS — SINCE 2005',
+  eyebrow: 'ROARS / SINCE 2005',
   title: 'We create delightful experiences that matters.',
   statLabel: '20 YEARS OF EXCELLENCE IN PRODUCT CONSULTING',
   stats: [
@@ -99,7 +99,7 @@ export const MENU_BAND = {
 export const MENU: MenuItem[] = [
   {
     n: '01', label: 'home', href: '/',
-    eyebrow: '01 — HOME',
+    eyebrow: '01 / HOME',
     title: 'Space of Product Solutions',
     body: 'Product development for startups and SMEs. Strategy, design and engineering under one roof, run by the same team since 2005.',
     kind: 'links',
@@ -111,7 +111,7 @@ export const MENU: MenuItem[] = [
   },
   {
     n: '02', label: 'about us', href: '/about-us/',
-    eyebrow: '02 — ABOUT US',
+    eyebrow: '02 / ABOUT US',
     title: 'The team behind 250 products',
     body: 'Founded in 2005 by Rinkesh A Shah. Eight senior people, five ventures of our own, and clients who come back for the next build.',
     kind: 'links',
@@ -124,7 +124,7 @@ export const MENU: MenuItem[] = [
   },
   {
     n: '03', label: 'approach', href: '/approach/',
-    eyebrow: '03 — APPROACH',
+    eyebrow: '03 / APPROACH',
     title: 'How an engagement runs',
     body: 'Four stages, a named project manager, and a monthly cadence you can scale up or down.',
     kind: 'services',
@@ -137,7 +137,7 @@ export const MENU: MenuItem[] = [
   },
   {
     n: '04', label: 'work', href: '/work/', meta: '11 PROJECTS',
-    eyebrow: '04 — WORK',
+    eyebrow: '04 / WORK',
     title: 'Selected projects',
     kind: 'cards',
     items: [
@@ -152,7 +152,7 @@ export const MENU: MenuItem[] = [
   },
   {
     n: '05', label: 'industries', href: null, meta: '9 SECTORS',
-    eyebrow: '05 — INDUSTRIES',
+    eyebrow: '05 / INDUSTRIES',
     title: 'Sectors we already understand',
     kind: 'sectors',
     items: [
@@ -169,7 +169,7 @@ export const MENU: MenuItem[] = [
   },
   {
     n: '06', label: 'services', href: null, meta: '12 SERVICES',
-    eyebrow: '06 — SERVICES',
+    eyebrow: '06 / SERVICES',
     title: 'What we do',
     kind: 'services',
     /* ALL TWELVE. The panel's own meta says "12 SERVICES" and it listed five,
@@ -194,7 +194,7 @@ export const MENU: MenuItem[] = [
   },
   {
     n: '07', label: 'resources', href: '/resources/', meta: '15 KITS',
-    eyebrow: '07 — RESOURCES',
+    eyebrow: '07 / RESOURCES',
     title: 'Tools, guides and templates',
     body: 'Free downloads we use in our own discovery work.',
     kind: 'kits',
@@ -215,18 +215,18 @@ export const MENU: MenuItem[] = [
   },
   {
     n: '08', label: 'our journal', href: '/our-journal/',
-    eyebrow: '08 — OUR JOURNAL',
+    eyebrow: '08 / OUR JOURNAL',
     title: 'Notes from the studio',
     kind: 'posts',
     items: [
       { label: 'AI App Development vs Traditional App Development', meta: '15 MAY', href: '/our-journal/ai-app-development-vs-traditional-app-development-which-is-better-for-customer-engagement/' },
       { label: '20 Years of Roars: Built on Purpose, Driven by Impact', meta: '04 MAY', href: '/our-journal/20-years-of-roars-built-on-purpose-driven-by-impact/' },
-      { label: 'The Unexpected Insight — We built a meal planning app', meta: '11 DEC', href: '/our-journal/the-unexpected-insight-we-built-a-meal-planning-app/' },
+      { label: 'The Unexpected Insight: we built a meal planning app', meta: '11 DEC', href: '/our-journal/the-unexpected-insight-we-built-a-meal-planning-app/' },
     ],
   },
   {
     n: '09', label: 'contact us', href: '/contact-us/',
-    eyebrow: '09 — CONTACT US',
+    eyebrow: '09 / CONTACT US',
     title: 'Tell us what you are building',
     body: 'A 30 minute call with Rinkesh, no pitch deck. We will tell you what the build takes and what it costs.',
     kind: 'contact',

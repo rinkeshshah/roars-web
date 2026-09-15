@@ -3,7 +3,7 @@ title: "Fitness"
 publishedAt: 2026-09-14
 serviceType: "Fitness App Development Company"
 caseStudies: []
-eyebrow: "INDUSTRIES / 02 — 09"
+eyebrow: "INDUSTRIES / 02 OF 09"
 headline:
   small: "health &"
   large: "fitness"

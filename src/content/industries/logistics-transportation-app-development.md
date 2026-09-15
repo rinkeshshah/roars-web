@@ -3,7 +3,7 @@ title: "Logistics"
 publishedAt: 2026-09-14
 serviceType: "Logistics and Transportation App Development Company"
 caseStudies: []
-eyebrow: "INDUSTRIES / 06 — 09"
+eyebrow: "INDUSTRIES / 06 OF 09"
 headline:
   small: "transport &"
   large: "logistics"

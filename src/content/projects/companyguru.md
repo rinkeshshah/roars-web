@@ -81,7 +81,7 @@ With a solution that addresses common pain points in company registration, Compa
 
 At Roars Technologies, we transformed an outdated, cumbersome registration process into a modern, efficient digital solution. Here’s how we made it happen:
 
-We managed every aspect of the project—from ideation and design to development, testing, and launch—ensuring a robust, scalable platform tailored to user needs.
+We managed every aspect of the project, from ideation and design to development, testing, and launch, ensuring a robust, scalable platform tailored to user needs.
 
 Drawing inspiration from market leaders like Easy Companies, our design team crafted an interface that is both visually appealing and highly functional, ensuring users feel confident and supported throughout the registration process.
 

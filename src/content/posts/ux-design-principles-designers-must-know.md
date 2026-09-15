@@ -37,7 +37,7 @@ The latest gadgets and innovations can distract from the foundational design pri
 
 ### Evolving Technologies, Constant Expectations
 
-Accessibility, clarity, and ease of use remain perpetual demands—no matter how innovative AI personalization becomes. These demands are now more important than ever.
+Accessibility, clarity, and ease of use remain perpetual demands, no matter how innovative AI personalization becomes. These demands are now more important than ever.
 
 ### Strategic Design = Better Product Outcomes
 
@@ -119,7 +119,7 @@ Because they help assure an attractive ROI by increasing adoption due to usefuln
 
 #### How often should UX principles be reviewed in a project?
 
-UX principles should be considered at every stage of a project — from initial research and planning to design, development, and testing. From ideation testing — UX principles guide every stage of our [product development](https://www.roarsinc.com/s/product-development-company/) process.
+UX principles should be considered at every stage of a project, from initial research and planning to design, development, and testing. From ideation testing, UX principles guide every stage of our [product development](https://www.roarsinc.com/s/product-development-company/) process.
 
 #### Conclusion
 

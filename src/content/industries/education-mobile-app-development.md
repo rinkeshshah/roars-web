@@ -3,7 +3,7 @@ title: "Education"
 publishedAt: 2026-09-14
 serviceType: "Education Mobile App Development Company"
 caseStudies: []
-eyebrow: "INDUSTRIES / 09 — 09"
+eyebrow: "INDUSTRIES / 09 OF 09"
 headline:
   small: "learning &"
   large: "education"

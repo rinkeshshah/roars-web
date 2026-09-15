@@ -1,5 +1,5 @@
 ---
-title: "Minimum Viable Product – Learn Faster To Deliver Better!"
+title: "Minimum Viable Product, Learn Faster To Deliver Better!"
 publishedAt: 2022-08-09
 author: "Roars Technologies"
 categories: ["Business", "Our Journal", "Product Development"]
@@ -7,7 +7,7 @@ migrated: true
 needsRewrite: true
 heroImage: "/wp-content/uploads/2022/08/Untitled-1-1.jpg"
 seo:
-  title: "Minimum Viable Product – Learn Faster To Deliver Better! | Roars"
+  title: "Minimum Viable Product, Learn Faster To Deliver Better! | Roars"
   description: "Agile Minimum Viable Product has emerged as the most effective approach to product development because getting the better product in the customer’s hands faster than others is the untold secret of startup success."
   primaryIntent: "minimum viable product learn"
   schemaType: "BlogPosting"

@@ -22,7 +22,7 @@ A prototype or an MVP differ in the ways that the former is limited to a certain
 
 An MVP is intended to be an endurable product that is intended not only for the current users but has a scope for future utilization with an opportunity for easy up-gradation of additional features. These features enhance the primary applications of a product while maintaining the nuclear elements to involve trendy updates and enhance the functionality.
 
-***Let us understand this with an example – ***
+***Let us understand this with an example, ***
 
 - In the design of a digital watch, a case that contains the necessary circuit elements and display features to let the user get a precise reading of the time can be regarded as an MVP. It is necessary that the basic time telling abilities of this watch be endurable and highly effective. The product can be released in the intended market in such a form as it has the best accumulation of primary features that users are looking for.
 

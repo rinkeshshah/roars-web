@@ -3,7 +3,7 @@ title: "HealthCare"
 publishedAt: 2026-09-14
 serviceType: "Healthcare App Development Company"
 caseStudies: []
-eyebrow: "INDUSTRIES / 08 — 09"
+eyebrow: "INDUSTRIES / 08 OF 09"
 headline:
   small: "clinics &"
   large: "healthcare"
