@@ -288,6 +288,11 @@ const links = [
   }
 
   /* ── what happens next ──────────────────────────────────── */
+  /* Section supplies NO padding — every band sets its own, and this one had
+     none at all. The result was the "Next" rule jammed against the dark band
+     above and the third step's body copy running under the yellow one below,
+     which the reveal transform pushed a further 26px into. */
+  .tn { padding-block: 88px 104px; }
   .tn__rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
   .tn__eyebrow {
     display: block; margin-top: 12px;
@@ -409,11 +414,13 @@ const links = [
        to it, so below the grid it follows rather than leads. */
     .ty__note { order: 2; max-width: 520px; }
     .ty__main { order: 1; }
+    .tn { padding-block: 72px 84px; }
     .tn__head, .tw__head { grid-template-columns: 1fr; row-gap: 26px; }
     .tn__rows, .tw__rows { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 720px) {
     .ty__inner { padding-block: 100px 64px; }
+    .tn { padding-block: 56px 64px; }
     .ty__sub { max-width: none; }
     .tn__rows, .tw__rows { grid-template-columns: 1fr; }
     .tn__hair { margin-top: 36px; }
