@@ -166,3 +166,42 @@ Two links in the exported footers pointed at URLs that do not exist:
     and the MIME is built correctly, but **deliverability is untested** — SPF,
     DKIM and DMARC for `noreply@roarsinc.com` need checking on the webspace
     before these go live.
+
+## The homepage service figures have no source in the content
+
+The Services band carries a figure per row: 250 shipped, 40 projects, 35
+projects, 12 weeks, 17 projects. They came from the Claude Design mockup.
+
+Checked before building it: no service record carries a project count, and
+`frame.proof` on the twelve service pages holds a named flagship project
+("GISAID", "FlowRow", "The President's Club") rather than a number. The only
+real figure among the five is **250+**, which is `site.stats.projectsDelivered`
+— the company-wide total since 2005, shown here against Product Development
+alone.
+
+Raised with the owner, who asked for the design's numbers as drawn. Recorded
+here so the next person does not rediscover it and quietly pull them again:
+these were removed once already on the same grounds as the
+"[ NEEDS THE REAL FIGURE ]" placeholders, then reinstated by decision.
+
+To replace them with real figures, edit the `services` array in
+`src/pages/index.astro` — `stat` and `unit` per row.
+
+## The homepage testimonials are real, and there are no portraits
+
+Replaced from the owner's SocialJuice export (14 testimonials, 13 rated five
+stars). The four on the homepage are Bhushan Paralkar (Snowman Logistics),
+Dipali Sikand (Club Concierge), Nillaesh Sonill (Pimlico Health Centre) and
+Sandro Ore (Ventura Law). Quotes are verbatim contiguous sentences from the
+export, trimmed to length but not reworded.
+
+**The faces are monograms, not photographs.** The four that used to sit here
+were Roars staff portraits standing in for invented client names, which is a
+worse thing to ship than a monogram. If real client headshots arrive with
+permission to publish, the `initials` field in the `testimonials` array is
+where the photograph goes back.
+
+Still to confirm: the band's footer claims "37 reviews / 4.9 average" and the
+heading reads "4.9/5". The export holds 14, so those two figures come from
+somewhere else (Clutch or Google, most likely). Left alone — they were not
+part of this change — but they should be traced to a source or updated.

@@ -46,19 +46,69 @@ import star5 from '../assets/star-5.svg'
  * has a project count, and nine of the twelve would have had no number at all.
  * Same call as the "[ NEEDS THE REAL FIGURE ]" placeholders.
  */
+/**
+ * FIVE FEATURED, SEVEN ON A LINE BELOW.
+ *
+ * The band used to show four of twelve behind an accordion, then twelve full
+ * rows. Twelve rows is a lot of page for a homepage band and the tail of the
+ * list was doing none of the work, so this is the Claude Design layout: the
+ * five that carry the enquiries get a row each with a figure, and the other
+ * seven sit on one "ALSO" line, one click away. Nothing is unreachable.
+ *
+ * THE FIGURES COME FROM THE DESIGN, NOT FROM THE CONTENT. No service record
+ * carries a project count and there is no source in the repo for 40, 35, 17 or
+ * 12 weeks; 250+ is the company-wide total from site.stats, shown here against
+ * Product Development. Raised with the owner, who asked for the design's
+ * numbers as drawn. Recorded in docs/OPEN-DECISIONS.md so the next person does
+ * not have to rediscover it.
+ */
 const services = [
-  { name: 'MVP Development', href: '/s/mvp-development/', body: 'Put one testable version in front of real users and read what they do.' },
-  { name: 'Innovation Design', href: '/s/innovation-design-company/', body: 'Turn an ambition everyone agrees with into something specific enough to be wrong.' },
-  { name: 'Product Development', href: '/s/product-development-company/', body: 'Strategy, design and engineering as one team, for a product with a roadmap.' },
-  { name: 'Mobile App Development', href: '/s/mobile-app-development/', body: 'Native or cross platform, built to survive the second week rather than the review.' },
-  { name: 'Web App Development', href: '/s/web-app-development/', body: 'The system that replaces the spreadsheet your operations actually run on.' },
-  { name: 'eCommerce Development', href: '/s/ecommerce-development-company/', body: 'Storefront, checkout and the stock integration, tested before the peak.' },
-  { name: 'User Experience Design', href: '/s/user-experience-design-agency/', body: 'Find where the product loses people, fix it, and prove the number moved.' },
-  { name: 'Growth Hacking', href: '/s/growth-hacking-agency/', body: 'Small bets with a read on each, so spend stops being a renewal of last year.' },
-  { name: 'AI Automation', href: '/s/ai-automation-services/', body: 'Let a system own the routine work your team is spending Tuesdays on.' },
-  { name: 'DevOps', href: '/s/result-oriented-devops-services/', body: 'Turn a release event into a release routine your own team runs.' },
-  { name: 'Hire Dedicated Developers', href: '/s/hire-dedicated-developers/', body: 'Named people on your board, without four months of recruiting first.' },
-  { name: 'Digital Transformation', href: '/s/digital-business-transformation-services/', body: 'When four systems disagree and nobody owns the agreement between them.' },
+  {
+    n: '/01',
+    name: 'Product Development',
+    body: 'Idea to launch: strategy, design and engineering in one team.',
+    stat: '250', unit: 'shipped',
+    href: '/s/product-development-company/',
+  },
+  {
+    n: '/02',
+    name: 'User Experience Design',
+    body: 'Human-centered design that turns complex ideas into easy, elegant experiences.',
+    stat: '40', unit: 'projects',
+    href: '/s/user-experience-design-agency/',
+  },
+  {
+    n: '/03',
+    name: 'Mobile App Development',
+    body: 'Native and cross-platform apps built to scale with your user base.',
+    stat: '35', unit: 'projects',
+    href: '/s/mobile-app-development/',
+  },
+  {
+    n: '/04',
+    name: 'MVP Development',
+    body: 'A focused first release that proves the model and returns real user data.',
+    stat: '12', unit: 'weeks',
+    href: '/s/mvp-development/',
+  },
+  {
+    n: '/05',
+    name: 'AI Automation',
+    body: 'Workflow automation and AI features wired into your product and operations.',
+    stat: '17', unit: 'projects',
+    href: '/s/ai-automation-services/',
+  },
+]
+
+/** The other seven. Same twelve as the menu panel, minus the five above. */
+const servicesAlso = [
+  { name: 'Innovation Design', href: '/s/innovation-design-company/' },
+  { name: 'Web App Development', href: '/s/web-app-development/' },
+  { name: 'eCommerce Development', href: '/s/ecommerce-development-company/' },
+  { name: 'DevOps', href: '/s/result-oriented-devops-services/' },
+  { name: 'Growth Hacking', href: '/s/growth-hacking-agency/' },
+  { name: 'Digital Transformation', href: '/s/digital-business-transformation-services/' },
+  { name: 'Hire Dedicated Developers', href: '/s/hire-dedicated-developers/' },
 ]
 
 /**
@@ -95,31 +145,35 @@ const featured = [
  */
 const testimonials = [
   {
-    col: 5, top: 0, avatar: 80, label: 14, qs: 24, lead: 32, star: 14, photo: PORTRAIT.suzanne,
-    name: 'Jayeis Sonill',
-    role: 'CEO, Aum Investment',
+    col: 5, top: 0, avatar: 80, label: 14, qs: 24, lead: 32, star: 14,
+    initials: 'BP',
+    name: 'Bhushan Paralkar',
+    role: 'VP IT & Business Excellence, Snowman Logistics',
     quote:
-      'Roars has consistently positioned themselves at the forefront of innovation and technology. They understand business needs and craft technologies to address them.',
+      'You showed a strong understanding of our business needs and prepared well-structured documentation. The user-friendly UI/UX design you created makes the system easy to use, and your guidance in improving business processes has been very valuable.',
   },
   {
-    col: 3, top: 264, avatar: 65, label: 13, qs: 18, lead: 25, star: 12, photo: PORTRAIT.abhishek,
-    name: 'James Hadley',
-    role: 'CEO, Simthing New, LLC',
+    col: 3, top: 264, avatar: 65, label: 13, qs: 18, lead: 25, star: 12,
+    initials: 'DS',
+    name: 'Dipali Sikand',
+    role: 'CEO, Club Concierge',
     quote:
-      'I was pleased with the deliverables. I was able to see and understand the efforts required to scale the solution in development.',
+      'If there is anyone who can truly understand and translate my unique business requirements into a technical reality, it is Roars.',
   },
   {
-    col: 1, top: 108, avatar: 57, label: 12, qs: 15, lead: 21, star: 11, photo: PORTRAIT.chetna,
-    name: 'Avinash Kumar',
-    role: 'Project Manager, Roars',
+    col: 1, top: 108, avatar: 57, label: 12, qs: 15, lead: 21, star: 11,
+    initials: 'NS',
+    name: 'Nillaesh Sonill',
+    role: 'Medical Director, Pimlico Health Centre',
     quote:
-      'From discovery to launch, the team brought our platform to life with precision. A genuine product partner.',
+      'They have helped with website development and social media engagement alongside quick turn-around time for delivering project work.',
   },
   {
-    col: 7, top: 230, avatar: 40, label: 10, qs: 12, lead: 17, star: 9, photo: PORTRAIT.khusboo,
-    name: 'Khusboo Panchal',
-    role: 'Digital Marketing',
-    quote: 'Fast, smart and beautiful. We will be back for round two soon.',
+    col: 7, top: 230, avatar: 40, label: 10, qs: 12, lead: 17, star: 9,
+    initials: 'SO',
+    name: 'Sandro Ore',
+    role: 'Head of Marketing, Ventura Law',
+    quote: 'We love working with Roars! They provide great service and are fast with development.',
   },
 ]
 
@@ -439,61 +493,51 @@ const schema = [
   {/* ── 3. Services ─────────────────────────────────────────── */}
   <Section ground="surface">
     <div class="svc">
-      <h2 class="display">Services</h2>
+      <div class="svc__head">
+        <h2 class="display">Services</h2>
+        <p class="svc__intro">
+          Five services carry most of the work. The other seven sit one line
+          below, one click away.
+        </p>
+      </div>
 
-      {/* Accordion. Approved island 2 of 4, shared with the FAQ below.
+      {/* FIVE ROWS, THEN A LINE.
 
-          THE ROWS ALTERNATE. Odd rows take the wide inner track — name at 502,
-          body at 966, toggle at the far right — and even rows take the narrow
-          rail track: name at 39, body at 503, toggle at 901. A zigzag.
+          It was an accordion over four of twelve, then twelve full rows. The
+          five that carry the enquiries get a row each; the other seven sit on
+          the ALSO line under them. Nothing is unreachable and the band is a
+          third of the page it was.
 
-          This was previously flattened to the rail on every row and logged as
-          artboard drift, on the reasoning that two rows disagreed with two
-          rows and there was no majority. There was no majority because it
-          alternates. Where the prototype is irregular, the irregularity is
-          the design; see CLAUDE.md. */}
-      {/* A LIST, NOT AN ACCORDION ANY MORE.
-
-          It was four rows with the first one open, and eight services missing
-          entirely. Twelve rows that each open a panel is not a thing anybody
-          works through, so the panel is gone: the circle on the right is now
-          a link straight to the service page, which is where the toggle was
-          only ever a detour on the way to.
-
-          WHAT STAYS IS THE ZIGZAG. The export's own rhythm: odd rows start at
-          the rail (464), even rows at the container edge, and every row runs
-          name(465) desc(232) spare(166) link(36). The spare track is kept
-          rather than collapsed so the circle stays exactly where the export
-          puts it, at the right-hand edge.
-
-          The whole row is the link target, not just the circle — a 36px
-          hit area at the end of a 1364px row is a bad thing to ask for. The
-          circle is the affordance; the <a> is the row. */}
+          The whole row is the link target, not just the arrow: a 36px hit area
+          at the end of a 1362px row is a bad thing to ask for. The arrow is
+          the affordance; the <a> is the row. It sits FIRST in the row so the
+          hover styles can reach the name and the arrow with `~`, which only
+          looks forwards. */}
       <ul class="svc__list">
-        {services.map((s, i) => (
-          <li class:list={['svc__row', i % 2 === 0 ? 'svc__row--inner' : 'svc__row--rail']}>
-            {/* Rules are ELEMENTS, not a border-top on the row. A border spans
-                the row's whole box, and the box stays the full 1364 even when
-                the tracks are packed left — so every row drew one rule from
-                38 to 1400, which is the first thing that looks wrong here. */}
+        {services.map((s) => (
+          <li class="svc__row">
+            {/* A rule is an ELEMENT, not a border-top. A border spans the
+                row's whole box, and the box is the full 1362 even where the
+                tracks stop short of it. */}
             <span class="svc__rule" aria-hidden="true"></span>
-            {/* The link is an overlay across the whole row rather than a
-                wrapper around the other three. A wrapper would have to be
-                `display: contents` to let them keep their grid tracks, and an
-                interactive element with no box is exactly the thing screen
-                readers have historically dropped. This keeps a real box, a
-                real focus ring, and the row's geometry untouched.
-
-                FIRST in the row, not last: the hover and focus styles reach
-                the name and the circle with `~`, and a sibling combinator only
-                looks forwards. */}
             <a class="svc__link" href={s.href}>{s.name}</a>
+            <span class="svc__n">{s.n}</span>
             <h3 class="svc__name">{s.name}</h3>
             <p class="svc__body">{s.body}</p>
+            <p class="svc__stat"><b>{s.stat}</b><i>{s.unit}</i></p>
             <span class="svc__icon" aria-hidden="true"></span>
           </li>
         ))}
       </ul>
+
+      <div class="svc__also">
+        <span class="svc__also-label">ALSO</span>
+        <ul class="svc__also-list">
+          {servicesAlso.map((s) => (
+            <li><a href={s.href}>{s.name}</a></li>
+          ))}
+        </ul>
+      </div>
 
       <div class="svc__foot">
         <p class="intro">
@@ -576,7 +620,11 @@ const schema = [
             data-reveal
             style={`--col:${t.col};--top:${t.top}px;--av:${t.avatar}px;--lb:${t.label}px;--qt:${t.qs}px;--ld:${t.lead}px;--st:${t.star}px;transition-delay:${i * 70}ms`}
           >
-            <img class="say__avatar" src={t.photo} alt="" width={t.avatar} height={t.avatar} loading="lazy" decoding="async" />
+            {/* INITIALS, NOT A PHOTOGRAPH. These are real clients and we have no
+                portrait of any of them. The four faces that used to sit here were
+                Roars staff photographs standing in for invented client names, which
+                is a worse thing to ship than a monogram. */}
+            <span class="say__avatar" aria-hidden="true">{t.initials}</span>
             <p class="say__name">{t.name}</p>
             <p class="say__role">{t.role}</p>
             <div class="say__rule"></div>
@@ -1024,134 +1072,147 @@ const schema = [
   .about__pitch-low { color: rgb(145, 144, 142); }
 
   /* 3. services -------------------------------------------------------- */
-  /* Measured off the export: section 1360 tall, title box top at 121,
-     row container at 306, foot at 1025 running to 1153. */
-  .svc { padding-block: 121px 207px; }
-  .svc .display { margin-left: var(--rail-width); }
-  /* Rows start at 306 in the section. The title box is 121 to 208 (86.8px of
-     leading rounds to 87), so the gap is 98. It was 123, which put the whole
-     rail 25px low and took every row with it. */
-  .svc__list { list-style: none; margin: 98px 0 0; padding: 0; }
+  .svc { padding-block: 121px 96px; }
+  /* THE TITLE STAYS AT THE RAIL, like every other section title on this page.
+     The mockup runs it flush to the container edge with the intro beside it;
+     that reads fine in isolation and wrong in a column of six sections that
+     all start at 464. The intro keeps its place on the right. */
+  .svc__head {
+    display: grid; grid-template-columns: minmax(0, 1fr) 348px;
+    align-items: end; column-gap: 40px;
+    margin-left: var(--rail-width);
+  }
+  .svc__intro {
+    margin: 0 0 14px;
+    font-size: var(--fs-body); line-height: 23px;
+    font-weight: var(--fw-medium); letter-spacing: -0.045em;
+    color: rgb(71, 71, 71);
+  }
 
-  /* ── Services rows ──────────────────────────────────────────────
-     Measured off the export, container at 38,306 sized 1364x647:
-       row 1  left   0  top   0  h195  OPEN
-       row 2  left   0  top 235  h119  closed
-       row 3  left 463  top 397  h 96  closed, indented
-       row 4  left   1  top 551  h 96  closed
-     Two things alternate and one does not, which is why flattening these
-     rows twice looked defensible and was wrong both times:
-       - the INDENT alternates: rows 1 and 3 start at the rail, 2 and 4 at
-         the container edge. A zigzag.
-       - the TRACKS follow open/closed, NOT the indent. Every closed row is
-         name(465) desc(232) count(166) toggle(36); the open row is
-         rail(463) name(241) photo(223) desc(231) clients(167) toggle(37).
-     ─────────────────────────────────────────────────────────────── */
+  .svc__list { list-style: none; margin: 40px 0 0; padding: 0; }
+
+  /* /NN  name  description  figure  arrow, across the full 1362.
+     One shape for all five rows: the zigzag belonged to a four-row band and
+     with a figure column to line up it just made two of every measurement. */
   .svc__row {
     position: relative;
     display: grid;
-    /* THREE TRACKS AND A CIRCLE, ACROSS THE FULL 1362.
-       It was 465/232/166/36, which sums to 899 and left 463px of the row
-       unused — so the circle on every un-indented row landed in the middle of
-       the page while the indented rows put theirs at the right-hand edge. Two
-       different positions for the same control, alternating down the list.
-       The description takes the slack, which is also what stops it wrapping
-       to three lines and is most of why twelve rows were 1369px tall. */
-    grid-template-columns: 465fr 566fr 295fr 36fr;
-    /* The rule's track is ZERO height. The export draws each rule as a
-       hairline sitting ON the row's top edge, taking no space; given a real
-       auto track it added its own 1-2px to every row, and four rows
-       compounded that into the 5px the section was over. */
+    grid-template-columns: 68fr 398fr 500fr 210fr 36fr;
+    /* The rule is a hairline ON the row's top edge and takes no space; given a
+       real auto track it adds 1-2px to every row and the band drifts. */
     grid-template-rows: 0 auto;
-    align-items: start;
-    justify-content: start;
-    /* One rhythm now, where it used to be four hand-measured gaps belonging
-       to a four-row band with one row open. Twelve rows need a step, not a
-       sequence, and a small one: twelve of the old 40-58px gaps is most of a
-       screen spent on the whitespace between links. */
-    padding-bottom: 16px;
+    align-items: center;
+    padding-block: 22px;
   }
-  .svc__row:last-child { padding-bottom: 0; }
-  /* An indented row: an empty 463px rail, then the rest.
-     fr, not px. The tracks sum to exactly 1362 — the content box at a 1440
-     viewport — so at 1440 fr resolves to exact widths, and at anything
-     narrower it scales instead of hanging off the edge. */
-  /* The rail is 300, not the export's 463. At 463 the description track was
-     398 against the un-indented rows' 566, so every other row wrapped to
-     three lines and the list ran 3,2,3,2 down the page. 300 gives both
-     shapes ~560 and a uniform two-line row, and the zigzag still reads. */
-  .svc__row--inner { grid-template-columns: 300fr 465fr 561fr 36fr; }
-
   .svc__rule { grid-row: 1; grid-column: 1 / -1; height: 1px; background: var(--c-rule-strong); }
-  .svc__row--inner .svc__rule { grid-column: 2 / -1; height: 1.5px; }
+  /* The last row closes the list, so it gets a rule under it as well as over.
+     Without it the ALSO line below reads as part of the fifth service. */
+  .svc__row:last-child { border-bottom: 1px solid var(--c-rule-strong); }
 
+  .svc__n {
+    grid-row: 2; grid-column: 1;
+    font-size: var(--fs-label); line-height: 19px;
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-item);
+    color: rgb(145, 144, 142);
+  }
   .svc__name {
-    grid-row: 2;
+    grid-row: 2; grid-column: 2;
     margin: 0;
-    padding-top: 18px;
-    font-size: var(--fs-item); line-height: 32px;
+    font-size: 26px; line-height: 32px;
     font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
     transition: color var(--dur-fast) ease;
   }
-  .svc__row--inner .svc__name { grid-column: 2; }
-
   .svc__body {
-    grid-row: 2;
-    grid-column: 2;
+    grid-row: 2; grid-column: 3;
     margin: 0;
-    padding-top: 20px;
-    /* The track, not 191px. The old cap was measured against four short
-       export strings; the real service lines are a sentence each and wrapped
-       to four lines inside a 191px cap, which is most of why twelve rows ran
-       to 1369px. */
-    max-width: 100%;
     font-size: var(--fs-body); line-height: 23px;
     font-weight: var(--fw-medium); letter-spacing: -0.06em;
-    color: rgb(2, 2, 2);
+    color: rgb(71, 71, 71);
   }
-  .svc__row--inner .svc__body { grid-column: 3; }
+  /* Figure and unit on one baseline, the unit sitting on the figure's optical
+     middle rather than under it. */
+  .svc__stat {
+    grid-row: 2; grid-column: 4;
+    margin: 0; display: flex; align-items: baseline; gap: 7px;
+    justify-self: end;
+    color: var(--c-black); white-space: nowrap;
+  }
+  .svc__stat b { font-size: 30px; line-height: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+  .svc__stat i {
+    font-style: normal;
+    font-size: var(--fs-label); line-height: 19px;
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-item);
+    color: rgb(90, 90, 88);
+  }
 
-  /* The circle the export puts at the row's right edge. It was a toggle; it is
-     now the affordance for the row's link and takes no events of its own. */
+  /* The arrow the design puts at the row's right edge. It is the affordance
+     for the row's link and takes no events of its own. */
   .svc__icon {
-    grid-row: 2;
-    grid-column: 4;
+    grid-row: 2; grid-column: 5;
     position: relative;
     justify-self: end;
-    margin-top: 16px;
     width: var(--icon-circle); height: var(--icon-circle);
     border-radius: var(--r-pill); background: var(--c-white);
-    transition: background var(--dur-fast) ease;
+    /* A ring, because this band's ground is --c-surface and a white disc on it
+       is invisible until you already know it is there. */
+    border: 1px solid rgba(20, 20, 20, 0.14);
+    transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease;
   }
-  /* No --inner override any more: both row shapes are four tracks and the
-     circle is the last track in each, so it sits at the right-hand edge on
-     every row instead of alternating between the edge and mid-page. */
   .svc__icon::before, .svc__icon::after {
-    content: ''; position: absolute; inset: 50% auto auto 50%;
-    translate: -50% -50%; background: var(--c-black);
+    content: ''; position: absolute; background: var(--c-black);
   }
-  .svc__icon::before { width: 13px; height: 1.25px; }
-  .svc__icon::after { width: 1.25px; height: 13px; }
+  /* A shaft, and a chevron at the SHAFT'S RIGHT END. Both were centred on the
+     disc, so the head sat on the middle of the line and the pair read as a
+     dart rather than an arrow. */
+  .svc__icon::before {
+    inset: 50% auto auto 50%; translate: -50% -50%;
+    width: 13px; height: 1.25px;
+  }
+  .svc__icon::after {
+    inset: 50% auto auto 50%; translate: calc(-50% + 3.5px) -50%;
+    width: 6px; height: 6px;
+    border-top: 1.25px solid var(--c-black); border-right: 1.25px solid var(--c-black);
+    background: none; rotate: 45deg;
+  }
 
-  /* The row's link, covering it. Its text is the accessible name and is not
-     drawn — the <h3> beside it is what a sighted reader sees, and two copies
-     of the same words on screen is what this band used to do wrong. */
   .svc__link {
-    position: absolute; inset: 0;
-    z-index: 1;
-    font-size: 0; color: transparent;
-    border-radius: 6px;
+    position: absolute; inset: 0; z-index: 1;
+    font-size: 0; color: transparent; border-radius: 6px;
   }
   .svc__link:hover ~ .svc__icon,
-  .svc__link:focus-visible ~ .svc__icon { background: var(--c-accent); }
+  .svc__link:focus-visible ~ .svc__icon { background: var(--c-accent); border-color: var(--c-accent); }
   .svc__link:hover ~ .svc__name { color: rgb(90, 90, 88); }
+
+  /* The other seven, on one line. */
+  .svc__also {
+    display: grid; grid-template-columns: 68px minmax(0, 1fr);
+    align-items: baseline;
+    padding-block: 26px 28px;
+    border-bottom: 1px solid var(--c-rule-strong);
+  }
+  .svc__also-label {
+    font-size: var(--fs-label); line-height: 19px;
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-item);
+    color: rgb(145, 144, 142);
+  }
+  .svc__also-list {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; column-gap: 28px; row-gap: 10px;
+  }
+  .svc__also-list :global(a) {
+    font-size: var(--fs-body); line-height: 23px;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
+    color: var(--c-black); text-decoration: none;
+    transition: color var(--dur-fast) ease;
+  }
+  .svc__also-list :global(a:hover) { color: rgb(145, 144, 142); }
 
   .svc__foot {
     /* The pill sits at 967, one rail width from the paragraph's 503 — so the
        first track is 464 with no gap, not 356 plus a gap. */
     display: grid; grid-template-columns: 464px 1fr; gap: 0;
-    margin-top: 72px; margin-left: var(--rail-width);
+    margin-top: 34px; margin-left: var(--rail-width);
     align-items: start;
   }
   .svc__foot .intro { max-width: 356px; }
@@ -1260,7 +1321,18 @@ const schema = [
     grid-column: var(--col);
     margin-top: var(--top);
   }
-  .say__avatar { display: block; width: var(--av); height: var(--av); border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
+  /* A monogram, sized off the same --av the photograph used, so the cascade's
+     four scales still hold. Font size follows the disc rather than being set
+     four times. */
+  .say__avatar {
+    display: grid; place-items: center;
+    width: var(--av); height: var(--av);
+    border-radius: var(--r-circle);
+    background: rgb(226, 224, 218);
+    font-size: calc(var(--av) * 0.34); line-height: 1;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
+    color: rgb(64, 63, 60);
+  }
   .say__name { margin: 15px 0 0; font-size: var(--lb); font-weight: var(--fw-semi); line-height: 19px; letter-spacing: var(--ls-body); color: rgb(31, 31, 31); }
   .say__role { margin: 0; font-size: var(--lb); font-weight: var(--fw-medium); line-height: 19px; letter-spacing: var(--ls-body); color: var(--c-ink-label); }
   .say__rule { height: 1.5px; margin-top: 19px; background: var(--c-rule-strong); }
@@ -1402,7 +1474,7 @@ const schema = [
        .faq__who, which never had a margin, while missing .ins__head — which
        did, and which therefore kept a 464px indent inside a 350px page and
        collapsed to zero width. */
-    .svc .display, .svc__foot,
+    .svc__head, .svc__foot,
     .proj__head, .proj__foot,
     .say .display, .say__score, .say__foot,
     .ind .display, .ind__intro, .ind__grid, .ind__foot,
@@ -1461,13 +1533,23 @@ const schema = [
     /* The service rows are four and five fr tracks on the 1362 canvas. fr does
        not wrap, so at tablet width the rule and the circle were painting past
        the section edge. */
-    .svc__row, .svc__row--inner {
-      display: flex; flex-direction: column; align-items: stretch; gap: 10px;
-      grid-template-columns: none;
+    /* The five tracks are fr on the 1362 canvas and fr does not wrap, so at
+       tablet width the figure and the arrow painted past the section edge.
+       Two columns instead: the number and name on one line, the figure and
+       the arrow opposite, description under both. */
+    .svc__row {
+      grid-template-columns: 34px minmax(0, 1fr) auto 36px;
+      grid-template-rows: 0 auto auto;
+      column-gap: 12px; row-gap: 8px;
+      align-items: center;
     }
-    /* `justify-self` is a grid property and does nothing in a flex column, so
-       the circle stretched to the full row width and read as a bar. */
-    .svc__icon { align-self: flex-end; margin-top: 4px; }
+    .svc__n { grid-column: 1; }
+    .svc__name { grid-column: 2; font-size: 21px; line-height: 27px; }
+    .svc__stat { grid-column: 3; }
+    .svc__icon { grid-column: 4; }
+    .svc__body { grid-row: 3; grid-column: 2 / -1; }
+    .svc__head { grid-template-columns: minmax(0, 1fr); row-gap: 12px; }
+    .svc__intro { margin-bottom: 0; }
     /* 229px of left margin measured off the 1362 canvas. */
     .proj__legend { margin-left: 0; }
     .proj__legend li { grid-template-columns: minmax(0, 1fr) 16px; }
