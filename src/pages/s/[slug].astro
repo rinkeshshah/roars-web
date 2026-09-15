@@ -383,7 +383,16 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
           </div>
           {d.process.intro && <p class="sv-proc__intro" data-reveal>{d.process.intro}</p>}
           {/* The track runs behind the four steps, with the accent marking the
-              first. It is one rule, not four borders. */}
+              first. It is one rule, not four borders.
+              It is wrapped WITH the steps so it can be placed against them
+              rather than against the section: the steps are in flow now, so
+              their top is no longer a number this file knows. */}
+          {/* COLUMN COUNT AND ACCENT LENGTH COME FROM THE STEPS THEMSELVES.
+              Both were hardcoded to four — the artboard's number — and eleven
+              of the twelve services write three, so those pages drew an empty
+              fourth column and marked the first step with a quarter of a track
+              that only spanned three. */}
+          <div class="sv-proc__flow" style={`--n:${d.process.steps.length}`}>
           <div class="sv-proc__track" aria-hidden="true"><span></span></div>
           <ol class="sv-proc__steps">
             {d.process.steps.map((st, i) => (
@@ -395,6 +404,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
               </li>
             ))}
           </ol>
+          </div>
           {d.process.closing && (
             <p class="sv-proc__closing" data-reveal>{d.process.closing}</p>
           )}
@@ -674,8 +684,12 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   }
 
   /* ── banded card grids ──────────────────────────────────── */
-  .sv-band { position: relative; padding-block: 80px 0; min-height: 1060px; }
-  .sv-band--tall { min-height: 1120px; }
+  /* NO min-height, for the same reason as the other two: the card grid was
+     placed absolutely at top 440 and could not grow its parent, so 1060 (or
+     1120) was a guess at how tall six cards of someone else's copy would be.
+     On four of the twelve it left up to 381px of nothing. The grid is in flow
+     now and the band is as tall as its cards. */
+  .sv-band { position: relative; padding-block: 80px 120px; }
   .sv-band__rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
   .sv-band__head { padding-top: 24px; }
   /* The heading hangs 7px left of the gutter, which is the optical inset the
@@ -703,11 +717,12 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.8);
   }
   .sv-cards {
-    list-style: none; margin: 0; padding: 0;
-    display: grid; grid-template-columns: repeat(3, 434fr); column-gap: 30px;
-    position: absolute; left: 1px; top: 440px; right: 0;
+    list-style: none; margin: 250px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 30px;
   }
-  .sv-cards--tall { top: 420px; }
+  /* The taller heading pushes the grid down on its own now, so --tall only
+     needs to take the 20px the artboard gave it back. */
+  .sv-cards--tall { margin-top: 230px; }
   .sv-cards > :nth-child(n + 4) { margin-top: 40px; }
   .sv-card { width: 100%; max-width: 434px; }
   .sv-card__rule { display: block; height: 0.5px; background: var(--c-rule-soft); }
@@ -728,17 +743,30 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.75);
   }
 
-  /* ── featured work ──────────────────────────────────────── */
-  .sv-feat { position: relative; padding-block: 110px 0; min-height: 620px; }
+  /* ── featured work ────────────────────────────────────────
+     A GRID, so the section is as tall as its taller column.
+     It was min-height 620 with the right-hand column placed absolutely, and
+     an absolutely placed child does not grow its parent — so 620 was a guess
+     at how tall the copy would be, and every service's copy is a different
+     length. All twelve ended on 137-201px of nothing. */
+  .sv-feat {
+    position: relative; padding-block: 110px 104px;
+    display: grid; grid-template-columns: minmax(0, 67.695%) minmax(0, 32.305%);
+    align-content: start;
+  }
+  .sv-feat > .sv-eyebrow { grid-area: 1 / 1; }
   /* Capped short of the column at 67.695%. The heading is a block, so
      without a cap its box runs the full 1362 and a client name longer than
      "GYMBAIT.AI" would set type straight through the body copy beside it. */
   .sv-feat__client {
+    grid-area: 2 / 1;
     margin: 40px 0 0 -6px; max-width: 62%;
     font-size: clamp(46px, 5.84vw, 84px); line-height: 86px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: rgb(251, 251, 251);
   }
-  .sv-feat__col { position: absolute; left: 67.695%; top: 168px; width: 32.305%; }
+  /* Spans both rows of the left column and starts 58px down, which is the
+     168px the artboard measured from the section top, less its 110 padding. */
+  .sv-feat__col { grid-area: 1 / 2 / span 2 / auto; margin-top: 58px; }
   .sv-feat__body {
     font-size: 18px; line-height: 27px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.9);
@@ -944,7 +972,17 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   .sv-next__list a:hover b { color: rgb(90, 90, 90); }
 
   /* ── process ────────────────────────────────────────────── */
-  .sv-proc { position: relative; padding-block: 80px 0; min-height: 1000px; }
+  /* NO min-height. It was 1000px, the export's artboard, and the artboard
+     assumes a closing line that only ONE of the twelve services actually
+     writes — so the other eleven reserved ~310px for a paragraph that was
+     never going to arrive and ended on a void.
+     The steps and the closing are in flow now, so the section is as tall as
+     what it contains and the hole cannot come back when a field is optional.
+     (The steps were absolute precisely because an absolutely placed child does
+     not grow its parent; min-height was the workaround for that, not a
+     design.) */
+  .sv-proc { position: relative; padding-block: 80px 130px; }
+  .sv-proc__flow { position: relative; margin-top: 96px; }
   .sv-proc__tick { display: block; width: 16px; height: 1.5px; background: var(--c-rule-strong); }
   .sv-proc__head { padding-top: 20px; }
   .sv-proc__intro {
@@ -952,15 +990,20 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.72);
   }
+  /* 70px below the steps' own top, which is where the label pair ends and the
+     name begins — the same crossing point the artboard drew at 380 against
+     310. Measured from the steps now, so it follows them. */
   .sv-proc__track {
-    position: absolute; left: 1px; right: 0; top: 380px; height: 2px;
+    position: absolute; left: 1px; right: 0; top: 70px; height: 2px;
     background: rgba(153, 152, 149, 0.35);
   }
-  .sv-proc__track span { display: block; width: 25%; height: 2px; background: var(--c-accent); }
+  .sv-proc__track span {
+    display: block; height: 2px; background: var(--c-accent);
+    width: calc(100% / var(--n, 4));
+  }
   .sv-proc__steps {
     list-style: none; margin: 0; padding: 0;
-    position: absolute; left: 1px; right: 0; top: 310px;
-    display: grid; grid-template-columns: repeat(4, 310fr); column-gap: 30px;
+    display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); column-gap: 30px;
   }
   .sv-proc__when {
     display: block;
@@ -983,7 +1026,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.75);
   }
   .sv-proc__closing {
-    position: absolute; left: -5px; top: 816px; max-width: 1100px;
+    margin: 96px 0 0 -5px; max-width: 1100px;
     font-size: 38px; line-height: 50px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
   }
@@ -1052,9 +1095,21 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     .sv-band__intro, .sv-proc__intro, .sv-rec__intro, .sv-feat__col {
       position: static; width: auto; max-width: 560px; margin-top: 28px; left: auto; top: auto;
     }
+    /* The featured section's two columns stack here. Its grid areas have to be
+       released with them: left in place they kept the body, the meta and the
+       "View Project" link in a 32%-wide second column, which at 390 is 126px —
+       the link ran off the side of the screen and the client name set straight
+       through the body copy. */
+    .sv-feat { grid-template-columns: minmax(0, 1fr); }
+    .sv-feat > .sv-eyebrow, .sv-feat__client, .sv-feat__col { grid-area: auto; }
+    .sv-feat__client { max-width: 100%; }
     .sv-cards, .sv-cards--tall, .sv-proc__steps, .sv-rec__stats {
       position: static; margin-top: 48px; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 30px; row-gap: 40px;
     }
+    /* The steps carry their own spacing here, and the track is a device for
+       the four-across row — across two columns it just rules through them. */
+    .sv-proc__flow { margin-top: 0; }
+    .sv-proc__track { display: none; }
     .sv-cards > :nth-child(n + 4) { margin-top: 0; }
     .sv-card, .sv-card__name, .sv-card__body { width: auto; max-width: none; }
     .sv-proc__track, .sv-rec__rule { position: static; margin-top: 40px; }
