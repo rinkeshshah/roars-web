@@ -92,7 +92,6 @@ anchor:
   did:
     - "Put membership, events and benefits behind one model instead of three, so a member is one record everywhere."
     - "Built it so the operations team could change what members see without asking an engineer."
-  outcome: "[ NEEDS THE REAL FIGURE: what changed for their team or their members, with a number and a timeframe ]"
   href: "/work/the-presidents-club/"
 scope:
   label: "SCOPE"
@@ -124,7 +123,7 @@ shape:
     - "One decision maker with authority over scope and budget"
     - "A weekly hour, and a fortnightly review with whoever owns the roadmap"
     - "Access to your production analytics and to your support queue"
-  pricing: "Monthly, against a team shape agreed up front, with a scope we revisit every quarter rather than pretending a year is knowable. [ NEEDS THE REAL MODEL: monthly band or day rate ]"
+  pricing: "Monthly, against a team shape agreed up front, with a scope we revisit every quarter rather than pretending a year is knowable."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

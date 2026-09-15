@@ -183,7 +183,6 @@ cases:
     - client: "Snowman Logistics"
       situation: "Warehouse staff in cold storage completing compliance checks on paper, in gloves, with no signal."
       did: "Designed for the actual conditions: large targets, offline capture, no typing where a tap would do, and sync that assumes the network is absent rather than broken."
-      outcome: "[ NEEDS THE REAL FIGURE: what changed on the warehouse floor, with a number and a timeframe ]"
       href: "/work/warehouse-compliance-checklist-app/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"

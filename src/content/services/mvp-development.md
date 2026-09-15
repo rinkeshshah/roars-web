@@ -96,7 +96,6 @@ anchor:
   did:
     - "Scoped the first version down to one path: order, track, receive. Nothing else shipped."
     - "Built a single app for residents and building managers instead of two, which halved what had to be maintained while the model was still moving."
-  outcome: "[ NEEDS THE REAL FIGURE: what changed for them, with a number and a timeframe ]"
   href: "/work/community-social-residential-community-app/"
 scope:
   label: "SCOPE"
@@ -129,7 +128,7 @@ shape:
     - "One decision maker who can settle scope questions inside a day"
     - "An hour a week, same slot, for the whole engagement"
     - "Access to five people who have the problem you are solving"
-  pricing: "Fixed price for a fixed scope, agreed after the first week when the scope is real rather than guessed. If the scope changes we requote the change, not the project. [ NEEDS THE REAL BAND: typical MVP engagement range ]"
+  pricing: "Fixed price for a fixed scope, agreed after the first week when the scope is real rather than guessed. If the scope changes we requote the change, not the project."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

@@ -183,12 +183,10 @@ cases:
     - client: "Concierge Loyalty"
       situation: "A concierge operation where recognising a returning member depended on whoever happened to take the request."
       did: "Put requests, members and rewards behind one model so the service could remember a member without the staff having to."
-      outcome: "[ NEEDS THE REAL FIGURE: what changed for members or staff, with a number and a timeframe ]"
       href: "/work/concierge-loyalty-program/"
     - client: "Les Concierges"
       situation: "A concierge business whose request handling ran across tools that did not share a view of the member."
       did: "Built the staff side first, so the workflow decided the product rather than the other way round."
-      outcome: "[ NEEDS THE REAL FIGURE: what changed in request handling, with a number and a timeframe ]"
       href: "/work/les-concierges/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"

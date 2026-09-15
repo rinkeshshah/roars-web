@@ -708,12 +708,17 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.66);
   }
-  .icz__out {
-    margin: 22px 0 0; padding-top: 18px;
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
-    font-size: 19px; line-height: 28px; font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-item); color: var(--c-accent);
-  }
+  /* .icz__out IS DELIBERATELY ABSENT. Every `outcome` in the industry content
+     was a "[ NEEDS THE REAL FIGURE ]" placeholder and all of them were removed,
+     so the rule matched nothing and assert-styles failed the build — which is
+     the gate doing its job.
+     THE MARKUP IS STILL WIRED: add a real outcome to a case in frontmatter and
+     it renders again, unstyled, which is obvious enough to notice. Restore this
+     rule with the first real figure:
+       margin: 22px 0 0; padding-top: 18px;
+       border-top: 1px solid rgba(255, 255, 255, 0.18);
+       font-size: 19px; line-height: 28px; font-weight: var(--fw-semi);
+       letter-spacing: var(--ls-item); color: var(--c-accent); */
   .icz__cta { margin-top: 26px; }
 
   /* ── I5 services applied ────────────────────────────────── */

@@ -96,7 +96,6 @@ anchor:
   did:
     - "Modelled the workflow once, properly, instead of building screens on top of the existing split."
     - "Built the integrations so the surrounding tools feed one system rather than compete with it."
-  outcome: "[ NEEDS THE REAL FIGURE: time saved or error rate change, with a number and a timeframe ]"
   href: "/work/blelp/"
 scope:
   label: "SCOPE"
@@ -129,7 +128,7 @@ shape:
     - "Two hours with the people who do the work today, not only with their manager"
     - "A copy of the real data early, however untidy it is"
     - "One decision maker for scope, and one for the cutover date"
-  pricing: "Fixed against the scope agreed at the end of strategy, with integrations priced separately because their cost sits with the other system rather than with ours. [ NEEDS THE REAL BAND: typical web app engagement range ]"
+  pricing: "Fixed against the scope agreed at the end of strategy, with integrations priced separately because their cost sits with the other system rather than with ours."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

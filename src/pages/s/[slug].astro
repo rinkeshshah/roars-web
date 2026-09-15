@@ -904,12 +904,15 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     content: ''; position: absolute; left: 0; top: 10px;
     width: 8px; height: 2px; background: var(--c-accent);
   }
-  .sv-anchor__out {
-    margin: 30px 0 0; padding-top: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
-    font-size: 22px; line-height: 32px; font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-item); color: var(--c-accent);
-  }
+  /* .sv-anchor__out IS DELIBERATELY ABSENT, same as .icz__out on the industry
+     pages: every service `anchor.outcome` was a "[ NEEDS THE REAL FIGURE ]"
+     placeholder and all of them were removed, so the rule matched nothing.
+     THE MARKUP IS STILL WIRED — a real outcome renders again, unstyled, which
+     is visible enough to catch. Restore this with the first real figure:
+       margin: 30px 0 0; padding-top: 24px;
+       border-top: 1px solid rgba(255, 255, 255, 0.18);
+       font-size: 22px; line-height: 32px; font-weight: var(--fw-semi);
+       letter-spacing: var(--ls-item); color: var(--c-accent); */
   .sv-anchor__cta { margin-top: 34px; }
 
   /* ── S5 scope ───────────────────────────────────────────── */

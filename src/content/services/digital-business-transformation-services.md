@@ -92,7 +92,6 @@ anchor:
   did:
     - "Brought the sources into one model so a customer is one customer, not one per system."
     - "Built the analytics for the people making the decisions rather than for the people maintaining the warehouse."
-  outcome: "[ NEEDS THE REAL FIGURE: what changed for their decision making, with a number and a timeframe ]"
   href: "/work/tanishq-data-analytics/"
 scope:
   label: "SCOPE"
@@ -125,7 +124,7 @@ shape:
     - "Two hours with each team whose work is in scope"
     - "Read access to the systems in question, early"
     - "A sponsor senior enough to change a process, not only to approve a document"
-  pricing: "The eight week assessment is fixed price. Delivery afterwards is quoted against the roadmap, and you are free to take the roadmap elsewhere. [ NEEDS THE REAL BAND: assessment fee and delivery model ]"
+  pricing: "The eight week assessment is fixed price. Delivery afterwards is quoted against the roadmap, and you are free to take the roadmap elsewhere."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

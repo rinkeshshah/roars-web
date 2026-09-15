@@ -99,7 +99,7 @@ shape:
     - "Admin access to analytics and ad accounts in week one"
     - "Permission to change the funnel without a two week approval loop"
     - "An hour a week to review results and kill the losers"
-  pricing: "Monthly for the engagement, with ad spend separate and paid by you directly. We do not take a percentage of media, because that pays us to spend more rather than to spend well. [ NEEDS THE REAL BAND: monthly engagement fee ]"
+  pricing: "Monthly for the engagement, with ad spend separate and paid by you directly. We do not take a percentage of media, because that pays us to spend more rather than to spend well."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

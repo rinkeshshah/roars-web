@@ -180,7 +180,6 @@ cases:
     - client: "The Club Social"
       situation: "A membership operation running amenities, ordering and members across tools that each held part of the truth."
       did: "Built one product where a member is one record, so the operations team could change what members see without waiting on an engineer."
-      outcome: "[ NEEDS THE REAL FIGURE: what changed for their team, with a number and a timeframe ]"
       href: "/work/club-social/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"

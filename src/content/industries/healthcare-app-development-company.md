@@ -179,12 +179,10 @@ cases:
     - client: "GISAID"
       situation: "A platform holding one of the largest COVID data sets in the world, where availability was not negotiable."
       did: "Built the tooling for a scale where a bad release is a public problem rather than an internal one."
-      outcome: "[ NEEDS THE REAL FIGURE: availability or throughput change, with a number and a timeframe ]"
       href: "/work/gisaid-health-tech/"
     - client: "Friendo"
       situation: "A healthcare product that had to work for people who are not at their best when they open it."
       did: "Designed the flows for the state the user is actually in rather than for an attentive reader."
-      outcome: "[ NEEDS THE REAL FIGURE: what changed for patients or clinicians, with a number and a timeframe ]"
       href: "/work/friendo-healthcare-mobile-app-development/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"

@@ -92,7 +92,6 @@ anchor:
   did:
     - "Built the tooling for a scale where a bad deploy is a public problem rather than an internal one."
     - "Automated the paths that had been manual, so releasing stopped depending on who was awake."
-  outcome: "[ NEEDS THE REAL FIGURE: deploy frequency or downtime change, with a number and a timeframe ]"
   href: "/work/gisaid-health-tech/"
 scope:
   label: "SCOPE"
@@ -125,7 +124,7 @@ shape:
     - "Access to your cloud accounts and repositories in week one"
     - "One engineer from your side who can spend half their week on it"
     - "Permission to change the release process, not only to document it"
-  pricing: "Fixed for the assessment, then quoted against the rollout once the pilot has shown what it involves. [ NEEDS THE REAL BAND: assessment fee and rollout model ]"
+  pricing: "Fixed for the assessment, then quoted against the rollout once the pilot has shown what it involves."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

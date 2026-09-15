@@ -99,7 +99,7 @@ shape:
     - "A real catalogue export in week one, not a sample"
     - "Access to your payment and shipping accounts"
     - "Whoever owns stock, so the integration is agreed rather than assumed"
-  pricing: "Fixed against the scope after planning. Integrations are priced separately, because their cost belongs to the other system rather than to ours. [ NEEDS THE REAL BAND: typical eCommerce build range ]"
+  pricing: "Fixed against the scope after planning. Integrations are priced separately, because their cost belongs to the other system rather than to ours."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

@@ -223,7 +223,6 @@ cases:
     - client: "The Club Social"
       situation: "A club running amenities, restaurant ordering and membership through separate tools, with staff reconciling between them."
       did: "Built one app for members and for the club, so an order, a booking and a member are the same records on both sides."
-      outcome: "[ NEEDS THE REAL FIGURE: what changed for the club or its staff, with a number and a timeframe ]"
       href: "/work/club-social/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"

@@ -79,7 +79,6 @@ anchor:
   did:
     - "Designed for the actual conditions: large targets, offline capture, and no typing anywhere a tap would do."
     - "Built sync that assumes the network is absent rather than treating it as an error state."
-  outcome: "[ NEEDS THE REAL FIGURE: what changed on the warehouse floor, with a number and a timeframe ]"
   href: "/work/warehouse-compliance-checklist-app/"
 scope:
   label: "SCOPE"
@@ -112,7 +111,7 @@ shape:
     - "Developer accounts in your company name, set up in week one"
     - "One decision maker, and an hour a fortnight for the build review"
     - "Access to two or three people who will actually use the app"
-  pricing: "Scoped and fixed after the pre-design phase, when there is enough detail to be honest about. Anything found later is quoted as a change, not absorbed and then argued about. [ NEEDS THE REAL BAND: typical mobile build range ]"
+  pricing: "Scoped and fixed after the pre-design phase, when there is enough detail to be honest about. Anything found later is quoted as a change, not absorbed and then argued about."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

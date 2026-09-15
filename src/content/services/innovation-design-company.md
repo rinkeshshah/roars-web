@@ -92,7 +92,6 @@ anchor:
   did:
     - "Turned the ambition into one testable thing: a nudge that learns from how a member actually trains."
     - "Built it as a product with a human in the loop rather than as a model with an interface on top."
-  outcome: "[ NEEDS THE REAL FIGURE: what the prototype proved, with a number and a timeframe ]"
   href: "/work/gymbait/"
 scope:
   label: "SCOPE"
@@ -125,7 +124,7 @@ shape:
     - "Access to eight people from the group you are designing for"
     - "A decision maker in the room at the end of week four"
     - "Willingness to hear that one of the three directions is the answer and it is not the one you brought"
-  pricing: "Fixed price for the seven weeks, agreed before we start. What happens afterwards is a separate conversation and a separate quote. [ NEEDS THE REAL BAND: innovation engagement fee ]"
+  pricing: "Fixed price for the seven weeks, agreed before we start. What happens afterwards is a separate conversation and a separate quote."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

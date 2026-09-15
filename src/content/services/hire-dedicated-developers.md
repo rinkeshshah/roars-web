@@ -92,7 +92,6 @@ anchor:
   did:
     - "Put a dedicated team on it rather than passing it between whoever was free."
     - "Built one app for members and for the club, so the two sides could not drift apart."
-  outcome: "[ NEEDS THE REAL FIGURE: what changed for the club or its members, with a number and a timeframe ]"
   href: "/work/club-social/"
 scope:
   label: "SCOPE"
@@ -125,7 +124,7 @@ shape:
     - "A backlog that is ready enough to start on in week one"
     - "Someone on your side who can answer a question the same day"
     - "Access to your repository, environments and standards documentation"
-  pricing: "Monthly per person, all in. No recruitment fee, no charge for the delivery lead, no markup on tools. [ NEEDS THE REAL BAND: monthly rate per engineer ]"
+  pricing: "Monthly per person, all in. No recruitment fee, no charge for the delivery lead, no markup on tools."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:

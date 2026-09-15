@@ -177,7 +177,6 @@ cases:
     - client: "ONUS"
       situation: "A travel and hospitality operation that needed its product to hold up away from a desk and away from a good connection."
       did: "Designed for the disruption rather than the booking, so the product is most useful at the point the plan stops working."
-      outcome: "[ NEEDS THE REAL FIGURE: what changed for travellers or staff, with a number and a timeframe ]"
       href: "/work/onus/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"

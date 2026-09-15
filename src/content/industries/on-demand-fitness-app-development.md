@@ -179,12 +179,10 @@ cases:
     - client: "GymBait.AI"
       situation: "A fitness business asking whether coaching could reach a member at the moment it mattered rather than at their next session."
       did: "Built a nudge that learns from how a member actually trains, with a coach reviewing what goes out rather than a model sending it unattended."
-      outcome: "[ NEEDS THE REAL FIGURE: engagement or retention change, with a number and a timeframe ]"
       href: "/work/gymbait/"
     - client: "FlowRow"
       situation: "People signed up in good numbers and stopped opening the app somewhere in the first fortnight."
       did: "Rebuilt the opening around one session worth doing rather than around a profile, a plan and a goal."
-      outcome: "[ NEEDS THE REAL FIGURE: activation or week-three retention change, with a number and a timeframe ]"
       href: "/work/flowrow-fitness-app/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"

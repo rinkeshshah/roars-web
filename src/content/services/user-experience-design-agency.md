@@ -96,7 +96,6 @@ anchor:
   did:
     - "Traced the drop to the gap between signing up and the first session that felt worth doing."
     - "Rebuilt the opening flow around one session rather than around a profile, a plan and a goal."
-  outcome: "[ NEEDS THE REAL FIGURE: retention or activation change, with a number and a timeframe ]"
   href: "/work/flowrow-fitness-app/"
 scope:
   label: "SCOPE"
@@ -129,7 +128,7 @@ shape:
     - "Read access to your analytics, on day one rather than week three"
     - "Introductions to five current users and, if you can, two who left"
     - "One person who can approve a direction without a committee"
-  pricing: "Priced per engagement against the flows in scope, agreed before we start. Research and design are not billed separately, because splitting them is how you end up with pretty screens nobody validated. [ NEEDS THE REAL BAND: typical UX engagement range ]"
+  pricing: "Priced per engagement against the flows in scope, agreed before we start. Research and design are not billed separately, because splitting them is how you end up with pretty screens nobody validated."
 faqLabel: "THE QUESTIONS WE GET"
 faqHeading: "Asked on real calls."
 faq:
