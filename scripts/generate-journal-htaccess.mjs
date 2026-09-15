@@ -29,6 +29,7 @@ import { fileURLToPath } from 'node:url'
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const SRC = join(ROOT, 'docs/migration/roarsinc-redirects.conf')
 const OVERRIDES = join(ROOT, 'docs/migration/journal-redirect-overrides.conf')
+const ADDITIONS = join(ROOT, 'docs/migration/journal-redirect-additions.conf')
 const OUT = join(ROOT, 'dist/.htaccess')
 const POSTS = join(ROOT, 'src/content/posts')
 
@@ -78,6 +79,26 @@ for (const o of parse(OVERRIDES)) {
   applied.push({ from: o.from, was: base.toPath, now: o.toPath, why: o.why })
   base.to = o.to
   base.toPath = o.toPath
+}
+
+/**
+ * Rules the supplied map never had. An override cannot express these: its
+ * stale-override check would reject a source the map does not list, and that
+ * check is worth keeping. A source that IS in the map is rejected here for
+ * the mirror-image reason, so the two files cannot both own a rule.
+ *
+ * Added rules go through every safety check below, exactly like the rest.
+ */
+const added = []
+for (const a of parse(ADDITIONS)) {
+  if (bySource.has(a.from)) {
+    console.error(`FAIL: addition for ${a.from} is already in the supplied map.`)
+    console.error('    Correct its target in journal-redirect-overrides.conf instead.')
+    process.exit(1)
+  }
+  rules.push(a)
+  bySource.set(a.from, a)
+  added.push(a)
 }
 
 const sources = new Set(rules.map((r) => r.from))
