@@ -67,13 +67,33 @@ const record = [
 ]
 
 /** Every href is an existing /s/ route from docs/URL-INVENTORY.csv. */
+/**
+ * All twelve services, not the five the page used to list.
+ *
+ * ORDER IS THE /s/ HUB'S ORDER, which groups by the question that sends you
+ * to a service: before you commit, building the thing, making it work harder,
+ * and when delivery is the constraint. Reusing it means the two pages tell the
+ * same story rather than each having its own arbitrary sequence, and it gives
+ * the list an arc instead of being alphabetical.
+ *
+ * Names are the display names, not the collection titles. Those are migrated
+ * SEO titles ("Top-notch Mobile App Development Company", "Digital Business")
+ * and would read badly as a numbered list.
+ */
 const practices = [
-  { n: '01', name: 'Product Development', href: '/s/product-development-company/' },
-  { n: '02', name: 'User Experience Design', href: '/s/user-experience-design-agency/' },
-  { n: '03', name: 'Mobile App Development', href: '/s/mobile-app-development/' },
-  { n: '04', name: 'MVP Development', href: '/s/mvp-development/' },
-  { n: '05', name: 'AI Automation Services', href: '/s/ai-automation-services/' },
-]
+  { name: 'MVP Development', href: '/s/mvp-development/' },
+  { name: 'Innovation Design', href: '/s/innovation-design-company/' },
+  { name: 'Product Development', href: '/s/product-development-company/' },
+  { name: 'Mobile App Development', href: '/s/mobile-app-development/' },
+  { name: 'Web App Development', href: '/s/web-app-development/' },
+  { name: 'eCommerce Development', href: '/s/ecommerce-development-company/' },
+  { name: 'User Experience Design', href: '/s/user-experience-design-agency/' },
+  { name: 'Growth Hacking', href: '/s/growth-hacking-agency/' },
+  { name: 'AI Automation Services', href: '/s/ai-automation-services/' },
+  { name: 'DevOps', href: '/s/result-oriented-devops-services/' },
+  { name: 'Hire Dedicated Developers', href: '/s/hire-dedicated-developers/' },
+  { name: 'Digital Transformation', href: '/s/digital-business-transformation-services/' },
+].map((p, i) => ({ ...p, n: String(i + 1).padStart(2, '0') }))
 
 const schema = [
   {
@@ -237,7 +257,7 @@ const schema = [
       <span class="apr__rule" aria-hidden="true"></span>
       <span class="apr__label">Where we apply it</span>
       <h2 class="aps__h">what we build</h2>
-      <p class="aps__intro" data-reveal>Five practices, one process. Every engagement runs Explore through Transform.</p>
+      <p class="aps__intro" data-reveal>Twelve practices, one process. Every engagement runs Explore through Transform.</p>
       <ul class="aps__rows">
         {practices.map((p, i) => (
           <li data-reveal style={`transition-delay:${i * 40}ms`}>
@@ -466,7 +486,12 @@ const schema = [
   }
 
   /* ── Practices ──────────────────────────────────────────── */
-  .aps { position: relative; padding-block: 80px 122px; min-height: 780px; }
+  /* No min-height, and the rows are in flow. The export draws this section
+     780 tall with the list absolutely positioned at 348, which works for the
+     five rows it was drawn with. Twelve rows are 744px, so the list ran out
+     of the bottom of the section and over the footer. In flow the section
+     grows to whatever the list needs. */
+  .aps { position: relative; padding-block: 80px 122px; }
   .aps__h {
     margin: 26px 0 0 -7px; max-width: 900px;
     font-size: clamp(42px, 5.84vw, var(--fs-display)); line-height: 86px;
@@ -477,7 +502,7 @@ const schema = [
     font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
   }
-  .aps__rows { list-style: none; margin: 0; padding: 0; position: absolute; left: 1px; right: 0; top: 348px; }
+  .aps__rows { list-style: none; margin: 96px 0 0; padding: 0; position: relative; left: 1px; }
   .aps__rows a { position: relative; display: block; height: 62px; }
   .aps__hair { display: block; height: 0.5px; background: var(--c-rule-soft); }
   .aps__n {
