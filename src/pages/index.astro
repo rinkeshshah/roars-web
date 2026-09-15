@@ -1050,7 +1050,14 @@ const schema = [
   .svc__row {
     position: relative;
     display: grid;
-    grid-template-columns: 465px 232px 166px 36px;
+    /* THREE TRACKS AND A CIRCLE, ACROSS THE FULL 1362.
+       It was 465/232/166/36, which sums to 899 and left 463px of the row
+       unused — so the circle on every un-indented row landed in the middle of
+       the page while the indented rows put theirs at the right-hand edge. Two
+       different positions for the same control, alternating down the list.
+       The description takes the slack, which is also what stops it wrapping
+       to three lines and is most of why twelve rows were 1369px tall. */
+    grid-template-columns: 465fr 566fr 295fr 36fr;
     /* The rule's track is ZERO height. The export draws each rule as a
        hairline sitting ON the row's top edge, taking no space; given a real
        auto track it added its own 1-2px to every row, and four rows
@@ -1060,16 +1067,20 @@ const schema = [
     justify-content: start;
     /* One rhythm now, where it used to be four hand-measured gaps belonging
        to a four-row band with one row open. Twelve rows need a step, not a
-       sequence — and a smaller one, because twelve of the old 40-58px gaps
-       is most of a screen spent on whitespace between links. */
-    padding-bottom: 26px;
+       sequence, and a small one: twelve of the old 40-58px gaps is most of a
+       screen spent on the whitespace between links. */
+    padding-bottom: 16px;
   }
   .svc__row:last-child { padding-bottom: 0; }
-  /* An indented row: an empty 463px rail, then the same four tracks.
-     fr, not px. The five tracks sum to exactly 1362 — the content box at a
-     1440 viewport — so at 1440 fr resolves to the identical widths, and at
-     anything narrower it scales instead of hanging off the edge. */
-  .svc__row--inner { grid-template-columns: 463fr 465fr 232fr 166fr 36fr; }
+  /* An indented row: an empty 463px rail, then the rest.
+     fr, not px. The tracks sum to exactly 1362 — the content box at a 1440
+     viewport — so at 1440 fr resolves to exact widths, and at anything
+     narrower it scales instead of hanging off the edge. */
+  /* The rail is 300, not the export's 463. At 463 the description track was
+     398 against the un-indented rows' 566, so every other row wrapped to
+     three lines and the list ran 3,2,3,2 down the page. 300 gives both
+     shapes ~560 and a uniform two-line row, and the zigzag still reads. */
+  .svc__row--inner { grid-template-columns: 300fr 465fr 561fr 36fr; }
 
   .svc__rule { grid-row: 1; grid-column: 1 / -1; height: 1px; background: var(--c-rule-strong); }
   .svc__row--inner .svc__rule { grid-column: 2 / -1; height: 1.5px; }
@@ -1077,7 +1088,7 @@ const schema = [
   .svc__name {
     grid-row: 2;
     margin: 0;
-    padding-top: 27px;
+    padding-top: 18px;
     font-size: var(--fs-item); line-height: 32px;
     font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
@@ -1089,11 +1100,12 @@ const schema = [
     grid-row: 2;
     grid-column: 2;
     margin: 0;
-    padding-top: 27px;
+    padding-top: 20px;
     /* The track, not 191px. The old cap was measured against four short
        export strings; the real service lines are a sentence each and wrapped
-       to four lines inside it, which is what made every row tall. */
-    max-width: 232px;
+       to four lines inside a 191px cap, which is most of why twelve rows ran
+       to 1369px. */
+    max-width: 100%;
     font-size: var(--fs-body); line-height: 23px;
     font-weight: var(--fw-medium); letter-spacing: -0.06em;
     color: rgb(2, 2, 2);
@@ -1107,12 +1119,14 @@ const schema = [
     grid-column: 4;
     position: relative;
     justify-self: end;
-    margin-top: 27px;
+    margin-top: 16px;
     width: var(--icon-circle); height: var(--icon-circle);
     border-radius: var(--r-pill); background: var(--c-white);
     transition: background var(--dur-fast) ease;
   }
-  .svc__row--inner .svc__icon { grid-column: 5; }
+  /* No --inner override any more: both row shapes are four tracks and the
+     circle is the last track in each, so it sits at the right-hand edge on
+     every row instead of alternating between the edge and mid-page. */
   .svc__icon::before, .svc__icon::after {
     content: ''; position: absolute; inset: 50% auto auto 50%;
     translate: -50% -50%; background: var(--c-black);
