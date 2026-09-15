@@ -74,6 +74,7 @@ const clients = CLIENT_LOGOS
  * "Top 15th User Experience Company" is not in this list: it is the headline
  * above it, and repeating it would have it read twice.
  */
+
 const awards = [
   { year: '2022', title: 'Top IT Services, India', body: 'Clutch', no: '/01' },
   { year: '2020', title: 'Top Mobile App Developers', body: 'Clutch', no: '/02' },
@@ -81,6 +82,27 @@ const awards = [
   { year: '', title: 'Top Software Developer', body: 'GoodFirms', no: '/04' },
   { year: '', title: 'Top App Designer', body: 'GoodFirms', no: '/05' },
   { year: '2018', title: '20 Most Promising UI/UX Solution Providers', body: 'CIO Review', no: '/06' },
+]
+
+/**
+ * The five ventures Roars runs for itself.
+ *
+ * Names and domains are the owner's, given verbatim. Each card carries the
+ * mark and the domain and NOTHING ELSE — no one-line description of what the
+ * product does, because nobody has written one and inferring it from a name
+ * would put a claim about a live business on a public page. The slot is there
+ * in the markup's shape if a line ever arrives.
+ *
+ * Widths and heights are the real output of scripts/build-venture-logos.mjs,
+ * which normalises all five to a common 60px height. They are declared so the
+ * row reserves its space before the images load.
+ */
+const VENTURES = [
+  { name: 'Produit', domain: 'produit.co', logo: '/ventures/produit.png', w: 253, h: 60 },
+  { name: 'Hostwala', domain: 'hostwala.co', logo: '/ventures/hostwala.png', w: 250, h: 60 },
+  { name: 'UX Audit Pro', domain: 'uxauditpro.com', logo: '/ventures/uxauditpro.png', w: 280, h: 59 },
+  { name: 'MicroKopy', domain: 'microkopy.com', logo: '/ventures/microkopy.png', w: 280, h: 58 },
+  { name: 'GetAutomation', domain: 'getautomation.ai', logo: '/ventures/getautomation.png', w: 280, h: 60 },
 ]
 
 const schema = [
@@ -259,6 +281,48 @@ const schema = [
             <span class="agb__award-title"><span>{a.title}</span></span>
             <span class="agb__award-body"><span class="agb__award-dot" aria-hidden="true"></span><span>{a.body}</span></span>
             <span class="agb__award-no"><span>{a.no}</span></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* ── Our ventures ─────────────────────────────────────────
+      The five products Roars runs for itself, immediately before the footer.
+      It earns that position: everything above it is work done for other
+      people, and this answers "do they only do it for hire".
+
+      THE MARKS ARE GREY UNTIL THE CURSOR REACHES THEM, which is the ask, and
+      it also does a job — five logos in five house palettes shouting at once
+      would pull rank on this page's own yellow. Grey holds them as one set and
+      colour is the reward for pointing at one. It is a CSS filter, so a single
+      colour file serves both states. */}
+  <Section ground="surface">
+    <div class="agv">
+      <span class="agv__tick" aria-hidden="true"></span>
+      <div class="agv__head">
+        <div class="agv__rail">
+          <span class="agv__eyebrow">Our ventures</span>
+          <h2 class="agv__h">We build for ourselves too.</h2>
+        </div>
+        <p class="agv__lede">
+          Five products of our own, run on the same process we sell. They are where we
+          find out what a decision costs before we recommend it to anybody else.
+        </p>
+      </div>
+
+      <ul class="agv__grid">
+        {VENTURES.map((v, i) => (
+          <li data-reveal style={`transition-delay:${i * 60}ms`}>
+            <a class="agv__card" href={`https://${v.domain}`} target="_blank" rel="noopener">
+              <span class="agv__shot">
+                <img src={v.logo} alt={v.name} width={v.w} height={v.h} loading="lazy" decoding="async" />
+              </span>
+              <span class="agv__go">
+                <span>{v.domain}</span>
+                <span class="agv__arrow" aria-hidden="true">↗</span>
+              </span>
+            </a>
           </li>
         ))}
       </ul>
@@ -588,5 +652,73 @@ const schema = [
        canvas it is a column marker; stacked under the title it just pushes
        "Clutch" into the middle of nowhere. */
     .agb__award-dot { display: none; }
+  }
+  /* ── Our ventures ───────────────────────────────────────── */
+  .agv { padding-block: 96px 112px; }
+  .agv__tick { display: block; width: 16px; height: 1.5px; background: var(--c-accent); }
+  .agv__head {
+    display: grid; grid-template-columns: minmax(0, 1fr) 440px;
+    column-gap: 60px; align-items: end; margin-top: 22px;
+  }
+  .agv__rail { display: flex; flex-direction: column; gap: 14px; }
+  .agv__eyebrow {
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .agv__h {
+    margin: 0; max-width: 700px;
+    font-size: clamp(38px, 3.9vw, 56px); line-height: 1.07; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .agv__lede {
+    margin: 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62); text-wrap: pretty;
+  }
+
+  .agv__grid {
+    list-style: none; margin: 64px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 26px;
+  }
+  /* One rule across the row, drawn per card so it survives wrapping. */
+  .agv__card {
+    display: flex; flex-direction: column; align-items: flex-start;
+    padding-top: 26px; border-top: 1px solid var(--c-rule-strong);
+    transition: border-color var(--dur-fast) ease;
+  }
+  .agv__card:hover { border-top-color: var(--c-black); }
+  .agv__shot { display: flex; align-items: center; height: 34px; }
+  /* GREY AT REST, COLOUR ON HOVER. One colour file, two states.
+     The opacity comes down with the saturation because a fully opaque grey
+     logo still reads as loud next to four others; together they settle into
+     the page and lift out of it as a pair. */
+  .agv__shot img {
+    display: block; width: auto; max-width: 100%; max-height: 30px;
+    filter: grayscale(1); opacity: 0.55;
+    transition: filter var(--dur-slow) ease, opacity var(--dur-slow) ease;
+  }
+  .agv__card:hover .agv__shot img { filter: grayscale(0); opacity: 1; }
+
+  .agv__go {
+    display: flex; align-items: baseline; gap: 6px; margin-top: 22px;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.5);
+    transition: color var(--dur-fast) ease;
+  }
+  .agv__card:hover .agv__go { color: var(--c-black); }
+  /* The arrow is the only thing that moves. */
+  .agv__arrow { transition: transform var(--dur-fast) ease; }
+  .agv__card:hover .agv__arrow { transform: translate(2px, -2px); }
+
+  @media (max-width: 1100px) {
+    .agv { padding-block: 72px 84px; }
+    .agv__head { grid-template-columns: 1fr; row-gap: 22px; align-items: start; }
+    .agv__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 40px; margin-top: 48px; }
+  }
+  @media (max-width: 680px) {
+    .agv__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 20px; }
+    /* Touch has no hover, so the marks are simply shown in colour there —
+       a grey logo that never resolves is just a faded logo. */
+    .agv__shot img { filter: grayscale(0); opacity: 1; }
   }
 </style>

@@ -182,7 +182,7 @@ const schema = [
               )}
               <span class="wf__shot">
                 {art(p.slug) && (
-                  <img src={art(p.slug)} alt="" width="1129" height="625" loading="lazy" decoding="async" />
+                  <img src={art(p.slug)} alt="" width="1242" height="621" loading="lazy" decoding="async" />
                 )}
               </span>
               {/* Sector, name, year — stacked on the flat-ink side, which is
@@ -293,9 +293,15 @@ const schema = [
     border-bottom: 1.25px solid rgba(71, 71, 71, 0.8);
   }
 
+  /* 2:1 AT EVERY WIDTH, so one export fits everywhere.
+     The box used to be two different shapes: a fixed 625px height against a
+     1242px column here, 1.99:1, and aspect-ratio 1129/625 below the design
+     grid, 1.81:1. With `object-fit: cover` no single file could satisfy both —
+     whichever shape the artwork was cut for, the other breakpoint cropped it.
+     One ratio means the supplied 2:1 art lands whole at every size. */
   .wf__shot {
     position: absolute; left: 120px; top: 1px; right: 0;
-    display: block; height: 625px; overflow: hidden;
+    display: block; aspect-ratio: 2 / 1; overflow: hidden;
     border-radius: 12px; background: rgb(30, 30, 30);
   }
   /* ── AMBER DUSK ─────────────────────────────────────────────
@@ -390,7 +396,7 @@ const schema = [
     .wf__rows a { height: auto; }
     .wf__date { position: static; display: flex; align-items: baseline; gap: 10px; width: auto; }
     .wf__date b { border: 0; padding: 0; }
-    .wf__shot { position: static; height: auto; aspect-ratio: 1129 / 625; margin-top: 14px; }
+    .wf__shot { position: static; margin-top: 14px; }
     /* The block sits on the card's foot here rather than a third of the way
        down: the card is much shorter, so a top anchor would push the year off
        the bottom of the shorter names. */

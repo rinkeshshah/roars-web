@@ -71,3 +71,51 @@ rather than shipping.
 will not fit, the title is wrong, not the limit. `scripts/migrate-wordpress.mjs`
 ports every value verbatim and reports over-length rows precisely so that this
 surfaces as work rather than being quietly truncated on import.
+
+---
+
+## The eight red URLs — scheduled, not deferred indefinitely
+
+**Status:** designed, agreed for the next working session. Recorded here so the
+red gate is understood rather than rediscovered.
+
+`assert-urls` fails on eight inventory URLs that have neither a page nor a
+redirect. That failure is EXPECTED and should stay visible — do not silence it,
+and do not build stubs to turn it green.
+
+    /product-development-agency-in-london/
+    /product-development-agency-in-manchester/
+    /product-development-agency-in-birmingham/
+    /ui-ux-design-services-london/
+    /ui-ux-design-services-bristol/
+    /ui-and-ux-design-agency-birmingham/
+    /ui-and-ux-design-agency-manchester/
+    /schedule-ux-ui-meeting/
+
+The owner's decision: **all eight are already designed**, and they are to be
+built once the UX/UI pass over the EXISTING pages is finished — the order is
+deliberate, so the new pages inherit a settled system instead of being fixed
+twice.
+
+Two things to carry into that session:
+
+  - The seven city pages use three different slug patterns
+    (`product-development-agency-in-<city>`, `ui-ux-design-services-<city>`,
+    `ui-and-ux-design-agency-<city>`). docs/URL-INVENTORY-FINDINGS.md §3 has
+    the detail. They are live, indexed URLs, so the slugs are not ours to
+    tidy.
+  - `/schedule-ux-ui-meeting/` is a booking page. The site already sends
+    booking traffic to site.booking (meet.roarsinc.com/sales), so the question
+    is whether this URL becomes a real page or a 301 to that. Either resolves
+    the gate; they are not the same for search.
+
+## The UX/UI pass — what has been through it
+
+Recorded so the next session starts where this one stopped rather than
+re-reviewing settled pages.
+
+  Done:      /about-us/, /approach/, /work/ (index), /s/* (all twelve),
+             /our-journal/ (index and post), /resources/*, /resource/*,
+             /thankyou/, /404
+  Not yet:   /, /contact-us/, /industries/*, /work/[slug] (the 23 detail
+             pages)
