@@ -33,13 +33,34 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import { getCollection } from 'astro:content'
 import { PROJECTS } from '../../lib/projects'
-import { WORK, PORTRAIT } from '../../lib/media'
+import { workHeroFor, PORTRAIT } from '../../lib/media'
 import { site } from '../../lib/site'
 import star5 from '../../assets/star-5.svg'
 
 const path = '/work/'
-const art = (key?: string) => (key ? WORK[key as keyof typeof WORK] : undefined)
+
+/**
+ * EACH CARD DRAWS ITS OWN PROJECT'S HEADER — the same file /work/[slug]/ puts
+ * at the top of that project's page.
+ *
+ * It used to read WORK[p.image] straight out of the registry, which holds nine
+ * entries against twenty-three projects: fourteen rows drew a bare dark plate,
+ * and of the nine that drew anything, not all were the shot the detail page
+ * opens with.
+ *
+ * The resolution order here is the detail page's, exactly: the content file's
+ * own heroImage first, the registry as the fallback. All twenty-three content
+ * files carry one. scripts/validate-content.mjs already fails the build if
+ * those two sources ever disagree, so the index and the page it links to
+ * cannot drift apart.
+ */
+const projectEntries = await getCollection('projects')
+const heroBySlug = new Map(
+  projectEntries.map((e) => [e.id, e.data.heroImage as string | undefined]),
+)
+const art = (slug: string) => heroBySlug.get(slug) ?? workHeroFor(`/work/${slug}/`)
 
 const schema = [
   {
@@ -128,8 +149,8 @@ const schema = [
                 </span>
               )}
               <span class="wf__shot">
-                {art(p.image) && (
-                  <img src={art(p.image)} alt="" width="1129" height="625" loading="lazy" decoding="async" />
+                {art(p.slug) && (
+                  <img src={art(p.slug)} alt="" width="1129" height="625" loading="lazy" decoding="async" />
                 )}
               </span>
               <span class="wf__client">{p.client}.</span>
@@ -236,19 +257,41 @@ const schema = [
     display: block; height: 625px; overflow: hidden;
     border-radius: 12px; background: rgb(30, 30, 30);
   }
+  /* ── AMBER DUSK ─────────────────────────────────────────────
+     The supplied treatment, 3c, applied to every card:
+
+       brightness(.44)
+       amber radial at 88% 96%, .30 → 0 @70%
+       ink gradient 90deg, 1 → .10
+       copy on flat ink
+
+     Three layers, and the ORDER IS THE POINT. The photograph is knocked back
+     to 44%. The amber sits ON TOP of it but UNDER the ink, so the one place
+     yellow touches the image is the far corner where the ink has thinned to
+     a tenth — the moment the ink goes dense towards the copy side, it covers
+     the amber completely. That is what "the yellow never crosses into the
+     copy side" means, and putting the amber above the ink instead would tint
+     the type's own ground and lose it.
+     Everything is on the shot, not the image, so the hover scale moves the
+     photograph underneath a treatment that stays put. */
   .wf__shot img {
     display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(0.44);
     transition: transform var(--dur-slow) ease;
   }
   .wf__rows a:hover .wf__shot img { transform: scale(1.03); }
-  /* The name is white over the photo, so the photo has to be dark where the
-     name is. The export lays a bottom-up wash over the lower 45%. */
+  /* Amber, from the far corner. Under the ink. */
+  .wf__shot::before {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(circle at 88% 96%, rgba(255, 212, 0, 0.30) 0%, rgba(255, 212, 0, 0) 70%);
+  }
+  /* Ink, dense on the copy side and thinning across. Over the amber. */
   .wf__shot::after {
-    content: ''; position: absolute; inset: auto 0 0 0; height: 45%;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+    content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(90deg, rgba(11, 11, 11, 1) 0%, rgba(11, 11, 11, 0.10) 100%);
   }
   .wf__client {
-    position: absolute; left: 816px; top: 507px; z-index: 1;
+    position: absolute; left: 816px; top: 507px; z-index: 3;
     font-size: 36px; line-height: 42px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-white);
   }
