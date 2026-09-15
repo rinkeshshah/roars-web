@@ -475,8 +475,6 @@ const schema = [
   }
 
   @media (max-width: 760px) {
-    .agb__grid { grid-template-columns: 1fr; justify-items: start; }
-    .agb__rest { width: auto; height: auto; padding-top: 210px; }
     .agh__intro, .agh__quote { margin-left: 0; }
     .agh__founder { width: auto; }
     /* Both measured off the 1362 canvas: a 384px intro and a 433px rule in a
@@ -484,5 +482,65 @@ const schema = [
        past the edge and lost their last words. */
     .agh__intro { width: 100%; }
     .agb__stat-rule { width: 100%; }
+
+    /* ── Team and clients: TWO PER ROW, not one ──────────────
+       These were one per row at a fixed 198px disc, which on a 390 phone is
+       half the viewport per face and eight scroll-screens of portraits. The
+       disc is sized by its column now instead of by a number measured off the
+       1362 canvas, so it fits any width. */
+    .agb__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 18px; row-gap: 26px;
+    }
+    .agb__person { width: auto; min-width: 0; }
+    .agb__disc { width: 100%; height: auto; aspect-ratio: 1; }
+    .agb__person-name { margin-top: 12px; font-size: var(--fs-label); line-height: 17px; }
+    .agb__person-role { font-size: var(--fs-label); line-height: 17px; }
+
+    /* The counter takes the full row. Its 210px top padding was standing in
+       for a grid position that does not exist at this width, and it read as a
+       screen of empty space above the number. */
+    /* `.agb__grid > .agb__rest` at the tablet breakpoint sets grid-column to
+       auto and outranks a bare `.agb__rest`, so the counter kept sitting in
+       column two beside the last portrait and its label wrapped to one word a
+       line. Matched specificity, not !important. */
+    .agb__grid > .agb__rest {
+      grid-column: 1 / -1;
+      width: auto; min-height: 0; padding-top: 0; margin-top: 6px; gap: 18px;
+    }
+    .agb__rest-disc { width: 128px; height: 128px; }
+    .agb__rest-n { font-size: 42px; line-height: 42px; gap: 6px; }
+    .agb__rest-label { font-size: 17px; line-height: 23px; }
+
+    /* ── The overlap ────────────────────────────────────────
+       .agb__shots is drawn 420 tall because the export puts two shots side by
+       side and lets the year line overhang. Stacked, two 371px shots plus
+       their captions need about 850, and the fixed height does not grow — so
+       the second shot painted straight over the awards list below it. That is
+       the text overlap on this page. */
+    .agb__shots { height: auto; grid-template-columns: minmax(0, 1fr); row-gap: 26px; }
+    .agb__shot { height: 208px; }
+
+    /* ── Gaps ───────────────────────────────────────────────
+       Every one of these was measured for a 1362 canvas, where 145px between
+       blocks reads as composure. At 390 it reads as the page having ended. */
+    .agb { padding-block: 56px; }
+    .agb__stats { margin-top: 40px; row-gap: 30px; }
+    .agb__grid--team, .agb__grid--clients { margin-top: 36px; }
+    .agb__plate { height: 220px; margin-top: 48px; }
+    .agb__h2 { font-size: 34px; line-height: 1.08; }
+    .agb__h2--clients { margin-top: 56px; }
+    .agb__h2--awards { margin-top: 52px; }
+    .agb__cta { margin-top: 44px; }
+    .agb__shots { margin-top: 52px; }
+    .agb__awards { margin-top: 22px; }
+    .agb__award { margin-bottom: 24px; }
+    /* The title is set 19/19 for a single line on the wide canvas. Wrapped to
+       two or three lines at this width that is solid type with no leading. */
+    .agb__award-title { line-height: 1.22; }
+    /* A 24px grey disc with 21px of margin, in front of one word. On the wide
+       canvas it is a column marker; stacked under the title it just pushes
+       "Clutch" into the middle of nowhere. */
+    .agb__award-dot { display: none; }
   }
 </style>
