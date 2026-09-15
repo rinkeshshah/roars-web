@@ -1149,7 +1149,15 @@ const schema = [
        gap to the next rule looked fine. The row hangs off its rule now. */
     padding-block: 34px 28px;
   }
-  .svc__rule { grid-row: 1; grid-column: 1 / -1; height: 1px; background: var(--c-rule-strong); }
+  /* ABSOLUTE, NOT A GRID TRACK. As a zero-height row-1 track the rule sat
+     AFTER the row's padding-top, so padding pushed the rule and the content
+     down together and the gap between them never opened — 34px of padding
+     still left the name 3px under the line. Anchored to the row's top edge it
+     stays put and the padding does what it says. */
+  .svc__rule {
+    position: absolute; left: 0; right: 0; top: 0;
+    height: 1px; background: var(--c-rule-strong);
+  }
   /* The last row closes the list, so it gets a rule under it as well as over.
      Without it the ALSO line below reads as part of the fifth service. */
   .svc__row:last-child { border-bottom: 1px solid var(--c-rule-strong); }
