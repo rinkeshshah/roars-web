@@ -119,6 +119,35 @@
   --avatar-lg:     60px;
   --avatar-overlap: -9px;
 
+  /* ---------- Amber dusk: the photograph treatment ----------
+     ONE DEFINITION, FOUR SURFACES. Case-study photography is treated the same
+     way wherever a project appears: the /work/ card, the /work/[slug]/ header,
+     the homepage Projects band and the industry proof band. The numbers live
+     here rather than four times in four scoped stylesheets, because four
+     copies of "brightness(0.62)" is four chances to change three of them.
+
+     TWO EXPOSURES, DELIBERATELY. A surface with the client name set ON the
+     photograph needs it knocked back far enough to hold white type; a surface
+     whose type sits elsewhere does not, and darkening it that far would only
+     make the picture muddy to protect copy that is not there.
+
+     The ink gradient goes with the card exposure, for the same reason: it is
+     there to hold type, so a surface with no type on it does not take it.
+     The amber goes on everything. It is the family resemblance, and the only
+     place yellow touches a photograph anywhere on the site. */
+  --dusk-exposure-card: 0.62;   /* copy sits on the image */
+  --dusk-exposure-hero: 0.82;   /* copy sits elsewhere; the photo is the subject */
+  --dusk-amber: radial-gradient(circle at 88% 96%, rgba(255, 212, 0, 0.30) 0%, rgba(255, 212, 0, 0) 70%);
+  --dusk-amber-soft: radial-gradient(circle at 88% 96%, rgba(255, 212, 0, 0.22) 0%, rgba(255, 212, 0, 0) 66%);
+  --dusk-ink: linear-gradient(90deg, rgba(11, 11, 11, 0.82) 0%, rgba(11, 11, 11, 0.06) 100%);
+  /* The same ink, turned to face the copy. The /work/ card runs its caption
+     down the left edge; the homepage card sets the client name along the
+     bottom. Pointing the horizontal one at a name that is not on the left
+     darkens the half of the photograph nobody is reading over and leaves the
+     type sitting on bare picture. Ramps out by 52%, a little above where the
+     name's cap height reaches. */
+  --dusk-ink-up: linear-gradient(0deg, rgba(11, 11, 11, 0.82) 0%, rgba(11, 11, 11, 0.06) 52%);
+
   /* ---------- Motion ---------- */
   --ease-out:     cubic-bezier(0.22, 0.68, 0.28, 1);
   --ease-spring:  cubic-bezier(0.16, 1, 0.3, 1);

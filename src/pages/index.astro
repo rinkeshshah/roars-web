@@ -21,7 +21,7 @@ import SiteFooter from '../components/SiteFooter.astro'
 import Button from '../components/Button.astro'
 import Accordion from '../components/Accordion.astro'
 import { site } from '../lib/site'
-import { PORTRAIT, CLIENT_LOGOS, WORK, SERVICE_IMG, JOURNAL } from '../lib/media'
+import { PORTRAIT, CLIENT_LOGOS, workHeroFor, SERVICE_IMG, JOURNAL } from '../lib/media'
 import GrainField from '../components/GrainField.astro'
 /* Decorative furniture still used by About and Insights. The hero's own
    set — planet, starbelt, slash mark — went with the export 2 redesign. */
@@ -67,14 +67,20 @@ const services = [
   },
 ]
 
-/** Two featured case studies. Slugs from docs/URL-INVENTORY.csv. */
+/**
+ * Two featured case studies. Slugs from docs/URL-INVENTORY.csv.
+ *
+ * The shot comes from workHeroFor, the same resolver /work/ and /work/<slug>/
+ * use, so a project shows the same photograph everywhere it is named and there
+ * is one place to change it. It is built at 2:1 by scripts/build-work-headers,
+ * which is why .proj__ph is 2:1 below rather than the export's 1129x579.
+ */
 const featured = [
   {
     day: '02 Jul',
     year: '2025',
     name: 'Parqly.',
     href: '/work/parqly-parking-solution/',
-    img: WORK.parqly,
     faces: [PORTRAIT.chetna, PORTRAIT.atul],
   },
   {
@@ -82,10 +88,9 @@ const featured = [
     year: '2026',
     name: 'Snowman Logistics.',
     href: '/work/warehouse-compliance-checklist-app/',
-    img: WORK.snowman,
     faces: [PORTRAIT.abhishek, PORTRAIT.suzanne],
   },
-]
+].map((f) => ({ ...f, img: workHeroFor(f.href) }))
 
 /**
  * The cascade. Four testimonials at four sizes and four vertical offsets,
@@ -592,7 +597,7 @@ const schema = [
               <span class="proj__year">{f.year}</span>
             </div>
             <a class="proj__card" href={f.href}>
-              <img class="proj__ph" src={f.img} alt="" width="1129" height="580" loading="lazy" decoding="async" />
+              <img class="proj__ph" src={f.img} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
               <span class="proj__faces" aria-hidden="true">
                 {f.faces.map((src) => <img src={src} alt="" width="42" height="42" loading="lazy" />)}
               </span>
@@ -1312,13 +1317,29 @@ const schema = [
   .proj__card { position: relative; display: block; border-radius: var(--r-card, 12px); overflow: hidden; }
   .proj__ph { display: block; width: 100%; height: 100%; object-fit: cover; background: rgb(30, 30, 30); }
   /* Two ringed faces at the card's top right, as the export draws them. */
-  .proj__faces { position: absolute; right: var(--sp-4); top: var(--sp-4); display: flex; flex-direction: column; gap: 6px; }
+  .proj__faces { position: absolute; right: var(--sp-4); top: var(--sp-4); z-index: 3; display: flex; flex-direction: column; gap: 6px; }
   .proj__faces img { width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); object-fit: cover; box-shadow: var(--shadow-ring); }
-  /* Placeholder ground from the design system: rgb(30,30,30) at the card's
-     real aspect so the layout and CLS budget hold once the photo lands. */
-  .proj__ph { aspect-ratio: 1129 / 579; background: rgb(30, 30, 30); border-radius: 12px; }
+  /* rgb(30,30,30) behind the photograph so the layout and the CLS budget hold
+     while it loads. 2:1 because that is what build-work-headers writes and
+     what both /work/ surfaces show — the export's 1129x579 would have cropped
+     a second time in the browser on top of the crop already baked into the
+     file. */
+  .proj__ph { aspect-ratio: 2 / 1; background: rgb(30, 30, 30); border-radius: 12px; }
+  /* Amber dusk. Amber under ink, same order as /work/ — see tokens.css.
+     The hero exposure rather than the card one, because what sits on this
+     photograph is a name along the bottom edge and two ringed faces in the
+     top corner, not a paragraph across the middle. The ink runs bottom-up and
+     puts the contrast under the name; holding the whole 1129px picture back
+     to 0.62 as well would be paying for contrast twice. */
+  .proj__ph { filter: brightness(var(--dusk-exposure-hero)); }
+  .proj__card::before,
+  .proj__card::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+  }
+  .proj__card::before { z-index: 1; background: var(--dusk-amber); }
+  .proj__card::after { z-index: 2; background: var(--dusk-ink-up); }
   .proj__name {
-    position: absolute; left: 50%; bottom: 62px;
+    position: absolute; left: 50%; bottom: 62px; z-index: 3;
     line-height: 42px;
     font-size: 36px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-white);
@@ -1712,6 +1733,11 @@ const schema = [
       font-size: 28px; line-height: 34px;
     }
     .proj__faces { position: static; flex-direction: row; margin-top: 12px; }
+    /* Nothing sits on the photograph at this width — the name and the faces
+       drop below it — so the ink has no copy to carry, and both layers cover
+       the card, which down here is taller than the picture. Off; the exposure
+       is already the one the photograph gets when it is the subject. */
+    .proj__card::before, .proj__card::after { display: none; }
     /* The slides are absolute so they can cross-fade over one another, which
        means the stage carries the height — 580px, measured on the two-column
        desktop card. Stacked to one column the card is taller than that and

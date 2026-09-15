@@ -331,19 +331,19 @@ const schema = [
      photograph underneath a treatment that stays put. */
   .wf__shot img {
     display: block; width: 100%; height: 100%; object-fit: cover;
-    filter: brightness(0.62);
+    filter: brightness(var(--dusk-exposure-card));
     transition: transform var(--dur-slow) ease;
   }
   .wf__rows a:hover .wf__shot img { transform: scale(1.03); }
   /* Amber, from the far corner. Under the ink. */
   .wf__shot::before {
     content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background: radial-gradient(circle at 88% 96%, rgba(255, 212, 0, 0.30) 0%, rgba(255, 212, 0, 0) 70%);
+    background: var(--dusk-amber);
   }
   /* Ink, dense on the copy side and thinning across. Over the amber. */
   .wf__shot::after {
     content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: linear-gradient(90deg, rgba(11, 11, 11, 0.82) 0%, rgba(11, 11, 11, 0.06) 100%);
+    background: var(--dusk-ink);
   }
   /* ── the copy block ─────────────────────────────────────────
      The supplied card sets sector, name and year as one left-aligned stack,
