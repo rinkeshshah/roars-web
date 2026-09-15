@@ -9,14 +9,14 @@
  * and /resources/guides/ are both additions, asked for directly. Guide detail
  * still lives at the flat form, as CLAUDE.md requires.
  *
- * ALL THREE SHELVES ARE LINKS NOW. They were descriptive for a while because
- * Staff Picks and Tools had no URL to point at: both live at the SINGULAR
- * /resource/<name>/ and neither was in docs/URL-INVENTORY.csv, so there was
- * nothing to link to and a card that looks clickable and is not is worse than
- * one that does not pretend. The URLs turned out to be real — the decisions
- * CSV marks both KEEP, and this page's own export links them absolutely — so
- * they are back in the inventory and both pages are built. See
- * src/lib/resource-archives.ts.
+ * GUIDES LINKS, THE OTHER TWO DO NOT, YET. Staff Picks and Tools are category
+ * ARCHIVES at the singular /resource/<name>/, each with its own child items,
+ * the same shape as /resources/guides/. The URLs are real and are now
+ * inventory rows, but the CHILD LISTS are not in this repository: the crawl
+ * that produced the inventory read the Squirrly sitemaps, and those carry no
+ * taxonomy archives. Until the export in src/pages/resource/[archive].astro
+ * describes lands, those two hold their URLs on the pending template and the
+ * cards do not pretend to lead anywhere finished.
  *
  * Canvas, section-relative: Hero 700, Collections 1020, Library 2740.
  *
@@ -53,14 +53,14 @@ const shelves = [
     stamp: ['BOOKS', 'TOOLS', 'PODCASTS'],
     name: 'Staff Picks',
     body: 'A selection of our favorite books, tools, podcasts, guides, and more.',
-    href: '/resource/staff-picks/',
+    href: null,
   },
   {
     n: '03 / PDF',
     stamp: ['HANDS-ON', 'EASY TO USE', 'ACTIONABLE'],
     name: 'Tools',
     body: 'Actionable tools for change-makers. We’ve transformed a lot of boring innovation management theory into hands-on, easy-to-use, actionable innovation tools. Explore our library of PDFs, free for you to download.',
-    href: '/resource/tools/',
+    href: null,
   },
 ]
 
@@ -73,8 +73,10 @@ const schema = [
     isPartOf: { '@id': `${site.url}/#website` },
     mainEntity: {
       '@type': 'ItemList',
-      numberOfItems: shelves.length,
-      itemListElement: shelves.map((s, i) => ({
+      /* Only the shelf that leads somewhere. An ItemList entry for a URL on
+         the pending template would offer search a page with nothing on it. */
+      numberOfItems: shelves.filter((s) => s.href).length,
+      itemListElement: shelves.filter((s) => s.href).map((s, i) => ({
         '@type': 'ListItem',
         position: i + 1,
         name: s.name,
@@ -157,7 +159,11 @@ const schema = [
             <h3 class="rc__name">{s.name}</h3>
             <p class="rc__body">{s.body}</p>
             <span class="rc__foot">
-              <a href={s.href}>See all {s.name.toLowerCase()}<span class="rc__go" aria-hidden="true">→</span></a>
+              {s.href ? (
+                <a href={s.href}>See all {s.name.toLowerCase()}<span class="rc__go" aria-hidden="true">→</span></a>
+              ) : (
+                <em class="rc__soon">Not published yet</em>
+              )}
             </span>
           </li>
         ))}
@@ -296,6 +302,12 @@ const schema = [
     transition: transform var(--dur-fast) ease;
   }
   .rc__foot a:hover .rc__go { transform: translateX(8px); }
+  /* No link, and it does not pretend to be one. */
+  .rc__soon {
+    display: block; font-style: normal;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.4);
+  }
 
   /* ── below the design grid ──────────────────────────────── */
   @media (max-width: 1360px) {
