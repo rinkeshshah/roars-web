@@ -66,10 +66,41 @@ export const site = {
       email: 'contact@roarsinc.com', phone: '' },
   ],
 
+  /**
+   * THE HEADLINE FIGURES, IN ONE PLACE.
+   *
+   * Supplied by the owner. They replace the set the build had been carrying
+   * since the migration (250+ projects, 96% returning customers), which came
+   * from the old site.
+   *
+   * TWO TRIOS, NOT ONE. A page that shows three figures uses `primary` unless
+   * it already sits next to a page that does, in which case it takes `alt` —
+   * the same three numbers on every section reads as a template, and the
+   * owner supplied a second set for exactly that reason.
+   *
+   * Individual values are also exported so prose can use one on its own
+   * ("4,000+ products shipped since 2005") without a second copy of the
+   * number going stale next to the trio.
+   */
   stats: {
     yearsInBusiness: '20+',
-    projectsDelivered: '250+',
-    returningCustomers: '96%',
+    projectsDelivered: '4,000+',
+    aiDriven: '63%',
+    happyCustomers: '2,500+',
+    globalAwards: '7+',
+  },
+
+  statSets: {
+    primary: [
+      { value: '20+', label: 'Years of Excellence' },
+      { value: '4,000+', label: 'Projects Delivered' },
+      { value: '63%', label: 'AI-Driven Solutions' },
+    ],
+    alt: [
+      { value: '20+', label: 'Years of Excellence' },
+      { value: '2,500+', label: 'Happy Customers' },
+      { value: '7+', label: 'Global Awards' },
+    ],
   },
 } as const
 

@@ -79,9 +79,9 @@ export const MENU_REST = {
   title: 'We create delightful experiences that matters.',
   statLabel: '20 YEARS OF EXCELLENCE IN PRODUCT CONSULTING',
   stats: [
-    { value: '20+', label: 'YEARS IN PRODUCT' },
-    { value: '250+', label: 'PROJECTS DELIVERED' },
-    { value: '96%', label: 'RETURNING CUSTOMERS' },
+    { value: '20+', label: 'YEARS OF EXCELLENCE' },
+    { value: '4,000+', label: 'PROJECTS DELIVERED' },
+    { value: '63%', label: 'AI-DRIVEN SOLUTIONS' },
   ],
   hint: 'HOVER A SECTION TO EXPLORE',
 }
@@ -112,7 +112,7 @@ export const MENU: MenuItem[] = [
   {
     n: '02', label: 'about us', href: '/about-us/',
     eyebrow: '02 / ABOUT US',
-    title: 'The team behind 250 products',
+    title: 'The team behind 4,000+ products',
     body: 'Founded in 2005 by Rinkesh A Shah. Eight senior people, five ventures of our own, and clients who come back for the next build.',
     kind: 'links',
     items: [

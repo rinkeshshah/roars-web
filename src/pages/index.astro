@@ -57,7 +57,7 @@ import star5 from '../assets/star-5.svg'
  *
  * THE FIGURES COME FROM THE DESIGN, NOT FROM THE CONTENT. No service record
  * carries a project count and there is no source in the repo for 40, 35, 17 or
- * 12 weeks; 250+ is the company-wide total from site.stats, shown here against
+ * 12 weeks; 4,000+ is the company-wide total from site.stats, shown here against
  * Product Development. Raised with the owner, who asked for the design's
  * numbers as drawn. Recorded in docs/OPEN-DECISIONS.md so the next person does
  * not have to rediscover it.
@@ -67,7 +67,7 @@ const services = [
     n: '/01',
     name: 'Product Development',
     body: 'Idea to launch: strategy, design and engineering in one team.',
-    stat: '250', unit: 'shipped',
+    stat: '4,000', unit: 'shipped',
     href: '/s/product-development-company/',
   },
   {
@@ -143,38 +143,59 @@ const featured = [
  * blocks: `col` places it in the 7-track grid, the rest drive one shared rule
  * set through custom properties.
  */
-const testimonials = [
-  {
-    col: 5, top: 0, avatar: 80, label: 14, qs: 24, lead: 32, star: 14,
-    initials: 'BP',
-    name: 'Bhushan Paralkar',
-    role: 'VP IT & Business Excellence, Snowman Logistics',
-    quote:
-      'You showed a strong understanding of our business needs and prepared well-structured documentation. The user-friendly UI/UX design you created makes the system easy to use, and your guidance in improving business processes has been very valuable.',
-  },
-  {
-    col: 3, top: 264, avatar: 65, label: 13, qs: 18, lead: 25, star: 12,
-    initials: 'DS',
-    name: 'Dipali Sikand',
-    role: 'CEO, Club Concierge',
-    quote:
-      'If there is anyone who can truly understand and translate my unique business requirements into a technical reality, it is Roars.',
-  },
-  {
-    col: 1, top: 108, avatar: 57, label: 12, qs: 15, lead: 21, star: 11,
-    initials: 'NS',
-    name: 'Nillaesh Sonill',
-    role: 'Medical Director, Pimlico Health Centre',
-    quote:
-      'They have helped with website development and social media engagement alongside quick turn-around time for delivering project work.',
-  },
-  {
-    col: 7, top: 230, avatar: 40, label: 10, qs: 12, lead: 17, star: 9,
-    initials: 'SO',
-    name: 'Sandro Ore',
-    role: 'Head of Marketing, Ventura Law',
-    quote: 'We love working with Roars! They provide great service and are fast with development.',
-  },
+/**
+ * THE CASCADE'S FOUR SLOTS. Geometry belongs to the SLOT, not the person:
+ * `col` places it in the 7-track grid, the rest drive one shared rule set
+ * through custom properties. Slot 0 is the largest and slot 3 the smallest,
+ * so each page puts its longest quote first and its shortest last.
+ */
+const saySlots = [
+  { col: 5, top: 0, avatar: 80, label: 14, qs: 24, lead: 32, star: 14 },
+  { col: 3, top: 264, avatar: 65, label: 13, qs: 18, lead: 25, star: 12 },
+  { col: 1, top: 108, avatar: 57, label: 12, qs: 15, lead: 21, star: 11 },
+  { col: 7, top: 230, avatar: 40, label: 10, qs: 12, lead: 17, star: 9 },
+]
+
+/**
+ * Twelve real testimonials, three pages of four, from the owner's SocialJuice
+ * export. Quotes are verbatim contiguous sentences, trimmed to fit the slot
+ * they sit in but not reworded.
+ *
+ * INITIALS, NOT PHOTOGRAPHS. These are real, named clients and there is no
+ * portrait of any of them. What used to sit here were four Roars staff
+ * photographs standing in for invented client names.
+ */
+const sayPages = [
+  [
+    { initials: 'BP', name: 'Bhushan Paralkar', role: 'VP IT & Business Excellence, Snowman Logistics',
+      quote: 'You showed a strong understanding of our business needs and prepared well-structured documentation. The user-friendly UI/UX design you created makes the system easy to use, and your guidance in improving business processes has been very valuable.' },
+    { initials: 'DS', name: 'Dipali Sikand', role: 'CEO, Club Concierge',
+      quote: 'If there is anyone who can truly understand and translate my unique business requirements into a technical reality, it is Roars.' },
+    { initials: 'NS', name: 'Nillaesh Sonill', role: 'Medical Director, Pimlico Health Centre',
+      quote: 'They have helped with website development and social media engagement alongside quick turn-around time for delivering project work.' },
+    { initials: 'SO', name: 'Sandro Ore', role: 'Head of Marketing, Ventura Law',
+      quote: 'We love working with Roars! They provide great service and are fast with development.' },
+  ],
+  [
+    { initials: 'NM', name: 'Nirmal Mistry', role: 'Director, Okeva',
+      quote: 'Rinkesh and his team at Roars have a unique approach to their work and truly tailor their services to the end client. Bespoke service and dedicated support. They really know their stuff and the quality of their output versus price point is exceptional.' },
+    { initials: 'YG', name: 'Yves Goris', role: 'Business Owner, Rubberduck',
+      quote: 'I have been a client for about 17 years, and in this time I have always had a good relationship with them. They are always on time, very friendly, and hands-on.' },
+    { initials: 'KH', name: 'Kamran Hussain', role: 'Director, gymBAIT',
+      quote: 'They executed everything me and my business partner asked for during the process of building our business app. I would recommend their services to anyone I come across.' },
+    { initials: 'EE', name: 'Elena Elraie', role: 'Digital Consultant, Lametus',
+      quote: 'Their service is professional, flexible, and friendly. I am very happy with the service and the results.' },
+  ],
+  [
+    { initials: 'DS', name: 'Deepika Sharma', role: 'Director, Itax Office',
+      quote: 'They took the time to understand our business needs and goals, and translated them into a visually appealing and user-friendly website. The design perfectly aligns with our brand identity, and the layout and navigation are intuitive for our visitors.' },
+    { initials: 'SM', name: 'Sadala Musoke', role: 'RightQode',
+      quote: 'This is the most dedicated team I have ever met. With the limited budget we had, they have always been on our side and worked hard to see that we launch our product.' },
+    { initials: 'NV', name: 'Nisha Verma', role: 'Chief Program Officer, Club Concierges',
+      quote: 'They were quite responsive and consistently honored the timelines they set. The quick turnaround times were particularly impressive.' },
+    { initials: 'SA', name: 'Sanjeev', role: 'CEO, Broad Wings Family Office',
+      quote: 'They approach every project with wholehearted dedication, ensuring it is completed on schedule.' },
+  ],
 ]
 
 /**
@@ -324,7 +345,7 @@ const schema = [
 
 <BaseLayout
   title="Product Development for Startups & SMEs | Roars"
-  description="Roars is a product development and design agency. 250+ products shipped since 2005, across product strategy, UI/UX, mobile apps and AI automation."
+  description="Roars is a product development and design agency. 4,000+ products shipped since 2005, across product strategy, UI/UX, mobile apps and AI automation."
   path="/"
   ogType="website"
   schema={schema}
@@ -349,7 +370,7 @@ const schema = [
         </h1>
         <p class="hero__lede">
           Roars is a product studio working out of the USA, UK and India.
-          250 products shipped for startups and SMEs since 2005.
+          4,000+ products shipped for startups and SMEs since 2005.
         </p>
         <a class="hero__cta" href="/contact-us/">
           Start a project<span class="hero__dot" aria-hidden="true"></span>
@@ -387,16 +408,16 @@ const schema = [
             <p class="about__stat-name">Projects Delivered</p>
             <div class="rule about__stat-rule"></div>
             <div class="about__stat-row">
-              <span class="about__stat-num">250<span class="about__plus">+</span></span>
+              <span class="about__stat-num">4,000<span class="about__plus">+</span></span>
               <span class="about__stat-note">Products launched successfully since 2005</span>
             </div>
           </div>
           <div class="about__stat">
-            <p class="about__stat-name">Returning Customers</p>
+            <p class="about__stat-name">AI-Driven Solutions</p>
             <div class="rule about__stat-rule"></div>
             <div class="about__stat-row">
-              <span class="about__stat-num">96<span class="about__pct">%</span></span>
-              <span class="about__stat-note">Clients who return for their next product</span>
+              <span class="about__stat-num">63<span class="about__pct">%</span></span>
+              <span class="about__stat-note">Products now shipping with AI in the build</span>
             </div>
           </div>
         </div>
@@ -434,7 +455,7 @@ const schema = [
           <img class="about__face about__face--b" src={PORTRAIT.chetna} alt="" width="42" height="42" loading="lazy" />
           <img class="about__face about__face--c" src={PORTRAIT.nitin} alt="" width="42" height="42" loading="lazy" />
           <img class="about__face about__face--d" src={PORTRAIT.atul} alt="" width="42" height="42" loading="lazy" />
-          <p class="about__team-count"><span>59</span></p>
+          <p class="about__team-count"><span>25</span></p>
         </div>
       </div>
 
@@ -561,7 +582,7 @@ const schema = [
     <div class="wrap proj__inner">
       <div class="proj__head">
         <h2 class="display display--on-dark">Projects</h2>
-        <p class="proj__count">250<span>+</span></p>
+        <p class="proj__count">4,000<span>+</span></p>
         <ul class="proj__legend">
           {['Recent Projects', 'Product Development', 'UI/UX and Product Design', 'Mobile and AI'].map((l) => (
             <li><span>{l}</span><i aria-hidden="true"></i></li>
@@ -617,36 +638,47 @@ const schema = [
       {/* A cascade, not a row of four equal cards. The four columns do not
           overlap horizontally, so this is one grid with uneven tracks plus a
           per-item top offset — flow layout, no absolute positioning. */}
-      <ul class="say__list">
-        {testimonials.map((t, i) => (
-          <li
-            class="say__item"
-            data-reveal
-            style={`--col:${t.col};--top:${t.top}px;--av:${t.avatar}px;--lb:${t.label}px;--qt:${t.qs}px;--ld:${t.lead}px;--st:${t.star}px;transition-delay:${i * 70}ms`}
-          >
-            {/* INITIALS, NOT A PHOTOGRAPH. These are real clients and we have no
-                portrait of any of them. The four faces that used to sit here were
-                Roars staff photographs standing in for invented client names, which
-                is a worse thing to ship than a monogram. */}
-            <span class="say__avatar" aria-hidden="true">{t.initials}</span>
-            <p class="say__name">{t.name}</p>
-            <p class="say__role">{t.role}</p>
-            <div class="say__rule"></div>
-            <div class="say__stars" aria-label="Rated 5 out of 5">
-              {[0, 1, 2, 3, 4].map(() => (
-                <span class="starmark" style={`--m:url(${star5.src});width:var(--st);height:var(--st)`} aria-hidden="true"></span>
-              ))}
-            </div>
-            <blockquote class="say__quote">{t.quote}</blockquote>
-          </li>
+      {/* THREE PAGES, ONE SET OF SLOTS.
+
+          The cascade's geometry belongs to the slot, so each page renders the
+          same four boxes with different people in them and Prev/Next swaps
+          which page is shown. All three ship in the DOM: twelve short quotes
+          is less markup than the script it would take to fetch them, and it
+          means the other eight are in the page for a crawler even though only
+          four are on screen. */}
+      <div class="say__deck" data-say>
+        {sayPages.map((page, p) => (
+          <ul class="say__list" data-say-page hidden={p !== 0}>
+            {page.map((t, i) => (
+              <li
+                class="say__item"
+                data-reveal
+                style={`--col:${saySlots[i].col};--top:${saySlots[i].top}px;--av:${saySlots[i].avatar}px;--lb:${saySlots[i].label}px;--qt:${saySlots[i].qs}px;--ld:${saySlots[i].lead}px;--st:${saySlots[i].star}px;transition-delay:${i * 70}ms`}
+              >
+                <span class="say__avatar" aria-hidden="true">{t.initials}</span>
+                <p class="say__name">{t.name}</p>
+                <p class="say__role">{t.role}</p>
+                <div class="say__rule"></div>
+                <div class="say__stars" aria-label="Rated 5 out of 5">
+                  {[0, 1, 2, 3, 4].map(() => (
+                    <span class="starmark" style={`--m:url(${star5.src});width:var(--st);height:var(--st)`} aria-hidden="true"></span>
+                  ))}
+                </div>
+                <blockquote class="say__quote">{t.quote}</blockquote>
+              </li>
+            ))}
+          </ul>
         ))}
-      </ul>
+      </div>
 
       <div class="say__foot">
+        {/* Buttons, not spans. They were decorative marks that looked like
+            controls; now they page the deck, so they have to be reachable by
+            keyboard and announce themselves. */}
         <div class="say__nav">
           <span class="say__dot"></span>
-          <span class="say__prev">Prev.</span>
-          <span class="say__next">Next</span>
+          <button class="say__prev" type="button" data-say-prev>Prev.</button>
+          <button class="say__next" type="button" data-say-next>Next</button>
           <span class="say__dot say__dot--on"></span>
         </div>
         {/* Reviewer portraits arrive with the Phase 5 uploads import; the
@@ -658,7 +690,7 @@ const schema = [
           <span class="say__count">37</span>
         </div>
         <p class="say__meta">reviews<br />4.9 average</p>
-        <Button href="/contact-us/" label="Leave a Review" />
+        <Button href="https://rateus.roarsinc.com/" label="Leave a Review" />
       </div>
     </div>
   </Section>
@@ -1234,7 +1266,13 @@ const schema = [
      the section 77 short once the all-line moved up to its measured y. */
   .proj__inner { position: relative; z-index: 1; padding-block: 142px 145px; }
   .proj__head { margin-left: var(--rail-width); }
-  .proj__count { margin-top: var(--sp-4); font-size: 40px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: rgb(236, 234, 228); }
+  /* margin-top was --sp-4 against "250+". "4,000+" is a third wider and the
+     display heading above it has a tight line-height, so the two boxes met. */
+  /* 48, where --sp-4 was enough for "250+". The display heading's line box
+     runs well below its baseline and the count always sat inside it; at
+     three characters the two rects never met horizontally, and at six they
+     do. Clearing the box is the fix, not narrowing the figure. */
+  .proj__count { margin-top: 48px; font-size: 40px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: rgb(236, 234, 228); }
   .proj__count span { font-size: 22px; font-weight: var(--fw-medium); }
   /* Label at 732, a 16px white rule at 974. Measured off the export. */
   .proj__legend {
@@ -1367,8 +1405,23 @@ const schema = [
   .say__foot :global(a) { justify-self: start; }
   /* 190px band: dot at 0, "Prev." at 18, "Next" at 128, dot at 182. */
   .say__nav { display: grid; grid-template-columns: 8px 102px 42px 8px; gap: 0 10px; width: 190px; align-items: center; margin-top: 14px; font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); }
+  /* These are <button>s now, so the UA's own chrome has to come off before
+     they look like the marks the prototype draws. */
+  .say__prev, .say__next {
+    border: 0; padding: 0; background: none; cursor: pointer;
+    font: inherit; letter-spacing: inherit;
+  }
   .say__prev { color: rgba(0, 0, 0, 0.4); }
   .say__next { color: rgb(8, 8, 8); }
+  .say__prev:hover, .say__next:hover { color: var(--c-black); }
+  /* All three pages occupy the same cell, so the band does not jump to the
+     tallest page's height when you click through. */
+  .say__deck { display: grid; }
+  .say__deck > * { grid-area: 1 / 1; }
+  /* .say__list sets its own display, which beats the UA's [hidden] rule, so
+     the two hidden pages were still laid out and every name sat on top of
+     the name behind it. */
+  .say__list[hidden] { display: none; }
   .say__dot { width: 8px; height: 8px; border-radius: var(--r-circle); background: rgba(0, 0, 0, 0.4); }
   .say__dot--on { background: rgb(8, 8, 8); }
   /* Overlapping stack: 42px discs at a 32px pitch, each ringed in the ground
@@ -1589,10 +1642,13 @@ const schema = [
       align-items: center;
     }
     .svc__n { grid-column: 1; }
-    .svc__name { grid-column: 2; font-size: 21px; line-height: 27px; }
-    .svc__stat { grid-column: 3; }
-    .svc__icon { grid-column: 4; }
-    .svc__body { grid-row: 3; grid-column: 2 / -1; }
+    .svc__name { grid-column: 2 / -1; font-size: 21px; line-height: 27px; }
+    /* The figure drops to its own line beside the arrow. On one line with the
+       name it was fine at "250" and ran into it at "4,000". */
+    .svc__stat { grid-row: 3; grid-column: 2; justify-self: start; }
+    .svc__icon { grid-row: 3; grid-column: 4; }
+    .svc__body { grid-row: 4; grid-column: 2 / -1; }
+    .svc__row { grid-template-rows: 0 auto auto auto; }
     .svc__head { grid-template-columns: minmax(0, 1fr); row-gap: 12px; }
     .svc__intro { margin-bottom: 0; }
     /* 229px of left margin measured off the 1362 canvas. */

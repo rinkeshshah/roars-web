@@ -33,10 +33,15 @@ import quote from '../assets/quote.svg'
 /** The export's three, with the suffix metrics it sets per figure: the "+"
  *  is 39px/400 and the "%" 26px/700, and they sit at different offsets
  *  because the numerals they follow are different widths. */
+/* site.statSets.alt, in the shape this band draws. The ALT trio, not the
+   primary one: the homepage and /approach/ both show 20 / 4,000 / 63, and a
+   third page repeating them reads as a template. See src/lib/site.ts.
+   The offsets are per figure because the numerals they follow are different
+   widths, so "2,500" takes a wider one than "250" did. */
 const stats = [
-  { n: '250', suffix: '+', sx: 113, sy: 20, ss: 39, sw: 400, label: 'Launched Projects' },
-  { n: '20', suffix: '+', sx: 83, sy: 20, ss: 39, sw: 400, label: 'Years Delivering Projects' },
-  { n: '96', suffix: '%', sx: 91, sy: 23, ss: 26, sw: 700, label: 'Client Satisfaction Rate' },
+  { n: '2,500', suffix: '+', sx: 168, sy: 20, ss: 39, sw: 400, label: 'Happy Customers' },
+  { n: '20', suffix: '+', sx: 83, sy: 20, ss: 39, sw: 400, label: 'Years of Excellence' },
+  { n: '7', suffix: '+', sx: 46, sy: 20, ss: 39, sw: 400, label: 'Global Awards' },
 ]
 
 /** Five named people and a counter for the rest. The export's own roster and
@@ -126,7 +131,7 @@ const schema = [
 ---
 
 <BaseLayout
-  title="About Roars | 250+ Products Since 2005"
+  title="About Roars | 4,000+ Products Since 2005"
   description="We work alongside entrepreneurs and visionaries, using agile methodologies to produce brilliant, scalable, technology-based products and services."
   path="/about-us/"
   schema={schema}
@@ -248,7 +253,7 @@ const schema = [
           <span class="agb__rest-disc" aria-hidden="true">
             <span class="agb__rest-n">250<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
           </span>
-          <span class="agb__rest-label">More than 250<br />Clients</span>
+          <span class="agb__rest-label">More than 2,500<br />Clients</span>
         </li>
       </ul>
 
@@ -334,8 +339,8 @@ const schema = [
       rather than with the generic line. */}
   <SiteFooter
     slot="footer"
-    tagline="250 products since 2005"
-    blurbTitle="Want the team behind 250 products?"
+    tagline="4,000+ products since 2005"
+    blurbTitle="Want the team behind 4,000+ products?"
     blurb="Tell us what you are building. We will tell you honestly whether we are the right fit, and what it would take."
   />
 </BaseLayout>

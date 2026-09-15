@@ -81,14 +81,14 @@ proof:
   stats:
     - n: "20"
       suffix: "+"
-      label: "YEARS IN PRODUCT DEVELOPMENT"
-    - n: "250"
+      label: "YEARS OF EXCELLENCE"
+    - n: "4,000"
       suffix: "+"
       label: "PROJECTS DELIVERED"
-    - n: "96"
+    - n: "63"
       suffix: "%"
       pct: true
-      label: "RETURNING CUSTOMERS"
+      label: "AI-DRIVEN SOLUTIONS"
   featured:
     label: "FEATURED WORK"
     client: "The Club Social"

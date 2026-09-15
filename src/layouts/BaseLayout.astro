@@ -154,6 +154,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
       import { initSpine } from '../scripts/spine'
       import { initTabs } from '../scripts/tabs'
       import { initTicket } from '../scripts/ticket'
+      import { initDecks } from '../scripts/deck'
 
       initReveal()
       initTopbar()
@@ -167,6 +168,7 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : abs(ogImage)
       initSpine()
       initTabs()
       initTicket()
+      initDecks()
     </script>
 
     {!ALLOW_INDEXING && (
