@@ -113,11 +113,18 @@ export const workHeroFor = (href: string): string | undefined => {
  * "building-partnership" singular. They are what the server has, and renaming
  * them would 404.
  *
- * STILL MISSING: the five that only ever appeared on /resource/tools/. Their
- * covers are recorded nowhere in this repository, and not in the WordPress
- * export either — that carries posts and the attachments those posts use, and
- * the guides are a `free_stuff` type it does not include. Those cards keep
- * the drawn plate until somebody supplies the paths.
+ * ALL FIFTEEN ARE THE LIVE FILES. The last five were supplied by hand, and
+ * they are the reason nothing here is ever derived from a slug:
+ *
+ *   innovation-flowchart1.webp          a trailing 1, and .webp
+ *   startup-problem-definition-1.png    a "startup-" prefix and a -1
+ *   pitching-checklist.webp             the clean one
+ *   website-redesign-calculator-roi1.png   words reordered, then a 1
+ *   people-connection-placeholder.webp  "placeholder" again, and .webp
+ *
+ * Five files, five different conventions, three of them with a digit welded
+ * on. No rule would have produced those, and each wrong guess is a broken
+ * image on a download page.
  */
 export const GUIDE_COVER: Record<string, string> = {
   'business-model-canvas': `${U}/2022/08/business-model-canvas.png`,
@@ -132,6 +139,11 @@ export const GUIDE_COVER: Record<string, string> = {
   'product-solution-benefit': `${U}/2022/08/placeholder.png`,
   'target-group': `${U}/2022/08/target-group-placeholder.png`,
   'prototype-testing-plan': `${U}/2022/08/prototyping-placeholder.png`,
+  'innovation-flowchart': `${U}/2022/08/innovation-flowchart1.webp`,
+  'problem-definition': `${U}/2022/08/startup-problem-definition-1.png`,
+  'pitching-checklist': `${U}/2022/08/pitching-checklist.webp`,
+  'website-redesign-roi-calculator': `${U}/2022/08/website-redesign-calculator-roi1.png`,
+  'people-connection-map': `${U}/2022/08/people-connection-placeholder.webp`,
 }
 
 /** The stack on the Guides hero. One image for the set, not per guide. */
