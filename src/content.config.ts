@@ -176,15 +176,40 @@ const projects = defineCollection({
   loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     ...base,
+    /**
+     * Twenty-two of the twenty-three came across from WordPress, so the same
+     * arrangement as the journal applies: the relaxed bounds accept the
+     * client's own meta description at whatever length it was written, and
+     * validate-content reports the overage rather than the build refusing it.
+     * Writing new descriptions for twenty-two live case studies is a content
+     * job, not something to do by hand at migration time.
+     */
+    seo: z.union([seo, seoMigrated]),
     client: z.string(),
-    /** Must match an industries slug, or 'legal'/'finance', which have no
-     *  industry page of their own. Checked in validate-content.mjs. */
+    /** Must match an industries slug, or 'legal'/'finance'/'entertainment',
+     *  which have no industry page of their own. Every value is sourced in
+     *  scripts/wordpress-export/work/write.py, never guessed. */
     industry: z.array(z.string()).min(1),
     heroImage: z.string().optional(),
     heroAlt: z.string().optional(),
     /** Editorial, set here, not "most recent". Drives the /work/ index tiers. */
     featured: z.boolean().default(false),
     team: z.array(z.string()).default([]),
+    /**
+     * Machine-extracted from the WordPress export and not yet read by anybody
+     * here. The words are the client's own, but which paragraph landed in
+     * which slot is the extractor's decision, so the page stays out of the
+     * index until somebody has looked at it.
+     */
+    needsReview: z.boolean().default(false),
+    /**
+     * The live case study is under the 300 word floor and there is no more
+     * copy to find. Four of the twenty-three are: the originals are short,
+     * and padding them would be writing claims about a client's project that
+     * nobody here can stand behind. Tracked rather than hidden, exactly as on
+     * the journal: validate-content prints every one on every run.
+     */
+    needsRewrite: z.boolean().default(false),
 
     /**
      * The case study's own layout, from `Roars v2 - Project Detail`.
@@ -228,6 +253,16 @@ const projects = defineCollection({
       .default([]),
     /** Paths under /wp-content/uploads/, served from the webspace. */
     gallery: z.array(z.object({ src: z.string(), alt: z.string().max(120).default('') })).max(4).default([]),
+    /**
+     * Everything else the original case study showed.
+     *
+     * `gallery` is a pair and `showcase` is four fixed slots, six images in
+     * all, which is what the export drew. The real pages carry far more than
+     * six: GymBait alone ships seventeen, mostly app screens. Those are the
+     * case study. They render as a grid after the showcase rather than being
+     * dropped because the designed slots were already full.
+     */
+    screens: z.array(z.object({ src: z.string(), alt: z.string().max(120).default('') })).max(24).default([]),
   }),
 })
 

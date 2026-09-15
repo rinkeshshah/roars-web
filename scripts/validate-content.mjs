@@ -158,6 +158,10 @@ function frontMatterProse(data) {
     'headline', 'standfirst', 'hero', 'journey', 'surfaces', 'proof', 'cta',
     'bands', 'process', 'featured', 'receipts', 'close', 'faq',
     'summary', 'sections',
+    /* Case study keys. /work/[slug]/ renders the about line, the fact table
+       and the headed blocks, and its markdown body is the intro alone, so
+       counting the body called twenty-two real pages 42-word stubs. */
+    'about', 'facts', 'blocks',
   ]) {
     if (data[k] !== undefined) walk(data[k], k)
   }

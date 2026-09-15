@@ -1,0 +1,63 @@
+{
+  "slug": "onus",
+  "title": "Onus",
+  "date": "2022-08-24",
+  "pills": [
+    "RESEARCH",
+    "IDEATION",
+    "EXPLORATION"
+  ],
+  "headline": "ONUS GLOBAL",
+  "tagline": "On-demand cab services to effortlessly send, receive & deliver.",
+  "about": "Onus is a top ecommerce logistics solutions provider that utilizes the best of digital software applications to cater vast requirements for package delivery and travel. The location based availability feature makes for an efficient process that ensures your valuables are delivered safely and in a jiffy. Onus also provides on-demand cab services for an on-the-go commute to vast destinations and with all the luxuries on serve.",
+  "facts": [
+    {
+      "k": "Typography",
+      "v": "Wireframe"
+    }
+  ],
+  "blocks": [
+    {
+      "heading": "Challenges",
+      "lead": "Optimizing the service chain with data analysis and critical evaluation was set to be a major hurdle in the development process. The need of strategic data storage and management, capable processing and an engaging display set the prime requisites of Onus. To include the tangible best in the application design requires",
+      "body": "Handle a continuous stream of incoming data and storing it for generating comprehensible reports."
+    },
+    {
+      "heading": "Core Features",
+      "lead": "Digital technologies have pervaded all business sectors and E-logistics has emerged as an ingenious force in the world of goods delivery and day-to-day commute.",
+      "body": "Time and usability dictate the efficiency and effectiveness of any process and digitization in logistics services has been the blueprint for transformation. As efficiency, optimization, speed and timing are the prime requisites in goods deliver and passenger transit, Onus comes with a vision to disrupt conventional log"
+    }
+  ],
+  "body": "UI,  UX, Strategy, Concept and Development\n\nTo serve real-time on-demand courier service tracking and trip progress information.\n\nTo achieve a minimalistic but engaging application that will provide an easy access to all the online services while streamlining the entire process with an easy-to-use and visually appealing platform.",
+  "hero": "/wp-content/uploads/elementor/thumbs/tuma-Fonts-typography-r1yz7f0pgf3xfr16orjuxw2vjihzscpwl6lgx9oe3o.webp",
+  "hero_alt": "",
+  "inner_image": "",
+  "gallery": [
+    {
+      "src": "/wp-content/uploads/2022/08/onus-wireframe.png",
+      "alt": ""
+    },
+    {
+      "src": "/wp-content/uploads/2022/08/onus-mobileapp-1.png",
+      "alt": "onus-mobileapp-1"
+    }
+  ],
+  "showcase": [
+    {
+      "src": "/wp-content/uploads/2022/08/onus-mobileapp-02.png",
+      "alt": "onus-mobileapp-02"
+    },
+    {
+      "src": "/wp-content/uploads/2022/08/onus-mobileapp-04.png",
+      "alt": "onus-mobileapp-04"
+    },
+    {
+      "src": "/wp-content/uploads/2022/08/onus-mobileapp-3.png",
+      "alt": "onus-mobileapp-3"
+    }
+  ],
+  "screens": [],
+  "links": [],
+  "seo_title": "Onus - on-demand cab services App | on-demand courier App",
+  "seo_desc": "Onus we designed on-demand cab services App or on-demand Courier App user interface for bettering the user-experience with simplistic look."
+}

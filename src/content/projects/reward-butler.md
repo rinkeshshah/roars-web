@@ -1,0 +1,57 @@
+---
+title: "Reward Butler"
+client: "Reward Butler"
+industry: ["concierge-app-development"]
+migrated: true
+publishedAt: 2022-08-24
+dateLabel: "Aug 24, 2022"
+headline: "Reward Butler"
+heroImage: "/wp-content/uploads/elementor/thumbs/tuma-Fonts-typography-ptebeb4lx57mc7rv3ydjtkwtf6tchwobhdtrgoa0ro.webp"
+about: "Organizations have discovered that one of the most effective ways to maintain employee motivation is to provide rewards for targets that are met. This approach ensures that employee goals are consistent with those of the organization, resulting in a mutually beneficial situation."
+facts:
+  - k: "Expertise"
+    v: "Design, Interaction and Development"
+  - k: "Platform"
+    v: "IOS, Android, Web and API"
+  - k: "Deliverables"
+    v: "UI, UX, Strategy, Concept and Development"
+  - k: "Technology"
+    v: "PHP Ci, iOS Native, Android Native"
+  - k: "Typography"
+    v: "Wireframe"
+blocks:
+  - heading: "Challenges"
+    lead: "Most companies do not tie goals to rewards because of the large amount of records and logistics that need to be maintained. However, our client came up with the ground-breaking idea of Reward Butler, which addresses this issue with ease."
+  - heading: "Core Features"
+    lead: "This screen gives employees thumbnail views of the holidays they can access or the product rewards they can enjoy, upon redeeming the points they have gathered."
+    body: "The ‘Experiences’ panel gives a brief overview of the cities where employees can go on vacations to. Right from learning some basic information about the city, their visa requirements to checking out their photos and finding out about the things to do there; all information can be found here."
+gallery:
+  - src: "/wp-content/uploads/2022/08/reward-butler-wireframe.jpg"
+    alt: ""
+  - src: "/wp-content/uploads/2022/08/rewardbutler-1-mobileapp.jpg"
+    alt: "rewardbutler-1-mobileapp"
+showcase:
+  - src: "/wp-content/uploads/2022/08/rewardbutler-3-mobileapp.jpg"
+    alt: "rewardbutler-3-mobileapp"
+  - src: "/wp-content/uploads/2022/08/rewardbutler-02-mobileapp.jpg"
+    alt: "rewardbutler-02-mobileapp"
+  - src: "/wp-content/uploads/2022/08/rewardbutler-5-mobileapp.jpg"
+    alt: "rewardbutler-5-mobileapp"
+  - src: "/wp-content/uploads/2022/08/rewardbutler-4-mobileapp.jpg"
+    alt: "rewardbutler-4-mobileapp"
+seo:
+  title: "Employee Loyalty Program & Rewards App Development | Roarsinc.com"
+  description: "Employee Engagement App ,Reward management system bundled into a feature-rich app with neat UX/UI. Perfect for companies wanting to handle reward systems for employees easily."
+  primaryIntent: "reward butler"
+  schemaType: "CreativeWork"
+needsReview: true
+---
+As the name suggests, the Dossier acts like your personal passbook where you can store your passport, visa, license, photos, and other important information in soft copy. An invaluable feature which makes this app extremely travel-friendly.
+
+Upon choosing a product reward, employees can save the receipts and warranty cards of the same, in the dossier.
+
+For those going for a vacation reward, the ‘Itinerary’ window offers a holiday plan in an easy to follow format. One of the best features of Reward Butler is its rich UX/UI experience, which makes its easy to use for anyone and everyone. Employees can track flight details, cab bookings, and reservations, all in one place.
+
+The chat window allows employees to connect with the Reward Butler support team for clarifications and further assistance, wherever they are. This addresses one of the most important issue of the need of connectivity while on the go; and also removes the burden off the company, of handling individual queries about the reward system.
+
+Reward Butler empowers the employees to manage their own rewards system as it is completely automated. It helps the company focus its efforts on other facets of employee management, while Reward Butler helps employees work towards their goals, redeem their points for dream vacations and interesting product rewards and keep them motivated.
