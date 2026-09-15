@@ -62,8 +62,8 @@ const items = slugsOf('free_stuff').map((slug) => {
     name: d?.title ?? nameFromSlug(slug),
     summary: d?.summary,
     category: d?.category,
-    /* Absent for the five whose live cover is a file named placeholder. See
-       src/lib/media.ts — the slot draws empty rather than ship that. */
+    /* Absent only for the five whose cover path is recorded nowhere. See
+       src/lib/media.ts. */
     cover: GUIDE_COVER[slug],
   }
 }).sort((x, y) => rank(x.slug) - rank(y.slug))

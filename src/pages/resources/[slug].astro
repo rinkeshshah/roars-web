@@ -63,7 +63,8 @@ const d = entry?.data
    on a URL that already ranks, which is the thin page the content gate exists
    to stop. Those keep the pending state until their copy is migrated. */
 const designed = Boolean(d?.summary) && !d?.draft
-/* Absent for the five whose live cover is a file named placeholder. */
+/* Absent only for the five that appear on /resource/tools/ and whose cover
+   path is recorded nowhere. See src/lib/media.ts. */
 const cover = GUIDE_COVER[slug as string]
 
 const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
@@ -140,9 +141,10 @@ const { Content } = entry ? await render(entry) : { Content: null }
           </div>
 
           {/* Three stacked sheets, drawn rather than photographed. The live
-              cover art for six of the fifteen is named "placeholder" and gets
-              replaced at migration rather than carried across, so nothing
-              here sources an image that would have to be thrown away. */}
+              cover art for several of the fifteen has "placeholder" in its
+              filename, which turned out to describe the upload rather than
+              the file: they are finished illustrations. See src/lib/media.ts.
+              Five have no recorded path at all and draw the plate alone. */}
           <div class="gh__preview" data-reveal aria-hidden="true">
             <span class="gh__sheet gh__sheet--3"></span>
             <span class="gh__sheet gh__sheet--2"></span>

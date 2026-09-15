@@ -186,10 +186,19 @@ export const MENU: MenuItem[] = [
     title: 'Tools, guides and templates',
     body: 'Free downloads we use in our own discovery work.',
     kind: 'kits',
+    /* The three shelves /resources/ actually has, in its own order, with the
+       export's own numbering.
+
+       It listed Insights and Brand guidelines before, neither of which is a
+       resource: Insights is the journal, which is already item 08 below, and
+       Brand guidelines is an internal design page with no URL at all. Both
+       sent people out of the section this panel exists to open up. Staff Picks
+       and Tools were missing because their URLs were missing from the
+       inventory; they are real pages now. */
     items: [
-      { label: 'Guides', href: '/resources/', meta: '01 / DOWNLOADS', note: 'Canvases and one-pagers, free as PDF' },
-      { label: 'Insights', href: '/our-journal/', meta: '02 / READING', note: 'What we learned building products' },
-      { label: 'Brand guidelines', href: null, meta: '03 / SYSTEM', note: 'How the Roars identity is used' },
+      { label: 'Guides', href: '/resources/guides/', meta: '01 / PDF', note: 'Canvases and one-pagers, free as PDF' },
+      { label: 'Staff Picks', href: '/resource/staff-picks/', meta: '02 / MIXED', note: 'The few we hand over most often' },
+      { label: 'Tools', href: '/resource/tools/', meta: '03 / PDF', note: 'Hands-on, by the job you are doing' },
     ],
   },
   {

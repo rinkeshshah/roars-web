@@ -98,17 +98,26 @@ export const workHeroFor = (href: string): string | undefined => {
 /**
  * Guide cover art, by /resources/ slug.
  *
- * FIVE OF THE TEN ARE MISSING ON PURPOSE. The live site serves
- * building-partnership-placeholder.png, business-plan-placeholder.png,
- * placeholder.png, target-group-placeholder.png and
- * prototyping-placeholder.png for the other five — files named placeholder
- * because that is what they are. CLAUDE.md's known landmines say that art is
- * replaced during migration, not carried across, so those slugs are absent
- * here and their cards draw the empty slot instead. An empty slot is honest;
- * shipping a file called placeholder.png to a download page is not.
+ * THE FILE CALLED "PLACEHOLDER" IS NOT A PLACEHOLDER. Five of these were held
+ * out of this map because the live filename says placeholder, on the reasoning
+ * that shipping a file called placeholder.png to a download page is not
+ * honest. That reasoning was about the NAME. The live pages show finished
+ * illustrated covers on every one of those cards: Business Plan and Prototype
+ * Testing Plan both have real art on /resource/staff-picks/ today. The name is
+ * a leftover from whoever uploaded them, not a description of the file.
  *
- * Filenames are the live ones, typos included — "Srartup", "plannig". They are
- * what the server has, and renaming them would 404.
+ * So they are all here now. Drawing an empty grey plate instead of the
+ * client's own artwork was the worse of the two outcomes.
+ *
+ * Filenames are the live ones, typos included — "Srartup", "plannig",
+ * "building-partnership" singular. They are what the server has, and renaming
+ * them would 404.
+ *
+ * STILL MISSING: the five that only ever appeared on /resource/tools/. Their
+ * covers are recorded nowhere in this repository, and not in the WordPress
+ * export either — that carries posts and the attachments those posts use, and
+ * the guides are a `free_stuff` type it does not include. Those cards keep
+ * the drawn plate until somebody supplies the paths.
  */
 export const GUIDE_COVER: Record<string, string> = {
   'business-model-canvas': `${U}/2022/08/business-model-canvas.png`,
@@ -116,6 +125,13 @@ export const GUIDE_COVER: Record<string, string> = {
   'learning-loop': `${U}/2022/08/Srartup-learning-loop.png`,
   'value-proposition': `${U}/2022/08/startup-value-proposition.png`,
   'evidence-planning': `${U}/2022/08/startup-evidence-plannig.png`,
+  /* The five whose live filename reads "placeholder". Same upload batch as
+     the five above, so the same /2022/08/ folder. */
+  'building-partnerships': `${U}/2022/08/building-partnership-placeholder.png`,
+  'business-plan': `${U}/2022/08/business-plan-placeholder.png`,
+  'product-solution-benefit': `${U}/2022/08/placeholder.png`,
+  'target-group': `${U}/2022/08/target-group-placeholder.png`,
+  'prototype-testing-plan': `${U}/2022/08/prototyping-placeholder.png`,
 }
 
 /** The stack on the Guides hero. One image for the set, not per guide. */
