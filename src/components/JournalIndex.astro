@@ -352,14 +352,24 @@ const schema = [
     display: grid; grid-template-columns: repeat(3, 435fr); column-gap: 26px; row-gap: 60px;
   }
   .jl__grid a { position: relative; display: block; min-height: 300px; }
+  /* `display: block` IS LOAD-BEARING, not tidiness. This is a <span>, and it
+     is only block-level here because it is absolutely positioned. Below the
+     design grid the responsive rule returns it to `position: static`, which
+     drops it back to inline — and an inline box ignores width and height. The
+     88px square went away, the image inside filled the column at its natural
+     height, and `border-radius: 50%` turned that rectangle into an ellipse.
+     Declaring the display here means the shape no longer depends on how the
+     element happens to be positioned. */
   .jl__disc {
-    position: absolute; left: 234px; top: 0;
+    position: absolute; left: 234px; top: 0; display: block;
     width: 138px; height: 138px; border-radius: 50%;
     background: rgb(241, 241, 239);
     transition: background var(--dur-fast) ease;
   }
   .jl__grid a:hover .jl__disc { background: var(--c-accent); }
-  .jl__hair { position: absolute; left: 2px; top: 174px; width: 433px; height: 1px; background: rgba(153, 152, 149, 0.7); }
+  /* Same reason as the disc above: a static <span> is inline, and an inline
+     box has no height, so this rule drew nothing at all below 1360. */
+  .jl__hair { position: absolute; left: 2px; top: 174px; display: block; width: 433px; height: 1px; background: rgba(153, 152, 149, 0.7); }
   .jl__date {
     position: absolute; left: 0; top: 190px;
     font-size: var(--fs-stat); line-height: 43px; font-weight: var(--fw-semi);
