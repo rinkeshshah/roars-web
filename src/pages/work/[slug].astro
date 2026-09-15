@@ -324,7 +324,27 @@ const faces = (d?.team ?? [])
     letter-spacing: -0.03em; color: rgb(20, 20, 20);
   }
 
-  .pd__hero { margin-top: 27px; overflow: hidden; border-radius: 12px; background: rgb(30, 30, 30); }
+  /* AMBER DUSK, THE DETAIL-PAGE VERSION. The /work/ card and this header now
+     belong to one family, which is the point — but they are not the same
+     picture doing the same job, so they are not the same treatment.
+
+     The CARD carries the client name, the sector and the year ON the
+     photograph, so it needs brightness .62 and a directional ink gradient
+     dense enough to hold white type. Neither of those is about the picture;
+     both are about the copy.
+
+     THIS HEADER CARRIES NO TYPE AT ALL. The name and the date sit above it on
+     white. So the ink gradient is dropped — there is nothing to protect, and a
+     dense left edge would just be a dark half for no reason — and the
+     exposure comes back to .82, because here the photograph IS the subject
+     rather than a ground. What carries across is the amber from the far
+     corner, which is the family resemblance and the one place yellow touches
+     an image anywhere on the site. */
+  .pd__hero { position: relative; margin-top: 27px; overflow: hidden; border-radius: 12px; background: rgb(30, 30, 30); }
+  .pd__hero::after {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(circle at 88% 96%, rgba(255, 212, 0, 0.26) 0%, rgba(255, 212, 0, 0) 68%);
+  }
   /* 2:1, THE SHAPE THE FILES ARE CUT TO. The box was a fixed 737px on a
      1358px column, 1.84:1, so a 2:1 photograph lost a strip off each side to
      `object-fit: cover` — the same fault the /work/ card had before it was
@@ -333,7 +353,7 @@ const faces = (d?.team ?? [])
      Saturation is baked into the file at 0.8 rather than applied as a CSS
      filter: one source of truth, and no filter to composite on a 2400px image
      at paint time. */
-  .pd__hero img { display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; }
+  .pd__hero img { display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; filter: brightness(0.82); }
 
   /* ── about ──────────────────────────────────────────────── */
   .pd__about { position: relative; margin-top: 83px; }
