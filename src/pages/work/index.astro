@@ -62,6 +62,36 @@ const heroBySlug = new Map(
 )
 const art = (slug: string) => heroBySlug.get(slug) ?? workHeroFor(`/work/${slug}/`)
 
+/**
+ * THE SECTOR LINE over each card.
+ *
+ * Every project names its own industry in frontmatter, so nothing here is
+ * guessed — projects.ts still refuses to carry industry tags for exactly that
+ * reason, and this reads the migrated content instead.
+ *
+ * Nine of the ten sectors have an /industries/ page and the label comes from
+ * that page's own title, so the card and the sector page can never disagree
+ * about what a sector is called. The other three — legal, finance,
+ * entertainment — have no page, so their slug is title-cased. They are single
+ * words, which is why that is safe here and would not be for the hyphenated
+ * ones.
+ */
+const industryEntries = await getCollection('industries')
+const industryTitle = new Map(industryEntries.map((e) => [e.id, e.data.title as string]))
+const sectorBySlug = new Map(
+  projectEntries.map((e) => {
+    const key = (e.data.industry as string[] | undefined)?.[0]
+    if (!key) return [e.id, undefined]
+    return [e.id, industryTitle.get(key) ?? key.charAt(0).toUpperCase() + key.slice(1)]
+  }),
+)
+
+/** The year, from the project's own publishedAt. All twenty-three carry one,
+ *  unlike projects.ts `date`, which only the five the export names have. */
+const yearBySlug = new Map(
+  projectEntries.map((e) => [e.id, (e.data.publishedAt as Date | undefined)?.getFullYear()]),
+)
+
 const schema = [
   {
     '@context': 'https://schema.org',
@@ -142,10 +172,12 @@ const schema = [
         {PROJECTS.map((p) => (
           <li>
             <a href={`/work/${p.slug}/`}>
+              {/* Day and month only. The year moved onto the card beside the
+                  star, and printing it in both places on the five projects
+                  that have a rail read as a mistake. */}
               {p.date && (
                 <span class="wf__date">
                   <b>{p.date.slice(0, 6)}</b>
-                  <i>{p.date.slice(-4)}</i>
                 </span>
               )}
               <span class="wf__shot">
@@ -153,7 +185,20 @@ const schema = [
                   <img src={art(p.slug)} alt="" width="1129" height="625" loading="lazy" decoding="async" />
                 )}
               </span>
-              <span class="wf__client">{p.client}.</span>
+              {/* Sector, name, year — stacked on the flat-ink side, which is
+                  what the ink gradient exists to keep clear. */}
+              <span class="wf__cap">
+                {sectorBySlug.get(p.slug) && (
+                  <span class="wf__sector">{sectorBySlug.get(p.slug)}</span>
+                )}
+                <span class="wf__client">{p.client}</span>
+                {yearBySlug.get(p.slug) && (
+                  <span class="wf__meta">
+                    <span class="wf__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+                    <span>{yearBySlug.get(p.slug)}</span>
+                  </span>
+                )}
+              </span>
             </a>
           </li>
         ))}
@@ -238,18 +283,14 @@ const schema = [
   .wf__rows li + li { margin-top: 81px; }
   .wf__rows a { position: relative; display: block; height: 626px; }
 
-  /* The date rail: day and month over a rule, year under it. */
+  /* The date rail: day and month over a rule. The year used to sit under it
+     and now sits on the card beside the star. */
   .wf__date { position: absolute; left: 0; top: 3px; width: 86px; }
   .wf__date b {
     display: block; padding-bottom: 19px;
     font-size: var(--fs-item); line-height: 19px; font-weight: var(--fw-medium);
     letter-spacing: -0.06em; color: var(--c-black);
     border-bottom: 1.25px solid rgba(71, 71, 71, 0.8);
-  }
-  .wf__date i {
-    display: block; margin-top: 11px; font-style: normal;
-    font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-medium);
-    letter-spacing: -0.06em; color: rgba(71, 71, 71, 0.8);
   }
 
   .wf__shot {
@@ -265,8 +306,15 @@ const schema = [
        ink gradient 90deg, 1 → .10
        copy on flat ink
 
-     Three layers, and the ORDER IS THE POINT. The photograph is knocked back
-     to 44%. The amber sits ON TOP of it but UNDER the ink, so the one place
+     TWO OF THOSE NUMBERS ARE OPENED UP, on the brief that the cards were
+     coming out too dark to read as photographs at all: brightness .44 → .62,
+     and the ink's dense end 1 → .82 with its far end .10 → .06. Measured
+     behind the title afterwards, white on the lightest ground any of the
+     twenty-three produces still clears 7:1, so the copy did not pay for it.
+     The amber, the geometry and the layer order are exactly as specified.
+
+     Three layers, and the ORDER IS THE POINT. The amber sits ON TOP of the
+     photograph but UNDER the ink, so the one place
      yellow touches the image is the far corner where the ink has thinned to
      a tenth — the moment the ink goes dense towards the copy side, it covers
      the amber completely. That is what "the yellow never crosses into the
@@ -276,7 +324,7 @@ const schema = [
      photograph underneath a treatment that stays put. */
   .wf__shot img {
     display: block; width: 100%; height: 100%; object-fit: cover;
-    filter: brightness(0.44);
+    filter: brightness(0.62);
     transition: transform var(--dur-slow) ease;
   }
   .wf__rows a:hover .wf__shot img { transform: scale(1.03); }
@@ -288,12 +336,45 @@ const schema = [
   /* Ink, dense on the copy side and thinning across. Over the amber. */
   .wf__shot::after {
     content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: linear-gradient(90deg, rgba(11, 11, 11, 1) 0%, rgba(11, 11, 11, 0.10) 100%);
+    background: linear-gradient(90deg, rgba(11, 11, 11, 0.82) 0%, rgba(11, 11, 11, 0.06) 100%);
+  }
+  /* ── the copy block ─────────────────────────────────────────
+     The supplied card sets sector, name and year as one left-aligned stack,
+     not a single name floating in the middle of the photograph — which is
+     what this was, at 56% across, where the ink has already thinned and the
+     amber is coming up. It now sits on the flat end of the ink gradient,
+     which is the whole reason that gradient runs the way it does.
+     Anchored from the TOP so the sector line rules across all twenty-three
+     rows; anchoring the block's foot instead would leave the eyebrow at a
+     different height on every one- and two-line name. */
+  /* 176px = the shot's own 120px offset plus a 56px inset. The containing
+     block here is the row, not the shot, so an inset measured from the card
+     would start the copy in the date rail — which is exactly where it went. */
+  .wf__cap {
+    position: absolute; left: 176px; top: 33%; right: 46%; z-index: 3;
+    display: flex; flex-direction: column; align-items: flex-start;
+  }
+  .wf__sector {
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255, 255, 255, 0.66);
   }
   .wf__client {
-    position: absolute; left: 816px; top: 507px; z-index: 3;
-    font-size: 36px; line-height: 42px; font-weight: var(--fw-semi);
+    margin-top: 16px;
+    font-size: 56px; line-height: 1.07; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-white);
+    text-wrap: pretty;
+  }
+  .wf__meta {
+    display: flex; align-items: center; gap: 12px; margin-top: 22px;
+    font-size: var(--fs-body); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.78);
+  }
+  /* Masked, not an <img>: the star has to take the accent token, and the same
+     asset is already on this page in the header. */
+  .wf__star {
+    width: 13px; height: 13px; background: var(--c-accent);
+    mask: var(--m) center / contain no-repeat;
+    -webkit-mask: var(--m) center / contain no-repeat;
   }
 
   /* ── below the design grid ──────────────────────────────── */
@@ -309,9 +390,13 @@ const schema = [
     .wf__rows a { height: auto; }
     .wf__date { position: static; display: flex; align-items: baseline; gap: 10px; width: auto; }
     .wf__date b { border: 0; padding: 0; }
-    .wf__date i { margin: 0; }
     .wf__shot { position: static; height: auto; aspect-ratio: 1129 / 625; margin-top: 14px; }
-    .wf__client { position: absolute; left: 24px; right: 24px; top: auto; bottom: 24px; font-size: var(--fs-item); line-height: 1.2; }
+    /* The block sits on the card's foot here rather than a third of the way
+       down: the card is much shorter, so a top anchor would push the year off
+       the bottom of the shorter names. */
+    .wf__cap { left: 24px; right: 24px; top: auto; bottom: 24px; }
+    .wf__client { margin-top: 10px; font-size: 30px; line-height: 1.12; }
+    .wf__meta { margin-top: 12px; }
     .wf__rows li { position: relative; }
 
   }
