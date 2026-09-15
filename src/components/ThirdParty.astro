@@ -2,89 +2,92 @@
 /**
  * Third-party tags, on every page, from BaseLayout.
  *
- * ONE SWITCH, `PUBLIC_ENABLE_TRACKING`, same shape as PUBLIC_ALLOW_INDEXING in
- * src/lib/site.ts and fail-safe the same way. Unset means no tag fires. That
- * matters more here than it does for robots: every build of this site, every
- * dev preview and every local run would otherwise post pageviews into the
- * client's real analytics property and fire the client's real ad pixel. The
- * numbers they use to make decisions would include us.
+ * ONE COMPONENT, NOT TWO. A separate Analytics.astro was suggested for GA4.
+ * It is not added, because this component is already mounted in BaseLayout on
+ * all 197 pages: two components both injecting gtag means two `config` calls
+ * and every pageview counted twice. The measurement id goes in ANALYTICS_ID
+ * below and the existing mount does the rest. This project's shell is
+ * BaseLayout.astro rather than Layout.astro, and it is already wired.
  *
- * Set it in the deploy environment when the site goes live. It is a launch
- * checklist item, not a code change.
+ * ON IN PRODUCTION by default, with PUBLIC_ENABLE_TRACKING=false as an
+ * explicit opt-out. See the `enabled` line for what that means for the
+ * staging host.
  *
- * The site verification meta is NOT behind the switch. It is inert markup with
- * no request and no cookie, and Search Console needs it present to keep the
- * property verified.
- *
- * ─────────────────────────────────────────────────────────────────────────
- * THREE PROBLEMS WITH THE SUPPLIED SNIPPETS. Two are carried as-is because
- * they are the client's to decide; one is not carried at all.
- *
- * 1. THE GOOGLE ANALYTICS TAG IS DEAD. UA-50783352-1 is a Universal Analytics
- *    property. Universal Analytics stopped processing new data in July 2023,
- *    so analytics.js still loads and still sends a request, and nothing lands
- *    anywhere anyone can read. It is carried because removing a tag nobody
- *    asked to remove is not my call, but it should be replaced with a GA4
- *    measurement ID (G-XXXXXXXXXX) on gtag.js. See ANALYTICS_ID below.
- *
- * 2. THE META PIXEL NEVER INITIALISES. The supplied snippet defines fbq and
- *    loads fbevents.js, and then stops. A pixel does nothing without
- *    fbq('init', '<PIXEL_ID>') and fbq('track', 'PageView'), and no pixel ID
- *    appears anywhere in what was supplied. Both calls are written below and
- *    the ID is the one value missing. Until PIXEL_ID is filled in, the loader
- *    is skipped entirely rather than shipped as a script that downloads 70KB
- *    and reports nothing.
- *
- * 3. THE FACEBOOK SIGNAL CONFIG IS NOT CARRIED. It is a WordPress plugin's
- *    inline config: it points ajaxUrl at /wp-admin/admin-ajax.php, which will
- *    not exist once WordPress is gone, and it carries a `signalsNonce` that is
- *    a one-off WordPress nonce, expired the moment that page was generated.
- *    Copying it across would ship a dead endpoint and a stale token to every
- *    page. The pixel above is the part that does the work.
+ * The verification meta is NOT behind the switch. It is inert markup with no
+ * request and no cookie, and Search Console needs it present to stay verified.
  *
  * ─────────────────────────────────────────────────────────────────────────
- * LOADING. Every tag waits for the load event and then an idle callback, so
- * none of them competes with first paint or with the LCP the homepage test
- * measures. Gleap's own loader already appends async; the others are given the
- * same treatment rather than being trusted to behave.
+ * WHAT IS DELIBERATELY NOT HERE. Three of the five tags on the WordPress site
+ * do not work, so none of them is carried. New ones are being generated.
+ *
+ *   Google Analytics    UA-50783352-1 is a Universal Analytics property, and
+ *                       UA stopped processing data in July 2023. The tag still
+ *                       loads analytics.js and still sends a request; nothing
+ *                       lands anywhere anyone can read. Carrying it would cost
+ *                       every visitor a DNS lookup and a download for no data
+ *                       at all. Replace with GA4: see ANALYTICS_ID.
+ *
+ *   Meta Pixel          the live snippet defines fbq, loads fbevents.js, and
+ *                       stops. No fbq('init', '<id>'), no PageView, and no
+ *                       pixel id anywhere in it. A pixel with no init reports
+ *                       nothing. See PIXEL_ID.
+ *
+ *   facebookSignalConfig   a WordPress plugin's inline config. ajaxUrl points
+ *                       at /wp-admin/admin-ajax.php, which stops existing when
+ *                       WordPress does, and signalsNonce is a one-off nonce
+ *                       that expired when that page was generated. There is no
+ *                       version of it worth carrying to a static site.
+ *
+ * TO ADD EITHER ONE: put the id in the constant below and it ships. GA4 is
+ * gtag.js rather than analytics.js, so that block is written for gtag. A
+ * constant left empty emits nothing at all, rather than a block behind a
+ * runtime `if` that can never be true, so an unused tag costs zero bytes.
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * LOADING. Everything waits for the load event and then an idle callback, so
+ * no third-party script competes with first paint or with the LCP the homepage
+ * test measures.
  */
 
 /** Google Search Console. Inert, no request, always present. */
 const SITE_VERIFICATION = 'aXxaXukTotkO1Dc0RqLpEQJLO6q8GEO4QkF64xC8OFU'
 
-/** See note 1. Replace with a GA4 id when there is one. */
-const ANALYTICS_ID = 'UA-50783352-1'
-
 /** Gleap feedback widget. A public client key, safe in markup. */
 const GLEAP_KEY = 'R8SQnj4KeBiXVrsZczEAQhdYij1U8eQr'
 
-/** See note 2. Empty means the pixel is not shipped at all. */
+/** GA4 measurement id. Replaces the dead UA property. */
+const ANALYTICS_ID = 'G-QX2LK1FZEG'
+
+/** Meta Pixel id, digits only. Empty until one exists. */
 const PIXEL_ID = ''
 
-const enabled = import.meta.env.PUBLIC_ENABLE_TRACKING === 'true'
+/* ON IN PRODUCTION, off everywhere else, with an explicit escape hatch.
+   `import.meta.env.PROD` is true for any `astro build`, so this fires on the
+   deployed site without anybody remembering an environment variable, and
+   never during `astro dev`.
+   NOTE THAT DEV.ROARSINC.COM IS ALSO A PRODUCTION BUILD, so it reports into
+   the same GA4 property as the live site until cutover. If that matters,
+   either add a hostname filter in GA4 or build the staging deploy with
+   PUBLIC_ENABLE_TRACKING=false. */
+const enabled =
+  import.meta.env.PROD && import.meta.env.PUBLIC_ENABLE_TRACKING !== 'false'
 
-/* Each block is assembled HERE, at build time, and only when its id exists.
-   Two earlier attempts got this wrong in different ways: `define:vars`
-   alongside `set:html` produced an empty tag, because the directive wraps the
-   script body and set:html then replaces what it wrote; and guarding a block
-   with `if (${q(ID)})` at RUNTIME still shipped the whole block as dead code
-   when the id was empty. Deciding at build time means an absent id costs zero
-   bytes. */
+/* Values are interpolated HERE rather than passed through `define:vars`: that
+   directive wraps the script body to declare its variables and `set:html`
+   then replaces what it wrote, which silently produces an empty tag. */
 const q = (v: string) => JSON.stringify(v)
 
 const ga = ANALYTICS_ID
   ? `
-    /* Google Analytics. See note 1: this is a Universal Analytics property
-       and UA no longer processes data. */
-    (function (i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r;
-      i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) };
-      i[r].l = 1 * new Date();
-      a = s.createElement(o); m = s.getElementsByTagName(o)[0];
-      a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
-    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-    window.ga('create', ${q(ANALYTICS_ID)}, 'auto');
-    window.ga('send', 'pageview');`
+    /* GA4, via gtag.js. */
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(${q(ANALYTICS_ID)});
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', ${q(ANALYTICS_ID)});`
   : ''
 
 const gleap = GLEAP_KEY
@@ -102,7 +105,8 @@ const gleap = GLEAP_KEY
 
 const pixel = PIXEL_ID
   ? `
-    /* Meta Pixel. */
+    /* Meta Pixel. init and PageView are the two calls the live snippet was
+       missing; without them the loader reports nothing. */
     !function (f, b, e, v, n, t, s) {
       if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) };
       if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
@@ -115,7 +119,7 @@ const pixel = PIXEL_ID
 
 const tags = [ga, gleap, pixel].filter(Boolean).join(String.fromCharCode(10))
 
-/* Deferred to idle: nothing here is needed to render the page, and all of it
+/* Deferred to idle: none of this is needed to render the page, and all of it
    is on somebody else's server. */
 const script = `
 (function () {
@@ -126,9 +130,8 @@ const script = `
 ${tags}
   }
   /* NOT (requestIdleCallback || setTimeout)(start, 1): the second argument to
-     requestIdleCallback is an options OBJECT, so passing 1 throws a TypeError
-     and no tag loads at all. They take different arguments and need
-     different calls. */
+     requestIdleCallback is an options OBJECT, so passing a number throws a
+     TypeError and nothing loads at all. They need different calls. */
   function queue() {
     if (window.requestIdleCallback) window.requestIdleCallback(start, { timeout: 2000 });
     else window.setTimeout(start, 1);
