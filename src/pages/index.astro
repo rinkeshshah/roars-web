@@ -177,15 +177,19 @@ const testimonials = [
   },
 ]
 
+/**
+ * The eight sectors, in the export's order. `body` is one line on what we
+ * actually build in each, which is what the sector's own page opens with.
+ */
 const industries = [
-  { letter: 'R', name: 'Restaurant', href: '/industries/food-restaurant-app-development/' },
-  { letter: 'F', name: 'Fitness', href: '/industries/on-demand-fitness-app-development/' },
-  { letter: 'e', name: 'eCommerce', href: '/industries/retail-ecommerce-development/' },
-  { letter: 'C', name: 'Concierge', href: '/industries/concierge-app-development/' },
-  { letter: 'T', name: 'Travel', href: '/industries/travel-and-hospitality-app-development/' },
-  { letter: 'L', name: 'Logistics', href: '/industries/logistics-transportation-app-development/' },
-  { letter: 'S', name: 'SaaS', href: '/industries/saas-application-development-services/' },
-  { letter: 'H', name: 'Healthcare', href: '/industries/healthcare-app-development-company/' },
+  { n: '01', letter: 'R', name: 'Restaurant', body: 'Ordering, delivery and POS-linked apps.', href: '/industries/food-restaurant-app-development/' },
+  { n: '02', letter: 'F', name: 'Fitness', body: 'On-demand classes, coaching and wearables.', href: '/industries/on-demand-fitness-app-development/' },
+  { n: '03', letter: 'e', name: 'eCommerce', body: 'Storefronts, checkout and fulfilment.', href: '/industries/retail-ecommerce-development/' },
+  { n: '04', letter: 'C', name: 'Concierge', body: 'Booking and service-request platforms.', href: '/industries/concierge-app-development/' },
+  { n: '05', letter: 'T', name: 'Travel', body: 'Booking, itineraries and hospitality ops.', href: '/industries/travel-and-hospitality-app-development/' },
+  { n: '06', letter: 'L', name: 'Logistics', body: 'Fleet, dispatch and last-mile tracking.', href: '/industries/logistics-transportation-app-development/' },
+  { n: '07', letter: 'S', name: 'SaaS', body: 'Multi-tenant products, roles and billing.', href: '/industries/saas-application-development-services/' },
+  { n: '08', letter: 'H', name: 'Healthcare', body: 'Patient apps, records and compliance.', href: '/industries/healthcare-app-development-company/' },
 ]
 
 /** Slugs resolved against docs/URL-INVENTORY.csv, not invented. */
@@ -663,31 +667,34 @@ const schema = [
   <Section ground="surface">
     <div class="ind">
       <h2 class="display">Industries</h2>
-      {/* Label pair lives in the left rail, not the inner column. */}
-      <div class="ind__rail">
-        <p class="ind__label">Eight sectors</p>
-        <p class="ind__sub">Where we work</p>
-      </div>
       <p class="intro ind__intro">
         We build in sectors we already understand, so the discovery work starts
         from domain knowledge rather than from scratch.
       </p>
 
+      {/* EIGHT CARDS, FOUR ACROSS, EACH WITH A RULE AND A NUMBER.
+          The rail's "Eight sectors / Where we work" pair is gone with the
+          redesign: the count is the numbering now, and it was sitting alone in
+          the far-left gutter 200px above anything it labelled. */}
       <ul class="ind__grid">
         {industries.map((sector, i) => (
           <li data-reveal style={`transition-delay:${i * 50}ms`}>
             <a class="ind__card" href={sector.href}>
+              <span class="ind__rule" aria-hidden="true"></span>
+              <span class="ind__n" aria-hidden="true">{sector.n}</span>
               <span class="ind__letter" aria-hidden="true">{sector.letter}</span>
               <span class="ind__text">
                 <span class="ind__name">{sector.name}</span>
                 <span class="ind__cta">View sector</span>
               </span>
+              <span class="ind__body">{sector.body}</span>
             </a>
           </li>
         ))}
       </ul>
 
       <div class="ind__foot">
+        <p class="ind__note">Not listed? Most of our work starts in a new sector.</p>
         <span class="ind__stars" aria-hidden="true">
           <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
           <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
@@ -1072,7 +1079,10 @@ const schema = [
   .about__pitch-low { color: rgb(145, 144, 142); }
 
   /* 3. services -------------------------------------------------------- */
-  .svc { padding-block: 121px 96px; }
+    /* Matches .ind and .ins: the band was 121/96 with only 40px between the
+     title and the first row, so it read tighter than every section around
+     it even though its own padding was the same. */
+  .svc { padding-block: 120px 104px; }
   /* THE TITLE STAYS AT THE RAIL, like every other section title on this page.
      The mockup runs it flush to the container edge with the intro beside it;
      that reads fine in isolation and wrong in a column of six sections that
@@ -1089,7 +1099,7 @@ const schema = [
     color: rgb(71, 71, 71);
   }
 
-  .svc__list { list-style: none; margin: 40px 0 0; padding: 0; }
+  .svc__list { list-style: none; margin: 64px 0 0; padding: 0; }
 
   /* /NN  name  description  figure  arrow, across the full 1362.
      One shape for all five rows: the zigzag belonged to a four-row band and
@@ -1212,7 +1222,7 @@ const schema = [
     /* The pill sits at 967, one rail width from the paragraph's 503 — so the
        first track is 464 with no gap, not 356 plus a gap. */
     display: grid; grid-template-columns: 464px 1fr; gap: 0;
-    margin-top: 34px; margin-left: var(--rail-width);
+    margin-top: 56px; margin-left: var(--rail-width);
     align-items: start;
   }
   .svc__foot .intro { max-width: 356px; }
@@ -1380,43 +1390,78 @@ const schema = [
   .say__meta { margin: 0; font-size: 13px; font-weight: var(--fw-medium); line-height: 18px; letter-spacing: var(--ls-display); color: rgb(71, 71, 71); }
 
   /* 6. industries ------------------------------------------------------ */
-  .ind { padding-block: 120px; position: relative; }
-  .ind .display, .ind__intro, .ind__grid, .ind__foot {
-    margin-left: var(--rail-width);
-  }
-  /* The label pair belongs to the left rail, not the inner column. */
-  .ind__rail { position: absolute; left: 3px; top: 319px; }
-  .ind__label { margin: 0; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); color: var(--c-black); }
-  .ind__sub { margin: 0; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-regular); letter-spacing: var(--ls-display); color: var(--c-rule); }
+  .ind { padding-block: 120px 96px; position: relative; }
+  /* Title and intro stay at the rail, where every other section title on this
+     page sits. The grid and the foot run the full width: eight cards four
+     across inside the inner column would be 224px each. */
+  .ind .display, .ind__intro { margin-left: var(--rail-width); }
   .ind__intro { margin-top: var(--sp-4); max-width: 756px; }
-  .ind__grid { list-style: none; margin: 202px 0 0 var(--rail-width); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 107px 20px; }
+  /* Was 202px of margin under the intro, against a rail pair that no longer
+     exists. That void was the first thing you saw in the section. */
+  .ind__grid {
+    list-style: none; margin: 64px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 44px 32px;
+  }
 
-  /* Horizontal: ring circle on the left, name and cta to its right, rule
-     above. Square boxes with inset rings were the earlier reading and are
-     not what the prototype does. */
+  /* Ring circle, name and cta beside it, a rule and a number above, and the
+     sector's line underneath. */
   .ind__card {
+    position: relative;
     display: grid;
-    grid-template-columns: 64px minmax(0, 1fr);
+    grid-template-columns: 52px minmax(0, 1fr);
     align-items: center;
-    gap: var(--sp-3);
-    padding-top: 28px;
-    border-top: 1px solid var(--c-rule-strong);
+    column-gap: var(--sp-3); row-gap: 14px;
+    padding-top: 26px;
+  }
+  .ind__rule {
+    position: absolute; left: 0; right: 0; top: 0;
+    height: 1px; background: var(--c-rule-strong);
+  }
+  /* The counter sits ON the rule's right end, which is where the design puts
+     it and why the rule is an element rather than a border-top. */
+  .ind__n {
+    position: absolute; right: 0; top: 9px;
+    font-size: var(--fs-micro); line-height: 1;
+    font-weight: var(--fw-medium); letter-spacing: 2px;
+    color: rgb(168, 166, 161);
   }
   .ind__letter {
+    grid-column: 1;
     display: flex; align-items: center; justify-content: center;
-    width: 64px; height: 64px;
+    width: 52px; height: 52px;
     border-radius: var(--r-circle);
     box-shadow: inset 0 0 0 1.5px rgba(20, 20, 20, 0.35);
-    font-size: var(--fs-intro); font-weight: var(--fw-semi); line-height: 1;
+    font-size: var(--fs-item); font-weight: var(--fw-semi); line-height: 1;
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
     transition: box-shadow var(--dur-fast) ease, background var(--dur-fast) ease;
   }
   .ind__card:hover .ind__letter { box-shadow: inset 0 0 0 1.5px var(--c-accent); background: rgba(255, 212, 0, 0.14); }
-  .ind__text { display: flex; flex-direction: column; gap: 2px; }
-  .ind__name { font-size: var(--fs-intro); font-weight: var(--fw-semi); line-height: 28px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
-  .ind__cta { font-size: var(--fs-micro); font-weight: var(--fw-medium); line-height: 19px; letter-spacing: var(--ls-item); color: var(--c-rule); }
-  .ind__foot { display: grid; grid-template-columns: 232px auto; margin-top: var(--sp-7); }
-  .ind__foot :global(a) { grid-column: 2; justify-self: start; }
+  .ind__text { grid-column: 2; display: flex; flex-direction: column; gap: 2px; }
+  .ind__name { font-size: var(--fs-intro); font-weight: var(--fw-semi); line-height: 26px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
+  .ind__cta { font-size: var(--fs-micro); font-weight: var(--fw-medium); line-height: 18px; letter-spacing: var(--ls-item); color: var(--c-rule); }
+  /* Under the whole card, not beside the disc: it is the sector's line, not
+     the circle's caption. */
+  .ind__body {
+    grid-column: 1 / -1;
+    font-size: var(--fs-body); line-height: 22px;
+    font-weight: var(--fw-medium); letter-spacing: -0.045em;
+    color: rgb(90, 90, 88);
+  }
+
+  .ind__foot {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center; column-gap: 20px;
+    margin-top: 56px; padding-top: 30px;
+    border-top: 1px solid var(--c-rule-strong);
+  }
+  .ind__note {
+    margin: 0;
+    font-size: var(--fs-body); line-height: 22px;
+    font-weight: var(--fw-medium); letter-spacing: -0.045em;
+    color: rgb(90, 90, 88);
+  }
+  .ind__foot :global(a) { justify-self: end; }
 
   /* 7. insights -------------------------------------------------------- */
   .ins { padding-block: 120px 79px; }
@@ -1477,7 +1522,7 @@ const schema = [
     .svc__head, .svc__foot,
     .proj__head, .proj__foot,
     .say .display, .say__score, .say__foot,
-    .ind .display, .ind__intro, .ind__grid, .ind__foot,
+    .ind .display, .ind__intro,
     .ins .display, .ins__head, .ins__foot,
     .faq .display, .faq__foot { margin-left: 0; }
     .faq :global(.acc) { margin-left: 0; }
@@ -1524,7 +1569,7 @@ const schema = [
     .proj__head, .ins__head { gap: 20px; }
     .proj__foot, .say__foot, .ind__foot, .ins__foot, .faq__foot { gap: 18px; }
     /* Side rails placed at a fixed top offset against a fixed section height. */
-    .ind__rail, .faq__rail { position: static; width: auto; margin-top: var(--sp-4); }
+    .faq__rail { position: static; width: auto; margin-top: var(--sp-4); }
     /* Widths measured off the 1362 box.
        100%, not none: these sit in flex columns aligned to the start, so
        `none` lets them size to max-content and run past the page edge. */
