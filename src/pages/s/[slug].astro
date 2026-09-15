@@ -689,7 +689,21 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
      1120) was a guess at how tall six cards of someone else's copy would be.
      On four of the twelve it left up to 381px of nothing. The grid is in flow
      now and the band is as tall as its cards. */
-  .sv-band { position: relative; padding-block: 80px 120px; }
+  /* A TWO-COLUMN GRID, so the intro sits beside the heading instead of being
+     placed absolutely over the section and having the content pushed past it
+     with a hard margin. That margin was the artboard's 440px offset used as
+     flow spacing: it double-counted the heading's own height and left 224px of
+     nothing between a heading and its cards. Now the row is as tall as the
+     taller of the two and the cards simply follow it. */
+  .sv-band { position: relative; padding-block: 64px 80px; }
+  .sv-band, .sv-faq, .sv-proc {
+    display: grid; grid-template-columns: minmax(0, 1fr) 32.305%; column-gap: 40px;
+    align-content: start;
+  }
+  .sv-band__rule, .sv-proc__tick { grid-column: 1 / -1; }
+  .sv-band__head, .sv-proc__head { grid-column: 1; }
+  .sv-band__intro, .sv-proc__intro { grid-column: 2; grid-row: 2; }
+  .sv-cards, .sv-faq__list, .sv-proc__flow { grid-column: 1 / -1; }
   .sv-band__rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
   .sv-band__head { padding-top: 24px; }
   /* The heading hangs 7px left of the gutter, which is the optical inset the
@@ -712,17 +726,17 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     font-size: clamp(34px, 3.8vw, 52px); line-height: 60px;
   }
   .sv-band__intro {
-    position: absolute; left: 67.695%; top: 158px; width: 32.305%;
+    margin-top: 52px;
     font-size: 18px; line-height: 27px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.8);
   }
   .sv-cards {
-    list-style: none; margin: 250px 0 0; padding: 0;
+    list-style: none; margin: 92px 0 0; padding: 0;
     display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 30px;
   }
   /* The taller heading pushes the grid down on its own now, so --tall only
      needs to take the 20px the artboard gave it back. */
-  .sv-cards--tall { margin-top: 230px; }
+  .sv-cards--tall { margin-top: 92px; }
   .sv-cards > :nth-child(n + 4) { margin-top: 40px; }
   .sv-card { width: 100%; max-width: 434px; }
   .sv-card__rule { display: block; height: 0.5px; background: var(--c-rule-soft); }
@@ -750,7 +764,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
      at how tall the copy would be, and every service's copy is a different
      length. All twelve ended on 137-201px of nothing. */
   .sv-feat {
-    position: relative; padding-block: 110px 104px;
+    position: relative; padding-block: 72px 80px;
     display: grid; grid-template-columns: minmax(0, 67.695%) minmax(0, 32.305%);
     align-content: start;
   }
@@ -792,8 +806,13 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     font-size: 30px; line-height: 38px; font-weight: var(--fw-semi);
     letter-spacing: -0.03em; color: rgb(251, 251, 251);
   }
+  /* flex-start, NOT baseline. The value is 24/28 and its label is 12/17, so
+     aligning their first baselines dropped the label 9px below the value's
+     cap and the pair read as misaligned. Starting both boxes at the same top
+     puts the two cap heights within a pixel of each other, because the
+     half-leading above each first line is nearly the same at both sizes. */
   .sv-frame__proof {
-    display: flex; align-items: baseline; gap: 12px; margin: 26px 0 0;
+    display: flex; align-items: flex-start; gap: 12px; margin: 26px 0 0;
     padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.18);
   }
   /* The value can be a client name rather than a figure, and some of those
@@ -810,7 +829,13 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   }
 
   /* ── S2 cost ────────────────────────────────────────────── */
-  .sv-cost { padding-block: 96px; }
+  /* SECTION RHYTHM, 64/80. Every band on this page carried 96-130px of its
+     own padding, so a boundary stacked two of them and came to 190-250px of
+     nothing between the last line of one section and the eyebrow of the next.
+     Measured with the reveals forced in, that was the ONLY thing still making
+     the page read as empty — the earlier pass closed the holes INSIDE
+     sections, not the ones between them. */
+  .sv-cost { padding-block: 64px 80px; }
   .sv-cost__h {
     margin: 26px 0 0 -4px; max-width: 900px;
     font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
@@ -823,7 +848,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   }
 
   /* ── S3 engagement ──────────────────────────────────────── */
-  .sv-eng { padding-block: 96px; }
+  .sv-eng { padding-block: 64px 80px; }
   .sv-eng__h {
     margin: 26px 0 0 -4px; max-width: 62%;
     font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
@@ -858,7 +883,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   }
 
   /* ── S4 anchor ──────────────────────────────────────────── */
-  .sv-anchor { padding-block: 96px; max-width: 820px; }
+  .sv-anchor { padding-block: 64px 80px; max-width: 820px; }
   .sv-anchor__client {
     margin: 26px 0 0 -5px;
     font-size: clamp(40px, 5vw, 72px); line-height: 1.06; font-weight: var(--fw-semi);
@@ -888,7 +913,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   .sv-anchor__cta { margin-top: 34px; }
 
   /* ── S5 scope ───────────────────────────────────────────── */
-  .sv-scope { padding-block: 96px; }
+  .sv-scope { padding-block: 64px 80px; }
   .sv-scope__h {
     margin: 26px 0 0 -4px; max-width: 62%;
     font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
@@ -914,7 +939,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   .sv-scope__list--out li { color: rgba(20, 20, 20, 0.52); }
 
   /* ── S6 shape ───────────────────────────────────────────── */
-  .sv-shape { padding-block: 96px; }
+  .sv-shape { padding-block: 64px 80px; }
   .sv-shape__h {
     margin: 26px 0 0 -4px; max-width: 62%;
     font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
@@ -940,7 +965,7 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   .sv-shape__list b { display: block; font-weight: var(--fw-semi); color: var(--c-black); }
 
   /* ── S8 next ────────────────────────────────────────────── */
-  .sv-next { padding-block: 96px; }
+  .sv-next { padding-block: 64px 80px; }
   .sv-next__h {
     margin: 26px 0 0 -4px; max-width: 62%;
     font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
@@ -981,12 +1006,12 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
      (The steps were absolute precisely because an absolutely placed child does
      not grow its parent; min-height was the workaround for that, not a
      design.) */
-  .sv-proc { position: relative; padding-block: 80px 130px; }
-  .sv-proc__flow { position: relative; margin-top: 96px; }
+  .sv-proc { position: relative; padding-block: 64px 80px; }
+  .sv-proc__flow { position: relative; margin-top: 72px; }
   .sv-proc__tick { display: block; width: 16px; height: 1.5px; background: var(--c-rule-strong); }
   .sv-proc__head { padding-top: 20px; }
   .sv-proc__intro {
-    position: absolute; left: 67.695%; top: 146px; width: 32.305%;
+    margin-top: 48px;
     font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.72);
   }
@@ -1067,11 +1092,12 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
   }
 
   /* ── faq ────────────────────────────────────────────────── */
-  .sv-faq { position: relative; padding-block: 80px 120px; min-height: 940px; }
+  /* min-height 940 was the last artboard height on this page — the same
+     fault as the others, a guess at how tall somebody else's FAQ would be. */
+  .sv-faq { position: relative; padding-block: 64px 80px; }
   .sv-faq .sv-band__head { padding-top: 24px; }
   .sv-faq .sv-band__h { line-height: 86px; }
-  .sv-faq .sv-band__intro { top: 156px; }
-  .sv-faq__list { margin-top: 300px; }
+  .sv-faq__list { margin-top: 92px; }
 
 
   /* ── below the design grid ──────────────────────────────
