@@ -21,7 +21,7 @@ import SiteFooter from '../components/SiteFooter.astro'
 import Button from '../components/Button.astro'
 import Accordion from '../components/Accordion.astro'
 import { site } from '../lib/site'
-import { PORTRAIT, CLIENT_LOGOS, workHeroFor, SERVICE_IMG, JOURNAL } from '../lib/media'
+import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL } from '../lib/media'
 import GrainField from '../components/GrainField.astro'
 /* Decorative furniture still used by About and Insights. The hero's own
    set — planet, starbelt, slash mark — went with the export 2 redesign. */
@@ -30,41 +30,35 @@ import star5 from '../assets/star-5.svg'
 
 /* ------------------------------------------------------------ content */
 
+/**
+ * ALL TWELVE, IN THE ORDER /s/ PUTS THEM.
+ *
+ * This band showed four of the twelve and hid the rest behind an accordion
+ * nobody was going to open twelve times. It is now a straight list: every
+ * service, one row each, and the circle on the right is a link to the page
+ * rather than a toggle.
+ *
+ * The lines are the ones /s/index.astro already writes for each service, not
+ * a second set — one description per service, in one place.
+ *
+ * NO "N PROJECTS" FIGURE. The old rows carried 40, 35 and 17, which are
+ * export numbers with nothing behind them in the content: no service record
+ * has a project count, and nine of the twelve would have had no number at all.
+ * Same call as the "[ NEEDS THE REAL FIGURE ]" placeholders.
+ */
 const services = [
-  {
-    n: '/01',
-    name: 'Product Development',
-    body: 'We take products from idea to launch — strategy, design and engineering in one team',
-    stages: 'Discovery, Architecture, Engineering, Launch',
-    clients: ['Snowman Logistics', 'Parqly'],
-    more: '+ 11',
-    href: '/s/product-development-company/',
-    pad: 40,
-  },
-  {
-    n: '/02',
-    name: 'UI/UX and Product Design',
-    body: 'Human-centered design that turns complex ideas into easy, elegant user experiences',
-    count: '40',
-    href: '/s/user-experience-design-agency/',
-    pad: 43,
-  },
-  {
-    n: '/03',
-    name: 'Mobile App Development',
-    body: 'Native and cross-platform apps built to scale with your user base',
-    count: '35',
-    href: '/s/mobile-app-development/',
-    pad: 58,
-  },
-  {
-    n: '/04',
-    name: 'AI Automation',
-    body: 'Workflow automation and AI features wired into your product and operations.',
-    count: '17',
-    href: '/s/ai-automation-services/',
-    pad: 0,
-  },
+  { name: 'MVP Development', href: '/s/mvp-development/', body: 'Put one testable version in front of real users and read what they do.' },
+  { name: 'Innovation Design', href: '/s/innovation-design-company/', body: 'Turn an ambition everyone agrees with into something specific enough to be wrong.' },
+  { name: 'Product Development', href: '/s/product-development-company/', body: 'Strategy, design and engineering as one team, for a product with a roadmap.' },
+  { name: 'Mobile App Development', href: '/s/mobile-app-development/', body: 'Native or cross platform, built to survive the second week rather than the review.' },
+  { name: 'Web App Development', href: '/s/web-app-development/', body: 'The system that replaces the spreadsheet your operations actually run on.' },
+  { name: 'eCommerce Development', href: '/s/ecommerce-development-company/', body: 'Storefront, checkout and the stock integration, tested before the peak.' },
+  { name: 'User Experience Design', href: '/s/user-experience-design-agency/', body: 'Find where the product loses people, fix it, and prove the number moved.' },
+  { name: 'Growth Hacking', href: '/s/growth-hacking-agency/', body: 'Small bets with a read on each, so spend stops being a renewal of last year.' },
+  { name: 'AI Automation', href: '/s/ai-automation-services/', body: 'Let a system own the routine work your team is spending Tuesdays on.' },
+  { name: 'DevOps', href: '/s/result-oriented-devops-services/', body: 'Turn a release event into a release routine your own team runs.' },
+  { name: 'Hire Dedicated Developers', href: '/s/hire-dedicated-developers/', body: 'Named people on your board, without four months of recruiting first.' },
+  { name: 'Digital Transformation', href: '/s/digital-business-transformation-services/', body: 'When four systems disagree and nobody owns the agreement between them.' },
 ]
 
 /**
@@ -458,97 +452,45 @@ const schema = [
           rows and there was no majority. There was no majority because it
           alternates. Where the prototype is irregular, the irregularity is
           the design; see CLAUDE.md. */}
-      {/* Accordion. Approved island 2 of 4, shared with the FAQ below.
+      {/* A LIST, NOT AN ACCORDION ANY MORE.
 
-          MEASURED GEOMETRY, container at 38,306 sized 1364x647:
-            row 1  left   0  top   0  h195  OPEN   6 tracks
-            row 2  left   0  top 235  h119  closed 4 tracks
-            row 3  left 463  top 397  h 96  closed 4 tracks, indented
-            row 4  left   1  top 551  h 96  closed 4 tracks
+          It was four rows with the first one open, and eight services missing
+          entirely. Twelve rows that each open a panel is not a thing anybody
+          works through, so the panel is gone: the circle on the right is now
+          a link straight to the service page, which is where the toggle was
+          only ever a detour on the way to.
 
-          So two things alternate and one does not, which is why flattening
-          this twice looked defensible and was wrong both times:
-            - the INDENT alternates. Rows 1 and 3 start at the rail (464),
-              rows 2 and 4 at the container edge. A zigzag.
-            - the TRACKS depend on open/closed, not on the indent. A closed
-              row is always name(465) desc(232) count(166) toggle(36); the
-              open row is rail(463) name(241) photo(223) desc(231)
-              clients(167) toggle(37).
+          WHAT STAYS IS THE ZIGZAG. The export's own rhythm: odd rows start at
+          the rail (464), even rows at the container edge, and every row runs
+          name(465) desc(232) spare(166) link(36). The spare track is kept
+          rather than collapsed so the circle stays exactly where the export
+          puts it, at the right-hand edge.
 
-          The toggle is the BUTTON, and the title is a heading beside it. It
-          used to be one button wrapping the title, the description, the
-          count and the icon — a button containing flow content, and the
-          reason the description existed twice in the row and drew through
-          the title on every open. One description, placed by grid. */}
-      <ul class="svc__list" data-accordion>
+          The whole row is the link target, not just the circle — a 36px
+          hit area at the end of a 1364px row is a bad thing to ask for. The
+          circle is the affordance; the <a> is the row. */}
+      <ul class="svc__list">
         {services.map((s, i) => (
-          <li
-            id={`svc-row-${i}`}
-            data-svc-row
-            class:list={['svc__row', i % 2 === 0 ? 'svc__row--inner' : 'svc__row--rail']}
-            data-open={i === 0 ? 'true' : 'false'}
-            style={`--svc-pad:${s.pad}px`}
-          >
+          <li class:list={['svc__row', i % 2 === 0 ? 'svc__row--inner' : 'svc__row--rail']}>
             {/* Rules are ELEMENTS, not a border-top on the row. A border spans
                 the row's whole box, and the box stays the full 1364 even when
                 the tracks are packed left — so every row drew one rule from
-                38 to 1400, which is the first thing that looks wrong here.
-                The export draws the OPEN row as a 16px stub in the rail plus
-                a separate 898px rule starting at the title, and every CLOSED
-                row as a single 898px rule stopping where the toggle does. */}
-            <span class="svc__stub" aria-hidden="true"></span>
+                38 to 1400, which is the first thing that looks wrong here. */}
             <span class="svc__rule" aria-hidden="true"></span>
+            {/* The link is an overlay across the whole row rather than a
+                wrapper around the other three. A wrapper would have to be
+                `display: contents` to let them keep their grid tracks, and an
+                interactive element with no box is exactly the thing screen
+                readers have historically dropped. This keeps a real box, a
+                real focus ring, and the row's geometry untouched.
 
-            <span class="svc__n">{s.n}</span>
+                FIRST in the row, not last: the hover and focus styles reach
+                the name and the circle with `~`, and a sibling combinator only
+                looks forwards. */}
+            <a class="svc__link" href={s.href}>{s.name}</a>
             <h3 class="svc__name">{s.name}</h3>
-            {/* ONE description element, moved by grid: column 4 when the row
-                is open, column 2 when it is closed. Two copies — one in the
-                trigger, one in the panel — is what drew the tag line through
-                the title on every open, four screenshots running. */}
             <p class="svc__body">{s.body}</p>
-
-            {/* Both states ship in the DOM and `display: contents` drops their
-                children straight into the row's tracks, so the accordion
-                swaps which is shown without a script having to build either.
-                The row is the panel; there is no separate box to overlap. */}
-            <div class="svc__open" data-svc-open>
-              <div class="svc__media" aria-hidden="true">
-                {/* Grey ground on the WRAPPER, as the export has it, so the
-                    138px slot still reads at the right size while the uploads
-                    are outstanding. On the img it vanished with the image. */}
-                <span class="svc__disc">
-                  <img src={SERVICE_IMG.productConsultant} alt="" width="138" height="138" loading="lazy" decoding="async" />
-                </span>
-                <span class="svc__disc svc__disc--sm">
-                  <img src={SERVICE_IMG.beautifulExperience} alt="" width="37" height="37" loading="lazy" decoding="async" />
-                </span>
-              </div>
-              {s.stages && <p class="svc__stages">{s.stages}</p>}
-              {s.clients && (
-                <ul class="svc__clients">
-                  {s.clients.map((c) => <li>{c}</li>)}
-                  <li class="svc__more">{s.more}</li>
-                </ul>
-              )}
-            </div>
-
-            {/* Two placed spans, not a number followed by a word. The export
-                draws a 206x32 block with the figure at 0,0 and the label at
-                56,7 — the label sits on the figure's optical middle, not on
-                its baseline. As the block's own text node it measured from
-                the block's top edge and read 34px high on all three rows. */}
-            <p class="svc__count" data-svc-closed>
-              {s.count && <><span class="svc__count-n">{s.count}</span><span class="svc__count-l">Projects</span></>}
-            </p>
-
-            <button
-              class="svc__icon"
-              type="button"
-              aria-expanded={i === 0 ? 'true' : 'false'}
-              aria-controls={`svc-row-${i}`}
-            >
-              <span class="visually-hidden">{s.name}</span>
-            </button>
+            <span class="svc__icon" aria-hidden="true"></span>
           </li>
         ))}
       </ul>
@@ -1106,57 +1048,31 @@ const schema = [
          rail(463) name(241) photo(223) desc(231) clients(167) toggle(37).
      ─────────────────────────────────────────────────────────────── */
   .svc__row {
+    position: relative;
     display: grid;
     grid-template-columns: 465px 232px 166px 36px;
     /* The rule's track is ZERO height. The export draws each rule as a
        hairline sitting ON the row's top edge, taking no space; given a real
-       auto track it added its own 1-2px to every row, and the four rows
+       auto track it added its own 1-2px to every row, and four rows
        compounded that into the 5px the section was over. */
     grid-template-rows: 0 auto;
     align-items: start;
     justify-content: start;
-    /* The gap below each row is the export's own and is not a rhythm:
-       40, 43, 58, 0. Set per row from the data. */
-    padding-bottom: var(--svc-pad, 43px);
+    /* One rhythm now, where it used to be four hand-measured gaps belonging
+       to a four-row band with one row open. Twelve rows need a step, not a
+       sequence — and a smaller one, because twelve of the old 40-58px gaps
+       is most of a screen spent on whitespace between links. */
+    padding-bottom: 26px;
   }
-  /* Those four numbers were measured with ROW 1 open, so they belong to that
-     state, not to those positions. Bound to the index alone, opening row 3
-     gave the tall open row the 58px gap meant for a short closed one and left
-     row 1 holding the open row's 40 — the rhythm inverted and the section
-     shuffled on every click. The gap follows the STATE: the open row takes 40
-     and the last row closes at 0, whichever rows those are. In the default
-     state this still resolves to exactly 40 / 43 / 58 / 0. */
-  .svc__row[data-open='true'] { padding-bottom: 40px; }
   .svc__row:last-child { padding-bottom: 0; }
-  /* An indented CLOSED row: an empty 463px rail, then the same four tracks. */
-  /* fr, not px. The five tracks sum to exactly 1362 — the content box at a
+  /* An indented row: an empty 463px rail, then the same four tracks.
+     fr, not px. The five tracks sum to exactly 1362 — the content box at a
      1440 viewport — so at 1440 fr resolves to the identical widths, and at
      anything narrower it scales instead of hanging off the edge. */
   .svc__row--inner { grid-template-columns: 463fr 465fr 232fr 166fr 36fr; }
-  /* The OPEN row is the only six-track row. */
-  .svc__row[data-open='true'] {
-    grid-template-columns: 463fr 241fr 223fr 231fr 167fr 37fr;
-  }
 
-  .svc__stub, .svc__rule { grid-row: 1; height: 1.5px; background: var(--c-rule-strong); }
-  /* The stub is the open row's only mark in the rail. */
-  .svc__stub { grid-column: 1; width: 16px; display: none; }
-  .svc__row[data-open='true'] .svc__stub { display: block; }
-  .svc__rule { grid-column: 1 / -1; height: 1px; }
-  .svc__row--inner .svc__rule,
-  .svc__row[data-open='true'] .svc__rule { grid-column: 2 / -1; height: 1.5px; }
-
-  .svc__n {
-    grid-row: 2; grid-column: 1;
-    padding-top: 25px;
-    /* 20px in the export, not --fs-label. This is the section's rail number,
-       not a rail label, and at 14 it read as a caption. */
-    font-size: 20px; line-height: 19px;
-    font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
-    color: rgb(17, 17, 17);
-    display: none;
-  }
-  .svc__row[data-open='true'] .svc__n { display: block; }
+  .svc__rule { grid-row: 1; grid-column: 1 / -1; height: 1px; background: var(--c-rule-strong); }
+  .svc__row--inner .svc__rule { grid-column: 2 / -1; height: 1.5px; }
 
   .svc__name {
     grid-row: 2;
@@ -1168,73 +1084,24 @@ const schema = [
     transition: color var(--dur-fast) ease;
   }
   .svc__row--inner .svc__name { grid-column: 2; }
-  .svc__row[data-open='true'] .svc__name { grid-column: 2; padding-top: 21px; font-size: 32px; line-height: 40px; }
 
   .svc__body {
     grid-row: 2;
     grid-column: 2;
     margin: 0;
     padding-top: 27px;
-    max-width: 191px;
+    /* The track, not 191px. The old cap was measured against four short
+       export strings; the real service lines are a sentence each and wrapped
+       to four lines inside it, which is what made every row tall. */
+    max-width: 232px;
     font-size: var(--fs-body); line-height: 23px;
     font-weight: var(--fw-medium); letter-spacing: -0.06em;
     color: rgb(2, 2, 2);
   }
   .svc__row--inner .svc__body { grid-column: 3; }
-  .svc__row[data-open='true'] .svc__body {
-    grid-column: 4;
-    padding-top: 26px;
-    max-width: 200px;
-    letter-spacing: -0.05em;
-    color: rgb(14, 14, 14);
-  }
 
-  /* display: contents drops these straight into the row's tracks, so the
-     row IS the panel and there is no separate box to overlap with. */
-  /* Only the open block is `display: contents`. On the count it turned the
-     " Projects" text node into an anonymous, unplaced grid item — which is
-     why the word went missing from all three closed rows. */
-  .svc__open { display: contents; }
-  .svc__row[data-open='true'] .svc__count,
-  .svc__row[data-open='false'] .svc__open { display: none; }
-
-  .svc__media { grid-row: 2; grid-column: 3; position: relative; height: 138px; margin-top: 30px; }
-  .svc__disc {
-    position: absolute; left: 0; top: 0;
-    width: 138px; height: 138px;
-    border-radius: var(--r-circle); overflow: hidden;
-    background: rgb(217, 217, 217);
-  }
-  .svc__disc img { width: 100%; height: 100%; display: block; object-fit: cover; }
-  .svc__disc--sm { left: 141px; top: 5px; width: 37px; height: 37px; background: rgb(102, 102, 102); }
-
-  /* The tags sit BELOW the description inside column 4, at y=157 in a row
-     whose description starts at 26 — never beside the title. */
-  .svc__stages {
-    grid-row: 2; grid-column: 4;
-    align-self: start;
-    margin: 157px 0 0;
-    max-width: 176px;
-    font-size: var(--fs-label); line-height: 19px;
-    font-weight: var(--fw-medium); letter-spacing: -0.06em;
-    color: rgb(71, 71, 71); opacity: 0.8;
-  }
-
-  .svc__count {
-    grid-row: 2; grid-column: 3;
-    position: relative; height: 32px;
-    margin: 0; padding-top: 27px;
-    color: var(--c-black);
-    white-space: nowrap;
-  }
-  .svc__row--inner .svc__count { grid-column: 4; }
-  .svc__count-n { font-size: 32px; line-height: 32px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
-  .svc__count-l {
-    position: absolute; left: 56px; top: 34px;
-    font-size: var(--fs-label); line-height: 19px;
-    font-weight: var(--fw-medium); letter-spacing: var(--ls-display); opacity: 0.9;
-  }
-
+  /* The circle the export puts at the row's right edge. It was a toggle; it is
+     now the affordance for the row's link and takes no events of its own. */
   .svc__icon {
     grid-row: 2;
     grid-column: 4;
@@ -1242,28 +1109,29 @@ const schema = [
     justify-self: end;
     margin-top: 27px;
     width: var(--icon-circle); height: var(--icon-circle);
-    border: 0; padding: 0;
     border-radius: var(--r-pill); background: var(--c-white);
-    cursor: pointer;
     transition: background var(--dur-fast) ease;
   }
   .svc__row--inner .svc__icon { grid-column: 5; }
-  .svc__row[data-open='true'] .svc__icon { grid-column: 6; margin-top: 29px; }
   .svc__icon::before, .svc__icon::after {
     content: ''; position: absolute; inset: 50% auto auto 50%;
     translate: -50% -50%; background: var(--c-black);
-    transition: opacity var(--dur-fast) ease;
   }
   .svc__icon::before { width: 13px; height: 1.25px; }
   .svc__icon::after { width: 1.25px; height: 13px; }
-  .svc__row[data-open='true'] .svc__icon::after { opacity: 0; }
-  .svc__icon:hover { background: var(--c-accent); }
 
-  /* Opens at 26 like the description beside it, not hard against the rule,
-     and the three names sit on a plain 22px leading. The 10px gap made the
-     steps 32 and pushed "+ 11" past the block the export draws it in. */
-  .svc__clients { list-style: none; margin: 0; padding: 26px 0 0; display: flex; flex-direction: column; font-size: var(--fs-body); font-weight: var(--fw-semi); line-height: 22px; letter-spacing: var(--ls-item); }
-  .svc__more { font-weight: var(--fw-medium); color: rgb(145, 144, 142); }
+  /* The row's link, covering it. Its text is the accessible name and is not
+     drawn — the <h3> beside it is what a sighted reader sees, and two copies
+     of the same words on screen is what this band used to do wrong. */
+  .svc__link {
+    position: absolute; inset: 0;
+    z-index: 1;
+    font-size: 0; color: transparent;
+    border-radius: 6px;
+  }
+  .svc__link:hover ~ .svc__icon,
+  .svc__link:focus-visible ~ .svc__icon { background: var(--c-accent); }
+  .svc__link:hover ~ .svc__name { color: rgb(90, 90, 88); }
 
   .svc__foot {
     /* The pill sits at 967, one rail width from the paragraph's 503 — so the
@@ -1575,14 +1443,17 @@ const schema = [
        100%, not none: these sit in flex columns aligned to the start, so
        `none` lets them size to max-content and run past the page edge. */
     .ind__intro, .ins__intro, .faq__intro, .ins__title, .faq__ask, .say__meta,
-    .svc__foot .intro, .svc__stages, .svc__clients { max-width: 100%; }
-    /* The service rows are five and six fr tracks on the 1362 canvas. fr does
-       not wrap, so at tablet width the rule, the count and the toggle were
-       all painting past the section edge. */
+    .svc__foot .intro { max-width: 100%; }
+    /* The service rows are four and five fr tracks on the 1362 canvas. fr does
+       not wrap, so at tablet width the rule and the circle were painting past
+       the section edge. */
     .svc__row, .svc__row--inner {
       display: flex; flex-direction: column; align-items: stretch; gap: 10px;
       grid-template-columns: none;
     }
+    /* `justify-self` is a grid property and does nothing in a flex column, so
+       the circle stretched to the full row width and read as a bar. */
+    .svc__icon { align-self: flex-end; margin-top: 4px; }
     /* 229px of left margin measured off the 1362 canvas. */
     .proj__legend { margin-left: 0; }
     .proj__legend li { grid-template-columns: minmax(0, 1fr) 16px; }
@@ -1719,10 +1590,6 @@ const schema = [
     .svc__grid { grid-template-columns: 1fr; gap: var(--sp-4); }
     .svc__name { font-size: 22px; line-height: 28px; }
     .svc__body { font-size: 15px; line-height: 22px; }
-    .svc__media { position: relative; display: flex; align-items: center; gap: 10px; height: auto; }
-    .svc__disc { position: static; width: 96px; height: 96px; }
-    .svc__disc--sm { position: static; width: 40px; height: 40px; }
-    .svc__stages { font-size: 14px; line-height: 19px; }
     .svc__foot { row-gap: var(--sp-4); }
 
     /* projects --------------------------------------------------------- */

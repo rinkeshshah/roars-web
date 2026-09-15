@@ -172,12 +172,24 @@ export const MENU: MenuItem[] = [
     eyebrow: '06 — SERVICES',
     title: 'What we do',
     kind: 'services',
+    /* ALL TWELVE. The panel's own meta says "12 SERVICES" and it listed five,
+       so seven services had no route through the menu at all — including
+       eCommerce, DevOps and Hire Dedicated Developers, which people arrive
+       looking for by name. Order follows /s/, which groups them by the
+       question that sends you there. */
     items: [
-      { label: 'Product Development', href: '/s/product-development-company/', note: 'Strategy through engineering' },
-      { label: 'User Experience Design', href: '/s/user-experience-design-agency/', note: 'Research, flows, interface' },
-      { label: 'Mobile App Development', href: '/s/mobile-app-development/', note: 'iOS, Android, cross-platform' },
       { label: 'MVP Development', href: '/s/mvp-development/', note: 'Eight to sixteen weeks to launch' },
+      { label: 'Innovation Design', href: '/s/innovation-design-company/', note: 'Make an ambition specific enough to test' },
+      { label: 'Product Development', href: '/s/product-development-company/', note: 'Strategy through engineering' },
+      { label: 'Mobile App Development', href: '/s/mobile-app-development/', note: 'iOS, Android, cross-platform' },
+      { label: 'Web App Development', href: '/s/web-app-development/', note: 'The system that replaces the spreadsheet' },
+      { label: 'eCommerce Development', href: '/s/ecommerce-development-company/', note: 'Storefront, checkout, stock integration' },
+      { label: 'User Experience Design', href: '/s/user-experience-design-agency/', note: 'Research, flows, interface' },
+      { label: 'Growth Hacking', href: '/s/growth-hacking-agency/', note: 'Small bets with a read on each' },
       { label: 'AI Automation', href: '/s/ai-automation-services/', note: 'Agents and workflow automation' },
+      { label: 'DevOps', href: '/s/result-oriented-devops-services/', note: 'A release routine your own team runs' },
+      { label: 'Hire Dedicated Developers', href: '/s/hire-dedicated-developers/', note: 'Named people, without the recruiting' },
+      { label: 'Digital Transformation', href: '/s/digital-business-transformation-services/', note: 'When four systems disagree' },
     ],
   },
   {
