@@ -35,14 +35,39 @@ export const PORTRAIT = {
   ankush: `${U}/2022/07/Ankush.webp`,
 } as const
 
-/** Client marks in the About strip, in the export's order. */
+/**
+ * Client marks. Fifteen, served from this repo rather than the webspace.
+ *
+ * WHY THESE ARE NOT UNDER /wp-content/uploads/ like everything else. The six
+ * that were there are the six the old site had; the other nine were supplied
+ * as loose files and never uploaded anywhere. Processing them into one
+ * consistent set is a build step (scripts/build-client-logos.mjs), so the
+ * output belongs with the code that makes it. It also means they resolve in
+ * every build, including this one, which the uploads paths do not.
+ *
+ * Each is black on transparent, trimmed to its own ink and levelled so the
+ * lightest mark and the heaviest carry the same weight at one CSS opacity.
+ * The page tints them; the files are not grey.
+ *
+ * ORDER IS EDITORIAL, strongest recognition first, not alphabetical. A wall
+ * is read left to right and the first row is the one anybody remembers.
+ */
 export const CLIENT_LOGOS = [
-  { src: `${U}/2022/07/home-brand01.png`, alt: 'Samsung', h: 22 },
-  { src: `${U}/2022/07/home-brand02.png`, alt: 'TATA', h: 27 },
-  { src: `${U}/2022/07/home-brand03.png`, alt: 'GISAID', h: 24 },
-  { src: `${U}/2022/07/home-brand04.png`, alt: 'Forbes', h: 22 },
-  { src: `${U}/2022/07/home-brand05.png`, alt: 'Reliance', h: 27 },
-  { src: `${U}/2022/07/home-brand06.png`, alt: 'DDB', h: 22 },
+  { slug: 'samsung', src: '/clients/samsung.png', alt: 'Samsung' },
+  { slug: 'tata', src: '/clients/tata.png', alt: 'TATA' },
+  { slug: 'forbes', src: '/clients/forbes.png', alt: 'Forbes' },
+  { slug: 'reliance', src: '/clients/reliance.png', alt: 'Reliance' },
+  { slug: 'gisaid', src: '/clients/gisaid.png', alt: 'GISAID' },
+  { slug: 'jwt', src: '/clients/jwt.png', alt: 'JWT' },
+  { slug: 'ddb-mudra', src: '/clients/ddb-mudra.png', alt: 'DDB Mudra Group' },
+  { slug: 'zee-cinema', src: '/clients/zee-cinema.png', alt: 'Zee Cinema' },
+  { slug: 'tanishq', src: '/clients/tanishq.png', alt: 'Tanishq' },
+  { slug: 'woodland', src: '/clients/woodland.png', alt: 'Woodland' },
+  { slug: 'facedrive', src: '/clients/facedrive.png', alt: 'Facedrive' },
+  { slug: 'airlift', src: '/clients/airlift.png', alt: 'Airlift' },
+  { slug: 'bollywood-hungama', src: '/clients/bollywood-hungama.png', alt: 'Bollywood Hungama' },
+  { slug: 'zapak', src: '/clients/zapak.png', alt: 'Zapak' },
+  { slug: 'rmg-connect', src: '/clients/rmg-connect.png', alt: 'RMG Connect' },
 ] as const
 
 /**

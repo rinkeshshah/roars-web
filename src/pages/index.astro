@@ -415,7 +415,7 @@ const schema = [
             The row is duplicated and the track travels -50%, which is what
             makes the loop seamless; the export's own edge fades cover both
             entry and exit. The clone is aria-hidden with empty alts so the
-            six brands are announced once. */}
+            the brands are announced once. */}
         <div class="about__logos" data-reveal>
           <div class="about__logo-track">
             {[false, true].map((clone) => (
@@ -424,7 +424,7 @@ const schema = [
                   <img
                     src={l.src}
                     alt={clone ? '' : l.alt}
-                    style={`--logo-h:${l.h}px;--i:${i}`}
+                    style={`--i:${i}`}
                     loading="lazy"
                     decoding="async"
                   />
@@ -1026,12 +1026,18 @@ const schema = [
      the stagger is a Y lift and a fade on each mark, the marquee an X
      translate on the track above them, so they compose. The row still arrives
      as one thing moving rather than six things appearing, and then it turns. */
+  /* ONE HEIGHT FOR ALL FIFTEEN, not a per-logo number.
+     The old six each carried their own --logo-h because they were raw files
+     at whatever size they happened to be. The set is levelled at build time
+     now (scripts/build-client-logos.mjs fits each mark's longest axis to the
+     same box), so a per-mark override would undo the levelling it is meant to
+     preserve. max-width stops a wide wordmark like bollywoodhungama.com from
+     running the row long. */
   .about__logo-row img {
     flex: 0 0 auto;
-    width: auto;
-    height: calc(var(--logo-h, 22px) * 0.73);
-    filter: grayscale(1);
-    opacity: 0.62;
+    width: auto; height: 26px; max-width: 132px;
+    object-fit: contain;
+    opacity: 0.55;
     translate: 0 6px;
     transition:
       filter var(--dur-fast) ease,

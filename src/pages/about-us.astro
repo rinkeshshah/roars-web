@@ -22,7 +22,7 @@ import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import GrainField from '../components/GrainField.astro'
 import Button from '../components/Button.astro'
-import { PORTRAIT, AGENCY_IMG } from '../lib/media'
+import { PORTRAIT, AGENCY_IMG, CLIENT_LOGOS } from '../lib/media'
 import { site } from '../lib/site'
 import star3 from '../assets/star-3.svg'
 import star5 from '../assets/star-5.svg'
@@ -53,13 +53,10 @@ const team = [
 ]
 
 /** The client marks, drawn as discs rather than as the strip on the homepage. */
-const clients = [
-  { name: 'Samsung', year: '2021', img: '/wp-content/uploads/2022/07/home-brand01.png' },
-  { name: 'TATA', year: '2021', img: '/wp-content/uploads/2022/07/home-brand02.png' },
-  { name: 'GISAID', year: '2021', img: '/wp-content/uploads/2022/07/home-brand03.png' },
-  { name: 'Forbes', year: '2021', img: '/wp-content/uploads/2022/07/home-brand04.png' },
-  { name: 'Reliance', year: '2021', img: '/wp-content/uploads/2022/07/home-brand05.png' },
-]
+/* All fifteen, from the one registry, so the about grid and the homepage
+   strip cannot drift apart. The year is gone: every client carried "2021",
+   which is not a fact about any of them. */
+const clients = CLIENT_LOGOS
 
 const awards = [
   { year: '2026', title: 'Top 15 User Experience Company', body: 'Clutch', no: '/01' },
@@ -209,9 +206,8 @@ const schema = [
       <ul class="agb__grid agb__grid--clients" data-reveal>
         {clients.map((c) => (
           <li class="agb__person">
-            <span class="agb__disc agb__disc--mark"><img src={c.img} alt="" width="100" height="40" loading="lazy" /></span>
-            <span class="agb__person-name">{c.name}</span>
-            <span class="agb__person-role">{c.year}</span>
+            <span class="agb__cell"><img src={c.src} alt={`${c.alt} logo`} width="160" height="64" loading="lazy" decoding="async" /></span>
+            <span class="agb__person-name">{c.alt}</span>
           </li>
         ))}
         <li class="agb__rest">
@@ -360,21 +356,48 @@ const schema = [
      of the CLIENTS BLOCK, and the heading above already occupies its first 43.
      Same trap on the awards list below. */
   .agb__grid--clients { margin: 74px 0 0 234px; }
-  /* Row two is one card under column two, and the counter under column four.
-     Columns 1 and 3 are empty by design. */
-  .agb__grid > :nth-child(5) { grid-column: 2; }
+  /* SCOPED TO THE TEAM GRID. Row two is one card under column two and the
+     counter under column four, with columns 1 and 3 empty by design. That is
+     an arrangement for exactly five people plus a counter, and it was applying
+     to the clients grid as well: with fifteen marks it pushed the fifth into
+     column two on its own and dropped the counter into the middle of the
+     wall. The clients grid flows, and its counter is simply last. */
+  .agb__grid--team > :nth-child(5) { grid-column: 2; }
   /* Spans the last two columns, not the fourth.
      The block is 437px in the export — a 198px disc with the label set beside
      it — but pinned to one 198px column the label's 54.691% offset landed at
      108px, inside the disc, and "The rest of the Roars Fam" typed straight
      over the 25. Column 3 is empty on this row, so the block takes both. */
-  .agb__grid > .agb__rest { grid-column: 3 / -1; grid-row: 2; justify-self: end; }
+  .agb__grid--team > .agb__rest { grid-column: 3 / -1; grid-row: 2; justify-self: end; }
+  /* The clients counter closes the wall: full width, under the last row. */
+  .agb__grid--clients > .agb__rest { grid-column: 1 / -1; margin-top: 10px; }
 
   .agb__person { width: 198px; }
   .agb__disc { display: block; width: 198px; height: 198px; border-radius: 50%; overflow: hidden; background: rgb(217, 217, 217); }
   .agb__disc img { width: 100%; height: 100%; object-fit: cover; }
-  .agb__disc--mark { background: rgb(242, 242, 242); display: flex; align-items: center; justify-content: center; }
-  .agb__disc--mark img { width: 100px; height: auto; object-fit: contain; opacity: 0.7; }
+  /* CLIENT MARKS SIT IN A FLAT CELL, NOT A CIRCLE.
+     The team portraits are circular because a face crops well to a circle.
+     A wordmark does not: "DDB mudra group", "bollywoodhungama.com" and
+     "WOODLAND" are wide lockups, and a 198px disc either shrinks them until
+     the strapline is unreadable or clips their ends. A cell of the same
+     footprint gives the same grid rhythm and lets each mark keep its own
+     proportions. */
+  .agb__cell {
+    display: flex; align-items: center; justify-content: center;
+    width: 198px; height: 198px; padding: 30px; border-radius: 10px;
+    background: rgb(244, 244, 242);
+    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.06);
+  }
+  /* Contained rather than sized, so a tall mark and a wide one both fit and
+     neither is stretched. Desaturated so a colour file dropped in later
+     still reads as part of one wall. */
+  .agb__cell img {
+    max-width: 100%; max-height: 72px;
+    width: auto; height: auto; object-fit: contain;
+    filter: grayscale(1); opacity: 0.62;
+    transition: opacity var(--dur-fast) ease;
+  }
+  .agb__grid--clients li:hover .agb__cell img { opacity: 0.9; }
   .agb__person-name { display: block; margin-top: 20px; font-size: var(--fs-body); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
   .agb__person-role { display: block; margin-top: 2px; font-size: var(--fs-body); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
 
@@ -461,7 +484,7 @@ const schema = [
     .agb__stats > :nth-child(2), .agb__stats > :nth-child(3) { grid-column: 1; }
     .agb__grid { grid-template-columns: repeat(2, 198px); }
     .agb__grid--team, .agb__grid--clients { margin-left: 0; margin-top: 64px; }
-    .agb__grid > :nth-child(5), .agb__grid > .agb__rest { grid-column: auto; grid-row: auto; }
+    .agb__grid--team > :nth-child(5), .agb__grid--team > .agb__rest { grid-column: auto; grid-row: auto; }
     .agb__h2--clients, .agb__h2--awards { margin-left: 0; }
     .agb__h2 { font-size: var(--fs-stat); line-height: 1.1; }
     .agb__plate { height: 380px; margin-top: 64px; }
@@ -494,6 +517,8 @@ const schema = [
     }
     .agb__person { width: auto; min-width: 0; }
     .agb__disc { width: 100%; height: auto; aspect-ratio: 1; }
+    .agb__cell { width: 100%; height: auto; aspect-ratio: 1; padding: 18px; }
+    .agb__cell img { max-height: 52px; }
     .agb__person-name { margin-top: 12px; font-size: var(--fs-label); line-height: 17px; }
     .agb__person-role { font-size: var(--fs-label); line-height: 17px; }
 
