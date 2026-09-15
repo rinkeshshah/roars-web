@@ -300,7 +300,17 @@ const servicePage = {
   frame: z
     .object({
       h1: z.string().min(20).max(120),
-      /** Who it is for and who it is not. Exclusion earns more trust. */
+      /**
+       * Who it is for and who it is not. Exclusion earns more trust.
+       *
+       * NOT CURRENTLY RENDERED. It sat directly under the H1 in the hero rail
+       * and crowded it, so src/pages/s/[slug].astro stopped drawing it. The
+       * field is kept, and kept required, because the copy is real and written
+       * on eleven of the twelve services: deleting it would throw that away to
+       * save a line of schema, and putting it back is a one-line change. If it
+       * returns it wants a place of its own rather than the gap under the
+       * heading.
+       */
       qualifier: z.string().max(220),
       /** One named client or one number, above the fold. */
       proof: z.object({ value: z.string().max(24), label: z.string().max(80) }).optional(),

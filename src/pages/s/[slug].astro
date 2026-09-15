@@ -135,7 +135,13 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
             {d.frame && (
               <Fragment>
                 <h1 class="sv-frame__h">{d.frame.h1}</h1>
-                <p class="sv-frame__qual">{d.frame.qualifier}</p>
+                {/* THE QUALIFIER IS NOT DRAWN. It sat directly under the H1 —
+                    two paragraphs of similar measure with 18px between them,
+                    then the rule and the proof figure — and the rail read as
+                    congested. The field is still in the schema and still
+                    written on eleven of the twelve services, so this is a
+                    rendering decision and no copy has been thrown away. See
+                    the note in src/content.config.ts. */}
                 {d.frame.proof && (
                   <p class="sv-frame__proof">
                     <b>{d.frame.proof.value}</b>
@@ -757,11 +763,6 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
     margin: 22px 0 0; max-width: 400px;
     font-size: 30px; line-height: 38px; font-weight: var(--fw-semi);
     letter-spacing: -0.03em; color: rgb(251, 251, 251);
-  }
-  .sv-frame__qual {
-    margin: 18px 0 0; max-width: 400px;
-    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.62);
   }
   .sv-frame__proof {
     display: flex; align-items: baseline; gap: 12px; margin: 26px 0 0;
