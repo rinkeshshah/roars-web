@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-24
 dateLabel: "Aug 24, 2022"
 headline: "Tanishq"
-heroImage: "/wp-content/uploads/2022/08/tanishq-userprofile1.png"
+heroImage: "/work/tanishq-data-analytics.jpg"
 about: "Data analytics is not limited to big corporations and data warehousing, anymore. Business success factors such as customer experience and customer retention, drove corporations and SMEs alike, to use data analytics as a precursor to providing apt and delightful customer experience."
 blocks:
   - heading: "Requirements"

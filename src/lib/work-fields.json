@@ -1,0 +1,146 @@
+{
+  "concierge-loyalty-program": {
+    "dominantHue": 25,
+    "accentHue": 206,
+    "share": 0.0934,
+    "usedAccent": true,
+    "hue": 206,
+    "field": "hsl(206 28% 16%)"
+  },
+  "gymbait": {
+    "dominantHue": 37,
+    "accentHue": 207,
+    "share": 0.122,
+    "usedAccent": true,
+    "hue": 207,
+    "field": "hsl(207 28% 16%)"
+  },
+  "flowrow-fitness-app": {
+    "dominantHue": 35,
+    "accentHue": 181,
+    "share": 0.0183,
+    "usedAccent": true,
+    "hue": 181,
+    "field": "hsl(181 28% 16%)"
+  },
+  "tanishq-data-analytics": {
+    "dominantHue": 46,
+    "accentHue": 194,
+    "share": 0.0154,
+    "usedAccent": true,
+    "hue": 194,
+    "field": "hsl(194 28% 16%)"
+  },
+  "ventura-law-firm": {
+    "dominantHue": 22,
+    "accentHue": 202,
+    "share": 0.0063,
+    "usedAccent": true,
+    "hue": 202,
+    "field": "hsl(202 28% 16%)"
+  },
+  "advisee": {
+    "dominantHue": 204,
+    "accentHue": null,
+    "share": 0,
+    "usedAccent": false,
+    "hue": 204,
+    "field": "hsl(204 28% 16%)"
+  },
+  "community-social-residential-community-app": {
+    "dominantHue": 26,
+    "accentHue": 82,
+    "share": 0.0052,
+    "usedAccent": true,
+    "hue": 82,
+    "field": "hsl(82 28% 16%)"
+  },
+  "club-social": {
+    "dominantHue": 34,
+    "accentHue": 215,
+    "share": 0.0002,
+    "usedAccent": false,
+    "hue": 34,
+    "field": "hsl(34 28% 16%)"
+  },
+  "go-champions-go": {
+    "dominantHue": 17,
+    "accentHue": 93,
+    "share": 0.0678,
+    "usedAccent": true,
+    "hue": 93,
+    "field": "hsl(93 28% 16%)"
+  },
+  "counter-cabinet": {
+    "dominantHue": 27,
+    "accentHue": 326,
+    "share": 0.0592,
+    "usedAccent": true,
+    "hue": 326,
+    "field": "hsl(326 28% 16%)"
+  },
+  "warehouse-compliance-checklist-app": {
+    "dominantHue": 26,
+    "accentHue": 196,
+    "share": 0.0078,
+    "usedAccent": true,
+    "hue": 196,
+    "field": "hsl(196 28% 16%)"
+  },
+  "parqly-parking-solution": {
+    "dominantHue": 27,
+    "accentHue": null,
+    "share": 0,
+    "usedAccent": false,
+    "hue": 27,
+    "field": "hsl(27 28% 16%)"
+  },
+  "411drives-on-demand-car-loan-app": {
+    "dominantHue": 24,
+    "accentHue": 215,
+    "share": 0.0205,
+    "usedAccent": true,
+    "hue": 215,
+    "field": "hsl(215 28% 16%)"
+  },
+  "gisaid-health-tech": {
+    "dominantHue": 215,
+    "accentHue": 46,
+    "share": 0.1533,
+    "usedAccent": true,
+    "hue": 46,
+    "field": "hsl(46 28% 16%)"
+  },
+  "friendo-healthcare-mobile-app-development": {
+    "dominantHue": 32,
+    "accentHue": 166,
+    "share": 0.0159,
+    "usedAccent": true,
+    "hue": 166,
+    "field": "hsl(166 28% 16%)"
+  },
+  "the-presidents-club": {
+    "dominantHue": 24,
+    "accentHue": 214,
+    "share": 0.0006,
+    "usedAccent": false,
+    "hue": 24,
+    "field": "hsl(24 28% 16%)"
+  },
+  "les-concierges": {
+    "dominantHue": 25,
+    "accentHue": null,
+    "share": 0,
+    "usedAccent": false,
+    "hue": 25,
+    "field": "hsl(25 28% 16%)"
+  },
+  "reward-butler": {
+    "dominantHue": 28,
+    "accentHue": null,
+    "share": 0,
+    "usedAccent": false,
+    "hue": 28,
+    "field": "hsl(28 28% 16%)"
+  }
+}

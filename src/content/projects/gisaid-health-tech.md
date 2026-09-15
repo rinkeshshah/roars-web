@@ -7,7 +7,7 @@ publishedAt: 2022-09-01
 featured: true
 dateLabel: "Sep 1, 2022"
 headline: "GISAID"
-heroImage: "/wp-content/uploads/2025/07/health-tech-covid.jpg"
+heroImage: "/work/gisaid-health-tech.jpg"
 about: "We developed tool for GISAID’s internal team so that they can have the access to the largest database of COVID-19. API was used to develop this tool to pull data from across the world."
 blocks:
   - heading: "Challenges"

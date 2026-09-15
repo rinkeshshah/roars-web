@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-24
 dateLabel: "Aug 24, 2022"
 headline: "Clubsocial"
-heroImage: "/wp-content/uploads/2022/08/club-social.jpg"
+heroImage: "/work/club-social.jpg"
 about: "Membership management App are an expensive affair which makes this truth inevitable. Our client, however, came up with a disruptive idea of pooling in a number of premium global clubs into one single app which you can access with a single subscription."
 facts:
   - k: "Expertise"

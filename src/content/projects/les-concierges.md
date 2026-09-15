@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-24
 dateLabel: "Aug 24, 2022"
 headline: "Les Concierges"
-heroImage: "/wp-content/uploads/elementor/thumbs/tuma-Fonts-typography-pu2jdlghjnim0k6f1ier6lk93d5o3mwpptu3ge3r6s.webp"
+heroImage: "/work/les-concierges.jpg"
 about: "Les Concierges is a members-only service that provides employees and customers of our client company with a personal assistant to help them with tasks and errands. Our concierge team is here to save you time and make your life easier."
 facts:
   - k: "Typography"

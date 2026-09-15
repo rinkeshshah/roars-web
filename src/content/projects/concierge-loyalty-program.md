@@ -7,7 +7,7 @@ publishedAt: 2025-07-24
 featured: true
 dateLabel: "Jul 24, 2025"
 headline: "Concierges"
-heroImage: "/wp-content/uploads/2025/07/concierge-ai-home.jpg"
+heroImage: "/work/concierge-loyalty-program.jpg"
 about: "Roars partnered with a fast-growing luxury concierge startup to transform its fragmented MVP into a unified, AI-powered platform tailored for high-net-worth travelers and enterprise clients."
 liveUrl: "https://www.concierges.in"
 blocks:

@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-24
 dateLabel: "Aug 24, 2022"
 headline: "Counter Cabinet"
-heroImage: "/wp-content/uploads/2022/08/counter-cabinet-color.png"
+heroImage: "/work/counter-cabinet.jpg"
 about: "Counter Cabinet is a game that allows users to select members of their dream presidential cabinet. They can create such cabinets using profiles of real politicians, gain or lose points for real-life social or political events, and compete against friends for the highest score."
 facts:
   - k: "Branding"

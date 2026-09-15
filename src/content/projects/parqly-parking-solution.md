@@ -7,7 +7,7 @@ publishedAt: 2025-07-28
 featured: true
 dateLabel: "Jul 28, 2025"
 headline: "Parqly"
-heroImage: "/wp-content/uploads/2025/07/parqly-parking-mobile-app.jpg"
+heroImage: "/work/parqly-parking-solution.jpg"
 about: "Parqly is at the forefront of urban innovation, transforming how drivers and parking owners navigate the world of city parking. Based in Cyprus, Parqly set out to eliminate the daily parking struggle with a seamless, technology-driven platform—fusing the power of mobile apps with smart automation…"
 liveUrl: "https://www.parqly.com"
 facts:

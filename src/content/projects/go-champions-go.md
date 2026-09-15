@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-10
 dateLabel: "Aug 10, 2022"
 headline: "GO Champions Go"
-heroImage: "/wp-content/uploads/2022/08/312303-50x50-1.png"
+heroImage: "/work/go-champions-go.jpg"
 about: "Steps Tracking App takes a proactive approach towards ensuring better employee health and fitness levels. Corporations try many different routes to improve employees’ happiness index."
 liveUrl: "https://www.orderdirect.ky/"
 facts:

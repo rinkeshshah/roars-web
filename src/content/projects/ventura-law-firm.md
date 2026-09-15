@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2023-02-28
 dateLabel: "Feb 28, 2023"
 headline: "Ventura Law Firm"
-heroImage: "/wp-content/uploads/2023/02/ventura-law-header-12.jpg"
+heroImage: "/work/ventura-law-firm.jpg"
 about: "Ventura Law has been a preeminent legal resource in Connecticut and the Tri-State Area since 1957. With a long-standing tradition of excellence, their attorneys have provided exemplary guidance to businesses, public entities, and individuals."
 liveUrl: "https://www.venturalaw.com/"
 facts:

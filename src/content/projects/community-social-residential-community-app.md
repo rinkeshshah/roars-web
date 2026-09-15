@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-24
 dateLabel: "Aug 24, 2022"
 headline: "Community Social"
-heroImage: "/wp-content/uploads/2022/08/comsocial-branding.png"
+heroImage: "/work/community-social-residential-community-app.jpg"
 about: "As the numbers of gated communities increase, there is an increasing need to manage the resources housed therein. Realtors are bringing to people, luxury apartments with a number of utilities. They have swimming pools, gymnasiums, saunas, Jacuzzis, and party halls."
 facts:
   - k: "Typography"

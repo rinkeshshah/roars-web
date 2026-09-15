@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-09-01
 dateLabel: "Sep 1, 2022"
 headline: "The President's Club"
-heroImage: "/wp-content/uploads/2022/08/president-colo-color-therpy.png"
+heroImage: "/work/the-presidents-club.jpg"
 about: "A concept created by Samsung, to honor its loyal partners and distributors. It wanted to extend the service through a mobile app interface with smooth UI/UX for easy use and navigation for customer loyalty program app."
 liveUrl: "https://play.google.com/store/apps/details?id=com.thepresidentsclub"
 facts:

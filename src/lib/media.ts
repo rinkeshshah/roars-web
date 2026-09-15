@@ -114,11 +114,36 @@ export const WORK = {
  * whatever month the file was uploaded), and a guessed one is a 404 that
  * looks like a bug rather than a gap.
  */
+/**
+ * THE EIGHTEEN CASE STUDIES WITH COMMISSIONED PHOTOGRAPHY.
+ *
+ * Served from this repo at /work/<slug>.jpg, cropped to 2:1 and saturation-
+ * capped at 0.8 by scripts/build-work-headers.mjs. They are listed rather than
+ * discovered from the filesystem because this module is imported by pages that
+ * must not do I/O, and because a missing file should be a visible gap rather
+ * than a silent one.
+ *
+ * The five absent — blelp, companyguru, gypsy, onus, super-social — keep
+ * whatever /wp-content/uploads/ path their content file already carried. Of
+ * those, only ONUS is on the /work/ index; the other four are held back.
+ */
+const WORK_HEADER = new Set([
+  'warehouse-compliance-checklist-app', 'parqly-parking-solution',
+  '411drives-on-demand-car-loan-app', 'gisaid-health-tech',
+  'friendo-healthcare-mobile-app-development', 'the-presidents-club',
+  'les-concierges', 'reward-butler', 'concierge-loyalty-program', 'gymbait',
+  'flowrow-fitness-app', 'tanishq-data-analytics', 'ventura-law-firm',
+  'advisee', 'community-social-residential-community-app', 'club-social',
+  'go-champions-go', 'counter-cabinet',
+])
+
 export const workHeroFor = (href: string): string | undefined => {
   const slug = href.replace(/^\/work\//, '').replace(/\/$/, '')
+  if (WORK_HEADER.has(slug)) return `/work/${slug}.jpg`
   const key = PROJECTS.find((p) => p.slug === slug)?.image
   return key ? WORK[key as keyof typeof WORK] : undefined
 }
+
 
 /**
  * Guide cover art, by /resources/ slug.

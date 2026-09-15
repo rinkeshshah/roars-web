@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-24
 dateLabel: "Aug 24, 2022"
 headline: "FlowRow"
-heroImage: "/wp-content/uploads/2022/08/flowrow-colortherpy.png"
+heroImage: "/work/flowrow-fitness-app.jpg"
 about: "Fitness experts ideally make this ultimate app for fitness enthusiasts who like flowing & dynamic movements and at the same time want to improve endurance, strength, and posture. Moreover, FlowRow uses the FlowRow Board."
 liveUrl: "https://play.google.com/store/apps/details?id=com.p9zqmh1342j8.p97akwqwapp"
 facts:

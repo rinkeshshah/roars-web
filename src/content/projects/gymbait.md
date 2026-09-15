@@ -7,7 +7,7 @@ publishedAt: 2024-07-16
 featured: true
 dateLabel: "Jul 16, 2024"
 headline: "GYMBAIT"
-heroImage: "/wp-content/uploads/2025/07/ai-fitness-home.jpg"
+heroImage: "/work/gymbait.jpg"
 about: "GymBAIT started with a clear insight: traditional fitness apps track workouts but don’t keep users committed. Users get frustrated when plans feel generic and motivation fades quickly."
 liveUrl: "https://apps.apple.com/app/gymbait/id6474441798"
 facts:

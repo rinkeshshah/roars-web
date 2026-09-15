@@ -6,7 +6,7 @@ publishedAt: 2026-02-18
 featured: true
 dateLabel: "Feb 18, 2026"
 headline: "Snowman"
-heroImage: "/wp-content/uploads/2026/02/Snowman-Logistics-app-solution.jpg"
+heroImage: "/work/warehouse-compliance-checklist-app.jpg"
 heroAlt: "Snowman Logistics warehouse platform"
 team: ["founder", "abhishek", "chetna", "nitin", "suzanne"]
 about: "A centralised warehouse operations system for Snowman Logistics — replacing manual checklists and fragmented reporting with real-time visibility, structured compliance and scalable control across every site."

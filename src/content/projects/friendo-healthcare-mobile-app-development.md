@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-24
 dateLabel: "Aug 24, 2022"
 headline: "Find a Friendo"
-heroImage: "/wp-content/uploads/2022/08/friendo-wireframe.png"
+heroImage: "/work/friendo-healthcare-mobile-app-development.jpg"
 about: "Mental Illnesses are becoming more common throughout our nation’s colleges. And, college therapy just isn’t working anymore because the college psychiatry system fails. According to proven research, talking about your problems with someone can clear one’s headspace and begin the growth process."
 blocks:
   - heading: "Challenges"

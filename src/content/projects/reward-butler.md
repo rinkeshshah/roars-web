@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2022-08-24
 dateLabel: "Aug 24, 2022"
 headline: "Reward Butler"
-heroImage: "/wp-content/uploads/elementor/thumbs/tuma-Fonts-typography-ptebeb4lx57mc7rv3ydjtkwtf6tchwobhdtrgoa0ro.webp"
+heroImage: "/work/reward-butler.jpg"
 about: "Organizations have discovered that one of the most effective ways to maintain employee motivation is to provide rewards for targets that are met. This approach ensures that employee goals are consistent with those of the organization, resulting in a mutually beneficial situation."
 facts:
   - k: "Expertise"

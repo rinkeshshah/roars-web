@@ -6,7 +6,7 @@ migrated: true
 publishedAt: 2025-03-27
 dateLabel: "Mar 27, 2025"
 headline: "Advisee"
-heroImage: "/wp-content/uploads/2025/03/advisee-finance-featured.jpg"
+heroImage: "/work/advisee.jpg"
 about: "Advisee, a trusted platform for mutual fund investments, partnered with Roars Technologies to revamp its digital presence. The goal was to create a seamless, engaging, and high-performing website that reflects the company’s credibility, enhances user experience, and simplifies investment decisions…"
 facts:
   - k: "Expertise"
