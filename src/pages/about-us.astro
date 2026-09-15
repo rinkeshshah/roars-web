@@ -58,17 +58,29 @@ const team = [
    which is not a fact about any of them. */
 const clients = CLIENT_LOGOS
 
+/**
+ * Read off the award badges on the live site, so the years are the ones the
+ * badges actually carry.
+ *
+ * The list this replaces ran 2026, 2025, 2025, 2024, 2024, which is not what
+ * any of the plaques say: the Clutch marks are 2022 and 2020, and the CIO
+ * Review one is 2018. Where a badge names a region it is kept, because "Top
+ * B2B Companies, Global" and "Top IT Services, India" are different awards.
+ *
+ * The two GoodFirms badges carry no year on the plaque, so none is written
+ * here. An invented year on an award is the kind of small false detail that
+ * costs more than the empty column does.
+ *
+ * "Top 15th User Experience Company" is not in this list: it is the headline
+ * above it, and repeating it would have it read twice.
+ */
 const awards = [
-  { year: '2026', title: 'Top 15 User Experience Company', body: 'Clutch', no: '/01' },
-  { year: '2025', title: 'Top Mobile App Development', body: 'Clutch', no: '/02' },
-  { year: '2025', title: 'Top B2B Company', body: 'Clutch', no: '/03' },
-  { year: '2024', title: 'Recognised Product Design Agency', body: 'GoodFirms', no: '/04' },
-  { year: '2024', title: 'Top Startup Consulting Partner', body: 'GoodFirms', no: '/05' },
-]
-
-const shots = [
-  { img: AGENCY_IMG.strategy, caption: 'Team work', year: '2026' },
-  { img: AGENCY_IMG.experience, caption: 'Generating ideas', year: '2024' },
+  { year: '2022', title: 'Top IT Services, India', body: 'Clutch', no: '/01' },
+  { year: '2020', title: 'Top Mobile App Developers', body: 'Clutch', no: '/02' },
+  { year: '2020', title: 'Top B2B Companies, Global', body: 'Clutch', no: '/03' },
+  { year: '', title: 'Top Software Developer', body: 'GoodFirms', no: '/04' },
+  { year: '', title: 'Top App Designer', body: 'GoodFirms', no: '/05' },
+  { year: '2018', title: '20 Most Promising UI/UX Solution Providers', body: 'CIO Review', no: '/06' },
 ]
 
 const schema = [
@@ -228,17 +240,16 @@ const schema = [
         <Button href="/contact-us/" label="Get Started" />
       </div>
 
-      <ul class="agb__shots" data-reveal>
-        {shots.map((s) => (
-          <li>
-            <span class="agb__shot"><img src={s.img} alt="" width="661" height="371" loading="lazy" /></span>
-            <span class="agb__shot-caption">{s.caption}</span>
-            <span class="agb__shot-year">{s.year}</span>
-          </li>
-        ))}
-      </ul>
 
-      <h2 class="agb__h2 agb__h2--awards">Awards:</h2>
+      <h2 class="agb__h2 agb__h2--awards">Awarded</h2>
+      {/* The lead the awards block was missing: what the recognition is for,
+          rather than a bare list of plaques. Copy supplied by the client. */}
+      <div class="agb__lead-award" data-reveal>
+        <h3 class="agb__lead-award-title">Top 15th User Experience Company</h3>
+        <p class="agb__lead-award-body">Our team is dedicated to delivering outstanding
+          experiences. We go above and beyond simply producing technology-based
+          solutions; we are focused on creating positive experiences for our users.</p>
+      </div>
       <ul class="agb__awards" data-reveal>
         {awards.map((a) => (
           <li class="agb__award">
@@ -375,24 +386,23 @@ const schema = [
   .agb__person { width: 198px; }
   .agb__disc { display: block; width: 198px; height: 198px; border-radius: 50%; overflow: hidden; background: rgb(217, 217, 217); }
   .agb__disc img { width: 100%; height: 100%; object-fit: cover; }
-  /* CLIENT MARKS SIT IN A FLAT CELL, NOT A CIRCLE.
-     The team portraits are circular because a face crops well to a circle.
-     A wordmark does not: "DDB mudra group", "bollywoodhungama.com" and
-     "WOODLAND" are wide lockups, and a 198px disc either shrinks them until
-     the strapline is unreadable or clips their ends. A cell of the same
-     footprint gives the same grid rhythm and lets each mark keep its own
-     proportions. */
+  /* CLIENT MARKS SIT IN A DISC, like the team portraits. Same shape, same
+     footprint, so the two grids read as one system.
+     THE LOGO IS SIZED TO THE INSCRIBED SQUARE, not to the cell. A circle of
+     diameter D only has D x 0.707 of usable width across its centre, so a
+     wide lockup measured against the full 198px would run its ends out
+     through the curve. 132px is that safe width with a little air; the
+     padding is belt and braces for the marks that are nearly square. */
   .agb__cell {
     display: flex; align-items: center; justify-content: center;
-    width: 198px; height: 198px; padding: 30px; border-radius: 10px;
+    width: 198px; height: 198px; padding: 26px; border-radius: 50%;
     background: rgb(244, 244, 242);
-    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.06);
   }
   /* Contained rather than sized, so a tall mark and a wide one both fit and
      neither is stretched. Desaturated so a colour file dropped in later
      still reads as part of one wall. */
   .agb__cell img {
-    max-width: 100%; max-height: 72px;
+    max-width: 132px; max-height: 62px;
     width: auto; height: auto; object-fit: contain;
     filter: grayscale(1); opacity: 0.62;
     transition: opacity var(--dur-fast) ease;
@@ -442,29 +452,47 @@ const schema = [
   .agb__h2 { margin: 0; font-size: 58px; line-height: 43px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
   .agb__h2--clients { margin: 122px 0 0 465px; }
   .agb__h2--awards { margin: 99px 0 0 460px; }
+  /* Sits under the heading in the same column, so the block reads as one
+     statement rather than a title floating above a list. */
+  .agb__lead-award { margin: 30px 0 0 460px; max-width: 420px; }
+  .agb__lead-award-title {
+    margin: 0;
+    font-size: var(--fs-item); line-height: 22px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .agb__lead-award-body {
+    margin: 12px 0 0;
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.7);
+  }
 
   .agb__cta { margin-top: 62px; display: grid; grid-template-columns: 462fr 464fr 436fr; align-items: start; }
   .agb__cta .agb__stars { padding-top: 26px; }
   .agb__cta-text { width: 356px; margin: 0; font-size: var(--fs-intro); line-height: 32px; font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: var(--c-black); }
-  .agb__cta :global(.btn) { margin-top: 22px; }
+  /* justify-self, or the button stretches to fill its 436px grid track: a
+     grid item defaults to stretch, and .btn only sets a MIN width, so nothing
+     stopped it. It was three times the width of its own label. */
+  .agb__cta :global(.btn) { margin-top: 22px; justify-self: start; }
 
   /* The export authors this block 420 tall and lets the year line overhang it
      by 5; without the explicit height the overhang pushed the awards down. */
-  .agb__shots { list-style: none; margin: 145px 0 0; padding: 0; height: 420px; display: grid; grid-template-columns: 661fr 39fr 661fr; }
-  .agb__shots > :nth-child(2) { grid-column: 3; }
-  .agb__shot { display: block; height: 371px; border-radius: 10px; overflow: hidden; background: rgb(30, 30, 30); }
-  .agb__shot img { width: 100%; height: 100%; object-fit: cover; }
-  .agb__shot-caption { display: block; margin-top: 14px; font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(20, 20, 20); }
-  .agb__shot-year { display: block; margin-top: 1px; font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium); letter-spacing: var(--ls-display); color: rgb(145, 144, 142); }
 
   /* 17, not the authored 60, for the same reason as the client grid. */
   .agb__awards { list-style: none; margin: 17px 0 0; padding: 0; }
-  .agb__award { position: relative; height: 48px; margin-bottom: 28px; }
+  /* 72, not the export's 48. The children are absolutely positioned, so the
+     row cannot grow to fit a title that wraps, and "20 Most Promising UI/UX
+     Solution Providers" is two lines at any sensible width. 72 holds two
+     lines from the title's 27px offset; the single-line rows keep the same
+     rhythm rather than each row being its own height. */
+  .agb__award { position: relative; height: 72px; margin-bottom: 28px; }
   .agb__award:last-child { margin-bottom: 0; }
   .agb__award-stub { position: absolute; left: 0; top: 0; width: 16px; height: 1.5px; background: var(--c-rule); opacity: 0.9; }
   .agb__award-year { position: absolute; left: 0; top: 27px; font-size: var(--fs-body); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-black); }
   .agb__award-rule { position: absolute; left: 34.068%; top: 0; width: 65.859%; height: 0.5px; background: var(--c-rule); opacity: 0.7; }
-  .agb__award-title { position: absolute; left: 466px; top: 27px; font-size: var(--fs-item); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-black); }
+  /* Capped so it wraps instead of running under the source column, which
+     starts at 68.209%. Without a width the longest award title printed
+     straight through "CIO Review". */
+  .agb__award-title { position: absolute; left: 466px; top: 27px; width: 30%; line-height: 1.22; font-size: var(--fs-item); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-black); }
   .agb__award-body { position: absolute; left: 68.209%; top: 24px; display: flex; align-items: center; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(2, 2, 2); }
   .agb__award-dot { width: 24px; height: 24px; margin-right: 21px; border-radius: 50%; background: rgb(242, 242, 242); }
   .agb__award-no { position: absolute; left: 94.2%; top: 24px; width: 5.727%; text-align: right; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
@@ -478,7 +506,7 @@ const schema = [
     .agh__founder, .agh__mast, .agh__trust, .agh__caption { grid-column: 1; grid-row: auto; margin-top: 0; }
     .agh__h1 { line-height: 1; margin-left: 0; }
     .agb { padding-block: 88px 88px; }
-    .agb__intro, .agb__cta, .agb__shots { grid-template-columns: 1fr; row-gap: 24px; }
+    .agb__intro, .agb__cta { grid-template-columns: 1fr; row-gap: 24px; }
     .agb__lede, .agb__creed, .agb__cta-text { width: auto; max-width: 520px; }
     .agb__stats { grid-template-columns: 1fr; row-gap: 40px; margin-top: 56px; }
     .agb__stats > :nth-child(2), .agb__stats > :nth-child(3) { grid-column: 1; }
@@ -486,9 +514,9 @@ const schema = [
     .agb__grid--team, .agb__grid--clients { margin-left: 0; margin-top: 64px; }
     .agb__grid--team > :nth-child(5), .agb__grid--team > .agb__rest { grid-column: auto; grid-row: auto; }
     .agb__h2--clients, .agb__h2--awards { margin-left: 0; }
+    .agb__lead-award { margin-left: 0; max-width: 560px; }
     .agb__h2 { font-size: var(--fs-stat); line-height: 1.1; }
     .agb__plate { height: 380px; margin-top: 64px; }
-    .agb__shots > :nth-child(2) { grid-column: 1; }
     .agb__award { height: auto; margin-bottom: 32px; padding-top: 18px; }
     .agb__award-stub { width: 100%; }
     .agb__award-year, .agb__award-title, .agb__award-body, .agb__award-no { position: static; display: block; }
@@ -517,8 +545,10 @@ const schema = [
     }
     .agb__person { width: auto; min-width: 0; }
     .agb__disc { width: 100%; height: auto; aspect-ratio: 1; }
-    .agb__cell { width: 100%; height: auto; aspect-ratio: 1; padding: 18px; }
-    .agb__cell img { max-height: 52px; }
+    .agb__cell { width: 100%; height: auto; aspect-ratio: 1; padding: 14px; }
+    /* Same inscribed-square rule, in percentages because the disc is fluid
+       here rather than a fixed 198. */
+    .agb__cell img { max-width: 66%; max-height: 32%; }
     .agb__person-name { margin-top: 12px; font-size: var(--fs-label); line-height: 17px; }
     .agb__person-role { font-size: var(--fs-label); line-height: 17px; }
 
@@ -537,14 +567,6 @@ const schema = [
     .agb__rest-n { font-size: 42px; line-height: 42px; gap: 6px; }
     .agb__rest-label { font-size: 17px; line-height: 23px; }
 
-    /* ── The overlap ────────────────────────────────────────
-       .agb__shots is drawn 420 tall because the export puts two shots side by
-       side and lets the year line overhang. Stacked, two 371px shots plus
-       their captions need about 850, and the fixed height does not grow — so
-       the second shot painted straight over the awards list below it. That is
-       the text overlap on this page. */
-    .agb__shots { height: auto; grid-template-columns: minmax(0, 1fr); row-gap: 26px; }
-    .agb__shot { height: 208px; }
 
     /* ── Gaps ───────────────────────────────────────────────
        Every one of these was measured for a 1362 canvas, where 145px between
@@ -557,7 +579,6 @@ const schema = [
     .agb__h2--clients { margin-top: 56px; }
     .agb__h2--awards { margin-top: 52px; }
     .agb__cta { margin-top: 44px; }
-    .agb__shots { margin-top: 52px; }
     .agb__awards { margin-top: 22px; }
     .agb__award { margin-bottom: 24px; }
     /* The title is set 19/19 for a single line on the wide canvas. Wrapped to

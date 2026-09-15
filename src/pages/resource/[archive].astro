@@ -347,14 +347,18 @@ const schema = [
     font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
     letter-spacing: 0.16em; color: var(--c-ink-label);
   }
+  /* Same pairing as /resources/guides/: a box shaped like the artwork, and
+     `contain` so it can never be cut. These are the same slide exports at
+     roughly 4:3, and the old 434/200 box with `object-fit: cover` took about
+     sixty pixels off the top and the bottom of every one. */
   .al__thumb {
-    position: relative; display: block; margin-top: 14px; aspect-ratio: 434 / 200;
+    position: relative; display: block; margin-top: 14px; aspect-ratio: 434 / 310;
     overflow: hidden; background: rgb(244, 244, 242);
     box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.1);
   }
   .al__thumb img {
     position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
   .al__name {
     display: block; margin-top: 20px;

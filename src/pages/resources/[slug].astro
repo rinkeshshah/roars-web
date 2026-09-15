@@ -381,7 +381,11 @@ const { Content } = entry ? await render(entry) : { Content: null }
   .gh__sheet--2 { left: 3.438%; top: 11px; background: rgba(251, 251, 249, 0.58); }
   .gh__sheet--1 { left: 0; top: 0; background: rgb(251, 251, 249); border-top: 4px solid var(--c-accent); }
   .gh__cover { position: absolute; left: 16px; top: 26px; overflow: hidden; width: 256px; height: 186px; background: rgb(240, 240, 237); }
-  .gh__cover img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* `contain`, not `cover`. The box is already 256x186, which is about the
+     artwork's own 4:3, so this changes almost nothing visually — but it is
+     what guarantees the cover is never cut if one of the fifteen turns out to
+     be a slightly different shape. The listing pages do the same. */
+  .gh__cover img { position: relative; display: block; width: 100%; height: 100%; object-fit: contain; }
   .gh__stamp, .gh__page {
     position: absolute; top: 228px; font-style: normal; line-height: normal;
     font-size: 10px; font-weight: var(--fw-semi); letter-spacing: 0.2em; color: rgba(20, 20, 20, 0.5);

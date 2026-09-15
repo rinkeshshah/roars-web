@@ -334,7 +334,7 @@ const schema = [
      with one that does; left in flow their "Download" lands wherever the copy
      stops, and the row reads as a mistake. */
   .rl__card { position: relative; }
-  .rl__card a { display: block; position: relative; height: 530px; }
+  .rl__card a { display: block; position: relative; height: 640px; }
   .rl__card a::before {
     content: ''; position: absolute; left: 0; top: 0;
     width: 100%; height: 0.5px; background: var(--c-rule-soft);
@@ -347,25 +347,35 @@ const schema = [
   /* Served from /wp-content/uploads/ like every other photograph on the site,
      so it 404s in this build and resolves on the webspace; media.ts blanks it
      meanwhile and the slot reads as the drawn block it is now. */
+  /* THE BOX IS THE SHAPE OF THE ARTWORK, AND THE FIT IS `contain`.
+     It was 434x200 with `object-fit: cover`, which is the pair that cut the
+     covers. The guide covers are slide exports at roughly 4:3; cover scales
+     the art until it fills the box and discards the overflow, so a 2.17:1 box
+     sliced about 60px off the top and the bottom of every card — the Roars
+     logo lost its top half and the illustration lost its feet.
+     Raising the height alone would not have fixed it: cover always fills, so
+     any box that is not exactly the art's ratio still crops. `contain` fits
+     the whole image in and can never cut, and the height below makes the box
+     ~1.4:1 so what it leaves over is a few pixels rather than grey bands. */
   .rl__thumb {
     position: absolute; top: 50px; left: 0; display: block;
-    overflow: hidden; width: 100%; height: 200px; background: rgb(244, 244, 242);
+    overflow: hidden; width: 100%; height: 310px; background: rgb(244, 244, 242);
   }
-  .rl__thumb img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; }
+  .rl__thumb img { position: relative; display: block; width: 100%; height: 100%; object-fit: contain; }
   .rl__name {
-    position: absolute; top: 268px; left: 0; display: block; width: 420px;
+    position: absolute; top: 378px; left: 0; display: block; width: 420px;
     font-size: 28px; line-height: 34px; font-weight: var(--fw-semi);
     letter-spacing: -0.045em; color: var(--c-ink-heading);
     transition: color var(--dur-fast) ease;
   }
   .rl__card a:hover .rl__name { color: var(--c-black); }
   .rl__sum {
-    position: absolute; top: 348px; left: 0; display: block; width: 420px;
+    position: absolute; top: 458px; left: 0; display: block; width: 420px;
     font-size: 15px; line-height: 23px; font-weight: var(--fw-medium);
     letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.72);
   }
   .rl__dl {
-    position: absolute; top: 490px; left: 0; display: block;
+    position: absolute; top: 600px; left: 0; display: block;
     font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
   }
@@ -389,7 +399,15 @@ const schema = [
     .rl__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
     .rl__card a { height: auto; padding-top: 20px; }
     .rl__cat, .rl__thumb, .rl__name, .rl__sum, .rl__dl { position: static; top: auto; width: auto; }
-    .rl__thumb { margin-top: 30px; }
+    /* The column is narrower here, so a fixed 310px box would stop matching
+       the artwork and start showing bands again. Let the ratio hold it.
+
+       POSITION STAYS RELATIVE. The rule above turns the whole card static, and
+       that quietly broke the plate: CanvasPlate positions its parts absolutely,
+       so with a static thumb their containing block became the card instead,
+       and `overflow: hidden` does not clip a box whose containing block is
+       outside it. The plate's blocks escaped and drew over the copy below. */
+    .rl__thumb { position: relative; margin-top: 30px; height: auto; aspect-ratio: 434 / 310; }
     .rl__name { margin-top: 18px; }
     .rl__sum { margin-top: 12px; }
     .rl__dl { margin-top: 22px; }

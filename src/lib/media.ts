@@ -203,14 +203,13 @@ export const JOURNAL_IMG: Record<string, string> = {
   'the-unexpected-insight-we-built-a-meal-planning-app': JOURNAL.mealPlanning,
 }
 
-/** The three photographs on /about-us/, in the export's order. The office
- *  shot and beautiful-experience are shared with JOURNAL and SERVICE_IMG
- *  above; the same file on two pages is the export's own choice, not a
- *  placeholder standing in for something missing. */
+/** The office photograph on /about-us/.
+ *  `strategy` and `experience` were the two shots below the awards; that pair
+ *  was removed from the page, so they are removed here rather than left as a
+ *  map nobody reads. beautiful-experience is still served from SERVICE_IMG,
+ *  which is where the homepage accordion draws it. */
 export const AGENCY_IMG = {
   office: `${U}/2024/11/roars-office-upscale-768x768.jpg`,
-  strategy: `${U}/2026/04/aboutus-strategy.jpg`,
-  experience: `${U}/2025/04/beautiful-experience.jpg`,
 } as const
 
 /** Gated PDFs. Root-level /tools/, NOT under the wp-content rewrite. */
