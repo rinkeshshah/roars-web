@@ -14,11 +14,13 @@
  * 1362 content width, taken from the measured x positions in the specs
  * (contact 0, navigation 459, social 692, subscribe 926).
  *
- * The newsletter fields are rendered with real labels and post to the Phase 4
- * PHP endpoint. That endpoint does not exist yet, so the form is marked
- * data-pending and the submit button is disabled until Phase 4 wires it.
- * Shipping a form that silently swallows submissions is worse than one that
- * plainly is not ready.
+ * The newsletter fields post to public/api/contact.php, which handles the
+ * `newsletter` form alongside contact, guide and callback. This was disabled
+ * with a "sign-up opens when the new site goes live" note for as long as that
+ * endpoint did not exist — shipping a form that silently swallows submissions
+ * is worse than one that plainly is not ready — and it exists now, so the
+ * form is live and carries data-contact-form like the other three. On success
+ * it lands on /thankyou/ with the rest of them.
  */
 import { site } from '../lib/site'
 import { FOOTER_NAV, SOCIAL, LEGAL } from '../lib/nav'
@@ -127,21 +129,23 @@ const year = new Date().getFullYear()
       <div class="ft__col">
         <span class="ft__label">Subscribe our News</span>
         <div class="ft__rule ft__rule--short"></div>
-        <form class="ft__sub" data-pending action="/api/contact.php" method="post">
+        <form class="ft__sub" action="/api/contact.php" method="post" data-contact-form>
           <input type="hidden" name="form" value="newsletter" />
           <div class="ft__field">
             <label for="ft-name">Your name *</label>
-            <input id="ft-name" name="name" type="text" required autocomplete="name" disabled />
+            <input id="ft-name" name="name" type="text" required autocomplete="name" />
           </div>
           <div class="ft__field">
             <label for="ft-email">Email *</label>
-            <input id="ft-email" name="email" type="email" required autocomplete="email" disabled />
+            <input id="ft-email" name="email" type="email" required autocomplete="email" />
           </div>
-          <button class="ft__submit" type="submit" disabled>
+          <button class="ft__submit" type="submit">
             <span>Subscribe</span>
             <span class="ft__dots" aria-hidden="true"><i></i><i></i></span>
           </button>
-          <p class="ft__pending">Sign-up opens when the new site goes live.</p>
+          {/* Empty until the island writes into it. It keeps the reserved line
+              so the button does not jump when the first message lands. */}
+          <p class="ft__pending" data-form-status role="status"></p>
         </form>
       </div>
     </div>

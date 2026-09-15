@@ -1,6 +1,6 @@
 ---
 /**
- * Not found.
+ * Not found. Built from design/prototypes/Roars v2 - 404.dc.html.
  *
  * MUST RETURN A REAL 404, not a 200 carrying a 404 page. nginx does that with
  * `error_page 404 /404.html` — see docs/DEPLOYMENT.md. A soft 404 is worse
@@ -17,10 +17,21 @@
  * oldest reflected-XSS hole there is, and it tells the visitor nothing they
  * do not already know. CLAUDE.md: never echo user input.
  *
- * The ticket is the industries receipt, reused. A request that came back with
- * nothing is still a request, and printing it as a docket says so with more
- * wit than an apology does. Its clock is the same module the hero ticket
- * uses, so it costs no new JavaScript.
+ * WHAT CAME FROM THE DESIGN AND WHAT CAME FROM THE SITE. The band, the digits
+ * with the hole punched between them, the copy, the two buttons and the route
+ * list are the prototype's. The shell is this site's — TopBar, NavOverlay and
+ * SiteFooter — because the prototype ships its own stand-in header and footer
+ * that exist only so the artboard is a whole page. Following the real shell is
+ * what keeps the 404 part of the site rather than a separate thing that looks
+ * like it.
+ *
+ * THE MOTION IS ALL THERE, deliberately: the ring spins, the mark inside it
+ * floats, the status dot pulses, the two grounds drift, and the whole stack
+ * answers the pointer with a parallax. Accessibility is not handled by cutting
+ * any of it — src/styles/tokens.css carries a site-wide
+ * prefers-reduced-motion blanket that reduces every animation and transition
+ * to 0.01ms, so a visitor who asks for stillness gets it without this page
+ * shipping a second, quieter design.
  *
  * Always noindex, whatever the site-wide switch says.
  */
@@ -31,23 +42,24 @@ import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import GrainField from '../components/GrainField.astro'
 import { site } from '../lib/site'
-import { inventory } from '../lib/inventory'
-import { redirectList } from '../lib/redirects.mjs'
+import mark from '../assets/roars-mark.png'
 
-/* Real counts, read at build time. Hardcoding "198" was accurate the day it
-   was written and wrong the day a page was added — a docket that quietly goes
-   stale is worse than one with no numbers on it. */
-const urlCount = inventory.length
-const redirectCount = redirectList.length
-
-/* Where people actually meant to go. Every one is a live route. */
-const ways = [
-  { n: '01', label: 'Work', body: 'Twenty-three case studies.', href: '/work/' },
-  { n: '02', label: 'Services', body: 'What we do, and how.', href: '/s/ai-automation-services/' },
-  { n: '03', label: 'Insights', body: 'Twenty years, written down.', href: '/our-journal/' },
-  { n: '04', label: 'Resources', body: 'Free one page templates.', href: '/resources/guides/' },
-  { n: '05', label: 'Contact', body: 'Five offices, one reply.', href: '/contact-us/' },
+/**
+ * Where people actually meant to go. Every href is a live route.
+ *
+ * The prototype points these at its own artboards — Roars v2 - Main.dc.html
+ * and friends — which are not URLs. Titles and notes are the design's; the
+ * destinations are the inventory's, per CLAUDE.md rule 1.
+ */
+const routes = [
+  { title: 'Home', note: 'Start over', href: '/' },
+  { title: 'Projects', note: '250+ delivered', href: '/work/' },
+  { title: 'Agency', note: 'Who we are', href: '/about-us/' },
+  { title: 'Insights', note: 'How we work', href: '/our-journal/' },
+  { title: 'Contact', note: 'Reply in 24 hours', href: '/contact-us/' },
 ]
+
+const reportHref = `mailto:${site.email.sales}?subject=${encodeURIComponent('Broken link on roarsinc.com')}`
 ---
 
 <BaseLayout
@@ -60,93 +72,63 @@ const ways = [
   <NavOverlay />
 
   <Section ground="dark" bleed>
-    <div class="nf">
+    <div class="nf" data-nf>
       <GrainField tone="dark" second />
+
       <div class="wrap nf__inner">
-        <div class="nf__rail" data-reveal>
-          <span class="nf__eyebrow">ERROR / 404</span>
-          <span class="nf__tick" aria-hidden="true"></span>
-          <h1 class="nf__h">
-            <span class="nf__h-small">page</span>
-            <span class="nf__h-large">not found</span>
-          </h1>
-          <p class="nf__body">
-            We looked. It is not here. Either the address has a typo in it, the page
-            moved and something still points at the old one, or we retired it. None of
-            those are your fault.
-          </p>
-          <a class="nf__home" href="/">
-            <span>Back to the homepage</span>
-            <span class="nf__dot nf__dot--grey" aria-hidden="true"></span>
-            <span class="nf__dot nf__dot--accent" aria-hidden="true"></span>
-          </a>
+        <div class="nf__flag">
+          <span class="nf__flag-text">Error 404</span>
+          <span class="nf__pulse" aria-hidden="true"></span>
         </div>
 
-        {/* The docket. Same shape as the hero ticket on an industry page, and
-            the same clock module — a request that came back empty is still a
-            request, and this prints it. */}
-        <aside
-          class="nf__ticket"
-          data-reveal
-          data-ticket={JSON.stringify(['SEARCHING', 'NO MATCH', 'NOT FOUND'])}
-          data-ticket-index="2"
-          aria-hidden="true"
-        >
-          <span class="nf__tear" aria-hidden="true"></span>
-          <div class="nf__paper">
-            <div class="nf__head">
-              <span>ROARS INDEX</span>
-              <span class="nf__time" data-ticket-clock>09:04:04</span>
+        <div class="nf__stack" data-nf-stack>
+          {/* The two figures with the hole punched between them. The middle
+              slot is not a zero — it is a ring with the mark adrift inside,
+              which is the joke the page is built on. */}
+          <div class="nf__digits">
+            <span class="nf__fig" data-nf-par=".05" aria-hidden="true">4</span>
+            <span class="nf__hole" data-nf-hole>
+              <span class="nf__ring" aria-hidden="true"></span>
+              <span class="nf__orbit" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
+            </span>
+            <span class="nf__fig" data-nf-par=".05" aria-hidden="true">4</span>
+            {/* The digits are decorative; the heading below carries the text.
+                Screen readers get the number once, here, not as "4 4". */}
+            <span class="visually-hidden">404.</span>
+          </div>
+
+          <div class="nf__cols">
+            <div class="nf__rail">
+              <span class="nf__rule" aria-hidden="true"></span>
+              <h1 class="nf__h">This page drifted out of orbit.</h1>
+              <p class="nf__body">
+                The address is valid, the page is not — it was moved, renamed, or never
+                existed. Nothing is broken on your side.
+              </p>
+              <div class="nf__actions">
+                <a class="nf__home" href="/">
+                  <span>Back to home</span>
+                  <span class="nf__dots" aria-hidden="true">
+                    <span class="nf__dot nf__dot--soft"></span>
+                    <span class="nf__dot nf__dot--ink"></span>
+                  </span>
+                </a>
+                <a class="nf__report" href={reportHref}>Report a broken link</a>
+              </div>
             </div>
-            <span class="nf__hair"></span>
-            <p class="nf__meta">LOOKUP #404</p>
-            <p class="nf__meta nf__meta--dim">ONE RESULT EXPECTED</p>
-            <span class="nf__hair"></span>
-            <ul class="nf__lines">
-              <li><span>URLs on file</span><span class="nf__v">{urlCount}</span></li>
-              <li><span>Redirects checked</span><span class="nf__v">{redirectCount}</span></li>
-              <li><span>Matches</span><span class="nf__v">0</span></li>
-            </ul>
-            <span class="nf__hair"></span>
-            <p class="nf__label">STATUS</p>
-            <p class="nf__status">
-              <span class="nf__led"></span><span data-ticket-status>NOT FOUND</span>
-            </p>
-            <div class="nf__ticks">
-              {[0, 1, 2].map((i) => (
-                <span data-ticket-step class:list={[i <= 2 && 'is-on']}></span>
+
+            <div class="nf__ways">
+              <span class="nf__ways-label">Try one of these</span>
+              {routes.map((r) => (
+                <a class="nf__row" href={r.href}>
+                  <span class="nf__row-title">{r.title}</span>
+                  <span class="nf__row-note">{r.note}</span>
+                </a>
               ))}
             </div>
-            <span class="nf__hair"></span>
-            <p class="nf__foot">NOTHING WAS CHARGED</p>
           </div>
-          <span class="nf__tear" aria-hidden="true"></span>
-        </aside>
+        </div>
       </div>
-    </div>
-  </Section>
-
-  {/* Not a dead end. Five real routes, so the page is a junction. */}
-  <Section ground="light">
-    <div class="nw">
-      <span class="nw__rule" aria-hidden="true"></span>
-      <span class="nw__eyebrow">WHERE YOU PROBABLY MEANT TO GO</span>
-      <ul class="nw__rows">
-        {ways.map((w) => (
-          <li>
-            <a href={w.href}>
-              <span class="nw__n">{w.n}</span>
-              <span class="nw__label">{w.label}</span>
-              <span class="nw__body">{w.body}</span>
-              <span class="nw__go" aria-hidden="true">→</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-      <p class="nw__note">
-        Followed a link to get here? Tell us where it was and we will fix it —
-        <a href={`mailto:${site.email.sales}`}>{site.email.sales}</a>.
-      </p>
     </div>
   </Section>
 
@@ -156,7 +138,7 @@ const ways = [
     blurb="Tell us what you were after. It is quicker than hunting through a nav, and somebody here has probably written about it."
     tagline="user experience matters"
     ctaLabel="Shall we chat?"
-    ctaHref="https://meet.roarsinc.com/sales"
+    ctaHref={site.booking}
   />
 </BaseLayout>
 
@@ -165,145 +147,188 @@ const ways = [
   .nf { position: relative; }
   .nf__inner {
     position: relative; z-index: 1;
-    display: grid; grid-template-columns: minmax(0, 1fr) 228px;
-    column-gap: 60px; align-content: start; padding-block: 180px 120px; min-height: 700px;
+    display: flex; flex-direction: column;
+    padding-block: 120px 96px; min-height: 620px;
   }
-  .nf__rail { grid-column: 1; max-width: 700px; }
-  .nf__eyebrow {
-    display: block;
-    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
-    letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.55);
-  }
-  .nf__tick { display: block; width: 16px; height: 1.5px; margin-top: 19px; background: var(--c-accent); }
 
-  .nf__h { margin: 26px 0 0; }
-  .nf__h-small {
-    display: block; margin-left: 2px;
-    font-size: 56px; line-height: 60px; font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-display); color: rgba(255, 255, 255, 0.6);
+  /* The status flag. The prototype puts this in its own header; here the real
+     TopBar owns that row, so it sits at the top of the band instead. */
+  .nf__flag { display: flex; align-items: center; gap: 10px; }
+  .nf__flag-text {
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
   }
-  /* Sized off the viewport so the two words never wrap into three lines and
-     never overhang. The vw term stays above the cap / 14.4 rule. */
-  .nf__h-large {
-    display: block; margin-top: 2px; white-space: nowrap;
-    font-size: clamp(52px, 8.62vw, 124px); line-height: 124px; font-weight: var(--fw-semi);
-    letter-spacing: -0.055em; color: rgb(251, 251, 251);
+  .nf__pulse {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--c-accent);
+    animation: nfPulse 2.4s ease-in-out infinite;
+  }
+
+  .nf__stack {
+    display: flex; flex-direction: column; gap: clamp(2px, 0.6vw, 8px);
+    margin-top: clamp(10px, 2vh, 22px);
+  }
+
+  /* ── the digits ─────────────────────────────────────────── */
+  /* LINE-HEIGHT IS `normal`, NOT THE PROTOTYPE'S 0.78.
+     A Range over a text node reports the font's em box, not the line box, and
+     at 360px Inter that is 436px against a 0.78 line box of 280px — so the
+     numerals claimed 78px above and below the space they appeared to take.
+     Nothing paints there (a "4" has no descender and its cap sits well below
+     the ascender), but the box is real, and assert-overlap correctly reported
+     it sitting on the flag above and the heading below.
+     Making the line box match the glyph box is the honest fix: the row now
+     reserves exactly what it occupies. The stack's own margin and gap are
+     pulled in to compensate, so the ink lands close to where the prototype
+     puts it rather than 78px lower. */
+  .nf__digits {
+    position: relative; display: flex; align-items: center;
+    gap: clamp(4px, 1vw, 14px); line-height: normal; user-select: none;
+  }
+  .nf__fig {
+    display: block;
+    font-size: clamp(120px, 26vw, 360px); font-weight: var(--fw-semi);
+    letter-spacing: -0.05em; color: #FBFBFB;
+  }
+  .nf__hole {
+    position: relative; flex: none;
+    width: clamp(96px, 21vw, 290px); height: clamp(96px, 21vw, 290px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  /* An ANNULUS, not a disc: a conic gradient with its middle masked out, so
+     the "0" reads as an orbit the mark has come loose from. */
+  .nf__ring {
+    position: absolute; inset: 0; border-radius: var(--r-circle);
+    background: conic-gradient(var(--c-accent) 0turn, rgba(255, 212, 0, 0.12) 0.72turn, rgba(255, 212, 0, 0.12) 1turn);
+    mask: radial-gradient(circle, rgba(0, 0, 0, 0) 63%, #000 65%);
+    -webkit-mask: radial-gradient(circle, rgba(0, 0, 0, 0) 63%, #000 65%);
+    animation: nfSpin 26s linear infinite;
+  }
+  /* Masked rather than <img>, the same way LogoChip does it, so the mark takes
+     a token colour instead of shipping a second recoloured raster. */
+  .nf__orbit {
+    position: relative; display: block;
+    width: clamp(26px, 5vw, 64px); aspect-ratio: 1;
+    background: var(--c-accent);
+    mask: var(--mark) center / contain no-repeat;
+    -webkit-mask: var(--mark) center / contain no-repeat;
+    animation: nfFloat 9s ease-in-out infinite;
+  }
+
+  /* ── copy and routes ────────────────────────────────────── */
+  .nf__cols { display: flex; flex-wrap: wrap; gap: clamp(22px, 4vw, 72px); align-items: flex-start; }
+  .nf__rail { flex: 1 1 320px; min-width: 0; max-width: 560px; display: flex; flex-direction: column; gap: 14px; }
+  .nf__rule { width: 100%; max-width: 520px; height: 1.5px; background: rgba(153, 152, 149, 0.6); }
+  .nf__h {
+    margin: 0;
+    font-size: clamp(28px, 3.4vw, 44px); font-weight: var(--fw-semi); line-height: 1.08;
+    letter-spacing: var(--ls-display); color: #FBFBFB; text-wrap: pretty;
   }
   .nf__body {
-    margin: 26px 0 0; max-width: 520px;
-    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.78);
+    margin: 0;
+    font-size: clamp(15px, 1.3vw, 18px); font-weight: var(--fw-medium); line-height: 1.5;
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.62); text-wrap: pretty;
   }
+
+  .nf__actions { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px; }
   .nf__home {
-    position: relative; display: inline-flex; align-items: center;
-    width: 244px; height: 47px; margin-top: 40px; padding-left: 25px;
-    border-radius: var(--r-pill); background: var(--c-white);
-    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
-    letter-spacing: normal; color: var(--c-footer);
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    height: 47px; padding: 0 25px; border-radius: 60px; background: #FBFBFB;
+    font-size: 14px; font-weight: var(--fw-medium); letter-spacing: -0.03em;
+    color: #0B0B0B; white-space: nowrap;
     transition: background var(--dur-fast) ease;
   }
   .nf__home:hover { background: var(--c-accent); }
-  .nf__dot { position: absolute; top: 20px; width: 8px; height: 8px; border-radius: 50%; }
-  .nf__dot--grey { left: 207px; background: rgba(11, 11, 11, 0.28); }
-  .nf__dot--accent { left: 217px; background: var(--c-accent); transition: background var(--dur-fast) ease; }
-  .nf__home:hover .nf__dot--accent { background: var(--c-footer); }
+  .nf__dots { display: flex; gap: 3px; }
+  .nf__dot { width: 8px; height: 8px; border-radius: 50%; }
+  .nf__dot--soft { background: rgba(11, 11, 11, 0.35); }
+  .nf__dot--ink { background: #0B0B0B; }
+  .nf__report {
+    display: flex; align-items: center; height: 47px; padding: 0 24px;
+    border-radius: 60px; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.22);
+    font-size: 13px; font-weight: var(--fw-medium); letter-spacing: -0.03em;
+    color: var(--c-white); white-space: nowrap;
+    transition: box-shadow var(--dur-fast) ease;
+  }
+  .nf__report:hover { box-shadow: inset 0 0 0 2px var(--c-accent); }
 
-  /* ── the docket ─────────────────────────────────────────── */
-  .nf__ticket { grid-column: 2; width: 228px; margin-top: 6px; color: rgb(20, 20, 20); line-height: normal; }
-  .nf__tear {
-    display: block; height: 8px;
-    background: repeating-linear-gradient(90deg, rgb(251, 251, 249) 0 8px, transparent 8px 16px);
+  .nf__ways { flex: 0 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .nf__ways-label {
+    font-size: 13px; font-weight: var(--fw-semi); letter-spacing: var(--ls-body);
+    color: var(--c-ink-label); padding-bottom: 10px;
   }
-  .nf__paper { background: rgb(251, 251, 249); padding: 22px 20px 28px; }
-  .nf__head {
-    display: flex;
-    font-size: 11px; font-weight: var(--fw-semi); letter-spacing: 0.24em;
+  .nf__row {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 20px;
+    padding: 13px 0; border-top: 1px solid rgba(180, 174, 174, 0.22);
+    transition: padding-left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .nf__head > :first-child { flex: 1; }
-  .nf__time { width: 56px; font-weight: var(--fw-medium); letter-spacing: 0.04em; }
-  .nf__hair { display: block; height: 1px; background: rgba(20, 20, 20, 0.14); }
-  .nf__head + .nf__hair { margin-top: 12.7px; }
-  .nf__meta { margin: 11px 0 0; font-size: var(--fs-micro); letter-spacing: 0.02em; }
-  .nf__meta--dim { margin-top: 5.5px; color: rgba(20, 20, 20, 0.55); }
-  .nf__meta + .nf__hair { margin-top: 13.5px; }
-  .nf__lines {
-    list-style: none; margin: 15px 0 0; padding: 0;
-    font-size: var(--fs-micro); line-height: 26px; letter-spacing: 0.01em;
+  .nf__row:hover { padding-left: 10px; }
+  .nf__row-title {
+    font-size: clamp(18px, 1.6vw, 24px); font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgba(255, 255, 255, 0.92); white-space: nowrap;
   }
-  .nf__lines li { display: flex; justify-content: space-between; }
-  .nf__v { color: rgba(20, 20, 20, 0.55); }
-  .nf__lines + .nf__hair { margin-top: 14px; }
-  .nf__label { margin: 15px 0 0; font-size: 10px; font-weight: var(--fw-semi); letter-spacing: 0.22em; color: rgba(20, 20, 20, 0.5); }
-  .nf__status {
-    display: flex; align-items: center; gap: 9px; margin: 7.9px 0 0; height: 20px;
-    font-size: 13px; font-weight: var(--fw-semi); letter-spacing: 0.03em;
+  .nf__row-note {
+    font-size: 13px; font-weight: var(--fw-medium); letter-spacing: var(--ls-item);
+    color: rgba(255, 255, 255, 0.45); text-align: right;
   }
-  .nf__led { width: 7px; height: 7px; background: var(--c-accent); }
-  .nf__ticks { display: flex; align-items: flex-start; gap: 5px; height: 26px; margin-top: 16px; }
-  .nf__ticks span { flex: 1; height: 3px; background: rgba(20, 20, 20, 0.15); transition: background var(--dur-fast) ease; }
-  .nf__ticks span.is-on { background: var(--c-accent); }
-  .nf__ticks + .nf__hair { margin-top: 4px; }
-  .nf__foot { margin: 15px 0 0; font-size: 10px; font-weight: var(--fw-medium); letter-spacing: 0.14em; color: rgba(20, 20, 20, 0.5); }
 
-  /* ── the junction ───────────────────────────────────────── */
-  .nw { padding-block: 80px 110px; }
-  .nw__rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
-  .nw__eyebrow {
-    display: block; margin-top: 24px;
-    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
-    letter-spacing: 0.18em; color: var(--c-ink-label);
-  }
-  .nw__rows { list-style: none; margin: 54px 0 0; padding: 0; }
-  .nw__rows a { position: relative; display: block; height: 84px; }
-  .nw__rows li::before {
-    content: ''; display: block; width: 100%; height: 0.5px; background: var(--c-rule-soft);
-  }
-  .nw__rows li:last-child::after {
-    content: ''; display: block; width: 100%; height: 0.5px; background: var(--c-rule-soft);
-  }
-  .nw__n {
-    position: absolute; left: 14px; top: 36px;
-    font-size: 11px; line-height: normal; font-weight: var(--fw-medium);
-    letter-spacing: 0.14em; color: var(--c-ink-label);
-  }
-  .nw__label {
-    position: absolute; left: 5.139%; top: 22px;
-    font-size: 32px; line-height: 40px; font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
-    transition: color var(--dur-fast) ease;
-  }
-  .nw__body {
-    position: absolute; left: 44.419%; top: 31px;
-    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
-  }
-  .nw__go {
-    position: absolute; right: 0; top: 26px;
-    font-size: var(--fs-item); line-height: 32px; letter-spacing: normal; color: rgba(20, 20, 20, 0.45);
-    transition: transform var(--dur-fast) ease, color var(--dur-fast) ease;
-  }
-  .nw__rows a:hover .nw__label { color: var(--c-black); }
-  .nw__rows a:hover .nw__go { color: var(--c-black); transform: translateX(8px); }
-  .nw__note {
-    position: relative; margin: 46px 0 0; max-width: 620px;
-    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
-  }
-  .nw__note a { color: rgb(20, 20, 20); text-decoration: underline; }
+  @keyframes nfSpin { to { transform: rotate(360deg); } }
+  @keyframes nfPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+  @keyframes nfFloat { 0%, 100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(14px, -18px, 0); } }
 
-  /* ── below the design grid ──────────────────────────────── */
-  @media (max-width: 1360px) {
-    .nf__inner { grid-template-columns: 1fr; row-gap: 48px; padding-block: 130px 80px; min-height: 0; }
-    .nf__ticket { grid-column: 1; margin-top: 0; }
-    .nf__h-large { white-space: normal; line-height: 1.04; }
-    .nf__h-small { line-height: 1.06; }
-
-    .nw { padding-block: 64px 72px; }
-    .nw__rows a { height: auto; padding: 18px 0; }
-    .nw__n, .nw__label, .nw__body, .nw__go { position: static; }
-    .nw__n { display: block; }
-    .nw__label { display: block; margin-top: 6px; font-size: var(--fs-item); line-height: 1.3; }
-    .nw__body { display: block; margin-top: 6px; }
-    .nw__go { display: none; }
+  @media (max-width: 900px) {
+    .nf__inner { padding-block: 96px 72px; min-height: 0; }
+    .nf__ways { flex-basis: 100%; }
+    .nf__row-title { white-space: normal; }
   }
 </style>
+
+<script>
+  /* The pointer parallax and the entrance stagger.
+     Both are progressive enhancement: with no JS the page is already complete
+     and the CSS animations still run. `matchMedia` is checked here as well as
+     in the stylesheet because the Web Animations call below is JavaScript and
+     the CSS blanket cannot reach it. */
+  const page = document.querySelector<HTMLElement>('[data-nf]')
+  if (page && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const stack = page.querySelector<HTMLElement>('[data-nf-stack]')
+    if (stack) {
+      ;[...stack.children].forEach((el, i) => {
+        ;(el as HTMLElement).animate(
+          [{ opacity: 0, transform: 'translateY(26px)' }, { opacity: 1, transform: 'none' }],
+          { duration: 900, delay: 120 + i * 140, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' },
+        )
+      })
+    }
+
+    const pars = [...page.querySelectorAll<HTMLElement>('[data-nf-par]')]
+    const hole = page.querySelector<HTMLElement>('[data-nf-hole]')
+    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0
+
+    const loop = () => {
+      cx += (tx - cx) * 0.08
+      cy += (ty - cy) * 0.08
+      pars.forEach((el) => {
+        const k = parseFloat(el.getAttribute('data-nf-par') || '') || 0.03
+        el.style.transform = `translate3d(${(cx * k * 900).toFixed(1)}px,${(cy * k * 600).toFixed(1)}px,0)`
+      })
+      /* The hole leads the digits slightly, and the other way, so the mark
+         looks like it is falling out rather than riding along. */
+      if (hole) hole.style.transform = `translate3d(${(cx * -26).toFixed(1)}px,${(cy * -18).toFixed(1)}px,0)`
+      /* Stop the loop once it has settled, rather than burning a frame a tick
+         forever on a page nobody stays on. */
+      raf = Math.abs(tx - cx) > 0.0005 || Math.abs(ty - cy) > 0.0005 ? requestAnimationFrame(loop) : 0
+    }
+
+    addEventListener(
+      'pointermove',
+      (e) => {
+        const r = page.getBoundingClientRect()
+        tx = (e.clientX - r.left) / Math.max(1, r.width) - 0.5
+        ty = (e.clientY - r.top) / Math.max(1, r.height) - 0.5
+        if (!raf) raf = requestAnimationFrame(loop)
+      },
+      { passive: true },
+    )
+  }
+</script>

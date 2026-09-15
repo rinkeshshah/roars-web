@@ -58,6 +58,21 @@ export function initForms(): void {
         form.reset()
         say('Thanks. We reply within 24 hours.', 'ok')
         form.dataset.sent = '1'
+
+        /* EVERY FORM LANDS ON /thankyou/. The in-place message above is what a
+           human reads for the half second before the navigation happens; it
+           stays because a failed or slow navigation must not leave the form
+           looking untouched.
+           The redirect is what makes the submit measurable: an in-place
+           message is not a pageview, so a GA4 destination goal has nothing to
+           fire on. `form` rides along as a query parameter so one goal can
+           still be broken down by which form produced it — the page is
+           noindex, so a parameterised URL costs nothing in search.
+           `replace`, not `assign`: Back should return to the page they came
+           from, not re-submit the form they just sent. */
+        const to = new URL('/thankyou/', location.origin)
+        if (data.form) to.searchParams.set('form', String(data.form))
+        location.replace(to.toString())
       } catch {
         say('Could not reach the server. Please email us instead.', 'error')
         if (submit) submit.disabled = false

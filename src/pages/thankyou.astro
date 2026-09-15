@@ -1,0 +1,424 @@
+---
+/**
+ * /thankyou/ — where every form lands after a successful submit.
+ * Built from design/prototypes/Roars v2 - Thank You.dc.html.
+ *
+ * WHY IT IS A REAL PAGE AND NOT A MESSAGE IN THE FORM. The forms already print
+ * "Thanks, we reply within 24 hours" in place. That is fine for a human and
+ * useless for measurement: an in-place message is not a pageview, so there is
+ * nothing for a GA4 destination goal to fire on. A dedicated URL is the thing
+ * a conversion can be counted against, which is why the brief was "all forms
+ * should redirect to thankyou page".
+ *
+ * IT IS IN docs/URL-INVENTORY.csv ALREADY, as a live WordPress URL marked
+ * `noindex` with the note "utility page, remove from sitemap". Both of those
+ * are honoured below. This is one of the nine URLs the gate has been reporting
+ * as neither built nor redirected; building it here closes that one for real
+ * rather than by deleting the row.
+ *
+ * NOINDEX IS NOT OPTIONAL HERE. A thank-you page that gets indexed collects
+ * search traffic from people who never submitted anything, which both misleads
+ * them and poisons the conversion number the page exists to produce.
+ *
+ * WHAT CAME FROM THE DESIGN AND WHAT CAME FROM THE SITE. The confirmation
+ * band, the founder note, the three steps and the yellow "while you wait"
+ * shelf are the prototype's, copy included. The shell is this site's — TopBar,
+ * NavOverlay and SiteFooter — because the prototype draws its own header and
+ * its own 1105px footer purely so the artboard is a whole page. Reusing
+ * SiteFooter also means the footer here cannot drift from every other page's.
+ *
+ * The prototype exposes showFounderNote and showMeetingCta as editor toggles.
+ * Both default to true there and both are simply on here: a prop nothing ever
+ * sets is a prop that rots.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import TopBar from '../components/TopBar.astro'
+import NavOverlay from '../components/NavOverlay.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import GrainField from '../components/GrainField.astro'
+import { site } from '../lib/site'
+import { PORTRAIT } from '../lib/media'
+import quote from '../assets/quote.svg'
+import star from '../assets/star-5.svg'
+
+/* Verbatim from the prototype's renderVals(). */
+const steps = [
+  {
+    n: '01',
+    title: 'We read it properly',
+    body: 'A product person reads your message the same working day. No autoresponder chain, no routing queue.',
+  },
+  {
+    n: '02',
+    title: 'We reply within 24 hours',
+    body: 'Usually by email, with a couple of sharp questions and a proposed time to talk.',
+  },
+  {
+    n: '03',
+    title: 'We scope it together',
+    body: 'A 30 minute call on scope, timelines and what success looks like. You leave with a clear next step.',
+  },
+]
+
+/* Same list, with the prototype's artboard hrefs swapped for real routes.
+   CLAUDE.md rule 1: the inventory is the authority on URLs. */
+const links = [
+  {
+    title: 'Recent work',
+    note: 'Ten projects across logistics, legal, loyalty and AI products.',
+    href: '/work/',
+  },
+  {
+    title: 'Insights',
+    note: 'How we run discovery, design and delivery on product teams.',
+    href: '/our-journal/',
+  },
+  {
+    title: 'Company profile',
+    note: 'The full deck: services, process, team and case studies.',
+    href: 'https://link.roars.in/F39Mv',
+  },
+]
+---
+
+<BaseLayout
+  title={`Thank you | ${site.name}`}
+  description="Your message is with us. We reply within 24 hours, Monday to Friday."
+  path="/thankyou/"
+  noindex={true}
+>
+  <TopBar slot="topbar" cta="contact" />
+  <NavOverlay />
+
+  {/* ── confirmation ─────────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="ty">
+      <GrainField tone="dark" second />
+      <div class="wrap ty__inner">
+        <div class="ty__note" data-reveal>
+          <div class="ty__who">
+            <img
+              class="ty__face"
+              src={PORTRAIT.founder}
+              alt=""
+              width="42"
+              height="42"
+              loading="eager"
+              decoding="async"
+            />
+            {/* The prototype ships the name scrambled — "Riinkesh A Sshah" —
+                the same way the Menu export does. See src/lib/nav.ts. */}
+            <span class="ty__who-lines">
+              <span class="ty__who-name">Rinkesh A Shah</span>
+              <span class="ty__who-role">CEO / Founder</span>
+            </span>
+          </div>
+          <img class="ty__quote" src={quote.src} alt="" width="32" height="27" />
+          <p class="ty__pull">
+            Every enquiry is read by the product team. You will get questions back, not a
+            template.
+          </p>
+        </div>
+
+        <div class="ty__main" data-reveal>
+          <div class="ty__flag">
+            <span class="ty__pulse" aria-hidden="true"></span>
+            <span class="ty__flag-lines">
+              <span class="ty__flag-text">Message received</span>
+              <span class="ty__flag-sub">
+                A copy is on its way to your inbox from {site.email.sales}
+              </span>
+            </span>
+          </div>
+
+          <span class="ty__word">
+            <span>roars</span>
+            <img src={star.src} alt="" width="10" height="10" />
+          </span>
+          <h1 class="ty__h">thank you.</h1>
+          <p class="ty__sub">
+            Your message is with us. We reply within 24 hours, Monday to Friday.
+          </p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── what happens next ────────────────────────────────── */}
+  <Section ground="light">
+    <div class="tn">
+      <span class="tn__rule" aria-hidden="true"></span>
+      <span class="tn__eyebrow">Next</span>
+      <div class="tn__head">
+        <h2 class="tn__h">what happens next</h2>
+        <div class="tn__aside">
+          <p class="tn__lede">Three steps, and nothing for you to fill in again.</p>
+          <p class="tn__note">
+            If something is urgent, call the office nearest to you — <a href={`tel:${site.phones.US.tel}`}>USA {site.phones.US.display}</a>, <a href={`tel:${site.phones.UK.tel}`}>UK {site.phones.UK.display}</a>.
+          </p>
+        </div>
+      </div>
+      <span class="tn__hair" aria-hidden="true"></span>
+      <ul class="tn__rows">
+        {steps.map((s, i) => (
+          <li class="tn__step" data-reveal style={`transition-delay:${i * 90}ms`}>
+            <span class="tn__n">{s.n}</span>
+            <span class="tn__title">{s.title}</span>
+            <span class="tn__body">{s.body}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* ── while you wait ───────────────────────────────────── */}
+  <Section ground="accent" bleed>
+    <div class="tw">
+      <GrainField tone="yellow" second />
+      <div class="wrap tw__inner">
+        <div class="tw__head">
+          <div class="tw__rail">
+            <span class="tw__eyebrow">Meanwhile</span>
+            <h2 class="tw__h">while you wait.</h2>
+          </div>
+          <p class="tw__lede">
+            A few things worth reading before we speak. They cover how we work and what we
+            have shipped.
+          </p>
+        </div>
+
+        <ul class="tw__rows">
+          {links.map((l, i) => (
+            <li data-reveal style={`transition-delay:${i * 90}ms`}>
+              <a class="tw__row" href={l.href}>
+                <span class="tw__row-title">{l.title}</span>
+                <span class="tw__row-note">{l.note}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <div class="tw__cta" data-reveal>
+          <a class="tw__pill" href={site.booking}>
+            <span>Setup a Meeting</span>
+            <span class="tw__dots" aria-hidden="true">
+              <span class="tw__dot tw__dot--soft"></span>
+              <span class="tw__dot tw__dot--accent"></span>
+            </span>
+          </a>
+          <span class="tw__or">Or pick a time that suits you.</span>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    blurbTitle="While you are here."
+    blurb="We write up what we learn on real product teams — discovery that went sideways, launches that did not, and the bits that worked."
+    tagline="user experience matters"
+    ctaLabel="Read the journal"
+    ctaHref="/our-journal/"
+  />
+</BaseLayout>
+
+<style>
+  /* ── confirmation ───────────────────────────────────────── */
+  .ty { position: relative; }
+  .ty__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 384px minmax(0, 1fr);
+    column-gap: 72px; align-items: center;
+    padding-block: 150px 120px; min-height: 560px;
+  }
+
+  .ty__note { display: flex; flex-direction: column; gap: 16px; max-width: 384px; }
+  .ty__who { display: flex; align-items: center; gap: 14px; }
+  .ty__face { width: 42px; height: 42px; border-radius: var(--r-circle); object-fit: cover; }
+  .ty__who-lines { display: flex; flex-direction: column; gap: 2px; }
+  .ty__who-name {
+    font-size: 14px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgba(255, 255, 255, 0.95);
+  }
+  .ty__who-role {
+    font-size: 14px; line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-display); color: rgba(255, 255, 255, 0.6);
+  }
+  .ty__quote { width: 32px; height: 27px; opacity: 0.55; filter: invert(1); }
+  .ty__pull {
+    margin: 0;
+    font-size: 22px; line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.92); text-wrap: pretty;
+  }
+
+  .ty__main { display: flex; flex-direction: column; }
+  .ty__flag { display: flex; align-items: flex-start; gap: 13px; }
+  .ty__pulse {
+    flex: none; width: 9px; height: 9px; margin-top: 5px;
+    border-radius: 50%; background: var(--c-accent);
+    animation: tyPulse 2.6s ease-in-out infinite;
+  }
+  .ty__flag-lines { display: flex; flex-direction: column; gap: 9px; }
+  .ty__flag-text {
+    font-size: 13px; line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72);
+  }
+  .ty__flag-sub {
+    max-width: 278px;
+    font-size: 14px; line-height: 21px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.6);
+  }
+
+  .ty__word { display: flex; align-items: flex-start; gap: 4px; margin-top: 44px; }
+  .ty__word span {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: #FBFBFB;
+  }
+  .ty__word img { width: 10px; height: 10px; filter: invert(1); }
+  .ty__h {
+    margin: 10px 0 0;
+    font-size: clamp(56px, 8.6vw, 124px); line-height: 0.72; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: #FBFBFB;
+  }
+  .ty__sub {
+    max-width: 320px; margin: 34px 0 0;
+    font-size: 14px; line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-body); color: rgba(255, 255, 255, 0.89);
+  }
+
+  /* ── what happens next ──────────────────────────────────── */
+  .tn__rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+  .tn__eyebrow {
+    display: block; margin-top: 12px;
+    font-size: 14px; line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body); color: var(--c-ink-label);
+  }
+  .tn__head {
+    display: grid; grid-template-columns: minmax(0, 1fr) 440px;
+    column-gap: 60px; align-items: start; margin-top: 34px;
+  }
+  .tn__h {
+    margin: 0;
+    font-size: clamp(46px, 5.9vw, 84px); line-height: 0.93; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .tn__aside { display: flex; flex-direction: column; gap: 16px; padding-top: 6px; }
+  .tn__lede {
+    margin: 0;
+    font-size: 22px; line-height: 32px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20); text-wrap: pretty;
+  }
+  .tn__note {
+    margin: 0;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62); text-wrap: pretty;
+  }
+  .tn__note a { color: var(--c-ink-heading); }
+  .tn__hair { display: block; height: 0.5px; margin-top: 56px; background: var(--c-rule-soft); }
+
+  .tn__rows {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 26px; margin: 50px 0 0; padding: 0; list-style: none;
+  }
+  .tn__step {
+    display: flex; flex-direction: column;
+    padding-top: 22px; border-top: 1px solid var(--c-rule-strong);
+  }
+  .tn__n {
+    font-size: 42px; line-height: 50px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .tn__title {
+    margin-top: 18px;
+    font-size: var(--fs-item); line-height: 32px; font-weight: var(--fw-semi);
+    letter-spacing: -0.045em; color: rgb(20, 20, 20);
+  }
+  .tn__body {
+    margin-top: 12px;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62); text-wrap: pretty;
+  }
+
+  /* ── while you wait ─────────────────────────────────────── */
+  .tw { position: relative; }
+  .tw__inner { position: relative; z-index: 1; padding-block: 82px 92px; }
+  .tw__head {
+    display: grid; grid-template-columns: minmax(0, 1fr) 440px;
+    column-gap: 60px; align-items: start;
+  }
+  .tw__rail { display: flex; flex-direction: column; gap: 14px; }
+  .tw__eyebrow {
+    font-size: 13px; line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(11, 11, 11, 0.7);
+  }
+  .tw__h {
+    margin: 0;
+    font-size: clamp(46px, 5vw, 72px); line-height: 1.03; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: #0B0B0B;
+  }
+  .tw__lede {
+    margin: 8px 0 0;
+    font-size: 17px; line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(11, 11, 11, 0.78); text-wrap: pretty;
+  }
+
+  .tw__rows {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 36px 26px; margin: 74px 0 0; padding: 0; list-style: none;
+  }
+  .tw__row {
+    display: flex; flex-direction: column; gap: 12px;
+    padding-top: 26px; border-top: 1px solid rgba(11, 11, 11, 0.28);
+    transition: opacity var(--dur-fast) ease;
+  }
+  .tw__row:hover { opacity: 0.72; }
+  .tw__row-title {
+    font-size: 30px; line-height: 38px; font-weight: var(--fw-semi);
+    letter-spacing: -0.045em; color: #0B0B0B;
+  }
+  .tw__row-note {
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(11, 11, 11, 0.72); text-wrap: pretty;
+  }
+
+  .tw__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin-top: 52px; }
+  .tw__pill {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    height: 47px; padding: 0 25px; border-radius: 60px; background: var(--c-black);
+    font-size: 14px; line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: -0.03em; color: var(--c-white); white-space: nowrap;
+    transition: background var(--dur-fast) ease;
+  }
+  .tw__pill:hover { background: #1F1F1F; }
+  .tw__dots { display: flex; gap: 3px; }
+  .tw__dot { width: 8px; height: 8px; border-radius: 50%; }
+  .tw__dot--soft { background: rgba(153, 152, 149, 0.6); }
+  .tw__dot--accent { background: var(--c-accent); }
+  .tw__or {
+    font-size: 14px; line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(11, 11, 11, 0.72);
+  }
+
+  @keyframes tyPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(0.86); } }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1100px) {
+    .ty__inner { grid-template-columns: 1fr; row-gap: 48px; padding-block: 120px 84px; min-height: 0; }
+    /* The founder note reads as a footnote to the confirmation, not a preface
+       to it, so below the grid it follows rather than leads. */
+    .ty__note { order: 2; max-width: 520px; }
+    .ty__main { order: 1; }
+    .tn__head, .tw__head { grid-template-columns: 1fr; row-gap: 26px; }
+    .tn__rows, .tw__rows { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .ty__inner { padding-block: 100px 64px; }
+    .ty__sub { max-width: none; }
+    .tn__rows, .tw__rows { grid-template-columns: 1fr; }
+    .tn__hair { margin-top: 36px; }
+    .tn__rows { margin-top: 34px; }
+    .tw__rows { margin-top: 44px; }
+    .tw__row-title { font-size: 26px; line-height: 32px; }
+  }
+</style>
