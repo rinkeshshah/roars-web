@@ -250,20 +250,27 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     {d.cases && (
       <Section ground="dark">
         <div class="icz">
+          {/* THE BAND'S GROUND IS THE PHOTOGRAPHY. Full bleed, edge to edge and
+              top to bottom — there is no black left behind this section.
+
+              Split when there are two cases. Three of the seven industries run
+              two side by side, and one photograph across the whole band would
+              put one client's premises behind another client's name, so the
+              ground is halved and each case sits over its own. With one case
+              it is a single image across the full width. */}
+          <span class="icz__ground" aria-hidden="true">
+            {d.cases.items.map((c) => (
+              <span class="icz__shot">
+                {workHeroFor(c.href) && (
+                  <img src={workHeroFor(c.href)} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+                )}
+              </span>
+            ))}
+          </span>
           <span class="i-eyebrow i-eyebrow--dark">{d.cases.label}</span>
           <div class:list={['icz__grid', d.cases.items.length === 1 && 'icz__grid--one']}>
             {d.cases.items.map((c, i) => (
               <article class="icz__case" data-reveal style={`transition-delay:${i * 90}ms`}>
-                {/* Its own project's photograph, not the band's. Two cases sit
-                    side by side here, so a single ground across the section
-                    would put one client's premises behind another client's
-                    name. Per case, or not at all — and not at all is what a
-                    case whose slug has no header file still gets. */}
-                {workHeroFor(c.href) && (
-                  <span class="icz__bg" aria-hidden="true">
-                    <img src={workHeroFor(c.href)} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
-                  </span>
-                )}
                 <span class="icz__cut" aria-hidden="true"></span>
                 <h3 class="icz__client">{c.client}</h3>
                 <p class="icz__sit">{c.situation}</p>
@@ -692,37 +699,56 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   }
 
   /* ── I4 cases ───────────────────────────────────────────── */
-  .icz { padding-block: 96px; }
-  .icz__grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 56px 60px; margin-top: 44px;
+  .icz { position: relative; isolation: isolate; padding-block: 96px; }
+  /* Full bleed. 100vw off the band's own centre, which is the viewport's
+     centre because .wrap is a centred max-width box — the same move .ip__bg
+     makes two sections down. z-index -1 under `isolation: isolate` puts it
+     over the Section's dark ground and under every word in the band. */
+  .icz__ground {
+    position: absolute; left: 50%; top: 0; z-index: -1;
+    display: flex; width: 100vw; height: 100%;
+    transform: translateX(-50%); overflow: hidden;
   }
-  .icz__grid--one { grid-template-columns: minmax(0, 760px); }
-  /* 64px of top padding, not 34: the cut sits at 34 and the client name has to
-     clear it by the same 30px it cleared by when the case was bare text. */
-  .icz__case { position: relative; isolation: isolate; min-width: 0; padding: 64px 34px 38px; }
-  /* The case's own project photograph, amber dusk at the card exposure: the
-     client name, the situation and the CTA all sit ON it, so the ink runs
-     left-to-right under them exactly as it does on a /work/ card.
-     NOT clipped by .icz__case — the radius and the overflow live here, on the
-     picture, so .icz__cut can still overhang the left edge below. */
-  .icz__bg {
-    position: absolute; inset: 0; z-index: -1; display: block;
-    border-radius: 12px; overflow: hidden; background: rgb(24, 24, 24);
-  }
-  .icz__bg img {
+  /* One flex child per case, so two cases halve the band and one fills it.
+     rgb(18,18,18) shows through for a case whose slug has no header file. */
+  .icz__shot { position: relative; flex: 1 1 0; min-width: 0; background: rgb(18, 18, 18); }
+  .icz__shot img {
     display: block; width: 100%; height: 100%; object-fit: cover;
     filter: brightness(var(--dusk-exposure-card));
   }
-  .icz__bg::before,
-  .icz__bg::after { content: ''; position: absolute; inset: 0; }
-  .icz__bg::before { z-index: 1; background: var(--dusk-amber); }
-  .icz__bg::after { z-index: 2; background: var(--dusk-ink); }
-  /* The stroke still cuts ACROSS the case rather than boxing it in — it
-     overhangs the photograph's left edge, which is the same structural line
-     it always was, now with something to cut across. */
+  /* Amber dusk, per half, so each case gets its own corner rather than one
+     corner for a band that might hold two. Amber under ink, as everywhere. */
+  .icz__shot::before,
+  .icz__shot::after { content: ''; position: absolute; inset: 0; }
+  .icz__shot::before { z-index: 1; background: var(--dusk-amber); }
+  /* The ink is steeper than --dusk-ink. That token ramps out across a card the
+     copy fills; here the copy sits in the left half of a 100vw band, so the
+     standard ramp would be spent before it reached the text and would darken
+     picture nobody is reading over. */
+  .icz__shot::after {
+    z-index: 2;
+    background: linear-gradient(90deg,
+      rgba(11, 11, 11, 0.9) 0%,
+      rgba(11, 11, 11, 0.74) 42%,
+      rgba(11, 11, 11, 0.3) 78%,
+      rgba(11, 11, 11, 0.16) 100%);
+  }
+  /* TWO EXPLICIT COLUMNS, NOT auto-fit. The ground behind this grid has to
+     split at exactly the same width the grid does, and auto-fit resolves
+     against the 1362 wrap while the ground resolves against 100vw — so the two
+     disagreed for about forty pixels and the seam landed inside a case. Both
+     now collapse at the 760px breakpoint below, together. */
+  .icz__grid {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 56px 60px; margin-top: 44px;
+  }
+  .icz__grid--one { grid-template-columns: minmax(0, 760px); }
+  .icz__case { position: relative; min-width: 0; padding-top: 30px; }
+  /* The stroke cuts ACROSS the case rather than boxing it in. Rounded cards
+     stay out; this is a structural line, and it now has a photograph to cut
+     across instead of a flat ground. */
   .icz__cut {
-    position: absolute; left: -12px; top: 34px; width: 120px; height: 3px;
+    position: absolute; left: -12px; top: 0; width: 120px; height: 3px;
     background: var(--c-accent);
   }
   .icz__client {
@@ -1112,10 +1138,6 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
      tab list stacks above its panel rather than beside it. */
   @media (max-width: 1360px) {
     .ic, .ifl, .icz, .iap, .idm { padding-block: 64px; }
-    /* Same reasoning as .sv-anchor: keep the panel, spend less of a narrow
-       screen on its inset. The cut moves in with it. */
-    .icz__case { padding: 52px 20px 32px; }
-    .icz__cut { left: -8px; top: 26px; }
     .ic__h, .ifl__h, .iap__h, .idm__h { max-width: 100%; }
     .if__h { font-size: 27px; line-height: 34px; }
     .icz__grid--one { grid-template-columns: minmax(0, 1fr); }
@@ -1176,5 +1198,17 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   @media (max-width: 760px) {
     .ip__stats { grid-template-columns: 1fr; row-gap: 36px; }
     .ip__stats > :nth-child(2), .ip__stats > :nth-child(3) { grid-column: 1; }
+
+    /* The two cases stack, so the ground stacks with them — same breakpoint,
+       so the seam never lands anywhere but between two cases. */
+    .icz__grid { grid-template-columns: minmax(0, 1fr); }
+    .icz__ground { flex-direction: column; }
+    /* Copy fills the width at this size instead of sitting in the left half,
+       so the ink stops being a left-to-right ramp and just holds the type. */
+    .icz__shot::after {
+      background: linear-gradient(180deg,
+        rgba(11, 11, 11, 0.84) 0%,
+        rgba(11, 11, 11, 0.78) 100%);
+    }
   }
 </style>

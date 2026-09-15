@@ -114,6 +114,9 @@ const engagements = d?.bands?.find((b) => b.key === 'engagements')
  *  Undefined for a slug with no header file, and the band then reads as the
  *  flat dark ground it was before. */
 const anchorShot = d?.anchor?.href ? workHeroFor(d.anchor.href) : undefined
+
+/** Same for the featured-work band lower down, which names a second project. */
+const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefined
 ---
 
 {designed && d ? (
@@ -258,31 +261,39 @@ const anchorShot = d?.anchor?.href ? workHeroFor(d.anchor.href) : undefined
     {/* S4. One case, in full. Not a carousel, and no logo grid on this page. */}
     {d.anchor && (
       <Section ground="dark">
+        {/* THE BAND'S GROUND IS THE CASE'S PHOTOGRAPH. Full bleed, edge to
+            edge and top to bottom, with no black left behind the section.
+
+            TWO BOXES, NOT ONE. .sv-anchor carries the full-bleed ground and
+            nothing else; .sv-anchor__inner carries the 820px cap the copy has
+            always had. They cannot be the same element: a 100vw child resolves
+            `left: 50%` against its container's padding box, so hanging it off
+            a capped, left-aligned box centres the picture on the text column
+            instead of the viewport. */}
         <div class="sv-anchor">
-          {/* One case on this page, so its photograph can be the band's whole
-              ground rather than a panel — same shape as the industry proof
-              band. aria-hidden with an empty alt: it is a ground. */}
           {anchorShot && (
             <div class="sv-anchor__bg" aria-hidden="true">
               <img src={anchorShot} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
             </div>
           )}
-          <span class="sv-eyebrow sv-eyebrow--dark">{d.anchor.label}</span>
-          <h2 class="sv-anchor__client" data-reveal>{d.anchor.client}</h2>
-          <p class="sv-anchor__sit" data-reveal>{d.anchor.situation}</p>
-          <ul class="sv-anchor__did" data-reveal>
-            {d.anchor.did.map((x) => <li>{x}</li>)}
-          </ul>
-          {d.anchor.outcome && <p class="sv-anchor__out" data-reveal>{d.anchor.outcome}</p>}
-          <a class="sv-ghost sv-anchor__cta" href={d.anchor.href}>
-            {d.anchor.ctaLabel}
-            {/* The two dots every other ghost button carries. This one asked
-                for `.sv-dots`, which is a class that exists nowhere in the
-                project — so the pair rendered as two empty <i> elements at
-                zero size and the button lost its dots. */}
-            <span class="sv-ghost__dot sv-ghost__dot--grey" aria-hidden="true"></span>
-            <span class="sv-ghost__dot sv-ghost__dot--accent" aria-hidden="true"></span>
-          </a>
+          <div class="sv-anchor__inner">
+            <span class="sv-eyebrow sv-eyebrow--dark">{d.anchor.label}</span>
+            <h2 class="sv-anchor__client" data-reveal>{d.anchor.client}</h2>
+            <p class="sv-anchor__sit" data-reveal>{d.anchor.situation}</p>
+            <ul class="sv-anchor__did" data-reveal>
+              {d.anchor.did.map((x) => <li>{x}</li>)}
+            </ul>
+            {d.anchor.outcome && <p class="sv-anchor__out" data-reveal>{d.anchor.outcome}</p>}
+            <a class="sv-ghost sv-anchor__cta" href={d.anchor.href}>
+              {d.anchor.ctaLabel}
+              {/* The two dots every other ghost button carries. This one asked
+                  for `.sv-dots`, which is a class that exists nowhere in the
+                  project — so the pair rendered as two empty <i> elements at
+                  zero size and the button lost its dots. */}
+              <span class="sv-ghost__dot sv-ghost__dot--grey" aria-hidden="true"></span>
+              <span class="sv-ghost__dot sv-ghost__dot--accent" aria-hidden="true"></span>
+            </a>
+          </div>
         </div>
       </Section>
     )}
@@ -372,6 +383,14 @@ const anchorShot = d?.anchor?.href ? workHeroFor(d.anchor.href) : undefined
     {d.featured && (
       <Section ground="dark">
         <div class="sv-feat">
+          {/* The featured project's own photograph as the band's ground, full
+              bleed. Same treatment as the anchor case above it and the cases
+              band on the industry pages. */}
+          {featuredShot && (
+            <div class="sv-feat__bg" aria-hidden="true">
+              <img src={featuredShot} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+            </div>
+          )}
           <span class="sv-eyebrow sv-eyebrow--dark" data-reveal>{d.featured.label}</span>
           <h2 class="sv-feat__client" data-reveal>{d.featured.client}</h2>
           <div class="sv-feat__col" data-reveal style="transition-delay:60ms">
@@ -783,9 +802,39 @@ const anchorShot = d?.anchor?.href ? workHeroFor(d.anchor.href) : undefined
      at how tall the copy would be, and every service's copy is a different
      length. All twelve ended on 137-201px of nothing. */
   .sv-feat {
-    position: relative; padding-block: 72px 80px;
+    position: relative; isolation: isolate; padding-block: 72px 80px;
     display: grid; grid-template-columns: minmax(0, 67.695%) minmax(0, 32.305%);
     align-content: start;
+  }
+  /* The featured project's photograph, full bleed across the band. */
+  .sv-feat__bg {
+    position: absolute; left: 50%; top: 0; z-index: -1;
+    width: 100vw; height: 100%; transform: translateX(-50%);
+    overflow: hidden; background: rgb(18, 18, 18);
+  }
+  /* The HERO exposure, not the card one. What sits on this band is an eyebrow,
+     a name at 84px, a short paragraph and a button — sparse, large and white,
+     with contrast to spare. Holding the picture back to 0.62 as well buried
+     the darker shots: The President's Club is a night interior and came out
+     as a black rectangle with a building faintly in it. */
+  .sv-feat__bg img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(var(--dusk-exposure-hero));
+  }
+  .sv-feat__bg::before,
+  .sv-feat__bg::after { content: ''; position: absolute; inset: 0; }
+  .sv-feat__bg::before { z-index: 1; background: var(--dusk-amber); }
+  /* An EVEN ink here, not the left-to-right ramp the anchor and the cases take.
+     This band puts an 84px client name in the left column and the body, the
+     meta list and the CTA in the right one, so there is type at both edges and
+     no quiet side to ramp towards. It lifts a little across the middle, which
+     is the only part of the picture nothing is sitting on. */
+  .sv-feat__bg::after {
+    z-index: 2;
+    background: linear-gradient(90deg,
+      rgba(11, 11, 11, 0.76) 0%,
+      rgba(11, 11, 11, 0.44) 46%,
+      rgba(11, 11, 11, 0.68) 100%);
   }
   .sv-feat > .sv-eyebrow { grid-area: 1 / 1; }
   /* Capped short of the column at 67.695%. The heading is a block, so
@@ -902,19 +951,17 @@ const anchorShot = d?.anchor?.href ? workHeroFor(d.anchor.href) : undefined
   }
 
   /* ── S4 anchor ──────────────────────────────────────────── */
-  /* Padded, because the ground behind it is now the case's own photograph and
-     the copy cannot sit on the picture's edge. A panel rather than a full-bleed
-     band: .sv-anchor is capped at 820px and left-aligned, so a 100vw child
-     would resolve `left: 50%` against THAT box, not the viewport — and a panel
-     is what .icz does on the industry pages, so the two read as one component
-     wherever a case appears. */
-  .sv-anchor { position: relative; isolation: isolate; padding: 54px 40px 62px; max-width: 900px; }
-  /* Amber dusk at the card exposure: the client name, the situation, the
-     bullets and the CTA all sit ON this photograph, and the copy runs down the
-     left, which is the direction --dusk-ink already points. */
+  /* No max-width here any more: this box is the positioning ancestor for the
+     full-bleed ground, so it has to span the wrap. The cap moved to __inner. */
+  .sv-anchor { position: relative; isolation: isolate; padding-block: 64px 80px; }
+  .sv-anchor__inner { max-width: 820px; }
+  /* Full bleed. 100vw off the band's own centre, which is the viewport's
+     centre because .wrap is a centred max-width box. Same move as .icz__ground
+     on the industry pages, so a case looks the same wherever it appears. */
   .sv-anchor__bg {
-    position: absolute; inset: 0; z-index: -1;
-    border-radius: 12px; overflow: hidden; background: rgb(24, 24, 24);
+    position: absolute; left: 50%; top: 0; z-index: -1;
+    width: 100vw; height: 100%; transform: translateX(-50%);
+    overflow: hidden; background: rgb(18, 18, 18);
   }
   .sv-anchor__bg img {
     display: block; width: 100%; height: 100%; object-fit: cover;
@@ -923,7 +970,17 @@ const anchorShot = d?.anchor?.href ? workHeroFor(d.anchor.href) : undefined
   .sv-anchor__bg::before,
   .sv-anchor__bg::after { content: ''; position: absolute; inset: 0; }
   .sv-anchor__bg::before { z-index: 1; background: var(--dusk-amber); }
-  .sv-anchor__bg::after { z-index: 2; background: var(--dusk-ink); }
+  /* Steeper than --dusk-ink, for the same reason as .icz__shot::after: the
+     copy is capped at 820px inside a 100vw band, so the token's ramp would be
+     spent long before it reached the text. */
+  .sv-anchor__bg::after {
+    z-index: 2;
+    background: linear-gradient(90deg,
+      rgba(11, 11, 11, 0.9) 0%,
+      rgba(11, 11, 11, 0.74) 42%,
+      rgba(11, 11, 11, 0.3) 78%,
+      rgba(11, 11, 11, 0.16) 100%);
+  }
   .sv-anchor__client {
     margin: 26px 0 0 -5px;
     font-size: clamp(40px, 5vw, 72px); line-height: 1.06; font-weight: var(--fw-semi);
@@ -1155,9 +1212,13 @@ const anchorShot = d?.anchor?.href ? workHeroFor(d.anchor.href) : undefined
     .sv-hero__small { line-height: 1.05; }
 
     .sv-cost, .sv-eng, .sv-anchor, .sv-scope, .sv-shape, .sv-next { padding-block: 64px; }
-    /* 40px of inset on each side is a quarter of a 390px screen. The photograph
-       panel keeps its edge, the copy just stops paying so much for it. */
-    .sv-anchor { padding-inline: 20px; }
+    /* The copy fills the width at this size rather than sitting in the left
+       half, so the ink stops being a left-to-right ramp and just holds it. */
+    .sv-anchor__bg::after {
+      background: linear-gradient(180deg,
+        rgba(11, 11, 11, 0.84) 0%,
+        rgba(11, 11, 11, 0.78) 100%);
+    }
     .sv-eng__h, .sv-scope__h, .sv-shape__h, .sv-next__h { max-width: 100%; }
     .sv-frame__h { font-size: 26px; line-height: 33px; }
     .sv-band, .sv-band--tall, .sv-proc, .sv-rec, .sv-faq, .sv-feat {
