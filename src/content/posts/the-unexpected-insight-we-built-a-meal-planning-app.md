@@ -1,5 +1,5 @@
 ---
-title: "The Unexpected Insight -We built a meal planning app"
+title: "The Unexpected Insight: we built a meal planning app"
 publishedAt: 2025-12-11
 author: "Roars Technologies"
 categories: ["Our Journal", "Product Development", "Startup"]
@@ -7,7 +7,7 @@ migrated: true
 needsRewrite: true
 heroImage: "/wp-content/uploads/2025/12/sra.jpg"
 seo:
-  title: "The Unexpected Insight -We built a meal planning app | Roars"
+  title: "The Unexpected Insight: we built a meal planning app | Roars"
   description: "Learn why successful products must iterate as they scale. Discover how data-driven evolution from 500 to 50,000 users transforms product strategy and technical architecture."
   primaryIntent: "the unexpected insight we built a meal planning app"
   schemaType: "BlogPosting"

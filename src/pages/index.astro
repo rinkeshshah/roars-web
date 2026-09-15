@@ -21,7 +21,8 @@ import SiteFooter from '../components/SiteFooter.astro'
 import Button from '../components/Button.astro'
 import Accordion from '../components/Accordion.astro'
 import { site } from '../lib/site'
-import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL } from '../lib/media'
+import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL_IMG } from '../lib/media'
+import { JOURNAL } from '../lib/journal'
 import GrainField from '../components/GrainField.astro'
 /* Decorative furniture still used by About and Insights. The hero's own
    set — planet, starbelt, slash mark — went with the export 2 redesign. */
@@ -214,29 +215,28 @@ const industries = [
 ]
 
 /** Slugs resolved against docs/URL-INVENTORY.csv, not invented. */
-const insights = [
-  {
-    day: '15',
-    month: 'May',
-    title: 'AI App Development vs Traditional App Development',
-    img: JOURNAL.aiVsTraditional,
-    href: '/our-journal/ai-app-development-vs-traditional-app-development-which-is-better-for-customer-engagement/',
-  },
-  {
-    day: '04',
-    month: 'May',
-    title: '20 Years of Roars: Built on Purpose, Driven by Impact',
-    img: JOURNAL.twentyYears,
-    href: '/our-journal/20-years-of-roars-built-on-purpose-driven-by-impact/',
-  },
-  {
-    day: '11',
-    month: 'Dec',
-    title: 'The Unexpected Insight: we built a meal planning app',
-    img: JOURNAL.mealPlanning,
-    href: '/our-journal/the-unexpected-insight-we-built-a-meal-planning-app/',
-  },
-]
+/**
+ * The three newest posts, FROM THE JOURNAL ITSELF.
+ *
+ * This was three hardcoded entries with hand-picked images, and two of the
+ * three were pointing at the wrong photograph — "AI App Development vs
+ * Traditional" carried the AI-fitness hero and the meal-planning piece
+ * carried the concierge one. It also went stale the moment anything was
+ * published, which is why it was still leading on a post from May.
+ *
+ * `JOURNAL` is already sorted newest first and already carries the day, the
+ * month, the title and the post's own hero, so the homepage takes the top
+ * three and nothing here has to be kept in step by hand. The JOURNAL_IMG
+ * fallback is the same one /our-journal/ uses for the posts whose migrated
+ * hero is missing.
+ */
+const insights = JOURNAL.slice(0, 3).map((p) => ({
+  day: p.day,
+  month: p.month,
+  title: p.name,
+  img: p.hero ?? JOURNAL_IMG[p.slug],
+  href: p.href,
+}))
 
 const faq = [
   {
@@ -1144,7 +1144,10 @@ const schema = [
        real auto track it adds 1-2px to every row and the band drifts. */
     grid-template-rows: 0 auto;
     align-items: center;
-    padding-block: 22px;
+    /* MORE ABOVE THAN BELOW. The rule is drawn on the row's top edge, so a
+       symmetric 22 put the name hard against the line above it while the
+       gap to the next rule looked fine. The row hangs off its rule now. */
+    padding-block: 34px 28px;
   }
   .svc__rule { grid-row: 1; grid-column: 1 / -1; height: 1px; background: var(--c-rule-strong); }
   /* The last row closes the list, so it gets a rule under it as well as over.
@@ -1230,7 +1233,7 @@ const schema = [
   .svc__also {
     display: grid; grid-template-columns: 68px minmax(0, 1fr);
     align-items: baseline;
-    padding-block: 26px 28px;
+    padding-block: 34px 30px;
     border-bottom: 1px solid var(--c-rule-strong);
   }
   .svc__also-label {
@@ -1650,6 +1653,11 @@ const schema = [
     .svc__body { grid-row: 4; grid-column: 2 / -1; }
     .svc__row { grid-template-rows: 0 auto auto auto; }
     .svc__head { grid-template-columns: minmax(0, 1fr); row-gap: 12px; }
+    /* 68px of label column leaves 282 for seven links, which wrapped into a
+       ragged block with one stranded on a line of its own. Label above,
+       list under it at the full width. */
+    .svc__also { grid-template-columns: minmax(0, 1fr); row-gap: 12px; }
+    .svc__also-list { column-gap: 18px; row-gap: 8px; }
     .svc__intro { margin-bottom: 0; }
     /* 229px of left margin measured off the 1362 canvas. */
     .proj__legend { margin-left: 0; }
