@@ -20,6 +20,7 @@ import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import Button from '../components/Button.astro'
 import Accordion from '../components/Accordion.astro'
+import { getCollection } from 'astro:content'
 import { site } from '../lib/site'
 import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL_IMG } from '../lib/media'
 import { JOURNAL } from '../lib/journal'
@@ -120,23 +121,50 @@ const servicesAlso = [
  * use, so a project shows the same photograph everywhere it is named and there
  * is one place to change it. It is built at 2:1 by scripts/build-work-headers,
  * which is why .proj__ph is 2:1 below rather than the export's 1129x579.
+ *
+ * NOTHING ABOUT THE PROJECT IS WRITTEN HERE ANY MORE — only which two, and
+ * whose faces. The name, the sector, the date and the year all come out of the
+ * project's own front matter, read exactly the way /work/ reads them, because
+ * the hard-coded versions had already drifted: this band said "02 Jul 2025"
+ * and "15 Oct 2026" where the content says 28 Jul 2025 and 18 Feb 2026, and
+ * called the clients "Parqly." and "Snowman Logistics." with a full stop that
+ * appears nowhere else on the site. A card that names a project cannot be the
+ * one surface that gets to disagree about its name.
  */
+/* UTC getters throughout, and this table rather than toLocaleDateString: the
+   dates are parsed as UTC midnight, so a local getter moves 28 Jul to 27 Jul
+   on any build machine west of Greenwich, and a locale format would render
+   differently depending on where the build ran. */
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+const projectEntries = await getCollection('projects')
+const industryEntries = await getCollection('industries')
+/* The sector label is the industry PAGE's own title, so a card and the sector
+   page can never disagree about what a sector is called. Same rule as /work/. */
+const industryTitle = new Map(industryEntries.map((e) => [e.id, e.data.title as string]))
+const projectBySlug = new Map(projectEntries.map((e) => [e.id, e.data]))
+
 const featured = [
-  {
-    day: '02 Jul',
-    year: '2025',
-    name: 'Parqly.',
-    href: '/work/parqly-parking-solution/',
-    faces: [PORTRAIT.chetna, PORTRAIT.atul],
-  },
-  {
-    day: '15 Oct',
-    year: '2026',
-    name: 'Snowman Logistics.',
-    href: '/work/warehouse-compliance-checklist-app/',
-    faces: [PORTRAIT.abhishek, PORTRAIT.suzanne],
-  },
-].map((f) => ({ ...f, img: workHeroFor(f.href) }))
+  { href: '/work/parqly-parking-solution/', faces: [PORTRAIT.chetna, PORTRAIT.atul] },
+  { href: '/work/warehouse-compliance-checklist-app/', faces: [PORTRAIT.abhishek, PORTRAIT.suzanne] },
+].map((f) => {
+  const d = projectBySlug.get(f.href.split('/').filter(Boolean)[1])
+  const at = d?.publishedAt as Date | undefined
+  const sectorKey = (d?.industry as string[] | undefined)?.[0]
+  return {
+    ...f,
+    img: workHeroFor(f.href),
+    name: (d?.client as string | undefined) ?? '',
+    sector: sectorKey
+      ? industryTitle.get(sectorKey) ?? sectorKey.charAt(0).toUpperCase() + sectorKey.slice(1)
+      : undefined,
+    /* Day and month in the rail, year on the card — /work/ split them that way
+       because printing the year in both places on one card reads as a mistake,
+       and this band had been doing exactly that. */
+    day: at ? `${at.getUTCDate()} ${MONTHS[at.getUTCMonth()]}` : '',
+    year: at?.getUTCFullYear(),
+  }
+})
 
 /**
  * The cascade. Four testimonials at four sizes and four vertical offsets,
@@ -618,17 +646,29 @@ const schema = [
             style={`opacity:${i === 0 ? 1 : 0}`}
             aria-hidden={i === 0 ? undefined : 'true'}
           >
+            {/* Day and month only. The year is on the card beside the star,
+                the way /work/ sets it — see the note on `featured` above. */}
             <div class="proj__date">
               <span class="proj__day">{f.day}</span>
               <div class="rule rule--thin"></div>
-              <span class="proj__year">{f.year}</span>
             </div>
             <a class="proj__card" href={f.href}>
               <img class="proj__ph" src={f.img} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
               <span class="proj__faces" aria-hidden="true">
                 {f.faces.map((src) => <img src={src} alt="" width="42" height="42" loading="lazy" />)}
               </span>
-              <span class="proj__name">{f.name}</span>
+              {/* Sector, name, year — stacked and left-aligned on the flat-ink
+                  side, which is the same caption /work/ sets on its cards. */}
+              <span class="proj__cap">
+                {f.sector && <span class="proj__sector">{f.sector}</span>}
+                <span class="proj__name">{f.name}</span>
+                {f.year && (
+                  <span class="proj__meta">
+                    <span class="proj__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+                    <span>{f.year}</span>
+                  </span>
+                )}
+              </span>
             </a>
           </article>
         ))}
@@ -646,7 +686,48 @@ const schema = [
     </div>
   </Section>
 
-  {/* ── 5. People say ───────────────────────────────────────── */}
+  {/* ── 5. Industries ───────────────────────────────────────── */}
+  <Section ground="surface">
+    <div class="ind">
+      <h2 class="display">Industries</h2>
+      <p class="intro ind__intro">
+        We build in sectors we already understand, so the discovery work starts
+        from domain knowledge rather than from scratch.
+      </p>
+
+      {/* EIGHT CARDS, FOUR ACROSS, EACH WITH A RULE AND A NUMBER.
+          The rail's "Eight sectors / Where we work" pair is gone with the
+          redesign: the count is the numbering now, and it was sitting alone in
+          the far-left gutter 200px above anything it labelled. */}
+      <ul class="ind__grid">
+        {industries.map((sector, i) => (
+          <li data-reveal style={`transition-delay:${i * 50}ms`}>
+            <a class="ind__card" href={sector.href}>
+              <span class="ind__rule" aria-hidden="true"></span>
+              <span class="ind__n" aria-hidden="true">{sector.n}</span>
+              <span class="ind__letter" aria-hidden="true">{sector.letter}</span>
+              <span class="ind__text">
+                <span class="ind__name">{sector.name}</span>
+                <span class="ind__cta">View sector</span>
+              </span>
+              <span class="ind__body">{sector.body}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="ind__foot">
+        <p class="ind__note">Not listed? Most of our work starts in a new sector.</p>
+        <span class="ind__stars" aria-hidden="true">
+          <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
+          <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
+        </span>
+        <Button href="/work/" label="See the work" />
+      </div>
+    </div>
+  </Section>
+
+  {/* ── 6. People say ───────────────────────────────────────── */}
   <Section ground="light">
     <div class="say">
       <h2 class="display">People say</h2>
@@ -708,47 +789,6 @@ const schema = [
         </div>
         <p class="say__meta">reviews<br />4.9 average</p>
         <Button href="https://rateus.roarsinc.com/" label="Leave a Review" />
-      </div>
-    </div>
-  </Section>
-
-  {/* ── 6. Industries ───────────────────────────────────────── */}
-  <Section ground="surface">
-    <div class="ind">
-      <h2 class="display">Industries</h2>
-      <p class="intro ind__intro">
-        We build in sectors we already understand, so the discovery work starts
-        from domain knowledge rather than from scratch.
-      </p>
-
-      {/* EIGHT CARDS, FOUR ACROSS, EACH WITH A RULE AND A NUMBER.
-          The rail's "Eight sectors / Where we work" pair is gone with the
-          redesign: the count is the numbering now, and it was sitting alone in
-          the far-left gutter 200px above anything it labelled. */}
-      <ul class="ind__grid">
-        {industries.map((sector, i) => (
-          <li data-reveal style={`transition-delay:${i * 50}ms`}>
-            <a class="ind__card" href={sector.href}>
-              <span class="ind__rule" aria-hidden="true"></span>
-              <span class="ind__n" aria-hidden="true">{sector.n}</span>
-              <span class="ind__letter" aria-hidden="true">{sector.letter}</span>
-              <span class="ind__text">
-                <span class="ind__name">{sector.name}</span>
-                <span class="ind__cta">View sector</span>
-              </span>
-              <span class="ind__body">{sector.body}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      <div class="ind__foot">
-        <p class="ind__note">Not listed? Most of our work starts in a new sector.</p>
-        <span class="ind__stars" aria-hidden="true">
-          <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
-          <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
-        </span>
-        <Button href="/work/" label="See the work" />
       </div>
     </div>
   </Section>
@@ -1355,11 +1395,10 @@ const schema = [
      screen together at any opacity. That collision is why this motion was
      removed once already. */
   .proj__slide[aria-hidden='true'] .proj__date,
-  .proj__slide[aria-hidden='true'] .proj__name { visibility: hidden; }
+  .proj__slide[aria-hidden='true'] .proj__cap { visibility: hidden; }
   .proj__slide:first-child { position: relative; }
   .proj__day { font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: #fbfbfb; }
   .proj__date .rule { margin-block: var(--sp-3); width: 85px; }
-  .proj__year { font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-body); color: var(--c-rule); }
   .proj__card { position: relative; display: block; border-radius: var(--r-card, 12px); overflow: hidden; }
   .proj__ph { display: block; width: 100%; height: 100%; object-fit: cover; background: rgb(30, 30, 30); }
   /* Two ringed faces at the card's top right, as the export draws them. */
@@ -1372,23 +1411,48 @@ const schema = [
      file. */
   .proj__ph { aspect-ratio: 2 / 1; background: rgb(30, 30, 30); border-radius: 12px; }
   /* Amber dusk. Amber under ink, same order as /work/ — see tokens.css.
-     The hero exposure rather than the card one, because what sits on this
-     photograph is a name along the bottom edge and two ringed faces in the
-     top corner, not a paragraph across the middle. The ink runs bottom-up and
-     puts the contrast under the name; holding the whole 1129px picture back
-     to 0.62 as well would be paying for contrast twice. */
-  .proj__ph { filter: brightness(var(--dusk-exposure-hero)); }
+     The card exposure, not the hero one, and the HORIZONTAL ink: the caption
+     is now a three-line stack down the left of the picture rather than a name
+     along the bottom, which is the case --dusk-ink was written for. The
+     bottom-up ramp it used to take put the contrast under a name that is no
+     longer there and left the sector label sitting on bare photograph. */
+  .proj__ph { filter: brightness(var(--dusk-exposure-card)); }
   .proj__card::before,
   .proj__card::after {
     content: ''; position: absolute; inset: 0; pointer-events: none;
   }
   .proj__card::before { z-index: 1; background: var(--dusk-amber); }
-  .proj__card::after { z-index: 2; background: var(--dusk-ink-up); }
+  .proj__card::after { z-index: 2; background: var(--dusk-ink); }
+  /* THE CAPTION IS /work/'s. Same order, same type, same alignment, so a
+     project introduced on the homepage and the same project in the index read
+     as one component. The only number that differs is the left inset: the
+     /work/ card carries its date rail INSIDE the frame and starts the caption
+     at 176px to clear it, where this band puts the date outside the card and
+     has the full width. */
+  .proj__cap {
+    position: absolute; left: var(--sp-5); top: 33%; right: 46%; z-index: 3;
+    display: flex; flex-direction: column; align-items: flex-start;
+  }
+  .proj__sector {
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255, 255, 255, 0.66);
+  }
   .proj__name {
-    position: absolute; left: 50%; bottom: 62px; z-index: 3;
-    line-height: 42px;
-    font-size: 36px; font-weight: var(--fw-semi);
+    margin-top: 16px;
+    font-size: 56px; line-height: 1.07; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-white);
+    text-wrap: pretty;
+  }
+  .proj__meta {
+    display: flex; align-items: center; gap: 12px; margin-top: 22px;
+    font-size: var(--fs-body); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.78);
+  }
+  /* Masked, not an <img>: the star takes the accent token. Same as /work/. */
+  .proj__star {
+    width: 13px; height: 13px; background: var(--c-accent);
+    mask: var(--m) center / contain no-repeat;
+    -webkit-mask: var(--m) center / contain no-repeat;
   }
   /* The "all line" is a 430x47 block at 503,1148: two star marks at 0 and 23,
      then the pill at 226. The marks belong beside the pill, not adrift in the
@@ -1857,17 +1921,22 @@ const schema = [
 
     /* projects --------------------------------------------------------- */
     .proj__slide { grid-template-columns: 1fr; }
-    /* Centred on a 50% offset, which at 350px puts the name off the card. */
-    .proj__name {
-      position: static; transform: none; margin-top: 12px;
-      font-size: 28px; line-height: 34px;
+    /* The caption comes off the photograph and sits under it. At 350px the
+       picture is 175px tall and a 56px name over it leaves nothing of either.
+       /work/ keeps its caption on the card down here because its card is
+       portrait at this width; this one is not, so it drops below instead. */
+    .proj__cap {
+      position: static; right: auto; margin-top: 12px;
     }
+    .proj__name { font-size: 28px; line-height: 34px; margin-top: 8px; }
+    .proj__meta { margin-top: 12px; }
     .proj__faces { position: static; flex-direction: row; margin-top: 12px; }
-    /* Nothing sits on the photograph at this width — the name and the faces
+    /* Nothing sits on the photograph at this width — the caption and the faces
        drop below it — so the ink has no copy to carry, and both layers cover
        the card, which down here is taller than the picture. Off; the exposure
        is already the one the photograph gets when it is the subject. */
     .proj__card::before, .proj__card::after { display: none; }
+    .proj__ph { filter: brightness(var(--dusk-exposure-hero)); }
     /* The slides are absolute so they can cross-fade over one another, which
        means the stage carries the height — 580px, measured on the two-column
        desktop card. Stacked to one column the card is taller than that and

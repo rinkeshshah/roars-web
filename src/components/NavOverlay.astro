@@ -42,6 +42,23 @@ import mark from '../assets/roars-mark.png'
    four clear of the arrow at 372 and still lines them up. */
 const ROW_H = 60
 const ROW_TOP = 50
+
+/**
+ * A steps panel with more than six entries runs in TWO COLUMNS.
+ *
+ * The services panel lists all twelve services. One column of twelve at 64px
+ * starts 150px down an area 614px tall and finishes 300px past the bottom of
+ * it, so the last four rows ran underneath the overlay's own footer — the
+ * email address and the discovery-call button printed straight through them.
+ *
+ * Six is the threshold because six rows is what the area holds with the panel
+ * heading above it. Approach, the only other steps panel, has four and stays
+ * in one column; nothing about it changes.
+ */
+const TWO_COL_FROM = 6
+const isTwoCol = (n: number) => n > TWO_COL_FROM
+/** Rows per column. One column means every item is its own row. */
+const rowsIn = (n: number) => (isTwoCol(n) ? Math.ceil(n / 2) : n)
 ---
 
 <div class="nav" id="nav-overlay" data-nav-overlay hidden>
@@ -136,16 +153,43 @@ const ROW_TOP = 50
           )}
 
           {item.kind === 'services' && (
-            <div class={`steps${item.n === '03' ? ' steps--approach' : ''}`}>
-              {item.items!.map((l, n) => (
-                <a class="steps__row" href={l.href!} style={`top:${n * (item.n === '03' ? 62 : 64)}px`}>
-                  <span class="steps__rule"></span>
-                  {n === item.items!.length - 1 && <span class="steps__rule steps__rule--last"></span>}
-                  <span class="steps__n">{String(n + 1).padStart(2, '0')}</span>
-                  <span class="steps__label">{l.label}</span>
-                  <span class="steps__note">{l.note}</span>
-                </a>
-              ))}
+            <div
+              class:list={[
+                'steps',
+                item.n === '03' && 'steps--approach',
+                isTwoCol(item.items!.length) && 'steps--two',
+              ]}
+            >
+              {item.items!.map((l, n) => {
+                const rows = rowsIn(item.items!.length)
+                const two = isTwoCol(item.items!.length)
+                const rowH = item.n === '03' ? 62 : two ? 68 : 64
+                /* In two columns the numbering still reads down each column in
+                   turn — 01-06 then 07-12 — because that is the order the list
+                   is written in and the order a reader takes it in. */
+                return (
+                  <a
+                    class="steps__row"
+                    href={l.href!}
+                    style={
+                      two
+                        ? `left:${Math.floor(n / rows) * 450}px;top:${(n % rows) * rowH}px`
+                        : `top:${n * rowH}px`
+                    }
+                  >
+                    <span class="steps__rule"></span>
+                    {/* The closing rule belongs to the bottom of each COLUMN,
+                        not to the last item overall, or the left column ends
+                        open while the right one is ruled off. */}
+                    {(two ? n % rows === rows - 1 : n === item.items!.length - 1) && (
+                      <span class="steps__rule steps__rule--last"></span>
+                    )}
+                    <span class="steps__n">{String(n + 1).padStart(2, '0')}</span>
+                    <span class="steps__label">{l.label}</span>
+                    <span class="steps__note">{l.note}</span>
+                  </a>
+                )
+              })}
             </div>
           )}
 
@@ -735,6 +779,30 @@ const ROW_TOP = 50
   }
   .steps--approach .steps__note { left: 300px; top: 24px; }
   .steps__row:hover .steps__label { color: var(--c-accent, #ffd400); }
+
+  /* ── two columns ─────────────────────────────────────────────
+     410px per column with a 40px gutter, which is the 860px the panel already
+     had. THE NOTE STACKS UNDER THE LABEL rather than sitting beside it: at
+     410px "Hire Dedicated Developers" alone is nearly the full column at the
+     one-column type size, so there is no room to its right for anything. The
+     label comes down to 20px and the note to 13px to pay for the second line,
+     and the row grows 64 -> 68 to hold both. Six rows of 68 is 408px, which
+     the panel clears with 56px to spare. */
+  .steps--two .steps__row { width: 410px; height: 68px; }
+  .steps--two .steps__rule { width: 410px; }
+  .steps--two .steps__rule--last { top: 67px; }
+  .steps--two .steps__n { top: 22px; }
+  .steps--two .steps__label {
+    left: 44px; top: 14px;
+    font-size: 20px; line-height: 24px;
+    /* The labels are set nowrap so a row is always one line; at this width the
+       longest of them, "Hire Dedicated Developers", has about 30px in hand. */
+  }
+  .steps--two .steps__note {
+    left: 44px; top: 40px; right: auto;
+    font-size: 13px; line-height: 17px;
+    width: 360px;
+  }
 
   /* work panel */
   .work { position: absolute; left: 0; top: 150px; width: 860px; height: 390px; }
