@@ -24,6 +24,7 @@ import { site } from '../lib/site'
 import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL_IMG } from '../lib/media'
 import { JOURNAL } from '../lib/journal'
 import GrainField from '../components/GrainField.astro'
+import RingField from '../components/RingField.astro'
 /* Decorative furniture still used by About and Insights. The hero's own
    set — planet, starbelt, slash mark — went with the export 2 redesign. */
 import star3 from '../assets/star-3.svg'
@@ -575,9 +576,14 @@ const schema = [
   </Section>
 
   {/* ── 4. Projects ─────────────────────────────────────────── */}
-  <Section ground="dark" bleed>
+  <Section ground="dark" bleed pin>
     <div class="proj">
     <GrainField tone="dark" />
+    {/* Turn 8a, on the band the export drew it on. AFTER GrainField, not
+        before: both fill the band at z-index 0, and at equal z-index the later
+        sibling paints on top — put the ring first and the grain gradient
+        covers it outright. */}
+    <RingField />
 
     <div class="wrap proj__inner">
       <div class="proj__head">
@@ -594,6 +600,16 @@ const schema = [
           so the incoming image can ride up OVER the outgoing one, which is
           the whole device. Only the text hides, and it hides discretely — see
           .proj__slide[aria-hidden] below and scripts/crossfade.ts. */}
+      {/* THE STAGE IS PINNED. The track below it is the stage's own height
+          plus one screenful of scroll per handover; the stage sticks inside
+          it, so the first project comes to rest in the middle of the viewport
+          and STAYS there while the page keeps scrolling. Those scrolled pixels
+          are what drive the handover to the second project, after which the
+          track runs out and the section carries on up.
+          --steps is the number of handovers, not the number of projects, and
+          it is written from the data so adding a third project lengthens the
+          track without anyone editing the CSS. */}
+      <div class="proj__track" data-crossfade-track style={`--steps:${featured.length - 1}`}>
       <div class="proj__stage" data-crossfade>
         {featured.map((f, i) => (
           <article
@@ -616,6 +632,7 @@ const schema = [
             </a>
           </article>
         ))}
+      </div>
       </div>
 
       <div class="proj__foot">
@@ -1088,6 +1105,13 @@ const schema = [
   @media (prefers-reduced-motion: reduce) {
     .about__logo-track { animation: none; }
     .about__logo-row img { translate: 0 0; transition: filter var(--dur-fast) ease; }
+    /* NO PIN. crossfade.ts already parks on the first slide under reduced
+       motion and stops sampling, so a pinned stage would hold a card still
+       while 620px of reserved, empty scroll went past — motion sickness is not
+       the only reason someone turns this on, but a dead gap is nobody's idea
+       of an accommodation. The track collapses and the stage flows. */
+    .proj__track::after { display: none; }
+    .proj__stage { position: relative; top: auto; }
   }
 
   /* Explicit box, not the attributes: tokens.css sets img{height:auto}, so a
@@ -1294,7 +1318,27 @@ const schema = [
   .proj__legend li { display: grid; grid-template-columns: 242px 16px; align-items: center; }
   .proj__legend i { display: block; height: 1px; background: var(--c-white); }
 
-  .proj__stage { position: relative; margin-top: 77px; min-height: 580px; }
+  /* The pinned track: the stage's own height plus the scroll the handovers
+     need. 620px per handover is the export's RANGE, which crossfade.ts already
+     used as the distance a handover takes; the only change is that those
+     pixels are now scrolled against a stationary card instead of a moving one.
+     A SPACER, NOT padding-bottom. A sticky child is confined to its containing
+     block's CONTENT box, and padding is outside it — with the reserved scroll
+     as padding the track's content box was exactly the stage's height, the
+     stage had nought pixels of room to travel, and it scrolled away like any
+     static element while reporting position:sticky the whole time. The spacer
+     is in flow, so it grows the content box and the stage gets its range.
+     The pseudo-element also means the height is never written against a fixed
+     stage height: if the card grows, the sum follows it. */
+  .proj__track { position: relative; }
+  .proj__track::after { content: ''; display: block; height: calc(var(--steps, 1) * 620px); }
+  /* Stuck roughly centred: half the leftover viewport, floored at 88px so the
+     card never rides up under the top bar on a short window. crossfade.ts
+     reads this computed value rather than assuming a number. */
+  .proj__stage {
+    position: sticky; top: max(88px, calc((100svh - 580px) / 2));
+    margin-top: 77px; min-height: 580px;
+  }
   .proj__slide {
     position: absolute; inset: 0;
     display: grid; grid-template-columns: 120px minmax(0, 1fr);
@@ -1692,7 +1736,13 @@ const schema = [
     .svc__list { margin-top: 40px; }
     .svc__foot { margin-top: 48px; }
     .proj__inner { padding-block: 56px 64px; }
-    .proj__stage { margin-top: 40px; }
+    /* NO PIN below 1040. The stage is most of a narrow viewport by itself, so
+       pinning it leaves nothing else on screen to show that the page is still
+       moving, and the track's reserved scroll reads as a dead gap. The stage
+       goes back to flowing and crossfade.ts sees position != sticky and
+       returns to sampling the stage's own rect. */
+    .proj__track::after { display: none; }
+    .proj__stage { position: relative; top: auto; margin-top: 40px; }
     .proj__foot { margin-top: 40px; }
     .say { padding-block: 56px 64px; }
     .say__list { margin-top: 32px; }

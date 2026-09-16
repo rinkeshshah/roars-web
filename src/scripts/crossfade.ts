@@ -36,7 +36,27 @@
  * prefers-reduced-motion the first slide simply stays put.
  */
 
-/** Scroll distance the handover takes, from the export. */
+/**
+ * THE STAGE IS PINNED NOW, above 1040px.
+ *
+ * The card sticks in the middle of the viewport and the handover is driven by
+ * the scroll that happens while it sits there, so the first project comes to
+ * rest, holds, and hands over to the second only when the reader scrolls on.
+ *
+ * That breaks the obvious way to measure progress. A stuck element's own rect
+ * STOPS CHANGING — that is what stuck means — so sampling the stage's top
+ * would read the same number for the whole pin and nothing would ever advance.
+ * Progress comes off the TRACK instead: the track keeps scrolling normally,
+ * and how far its top has travelled past the stage's sticky offset is exactly
+ * how far through the pin we are.
+ *
+ * Below 1040px the CSS drops the pin, and this falls back to the original
+ * measurement against the stage's own rect. It decides which by reading the
+ * computed position rather than re-testing the media query, so there is one
+ * source of truth for whether the pin is on and it is the stylesheet.
+ */
+
+/** Scroll distance ONE handover takes, from the export. */
 const RANGE = 620
 /** How far the outgoing card lifts, from the export. */
 const LIFT = 56
@@ -70,19 +90,45 @@ export function initCrossfade(): void {
     return
   }
 
+  const track = stage.parentElement?.hasAttribute('data-crossfade-track')
+    ? stage.parentElement
+    : null
+
   let active = false
   let frame = 0
   let current = -1
 
+  /* Cached, because getComputedStyle forces style resolution and this would
+     otherwise run on every animation frame of every scroll. Only the two
+     things that can change it invalidate it. */
+  let pin: { top: number; travel: number } | null = null
+  const measurePin = () => {
+    pin = null
+    if (!track) return
+    const cs = getComputedStyle(stage)
+    if (cs.position !== 'sticky') return
+    const top = parseFloat(cs.top)
+    /* How far the track can scroll while the stage stays stuck: everything the
+       track has that the stage does not. Zero means the CSS reserved nothing,
+       so there is no pin to measure against. */
+    const travel = track.offsetHeight - stage.offsetHeight
+    if (!Number.isFinite(top) || travel <= 0) return
+    pin = { top, travel }
+  }
+
   const smooth = (x: number) => x * x * (3 - 2 * x)
 
   const sample = () => {
-    const r = stage.getBoundingClientRect()
-    /* Zero when the stage sits at 62% of the viewport, one after RANGE more
-       pixels of scroll. Anchored to the stage's own rect rather than a page
-       offset, so it stays correct when the content above it changes length —
-       which is the trap the hard-coded pixel bands fell into. */
-    const raw = (innerHeight * 0.62 - r.top) / RANGE
+    /* Zero when the handover starts, one when it has finished. Pinned, that is
+       how far the track has scrolled past the stage's sticky offset. Unpinned,
+       it is the original measure: zero when the stage sits at 62% of the
+       viewport, one after RANGE more pixels. Either way it is anchored to a
+       live rect rather than a page offset, so it stays correct when the
+       content above it changes length — the trap the hard-coded pixel bands
+       fell into. */
+    const raw = pin
+      ? (pin.top - track!.getBoundingClientRect().top) / pin.travel
+      : (innerHeight * 0.62 - stage.getBoundingClientRect().top) / RANGE
     const p = smooth(Math.min(1, Math.max(0, raw)))
     const pos = p * (slides.length - 1)
 
@@ -104,13 +150,20 @@ export function initCrossfade(): void {
     frame = requestAnimationFrame(() => { frame = 0; sample() })
   }
 
+  /* The TRACK, not the stage. A stuck stage is on screen for the whole pin, so
+     observing it would be the same test; observing the track is what tells us
+     the pin has ended and the section is leaving. */
   const io = new IntersectionObserver((entries) => {
     active = entries.some((e) => e.isIntersecting)
     if (active) sample()
   })
-  io.observe(stage)
+  io.observe(track ?? stage)
 
+  measurePin()
   sample()
   addEventListener('scroll', onScroll, { passive: true })
-  addEventListener('resize', onScroll, { passive: true })
+  /* Resize can cross the 1040px breakpoint in either direction, and the sticky
+     offset is a function of viewport height, so the pin is re-measured before
+     the next sample rather than trusted from load. */
+  addEventListener('resize', () => { measurePin(); onScroll() }, { passive: true })
 }

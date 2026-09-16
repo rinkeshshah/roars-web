@@ -36,11 +36,24 @@ interface Props {
   id?: string
   /** The ring ground. Flat-black bands only — see the note above. */
   rings?: boolean
+  /**
+   * Let a descendant use `position: sticky`.
+   *
+   * `overflow: hidden` makes this section the nearest scroll container, and a
+   * sticky child sticks to its scroll container — this one never scrolls, so
+   * the child behaves as if it were static and the pin silently does nothing.
+   * `overflow: clip` clips exactly the same way WITHOUT becoming a scroll
+   * container, so the child keeps sticking to the viewport.
+   *
+   * Opt-in rather than the default because `clip` is the newer property and
+   * the only section that needs it is the pinned Projects stage.
+   */
+  pin?: boolean
 }
-const { ground = 'light', as: Tag = 'section', bleed = false, id, rings = false } = Astro.props
+const { ground = 'light', as: Tag = 'section', bleed = false, id, rings = false, pin = false } = Astro.props
 ---
 
-<Tag class="sec" data-ground={ground} data-rings={rings ? '' : undefined} id={id}>
+<Tag class="sec" data-ground={ground} data-rings={rings ? '' : undefined} data-pin={pin ? '' : undefined} id={id}>
   {rings && <RingField />}
   <slot name="bleed" />
   {bleed ? <slot /> : <div class="wrap"><slot /></div>}
@@ -57,5 +70,7 @@ const { ground = 'light', as: Tag = 'section', bleed = false, id, rings = false 
      is a stacking context of its own. Only where the rings are on, so every
      other section keeps painting exactly as it did. */
   .sec[data-rings] { isolation: isolate; }
+  /* Same clipping, no scroll container — see the `pin` note above. */
+  .sec[data-pin] { overflow: clip; }
   .sec > .wrap { position: relative; z-index: 1; }
 </style>
