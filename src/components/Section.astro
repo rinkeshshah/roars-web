@@ -10,12 +10,23 @@
  * driven by IntersectionObserver over [data-ground="dark"] rather than the
  * prototypes' hard-coded pixel bands.
  *
+ * THE RING FIELD IS OPT-IN, via `rings`, and only for a band whose ground is
+ * FLAT BLACK. A band that draws its own dark GRADIENT through GrainField —
+ * every hero on the site — is not black, and turn 8 of the graphic-elements
+ * export puts the ring on black. Those bands also paint that gradient at
+ * inset:0 over anything the section puts behind them, so a section-level ring
+ * there is invisible as well as wrong.
+ *
+ * Off by default, so a new dark band has to ask for it rather than inherit it.
+ *
  * There is deliberately NO `class` prop. An Astro scope hash does not cross a
  * component boundary, so a class passed in from a page compiles to a selector
  * that matches nothing and the rule silently does nothing — which is exactly
  * how .hero lost its 900px min-height. Style your own element inside the
  * slot instead. scripts/assert-styles.mjs fails the build on a recurrence.
  */
+import RingField from './RingField.astro'
+
 interface Props {
   ground?: 'light' | 'surface' | 'dark' | 'accent'
   /** Rendered element. Sections are <section>; the footer passes "footer". */
@@ -23,11 +34,14 @@ interface Props {
   /** Skip the inner .wrap when the section manages its own bleed. */
   bleed?: boolean
   id?: string
+  /** The ring ground. Flat-black bands only — see the note above. */
+  rings?: boolean
 }
-const { ground = 'light', as: Tag = 'section', bleed = false, id } = Astro.props
+const { ground = 'light', as: Tag = 'section', bleed = false, id, rings = false } = Astro.props
 ---
 
-<Tag class="sec" data-ground={ground} id={id}>
+<Tag class="sec" data-ground={ground} data-rings={rings ? '' : undefined} id={id}>
+  {rings && <RingField />}
   <slot name="bleed" />
   {bleed ? <slot /> : <div class="wrap"><slot /></div>}
 </Tag>
@@ -39,5 +53,9 @@ const { ground = 'light', as: Tag = 'section', bleed = false, id } = Astro.props
     color: var(--ink);
     overflow: hidden;
   }
+  /* A child at z-index 0 still paints under .sec's own background unless .sec
+     is a stacking context of its own. Only where the rings are on, so every
+     other section keeps painting exactly as it did. */
+  .sec[data-rings] { isolation: isolate; }
   .sec > .wrap { position: relative; z-index: 1; }
 </style>

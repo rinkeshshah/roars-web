@@ -15,6 +15,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import RingField from '../../components/RingField.astro'
 import { PORTRAIT, workHeroFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { clientFor, isHeldBack } from '../../lib/projects'
@@ -149,6 +150,7 @@ const faces = (d?.team ?? [])
               alt={d.heroAlt || ''}
               width="2400" height="1200" loading="lazy" decoding="async"
             />
+            <RingField variant="sweep" />
           </div>
         )}
 
@@ -341,10 +343,6 @@ const faces = (d?.team ?? [])
      corner, which is the family resemblance and the one place yellow touches
      an image anywhere on the site. */
   .pd__hero { position: relative; margin-top: 27px; overflow: hidden; border-radius: 12px; background: rgb(30, 30, 30); }
-  .pd__hero::after {
-    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background: var(--dusk-amber-soft);
-  }
   /* 2:1, THE SHAPE THE FILES ARE CUT TO. The box was a fixed 737px on a
      1358px column, 1.84:1, so a 2:1 photograph lost a strip off each side to
      `object-fit: cover` — the same fault the /work/ card had before it was
@@ -353,7 +351,7 @@ const faces = (d?.team ?? [])
      Saturation is baked into the file at 0.8 rather than applied as a CSS
      filter: one source of truth, and no filter to composite on a 2400px image
      at paint time. */
-  .pd__hero img { display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; filter: brightness(var(--dusk-exposure-hero)); }
+  .pd__hero img { display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; filter: var(--sweep-grade); }
 
   /* ── about ──────────────────────────────────────────────── */
   .pd__about { position: relative; margin-top: 83px; }

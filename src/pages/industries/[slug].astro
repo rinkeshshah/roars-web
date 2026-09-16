@@ -27,6 +27,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import RingField from '../../components/RingField.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { site } from '../../lib/site'
 import { workHeroFor } from '../../lib/media'
@@ -258,11 +259,22 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
               put one client's premises behind another client's name, so the
               ground is halved and each case sits over its own. With one case
               it is a single image across the full width. */}
+          {/* THE SWEEP ONLY WHEN THERE IS ONE. Turn 7b puts the ring ON a
+              photograph where that photograph is the full-width ground of a
+              band, which is this band with a single case and nothing else on
+              the site. With two, the ground is halved: each picture is a
+              half-width card carrying a client name, a lead and a button, and
+              the arcs cross every line of it. Those halves keep the card
+              treatment — amber dusk under ink — which is the same rule the
+              /work/ grid follows. */}
           <span class="icz__ground" aria-hidden="true">
             {d.cases.items.map((c) => (
-              <span class="icz__shot">
+              <span class:list={['icz__shot', d.cases.items.length === 1 && 'icz__shot--sweep']}>
                 {workHeroFor(c.href) && (
-                  <img src={workHeroFor(c.href)} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+                  <Fragment>
+                    <img src={workHeroFor(c.href)} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+                    {d.cases.items.length === 1 && <RingField variant="sweep" />}
+                  </Fragment>
                 )}
               </span>
             ))}
@@ -428,6 +440,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
           {featuredShot && (
             <div class="ip__bg" aria-hidden="true">
               <img src={featuredShot} alt="" width="1440" height="1000" loading="lazy" decoding="async" />
+              <RingField variant="sweep" />
             </div>
           )}
           <span class="ip__tick" aria-hidden="true"></span>
@@ -733,6 +746,18 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
       rgba(11, 11, 11, 0.3) 78%,
       rgba(11, 11, 11, 0.16) 100%);
   }
+  /* The single-case band is one photograph across the full width, so it takes
+     turn 7b instead: the grade, the ring drawn on it, no amber, and only the
+     ink the copy in the left half actually needs. Same swap as .ip__bg. */
+  .icz__shot--sweep img { filter: var(--sweep-grade); }
+  .icz__shot--sweep::before { display: none; }
+  .icz__shot--sweep::after {
+    background: linear-gradient(90deg,
+      rgba(11, 11, 11, 0.72) 0%,
+      rgba(11, 11, 11, 0.42) 42%,
+      rgba(11, 11, 11, 0.08) 78%,
+      rgba(11, 11, 11, 0) 100%);
+  }
   /* TWO EXPLICIT COLUMNS, NOT auto-fit. The ground behind this grid has to
      split at exactly the same width the grid does, and auto-fit resolves
      against the 1362 wrap while the ground resolves against 100vw — so the two
@@ -1017,17 +1042,21 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     position: absolute; left: 50%; top: 0; z-index: -1;
     width: 100vw; height: 100%; transform: translateX(-50%); overflow: hidden;
   }
-  .ip__bg img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* TURN 7's GRADE, and the Roar Ring drawn ON the picture rather than behind
+     it — the export's rule is that screenshots get the ring behind them and
+     photographs get it on them, and this is a photograph.
+     NO AMBER AND NO INK. The grade exists so the drawn layer is the only
+     colour on the frame; the yellow ring is the accent now. */
+  .ip__bg img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: var(--sweep-grade);
+  }
+  /* A lighter wash than before: the grade takes the picture to 42% on its own,
+     so the old 0.88/0.66/0.9 stack on top of it left a black rectangle. This
+     is only what the 84px numerals need at the top and bottom. */
   .ip__bg::after {
     content: ''; position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.66) 44%, rgba(0, 0, 0, 0.9) 100%);
-  }
-  /* Amber dusk, third layer. The soft stop, on top of the wash — this band is
-     already darker than any card, so it needs the tint and not the exposure.
-     Its corner is at 88%/96%, below and right of the stats. */
-  .ip__bg::before {
-    content: ''; position: absolute; inset: 0; z-index: 2;
-    background: var(--dusk-amber-soft);
+    background: linear-gradient(rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.12) 44%, rgba(0, 0, 0, 0.6) 100%);
   }
   .ip__tick { display: block; width: 16px; height: 1.5px; background: rgba(180, 174, 174, 0.7); }
   .ip .i-eyebrow { margin-top: 20px; }

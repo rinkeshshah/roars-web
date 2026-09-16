@@ -36,13 +36,22 @@ interface Props {
    *   Turn 8b.
    */
   tone?: 'dark' | 'light'
-  /** Override the centre, e.g. "86% 112%". Defaults per tone. */
+  /**
+   * ground: turn 8a/8b — the ring on the SECTION behind a listing of cards.
+   * sweep:  turn 7b, "The Sweep" — the ring ON a photograph, from a centre off
+   *   the bottom-right. Used where one project's picture is the full-width
+   *   ground of a band. The rule from the export: screenshots get the ring
+   *   behind them, photographs get it on them.
+   */
+  variant?: 'ground' | 'sweep'
+  /** Override the centre. Defaults per variant and tone. */
   at?: string
 }
 
-const { tone = 'dark', at } = Astro.props
+const { tone = 'dark', variant = 'ground', at } = Astro.props
+const sweep = variant === 'sweep'
 
-const centre = at ?? (tone === 'dark' ? '-6% 108%' : '104% -8%')
+const centre = at ?? (sweep ? '86% 112%' : tone === 'dark' ? '-6% 108%' : '104% -8%')
 const hair = tone === 'dark' ? 'rgba(255,255,255,0.26)' : 'rgba(20,20,20,0.16)'
 const hairOut = tone === 'dark' ? 'rgba(255,255,255,0)' : 'rgba(20,20,20,0)'
 const accent = tone === 'dark' ? 'rgba(255,212,0,0.9)' : 'rgba(214,178,0,0.75)'
@@ -50,12 +59,14 @@ const accentOut = tone === 'dark' ? 'rgba(255,212,0,0)' : 'rgba(214,178,0,0)'
 
 /* The masks. Neither starts solid: both open faint at the origin and peak
    further out, which is what stops the field reading as a target. */
-const maskHair =
-  tone === 'dark'
+const maskHair = sweep
+  ? `radial-gradient(circle at ${centre},rgba(0,0,0,0.2) 0%,#000 22%,rgba(0,0,0,0.5) 54%,rgba(0,0,0,0.14) 80%,rgba(0,0,0,0) 96%)`
+  : tone === 'dark'
     ? `radial-gradient(circle at ${centre},rgba(0,0,0,0.2) 0%,#000 24%,rgba(0,0,0,0.45) 56%,rgba(0,0,0,0.12) 82%,rgba(0,0,0,0) 97%)`
     : `radial-gradient(circle at ${centre},rgba(0,0,0,0.25) 0%,#000 26%,rgba(0,0,0,0.4) 58%,rgba(0,0,0,0) 94%)`
-const maskAccent =
-  tone === 'dark'
+const maskAccent = sweep
+  ? `radial-gradient(circle at ${centre},rgba(0,0,0,0) 0%,rgba(0,0,0,0.35) 20%,#000 46%,rgba(0,0,0,0.3) 74%,rgba(0,0,0,0) 94%)`
+  : tone === 'dark'
     ? `radial-gradient(circle at ${centre},rgba(0,0,0,0) 2%,rgba(0,0,0,0.4) 22%,#000 48%,rgba(0,0,0,0.28) 76%,rgba(0,0,0,0) 95%)`
     : `radial-gradient(circle at ${centre},rgba(0,0,0,0) 4%,rgba(0,0,0,0.4) 24%,#000 50%,rgba(0,0,0,0.25) 78%,rgba(0,0,0,0) 96%)`
 
@@ -66,13 +77,13 @@ const hairStyle = [
 ].join(';')
 
 const accentStyle = [
-  `background:repeating-radial-gradient(circle at ${centre},${accent} 0 1.5px,${accentOut} 1.5px 372px)`,
+  `background:repeating-radial-gradient(circle at ${centre},${accent} 0 1.5px,${accentOut} 1.5px ${sweep ? 336 : 372}px)`,
   `-webkit-mask-image:${maskAccent}`,
   `mask-image:${maskAccent}`,
 ].join(';')
 ---
 
-<span class="rf" aria-hidden="true">
+<span class:list={['rf', sweep && 'rf--sweep']} aria-hidden="true">
   <span class="rf__l" style={hairStyle}></span>
   <span class="rf__l" style={accentStyle}></span>
 </span>
@@ -81,7 +92,11 @@ const accentStyle = [
   /* Full bleed off the band's own centre, which is the viewport's centre
      because .wrap is a centred max-width box. Same move as .icz__ground. */
   .rf {
-    position: absolute; left: 50%; top: 0; z-index: -1;
+    /* z-index 0, NOT -1. It has to paint above the band's own ground —
+       GrainField's gradient sits at inset:0 earlier in the DOM — and below the
+       band's content, which is z-index 1 in every one of these. At -1 it went
+       under the band's background and was never seen. */
+    position: absolute; left: 50%; top: 0; z-index: 0;
     display: block; width: 100vw; height: 100%;
     transform: translateX(-50%);
     overflow: hidden; pointer-events: none;
@@ -90,4 +105,8 @@ const accentStyle = [
      against the same box and the yellow lands on a grey ring rather than
      between two. */
   .rf__l { position: absolute; inset: 0; display: block; }
+  /* The sweep belongs TO the photograph, so it fills its parent rather than
+     bleeding to the viewport: the arcs have to leave the frame at the picture's
+     own edge, which is what makes photo and layout read as one surface. */
+  .rf--sweep { left: 0; width: 100%; transform: none; }
 </style>

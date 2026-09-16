@@ -935,9 +935,6 @@ const cities = defineCollection({
       .min(2)
       .max(3),
     why: z.array(z.object({ name: z.string().max(34), body: z.string().max(180) })).min(4).max(6),
-    /** Draw the concentric ring ground behind the Selected Work band. Opt-in
-     *  per page while the treatment is being tried on one of the seven. */
-    ringField: z.boolean().default(false),
   }),
 })
 

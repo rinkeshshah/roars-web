@@ -148,6 +148,16 @@
      name's cap height reaches. */
   --dusk-ink-up: linear-gradient(0deg, rgba(11, 11, 11, 0.82) 0%, rgba(11, 11, 11, 0.06) 52%);
 
+  /* TURN 7's GRADE. Where one project's photograph is the full-width ground of
+     a band, it is graded to this and the Roar Ring is drawn ON it — the export
+     calls it The Sweep. The point of the grade is that the drawn layer becomes
+     the only colour on the frame, so a band carrying it takes no amber and no
+     ink: the yellow ring is the accent.
+     The amber-dusk tokens above stay for CARD-sized pictures — the /work/ grid
+     and the homepage band — where the ring goes behind the cards instead. */
+  --sweep-grade: grayscale(0.6) contrast(1.12) brightness(0.42);
+
+
   /* ---------- Motion ---------- */
   --ease-out:     cubic-bezier(0.22, 0.68, 0.28, 1);
   --ease-spring:  cubic-bezier(0.16, 1, 0.3, 1);

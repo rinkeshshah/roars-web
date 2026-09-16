@@ -21,7 +21,11 @@ process:
     - name: "Wireframe"
       body: "Our expert UI/UX designers provide a visual presentation of your product features and flow by creating wireframes. Doing so can help us discover the opportunities for making the app faster and efficient for users so that they can navigate hassle-free and focus on the task while using your product."
     - name: "User interface"
-      body: "Once your app is deployed and need the optimisation of an e-commerce stIn this phase, we design your product visually appealing and user-friendly to represent your brand as the best amongst your competitors. Our experts employ user-centric design to make your product look with a focus on ease of use."
+      # The migration spliced two paragraphs here: a sentence truncated at
+      # "an e-commerce st" ran straight into "In this phase". The orphan
+      # clause is dropped rather than guessed at — nothing on the live page
+      # says how it ended.
+      body: "In this phase, we design your product visually appealing and user-friendly to represent your brand as the best amongst your competitors. Our experts employ user-centric design to make your product look with a focus on ease of use."
 bands:
   - key: "capabilities"
     label: "WHAT WE DO"
@@ -45,7 +49,9 @@ bands:
 featured:
   label: "FEATURED WORK"
   client: "FlowRow"
-  body: "Once your app is deployed and need the optimisation of an e-commerce stIn this phase, we design your product visually appealing and user-friendly to represent your brand as the best amongst your competitors. Our experts employ user-centric design to make your product look with a focus on ease of use."
+  # Same splice as the process step above. "In this phase" is dropped here
+  # too, because in a featured band it refers to no phase the reader has seen.
+  body: "We design your product visually appealing and user-friendly to represent your brand as the best amongst your competitors. Our experts employ user-centric design to make your product look with a focus on ease of use."
   href: "/work/flowrow-fitness-app/"
 cta:
   label: "Start here"
