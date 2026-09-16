@@ -189,13 +189,19 @@ cases:
     # featured; this slot goes to Community Social, the other travel case
     # production links.
     #
-    # Production links a third, /work/the-revolver-life-concierge-app/. It is
-    # NOT in docs/URL-INVENTORY.csv and does not build, so it is not linked
-    # here. CLAUDE.md rule 1: the inventory is the authority on what a URL is.
+    # The Revolver Life is the third production links. It was left off on 16 Sep
+    # because it was not in docs/URL-INVENTORY.csv and did not build — the right
+    # call under CLAUDE.md rule 1, and the wrong answer, because the inventory
+    # was the thing that was wrong. The page is live and indexed on production.
+    # It is now migrated, in the inventory, and linked here as production does.
     - client: "Community Social"
       situation: "Residents with no reliable way to keep track of what was actually happening in their own community."
       did: "Put notices, bookings and the day-to-day admin behind one product, so the answer is in one place rather than four group chats."
       href: "/work/community-social-residential-community-app/"
+    - client: "The Revolver Life"
+      situation: "Digital nomads running a job and planning the next leg from the same phone, across apps that knew nothing about each other."
+      did: "One on-demand concierge app: rooms, work needs and lifestyle in one place, with a marketplace where vendors quote on what you post."
+      href: "/work/the-revolver-life-concierge-app/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for travel and hospitality clients"

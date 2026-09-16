@@ -22,6 +22,8 @@
  * Sitemap line. Getting this backwards is the failure the flag exists to
  * make loud, so there is no default that covers both.
  */
+import { redirectList } from '../src/lib/redirects.mjs'
+
 const args = process.argv.slice(2)
 const LIVE = args.includes('--live')
 const BASE = (args.find((a) => !a.startsWith('--')) ?? '').replace(/\/$/, '')
@@ -196,8 +198,30 @@ for (const path of ['/wp-admin/', '/wp-login.php', '/xmlrpc.php']) {
 
 /* ------------------------------------------- 7. redirects are one hop */
 
+/**
+ * Every exact source in the map, plus three probes for the pattern rules, plus
+ * the two paths that test nginx's own trailing-slash handling.
+ *
+ * The map's sources used to be spot-checked with one entry. That is how the
+ * retired `/industry/` prefix went unnoticed for so long: nothing asked the
+ * server what it did with URLs Clutch has been linking for years. Checking all
+ * of them costs one request each, and it is the only way to know the rules
+ * actually shipped — they are pasted into Plesk by hand, so a rule existing in
+ * this repo says nothing about a rule existing on the server.
+ *
+ * Two pattern probes are deliberate. `/industry/<a real slug>/` has to be caught
+ * by its own exact rule rather than by the catch-all, because the catch-all
+ * would send the three renamed slugs into a 404 — this probe uses healthcare,
+ * one of the three. The other is an attachment page, the second pattern rule.
+ */
+const PATTERN_PROBES = [
+  '/industry/healthcare-app-development/',
+  '/work/gypsy/attachment/concierge-app-development-3/',
+]
+
 for (const path of [
-  '/our-journal/the-presidents-club-2/',
+  ...redirectList.map((r) => r.source),
+  ...PATTERN_PROBES,
   '/about-us',
   '/work',
 ]) {
@@ -215,6 +239,21 @@ for (const path of [
        is permanent by definition, so a 302 here means nginx, not us. */
     record(h.status === 301, `${path} redirects permanently (301)`, `got ${h.status}, not 301`)
   }
+}
+
+/* The catch-all under the retired prefix, checked on its own because it is the
+   one rule whose correct behaviour is NOT a 200. A slug that never existed is
+   still a 404 at the end; what is being checked is that nginx has the regex
+   location at all, and that a real slug never reaches it. */
+{
+  const path = '/industry/a-slug-that-never-existed/'
+  const hops = await chain(path)
+  const first = hops.find((h) => h.status >= 300 && h.status < 400)
+  record(
+    first?.status === 301 && /\/industries\/a-slug-that-never-existed\/$/.test(first.location ?? ''),
+    `${path} is caught by the /industry/ catch-all`,
+    hops.map((h) => `${h.status} ${h.url}`).join(' -> '),
+  )
 }
 
 /* ------------------------------------------------------------ report */

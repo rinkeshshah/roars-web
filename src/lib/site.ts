@@ -46,6 +46,10 @@ export const site = {
   /** Used as Organization.sameAs. Order is deliberate: strongest first. */
   sameAs: [
     'https://www.linkedin.com/company/roars-technologies-pvt.-ltd.',
+    /* Clutch, added 16 Sep. It sits second because it is the profile that
+       carries the client reviews — the strongest third-party corroboration
+       the business has, and the one that links back here. */
+    'https://clutch.co/profile/roars-technologies',
     'https://twitter.com/roarstech',
     'https://www.instagram.com/roarstech',
     'https://www.facebook.com/roarstech/',

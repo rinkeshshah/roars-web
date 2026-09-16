@@ -23,19 +23,19 @@ journey:
       body: "We offer cutting-edge education app development solutions for kindergarten students to college/university students to maximize their outcomes and give a personalized learning experience."
       tags: ["EDUCATION", "MOBILE"]
     - n: "02"
-      name: "Learning"
-      lead: "Learning management solution allows the users to view"
-      body: "It also provides the facility to work offline if there are any internet connectivity issues."
+      name: "Learning management"
+      lead: "Users view, schedule and plan training, with detailed progress analysis."
+      body: "A learning management system that also works offline when connectivity drops, which is most of what a campus network does."
       tags: ["LEARNING", "MANAGEMENT"]
     - n: "03"
       name: "Exam preparation"
-      lead: "With the help of an exam preparation solution"
-      body: "Also, this solution will provide features like track progress, exam schedule with the countdown, and much more."
+      lead: "Students prepare for school and institute tests."
+      body: "Progress tracking, an exam schedule with a countdown, and the practice that goes with both."
       tags: ["EXAM", "PREPARATION"]
     - n: "04"
-      name: "Mobility college"
-      lead: "Innovative mobility solutions for colleges and universities."
-      body: "Plus, it makes the learning process even more enjoyable for the students."
+      name: "Mobility for colleges"
+      lead: "Mobile solutions that speed up communication between institutions, parents and students."
+      body: "For colleges and universities, and it makes the learning process more enjoyable for the students while it does it."
       tags: ["MOBILITY", "FOR"]
     - n: "05"
       name: "Expertise"
@@ -45,39 +45,77 @@ journey:
       name: "Online training"
       body: "We develop high-performing and user-friendly online training apps that help students to communicate with the leading subject experts sitting at home, and can learn, practice, and analyze the performance through it."
       tags: ["ONLINE", "TRAINING"]
+    # Production names this one under Expertise and it had no home on the page:
+    # it was in the markdown body, and industry pages do not render their body.
+    # Six of this page's topics were missing for the same reason; the other five
+    # are the `types` block below.
+    - n: "07"
+      name: "Professional education"
+      lead: "Apps for medical and engineering students, with access to professional courses."
+      body: "Supported by tools that handle complex data — statistics, graphs and the rest of what those two subjects actually run on."
+      tags: ["PROFESSIONAL", "EDUCATION"]
 surfaces:
   label: "CAPABILITIES"
-  heading: "Education app features"
-  # NO PRODUCTION TEXT FOR THIS PAGE. The owner's file covers seven pages and
-  # education is not among them — restaurant is, and it needed nothing. So the
-  # agreed fallback applies here and only here: cut each clipped point back to
-  # the part that is whole, drop what cannot be cut, invent nothing. Every tab
-  # keeps at least one point.
+  # Was "Education app features". That is production's name for the FEATURES
+  # section, which now exists as the `types` block above, and two sections on
+  # one page cannot both be called it. These four are product kinds.
+  heading: "Kinds of learning product"
+  # RESTORED FROM PRODUCTION 16 Sep. These nine items were the last ones on the
+  # site still carrying the fallback trim — cut back to the part that was whole
+  # because education was the one sector missing from the owner's production
+  # text file. That file arrived, so the trim is gone and every point says the
+  # whole thing it was trying to say.
   sub: "Four kinds of learning product, and who each is for"
   tabs:
     - n: "01"
       name: "Virtual classroom"
       heading: "Virtual classroom apps"
       points:
-        - "Students connect with their teachers"
-        - "Lessons taken wherever both of them are"
+        - "Students join their teachers from anywhere"
+        - "Video sessions and live discussion"
     - n: "02"
       name: "E-books"
       heading: "E-book learning apps"
       points:
-        - "A personalised experience, through eBooks"
-        - "Built to read on a mobile or a tablet"
+        - "E-books built to read on a mobile or a tablet"
+        - "A personal way to build subject knowledge"
     - n: "03"
       name: "Competitive exam"
       heading: "Competitive exam apps"
       points:
         - "For schools and colleges preparing candidates"
+        - "Practice on real exam patterns, kept up to date"
     - n: "04"
       name: "Nursery"
       heading: "Nursery and preschool"
       points:
-        - "Interactive and visually rich, which is the point here"
+        - "Letters, colours and animals, learned through pictures"
         - "Fun, engaging and multilingual"
+# PRODUCTION'S FEATURES SECTION. Five items, and none of them were on this page
+# — they sat in the markdown body, which an industry page does not render, so
+# every one of them was invisible. They are the parent-facing half of the
+# product and the reason a school buys one, which makes them the last thing
+# that should have been missing.
+types:
+  label: "WHAT IT DOES FOR PARENTS"
+  heading: "Education app features"
+  intro: "The five a parent actually opens the app for, and the reason a school gets asked about it."
+  items:
+    - n: "01"
+      name: "Worksheets and report cards"
+      body: "Parents check report cards and track progress. Teachers create worksheets and share them, in line with the curriculum rather than beside it."
+    - n: "02"
+      name: "Push notifications"
+      body: "Parents and students get updates on events, syllabus changes, courses and exam schedules, at the point the change is made."
+    - n: "03"
+      name: "Private messaging"
+      body: "Parents talk to teachers and school staff about performance, exams and results, in the app rather than through a note in a bag."
+    - n: "04"
+      name: "Staff contact list with easy calling"
+      body: "Parents find the right staff member and call them in one tap, instead of working out who to ask from a printed list."
+    - n: "05"
+      name: "Fee payments"
+      body: "Parents pay school and college fees quickly, through several payment methods, without a trip to an office."
 proof:
   label: "PROOF"
   heading: "Practised since 2005"

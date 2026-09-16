@@ -1,7 +1,7 @@
 /**
  * Case studies that are BUILT but not offered.
  *
- * Eleven of the twenty-three are listed on /work/ for now. These twelve keep
+ * Twelve of the twenty-four are listed on /work/ for now. These twelve keep
  * their URLs and their content, but they are off the index, carry noindex, and
  * stay out of the sitemap.
  *

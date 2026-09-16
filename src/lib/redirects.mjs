@@ -81,6 +81,70 @@ export const duplicateSlugRedirects = [
 ]
 
 /**
+ * CONFIRMED. The old singular `/industry/` prefix, linked from Clutch.
+ *
+ * The Roars profile on Clutch links nine industry pages at `/industry/<slug>/`.
+ * Those are backlinks from a high-authority profile and every one of them is a
+ * 404 on this site, which spends the link and gets nothing.
+ *
+ * Six of the nine slugs are unchanged and only the prefix moved. THREE ARE
+ * DIFFERENT SLUGS, which is why this is nine explicit rules and not one regex:
+ *
+ *   on-demand-fitness-app                   -> on-demand-fitness-app-development
+ *   healthcare-app-development              -> healthcare-app-development-company
+ *   logistics-and-transportation-app-...    -> logistics-transportation-app-...
+ *
+ * A bare `/industry/(.*)` -> `/industries/$1` rule would send all three into a
+ * 404 while looking like it had handled them. The pattern rule still ships, in
+ * `patternRedirects` below, but it sits behind these so it only ever sees a
+ * slug nobody here has heard of.
+ */
+export const legacyIndustryRedirects = [
+  // The three that changed slug, not just prefix.
+  {
+    source: '/industry/on-demand-fitness-app/',
+    destination: '/industries/on-demand-fitness-app-development/',
+  },
+  {
+    source: '/industry/healthcare-app-development/',
+    destination: '/industries/healthcare-app-development-company/',
+  },
+  {
+    // Clutch truncates this one in its own markup. The full slug is the only
+    // one it can be: there is exactly one logistics page on either site.
+    source: '/industry/logistics-and-transportation-app-development/',
+    destination: '/industries/logistics-transportation-app-development/',
+  },
+  // The six where only the prefix moved. Explicit anyway, so a future edit to
+  // any one slug breaks a named rule rather than silently falling through to
+  // the pattern and 301ing into a 404.
+  {
+    source: '/industry/education-mobile-app-development/',
+    destination: '/industries/education-mobile-app-development/',
+  },
+  {
+    source: '/industry/concierge-app-development/',
+    destination: '/industries/concierge-app-development/',
+  },
+  {
+    source: '/industry/saas-application-development-services/',
+    destination: '/industries/saas-application-development-services/',
+  },
+  {
+    source: '/industry/travel-and-hospitality-app-development/',
+    destination: '/industries/travel-and-hospitality-app-development/',
+  },
+  {
+    source: '/industry/retail-ecommerce-development/',
+    destination: '/industries/retail-ecommerce-development/',
+  },
+  {
+    source: '/industry/food-restaurant-app-development/',
+    destination: '/industries/food-restaurant-app-development/',
+  },
+]
+
+/**
  * PENDING: MVP cluster. Eleven posts compete for one intent, plus
  * /s/mvp-development/. Four refreshed in 2025, seven stale since 2022.
  *
@@ -108,9 +172,97 @@ export const cryptoTailRedirects = []
  */
 export const ukCityRedirects = []
 
+/**
+ * CONFIRMED. Live URLs the sitemap-derived inventory never knew about.
+ *
+ * All six came out of docs/migration/squirrly-meta.csv, which is the SEO
+ * plugin's own table and therefore a record of what WordPress actually had,
+ * not of what its sitemap advertised. Every one is `post_type: post` with a
+ * real title and a real meta description, and every one was missing from
+ * docs/URL-INVENTORY.csv. scripts/assert-inventory.mjs now fails on this class
+ * rather than waiting for somebody to notice at cutover.
+ *
+ * Three are the old category-nested permalink shape, `/our-journal/<category>/
+ * <slug>/`. The post each one points at is migrated and live at the flat slug,
+ * so these are one hop into real content.
+ *
+ * Three are /work/ pages:
+ *   gymbait-2 is a duplicate-slug artefact of the GymBait case study, which is
+ *     migrated, featured and live. Same project, so it goes there.
+ *   orderdirect and addictlab-collabration-tool are real case studies that were
+ *     never migrated. There is no export for either, no images, and a meta
+ *     description is not a case study, so writing a page for them would be
+ *     inventing a client's project. They 301 to the nearest page that is
+ *     actually about the work — the logistics sector page for one, product
+ *     development for the other. Flagged to the owner 16 Sep: if the original
+ *     copy turns up, both become case studies and these two rules come out.
+ */
+export const missingFromInventoryRedirects = [
+  {
+    source: '/our-journal/business/minimum-viable-product-learn/',
+    destination: '/our-journal/minimum-viable-product-learn/',
+  },
+  {
+    source: '/our-journal/user-experience/ux-design-principles-designers-must-know-3/',
+    destination: '/our-journal/ux-design-principles-designers-must-know/',
+  },
+  {
+    source: '/our-journal/user-experience/how-ai-is-transforming-user-experience-design-in-2025/',
+    destination: '/our-journal/how-ai-is-transforming-user-experience-design/',
+  },
+  {
+    source: '/work/gymbait-2/',
+    destination: '/work/gymbait/',
+  },
+  {
+    // "Logistics App Development Company", post 7365.
+    source: '/work/orderdirect/',
+    destination: '/industries/logistics-transportation-app-development/',
+  },
+  {
+    // "Creative Collaboration Tool Development Case study", post 7357. There is
+    // no collaboration-tools sector page, and the service that built it is the
+    // honest nearest thing.
+    source: '/work/addictlab-collabration-tool/',
+    destination: '/s/product-development-company/',
+  },
+]
+
+/**
+ * REGEX RULES, not exact paths. These are emitted after every exact rule and
+ * only ever see a path none of them matched.
+ *
+ * They are kept out of `redirectList` on purpose: that list is exact-match
+ * `location =` rules, and validateRedirects checks each source for a trailing
+ * slash, which a pattern does not have.
+ */
+export const patternRedirects = [
+  {
+    // Everything else under the retired singular prefix. All nine real slugs
+    // are named above, so what reaches this is a path that does not exist on
+    // either site. It gets a 301 to the same slug under the new prefix, which
+    // is the best guess available; if that does not exist either it is a 404,
+    // the same 404 it would have been without the rule.
+    pattern: '^/industry/(.*)$',
+    destination: '/industries/$1',
+  },
+  {
+    /* WordPress attachment pages: one thin page per uploaded image, at
+       <parent>/attachment/<image-slug>/. Five turned up in squirrly-meta.csv
+       under /work/, /s/ and /industries/, and there is one per image on the
+       old site, so naming them individually is a list that is wrong the moment
+       anybody uploads anything. Each goes to the page it hangs off, which is
+       the page a person landing on it was looking for. */
+    pattern: '^(/.*)/attachment/[^/]+/?$',
+    destination: '$1/',
+  },
+]
+
 export const redirects = Object.fromEntries(
   [
     ...duplicateSlugRedirects,
+    ...legacyIndustryRedirects,
+    ...missingFromInventoryRedirects,
     ...mvpClusterRedirects,
     ...cryptoTailRedirects,
     ...ukCityRedirects,
@@ -119,6 +271,8 @@ export const redirects = Object.fromEntries(
 
 export const redirectList = [
   ...duplicateSlugRedirects,
+  ...legacyIndustryRedirects,
+  ...missingFromInventoryRedirects,
   ...mvpClusterRedirects,
   ...cryptoTailRedirects,
   ...ukCityRedirects,

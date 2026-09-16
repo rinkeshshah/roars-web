@@ -1,7 +1,7 @@
 import { HELD_BACK_WORK } from './held-back.mjs'
 
 /**
- * The 23 case studies: inventory slug to client name.
+ * The 24 case studies: inventory slug to client name.
  *
  * Slugs are from docs/URL-INVENTORY.csv. Client names are from the design
  * brief's own list (docs/briefs/work-index-at-real-scale.md), which names them
@@ -52,6 +52,11 @@ export const PROJECTS: Project[] = [
   { slug: 'onus', client: 'Onus' },
   { slug: 'counter-cabinet', client: 'Counter Cabinet' },
   { slug: 'go-champions-go', client: 'Go Champions Go' },
+  /* The twenty-fourth, added 16 Sep. It was never in URL-INVENTORY.csv and
+     never in the WordPress export, but it is live and indexed on production
+     and the live travel page links it, so at cutover it would have 404'd. See
+     the header of its content file for what is and is not known about it. */
+  { slug: 'the-revolver-life-concierge-app', client: 'The Revolver Life' },
 ]
 
 export const clientFor = (slug: string): string | undefined =>
@@ -73,7 +78,7 @@ export const FEATURED_ORDER = [
 /**
  * NOT LISTED ON /work/, AND noindex ON THEIR OWN URL.
  *
- * Eleven case studies are shown for now; twelve are held back. They are still
+ * Twelve case studies are shown for now; twelve are held back. They are still
  * BUILT — src/lib/held-back.mjs carries the list and the reasoning, and it
  * lives there rather than here because astro.config.mjs needs the same list to
  * keep those URLs out of the sitemap and cannot import this module.
