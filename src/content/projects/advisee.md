@@ -28,33 +28,88 @@ blocks:
     lead: "Use modern UI elements, clear typography, and a structured layout to establish authority in the financial sector."
   - heading: "Strategic Branding & Visual Identity"
     lead: "Designed a cohesive color palette, typography, and visual elements that establish trust and reliability."
+# EVERY PICTURE CARRIES ITS SIZE, and that is what unsticks this page.
+#
+# The web captures are 1.05 to 1.59 tall, and one full blog page is 0.70. The
+# web grid was cropping all of them into a 16/10 box, so every screenshot lost
+# its bottom half and you were looking at a strip of a header. They take the
+# column at their own shape now.
+#
+# Three assets from the client's folder were on no page at all: the brand
+# logo, the icon set, and the legacy persona page. They are here.
 gallery:
+  # Not in the WordPress export, so there is no upload path to point at.
+  # Served from this repo.
+  - src: "/work/advisee/logo.png"
+    kind: "study"
+    w: 1008
+    h: 436
+    alt: "The Advisee mark and wordmark in blue and lime, on light and dark grounds"
+    caption: "The mark"
+  - src: "/wp-content/uploads/2025/03/advisee-colors.png"
+    kind: "study"
+    w: 937
+    h: 358
+    alt: "The Advisee palette: lime green and two blues with their tints"
+    caption: "Colour"
   - src: "/wp-content/uploads/2025/03/Typography-e1743077765250.png"
     kind: "study"
-    alt: ""
+    w: 667
+    h: 461
+    alt: "The Advisee type scale, a heading weight over a paragraph of body copy"
+    caption: "Type"
+  - src: "/work/advisee/icons.png"  # not in the export either
+    kind: "study"
+    w: 768
+    h: 253
+    alt: "The Advisee icon set, thin line icons for wealth, planning and advice"
+    caption: "Iconography"
+showcase:
   - src: "/wp-content/uploads/2025/03/advsiee-1.png"
     kind: "web"
-    alt: ""
-  - src: "/wp-content/uploads/2025/03/advisee-colors.png"
-    alt: "Colour study"
-    kind: "study"
-showcase:
+    w: 1536
+    h: 965
+    alt: "The Advisee home page: Make your wealth work for you, over a portrait"
+    caption: "Home"
   - src: "/wp-content/uploads/2025/03/advisee-stats.png"
     kind: "web"
-    alt: ""
+    w: 1536
+    h: 1226
+    alt: "The Advisee figures band: 1000 plus clients, 25 percent, one billion, 40 plus"
+    caption: "The figures, and what they are for"
   - src: "/wp-content/uploads/2025/03/advisee-services.png"
     kind: "web"
-    alt: ""
-  - src: "/wp-content/uploads/2025/03/foooter.png"
+    w: 1536
+    h: 1363
+    alt: "The Advisee services section: complete and exclusive financial solutions"
+    caption: "Services"
+  - src: "/wp-content/uploads/2025/03/legacy-1.png"
     kind: "web"
-    alt: ""
+    w: 1536
+    h: 1460
+    alt: "The Legacy Creators persona page: Preserving Wealth with a Balanced Approach"
+    caption: "One persona, one page"
   - src: "/wp-content/uploads/2025/03/advisee-5.png"
     kind: "web"
-    alt: ""
+    w: 1536
+    h: 1090
+    alt: "The Advisee insight band: what is new on Advisee, over a blue panel"
+    caption: "Unlock your financial potential"
+  - src: "/wp-content/uploads/2025/03/foooter.png"
+    kind: "web"
+    w: 1536
+    h: 1238
+    alt: "The Advisee footer with the newsletter sign-up and the site map"
+    caption: "The footer, which is where the enquiry starts"
 screens:
   - src: "/wp-content/uploads/2025/03/advisee-blog.png"
     kind: "web"
-    alt: ""
+    w: 1431
+    h: 2048
+    alt: "The Advisee insights index: latest updates from the world of wealth management"
+    caption: "Insights, end to end"
+# High impressions, near-zero clicks, and a body that is 293 words. Tracked
+# rather than hidden: every validate-content run prints it.
 needsRewrite: true
 seo:
   title: "Advisee: a mutual fund investment platform, rebuilt"

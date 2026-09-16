@@ -133,6 +133,17 @@ const pick = (...kinds: string[]) => media.filter((m) => m.kind && kinds.include
  */
 const PHONE_MAX = 0.7
 /**
+ * AND IT ONLY APPLIES TO `app`. A web capture is a picture of a website, and a
+ * website is a wide thing whatever the capture's height: Advisee's are 1.05 to
+ * 1.59 and one full blog page is 0.70, all of them taller than the 16/10 box
+ * the web grid was cropping them into, so every one lost its bottom half. A
+ * `web` entry with dimensions takes the column at its own shape, full stop.
+ * The portrait grid exists for one thing, a phone screen, and nothing else
+ * belongs in it.
+ */
+const isPhoneShaped = (m: { w?: number; h?: number; kind?: string }) =>
+  m.kind === 'app' && Boolean(m.w && m.h && m.w / m.h <= PHONE_MAX)
+/**
  * AND BIG ENOUGH TO FILL THE COLUMN.
  *
  * Shape alone is not sufficient. Snowman's design study is 824 x 521 — the
@@ -143,8 +154,8 @@ const PHONE_MAX = 0.7
  * the pixels for.
  */
 const MIN_FULL = 1200
-const isWide = (m: { w?: number; h?: number }) =>
-  Boolean(m.w && m.h && m.w / m.h > PHONE_MAX && m.w >= MIN_FULL)
+const isWide = (m: { w?: number; h?: number; kind?: string }) =>
+  Boolean(m.w && m.h && m.w >= MIN_FULL && !isPhoneShaped(m))
 
 /** The process: how it was structured, and how it was dressed. Split by shape,
  *  because a wireframe sheet and a single wireframe want different room. */
@@ -520,8 +531,9 @@ const nextProject = neighbour(1)
         out through the footer". A case study is the end of a path, and the
         useful thing to offer at the end of one is the next one. */}
     {(prevProject || nextProject) && (
-      <Section ground="surface">
-        <nav class="pdnav" aria-label="More case studies">
+      <Section ground="accent" bleed>
+        <GrainField tone="yellow" />
+        <nav class="wrap pdnav" aria-label="More case studies">
           {prevProject && (
             <a class="pdnav__side pdnav__side--prev" href={`/work/${prevProject.slug}/`} rel="prev">
               <span class="pdnav__dir"><i aria-hidden="true">&larr;</i>Previous</span>
@@ -853,9 +865,13 @@ const nextProject = neighbour(1)
      Three columns with the middle one auto, so the two names sit hard against
      the gutters and "All projects" stays centred on the page rather than
      centred between two labels of different lengths. */
+  /* THE SAME GROUND AS THE HOMEPAGE HERO. GrainField tone="yellow" is the one
+     place that gradient is written down, so this cannot drift from the hero;
+     z-index 1 lifts the links above it because GrainField paints inset 0. */
   .pdnav {
+    position: relative; z-index: 1;
     display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-    gap: 24px; padding-block: 64px;
+    gap: 24px; padding-block: 82px;
   }
   .pdnav__side { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
   .pdnav__side--next { text-align: right; align-items: flex-end; }
@@ -864,27 +880,27 @@ const nextProject = neighbour(1)
   .pdnav__all {
     justify-self: center;
     font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-semi);
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted);
     transition: color var(--dur-fast) ease;
   }
-  .pdnav__all:hover { color: var(--c-ink-heading); }
+  .pdnav__all:hover { color: var(--ink); }
   .pdnav__dir {
     display: flex; align-items: center; gap: 8px;
     font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-semi);
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted);
   }
   .pdnav__dir i { font-style: normal; transition: translate var(--dur-fast) var(--ease-out); }
   .pdnav__name {
     font-size: 30px; line-height: 1.16; font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
-    transition: color var(--dur-fast) ease;
+    letter-spacing: var(--ls-item); color: var(--ink);
+    transition: opacity var(--dur-fast) ease;
     overflow-wrap: anywhere;
   }
   /* The arrow leans the way you are going. Nothing else moves, so the whole
      band does not shift under the pointer. */
   .pdnav__side--prev:hover .pdnav__dir i { translate: -4px 0; }
   .pdnav__side--next:hover .pdnav__dir i { translate: 4px 0; }
-  .pdnav__side:hover .pdnav__name { color: rgb(90, 90, 90); }
+  .pdnav__side:hover .pdnav__name { opacity: 0.66; }
   @media (prefers-reduced-motion: reduce) {
     .pdnav__dir i { transition: none; }
     .pdnav__side--prev:hover .pdnav__dir i,

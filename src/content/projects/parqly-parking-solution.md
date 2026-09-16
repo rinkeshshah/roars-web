@@ -65,10 +65,13 @@ showcase:
     ground: "dark"
     alt: "The Parqly map screen showing nearby spaces and a Park and Pay button"
     caption: "Find a space, see the price, pay in one tap"
-  - src: "/wp-content/uploads/2025/07/parqly-device-scaled.jpg"
+  # NOT in the WordPress export: the old site never served this file, so the
+  # uploads path it had was one I made up to match its siblings. Served from
+  # this repo instead. validate-content refuses an unexported uploads path now.
+  - src: "/work/parqly/device.jpg"
     kind: "photo"
-    w: 2560
-    h: 1617
+    w: 2000
+    h: 1263
     alt: "A hand holding the Parqly app beside a yellow Parqly parking lock on a driveway"
     caption: "The app, and the lock it opens, on a real driveway"
   - src: "/wp-content/uploads/2025/07/iphone-parqly-map.jpg"

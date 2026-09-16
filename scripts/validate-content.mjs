@@ -560,6 +560,49 @@ for (const abs of proseFiles) {
   }
 }
 
+/**
+ * AN UPLOADS PATH MUST BE ONE THE OLD SITE ACTUALLY HAD.
+ *
+ * CLAUDE.md rule 1 is never invent a URL, and an image src is a URL. The
+ * failure is silent in a way a page URL is not: /wp-content/uploads/ is
+ * aliased to the WordPress uploads directory on the server, so nothing in
+ * this repository can tell a real path from a plausible one. It builds, it
+ * passes every gate, and it is a broken picture on a live page.
+ *
+ * This was written the same afternoon it happened. Adding two of Advisee's
+ * brand assets, both real files from the client, both given an upload path
+ * that matched the pattern of their siblings, and neither path existed.
+ *
+ * The WordPress export IS the record of what the old site had, one JSON per
+ * case study, so it is the thing to check against. A picture with no upload
+ * path goes in public/work/<slug>/ instead, where it resolves in the build
+ * and assert-assets can see it.
+ */
+const EXPORTS = join(ROOT, 'scripts/wordpress-export/work/out')
+if (existsSync(EXPORTS)) {
+  for (const abs of walk(join(ROOT, 'src/content/projects'), (n) => n.endsWith('.md'))) {
+    const slug = relative(join(ROOT, 'src/content/projects'), abs).replace(/\.md$/, '')
+    const dump = join(EXPORTS, `${slug}.json`)
+    if (!existsSync(dump)) continue
+    const known = new Set(
+      (readFileSync(dump, 'utf8').match(/\/wp-content\/uploads\/[^"\\\s]+/g) ?? []),
+    )
+    const used = readFileSync(abs, 'utf8').match(/^\s*(?:-\s*)?src:\s*"(\/wp-content\/uploads\/[^"]+)"/gm) ?? []
+    for (const line of used) {
+      const src = line.match(/"([^"]+)"/)[1]
+      if (known.has(src)) continue
+      errors.push({
+        file: `src/content/projects/${slug}.md`,
+        rule: 'invented uploads path',
+        msg:
+          `"${src}" is not in scripts/wordpress-export/work/out/${slug}.json, so the old site ` +
+          'never served it and nothing here can prove it exists. Put the file in ' +
+          `public/work/${slug}/ and reference it from there.`,
+      })
+    }
+  }
+}
+
 /* --------------------------------------------------------------- report */
 
 console.log('--- validate-content ---')

@@ -17,29 +17,66 @@ blocks:
     lead: "Built from day one for multi-tenant flexibility, so you effortlessly onboard enterprise clients and offer full white-label adaptability."
   - heading: "The Solution"
     lead: "A turnkey MVP and clear growth path for a new era concierge platform, future-ready and scalable to your ambitions."
+# Every picture carries its pixel size now. Three of the five tagged `app`
+# are four-up CONTACT SHEETS at 1536 x 959, not phone screens, and were being
+# letterboxed into a 9/16 box. The chatbot at 494 x 760 genuinely is portrait
+# and stays in the grid, which is the rule working rather than an exception.
+#
+# `concierges-app-ui3.jpg` had an EMPTY alt. Not a decorative image: it is
+# four screens of the itinerary, the booking pass, the membership card and the
+# request menu, so a reader on a screen reader was told nothing at all.
 gallery:
   - src: "/wp-content/uploads/2025/07/concierges-wireframe.png"
     kind: "wireframe"
-    alt: "App design wireframe"
+    w: 1536
+    h: 959
+    alt: "Greyscale wireframes of the concierge app: discover, city list, hotel and booking"
+    caption: "Discover, city, hotel, booking"
   - src: "/wp-content/uploads/2025/07/Concierge-Wireframe1.png"
     kind: "wireframe"
-    alt: "App Design wireframe"
+    w: 1536
+    h: 955
+    alt: "Greyscale wireframes of the request and membership flows"
+    caption: "Request, itinerary, membership"
 showcase:
-  - src: "/wp-content/uploads/2025/07/Ai-Concierges-Chatbot.png"
-    kind: "app"
-    alt: "AI Chatbot"
+  - src: "/work/concierge/pair.jpg"
+    # Not in the WordPress export, so there is no upload path to point at.
+    # Served from this repo, like the Snowman set.
+    kind: "photo"
+    w: 1800
+    h: 1013
+    alt: "Two phones on a dark dune showing the concierge home screen and the get-started grid"
+    caption: "Two screens, one membership"
+  - src: "/wp-content/uploads/2025/07/concierges-mobileapp.jpg"
+    kind: "photo"
+    w: 1536
+    h: 876
+    ground: "dark"
+    alt: "The concierge destination picker with Los Angeles selected, on a dark ground"
+    caption: "Pick the city, and the concierge picks up from there"
   - src: "/wp-content/uploads/2025/07/concierges-app-ui1.jpg"
     kind: "app"
-    alt: "App user interface design"
+    w: 1536
+    h: 959
+    alt: "Four concierge screens: the feature story, the city list, a destination and hotels"
+    caption: "Story, city, destination, hotels"
   - src: "/wp-content/uploads/2025/07/concierges-app-ui2.jpg"
     kind: "app"
-    alt: "App Design interface"
+    w: 1536
+    h: 959
+    alt: "Four concierge screens: hotel search, a hotel page, booking details and confirmation"
+    caption: "Search, choose, book, confirmed"
   - src: "/wp-content/uploads/2025/07/concierges-app-ui3.jpg"
     kind: "app"
-    alt: ""
-  - src: "/wp-content/uploads/2025/07/concierges-mobileapp.jpg"
-    alt: "The concierge app in use"
+    w: 1536
+    h: 959
+    alt: "Four concierge screens: journey map, booking pass with QR, membership card and request menu"
+    caption: "Journey, pass, membership, request"
+  - src: "/wp-content/uploads/2025/07/Ai-Concierges-Chatbot.png"
     kind: "app"
+    w: 494
+    h: 760
+    alt: "The AI Concierge chat, Mira, answering a request for a hotel reservation in Hyderabad"
 seo:
   title: "Concierges: one AI platform for luxury concierge services"
   description: "Roars partnered with a fast-growing luxury concierge startup to transform its fragmented MVP into a unified, AI-powered platform tailored for high-net-worth travelers and enterprise clients."
