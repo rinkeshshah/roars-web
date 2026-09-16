@@ -119,8 +119,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
             {d.hero!.ctaLabel && d.hero!.ctaHref && (
               <a class="i-ghost" href={d.hero!.ctaHref} target="_blank" rel="noopener">
                 <span>{d.hero!.ctaLabel}</span>
-                <span class="i-ghost__dot i-ghost__dot--grey" aria-hidden="true"></span>
-                <span class="i-ghost__dot i-ghost__dot--accent" aria-hidden="true"></span>
+                <span class="i-ghost__dots" data-dots aria-hidden="true"><i></i><i></i></span>
               </a>
             )}
           </div>
@@ -288,7 +287,10 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
                 <p class="icz__sit">{c.situation}</p>
                 <p class="icz__did">{c.did}</p>
                 {c.outcome && <p class="icz__out">{c.outcome}</p>}
-                <a class="i-ghost icz__cta" href={c.href}><span>Read the case study</span></a>
+                <a class="i-ghost icz__cta" href={c.href}>
+                  <span>Read the case study</span>
+                  <span class="i-ghost__dots" data-dots aria-hidden="true"><i></i><i></i></span>
+                </a>
               </article>
             ))}
           </div>
@@ -473,8 +475,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
               </dl>
               <a class="i-ghost ip__feat-cta" href={d.proof.featured.href}>
                 <span>{d.proof.featured.ctaLabel}</span>
-                <span class="i-ghost__dot i-ghost__dot--grey" aria-hidden="true"></span>
-                <span class="i-ghost__dot i-ghost__dot--accent" aria-hidden="true"></span>
+                <span class="i-ghost__dots" data-dots aria-hidden="true"><i></i><i></i></span>
               </a>
             </div>
           )}
@@ -558,9 +559,23 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     transition: box-shadow var(--dur-fast) ease;
   }
   .i-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--c-accent); color: var(--c-white); }
-  .i-ghost__dot { position: absolute; top: 17px; width: 8px; height: 8px; border-radius: 50%; }
-  .i-ghost__dot--grey { left: 158px; background: rgb(153, 152, 149); }
-  .i-ghost__dot--accent { left: 169px; background: var(--c-accent); }
+  /* THE DOTS, AS A PAIR, ON ALL THREE OF THESE BUTTONS.
+     They were two separately-positioned spans pinned at left:158 and left:169,
+     and the cases band's "Read the case study" shipped without them at all.
+     .i-ghost is a fixed 195px and those two lefts reserve its last 40px for
+     dots, so that button was a pill with a hole in the end of it — which is
+     precisely what made it look unfinished beside every other button here.
+     One flex pair anchored to the right edge instead of to two magic numbers,
+     so it stays correct whatever the pill's width becomes. It carries
+     data-dots as well, so these blink like every other pair on the site;
+     they were the last ones left out. */
+  .i-ghost__dots {
+    position: absolute; right: 18px; top: 50%; translate: 0 -50%;
+    display: flex; gap: 3px;
+  }
+  .i-ghost__dots i { width: 8px; height: 8px; border-radius: 50%; display: block; }
+  .i-ghost__dots i:first-child { background: rgb(153, 152, 149); }
+  .i-ghost__dots i:last-child { background: var(--c-accent); }
 
   /* ── hero ───────────────────────────────────────────────── */
   .ih { position: relative; }
