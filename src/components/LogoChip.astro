@@ -137,54 +137,38 @@ import mark from '../assets/roars-mark.png'
   .chip:hover .chip__mark { --mark-ink: var(--c-footer); }
   :global(.topbar:not(.is-light)) .chip:hover .chip__mark { --mark-ink: var(--c-white); }
 
-  /* THE SECTION-CHANGE PULSE.
-     A 180ms flash of pink, a second of yellow, then back to whatever ink the
-     section it has arrived on calls for. src/scripts/topbar.ts adds the class
-     each time a new section crosses the middle of the viewport and takes it
-     off when the animation ends.
+  /* THE SECTION-CHANGE FLASH.
+     Pink as a section boundary sweeps past, yellow just either side of it,
+     and the ground ink everywhere else.
 
-     THE SPLIT, AND HOW TO CHANGE IT. Keyframe offsets have to be literal
-     percentages — a custom property cannot be used for one — so the two
-     durations are written here and the percentage is derived by hand:
+     TIED TO SCROLL POSITION, NOT TO A CLOCK. The first version was an
+     animation: the boundary fired it and it then ran its own 1180ms timeline.
+     That put the colour changes wherever the reader happened to have scrolled
+     to by the time the timer got there — pink at the boundary, but yellow and
+     then black several hundred pixels into the next section, which is exactly
+     the "in between" that was wrong about it. There is no animation here now.
+     src/scripts/topbar.ts measures how far the probe line is from the nearest
+     boundary on every scroll frame and sets one of these two classes, so the
+     colour is a function of WHERE the page is and nothing else. Stop
+     mid-boundary and it holds; scroll back up and it runs in reverse.
 
-         pink    180ms
-         yellow 1000ms
-         total  1180ms   -> the boundary is 180/1180 = 15.25%
+     No transition on either, which keeps the rule the note above set: the
+     mark is #FF3E9A, #FFD400, #0B0B0B or #FFFFFF and never a value between
+     two of them. The switch is instant because the scroll position is what
+     makes it feel like motion.
 
-     Move either number and the boundary has to be recomputed with it. Pink
-     was a full second at first and read as a colour change rather than a
-     flash; at 180ms it registers without the logo looking like it has gone
-     pink for a living.
-
-     HELD STOPS, NOT A FADE. The note above records that transitioning this
-     ink was tried and pulled: the values between yellow and black come out
-     around rgb(151,127,5), and a dark gold at 26px reads as red-brown. Pink
-     to yellow blends through orange and is no better. steps(1, end) means the
-     mark never holds an in-between value at all — it shows pink, then yellow,
-     then the ground ink, and nothing else. That is the same rule the earlier
-     note set, kept rather than worked around.
-
-     background-color, not --mark-ink: animating a custom property needs it
-     registered through @property before it will interpolate as a colour, and
-     painting the value directly does the same job with nothing to register.
-     When the class comes off, the element falls back to its own
-     `background: var(--mark-ink)` and lands on the right ground ink by
-     itself — including white, on a dark section. */
-  @keyframes logoPulse {
-    0%,     15.24% { background-color: var(--c-pulse); }
-    15.25%, 99.99% { background-color: var(--c-accent); }
-    100%           { background-color: var(--mark-ink); }
-  }
-
-  .chip__mark.is-pulsing {
-    animation: logoPulse 1180ms steps(1, end) 1 both;
-  }
+     background-color, not --mark-ink, so that when both classes come off the
+     element falls back to its own `background: var(--mark-ink)` and lands on
+     the right ground ink by itself — including white, on a dark section. */
+  .chip__mark.is-flash-pink { background-color: var(--c-pulse); }
+  .chip__mark.is-flash-amber { background-color: var(--c-accent); }
 
   @media (prefers-reduced-motion: reduce) {
     .chip__mark { transition: none; }
     /* Decoration carrying no information, so it does not run. topbar.ts tests
-       the same query and never adds the class; this is the belt to that
+       the same query and never adds either class; this is the belt to that
        brace, for a preference switched on after the page loaded. */
-    .chip__mark.is-pulsing { animation: none; }
+    .chip__mark.is-flash-pink,
+    .chip__mark.is-flash-amber { background-color: var(--mark-ink); }
   }
 </style>

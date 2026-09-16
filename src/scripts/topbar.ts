@@ -87,30 +87,39 @@ export function initTopbar(): void {
   addEventListener('scroll', onScroll, { passive: true })
   addEventListener('resize', onScroll, { passive: true })
 
-  initLogoPulse(bar)
+  initLogoFlash(bar)
 }
 
 /**
- * The logo's section-change pulse.
+ * The logo's section-change flash: pink as a boundary sweeps past the probe
+ * line, yellow just either side of it, the ground ink everywhere else.
  *
- * Each time a new section reaches the middle of the viewport the mark flashes
- * pink for a second, then yellow for a second, then settles back to the ink
- * its new ground calls for. The colours, and why they are held rather than
- * blended, are in src/components/LogoChip.astro.
+ * DRIVEN BY POSITION, NOT BY A TIMER. The first version fired a 1180ms
+ * animation when a new section became current. Firing at the boundary was
+ * right; everything after it was not, because the animation then ran on its
+ * own clock and put the pink-to-yellow and yellow-to-black changes wherever
+ * the reader had scrolled to by the time the timer reached them — typically
+ * several hundred pixels deep into the next section. The colour has to be a
+ * function of where the page IS, so here it is measured rather than timed:
+ * every scroll frame asks how far the probe line is from the nearest section
+ * boundary and the answer picks the colour. Stop halfway and it holds. Scroll
+ * back up and it runs in reverse. It cannot drift, because there is nothing
+ * running to drift.
+ *
+ * THE BANDS are deliberately tight — 34px of pink, 96px of yellow either side
+ * of it. At an ordinary scroll of roughly 1000px a second that is a flash of
+ * about 70ms and a total of under 200ms, which is what "faster" asked for;
+ * widen them and the flash slows down without any duration being edited.
  *
  * OPT-IN PER PAGE, through `pulse` on <TopBar />, which writes
- * data-topbar-pulse on the bar. It is on the homepage alone while the effect
- * is being judged; every other page ships the observer-free path, and turning
- * it on elsewhere later is one prop per page rather than a change in here.
+ * data-topbar-pulse on the bar. Homepage only while the effect is judged.
  *
- * THE MIDDLE OF THE VIEWPORT, not the top. A zero-height band across the
- * centre — which is what the -50%/-50% rootMargin makes — has exactly one
- * section crossing it at a time on a page whose sections tile the document,
- * so "which section is current" has one answer and a boundary fires once.
- * Probing at the top of the viewport instead would fire twice per boundary,
- * as the old section left and again as the new one arrived.
+ * THE PROBE IS THE MIDDLE OF THE VIEWPORT. A boundary passing behind the
+ * fixed top bar cannot be seen, so a probe at the top would flash the mark for
+ * something the reader has no way to observe. The middle is where a boundary
+ * is most legible, so that is where the flash is anchored to.
  */
-function initLogoPulse(bar: HTMLElement): void {
+function initLogoFlash(bar: HTMLElement): void {
   if (!bar.hasAttribute('data-topbar-pulse')) return
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
@@ -118,36 +127,48 @@ function initLogoPulse(bar: HTMLElement): void {
   const sections = Array.from(document.querySelectorAll<HTMLElement>('main section'))
   if (!mark || sections.length < 2) return
 
-  let current: Element | null = null
+  const PINK = 34
+  const AMBER = 96
 
-  const pulse = () => {
-    /* Restart from the top if one is already running. Remove the class, read
-       a layout property to flush the style change, then add it back — without
-       that read the two changes coalesce into no change at all, and scrolling
-       quickly through three sections would animate once. */
-    mark.classList.remove('is-pulsing')
-    void mark.offsetWidth
-    mark.classList.add('is-pulsing')
+  /* Boundaries in document coordinates: the top edge of every section after
+     the first. The first section's top is the top of the page, which is not a
+     boundary between two sections and would flash the mark at a scroll
+     position nobody scrolled through. */
+  let bounds: number[] = []
+  const measure = () => {
+    bounds = sections.slice(1).map((s) => s.getBoundingClientRect().top + window.scrollY)
   }
 
-  mark.addEventListener('animationend', (e) => {
-    if ((e as AnimationEvent).animationName.includes('logoPulse')) {
-      mark.classList.remove('is-pulsing')
-    }
-  })
+  let pink = false
+  let amber = false
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting || entry.target === current) continue
-        /* Whatever is under the line when the page loads is not something the
-           reader scrolled to, so the first answer sets the state silently. */
-        const first = current === null
-        current = entry.target
-        if (!first) pulse()
-      }
-    },
-    { rootMargin: '-50% 0px -50% 0px', threshold: 0 },
-  )
-  sections.forEach((s) => io.observe(s))
+  const paint = () => {
+    const line = window.scrollY + window.innerHeight / 2
+    let near = Infinity
+    for (const b of bounds) {
+      const d = Math.abs(b - line)
+      if (d < near) near = d
+    }
+    const nextPink = near <= PINK
+    const nextAmber = !nextPink && near <= AMBER
+    /* Only touch the DOM when the answer changes. This runs on every scroll
+       frame, and two classList writes a frame for a value that is the same as
+       last frame is work for nothing. */
+    if (nextPink !== pink) { mark.classList.toggle('is-flash-pink', nextPink); pink = nextPink }
+    if (nextAmber !== amber) { mark.classList.toggle('is-flash-amber', nextAmber); amber = nextAmber }
+  }
+
+  let frame = 0
+  const onScroll = () => {
+    if (frame) return
+    frame = requestAnimationFrame(() => { frame = 0; paint() })
+  }
+
+  measure()
+  paint()
+  addEventListener('scroll', onScroll, { passive: true })
+  /* Section offsets move when the viewport does — the pinned Projects track
+     and every clamp on the page are height-dependent — so they are measured
+     again rather than trusted from load. */
+  addEventListener('resize', () => { measure(); onScroll() }, { passive: true })
 }
