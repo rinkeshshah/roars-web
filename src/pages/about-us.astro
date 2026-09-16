@@ -63,6 +63,16 @@ const team = [
    which is not a fact about any of them. */
 const clients = CLIENT_LOGOS
 
+/* THE COUNTER'S FIGURE, FROM THE TOKEN, IN BOTH PLACES.
+   The design spec sets "250" in the disc AND "More than 250 Clients" beside
+   it. The label was later moved to the owner's own figure and the disc was
+   not, so the tile read "250" next to "More than 2,500 Clients" — two
+   different numbers about the same thing, nine inches apart. Both now come
+   off site.stats.happyCustomers, which is the same '2,500+' the stats band at
+   the top of this page already prints. The '+' is dropped because "More
+   than" and "+" say the same thing twice. */
+const clientCount = site.stats.happyCustomers.replace('+', '')
+
 /**
  * Read off the award badges on the live site, so the years are the ones the
  * badges actually carry.
@@ -251,9 +261,9 @@ const schema = [
         ))}
         <li class="agb__rest">
           <span class="agb__rest-disc" aria-hidden="true">
-            <span class="agb__rest-n">250<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
+            <span class="agb__rest-n">{clientCount}<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
           </span>
-          <span class="agb__rest-label">More than 2,500<br />Clients</span>
+          <span class="agb__rest-label">More than {clientCount}<br />Clients</span>
         </li>
       </ul>
 
@@ -449,8 +459,19 @@ const schema = [
      108px, inside the disc, and "The rest of the Roars Fam" typed straight
      over the 25. Column 3 is empty on this row, so the block takes both. */
   .agb__grid--team > .agb__rest { grid-column: 3 / -1; grid-row: 2; justify-self: end; }
-  /* The clients counter closes the wall: full width, under the last row. */
-  .agb__grid--clients > .agb__rest { grid-column: 1 / -1; margin-top: 10px; }
+  /* The clients counter closes the wall: its own row under the last one, and
+     CENTRED across it. Spanning 1 / -1 gave it the full width but its content
+     still started at the left edge, so with fifteen marks — three rows of four
+     and a row of three — it sat alone under the first column looking like a
+     sixteenth client that had lost its logo. Centred, it reads as the line
+     that closes the grid rather than a member of it.
+     width:auto is what makes justify-self do anything: .agb__rest is width
+     100%, which against a full-width grid area is the whole row, and a item
+     already filling its area has nowhere to be centred. */
+  .agb__grid--clients > .agb__rest {
+    grid-column: 1 / -1; margin-top: 10px;
+    width: auto; justify-self: center;
+  }
 
   .agb__person { width: 198px; }
   .agb__disc { display: block; width: 198px; height: 198px; border-radius: 50%; overflow: hidden; background: rgb(217, 217, 217); }
@@ -508,6 +529,13 @@ const schema = [
     font-size: 65px; line-height: 64px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-black);
   }
+  /* THE CLIENTS FIGURE ONLY. This rule is shared with the team counter, which
+     shows "25" and keeps the export's 65px. The clients one is "2,500": five
+     characters at 65px plus the 9px gap and the 17px star measure about 206px
+     against a disc 198px across, and a circle has less than its diameter to
+     give at any line off its centre, so it was over the curve well before
+     that. 46px brings the group to roughly 154px. */
+  .agb__grid--clients .agb__rest-n { font-size: 46px; line-height: 46px; }
   .agb__rest-n .starmark { align-self: flex-start; margin-top: 4px; }
   .agb__rest-label {
     min-width: 0;
