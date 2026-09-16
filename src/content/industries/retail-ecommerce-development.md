@@ -15,7 +15,7 @@ hero:
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
-  heading: "ecommerce, end to end"
+  heading: "eCommerce app development, end to end"
   intro: "Reach your customers with top-notch digital store experiences!"
   moments:
     - n: "01"
@@ -47,7 +47,7 @@ journey:
       tags: ["E-COMMERCE", "PORTALS"]
 surfaces:
   label: "CAPABILITIES"
-  heading: "4 more"
+  heading: "eCommerce app features"
   sub: "what else we bring"
   tabs:
     - n: "01"
@@ -89,7 +89,7 @@ proof:
       label: "AI-DRIVEN SOLUTIONS"
 sectors:
   label: "WHERE ELSE WE WORK"
-  heading: "nine sectors"
+  heading: "Other industries we build for"
   intro: "Same process, different floor. Hover a sector to see what we go after first."
   items:
     - n: "01"

@@ -15,7 +15,7 @@ hero:
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
-  heading: "fitness, end to end"
+  heading: "Fitness app development, end to end"
   intro: "Design and develop fitness apps that users, trainers, dietitians, and admins like!"
   moments:
     - n: "01"
@@ -47,7 +47,7 @@ journey:
       tags: ["FITNESS", "TRACKER"]
 surfaces:
   label: "CAPABILITIES"
-  heading: "4 more"
+  heading: "Fitness app features"
   sub: "what else we bring"
   tabs:
     - n: "01"
@@ -96,7 +96,7 @@ proof:
     ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
-  heading: "nine sectors"
+  heading: "Other industries we build for"
   intro: "Same process, different floor. Hover a sector to see what we go after first."
   items:
     - n: "01"

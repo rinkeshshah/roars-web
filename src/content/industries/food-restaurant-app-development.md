@@ -43,7 +43,7 @@ hero:
     footnote: "BUILT BY ROARS"
 journey:
   label: "THE JOURNEY"
-  heading: "one order, end to end"
+  heading: "Restaurant app development, end to end"
   intro: "A restaurant is not one app. It is six moments that have to agree with each other."
   note: "We design and build the surfaces each moment needs, and the plumbing that keeps them in step."
   moments:
@@ -79,7 +79,7 @@ journey:
       tags: ["LOYALTY", "PUSH & CRM"]
 surfaces:
   label: "SURFACES"
-  heading: "four apps"
+  heading: "Restaurant app features"
   sub: "one kitchen, pick a seat"
   tabs:
     - n: "01"
@@ -145,7 +145,7 @@ proof:
     ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
-  heading: "seven more"
+  heading: "Other industries we build for"
   intro: "Same four-phase process, different floor. Hover a sector to see what we go after first."
   items:
     - n: "01"

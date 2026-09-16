@@ -15,7 +15,7 @@ hero:
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
-  heading: "education, end to end"
+  heading: "Education app development, end to end"
   intro: "Enhancing academic experience with our education app development solutions!"
   moments:
     - n: "01"
@@ -47,7 +47,7 @@ journey:
       tags: ["ONLINE", "TRAINING"]
 surfaces:
   label: "CAPABILITIES"
-  heading: "4 more"
+  heading: "Education app features"
   sub: "what else we bring"
   tabs:
     - n: "01"
@@ -89,7 +89,7 @@ proof:
       label: "AI-DRIVEN SOLUTIONS"
 sectors:
   label: "WHERE ELSE WE WORK"
-  heading: "nine sectors"
+  heading: "Other industries we build for"
   intro: "Same process, different floor. Hover a sector to see what we go after first."
   items:
     - n: "01"

@@ -15,7 +15,7 @@ hero:
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
-  heading: "hospitality, end to end"
+  heading: "Hospitality app development, end to end"
   intro: "We leverage innovative technology advancement to transform travel and hospitality."
   moments:
     - n: "01"
@@ -48,7 +48,7 @@ journey:
       tags: ["TRAVEL", "PLANNING"]
 surfaces:
   label: "CAPABILITIES"
-  heading: "4 more"
+  heading: "Hospitality app features"
   sub: "what else we bring"
   tabs:
     - n: "01"
@@ -94,7 +94,7 @@ proof:
     ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
-  heading: "nine sectors"
+  heading: "Other industries we build for"
   intro: "Same process, different floor. Hover a sector to see what we go after first."
   items:
     - n: "01"

@@ -15,7 +15,7 @@ hero:
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
-  heading: "healthcare, end to end"
+  heading: "Healthcare app development, end to end"
   intro: "Bring Healthcare to Your Fingertips with our well-built solutions!"
   moments:
     - n: "01"
@@ -51,7 +51,7 @@ journey:
       tags: ["HIPAA", "GDPR"]
 surfaces:
   label: "CAPABILITIES"
-  heading: "4 more"
+  heading: "Healthcare app features"
   sub: "what else we bring"
   tabs:
     - n: "01"
@@ -100,7 +100,7 @@ proof:
     ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
-  heading: "nine sectors"
+  heading: "Other industries we build for"
   intro: "Same process, different floor. Hover a sector to see what we go after first."
   items:
     - n: "01"

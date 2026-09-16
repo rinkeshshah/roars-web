@@ -60,7 +60,7 @@ export const site = {
    */
   offices: [
     { code: 'IN', label: 'India',   city: 'Bengaluru',         region: 'Karnataka', country: 'IN',
-      street: '4th Block, Jaynagar, Bengaluru', postal: 'India, 560041',
+      street: '4th Block, Jayanagar, Bengaluru', postal: 'India, 560041',
       email: 'sales@roarsinc.com', phone: '+91 7990050464' },
     { code: 'US', label: 'USA',     city: 'Frisco',            region: 'TX',        country: 'US',
       street: '9300 John Hickman Parkway,', postal: 'Frisco TX 75035',

@@ -10,74 +10,116 @@ headline:
 standfirst: "Concierge app development company"
 hero:
   statement: "Improve your business productivity using our concierge app development solutions!"
-  sub: "We build extra-ordinary concierge applications, having exemplary features to provide a pleasant guest experience to…"
+  sub: "We build extra-ordinary concierge applications, having exemplary features to provide a pleasant guest experience."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
-  heading: "concierge, end to end"
-  intro: "Improve your business productivity using our concierge app development solutions!"
+  heading: "Concierge app development, end to end"
+  # Was a second printing of hero.statement, word for word, one screen below
+  # it. This says what the band is for instead, and carries "on demand" and
+  # "mobile", which the production title ranks on and the new title drops.
+  intro: "Three things people mean by an on demand mobile concierge app, and what each one takes to build."
   moments:
     - n: "01"
       name: "Concierge"
-      body: "Invest in building concierge apps to prioritize customer experience and gain a competitive edge in the long run with concierge app development solutions!"
+      body: "Invest in a mobile concierge app to prioritise customer experience and gain a competitive edge in the long run."
       tags: ["OUR", "CONCIERGE"]
     - n: "02"
       name: "Travel Assistants"
-      lead: "We help you develop such an awesome concierge app that allows users to plan their…"
+      lead: "We help you develop a concierge app that lets users plan their complete trip."
       body: "Using this app, they can book flight tickets, get suggestions for nearby places, and much more. Win the hearts of your users by offering them a one-stop solution for their travel."
       tags: ["TRAVEL", "ASSISTANTS"]
     - n: "03"
       name: "On-Demand"
       lead: "Provide comfort and convenience to users via an on-demand concierge app."
-      body: "It helps the travelers to save a lot of time & get the information & booking system of the room prices, perform check-in and check-outs, room transfers, or use room services. In short, this kind of application will work on every demand that users ask for."
+      body: "It helps travellers save time and get information on room prices and bookings, check in and check out, request room transfers or use room service. In short, this kind of application responds to whatever users ask for."
       tags: ["ON-DEMAND", "CONCIERGE"]
     - n: "04"
       name: "Loyalty"
-      lead: "Now manage your loyalty programs with ease through the advanced concierge app."
-      body: "Build an application that helps you to create & execute successful loyalty programs. Plus, it also supports B2B, B2C, AI & Machine learning to identify your clients & provide full customer data with an intuitive interface."
+      lead: "Now manage your loyalty programmes with ease through the advanced concierge app."
+      body: "Build an application that helps you create and run successful loyalty programmes. It can support B2B and B2C models and use AI and machine learning to identify your clients and give you full customer data through an intuitive interface."
       tags: ["LOYALTY", "MANAGEMENT"]
     - n: "05"
       name: "Expertise"
-      lead: "We ensure that our concierge app development services facilitate a lot many things to…"
-      body: "Our experts will provide an extraordinary chance to serve your users in a better manner.Be it a travel or hospitality industry!"
+      # The lead was clipped mid-clause and production carries no uncut copy
+      # for it. lead is optional, so it goes rather than being guessed at.
+      body: "Our experts will provide an extraordinary chance to serve your users in a better manner, be it a travel or a hospitality business."
       tags: ["OUR", "EXPERTISE"]
-    - n: "06"
-      name: "Entertainment"
-      lead: "Build a concierge application for entertainment so that users can spend on their leisure…"
-      body: "It allows users to see a list of top listed movies, series, events, concerts, parties, and more. Nonetheless, they can book the tickets for the same."
-      tags: ["ENTERTAINMENT", "APPLICATION"]
 surfaces:
   label: "CAPABILITIES"
-  heading: "4 more"
-  sub: "what else we bring"
+  heading: "Concierge app features"
+  # These four tabs used to hold four of the six APP TYPES, with copy about
+  # wellness and healthcare that belongs to neither. The types have their own
+  # band now; this is the five feature panels production names, which is what
+  # a band headed "features" should contain.
+  sub: "The five panels a concierge product is actually made of"
   tabs:
     - n: "01"
-      name: "Resort application"
-      heading: "Resort application"
+      name: "Customer panel"
+      heading: "Customer panel"
       points:
-        - "Wellness apps are growing in popularity as they help people…"
-        - "However not all wellness apps are made in the same manner."
-        - "We have expertise in developing state of the art wellness…"
+        - "Registration, bookings, check-in and check-out"
+        - "Reminders, suggestions and a destination map"
+        - "Reviews and feedback"
     - n: "02"
-      name: "Hotel/Hospitality"
-      heading: "Hotel/Hospitality application"
+      name: "Staff panel"
+      # Production labels this block "Big data analytics" and then describes
+      # staff tools. The label is the error, not the copy under it.
+      heading: "Staff panel"
       points:
-        - "Creating a concierge application is a need of an hour for…"
-        - "It makes it easy for a business owner to interact with…"
-        - "Via this application, guests can have access to a wide…"
+        - "Registration and customer management"
+        - "Room service and request monitoring"
+        - "Customer support and in-app chat"
+        - "Less effort per request, which is the point"
     - n: "03"
-      name: "Personal Assistant"
-      heading: "Personal Assistant"
+      name: "AI automation"
+      heading: "AI automation"
       points:
-        - "Many business owners use such kind of personal assistant…"
-        - "In short, you can definitely customize the application and…"
+        - "Automate the repetitive tasks"
+        - "Interpret the intent behind a request"
+        - "Access conversation history"
+        - "APIs and AI-powered bots"
     - n: "04"
-      name: "Bed"
-      heading: "Bed and breakfast/guesthouses"
+      name: "UI/UX design"
+      heading: "Interactive UI/UX design"
       points:
-        - "This is the platform that is making healthcare and supports…"
-        - "Most people today generally do not get the time for proper…"
+        - "An intuitive interface moves users to act"
+        - "Expressive, noticeable and simple"
+    - n: "05"
+      name: "Admin panel"
+      heading: "Management and admin panel"
+      points:
+        - "Login and user management"
+        - "Push notifications and database management"
+        - "Third-party integrations and payment gateway"
+        - "Internal processes that run smoothly and fast"
+types:
+  label: "THE KINDS WE BUILD"
+  heading: "Types of concierge apps we build"
+  intro: "Six shapes the same product takes, depending on who is being looked after."
+  items:
+    - n: "01"
+      name: "Entertainment"
+      body: "A concierge app for leisure. Users browse top movies, series, events, concerts and parties, and book tickets for them."
+    - n: "02"
+      name: "Resort"
+      # Production's resort block is copy about wellness apps, pasted in from
+      # another page. Written here rather than carried across.
+      body: "Guest requests, spa and activity bookings, dining reservations and on-property information, in one app rather than a folder in the room."
+    - n: "03"
+      name: "Hotel and hospitality"
+      body: "A concierge app makes it easy for hotels to serve guests. Guests reach the full range of hotel services, from booking through to leaving feedback."
+    - n: "04"
+      name: "Personal assistant"
+      body: "Business owners use personal assistant apps to manage plans, meetings, conferences and events. The app can be customised to match exactly how the business works."
+    - n: "05"
+      name: "Bed and breakfast and guesthouses"
+      # Production's block here is copy about healthcare. Same story as Resort.
+      body: "Bookings, check-in instructions, local recommendations and host messaging, sized for a property where the host is also the front desk."
+    - n: "06"
+      name: "Restaurant and catering"
+      body: "Lets users reserve breakfast, lunch or dinner, order home delivery and request related services."
 proof:
   label: "PROOF"
   heading: "Practised since 2005"
@@ -95,12 +137,14 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "Concierges"
-    body: "Now manage your loyalty programs with ease through the advanced concierge app."
+    # Was the loyalty capability's own sentence, reused here, so the featured
+    # card described a feature rather than the project it links to.
+    body: "AI-first concierge platform for enterprises. Roars turned a luxury concierge startup's fragmented MVP into one AI-powered platform for high-net-worth travellers and enterprise clients."
     href: "/work/concierge-loyalty-program/"
     ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
-  heading: "nine sectors"
+  heading: "Other industries we build for"
   intro: "Same process, different floor. Hover a sector to see what we go after first."
   items:
     - n: "01"
@@ -179,11 +223,16 @@ failures:
       body: "Points added after launch sit outside the request model, so the thing that should reward good service cannot see it happening."
 cases:
   label: "WHAT WE HAVE BUILT HERE"
+  # Production links three concierge case studies and this page carried two of
+  # them, one of which was Concierge Loyalty, already the featured card below.
+  # Club Social was on neither. So: Concierge Loyalty stays as the featured
+  # card, and the two slots here go to the other two, which puts all three on
+  # the page and stops one project appearing twice.
   items:
-    - client: "Concierge Loyalty"
-      situation: "A concierge operation where recognising a returning member depended on whoever happened to take the request."
-      did: "Put requests, members and rewards behind one model so the service could remember a member without the staff having to."
-      href: "/work/concierge-loyalty-program/"
+    - client: "Club Social"
+      situation: "A membership business whose members could reach one club at a time, when what they had bought was access to more than 300 worldwide."
+      did: "Built membership and booking as one responsive product, so a member sees every club they can use and reserves without the phone call."
+      href: "/work/club-social/"
     - client: "Les Concierges"
       situation: "A concierge business whose request handling ran across tools that did not share a view of the member."
       did: "Built the staff side first, so the workflow decided the product rather than the other way round."

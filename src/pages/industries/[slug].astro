@@ -437,6 +437,30 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
       </Section>
     )}
 
+    {/* I5b. The kinds of app in this sector.
+        AFTER the features band and not before it, purely so two `surface`
+        grounds do not end up touching. The page reads end to end, then
+        features, then kinds, then proof, and the grounds alternate light,
+        surface, light, dark. */}
+    {d.types && (
+      <Section ground="light">
+        <div class="ity">
+          <span class="i-eyebrow">{d.types.label}</span>
+          <h2 class="ity__h" data-reveal>{d.types.heading}</h2>
+          {d.types.intro && <p class="ity__intro" data-reveal style="transition-delay:70ms">{d.types.intro}</p>}
+          <ul class="ity__grid">
+            {d.types.items.map((it, i) => (
+              <li data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
+                <span class="ity__n" aria-hidden="true">{it.n}</span>
+                <h3 class="ity__name">{it.name}</h3>
+                <p class="ity__body">{it.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    )}
+
     {/* ── Proof, 1440x1000 on black ────────────────────────── */}
     {d.proof && (
       <Section ground="dark">
@@ -861,6 +885,48 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   }
   .iap__list a:hover b { color: rgb(90, 90, 90); }
 
+  /* ── I5b the kinds of app in this sector ────────────────── */
+  /* Same measurements as I5 and I6 on purpose. Three bands of the same
+     weight, set the same way, read as one argument; three bands each with
+     their own heading scale read as three pages stapled together. */
+  .ity { padding-block: 96px; }
+  .ity__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .ity__intro {
+    margin: 16px 0 0; max-width: 56ch;
+    font-size: var(--fs-intro); line-height: 32px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  /* THREE COLUMNS, FIXED, not auto-fit.
+     auto-fit with minmax(280px, 1fr) fits FOUR columns in the 1362 content
+     width, so six items came out 4 + 2 with two empty cells and a ragged
+     second row. Six wants 3 x 2, and three is also the width at which the
+     card bodies stay three or four lines instead of seven. */
+  .ity__grid {
+    list-style: none; margin: 48px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 34px 60px;
+  }
+  .ity__grid li { border-top: 1px solid rgba(153, 152, 149, 0.3); padding-top: 18px; }
+  .ity__n {
+    display: block;
+    font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; color: var(--c-ink-label);
+  }
+  .ity__name {
+    margin: 12px 0 0;
+    font-size: 20px; line-height: 26px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .ity__body {
+    margin: 6px 0 0;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.6);
+  }
+
   /* ── I6 domain ──────────────────────────────────────────── */
   .idm { padding-block: 96px; }
   .idm__h {
@@ -892,9 +958,22 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
 
   /* ── the journey ────────────────────────────────────────── */
   .ij { position: relative; padding-block: 80px 270px; min-height: 2160px; }
+  /* 112px in a 900px box was sized for "one order, end to end", which is a
+     fragment and fitted on one line. The headings say "<Sector> app
+     development, end to end" now, which at 112px is THREE lines, 312px tall,
+     and the band below it is laid out at fixed pixel offsets that do not move
+     out of the way. assert-overlap caught it colliding with the first moment.
+     At the same scale as the other display headings on this page, in a wider
+     box, the longest of the nine takes two lines with room to spare. */
   .ij__h {
-    margin: 24px 0 0 -7px; max-width: 900px;
-    font-size: clamp(48px, 7.78vw, 112px); line-height: 104px; font-weight: var(--fw-semi);
+    /* 62%, not a pixel width. .ij__intro is absolutely positioned starting at
+       67.695%, so anything wider than that runs under it: a 1080px box in a
+       1362px band reaches 79% and put two lines of display type straight
+       through the intro paragraph. 62% is the same cap the other headings on
+       this page use, and it leaves the intro its column. */
+    margin: 24px 0 0 -6px; max-width: 62%;
+    font-size: clamp(38px, 4.45vw, 64px); line-height: 1.06;
+    font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
   }
   .ij .i-eyebrow { margin-top: 24px; }
@@ -1206,8 +1285,10 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
      against the 1362 box returns to flow; the spine goes with it, and the
      tab list stacks above its panel rather than beside it. */
   @media (max-width: 1360px) {
-    .ic, .ifl, .icz, .iap, .idm { padding-block: 64px; }
-    .ic__h, .ifl__h, .iap__h, .idm__h { max-width: 100%; }
+    .ic, .ifl, .icz, .iap, .idm, .ity { padding-block: 64px; }
+    .ic__h, .ifl__h, .iap__h, .idm__h, .ity__h { max-width: 100%; }
+    /* Six into two, so the second row is full rather than a widow. */
+    .ity__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 40px; }
     .if__h { font-size: 27px; line-height: 34px; }
     .icz__grid--one { grid-template-columns: minmax(0, 1fr); }
     .ih__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 130px 72px; row-gap: 40px; }
@@ -1265,6 +1346,15 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   }
 
   @media (max-width: 760px) {
+    .ity__grid { grid-template-columns: minmax(0, 1fr); }
+
+    /* THE TAB STRIP STACKS. Wrapping was fine for four tabs, which fell 2 + 2;
+       five fall 1 + 2 + 2 and the last name sits hard against the right
+       gutter, where the 10px nudge the selected tab gets would push it off
+       the page. One per line has room for the nudge and is easier to hit. */
+    .isf__tabs { flex-direction: column; flex-wrap: nowrap; gap: 0; }
+    .isf__tabs button { padding: 11px 0; border-top: 1px solid rgba(153, 152, 149, 0.3); }
+    .isf__tabs button:last-child { border-bottom: 1px solid rgba(153, 152, 149, 0.3); }
     .ip__stats { grid-template-columns: 1fr; row-gap: 36px; }
     .ip__stats > :nth-child(2), .ip__stats > :nth-child(3) { grid-column: 1; }
 

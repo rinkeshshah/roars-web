@@ -15,7 +15,7 @@ hero:
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
-  heading: "logistics, end to end"
+  heading: "Logistics app development, end to end"
   intro: "Transform your business with our mobility solutions for transportation and logistics!"
   moments:
     - n: "01"
@@ -48,7 +48,7 @@ journey:
       tags: ["SUPPLY", "CHAIN"]
 surfaces:
   label: "CAPABILITIES"
-  heading: "4 more"
+  heading: "Logistics app features"
   sub: "what else we bring"
   tabs:
     - n: "01"
@@ -100,7 +100,7 @@ proof:
     ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
-  heading: "nine sectors"
+  heading: "Other industries we build for"
   intro: "Same process, different floor. Hover a sector to see what we go after first."
   items:
     - n: "01"

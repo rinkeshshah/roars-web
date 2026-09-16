@@ -670,7 +670,12 @@ const industryLayout = {
           }),
         )
         .min(2)
-        .max(4),
+        /* Five, raised from four. The concierge page has five features on the
+           production site — customer panel, staff panel, AI automation, UI/UX
+           and admin panel — and a cap of four is a reason to drop one, which
+           is how a ranking topic goes missing. assert-overlap covers the tab
+           strip at 1440, 768 and 390. */
+        .max(5),
     })
     .optional(),
   proof: z
@@ -791,6 +796,30 @@ const industryPage = {
       items: z
         .array(z.object({ name: z.string().max(40), href: z.string(), why: z.string().max(180) }))
         .min(2)
+        .max(6),
+    })
+    .optional(),
+  /**
+   * I5b. THE KINDS OF APP IN THIS SECTOR.
+   *
+   * `applies` answers "which of your services do I need". This answers a
+   * different question that people actually search: "do you build the kind of
+   * app I have in mind". On concierge that is entertainment, resort, hotel,
+   * personal assistant, guesthouse and restaurant, six things the production
+   * page named and the new one did not, all of them terms somebody types.
+   *
+   * Six, not four, because six is what the sector splits into and a block
+   * that drops two of them to fit a grid is the reason the topic went missing
+   * in the first place.
+   */
+  types: z
+    .object({
+      label: z.string().max(32).default('THE KINDS WE BUILD'),
+      heading: z.string().max(90),
+      intro: z.string().max(220).optional(),
+      items: z
+        .array(z.object({ n: z.string().max(4), name: z.string().max(40), body: z.string().max(260) }))
+        .min(3)
         .max(6),
     })
     .optional(),
