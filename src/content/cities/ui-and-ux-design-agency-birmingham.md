@@ -4,6 +4,7 @@ title: "UI and UX Design Agency Birmingham"
 path: "/ui-and-ux-design-agency-birmingham/"
 city: "Birmingham"
 kind: "UI & UX DESIGN"
+ringField: true
 heading: "Leading UI and UX Design Agency Birmingham"
 lead: "We craft interfaces that engage, inspire and drive results."
 desk:

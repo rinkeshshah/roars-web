@@ -1,0 +1,95 @@
+---
+/**
+ * Concentric rings from a point off the bottom-left corner.
+ *
+ * A ground for dark bands: thin hairlines at a low opacity, with a handful
+ * struck in the brand yellow so the field reads as deliberate rather than as a
+ * texture. Inline SVG rather than a repeating-radial-gradient, because a
+ * gradient repeats one stop pattern and cannot pick individual rings out in a
+ * different colour, which is the whole effect.
+ *
+ * THE CENTRE IS OFF-CANVAS, at the bottom left. That is what stops the field
+ * reading as a target: with the centre inside the frame every ring is a
+ * complete circle around a point the eye then looks for. Pushed outside, only
+ * the outer arcs cross the band and they read as a sweep.
+ *
+ * The radii are an arithmetic run, not a geometric one. Geometric spacing
+ * crowds the centre and empties the far edge; even spacing keeps the density
+ * flat across a band that only ever shows the outer arcs anyway.
+ *
+ * NOTHING ABOUT THE CONTENT ABOVE IT CHANGES. It is a sibling at z-index -1
+ * under `isolation: isolate`, so the cards, their crops and their images are
+ * untouched and this ships without re-exporting anything.
+ *
+ * Static: no animation, so there is nothing for prefers-reduced-motion to turn
+ * off. It is aria-hidden and carries no meaning.
+ */
+interface Props {
+  /** Viewport-ish box the rings are drawn against. */
+  w?: number
+  h?: number
+  /** How many rings. */
+  count?: number
+  /** Gap between rings, in the same units as w/h. */
+  step?: number
+  /** Radius of the innermost ring. */
+  first?: number
+  /** Which rings take the accent, by index. */
+  accentAt?: number[]
+  /** Centre, relative to the box. Negative x and an y past h put it outside
+   *  the bottom-left corner. */
+  cx?: number
+  cy?: number
+  opacity?: number
+}
+
+const {
+  w = 1600,
+  h = 900,
+  count = 64,
+  step = 44,
+  first = 80,
+  accentAt = [7, 16, 26, 37, 49, 58],
+  cx = -60,
+  cy = 980,
+  opacity = 1,
+} = Astro.props
+
+const accent = new Set(accentAt)
+const rings = Array.from({ length: count }, (_, i) => ({
+  r: first + i * step,
+  on: accent.has(i),
+}))
+---
+
+<svg
+  class="rf"
+  viewBox={`0 0 ${w} ${h}`}
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  focusable="false"
+  style={`opacity:${opacity}`}
+>
+  {rings.map((ring) => (
+    <circle
+      cx={cx}
+      cy={cy}
+      r={ring.r}
+      fill="none"
+      stroke={ring.on ? 'var(--c-accent)' : 'rgba(255,255,255,0.13)'}
+      stroke-width={ring.on ? 1.1 : 1}
+      opacity={ring.on ? 0.5 : 1}
+    />
+  ))}
+</svg>
+
+<style>
+  /* Full bleed off the band's own centre, which is the viewport's centre
+     because .wrap is a centred max-width box. Same move as .icz__ground. */
+  .rf {
+    position: absolute; left: 50%; top: 0; z-index: -1;
+    width: 100vw; height: 100%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+</style>

@@ -37,6 +37,7 @@ import Button from '../components/Button.astro'
 import CtaBand from '../components/CtaBand.astro'
 import { site } from '../lib/site'
 import { workHeroFor } from '../lib/media'
+import RingField from '../components/RingField.astro'
 
 export async function getStaticPaths() {
   const entries = await getCollection('cities')
@@ -186,6 +187,10 @@ const schema = [{
   {/* ── Selected work ──────────────────────────────────────── */}
   <Section ground="dark">
     <div class="cw">
+      {/* Opt-in per page while the treatment is being tried. The centre sits
+          off the bottom-left corner so the widest arcs cross the gutters
+          between cards rather than sitting behind one of them. */}
+      {d.ringField && <RingField />}
       <span class="i-eyebrow i-eyebrow--dark">SELECTED WORK</span>
       <h2 class="cw__h" data-reveal>Work we have shipped, and what it had to solve</h2>
       <ul class="cw__grid">
@@ -369,7 +374,7 @@ const schema = [{
   .cp__body { margin: 10px 0 0; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: -0.045em; color: rgb(90, 90, 88); }
 
   /* ── Selected work ───────────────────────────────────────── */
-  .cw { padding-block: 104px 96px; }
+  .cw { position: relative; isolation: isolate; padding-block: 104px 96px; }
   .cw__grid {
     list-style: none; margin: 56px 0 0; padding: 0;
     display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
