@@ -17,8 +17,10 @@ blocks:
     body: "For the benefit of the agents and for the concerned authorities who work with the dashboard, Roars maintained a clean UI and easy UX."
 gallery:
   - src: "/wp-content/uploads/2022/08/tanishq-report.png"
+    kind: "web"
     alt: ""
   - src: "/wp-content/uploads/2022/08/tanishq-report02.png"
+    kind: "web"
     alt: ""
 needsRewrite: true
 seo:
@@ -30,6 +32,10 @@ seo:
 # named consistently throughout, SEO block checked against this project.
 # See docs/OPEN-DECISIONS.md for what the pass covered and what it did not.
 needsReview: false
+showcase:
+  - src: "/wp-content/uploads/2022/08/tanishq-userprofile1.png"
+    alt: "The customer profile view"
+    kind: "web"
 ---
 Further, keeping in mind the importance of dates such as birthdays and anniversaries and festivals, the client can send targeted ads at the right time to the right customer.
 

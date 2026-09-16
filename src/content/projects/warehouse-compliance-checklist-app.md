@@ -28,8 +28,10 @@ blocks:
     body: "A streamlined system that highlights what matters and drives stronger engagement, with clear navigation and exception-first reporting for managers."
 gallery:
   - src: "/wp-content/uploads/2026/04/aboutus-strategy.jpg"
+    kind: "wireframe"
     alt: "Planning the warehouse compliance flow"
   - src: "/wp-content/uploads/2025/04/beautiful-experience.jpg"
+    kind: "photo"
     alt: "The checklist interface in use"
 seo:
   title: "Snowman Logistics: Warehouse Compliance App"

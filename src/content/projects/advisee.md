@@ -30,22 +30,30 @@ blocks:
     lead: "Designed a cohesive color palette, typography, and visual elements that establish trust and reliability."
 gallery:
   - src: "/wp-content/uploads/2025/03/Typography-e1743077765250.png"
+    kind: "study"
     alt: ""
   - src: "/wp-content/uploads/2025/03/advsiee-1.png"
+    kind: "web"
     alt: ""
+  - src: "/wp-content/uploads/2025/03/advisee-colors.png"
+    alt: "Colour study"
+    kind: "study"
 showcase:
   - src: "/wp-content/uploads/2025/03/advisee-stats.png"
+    kind: "web"
     alt: ""
   - src: "/wp-content/uploads/2025/03/advisee-services.png"
+    kind: "web"
     alt: ""
   - src: "/wp-content/uploads/2025/03/foooter.png"
+    kind: "web"
     alt: ""
   - src: "/wp-content/uploads/2025/03/advisee-5.png"
+    kind: "web"
     alt: ""
 screens:
   - src: "/wp-content/uploads/2025/03/advisee-blog.png"
-    alt: ""
-  - src: "/wp-content/uploads/2025/03/legacy-1.png"
+    kind: "web"
     alt: ""
 needsRewrite: true
 seo:

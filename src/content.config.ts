@@ -172,6 +172,33 @@ const posts = defineCollection({
   }),
 })
 
+/**
+ * ONE PICTURE ON A CASE STUDY.
+ *
+ * `kind` is the whole point of this type. The migration sorted a project's
+ * images into gallery / showcase / screens, which describes WHERE the old
+ * WordPress page put them and nothing about what they are — so a wireframe
+ * and a finished app screen ended up in the same grid, given the same
+ * treatment, because they happened to land in the same array. The case-study
+ * template groups by `kind` across all three arrays instead, which is what
+ * lets a project with two pictures and a project with seventeen use the same
+ * layout without either one looking wrong.
+ *
+ *   wireframe  the structure before it was dressed: wireframes, flows, sitemaps
+ *   study      colour therapy, typography sheets, moodboards
+ *   app        a screen from the finished mobile product
+ *   web        a screen from the finished web product or dashboard
+ *   photo      a photograph, not a screen
+ *
+ * Optional, because a picture nobody has classified is better rendered in the
+ * catch-all than dropped. Anything without a kind falls to the end.
+ */
+const projectImage = z.object({
+  src: z.string(),
+  alt: z.string().max(120).default(''),
+  kind: z.enum(['wireframe', 'study', 'app', 'web', 'photo']).optional(),
+})
+
 const projects = defineCollection({
   loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
@@ -230,7 +257,7 @@ const projects = defineCollection({
      * slots that have no image still draw, because the block is part of the
      * layout rather than a gallery that appears when it is full.
      */
-    showcase: z.array(z.object({ src: z.string(), alt: z.string().max(120).default('') })).max(4).default([]),
+    showcase: z.array(projectImage).max(6).default([]),
     /** The one-sentence what-this-is, set 26/37 across 689px. */
     about: z.string().max(320).optional(),
     /** The four-row fact table. Label left, value right. */
@@ -252,7 +279,7 @@ const projects = defineCollection({
       .max(4)
       .default([]),
     /** Paths under /wp-content/uploads/, served from the webspace. */
-    gallery: z.array(z.object({ src: z.string(), alt: z.string().max(120).default('') })).max(4).default([]),
+    gallery: z.array(projectImage).max(6).default([]),
     /**
      * Everything else the original case study showed.
      *
@@ -262,7 +289,7 @@ const projects = defineCollection({
      * case study. They render as a grid after the showcase rather than being
      * dropped because the designed slots were already full.
      */
-    screens: z.array(z.object({ src: z.string(), alt: z.string().max(120).default('') })).max(24).default([]),
+    screens: z.array(projectImage).max(24).default([]),
   }),
 })
 

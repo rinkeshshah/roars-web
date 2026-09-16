@@ -15,12 +15,18 @@ blocks:
     body: "Apart from that, our developers added this basic yet important functionality. Scientists who have access to this tool can easily edit the information such as source, virus name, originating lab/submitting lab, authors, collection date."
 gallery:
   - src: "/wp-content/uploads/2022/08/gisaid-3.webp"
+    kind: "web"
     alt: ""
   - src: "/wp-content/uploads/2022/08/gisaid-2.webp"
+    kind: "web"
     alt: ""
 showcase:
   - src: "/wp-content/uploads/2022/08/gisaid-1.webp"
+    kind: "web"
     alt: ""
+  - src: "/wp-content/uploads/2022/08/gisaid4.webp"
+    alt: "The GISAID platform"
+    kind: "web"
 needsRewrite: true
 seo:
   title: "GISAID - Health Tech product for COVID"

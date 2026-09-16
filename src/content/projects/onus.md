@@ -20,15 +20,23 @@ blocks:
     body: "Time and usability dictate the efficiency and effectiveness of any process and digitization in logistics services has been the blueprint for transformation. As efficiency, optimization, speed and timing are the prime requisites in goods deliver and passenger transit, Onus comes with a vision to…"
 gallery:
   - src: "/wp-content/uploads/2022/08/onus-wireframe.png"
+    kind: "wireframe"
     alt: ""
   - src: "/wp-content/uploads/2022/08/onus-mobileapp-1.png"
+    kind: "app"
     alt: "onus-mobileapp-1"
+  - src: "/wp-content/uploads/elementor/thumbs/tuma-Fonts-typography-r1yz7f0pgf3xfr16orjuxw2vjihzscpwl6lgx9oe3o.webp"
+    alt: "Type study"
+    kind: "study"
 showcase:
   - src: "/wp-content/uploads/2022/08/onus-mobileapp-02.png"
+    kind: "app"
     alt: "onus-mobileapp-02"
   - src: "/wp-content/uploads/2022/08/onus-mobileapp-04.png"
+    kind: "app"
     alt: "onus-mobileapp-04"
   - src: "/wp-content/uploads/2022/08/onus-mobileapp-3.png"
+    kind: "app"
     alt: "onus-mobileapp-3"
 needsRewrite: true
 seo:
