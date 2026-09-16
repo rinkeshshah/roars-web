@@ -114,10 +114,19 @@ export function initTopbar(): void {
  * OPT-IN PER PAGE, through `pulse` on <TopBar />, which writes
  * data-topbar-pulse on the bar. Homepage only while the effect is judged.
  *
- * THE PROBE IS THE MIDDLE OF THE VIEWPORT. A boundary passing behind the
- * fixed top bar cannot be seen, so a probe at the top would flash the mark for
- * something the reader has no way to observe. The middle is where a boundary
- * is most legible, so that is where the flash is anchored to.
+ * THE PROBE IS BAR_PROBE_Y, THE SAME LINE THE INK INVERSION USES.
+ *
+ * It was the middle of the viewport first, and that was the wrong line. With
+ * the probe at the middle, the moment it fired the screen was half the old
+ * section and half the new one — measured: the top of the viewport still
+ * showed Services while the middle and bottom showed Projects. Flashing there
+ * marks the most in-between position there is, not an arrival.
+ *
+ * A section has arrived when it has taken the screen, which is when its top
+ * edge passes the top of the viewport. Using BAR_PROBE_Y rather than 0 puts
+ * the flash on exactly the line the bar already asks its own question at, so
+ * the mark changes colour in the same frame the bar's ground changes under
+ * it and the two read as one event instead of two near-misses.
  */
 function initLogoFlash(bar: HTMLElement): void {
   if (!bar.hasAttribute('data-topbar-pulse')) return
@@ -143,7 +152,7 @@ function initLogoFlash(bar: HTMLElement): void {
   let amber = false
 
   const paint = () => {
-    const line = window.scrollY + window.innerHeight / 2
+    const line = window.scrollY + BAR_PROBE_Y
     let near = Infinity
     for (const b of bounds) {
       const d = Math.abs(b - line)
