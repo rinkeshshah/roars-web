@@ -33,6 +33,12 @@ gallery:
   - src: "/wp-content/uploads/2025/04/beautiful-experience.jpg"
     kind: "photo"
     alt: "The checklist interface in use"
+testimonial:
+  quote: "You showed a strong understanding of our business needs and prepared well-structured documentation. The user-friendly UI/UX design you created makes the system easy to use, and your guidance in improving business processes has been very valuable."
+  name: "Bhushan Paralkar"
+  role: "VP IT & Business Excellence, Snowman Logistics"
+  portrait: "/wp-content/uploads/2026/02/vt6oz.Bhushan1.jpg"
+
 seo:
   title: "Snowman Logistics: Warehouse Compliance App"
   description: "Manual checklists and fragmented reporting replaced by one system: evidence on the floor, timestamped sign-off, and reporting that rolls up to national views."

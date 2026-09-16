@@ -78,6 +78,11 @@ screens:
     kind: "app"
     alt: "gallery grid image"
 needsRewrite: true
+testimonial:
+  quote: "They executed everything me and my business partner asked for during the process of building our business app. I would recommend their services to anyone I come across."
+  name: "Kamran Hussain"
+  role: "Director, gymBAIT"
+
 seo:
   # WAS ANOTHER COMPANY'S. The migration put Tuma's title and description on
   # this record: "Tuma is a leading digital financial service provider for

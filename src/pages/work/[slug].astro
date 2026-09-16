@@ -285,6 +285,29 @@ const rest = media.filter((m) => !m.kind || m.kind === 'photo')
           </section>
         )}
 
+        {/* THE CLIENT'S VERDICT, after the work rather than before it. A quote
+            placed above the pictures asks the reader to take the outcome on
+            trust; placed here it lands on something they have just seen.
+            Only ever a quote whose role names this client outright — see the
+            note on `testimonial` in content.config.ts. */}
+        {d.testimonial && (
+          <figure class="pd__say" data-reveal>
+            <span class="pd__say-mark" aria-hidden="true">&ldquo;</span>
+            <blockquote class="pd__say-q">{d.testimonial.quote}</blockquote>
+            <figcaption class="pd__say-who">
+              {d.testimonial.portrait
+                ? <img src={d.testimonial.portrait} alt="" width="56" height="56" loading="lazy" />
+                : <span class="pd__say-mono" aria-hidden="true">
+                    {d.testimonial.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
+                  </span>}
+              <span>
+                <b>{d.testimonial.name}</b>
+                <i>{d.testimonial.role}</i>
+              </span>
+            </figcaption>
+          </figure>
+        )}
+
         {/* The migrated body. The export has no slot for it; a case study with
             four sentences is not a case study, and this is the page that has
             to answer "have they done logistics". Given its own header and
@@ -431,6 +454,36 @@ const rest = media.filter((m) => !m.kind || m.kind === 'photo')
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
   /* ── the pair ───────────────────────────────────────────── */
+  /* ── the client's verdict ───────────────────────────────── */
+  .pd__say {
+    margin: 104px 0 0; padding: 48px 0 0;
+    border-top: 1.5px solid var(--c-rule-strong);
+    max-width: 900px;
+  }
+  .pd__say-mark {
+    display: block; font-size: 84px; line-height: 0.6;
+    font-weight: var(--fw-semi); color: var(--c-accent);
+  }
+  .pd__say-q {
+    margin: 24px 0 0; font-size: var(--fs-intro); line-height: var(--lh-intro);
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .pd__say-who { display: flex; align-items: center; gap: 16px; margin-top: 32px; }
+  .pd__say-who img, .pd__say-mono {
+    width: 56px; height: 56px; border-radius: var(--r-circle);
+    object-fit: cover; flex: none; background: rgb(233, 233, 231);
+  }
+  .pd__say-mono {
+    display: grid; place-items: center;
+    font-size: var(--fs-label); font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .pd__say-who b, .pd__say-who i {
+    display: block; font-style: normal; letter-spacing: var(--ls-body);
+  }
+  .pd__say-who b { font-size: var(--fs-body); font-weight: var(--fw-semi); color: var(--c-ink-heading); }
+  .pd__say-who i { margin-top: 3px; font-size: var(--fs-label); font-weight: var(--fw-medium); color: var(--c-ink-muted); }
+
   /* ── chapters ───────────────────────────────────────────────
      FIXED HEIGHTS ARE GONE. The old showcase was four slots at 737, 700, 700
      and 754px that drew whether or not they held an image, which is why four

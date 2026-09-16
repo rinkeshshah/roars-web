@@ -199,6 +199,26 @@ const projectImage = z.object({
   kind: z.enum(['wireframe', 'study', 'app', 'web', 'photo']).optional(),
 })
 
+/**
+ * A client's own words, on their own case study.
+ *
+ * NOT COPIED FROM THE HOMEPAGE DECK BY GUESSWORK. Only a quote whose role
+ * names this client outright is put on this page — "VP IT & Business
+ * Excellence, Snowman Logistics" on the Snowman case study, "Director,
+ * gymBAIT" on GymBait's. scripts/assert-attribution.mjs exists because
+ * getting a name wrong on a testimonial is not a rounding error, and a near
+ * match is a wrong match.
+ */
+const testimonial = z
+  .object({
+    quote: z.string().min(40).max(600),
+    name: z.string().min(2).max(60),
+    role: z.string().min(2).max(90),
+    /** The person, if a photograph of them exists. Monogram otherwise. */
+    portrait: z.string().optional(),
+  })
+  .optional()
+
 const projects = defineCollection({
   loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
@@ -260,6 +280,7 @@ const projects = defineCollection({
     showcase: z.array(projectImage).max(6).default([]),
     /** The one-sentence what-this-is, set 26/37 across 689px. */
     about: z.string().max(320).optional(),
+    testimonial,
     /** The four-row fact table. Label left, value right. */
     facts: z.array(z.object({ k: z.string().max(20), v: z.string().max(80) })).max(6).default([]),
     liveUrl: z.string().optional(),
