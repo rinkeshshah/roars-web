@@ -142,10 +142,35 @@ if ($host != 'www.roarsinc.com') {
 
 # Trailing slash, to match all 194 live URLs.
 # Astro builds directory-format output, so /about-us/index.html exists.
+#
+# ORDER MATTERS. The 301 map from dist/nginx-redirects.conf goes ABOVE this
+# rewrite: every source path in it already ends in a slash, so a legacy URL
+# arriving without one would be slash-rewritten first and reach the map as a
+# second hop. One redirect, not two.
 rewrite ^/(.*[^/])$ /$1/ permanent;
 
+# The WordPress surface is gone. Say so, rather than 404.
+#
+# 410 and not 404, and not a 301 to the homepage. A 404 means "maybe later",
+# and Google recrawls it for months; a 410 means "deliberately gone" and it
+# drops out much faster. Redirecting to the homepage would be a soft 404 and
+# would also hand a bot scanning for logins a 200.
+#
+# These paths get scanned constantly whether or not WordPress was ever here,
+# so this also stops the scan traffic reaching PHP at all.
+location ~ ^/(wp-admin|wp-login\.php|xmlrpc\.php|wp-json|wp-includes|wp-cron\.php) {
+  return 410;
+}
+
 # Indexed legacy image paths must keep resolving 200.
-location /wp-content/uploads/ {
+#
+# `^~`, not a plain prefix. In nginx a regex location beats a prefix location
+# regardless of which is written first, so if the 410 block above ever grows a
+# broader pattern this would silently start returning 410 for every migrated
+# image on the site. `^~` stops the regex matching being considered at all,
+# which turns "do not break the images" from a thing to remember into a thing
+# the config enforces.
+location ^~ /wp-content/uploads/ {
   alias /var/www/vhosts/roarsinc.com/httpdocs/assets/legacy/;
   expires 1y;
   add_header Cache-Control "public, immutable";

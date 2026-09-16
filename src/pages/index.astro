@@ -360,15 +360,17 @@ const schema = [
       },
     ],
   },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faq.map((f) => ({
-      '@type': 'Question',
-      name: f.question,
-      acceptedAnswer: { '@type': 'Answer', text: f.answer },
-    })),
-  },
+  /* FAQPage was here and has been dropped.
+   *
+   * Since August 2023 Google shows FAQ rich results for government and health
+   * sites only. For everyone else the markup is parsed and then ignored, so
+   * what it was buying was nothing, and what it cost was a second copy of
+   * seven answers that had to stay word for word identical to the accordion
+   * or become a guideline violation.
+   *
+   * The answers themselves are untouched. They are in the DOM, in the
+   * accordion below, as real paragraphs a crawler and a screen reader both
+   * read. Removing the markup removes the duplicate, not the content. */
 ]
 ---
 

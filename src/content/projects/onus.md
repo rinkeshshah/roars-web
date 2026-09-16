@@ -17,7 +17,7 @@ blocks:
     body: "Handle a continuous stream of incoming data and storing it for generating comprehensible reports."
   - heading: "Core Features"
     lead: "Digital technologies have pervaded all business sectors and E-logistics has emerged as an ingenious force in the world of goods delivery and day-to-day commute."
-    body: "Time and usability dictate the efficiency and effectiveness of any process and digitization in logistics services has been the blueprint for transformation. As efficiency, optimization, speed and timing are the prime requisites in goods deliver and passenger transit, Onus comes with a vision to…"
+    body: "Time and usability dictate the efficiency and effectiveness of any process and digitization in logistics services has been the blueprint for transformation."
 gallery:
   - src: "/wp-content/uploads/2022/08/onus-wireframe.png"
     kind: "wireframe"

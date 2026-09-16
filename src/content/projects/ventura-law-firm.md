@@ -20,7 +20,7 @@ facts:
     v: "Wordpress, Laravel, React Native"
 blocks:
   - heading: "Challenges"
-    lead: "Ventura Law's old branding and web presence failed to showcase the firm's vibrant, captivating qualities. The website's aesthetic and structure were outdated. Although the logo featured blue, its presence throughout the website created a formal atmosphere that didn't represent the firm's energy…"
+    lead: "Ventura Law's old branding and web presence failed to showcase the firm's vibrant, captivating qualities. The website's aesthetic and structure were outdated. Although the logo featured blue, its presence throughout the website created a formal atmosphere that didn't represent the firm's energy."
   - heading: "Results"
     lead: "At Roars, our objective was to create a website that was as efficient and responsive as the firm itself. To accomplish this, we designed an uncomplicated and user-friendly interface with easy to use navigation tools."
     body: "At Roars, we are proud to offer our expertise in creating websites for law firms. Our work with Ventura Law exemplifies how our knowledge of the legal landscape allowed us to quickly understand the firm's goals and the needs of their clients."

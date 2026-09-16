@@ -9,7 +9,7 @@ headline:
 standfirst: "Mobile app development company for iOS and Android"
 hero:
   statement: "We build advanced mobile app solutions for startups, SMEs, and large-scale enterprises."
-  sub: "Hire professional mobile app developers from a trusted mobile app development company to craft feature-rich and robust…"
+  sub: "Hire professional mobile app developers from a trusted mobile app development company."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 process:
@@ -46,7 +46,7 @@ frame:
   h1: "Your app is in the store. Nobody opens it twice."
   qualifier: "For teams that need a native app built properly, or an existing one rescued. Not for a first test of an idea, an MVP will answer that faster and for less."
   proof:
-    value: "250+"
+    value: "4,000+"
     label: "PRODUCTS SHIPPED SINCE 2005"
 cost:
   label: "THE COST OF WAITING"

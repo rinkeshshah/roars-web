@@ -24,7 +24,7 @@ blocks:
   - heading: "Challenges"
     lead: "They organize parties, outings, flash mobs, and provide health insurance schemes to take care of that. However, our client came up with a more direct approach that makes working towards good health a task of the employees. It makes more sense, as their fitness ultimately lies in their hands."
   - heading: "Core Features"
-    lead: "The rewards page gives you a glimpse of the rewards up for grabs and also the once you have achieved till date. The main screen of the homepage also acts as your personal tracker which clocks the total steps taken till date, steps to be taken to achieve the next leaderboard target and the final…"
+    lead: "The rewards page gives you a glimpse of the rewards up for grabs and also the once you have achieved till date. The main screen of the homepage also acts as your personal tracker which clocks the total steps taken till date, and the steps to be taken to achieve the next leaderboard target."
     body: "Shealth is used to track all activities of user. Shealth helps to track running, walking and other sensor related to health."
   - heading: "Solutions"
     lead: "Our innovation strategy team worked with our strategy partner to create one of the bestselling features Steps Tracking App for Go champions go : the happy index."

@@ -36,7 +36,7 @@ bands:
         body: "At roars, our UX designers have in-depth knowledge and a better understanding of the product and its end-users needs. Our experts make a user journey map to inform the initial wireframe and deliver the best results in the research phase. Hire our user experience expert to do better than your competition."
       - tag: "USER"
         name: "USER INTERFACE DESIGN"
-        body: "With proven expertise in delivering best-in-class user experience, our expert UX designers offer comprehensive User Experience design services to create light user interface designs where elements such as color, texture, shape, images, and composition seamlessly support the underlying user experience, from…"
+        body: "With proven expertise in delivering best-in-class user experience, our expert UX designers offer comprehensive User Experience design services to create light user interface designs where elements such as color, texture, shape, images, and composition seamlessly support the underlying user experience."
       - tag: "USER"
         name: "USER EXPERIENCE STRATEGY"
         body: "We create a mind-blowing strategy for your digital product aligned with your business capabilities and customer’s point of view on the user experience. We use many creative methods and strategies to understand the customers’ habits, needs, and challenges for crafting a seamless digital experience."

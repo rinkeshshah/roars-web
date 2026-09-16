@@ -9,7 +9,7 @@ headline:
 standfirst: "Hire dedicated developers and remote teams"
 hero:
   statement: "We provide a guarantee for the successful delivery of your project with an exclusive touch!"
-  sub: "Our dedicated development team has in-depth knowledge and years of experience working on various technologies…"
+  sub: "Our dedicated development team has in-depth knowledge and years of experience working on various technologies."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 process:

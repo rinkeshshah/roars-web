@@ -40,11 +40,15 @@ journey:
       lead: "Being the prominent healthcare app development company USA"
       body: "Connect with us today to get into the market with a well-developed"
       tags: ["OUR", "EXPERTISE"]
+    # "HIPAA Compliant" as a capability name read as a certification we hold.
+    # We build to the requirements; the covered entity is the one who is
+    # compliant, and an audit is theirs to pass. Reworded to say what is
+    # actually true, at the owner's instruction.
     - n: "06"
-      name: "HIPAA Compliant"
-      lead: "We have years of experience in developing apps that are compliant with the standards set…"
-      body: "We make sure to place certain security measures as and when required."
-      tags: ["HIPAA", "COMPLIANT"]
+      name: "HIPAA and GDPR"
+      lead: "Built with HIPAA and GDPR requirements in mind, from the data model up."
+      body: "Access control, audit trails and retention decided at design time rather than retrofitted before a review."
+      tags: ["HIPAA", "GDPR"]
 surfaces:
   label: "CAPABILITIES"
   heading: "4 more"

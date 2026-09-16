@@ -24,7 +24,7 @@ blocks:
     lead: "The beautifully designed Membership management App listings page gives you a sneak peek into the clubs available close to you or at the destination of your choice. You can mention your destination of choice and add filters based on your club preferences to find just the right match."
     body: "The profile screen also offers a calendar view of upcoming club bookings and reservations made for events or holidays."
   - heading: "Solutions"
-    lead: "Roars ensured that the UX/UI of the Membership management app are as responsive and premium as the offering of their client. Prior to working on the UX/UI they ensured the framework was laid well through the wireframes which helped turned Club Social into a responsive app which was also beautiful…"
+    lead: "Roars ensured that the UX/UI of the Membership management app are as responsive and premium as the offering of their client. Prior to working on the UX/UI they ensured the framework was laid well through the wireframes which helped turned Club Social into a responsive app which was also beautiful to work with."
 gallery:
   - src: "/wp-content/uploads/2022/08/clubsocial-wireframe.jpg"
     kind: "wireframe"

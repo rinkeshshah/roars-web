@@ -8,7 +8,7 @@ featured: true
 dateLabel: "Jul 28, 2025"
 headline: "Parqly"
 heroImage: "/work/parqly-parking-solution.jpg"
-about: "Parqly is at the forefront of urban innovation, transforming how drivers and parking owners navigate the world of city parking. Based in Cyprus, Parqly set out to eliminate the daily parking struggle with a seamless, technology-driven platform, fusing the power of mobile apps with smart automation…"
+about: "Parqly is at the forefront of urban innovation, transforming how drivers and parking owners navigate city parking. Based in Cyprus, Parqly set out to eliminate the daily parking struggle with a seamless, technology-driven platform, fusing the power of mobile apps with smart automation and future-ready hardware."
 liveUrl: "https://www.parqly.com"
 facts:
   - k: "TECHNOLOGY"
@@ -20,7 +20,7 @@ blocks:
   - heading: "Know before you go."
     lead: "Instantly see real-time parking availability citywide, filtering by price, convenience, or accessibility. With Parqly, every parking decision is informed, fast, and stress-free."
   - heading: "Agile Tech, Flawless Execution"
-    lead: "Roars harnessed Flutter for beautiful cross-platform mobile interfaces, Node.js for a scalable backend, and Firebase for real-time data. Our breakthrough? BLE (Bluetooth Low Energy) hardware integration, unlocking parking spaces securely and instantly, thanks to seamless device-to-system…"
+    lead: "Roars harnessed Flutter for beautiful cross-platform mobile interfaces, Node.js for a scalable backend, and Firebase for real-time data. Our breakthrough? BLE (Bluetooth Low Energy) hardware integration, unlocking parking spaces securely and instantly, thanks to seamless device-to-system communication."
   - heading: "The Solution"
     lead: "A feature-rich MVP and a clear growth roadmap, delivering a next-gen smart parking ecosystem ready to launch, scale, and evolve with every urban challenge."
 gallery:
@@ -48,7 +48,7 @@ showcase:
     kind: "app"
 seo:
   title: "Parqly: smart city parking, from app to BLE hardware"
-  description: "Parqly is at the forefront of urban innovation, transforming how drivers and parking owners navigate the world of city parking. Based in Cyprus, Parqly set out to eliminate the daily parking struggle with a seamless, technology-driven platform, fusing the power of mobile apps with smart automation…"
+  description: "Parqly is at the forefront of urban innovation, transforming how drivers and parking owners navigate the world of city parking. Based in Cyprus, Parqly set out to eliminate the daily parking struggle with a seamless, technology-driven platform, fusing the power of mobile apps with smart automation and future-ready hardware."
   primaryIntent: "parqly parking solution"
   schemaType: "CreativeWork"
 # Reviewed 16 Sep 2026: slot assignment checked against the live page, client

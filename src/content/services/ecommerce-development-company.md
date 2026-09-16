@@ -9,7 +9,7 @@ headline:
 standfirst: "eCommerce development company"
 hero:
   statement: "We are a one-stop solution for your Bespoke eCommerce app development needs!"
-  sub: "Bring the eCommerce change in your business and provide personalised shopping experiences to your end-users with our…"
+  sub: "Bring the eCommerce change in your business and provide personalised shopping experiences to your end-users."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 process:

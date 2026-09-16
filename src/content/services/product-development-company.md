@@ -9,7 +9,7 @@ headline:
 standfirst: "Product development company for startups and SMEs"
 hero:
   statement: "Build an innovation-focused product to solve modern-world problems."
-  sub: "With our robust product development, you can build user-centric digital products with a human focus for your…"
+  sub: "With our robust product development, you can build user-centric digital products with a human focus."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 process:
@@ -106,7 +106,11 @@ scope:
   excludes:
     - "Taking over a codebase without reading it first"
     - "Brand, marketing or content production"
-    - "Staff augmentation, we work as a team or not at all"
+    # Was "Staff augmentation, we work as a team or not at all", which read as
+    # a flat no and contradicted /s/hire-dedicated-developers/, where hiring
+    # developers from us is the whole offer. The exclusion is the unmanaged
+    # version of it, not the model.
+    - "Unmanaged staff augmentation. Dedicated developers always come with a product lead."
     - "Working to a roadmap we are not allowed to question"
 shape:
   label: "THE SHAPE OF IT"

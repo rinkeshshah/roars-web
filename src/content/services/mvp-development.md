@@ -9,7 +9,7 @@ headline:
 standfirst: "MVP development company for startups"
 hero:
   statement: "Looking for expert MVP development services to validate your idea and its market potential?"
-  sub: "Being the prominent MVP development services provider company, we can help you develop innovative, secure, and…"
+  sub: "We help you develop innovative, secure, and high-quality solutions for a successful minimum viable product."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 process:
@@ -21,7 +21,7 @@ process:
     - name: "Design user flow"
       body: "At this stage, we provide experienced designers (UI/UX) that have top-of-the-line expertise in building prototypes incorporating features to collect the data and feedback. From opening the app to the final process, We will help you map out the user flow from opening the app to the final process."
     - name: "Develop the MVP"
-      body: "With our proven expertise in product thinking and accelerating innovation, being the result-oriented MVP development service provider company we let you leverage frameworks like VPC and MoSCoW that have an agile delivery model to reduce the risks of new technology adoption and achieve the goals of developing MVP…"
+      body: "With our proven expertise in product thinking and accelerating innovation, being the result-oriented MVP development service provider company we let you leverage frameworks like VPC and MoSCoW that have an agile delivery model to reduce the risks of new technology adoption and achieve the goals of developing MVP."
 bands:
   - key: "capabilities"
     label: "WHAT WE DO"
@@ -45,7 +45,7 @@ bands:
 featured:
   label: "FEATURED WORK"
   client: "The Community Social"
-  body: "With our proven expertise in product thinking and accelerating innovation, being the result-oriented MVP development service provider company we let you leverage frameworks like VPC and MoSCoW that have an agile delivery model to reduce the risks of new technology adoption and achieve the goals of developing MVP…"
+  body: "With our proven expertise in product thinking and accelerating innovation, being the result-oriented MVP development service provider company we let you leverage frameworks like VPC and MoSCoW that have an agile delivery model to reduce the risks of new technology adoption and achieve the goals of developing MVP."
   href: "/work/community-social-residential-community-app/"
 cta:
   label: "Start here"

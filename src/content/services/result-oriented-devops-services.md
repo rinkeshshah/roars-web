@@ -9,7 +9,7 @@ headline:
 standfirst: "DevOps services and CI/CD consulting"
 hero:
   statement: "Stay ahead with our expert DevOps as a Service solutions."
-  sub: "Roars is a trusted DevOps company, providing robust DevOps as a services that help businesses to bridge the gap between…"
+  sub: "Robust DevOps services that help businesses bridge the gap between development and operations."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 process:

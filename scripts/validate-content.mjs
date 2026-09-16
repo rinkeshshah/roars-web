@@ -473,6 +473,87 @@ if (existsSync(MANIFEST)) {
   })
 }
 
+/**
+ * RETIRED FIGURES.
+ *
+ * The migration carried a set of headline numbers off the old site — 250+
+ * projects, 96% returning customers, 23 projects. The owner replaced all of
+ * them, and src/lib/site.ts is now the only place a headline figure is
+ * written down. Two of the retired ones survived the replacement anyway,
+ * sitting in hand-written copy where nothing was looking for them.
+ *
+ * This looks. Prose only: the .astro files are skipped because "96%" is also
+ * a gradient stop in about forty of them, and a gate that cries wolf gets
+ * switched off. If a figure belongs on a page, it comes from site.ts.
+ */
+const RETIRED = [
+  [/\b250\+/, '250+ (retired; site.ts stats.projectsDelivered is 4,000+)'],
+  [/\b96\s*%\s*(returning|repeat)/i, '96% returning customers (retired, no replacement)'],
+  [/\b23\s+projects\b/i, '23 projects (retired; site.ts stats.projectsDelivered is 4,000+)'],
+]
+const walk = (dir, test, out = []) => {
+  if (!existsSync(dir)) return out
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name)
+    if (statSync(p).isDirectory()) walk(p, test, out)
+    else if (test(name)) out.push(p)
+  }
+  return out
+}
+const proseFiles = [
+  ...walk(join(ROOT, 'src/content'), (n) => n.endsWith('.md') || n.endsWith('.mdx')),
+  ...walk(join(ROOT, 'public/api'), (n) => n.endsWith('.html')),
+]
+for (const abs of proseFiles) {
+  const rel = relative(ROOT, abs)
+  const text = readFileSync(abs, 'utf8')
+  for (const [re, what] of RETIRED) {
+    if (re.test(text)) {
+      errors.push({
+        file: rel,
+        rule: 'retired figure',
+        msg: `carries ${what}. Headline numbers live in src/lib/site.ts.`,
+      })
+    }
+  }
+
+  /**
+   * TRUNCATED COPY.
+   *
+   * The two migration extractors clip long text to a character cap and mark
+   * the cut with an ellipsis. On a sentence that fits, nothing happens; on one
+   * that does not, the page ships a half-sentence: "we help you build fitness
+   * apps that allow users to stay fit and reach their…". Ninety of those were
+   * live across the service, industry, project and journal pages before
+   * anybody counted them, because each one looks like a deliberate trailing
+   * ellipsis until you read it.
+   *
+   * WARNING, NOT ERROR, AND ONLY FOR NOW. Every one outside src/content/
+   * industries has been repaired; the remaining 87 are on the eight Elementor
+   * industry pages, and the Elementor export they were clipped from is not in
+   * this repository, so there is nothing here to restore them from. Making
+   * this fatal today would block the launch build on content that cannot be
+   * written from inside the build. It prints a count on every run instead, and
+   * it becomes an error in the same change that fixes the last one.
+   *
+   * THREE ARE DELIBERATE and are warned about anyway: "RUNNING EVALS…" and
+   * "The other 80% just… happens." on the AI page, and a quoted interface
+   * string in one journal post. They are not exempted by a list here, because
+   * a list of allowed ellipses is a thing that goes stale silently and this
+   * whole rule exists because of something that went stale silently. Three
+   * known warnings is cheaper than an allowlist nobody maintains.
+   */
+  const lines = text.split('\n')
+  for (let i = 0; i < lines.length; i++) {
+    if (!lines[i].includes('…')) continue
+    warnings.push({
+      file: `${rel}:${i + 1}`,
+      rule: 'truncated copy',
+      msg: `sentence cut by the migration's character cap: ...${lines[i].split('…')[0].slice(-52).trim()}[...]`,
+    })
+  }
+}
+
 /* --------------------------------------------------------------- report */
 
 console.log('--- validate-content ---')

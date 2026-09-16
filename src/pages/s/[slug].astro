@@ -75,24 +75,12 @@ const schema = entry
             }
           : {}),
       },
-      /* The page answers seven questions in full, so it is an FAQPage as well
-         as a Service. Only emitted when the answers are actually on the page:
-         marking up copy a visitor cannot see is exactly what the rich-result
-         guidelines prohibit. */
-      ...(entry.data.faq.length
-        ? [
-            {
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              '@id': `${site.url}${path}#faq`,
-              mainEntity: entry.data.faq.map((f) => ({
-                '@type': 'Question',
-                name: f.question,
-                acceptedAnswer: { '@type': 'Answer', text: f.answer },
-              })),
-            },
-          ]
-        : []),
+      /* An FAQPage node was here and has been dropped, for the same reason as
+         the homepage: since August 2023 Google shows FAQ rich results for
+         government and health sites only, so on a service page the markup is
+         read and discarded. It was a second copy of every answer that had to
+         track the first exactly. The questions and answers stay on the page
+         in full; only the duplicate goes. */
       {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',

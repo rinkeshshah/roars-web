@@ -9,7 +9,7 @@ headline:
 standfirst: "Growth hacking agency for startups"
 hero:
   statement: "Accelerate your business growth with a data-driven growth hacking agency."
-  sub: "We bring fast, sustainable, and scalable growth in your businesses to prosper, strive and succeed with cutting-edge…"
+  sub: "We bring fast, sustainable, and scalable growth in your businesses to prosper, strive and succeed."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 process:

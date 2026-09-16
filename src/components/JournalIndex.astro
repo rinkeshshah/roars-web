@@ -158,6 +158,12 @@ const schema = [
                   <b>{f.day}</b><i>{f.month}</i>
                 </span>
               </span>
+              {/* The date is the only thing the caption prints, which left the
+                  anchor reading "04 May" to a crawler and to a screen reader.
+                  The title goes in unpainted rather than on the art, so the
+                  link says what it links to without setting the headline
+                  twice. */}
+              <span class="visually-hidden">{f.name}</span>
             </a>
           ))}
           {featured.length > 1 && (

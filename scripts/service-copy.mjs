@@ -226,7 +226,9 @@ const COPY = {
       h1: 'Your app is in the store. Nobody opens it twice.',
       qualifier:
         'For teams that need a native app built properly, or an existing one rescued. Not for a first test of an idea, an MVP will answer that faster and for less.',
-      proof: { value: '250+', label: 'PRODUCTS SHIPPED SINCE 2005' },
+      // Was '250+', the retired migration figure. The number of record is
+      // site.ts stats.projectsDelivered.
+      proof: { value: '4,000+', label: 'PRODUCTS SHIPPED SINCE 2005' },
     },
     cost: {
       heading: 'A shipped app that nobody returns to is a running cost.',

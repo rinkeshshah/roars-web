@@ -9,7 +9,7 @@ headline:
 standfirst: "Web app development company for custom web applications"
 hero:
   statement: "Build custom software that helps your business thrive in the digital age!"
-  sub: "Leverage our end-to-end web app development services to build secure, robust, and user-friendly web applications…"
+  sub: "Leverage our end-to-end web app development services to build secure, robust, and user-friendly web applications."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 process:

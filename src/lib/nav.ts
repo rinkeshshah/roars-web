@@ -118,7 +118,12 @@ export const MENU: MenuItem[] = [
     items: [
       { label: 'The agency', href: '/about-us/' },
       { label: 'Leadership & team', href: '/about-us/' },
-      { label: 'Brand guidelines', href: null },
+      /* 'Brand guidelines' used to sit here with href: null, so it rendered as
+         a span dressed like the two links above it, with the same rule and the
+         same arrow, and went nowhere when clicked. It is the internal design
+         page, the same one already taken out of the Resources panel below for
+         this reason. A menu that lists something you cannot open is worse than
+         a shorter menu. */
     ],
     ventures: ['Produit · Hostwala · UX Audit Pro', 'Microkopy · GetAutomation'],
   },

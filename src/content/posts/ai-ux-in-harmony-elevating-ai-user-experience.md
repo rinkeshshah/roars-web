@@ -125,7 +125,7 @@ Regulations like GDPR and recent AI news from the UK already require
 
 - Opt-in consent for tailored experiences
 
-Teams implementing **ethical AI design** principles should practically…
+Teams implementing **ethical AI design** principles should practically:
 
 - Run workshops embracing “data minimization”; focus on information collection that is strictly essential.
 
