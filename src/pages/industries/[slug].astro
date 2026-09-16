@@ -712,7 +712,12 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   }
 
   /* ── I4 cases ───────────────────────────────────────────── */
-  .icz { position: relative; isolation: isolate; padding-block: 96px; }
+  /* 204px, not 96px. The band is 40% taller than it was, and the height comes
+     from padding rather than a min-height so the extra air lands evenly above
+     and below the copy — the photograph gets room to be a photograph and the
+     ring arcs get length to travel. 347px of content + 408px of padding = the
+     755px this band now stands at, against 539px before. */
+  .icz { position: relative; isolation: isolate; padding-block: 204px; }
   /* Full bleed. 100vw off the band's own centre, which is the viewport's
      centre because .wrap is a centred max-width box — the same move .ip__bg
      makes two sections down. z-index -1 under `isolation: isolate` puts it
@@ -1033,7 +1038,16 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   /* ── proof ──────────────────────────────────────────────── */
   /* isolation, so the ground can sit at z-index -1 without dropping behind
      the section's own background and out of the band entirely. */
-  .ip { position: relative; isolation: isolate; padding-block: 90px 130px; min-height: 1000px; }
+  /* 1400px, up 40% from 1000.
+     THIS BAND DOES NOT TAKE PADDING THE WAY THE OTHERS DO. Its stats row and
+     its featured row are absolutely positioned at fixed offsets from .ip, so
+     padding moves the heading that flows and leaves those two where they are —
+     the first attempt at 40% dropped "Practised since 2005" straight through
+     the 84px "20+". The offsets below are scaled by the same 1.4 instead, and
+     the padding only takes the share that belongs to the flow.
+     Everything here is overridden at 1360px, where the whole band goes static
+     and keeps its own 64/72 padding. */
+  .ip { position: relative; isolation: isolate; padding-block: 126px 362px; min-height: 1400px; }
   /* Bleeds the full band, not the 1362 content box, so it reads as ground
      rather than as a picture sitting on one. The wash is heaviest at the top
      and bottom, where the 11px labels are, and thinnest across the middle
@@ -1067,7 +1081,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   }
   .ip__stats {
     list-style: none; margin: 0; padding: 0;
-    position: absolute; left: 1px; right: 0; top: 264px;
+    position: absolute; left: 1px; right: 0; top: 370px;   /* 264 x 1.4 */
     display: grid; grid-template-columns: 420fr 41fr 420fr 41fr 440fr;
   }
   .ip__stats > :nth-child(2) { grid-column: 3; }
@@ -1091,7 +1105,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     color: rgba(255, 255, 255, 0.6);
   }
 
-  .ip__feat { position: absolute; left: 1px; right: 0; top: 520px; }
+  .ip__feat { position: absolute; left: 1px; right: 0; top: 728px; }   /* 520 x 1.4 */
   .ip__hair { display: block; height: 0.5px; background: rgba(255, 255, 255, 0.22); }
   .ip .ip__feat-label { margin-top: 42px; line-height: normal; }
   .ip__feat-client {

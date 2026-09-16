@@ -804,8 +804,12 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
      an absolutely placed child does not grow its parent — so 620 was a guess
      at how tall the copy would be, and every service's copy is a different
      length. All twelve ended on 137-201px of nothing. */
+  /* +190px of padding for the same 40%. This band's content height varies with
+     how long the featured body runs — 449px on one service page, 513px on
+     another — so a single padding cannot land on exactly 40% for both. 190
+     splits the difference: +42% on the short one, +37% on the long one. */
   .sv-feat {
-    position: relative; isolation: isolate; padding-block: 72px 80px;
+    position: relative; isolation: isolate; padding-block: 167px 175px;
     display: grid; grid-template-columns: minmax(0, 67.695%) minmax(0, 32.305%);
     align-content: start;
   }
@@ -954,7 +958,10 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
   /* ── S4 anchor ──────────────────────────────────────────── */
   /* No max-width here any more: this box is the positioning ancestor for the
      full-bleed ground, so it has to span the wrap. The cap moved to __inner. */
-  .sv-anchor { position: relative; isolation: isolate; padding-block: 64px 80px; }
+  /* 40% taller, the same way .icz gets there: the padding carries it, so the
+     extra air is split above and below the copy. 373px of content + 351px of
+     padding = 724px, against 517px before. */
+  .sv-anchor { position: relative; isolation: isolate; padding-block: 167px 184px; }
   .sv-anchor__inner { max-width: 820px; }
   /* Full bleed. 100vw off the band's own centre, which is the viewport's
      centre because .wrap is a centred max-width box. Same move as .icz__ground
