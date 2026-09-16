@@ -36,6 +36,7 @@ import GrainField from '../components/GrainField.astro'
 import Button from '../components/Button.astro'
 import CtaBand from '../components/CtaBand.astro'
 import { site } from '../lib/site'
+import { workHeroFor } from '../lib/media'
 
 export async function getStaticPaths() {
   const entries = await getCollection('cities')
@@ -191,6 +192,16 @@ const schema = [{
         {d.work.map((w, i) => (
           <li data-reveal style={`transition-delay:${i * 80}ms`}>
             <a class="cw__card" href={w.href}>
+              {/* The project's own header shot, same resolver /work/ uses, so a
+                  project looks the same wherever it is named. The copy sits
+                  BELOW it rather than on it, so this takes the hero exposure
+                  and the amber and no ink — the same treatment as the
+                  case-study page's own header. */}
+              {workHeroFor(w.href) && (
+                <span class="cw__shot" aria-hidden="true">
+                  <img src={workHeroFor(w.href)} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+                </span>
+              )}
               <span class="cw__tag">{w.tag}</span>
               <h3 class="cw__name">{w.name}</h3>
               <p class="cw__body">{w.body}</p>
@@ -364,11 +375,30 @@ const schema = [{
     display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 34px 32px;
   }
-  .cw__card { display: block; padding-top: 26px; border-top: 1px solid rgba(255, 255, 255, 0.24); }
+  /* A column with the CTA pushed to the bottom, so three cards whose bodies
+     run to two, three and three lines still line their links up. */
+  .cw__grid > li { display: flex; }
+  .cw__card {
+    display: flex; flex-direction: column; flex: 1;
+    padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, 0.24);
+  }
+  .cw__cta { margin-top: auto; }
+  .cw__shot {
+    position: relative; display: block;
+    margin-bottom: 22px;
+    border-radius: 12px; overflow: hidden; background: rgb(24, 24, 24);
+  }
+  .cw__shot img {
+    display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover;
+    filter: brightness(var(--dusk-exposure-hero));
+    transition: transform var(--dur-slow, 480ms) ease;
+  }
+  .cw__shot::after { content: ''; position: absolute; inset: 0; background: var(--dusk-amber-soft); }
+  .cw__card:hover .cw__shot img { transform: scale(1.03); }
   .cw__tag { font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-medium); letter-spacing: 2px; color: rgba(255, 255, 255, 0.52); }
-  .cw__name { margin: 16px 0 0; font-size: 28px; line-height: 34px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: rgb(251, 251, 251); transition: color var(--dur-fast) ease; }
+  .cw__name { margin: 14px 0 0; font-size: 28px; line-height: 34px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: rgb(251, 251, 251); transition: color var(--dur-fast) ease; }
   .cw__body { margin: 12px 0 0; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: -0.045em; color: rgba(255, 255, 255, 0.7); }
-  .cw__cta { display: inline-block; margin-top: 18px; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-accent); }
+  .cw__cta { display: inline-block; padding-top: 18px; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-accent); }
   .cw__card:hover .cw__name { color: var(--c-accent); }
 
   /* ── Why ─────────────────────────────────────────────────── */
