@@ -1674,7 +1674,31 @@ const schema = [
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
     transition: box-shadow var(--dur-fast) ease, background var(--dur-fast) ease;
   }
+  /* THE WHOLE CARD ANSWERS, not just the disc.
+     The card is 250px wide and an <a> for all of it, but only the 52px circle
+     used to react — hover anywhere else and nothing happened, which is why it
+     read as inert. Now the rule above it takes the accent, the name and its
+     cta step 4px right, the number and the cta come up to full ink, and the
+     disc keeps the ring it already had.
+
+     THE ACCENT STAYS A LINE, NOT A FILL. tokens.css is explicit that the
+     accent is "never a background, max two moments per viewport", and a solid
+     yellow 52px disc under the cursor would break both halves of that on a
+     grid of eight. The 1px rule going yellow is the accent doing what it is
+     for, and it is the same device the service rows use one section up, so
+     the two lists behave like one system. */
+  .ind__rule, .ind__n { transition: background var(--dur-fast) ease, color var(--dur-fast) ease; }
+  .ind__name, .ind__cta { transition: color var(--dur-fast) ease, translate var(--dur-fast) var(--ease-out); }
+  .ind__card:hover .ind__rule { background: var(--c-accent); }
+  .ind__card:hover .ind__n { color: var(--c-ink-heading); }
+  .ind__card:hover .ind__name { translate: 4px 0; }
+  .ind__card:hover .ind__cta { translate: 4px 0; color: var(--c-ink-heading); }
   .ind__card:hover .ind__letter { box-shadow: inset 0 0 0 1.5px var(--c-accent); background: rgba(255, 212, 0, 0.14); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ind__name, .ind__cta { transition: color var(--dur-fast) ease; }
+    .ind__card:hover .ind__name, .ind__card:hover .ind__cta { translate: none; }
+  }
   .ind__text { grid-column: 2; display: flex; flex-direction: column; gap: 2px; }
   .ind__name { font-size: var(--fs-intro); font-weight: var(--fw-semi); line-height: 26px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
   .ind__cta { font-size: var(--fs-micro); font-weight: var(--fw-medium); line-height: 18px; letter-spacing: var(--ls-item); color: var(--c-rule); }
