@@ -162,6 +162,13 @@ function frontMatterProse(data) {
        and the headed blocks, and its markdown body is the intro alone, so
        counting the body called twenty-two real pages 42-word stubs. */
     'about', 'facts', 'blocks',
+    /* Location-page keys. /[city]/ renders its whole page from front matter —
+       the lead, the intro paragraph, six services, a four-step process, the
+       case studies and the reasons — and mounts no <Content /> at all, so the
+       markdown body is empty by design. Counting only the body called seven
+       full pages 102-word stubs. `desk` stays out: it is a data strip, not
+       prose. */
+    'intro', 'lead', 'services', 'why', 'work',
   ]) {
     if (data[k] !== undefined) walk(data[k], k)
   }

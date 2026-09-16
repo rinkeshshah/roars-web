@@ -1,0 +1,425 @@
+---
+/**
+ * The seven UK location pages.
+ *
+ * All seven are live, indexed URLs in docs/URL-INVENTORY.csv and all seven
+ * were 404ing, which is what kept assert-urls red through cutover. Layout is
+ * the Claude Design export ("Roars UI UX Design Birmingham") applied to all of
+ * them; the copy is per page, in src/content/cities/.
+ *
+ * A ROOT-LEVEL DYNAMIC ROUTE, which sounds worse than it is: getStaticPaths
+ * returns exactly the seven slugs from the collection, and Astro gives static
+ * routes priority over dynamic ones, so /about-us/ and the rest are untouched.
+ *
+ * WHAT THE EXPORT SHIPPED THAT IS NOT HERE, and why:
+ *
+ *   - A background photograph behind the hero. Its <img> srcs are Claude
+ *     Design asset IDs that resolve to nothing outside the editor, and the
+ *     owner asked for the site's own yellow gradient in its place — which is
+ *     Section ground="accent" plus GrainField, the same lockup as the homepage
+ *     hero and the approach page's track record band.
+ *   - "BIRMINGHAM DESK / 09:41 GMT". There is no Birmingham desk: site.ts
+ *     lists one UK office and it is in London. Only the two London pages say
+ *     office; the rest carry the UK line. The clock is gone rather than
+ *     hardcoded, because a static "09:41" is wrong 1439 minutes a day.
+ *   - "PLACEHOLDER — SOCIALJUICE CAROUSEL 1944 RENDERS HERE". The real
+ *     testimonials are in the repo now, so two of them render instead.
+ *   - "Riinkesh A Sshah", which the export still ships scrambled.
+ */
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import TopBar from '../components/TopBar.astro'
+import NavOverlay from '../components/NavOverlay.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import GrainField from '../components/GrainField.astro'
+import Button from '../components/Button.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { site } from '../lib/site'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('cities')
+  return entries.map((e) => ({ params: { city: e.id }, props: { entry: e } }))
+}
+
+const { entry } = Astro.props
+const d = entry.data
+
+/* site.statSets.primary, plus the office count, which the design's fourth
+   figure asks for and site.offices can answer. */
+const figures = [
+  { v: site.stats.yearsInBusiness, l: 'Years designing' },
+  { v: site.stats.projectsDelivered, l: 'Projects delivered' },
+  { v: site.stats.aiDriven, l: 'AI-driven solutions' },
+  { v: String(site.offices.length), l: 'Global offices' },
+]
+
+/* Two of the real testimonials, in place of the export's carousel
+   placeholder. Verbatim from the owner's SocialJuice export. */
+const voices = [
+  {
+    initials: 'NS',
+    name: 'Nillaesh Sonill',
+    role: 'Medical Director, Pimlico Health Centre',
+    quote:
+      'Rinkesh and his experienced team have been great working with. They have helped with website development and social media engagement alongside quick turn-around time for delivering project work.',
+  },
+  {
+    initials: 'NM',
+    name: 'Nirmal Mistry',
+    role: 'Director, Okeva',
+    quote:
+      'Bespoke service and dedicated support. They really know their stuff and the quality of their output versus price point is exceptional.',
+  },
+]
+
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: d.title,
+  serviceType: d.kind === 'PRODUCT DEVELOPMENT' ? 'Product development' : 'UI and UX design',
+  areaServed: { '@type': 'City', name: d.city },
+  provider: {
+    '@type': 'Organization',
+    name: site.name,
+    url: site.url,
+    telephone: site.phones.UK.display,
+  },
+}]
+---
+
+<BaseLayout
+  title={d.seo.title}
+  description={d.seo.description}
+  path={d.path}
+  schema={schema}
+>
+  <TopBar />
+  <NavOverlay />
+
+  {/* ── Hero, on the site's yellow ─────────────────────────── */}
+  <Section ground="accent" bleed>
+    <div class="ch">
+      <GrainField tone="yellow" second />
+      <div class="wrap ch__in">
+        <span class="ch__eyebrow">{d.kind} / {d.city.toUpperCase()}</span>
+        <h1 class="ch__h">{d.heading}</h1>
+        <p class="ch__lead">{d.lead}</p>
+        <div class="ch__cta">
+          <Button href="/contact-us/" label="Start a project" />
+          <span class="ch__note">Research, wireframes, testing, handover</span>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── The desk strip ─────────────────────────────────────── */}
+  <Section ground="dark">
+    <ul class="cd">
+      {d.desk.map((x) => (
+        <li class="cd__item">
+          <span class="cd__k">{x.k}</span>
+          <span class="cd__v">{x.v}</span>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  {/* ── By the numbers ─────────────────────────────────────── */}
+  <Section ground="surface">
+    <div class="cn">
+      <span class="i-eyebrow">BY THE NUMBERS</span>
+      <p class="cn__intro">{d.intro}</p>
+      <ul class="cn__list">
+        {figures.map((f, i) => (
+          <li data-reveal style={`transition-delay:${i * 60}ms`}>
+            <span class="cn__v">{f.v}</span>
+            <span class="cn__l">{f.l}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* ── What we do ─────────────────────────────────────────── */}
+  <Section ground="light">
+    <div class="cs">
+      <span class="i-eyebrow">WHAT WE DO</span>
+      <h2 class="cs__h" data-reveal>
+        {d.kind === 'PRODUCT DEVELOPMENT'
+          ? `Product development services in ${d.city}`
+          : `Our UI and UX design services in ${d.city}`}
+      </h2>
+      <ul class="cs__grid">
+        {d.services.map((s, i) => (
+          <li class="cs__card" data-reveal style={`transition-delay:${(i % 3) * 70}ms`}>
+            <span class="cs__n">{s.n}</span>
+            <h3 class="cs__name">{s.name}</h3>
+            <p class="cs__body">{s.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* ── How we work ────────────────────────────────────────── */}
+  <Section ground="surface">
+    <div class="cp">
+      <span class="i-eyebrow">HOW WE WORK</span>
+      <h2 class="cp__h" data-reveal>
+        {d.kind === 'PRODUCT DEVELOPMENT' ? 'How an engagement runs' : 'Our UI and UX design process'}
+      </h2>
+      <ol class="cp__list">
+        {d.process.map((p, i) => (
+          <li class="cp__step" data-reveal style={`transition-delay:${i * 70}ms`}>
+            <span class="cp__rule" aria-hidden="true"></span>
+            <span class="cp__when">{p.when}</span>
+            <h3 class="cp__name">{p.name}</h3>
+            <p class="cp__body">{p.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </Section>
+
+  {/* ── Selected work ──────────────────────────────────────── */}
+  <Section ground="dark">
+    <div class="cw">
+      <span class="i-eyebrow i-eyebrow--dark">SELECTED WORK</span>
+      <h2 class="cw__h" data-reveal>Work we have shipped, and what it had to solve</h2>
+      <ul class="cw__grid">
+        {d.work.map((w, i) => (
+          <li data-reveal style={`transition-delay:${i * 80}ms`}>
+            <a class="cw__card" href={w.href}>
+              <span class="cw__tag">{w.tag}</span>
+              <h3 class="cw__name">{w.name}</h3>
+              <p class="cw__body">{w.body}</p>
+              <span class="cw__cta">Read the case study</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* ── Why choose us ──────────────────────────────────────── */}
+  <Section ground="light">
+    <div class="cy">
+      <span class="i-eyebrow">WHY CHOOSE US</span>
+      <h2 class="cy__h" data-reveal>
+        {d.kind === 'PRODUCT DEVELOPMENT'
+          ? `Why teams in ${d.city} bring the build to us`
+          : `Why choose Roars for UI and UX design in ${d.city}`}
+      </h2>
+      <ul class="cy__grid">
+        {d.why.map((w, i) => (
+          <li class="cy__item" data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
+            <span class="cy__rule" aria-hidden="true"></span>
+            <h3 class="cy__name">{w.name}</h3>
+            <p class="cy__body">{w.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* ── Words from clients ─────────────────────────────────── */}
+  <Section ground="surface">
+    <div class="cv">
+      <span class="i-eyebrow">WORDS FROM CLIENTS</span>
+      <ul class="cv__grid">
+        {voices.map((v, i) => (
+          <li class="cv__item" data-reveal style={`transition-delay:${i * 80}ms`}>
+            <span class="cv__avatar" aria-hidden="true">{v.initials}</span>
+            <p class="cv__name">{v.name}</p>
+            <p class="cv__role">{v.role}</p>
+            <blockquote class="cv__quote">{v.quote}</blockquote>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  <CtaBand
+    label="Start here"
+    heading="Ready to kickstart your project?"
+    body="Tell us what you are building and who it is for. We will come back within a day with a view on scope, sequence and what we would do first."
+    ctaLabel="Shall we chat?"
+    ctaHref="https://meet.roarsinc.com/sales"
+  />
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  /* ── Hero ────────────────────────────────────────────────── */
+  .ch { position: relative; }
+  .ch__in { position: relative; z-index: 1; padding-block: 148px 128px; }
+  .ch__eyebrow {
+    display: block;
+    font-size: var(--fs-label); line-height: var(--lh-label);
+    font-weight: var(--fw-medium); letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(20, 20, 20, 0.62);
+  }
+  .ch__h {
+    margin: 22px 0 0 -5px; max-width: 16ch;
+    font-size: clamp(42px, 5.6vw, 80px); line-height: 1.04;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-display);
+    color: var(--c-black);
+  }
+  .ch__lead {
+    margin: 22px 0 0; max-width: 46ch;
+    font-size: var(--fs-intro); line-height: 30px;
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-item);
+    color: rgba(20, 20, 20, 0.78);
+  }
+  .ch__cta { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; margin-top: 38px; }
+  .ch__note {
+    font-size: var(--fs-label); line-height: var(--lh-label);
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-item);
+    color: rgba(20, 20, 20, 0.6);
+  }
+
+  /* ── Desk strip ──────────────────────────────────────────── */
+  .cd {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px; background: rgba(255, 255, 255, 0.14);
+    padding-block: 0;
+  }
+  /* The hairlines between cells are the grid gap showing through, so each cell
+     needs its own ground rather than the row having one. */
+  .cd__item {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 34px 24px 36px 0;
+    background: var(--ground);
+  }
+  .cd__k {
+    font-size: var(--fs-micro); line-height: 1;
+    font-weight: var(--fw-medium); letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .cd__v {
+    font-size: var(--fs-body); line-height: 22px;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
+    color: rgb(251, 251, 251);
+  }
+
+  /* ── By the numbers ──────────────────────────────────────── */
+  .cn { padding-block: 104px 96px; }
+  .cn__intro {
+    margin: 22px 0 0; max-width: 62ch;
+    font-size: var(--fs-intro); line-height: 30px;
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-item);
+    color: var(--c-ink-heading);
+  }
+  .cn__list {
+    list-style: none; margin: 56px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 34px 28px;
+  }
+  .cn__list li { display: flex; flex-direction: column; gap: 10px; padding-top: 24px; border-top: 1.5px solid var(--c-rule-strong); }
+  .cn__v { font-size: clamp(38px, 4vw, 56px); line-height: 1; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-black); }
+  .cn__l { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: rgb(90, 90, 88); }
+
+  /* ── What we do ──────────────────────────────────────────── */
+  .cs { padding-block: 104px 96px; }
+  .cs__h, .cp__h, .cw__h, .cy__h {
+    margin: 14px 0 0 -3px; max-width: 22ch;
+    font-size: clamp(28px, 3vw, 44px); line-height: 1.12;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-display);
+    color: var(--c-ink-heading);
+  }
+  .cw__h { color: rgb(251, 251, 251); }
+  /* THREE COLUMNS, NOT auto-fit. Six cards in auto-fit's four tracks leaves
+     two stranded on a second row with two empty cells beside them. Three
+     gives two clean rows of three. */
+  .cs__grid {
+    list-style: none; margin: 56px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 44px 40px;
+  }
+  .cs__card { padding-top: 26px; border-top: 1px solid var(--c-rule-strong); }
+  .cs__n { font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-medium); letter-spacing: 2px; color: rgb(168, 166, 161); }
+  .cs__name { margin: 16px 0 0; font-size: var(--fs-intro); line-height: 26px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
+  .cs__body { margin: 12px 0 0; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: -0.045em; color: rgb(90, 90, 88); }
+
+  /* ── Process ─────────────────────────────────────────────── */
+  .cp { padding-block: 104px 96px; }
+  .cp__list {
+    list-style: none; margin: 56px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 40px 32px;
+  }
+  .cp__step { position: relative; padding-top: 26px; }
+  .cp__rule { position: absolute; left: 0; right: 0; top: 0; height: 1.5px; background: var(--c-accent); }
+  .cp__when { font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-medium); letter-spacing: 2px; color: rgb(145, 144, 142); }
+  .cp__name { margin: 14px 0 0; font-size: var(--fs-item); line-height: 28px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-ink-heading); }
+  .cp__body { margin: 10px 0 0; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: -0.045em; color: rgb(90, 90, 88); }
+
+  /* ── Selected work ───────────────────────────────────────── */
+  .cw { padding-block: 104px 96px; }
+  .cw__grid {
+    list-style: none; margin: 56px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 34px 32px;
+  }
+  .cw__card { display: block; padding-top: 26px; border-top: 1px solid rgba(255, 255, 255, 0.24); }
+  .cw__tag { font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-medium); letter-spacing: 2px; color: rgba(255, 255, 255, 0.52); }
+  .cw__name { margin: 16px 0 0; font-size: 28px; line-height: 34px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: rgb(251, 251, 251); transition: color var(--dur-fast) ease; }
+  .cw__body { margin: 12px 0 0; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: -0.045em; color: rgba(255, 255, 255, 0.7); }
+  .cw__cta { display: inline-block; margin-top: 18px; font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-accent); }
+  .cw__card:hover .cw__name { color: var(--c-accent); }
+
+  /* ── Why ─────────────────────────────────────────────────── */
+  .cy { padding-block: 104px 96px; }
+  .cy__grid {
+    list-style: none; margin: 56px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 40px;
+  }
+  .cy__item { position: relative; padding-top: 24px; }
+  .cy__rule { position: absolute; left: 0; top: 0; width: 46px; height: 2px; background: var(--c-accent); }
+  .cy__name { margin: 0; font-size: var(--fs-item); line-height: 26px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-ink-heading); }
+  .cy__body { margin: 10px 0 0; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: -0.045em; color: rgb(90, 90, 88); }
+
+  /* ── Voices ──────────────────────────────────────────────── */
+  .cv { padding-block: 96px; }
+  .cv__grid {
+    list-style: none; margin: 44px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+  }
+  .cv__item { padding-top: 26px; border-top: 1.5px solid var(--c-rule-strong); }
+  /* A monogram: these are real, named clients and there is no portrait of any
+     of them. Same call as the homepage testimonial deck. */
+  .cv__avatar {
+    display: grid; place-items: center;
+    width: 56px; height: 56px; border-radius: var(--r-circle);
+    background: rgb(226, 224, 218);
+    font-size: 19px; line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(64, 63, 60);
+  }
+  .cv__name { margin: 16px 0 0; font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(31, 31, 31); }
+  .cv__role { margin: 0; font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
+  .cv__quote { margin: 18px 0 0; font-size: var(--fs-intro); line-height: 28px; font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: var(--c-ink-heading); }
+
+  @media (max-width: 1360px) {
+    .ch__in { padding-block: 116px 88px; }
+    .cn, .cs, .cp, .cw, .cy { padding-block: 72px 64px; }
+    .cs__grid, .cy__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cv { padding-block: 64px; }
+  }
+
+  @media (max-width: 760px) {
+    .ch__in { padding-block: 96px 68px; }
+    .cn, .cs, .cp, .cw, .cy { padding-block: 56px 52px; }
+    .cv { padding-block: 52px; }
+    /* One column, and the cell padding loses its right inset so the values do
+       not sit against the gutter. */
+    .cd { grid-template-columns: 1fr; }
+    .cd__item { padding: 22px 0 24px; }
+    .cn__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cs__grid, .cy__grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

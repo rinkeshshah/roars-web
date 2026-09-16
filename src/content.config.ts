@@ -888,4 +888,54 @@ const pages = defineCollection({
   }),
 })
 
-export const collections = { posts, projects, services, industries, resources, pages }
+
+/**
+ * The seven UK location pages.
+ *
+ * All seven are live, indexed URLs in docs/URL-INVENTORY.csv and all seven
+ * were still 404ing at cutover, which is what kept assert-urls red. The layout
+ * is one Claude Design export ("Roars UI UX Design Birmingham") applied to all
+ * of them; the copy is per page.
+ *
+ * NEAR-DUPLICATE PROSE IS THE RISK HERE, not the layout. Seven pages that
+ * differ only by a city name is the shape search engines read as doorway
+ * pages, so `intro`, `services`, `work` and `why` are written per page rather
+ * than templated, and the two page kinds — UI/UX design and product
+ * development — carry genuinely different service lists and case studies.
+ * validate-content's near-duplicate check covers these the same way it covers
+ * the industries.
+ */
+const cities = defineCollection({
+  loader: glob({ base: './src/content/cities', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    ...base,
+    /** Route path, with leading and trailing slash. Must be in the inventory. */
+    path: z.string().regex(/^\/.*\/$/, 'path must start and end with a slash'),
+    city: z.string().max(20),
+    /** "UI & UX DESIGN" or "PRODUCT DEVELOPMENT". Drives the eyebrow. */
+    kind: z.string().max(28),
+    heading: z.string().max(80),
+    lead: z.string().max(200),
+    /** The strip under the hero. Values must be true of this city: Roars has
+     *  ONE UK office, in London, so only that page says "office". */
+    desk: z.array(z.object({ k: z.string().max(24), v: z.string().max(40) })).min(3).max(5),
+    intro: z.string().max(420),
+    services: z
+      .array(z.object({ n: z.string().max(2), name: z.string().max(40), body: z.string().max(260) }))
+      .min(4)
+      .max(6),
+    process: z
+      .array(z.object({ when: z.string().max(24), name: z.string().max(40), body: z.string().max(260) }))
+      .min(3)
+      .max(4),
+    /** Case studies from /work/. Every href must be a LISTED project: the
+     *  twelve held-back ones are noindex and must not be linked from here. */
+    work: z
+      .array(z.object({ tag: z.string().max(34), name: z.string().max(34), body: z.string().max(180), href: z.string() }))
+      .min(2)
+      .max(3),
+    why: z.array(z.object({ name: z.string().max(34), body: z.string().max(180) })).min(4).max(6),
+  }),
+})
+
+export const collections = { posts, projects, services, industries, resources, pages, cities }
