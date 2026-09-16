@@ -158,10 +158,17 @@ Two links in the exported footers pointed at URLs that do not exist:
   - `postal_address` defaults to the Bengaluru office. If the emails should
     carry a different one, set `postal_address` in the private config; no code
     change needed.
-  - `sales@roarsinc.com` is printed in both footers. It came from the design
+  - ~~`sales@roarsinc.com` is printed in both footers. It came from the design
     and matches `notify_to` in the config example, but every office in
     `site.ts` publishes `contact@roarsinc.com`. Worth deciding which address
-    the emails should show.
+    the emails should show.~~
+    **SETTLED 16 Sep 2026: `sales@roarsinc.com`, everywhere.** The `contact`
+    key is gone from `site.ts` rather than reassigned, so there is no second
+    address to drift back to; the four office records and the one envelope
+    link on `/contact-us/` that still said `contact@` now read `site.email
+    .sales` like everything else. Belgium keeps `be@roarsinc.com` — a
+    different desk, not a second spelling. Nothing changed in the email
+    templates: they already said `sales@` in all five places.
   - Nothing has been sent through a real mail server yet. The templates render
     and the MIME is built correctly, but **deliverability is untested** — SPF,
     DKIM and DMARC for `noreply@roarsinc.com` need checking on the webspace

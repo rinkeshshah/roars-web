@@ -686,48 +686,7 @@ const schema = [
     </div>
   </Section>
 
-  {/* ── 5. Industries ───────────────────────────────────────── */}
-  <Section ground="surface">
-    <div class="ind">
-      <h2 class="display">Industries</h2>
-      <p class="intro ind__intro">
-        We build in sectors we already understand, so the discovery work starts
-        from domain knowledge rather than from scratch.
-      </p>
-
-      {/* EIGHT CARDS, FOUR ACROSS, EACH WITH A RULE AND A NUMBER.
-          The rail's "Eight sectors / Where we work" pair is gone with the
-          redesign: the count is the numbering now, and it was sitting alone in
-          the far-left gutter 200px above anything it labelled. */}
-      <ul class="ind__grid">
-        {industries.map((sector, i) => (
-          <li data-reveal style={`transition-delay:${i * 50}ms`}>
-            <a class="ind__card" href={sector.href}>
-              <span class="ind__rule" aria-hidden="true"></span>
-              <span class="ind__n" aria-hidden="true">{sector.n}</span>
-              <span class="ind__letter" aria-hidden="true">{sector.letter}</span>
-              <span class="ind__text">
-                <span class="ind__name">{sector.name}</span>
-                <span class="ind__cta">View sector</span>
-              </span>
-              <span class="ind__body">{sector.body}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      <div class="ind__foot">
-        <p class="ind__note">Not listed? Most of our work starts in a new sector.</p>
-        <span class="ind__stars" aria-hidden="true">
-          <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
-          <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
-        </span>
-        <Button href="/work/" label="See the work" />
-      </div>
-    </div>
-  </Section>
-
-  {/* ── 6. People say ───────────────────────────────────────── */}
+  {/* ── 5. People say ───────────────────────────────────────── */}
   <Section ground="light">
     <div class="say">
       <h2 class="display">People say</h2>
@@ -789,6 +748,47 @@ const schema = [
         </div>
         <p class="say__meta">reviews<br />4.9 average</p>
         <Button href="https://rateus.roarsinc.com/" label="Leave a Review" />
+      </div>
+    </div>
+  </Section>
+
+  {/* ── 6. Industries ───────────────────────────────────────── */}
+  <Section ground="surface">
+    <div class="ind">
+      <h2 class="display">Industries</h2>
+      <p class="intro ind__intro">
+        We build in sectors we already understand, so the discovery work starts
+        from domain knowledge rather than from scratch.
+      </p>
+
+      {/* EIGHT CARDS, FOUR ACROSS, EACH WITH A RULE AND A NUMBER.
+          The rail's "Eight sectors / Where we work" pair is gone with the
+          redesign: the count is the numbering now, and it was sitting alone in
+          the far-left gutter 200px above anything it labelled. */}
+      <ul class="ind__grid">
+        {industries.map((sector, i) => (
+          <li data-reveal style={`transition-delay:${i * 50}ms`}>
+            <a class="ind__card" href={sector.href}>
+              <span class="ind__rule" aria-hidden="true"></span>
+              <span class="ind__n" aria-hidden="true">{sector.n}</span>
+              <span class="ind__letter" aria-hidden="true">{sector.letter}</span>
+              <span class="ind__text">
+                <span class="ind__name">{sector.name}</span>
+                <span class="ind__cta">View sector</span>
+              </span>
+              <span class="ind__body">{sector.body}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="ind__foot">
+        <p class="ind__note">Not listed? Most of our work starts in a new sector.</p>
+        <span class="ind__stars" aria-hidden="true">
+          <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
+          <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
+        </span>
+        <Button href="/work/" label="See the work" />
       </div>
     </div>
   </Section>
