@@ -73,12 +73,44 @@ export function initTopbar(): void {
     ring.style.opacity = window.scrollY > 24 ? '1' : '0'
   }
 
+  /**
+   * THE CONTACT PILL GETS OUT OF THE WAY GOING DOWN, AND COMES BACK COMING UP.
+   *
+   * It is a 285px lockup pinned over the top of every page, and while you are
+   * reading downwards it is covering the thing you are reading. Hiding it on
+   * the way down and returning it on the way up is the same bargain a hiding
+   * header makes: gone while you are consuming, one flick away when you want
+   * it.
+   *
+   * WHAT DOES NOT HIDE. The mark and the burger stay. The burger is the only
+   * navigation on the page and a menu you have to hunt for by scrolling the
+   * wrong way is worse than a pill in the margin.
+   *
+   * TOP_ZONE, because at the very top there is nothing being covered and the
+   * pill is part of the header's composition. DELTA, because without it a
+   * trackpad's sub-pixel jitter flickers the pill on and off while you sit
+   * still.
+   */
+  const TOP_ZONE = 140
+  const DELTA = 6
+  let lastY = window.scrollY
+
+  const setPill = () => {
+    const y = window.scrollY
+    const moved = y - lastY
+    if (Math.abs(moved) < DELTA) return
+    lastY = y
+    /* Never hidden in the top zone, whichever way the page is going. */
+    bar.classList.toggle('is-pill-away', y > TOP_ZONE && moved > 0)
+  }
+
   let frame = 0
   const onScroll = () => {
     if (frame) return
     frame = requestAnimationFrame(() => {
       frame = 0
       bar.classList.toggle('is-scrolled', window.scrollY > 80)
+      setPill()
       setRing()
     })
   }

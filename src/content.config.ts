@@ -193,10 +193,37 @@ const posts = defineCollection({
  * Optional, because a picture nobody has classified is better rendered in the
  * catch-all than dropped. Anything without a kind falls to the end.
  */
+/**
+ * A picture on a case study.
+ *
+ * `kind` says what it IS. `w`/`h` say what SHAPE it is, and the two are
+ * separate on purpose.
+ *
+ * WHY THE SHAPE HAS TO BE DATA. Half the migrated "app screens" are not
+ * screens at all: they are CONTACT SHEETS, four phone screens laid out side
+ * by side in one 1536x806 file. The template had no way to tell those from a
+ * single 9:16 capture, so it put both in a portrait box and letterboxed the
+ * sheets down to an unreadable strip with a field of grey around it. Parqly
+ * had five of them. The pictures were on the page and you could not see a
+ * thing in them.
+ *
+ * With w and h the template can ask one question, is this wider than it is
+ * tall, and give a wide picture the full column instead of a quarter of it.
+ * Both optional: an entry without them behaves exactly as it did.
+ *
+ * `ground` is for a picture that already has its own dark background, so the
+ * band behind it can match instead of framing black in a white card.
+ */
 const projectImage = z.object({
   src: z.string(),
   alt: z.string().max(120).default(''),
   kind: z.enum(['wireframe', 'study', 'app', 'web', 'photo']).optional(),
+  /** Intrinsic pixel size. Reserves the space and decides the layout. */
+  w: z.number().int().positive().optional(),
+  h: z.number().int().positive().optional(),
+  /** Printed under a wide picture. Say what is in it, not that it is a photo. */
+  caption: z.string().max(90).optional(),
+  ground: z.enum(['light', 'dark']).optional(),
 })
 
 /**

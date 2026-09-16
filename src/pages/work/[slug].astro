@@ -108,14 +108,50 @@ const faces = (d?.team ?? [])
  */
 const media = [...(d?.gallery ?? []), ...(d?.showcase ?? []), ...(d?.screens ?? [])]
 const pick = (...kinds: string[]) => media.filter((m) => m.kind && kinds.includes(m.kind))
-/** The process: how it was structured, and how it was dressed. */
+
+/**
+ * WIDE OR NOT, WHICH IS A DIFFERENT QUESTION FROM WHAT IT IS.
+ *
+ * A file 1536 across and 806 tall is a contact sheet: four phone screens laid
+ * out side by side. A file 1170 across and 2532 tall is one screen. Both come
+ * through the migration tagged `app`, and the template used to put both in a
+ * 9/16 box — which is right for the second and destroys the first. On Parqly
+ * that turned five sheets, twenty screens of interface, into five grey
+ * squares with an unreadable band across the middle.
+ *
+ * 1.2 is the line between landscape and not. The three populations are miles
+ * apart and nothing sits near it: phone captures come in at 0.46 to 0.56,
+ * photographs at 1.33 (4:3) to 1.58, contact sheets at 1.8 to 1.93. It was
+ * 1.35 for one build, which put 4:3 on the wrong side by sixteen thousandths
+ * and dropped two photographs back into the grid.
+ */
+const WIDE = 1.2
+const isWide = (m: { w?: number; h?: number }) => Boolean(m.w && m.h && m.w / m.h >= WIDE)
+
+/** The process: how it was structured, and how it was dressed. Split by shape,
+ *  because a wireframe sheet and a single wireframe want different room. */
 const groundwork = pick('wireframe', 'study')
-/** The product. Phone screens and web screens are different shapes and want
- *  different grids, so they stay apart. */
-const appShots = pick('app')
-const webShots = pick('web')
-/** Photographs and anything nobody classified. Never dropped; shown last. */
+const groundSheets = groundwork.filter(isWide)
+const groundGrid = groundwork.filter((m) => !isWide(m))
+
+/** The product. Web screens are landscape and app screens portrait, so they
+ *  keep their own grids; anything wide leaves both and gets the full column. */
+const shipped = pick('app', 'web')
+const sheets = shipped.filter(isWide)
+const appShots = pick('app').filter((m) => !isWide(m))
+const webShots = pick('web').filter((m) => !isWide(m))
+
+/** Photographs and anything nobody classified. Never dropped.
+ *  A photograph is the one picture on a case study that is of the real world,
+ *  so it gets a stage of its own rather than a cell in a grid. */
 const rest = media.filter((m) => !m.kind || m.kind === 'photo')
+const photoStages = rest.filter(isWide)
+const restGrid = rest.filter((m) => !isWide(m))
+
+/** Inline style that both reserves the space and stops the wide pictures
+ *  reflowing the page as they load. */
+const ratio = (m: { w?: number; h?: number }) =>
+  m.w && m.h ? `aspect-ratio:${m.w} / ${m.h}` : undefined
 ---
 
 {designed && d ? (
@@ -218,25 +254,94 @@ const rest = media.filter((m) => !m.kind || m.kind === 'photo')
             <span class="pd__ch-tick" aria-hidden="true"></span>
             <h2 class="pd__ch-h">Groundwork</h2>
             <p class="pd__ch-sub">Structure first, then the look of it.</p>
-            <ul class="pd__ground">
-              {groundwork.map((m, i) => (
-                <li data-reveal style={`transition-delay:${Math.min(i, 5) * 60}ms`}>
-                  <img src={m.src} alt={m.alt} loading="lazy" decoding="async" />
-                  <span class="pd__cap">{m.kind === 'wireframe' ? 'Wireframe' : 'Colour and type'}</span>
-                </li>
-              ))}
-            </ul>
+
+            {/* Wide sheets take the column. A wireframe sheet is four screens
+                of thinking and it is the only thing on this page that shows
+                the argument before the paint. */}
+            {groundSheets.length > 0 && (
+              <ul class="pd__sheets pd__sheets--ground">
+                {groundSheets.map((m, i) => (
+                  <li data-reveal style={`transition-delay:${Math.min(i, 4) * 70}ms`}>
+                    <span class="pd__sheet-vp">
+                      <img
+                        src={m.src} alt={m.alt} width={m.w} height={m.h}
+                        style={ratio(m)} loading="lazy" decoding="async"
+                      />
+                    </span>
+                    <span class="pd__cap">
+                      <b>{String(i + 1).padStart(2, '0')}</b>
+                      {m.caption ?? (m.kind === 'wireframe' ? 'Wireframe' : 'Colour and type')}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {groundGrid.length > 0 && (
+              <ul class="pd__ground">
+                {groundGrid.map((m, i) => (
+                  <li data-reveal style={`transition-delay:${Math.min(i, 5) * 60}ms`}>
+                    <img src={m.src} alt={m.alt} loading="lazy" decoding="async" />
+                    <span class="pd__cap">{m.caption ?? (m.kind === 'wireframe' ? 'Wireframe' : 'Colour and type')}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
         )}
 
-        {d.blocks.slice(1).map((b) => (
-          <div class="pd__block" data-reveal>
-            <h2 class="pd__block-h">{b.heading}</h2>
-            <div class="pd__block-body">
-              <p class="pd__lead">{b.lead}</p>
-              {b.body && <p class="pd__more">{b.body}</p>}
+        {/* THE PHOTOGRAPHS ARE DEALT BETWEEN THE PARAGRAPHS, one after each
+            block, rather than swept into the grid at the bottom.
+
+            A case study that puts every picture after every word asks the
+            reader to hold four paragraphs in their head and then go looking
+            for what they described. Parqly's photograph of a hand holding the
+            app next to the actual yellow lock on the actual driveway is the
+            single most convincing thing on the page, and it belongs against
+            the paragraph about hardware integration, not eight screens later
+            in a 16/10 crop.
+
+            Run out of photographs and the blocks simply carry on. */}
+        {d.blocks.slice(1).map((b, i) => (
+          <>
+            <div class="pd__block" data-reveal>
+              <h2 class="pd__block-h">{b.heading}</h2>
+              <div class="pd__block-body">
+                <p class="pd__lead">{b.lead}</p>
+                {b.body && <p class="pd__more">{b.body}</p>}
+              </div>
             </div>
-          </div>
+            {photoStages[i] && (
+              <figure
+                class:list={['pd__stage', photoStages[i].ground === 'dark' && 'pd__stage--dark']}
+                data-reveal
+              >
+                <img
+                  src={photoStages[i].src}
+                  alt={photoStages[i].alt}
+                  width={photoStages[i].w}
+                  height={photoStages[i].h}
+                  style={ratio(photoStages[i])}
+                  loading="lazy"
+                  decoding="async"
+                />
+                {photoStages[i].caption && (
+                  <figcaption class="pd__stage-cap">{photoStages[i].caption}</figcaption>
+                )}
+              </figure>
+            )}
+          </>
+        ))}
+
+        {/* Any photograph the blocks ran out of room for still gets a stage. */}
+        {photoStages.slice(Math.max(0, d.blocks.length - 1)).map((m) => (
+          <figure class:list={['pd__stage', m.ground === 'dark' && 'pd__stage--dark']} data-reveal>
+            <img
+              src={m.src} alt={m.alt} width={m.w} height={m.h}
+              style={ratio(m)} loading="lazy" decoding="async"
+            />
+            {m.caption && <figcaption class="pd__stage-cap">{m.caption}</figcaption>}
+          </figure>
         ))}
 
         {/* THE PRODUCT. Web screens are landscape and app screens portrait, so
@@ -244,14 +349,41 @@ const rest = media.filter((m) => !m.kind || m.kind === 'photo')
             Either chapter is skipped when the project has none of that kind,
             which is how a three-picture case study and a sixteen-picture one
             use the same template. */}
-        {(webShots.length > 0 || appShots.length > 0 || rest.length > 0) && (
+        {(webShots.length > 0 || appShots.length > 0 || sheets.length > 0 || restGrid.length > 0) && (
           <section class="pd__chapter" data-reveal>
             <span class="pd__ch-tick" aria-hidden="true"></span>
             <h2 class="pd__ch-h">What shipped</h2>
             <p class="pd__ch-sub">
-              {[webShots.length && `${webShots.length} web`, appShots.length && `${appShots.length} app`]
-                .filter(Boolean).join(' · ') || 'From the build'}
+              {[
+                sheets.length && `${sheets.length} screen ${sheets.length === 1 ? 'sheet' : 'sheets'}`,
+                webShots.length && `${webShots.length} web`,
+                appShots.length && `${appShots.length} app`,
+              ].filter(Boolean).join(' · ') || 'From the build'}
             </p>
+
+            {/* THE SHEETS, FULL COLUMN AND STACKED. Four screens in one file
+                is a row of an interface, and a row of an interface read at a
+                quarter of the column is a texture, not a screen. Numbered,
+                because stacked at this size they are a sequence. */}
+            {sheets.length > 0 && (
+              <ul class="pd__sheets">
+                {sheets.map((m, i) => (
+                  <li data-reveal style={`transition-delay:${Math.min(i, 4) * 70}ms`}>
+                    <span class="pd__sheet-vp">
+                      <img
+                        src={m.src} alt={m.alt} width={m.w} height={m.h}
+                        style={ratio(m)} loading="lazy" decoding="async"
+                      />
+                    </span>
+                    {m.caption && (
+                      <span class="pd__cap">
+                        <b>{String(i + 1).padStart(2, '0')}</b>{m.caption}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
 
             {webShots.length > 0 && (
               <ul class="pd__web">
@@ -273,9 +405,9 @@ const rest = media.filter((m) => !m.kind || m.kind === 'photo')
               </ul>
             )}
 
-            {rest.length > 0 && (
+            {restGrid.length > 0 && (
               <ul class="pd__web">
-                {rest.map((m, i) => (
+                {restGrid.map((m, i) => (
                   <li data-reveal style={`transition-delay:${Math.min(i, 4) * 60}ms`}>
                     <img src={m.src} alt={m.alt} loading="lazy" decoding="async" />
                   </li>
@@ -528,6 +660,67 @@ const rest = media.filter((m) => !m.kind || m.kind === 'photo')
     letter-spacing: 0.16em; text-transform: uppercase; color: rgba(20, 20, 20, 0.5);
   }
 
+  /* ── CONTACT SHEETS ─────────────────────────────────────────
+     A sheet is several screens in one wide file. It gets the whole column and
+     nothing beside it, because at half the column each screen inside it is
+     about 160px across and you are looking at a pattern rather than an
+     interface.
+
+     aspect-ratio comes from the entry's own w and h as an inline style, so
+     the box is the picture's real shape: no letterboxing, no crop, and the
+     space is reserved before the file arrives. These are migrated uploads
+     with no dimensions in the markup, and without this the page grew by
+     several thousand pixels as each one landed.
+
+     PAPER, NOT A DARK CARD. Every one of these sheets is artwork on white, so
+     a dark frame around it draws a hard rectangle the designer never drew.
+     The hairline is enough to say where the picture ends. */
+  .pd__sheets { margin: 44px 0 0; padding: 0; list-style: none; display: grid; gap: 44px; }
+  /* min-width: 0, or the grid item sizes to its content instead of its track
+     and the sideways-scrolling viewport below just makes the row wider. */
+  .pd__sheets li { min-width: 0; }
+  .pd__sheet-vp { display: block; max-width: 100%; }
+  .pd__sheets img {
+    display: block; width: 100%; height: auto;
+    aspect-ratio: 16 / 9;            /* fallback until w/h override it inline */
+    object-fit: contain;
+    border-radius: 14px;
+    background: rgb(250, 250, 249);
+    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.07);
+  }
+  .pd__sheets .pd__cap { display: flex; align-items: baseline; gap: 10px; margin-top: 14px; }
+  .pd__sheets .pd__cap b { font-weight: var(--fw-semi); color: rgba(20, 20, 20, 0.28); }
+  /* Groundwork reads quieter than the product, here as everywhere else on
+     this page: the same sheet, inset, on a flatter ground. */
+  .pd__sheets--ground img { background: rgb(244, 244, 242); border-radius: 12px; }
+  .pd__sheets--ground { gap: 34px; }
+
+  /* ── THE PHOTOGRAPH STAGE ───────────────────────────────────
+     Wider than the text column and centred on it, so a photograph reads as a
+     change of register rather than another item in the layout. 1362 is the
+     content width; this pushes to the viewport with a gutter, which is as
+     close to full bleed as a page with a 1362 column can go without the
+     picture losing its relationship to the words above it. */
+  .pd__stage {
+    position: relative; margin: 64px calc(50% - 50vw + 40px) 0;
+    border-radius: 16px; overflow: clip;
+  }
+  .pd__stage img { display: block; width: 100%; height: auto; object-fit: cover; }
+  .pd__stage-cap {
+    position: absolute; left: 24px; bottom: 20px; margin: 0;
+    padding: 7px 14px; border-radius: 40px;
+    background: rgba(255, 255, 255, 0.86);
+    backdrop-filter: blur(6px);
+    font-size: var(--fs-micro); line-height: 1.4; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
+  }
+  /* A picture that is already black on black needs no frame and no white
+     caption chip. The ground carries through to the edge of the file. */
+  .pd__stage--dark { background: rgb(12, 12, 12); }
+  .pd__stage--dark .pd__stage-cap {
+    background: rgba(20, 20, 20, 0.72); color: var(--c-white);
+  }
+
   /* WEB screens are landscape: two across, and one on its own goes full width
      rather than sitting in half a row with a gap beside it. */
   .pd__web {
@@ -667,6 +860,34 @@ const rest = media.filter((m) => !m.kind || m.kind === 'photo')
     .pd__chapter { margin-top: 56px; }
     .pd__ground, .pd__web { grid-template-columns: 1fr; gap: 20px; margin-top: 28px; }
     .pd__app { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+    /* THE SHEETS SCROLL SIDEWAYS ON A PHONE rather than shrink to nothing.
+       A four-up sheet fitted to a 350px column gives each screen inside it
+       about 85px, which is a pattern, not an interface — the same failure the
+       9/16 box caused, arrived at from the other direction.
+
+       760px keeps each screen around 185px, readable, and the reader drags.
+       The overflow is on the viewport span, so the caption below stays put
+       and does not scroll away from the picture it names. It is also why the
+       page itself still reports no horizontal scroll: the scrolling is inside
+       this box, not on the document. */
+    .pd__sheets { gap: 28px; margin-top: 28px; }
+    .pd__sheet-vp {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      border-radius: 12px;
+      /* The right edge softens, which is the one affordance that says "there
+         is more this way" on a touch device with no visible scrollbar. Safe
+         to make unconditional here: inside this query the sheet is 760px in a
+         column that is never that wide, so it always overflows. */
+      mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+    }
+    .pd__sheets img { width: 760px; max-width: none; border-radius: 0; }
+    /* The stage stops reaching past the column: at this width the column IS
+       the viewport minus the gutter, so the negative margin would only push
+       the picture under the page edge. */
+    .pd__stage { margin: 40px 0 0; border-radius: 12px; }
+    .pd__stage-cap { left: 14px; bottom: 12px; }
     .pd__ch-h { font-size: var(--fs-stat-m); line-height: 1.1; }
     .pd__block { margin-top: 56px; }
     .pd__block-h { position: static; width: auto; }

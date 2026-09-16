@@ -23,29 +23,78 @@ blocks:
     lead: "Roars harnessed Flutter for beautiful cross-platform mobile interfaces, Node.js for a scalable backend, and Firebase for real-time data. Our breakthrough? BLE (Bluetooth Low Energy) hardware integration, unlocking parking spaces securely and instantly, thanks to seamless device-to-system communication."
   - heading: "The Solution"
     lead: "A feature-rich MVP and a clear growth roadmap, delivering a next-gen smart parking ecosystem ready to launch, scale, and evolve with every urban challenge."
+# EVERY PICTURE NOW CARRIES ITS PIXEL SIZE, and that is what fixed this page.
+#
+# Five of these files are CONTACT SHEETS: four phone screens laid out side by
+# side in one 1536x806 file. Tagged `app` with no dimensions, the template had
+# to guess the shape, guessed 9/16, and letterboxed twenty screens of interface
+# down to five unreadable strips in five grey squares. With w and h it can tell
+# a sheet from a single screen and give the sheet the whole column.
+#
+# parqly-device-scaled.jpg was in the client's folder and on no page at all. It
+# is the hand holding the app next to the actual lock on an actual driveway,
+# which is the one picture here that proves the hardware half of this project
+# exists.
+#
+# The alt text was the same six words on four different pictures. Each one now
+# says what is in it, which is what the attribute is for.
 gallery:
   - src: "/wp-content/uploads/2025/07/parqly-wireframe.jpg"
     kind: "wireframe"
-    alt: "Wire frame of mobile friendly UI UX App design"
+    w: 1536
+    h: 795
+    alt: "Greyscale wireframes: device list, lock control, add a device, and history"
+    caption: "Device list, control, pairing, history"
   - src: "/wp-content/uploads/2025/07/parqly-wireframe-2.jpg"
     kind: "wireframe"
-    alt: "Wire frame of mobile friendly UI UX App design"
+    w: 1536
+    h: 795
+    alt: "Greyscale wireframes: guest invite form, parking map, notifications and saved cards"
+    caption: "Guest invite, map, notifications, payment"
+# PHOTOGRAPH ORDER IS THE PARAGRAPH ORDER. The template deals one photograph
+# after each block from the second onward, so these three are sequenced to land
+# on the sentence each one illustrates:
+#   "Know before you go"            -> the map, on the dark ground
+#   "Agile Tech ... BLE hardware"   -> the app beside the lock it opens
+#   "The Solution"                  -> the finished thing, in a hand
 showcase:
+  - src: "/wp-content/uploads/2025/07/parqly-iphone-scaled.jpg"
+    kind: "photo"
+    w: 2048
+    h: 1535
+    ground: "dark"
+    alt: "The Parqly map screen showing nearby spaces and a Park and Pay button"
+    caption: "Find a space, see the price, pay in one tap"
+  - src: "/wp-content/uploads/2025/07/parqly-device-scaled.jpg"
+    kind: "photo"
+    w: 2560
+    h: 1617
+    alt: "A hand holding the Parqly app beside a yellow Parqly parking lock on a driveway"
+    caption: "The app, and the lock it opens, on a real driveway"
   - src: "/wp-content/uploads/2025/07/iphone-parqly-map.jpg"
-    kind: "app"
-    alt: "Easy to use UI UX of mobile app"
+    kind: "photo"
+    w: 1500
+    h: 1125
+    alt: "A hand holding a phone showing the Parqly map and a space at 25 dollars an hour"
+    caption: "Sixty-five spaces, one screen"
   - src: "/wp-content/uploads/2025/07/paqly-parking-solution-scaled.jpg"
     kind: "app"
-    alt: "Mobile friendly UI UX design of mobile app"
+    w: 1536
+    h: 806
+    alt: "Four Parqly screens: onboarding, reserved parking home, lock control and sign-up"
+    caption: "Onboarding, home, lock control, sign-up"
   - src: "/wp-content/uploads/2025/07/paqly-parking-solution-2-scaled.jpg"
     kind: "app"
-    alt: "Easy to use Mobile app design and development"
+    w: 1536
+    h: 853
+    alt: "Four Parqly screens: empty state, two notification views and account settings"
+    caption: "Empty state, notifications, alert settings"
   - src: "/wp-content/uploads/2025/07/parqly-parking-solution3-scaled.jpg"
     kind: "app"
-    alt: "Easy to use Mobile app design and development"
-  - src: "/wp-content/uploads/2025/07/parqly-iphone-scaled.jpg"
-    alt: "Parqly running on iPhone"
-    kind: "app"
+    w: 1536
+    h: 853
+    alt: "Four Parqly screens: map with Park and Pay, payment history, saved cards and device log"
+    caption: "Map and pay, payment history, cards, device log"
 seo:
   title: "Parqly: smart city parking, from app to BLE hardware"
   description: "Parqly is at the forefront of urban innovation, transforming how drivers and parking owners navigate the world of city parking. Based in Cyprus, Parqly set out to eliminate the daily parking struggle with a seamless, technology-driven platform, fusing the power of mobile apps with smart automation and future-ready hardware."

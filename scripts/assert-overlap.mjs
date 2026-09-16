@@ -96,6 +96,14 @@ const PAGES = [
   ['service', '/s/ai-automation-services/'],
   ['service-m', '/s/mvp-development/'],
   ['project', '/work/warehouse-compliance-checklist-app/'],
+  /* Two projects, because they exercise different halves of the template.
+     Snowman has three pictures and no dimensions on any of them, so it runs
+     the original grids. Parqly has eleven with w and h, which is what turns
+     on the full-width contact sheets and the photograph stages — and the
+     stage is the one element on this page that deliberately reaches past the
+     1362 column to the viewport edge, which is exactly the shape of thing
+     that starts a horizontal scrollbar. */
+  ['project-wide', '/work/parqly-parking-solution/'],
   ['journal', '/our-journal/'],
   ['post', '/our-journal/how-ai-is-transforming-user-experience-design/'],
   ['404', '/404.html'],
@@ -235,6 +243,18 @@ for (const [name, url] of PAGES) for (const width of WIDTHS) {
       if (re.test(cls)) return
       for (let a = el.parentElement; a; a = a.parentElement) {
         if (re.test(typeof a.className === 'string' ? a.className : '')) return
+        /* INSIDE A SIDEWAYS SCROLLER IS NOT OFF-SCREEN.
+           This gate exists to catch content painted where nobody can reach
+           it. Content in a box the reader can drag is reachable — that is
+           what the box is for. The case study contact sheets are 760px of
+           four phone screens inside a 350px column on a phone, deliberately,
+           because fitted to the column each screen is 85px and shows
+           nothing. Without this the gate reports the picture as off the page
+           every time, which is the kind of false positive that gets a gate
+           switched off. The document-level scrollWidth check above is
+           untouched, so a real overflow still fails. */
+        const ox = getComputedStyle(a).overflowX
+        if (ox === 'auto' || ox === 'scroll') return
       }
       const key = el.tagName.toLowerCase() + (cls ? '.' + cls.split(' ').filter(c => !c.startsWith('astro-')).join('.') : '')
       seen.set(key, Math.max(seen.get(key) || 0, Math.round(q.right)))
