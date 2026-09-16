@@ -967,10 +967,35 @@ const nextProject = neighbour(1)
      are phone captures of wildly different crops, and forcing them into one
      aspect ratio would crop the interface the page exists to show. */
 
-  .pd__prose { counter-reset: sec; margin: 56px 0 0 461px; max-width: 707px; }
+  /**
+   * THE LONG VERSION. A GRID, NOT A FLOAT.
+   *
+   * This paired a heading with its paragraph by floating the heading into the
+   * rail and letting the paragraph flow beside it. That is the only two-column
+   * pairing plain markdown allows, since markdown gives no element to wrap a
+   * section in — and it is pairing by visual adjacency, which is not the same
+   * thing as pairing by markup.
+   *
+   * It broke twice on Advisee. Its body has two group titles with no paragraph
+   * of their own, "Objectives" and "Project Outcome", so each captured the next
+   * item's copy and everything below slid up by one. Fixing that left a second
+   * failure: a paragraph SHORTER than its heading does not push the next
+   * heading past it, so the next heading floats up beside the previous
+   * paragraph. Measured on the built page, six of nine sections were still
+   * showing another section's copy.
+   *
+   * So the pairing stops being positional. The heading spans both columns and
+   * the paragraph sits in the second one, which is a grid placement rather
+   * than a float, and a heading with no paragraph simply has nothing under it.
+   * There is no arrangement of headings and paragraphs that can mis-pair,
+   * because nothing is being paired: each element is placed where it belongs.
+   */
+  .pd__prose {
+    counter-reset: sec; margin: 56px 0 0; max-width: 1168px;
+    display: grid; grid-template-columns: 461px minmax(0, 707px);
+  }
   .pd__prose :global(h2) {
-    float: left; clear: left; width: 380px;
-    margin: 0 0 0 -461px;
+    grid-column: 1 / -1; margin: 0;
     font-size: 26px; line-height: 37px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
@@ -982,35 +1007,38 @@ const nextProject = neighbour(1)
   .pd__prose :global(h2)::before {
     counter-increment: sec;
     content: '0' counter(sec);
-    display: block; margin-bottom: 14px;
+    display: block; margin-bottom: 10px;
     font-size: 52px; line-height: 1; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: rgba(20, 20, 20, 0.18);
   }
+  /* A HEADING WITH NO PARAGRAPH IS A GROUP LABEL, NOT AN ITEM. "Objectives"
+     and "Project Outcome" are titles over the items beneath them, not items.
+     `content: none` on the ::before also stops the counter, which is what
+     keeps the numbering on the items rather than the labels. */
+  .pd__prose :global(h2:has(+ h2)) {
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .pd__prose :global(h2:has(+ h2))::before { content: none; }
+
+  /* Column two, always. The paragraph lands under its own heading and beside
+     nothing, whatever the heading above it did. */
   .pd__prose :global(p) {
-    margin: 0;
+    grid-column: 2; margin: 0;
     font-size: 18px; line-height: 28px; font-weight: var(--fw-medium);
     letter-spacing: -0.03em; color: rgba(71, 71, 71, 0.85);
   }
   .pd__prose :global(p + p) { margin-top: 20px; }
+  .pd__prose :global(h2 + p) { margin-top: 18px; }
 
-  /* `h2 + p` only, not `h2 ~ p` — the general sibling was killing the gap
-     between every later paragraph too, which ran section 01 together. */
-  .pd__prose :global(h2 + p) { position: relative; margin-top: 0; }
-
-  /* THE HEADING AND ITS PARAGRAPH MUST GET THE SAME GAP. A float does not
-     take the following sibling's margin, so giving the paragraph 96px of air
-     and the heading none left the heading floating at the top of the gap with
-     the rule cutting through it. Both carry 96. */
-  .pd__prose :global(h2:not(:first-child)) { margin-top: 96px; }
-  .pd__prose :global(h2:not(:first-child) + p) { margin-top: 96px; }
-  /* A hairline opens each section, drawn from the page gutter rather than
-     from the text column, so it reads as a section break and not as a rule
-     over a paragraph. It hangs off the first paragraph because the heading is
-     floated and cannot carry a full-width border. */
-  .pd__prose :global(h2:not(:first-child) + p)::before {
-    content: ''; position: absolute; left: -461px; right: 0; top: -50px;
-    height: 0.5px; background: var(--c-rule-soft);
+  /* A hairline opens each section, drawn across both columns. It can hang off
+     the heading now rather than off the first paragraph, because the heading
+     is no longer floated and a section with no paragraph still gets its rule. */
+  .pd__prose :global(h2:not(:first-child)) {
+    margin-top: 96px; padding-top: 46px;
+    border-top: 0.5px solid var(--c-rule-soft);
   }
+  .pd__prose :global(h2:has(+ h2) + h2) { margin-top: 40px; padding-top: 0; border-top: 0; }
 
   /* ── below the design grid ──────────────────────────────── */
   @media (max-width: 1360px) {
@@ -1080,12 +1108,16 @@ const nextProject = neighbour(1)
     .pd__long { margin-top: 64px; }
     .pd__screens { margin-top: 64px; }
     .pd__screens ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-    .pd__prose { margin: 40px 0 0; max-width: 620px; }
-    .pd__prose :global(h2) { float: none; width: auto; margin: 44px 0 14px; }
-    .pd__prose :global(h2:first-child) { margin-top: 0; }
-    .pd__prose :global(h2:not(:first-child) + p) { margin-top: 0; }
-    .pd__prose :global(h2:not(:first-child)) { margin-top: 44px; }
-    .pd__prose :global(h2:not(:first-child) + p)::before { left: 0; top: -22px; }
+    /* One column below the breakpoint. The two-column grid has a fixed 461px
+       label column, which is wider than a 390px viewport on its own, so it
+       has to collapse rather than shrink. Heading and paragraph both take the
+       single track and keep their markup order, which is what the grid was
+       for in the first place. */
+    .pd__prose { margin: 40px 0 0; max-width: 620px; grid-template-columns: minmax(0, 1fr); }
+    .pd__prose :global(h2) { grid-column: 1; }
+    .pd__prose :global(p) { grid-column: 1; }
+    .pd__prose :global(h2:not(:first-child)) { margin-top: 56px; padding-top: 32px; }
+    .pd__prose :global(h2:has(+ h2) + h2) { margin-top: 28px; }
     .pd__prose :global(h2)::before { font-size: 32px; margin-bottom: 8px; }
   }
 </style>
