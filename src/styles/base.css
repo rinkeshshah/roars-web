@@ -114,3 +114,46 @@ img.is-missing { object-fit: fill; }
   initial-value: #ffd400;
   inherits: false;
 }
+
+/*
+ * THE TWO DOTS, ANIMATED ONCE FOR THE WHOLE SITE.
+ *
+ * The dot pair is the brand's signature and it is built EIGHT TIMES: btn__dots,
+ * ghost__dots, ft__dots, cf__dots, jp__dots, gg__dots, nf__dots, tw__dots —
+ * eight class names for the same two 8px circles, each in its own component or
+ * page. Astro scopes component styles, so a keyframe written in one of them
+ * cannot be reached from the other seven; writing it eight times would mean
+ * eight chances for the ninth to be forgotten and eight places to change the
+ * timing. It lives here instead, where nothing is scoped, and each pair opts
+ * in with `data-dots`.
+ *
+ * `> *` rather than `> i`, because two of the eight use <span> children rather
+ * than <i>. Matching the children by position is what makes one selector cover
+ * markup that was never written to a shared shape.
+ *
+ * WHAT IT DOES: nothing for most of four seconds, then one dot swells and
+ * dims, and the other follows 170ms later. Roughly half a second of motion in
+ * every 4.2, so several buttons on one screen read as a slow pulse rather than
+ * a twitch. The amplitude is deliberately small — this is the mark breathing,
+ * not a loading spinner. It stops on hover, by which point it has done its
+ * job and the button has the reader's attention anyway.
+ *
+ * This replaces the single-dot pulse that used to live in GhostButton and ran
+ * on the top bar alone.
+ */
+[data-dots] > * {
+  animation: dotBlip 4.2s var(--ease-out) infinite;
+  transform-origin: 50% 50%;
+}
+[data-dots] > :last-child { animation-delay: 170ms; }
+a:hover [data-dots] > *,
+button:hover [data-dots] > * { animation: none; }
+
+@keyframes dotBlip {
+  0%, 68%, 100% { opacity: 1; scale: 1; }
+  80%           { opacity: 0.55; scale: 1.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-dots] > * { animation: none; }
+}

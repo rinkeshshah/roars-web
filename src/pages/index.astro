@@ -1517,7 +1517,10 @@ const schema = [
   .proj__stars, .ind__stars { display: flex; gap: 6px; align-self: start; margin-top: 16px; }
 
   /* 5. people say ------------------------------------------------------ */
-  .say { padding-block: 147px 95px; }
+  /* 104px below, up from 95, so the band closes with about as much air under
+     the controls as the gap that now sits above them. --sp-7 rather than a
+     new number: the spacing scale already had the step. */
+  .say { padding-block: 147px var(--sp-7); }
   .say .display, .say__score { margin-left: var(--rail-width); }
   .say__score { margin-top: var(--sp-4); font-size: var(--fs-stat); line-height: var(--lh-stat); font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
 
@@ -1575,7 +1578,11 @@ const schema = [
      (I briefly set that track to 314 off a `left:464px` found in the MENU
      overlay's contact panel, not this section, and it threw the pill 235px
      right. Grep the right block.) */
-  .say__foot { display: grid; grid-template-columns: 351px 150px 79px auto; align-items: start; margin-top: 12px; margin-left: 347px; }
+  /* 64px above, not 12. The cascade's lowest quote ended eleven pixels before
+     the Prev/Next row started — measured on all three pages of the deck, and
+     the list is not overrunning, so twelve is simply what the gap always was.
+     Under a paragraph that reads as the controls being part of the quote. */
+  .say__foot { display: grid; grid-template-columns: 351px 150px 79px auto; align-items: start; margin-top: var(--sp-6); margin-left: 347px; }
   .say__foot :global(a) { justify-self: start; }
   /* 190px band: dot at 0, "Prev." at 18, "Next" at 128, dot at 182. */
   .say__nav { display: grid; grid-template-columns: 8px 102px 42px 8px; gap: 0 10px; width: 190px; align-items: center; margin-top: 14px; font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); }

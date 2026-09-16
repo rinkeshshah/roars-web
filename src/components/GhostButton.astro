@@ -24,7 +24,7 @@ const { href, label, on = 'dark', width = 243, external = false, class: cls } = 
   style={width === 'auto' ? undefined : `width:${width}px`}
 >
   <span class="ghost__label">{label}</span>
-  <span class="ghost__dots" aria-hidden="true"><i></i><i></i></span>
+  <span class="ghost__dots" data-dots aria-hidden="true"><i></i><i></i></span>
 </a>
 
 <style>
@@ -44,19 +44,11 @@ const { href, label, on = 'dark', width = 243, external = false, class: cls } = 
   }
   .ghost__dots { display: flex; gap: 3px; margin-left: var(--sp-5); }
   .ghost__dots i { width: 8px; height: 8px; border-radius: var(--r-circle); display: block; }
-  /* Subtle attention on the top bar's call to action. DELIBERATE ADDITION:
-     the export has no motion here. Four seconds, opacity and scale only, on
-     the trailing dot alone — enough to catch the eye in peripheral vision,
-     not enough to nag. Stops on hover, since by then it has done its job. */
-  :global(.topbar) .ghost__dots i:last-child {
-    animation: ghostPulse 4s var(--ease-out) infinite;
-    transform-origin: 50% 50%;
-  }
-  :global(.topbar) .ghost:hover .ghost__dots i:last-child { animation: none; }
-  @keyframes ghostPulse {
-    0%, 70%, 100% { opacity: 1; scale: 1; }
-    82% { opacity: 0.55; scale: 1.55; }
-  }
+  /* THE DOT MOTION MOVED OUT OF HERE. It was a single-dot pulse on the top
+     bar alone; it is now one definition in src/styles/base.css driving all
+     eight dot pairs on the site, which this one opts into with `data-dots` on
+     the span above. A copy kept here would be a second timing to change and
+     a second one to forget. */
   .ghost__dots i:first-child { background: var(--c-rule); }
 
   .ghost--dark { color: var(--c-on-dark); box-shadow: inset 0 0 0 2px var(--c-ring-dark); }
