@@ -7,7 +7,7 @@ eyebrow: "INDUSTRIES / 05 OF 09"
 headline:
   small: "travel &"
   large: "hospitality"
-standfirst: "Travel & Hospitality App Development Company in USA"
+standfirst: "Travel and hospitality app development"
 hero:
   statement: "We leverage innovative technology advancement to transform travel and hospitality."
   sub: "Overcome all your software technology challenges and take your travel and hospitality business ideas to the next level…"

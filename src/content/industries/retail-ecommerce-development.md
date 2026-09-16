@@ -7,7 +7,7 @@ eyebrow: "INDUSTRIES / 03 OF 09"
 headline:
   small: "retail &"
   large: "ecommerce"
-standfirst: "eCommerce Development For Web And Mobile App Development"
+standfirst: "Retail and eCommerce app development"
 hero:
   statement: "Reach your customers with top-notch digital store experiences!"
   sub: "We deliver unmatched and engaging shopping experiences that are innovative and customised according to your business…"

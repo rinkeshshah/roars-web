@@ -7,7 +7,7 @@ eyebrow: "INDUSTRIES / 06 OF 09"
 headline:
   small: "transport &"
   large: "logistics"
-standfirst: "Logistics and Transportation App Development Company"
+standfirst: "Logistics app development company"
 hero:
   statement: "Transform your business with our mobility solutions for transportation and logistics!"
   sub: "We deliver next-gen logistics solutions to enhance productivity and meet the demand of your logistics and…"

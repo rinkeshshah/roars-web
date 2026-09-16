@@ -6,7 +6,7 @@ eyebrow: "SERVICES / DEVELOPMENT"
 headline:
   small: "mvp"
   large: "development"
-standfirst: "MVP Development Company"
+standfirst: "MVP development company for startups"
 hero:
   statement: "Looking for expert MVP development services to validate your idea and its market potential?"
   sub: "Being the prominent MVP development services provider company, we can help you develop innovative, secure, and…"
@@ -55,7 +55,7 @@ cta:
   ctaHref: "https://meet.roarsinc.com/sales"
 seo:
   title: "MVP Development Company | MVP Development Services in USA"
-  description: "Looking to validate your MVP Development idea and its viability? We help you develop innovative, secure, and high-quality solutions that will help in optimizing your path to a successful minimum viable product. Having offices in UK, USA, Canada, India & Germany, we have vast talent according to your project requirement."
+  description: "Looking to validate your MVP Development idea and its viability? We help you develop innovative, secure, and high-quality solutions that will help in optimizing your path to a successful minimum viable product. Having offices in UK, USA, India, Belgium & Germany, we have vast talent according to your project requirement."
   primaryIntent: "mvp development"
   schemaType: "Service"
 migrated: true

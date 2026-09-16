@@ -6,7 +6,7 @@ eyebrow: "SERVICES / TRANSFORMATION"
 headline:
   small: "digital"
   large: "transformation"
-standfirst: "Digital Business Transformation Services In USA"
+standfirst: "Digital transformation services for SMEs"
 hero:
   statement: "Unlock The Full Potential Of Business Digitalisation With Our Cutting-Edge Transformation Solutions."
   sub: "We have helped numerous start-ups, SMEs, and large enterprises accelerate growth through business digital…"

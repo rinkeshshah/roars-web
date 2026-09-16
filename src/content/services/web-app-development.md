@@ -6,7 +6,7 @@ eyebrow: "SERVICES / DEVELOPMENT"
 headline:
   small: "web app"
   large: "development"
-standfirst: "Top Web App Development Company in USA"
+standfirst: "Web app development company for custom web applications"
 hero:
   statement: "Build custom software that helps your business thrive in the digital age!"
   sub: "Leverage our end-to-end web app development services to build secure, robust, and user-friendly web applications…"

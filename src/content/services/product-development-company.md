@@ -6,7 +6,7 @@ eyebrow: "SERVICES / DEVELOPMENT"
 headline:
   small: "product"
   large: "development"
-standfirst: "Top Product Development Company In USA"
+standfirst: "Product development company for startups and SMEs"
 hero:
   statement: "Build an innovation-focused product to solve modern-world problems."
   sub: "With our robust product development, you can build user-centric digital products with a human focus for your…"
@@ -55,7 +55,7 @@ cta:
   ctaHref: "https://meet.roarsinc.com/sales"
 seo:
   title: "Top Product Development Company In USA | Roars Technologies"
-  description: "Get your product development team assigned to you within hours. Start your agile product development journey with Roars technologies. Having global offices in USA, Canada, UK, India & Germany."
+  description: "Get your product development team assigned to you within hours. Start your agile product development journey with Roars technologies. Having global offices in USA, UK, India, Belgium & Germany."
   primaryIntent: "product development company"
   schemaType: "Service"
 migrated: true

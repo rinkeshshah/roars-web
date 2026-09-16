@@ -6,7 +6,7 @@ eyebrow: "SERVICES / DEVELOPMENT"
 headline:
   small: "mobile app"
   large: "development"
-standfirst: "Hire Mobile App Development Company In USA"
+standfirst: "Mobile app development company for iOS and Android"
 hero:
   statement: "We build advanced mobile app solutions for startups, SMEs, and large-scale enterprises."
   sub: "Hire professional mobile app developers from a trusted mobile app development company to craft feature-rich and robust…"
@@ -38,7 +38,7 @@ cta:
   ctaHref: "https://meet.roarsinc.com/sales"
 seo:
   title: "Hire Mobile App Development Company In USA | Roars Technologies"
-  description: "Hire iOS and Android mobile application developer from USA, India, Canada, Germany, UK. Expert professional and experienced mobile app development company, serving clients across the globe for last 15+ Years."
+  description: "Hire iOS and Android mobile application developer from USA, India, Germany, UK. Expert professional and experienced mobile app development company, serving clients across the globe for last 15+ Years."
   primaryIntent: "mobile app development"
   schemaType: "Service"
 migrated: true

@@ -6,7 +6,7 @@ eyebrow: "SERVICES / DESIGN"
 headline:
   small: "innovation"
   large: "design"
-standfirst: "Innovation Design Company in TX, USA"
+standfirst: "Innovation design company"
 hero:
   statement: "Build the next-gen products, services, and experiences with innovative design."
   sub: "We are very well-known for creating a positive impact through our innovative design that people love."

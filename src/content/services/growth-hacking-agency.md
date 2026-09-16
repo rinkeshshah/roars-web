@@ -6,7 +6,7 @@ eyebrow: "SERVICES / HACKING"
 headline:
   small: "growth"
   large: "hacking"
-standfirst: "Digital Marketing Growth Hacking Agency In Texas, USA"
+standfirst: "Growth hacking agency for startups"
 hero:
   statement: "Accelerate your business growth with a data-driven growth hacking agency."
   sub: "We bring fast, sustainable, and scalable growth in your businesses to prosper, strive and succeed with cutting-edge…"

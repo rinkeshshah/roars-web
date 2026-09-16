@@ -7,7 +7,7 @@ eyebrow: "INDUSTRIES / 01 OF 08"
 headline:
   small: "food &"
   large: "restaurant"
-standfirst: "App development, end to end"
+standfirst: "Restaurant app development company"
 hero:
   statement: "We build the best-in-class solutions that help you serve your diners better!"
   sub: "Four surfaces, one kitchen, one order that never loses its place."

@@ -6,7 +6,7 @@ eyebrow: "SERVICES / SERVICES"
 headline:
   small: "devops"
   large: "services"
-standfirst: "Result Oriented DevOps Services In USA"
+standfirst: "DevOps services and CI/CD consulting"
 hero:
   statement: "Stay ahead with our expert DevOps as a Service solutions."
   sub: "Roars is a trusted DevOps company, providing robust DevOps as a services that help businesses to bridge the gap between…"

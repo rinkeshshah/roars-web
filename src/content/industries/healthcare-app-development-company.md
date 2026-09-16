@@ -7,7 +7,7 @@ eyebrow: "INDUSTRIES / 08 OF 09"
 headline:
   small: "clinics &"
   large: "healthcare"
-standfirst: "Healthcare App Development Company"
+standfirst: "Healthcare app development company"
 hero:
   statement: "Bring Healthcare to Your Fingertips with our well-built solutions!"
   sub: "We have years of experience in developing integrated healthcare mobile applications physician platforms, and a lot more…"

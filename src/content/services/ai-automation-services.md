@@ -6,7 +6,7 @@ eyebrow: "SERVICES / AI AUTOMATION"
 headline:
   small: "AI"
   large: "automation"
-standfirst: "Services: agents, workflows, plumbing"
+standfirst: "AI automation services for SMEs and startups"
 hero:
   statement: "Your team shouldn’t spend time on work a system can own."
   sub: "AI automation that removes friction from real work."

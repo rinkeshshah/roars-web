@@ -6,7 +6,7 @@ eyebrow: "SERVICES / DEVELOPMENT"
 headline:
   small: "ecommerce"
   large: "development"
-standfirst: "Best eCommerce Development Company In USA"
+standfirst: "eCommerce development company"
 hero:
   statement: "We are a one-stop solution for your Bespoke eCommerce app development needs!"
   sub: "Bring the eCommerce change in your business and provide personalised shopping experiences to your end-users with our…"

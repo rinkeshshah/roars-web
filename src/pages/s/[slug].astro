@@ -144,7 +144,7 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
                 gets the problem they arrived with. */}
             {d.frame && (
               <Fragment>
-                <h1 class="sv-frame__h">{d.frame.h1}</h1>
+                <p class="sv-frame__h">{d.frame.h1}</p>
                 {/* THE QUALIFIER IS NOT DRAWN. It sat directly under the H1 —
                     two paragraphs of similar measure with 18px between them,
                     then the rule and the proof figure — and the rail read as
@@ -187,8 +187,14 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
             <div class="sv-hero__mast" data-reveal>
               <span class="sv-chip"><span>roars</span></span>
               <span class="sv-hero__small">{d.headline.small}</span>
-              <h1 class="sv-hero__large">{d.headline.large}</h1>
-              {d.standfirst && <p class="sv-hero__standfirst">{d.standfirst}</p>}
+              <span class="sv-hero__large">{d.headline.large}</span>
+              {/* THE PAGE'S ONE H1, AND IT CARRIES THE KEYWORD.
+                  There used to be two: the pain line above, and the lockup's
+                  single word — "development", "healthcare", "saas" — which
+                  says nothing on its own. The lockup keeps its look as spans;
+                  the standfirst, which already held the full phrase and
+                  already sat here, becomes the heading. Nothing moved. */}
+              {d.standfirst && <h1 class="sv-hero__standfirst">{d.standfirst}</h1>}
             </div>
           )}
 

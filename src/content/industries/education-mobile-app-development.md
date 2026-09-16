@@ -7,7 +7,7 @@ eyebrow: "INDUSTRIES / 09 OF 09"
 headline:
   small: "learning &"
   large: "education"
-standfirst: "Education Mobile App Development Company"
+standfirst: "Education app development company"
 hero:
   statement: "Enhancing academic experience with our education app development solutions!"
   sub: "We address the education industry's critical challenges and reinvent the teaching methods with our e-learning solutions…"

@@ -7,7 +7,7 @@ eyebrow: "INDUSTRIES / 07 OF 09"
 headline:
   small: "cloud &"
   large: "saas"
-standfirst: "SaaS Application Development Services"
+standfirst: "SaaS application development services"
 hero:
   statement: "cloud-based SaaS applications"
   sub: "We can help you develop feature-rich to bootstrap your business!"

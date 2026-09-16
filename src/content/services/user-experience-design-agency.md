@@ -1,12 +1,12 @@
 ---
 title: "User Experience"
 publishedAt: 2026-09-14
-serviceType: "UX Design Agency / UI Design Agency in India, USA, Canada, Germany, UK"
+serviceType: "UX Design Agency / UI Design Agency in India, USA, Germany, UK"
 eyebrow: "SERVICES / EXPERIENCE"
 headline:
   small: "user"
   large: "experience"
-standfirst: "UX Design Agency / UI Design Agency in India, USA, Canada, Germany, UK"
+standfirst: "UX design agency for SaaS and apps"
 hero:
   statement: "Build a consistent user experience design that delivers!"
   sub: "We offer client-focused User experience design services to create modern yet engaging digital experiences."
@@ -60,8 +60,8 @@ cta:
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 seo:
-  title: "UX Design Agency / UI Design Agency in India, USA, Canada, Germany, UK"
-  description: "We are award winning UI / UX design agency based in India, USA, UK Canada, Germany and serving clients across the globe. Build a consistent user experience design that delivers! We offer client-focused UX design services to create modern yet engaging digital experiences."
+  title: "UX Design Agency / UI Design Agency in India, USA, Germany, UK"
+  description: "We are award winning UI / UX design agency based in India, USA, UK, Germany and serving clients across the globe. Build a consistent user experience design that delivers! We offer client-focused UX design services to create modern yet engaging digital experiences."
   primaryIntent: "user experience design agency"
   schemaType: "Service"
 migrated: true

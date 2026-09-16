@@ -7,7 +7,7 @@ eyebrow: "INDUSTRIES / 02 OF 09"
 headline:
   small: "health &"
   large: "fitness"
-standfirst: "Fitness App Development Company"
+standfirst: "Fitness app development company"
 hero:
   statement: "Design and develop fitness apps that users, trainers, dietitians, and admins like!"
   sub: "Right from out-of-shape to ripped model, we help you build fitness apps that allow users to stay fit and reach their…"

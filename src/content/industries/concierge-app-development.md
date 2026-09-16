@@ -7,7 +7,7 @@ eyebrow: "INDUSTRIES / 04 OF 09"
 headline:
   small: "members &"
   large: "concierge"
-standfirst: "On Demand Mobile Concierge App Development Company"
+standfirst: "Concierge app development company"
 hero:
   statement: "Improve your business productivity using our concierge app development solutions!"
   sub: "We build extra-ordinary concierge applications, having exemplary features to provide a pleasant guest experience to…"

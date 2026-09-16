@@ -112,7 +112,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
                 source the I1 line was written from. */}
             {d.frame && (
               <Fragment>
-                <h1 class="if__h">{d.frame.h1}</h1>
+                <p class="if__h">{d.frame.h1}</p>
                 <p class="if__does">{d.frame.does}</p>
               </Fragment>
             )}
@@ -139,8 +139,14 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
                 ></span>
               </span>
               <span class="ih__small">{d.headline.small}</span>
-              <h1 class="ih__large">{d.headline.large}</h1>
-              {d.standfirst && <p class="ih__standfirst">{d.standfirst}</p>}
+              <span class="ih__large">{d.headline.large}</span>
+              {/* THE PAGE'S ONE H1, AND IT CARRIES THE KEYWORD. There used to be
+                  two: the pain line above, and the lockup's single word —
+                  "healthcare", "saas", "logistics" — which says nothing on its
+                  own. The lockup keeps its look as spans; the standfirst,
+                  which already held the full phrase and already sat here,
+                  becomes the heading. Nothing moved on the page. */}
+              {d.standfirst && <h1 class="ih__standfirst">{d.standfirst}</h1>}
             </div>
           )}
 

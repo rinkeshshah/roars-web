@@ -6,7 +6,7 @@ eyebrow: "SERVICES / DEVELOPERS"
 headline:
   small: "dedicated"
   large: "developers"
-standfirst: "Hire Dedicated Developers In USA"
+standfirst: "Hire dedicated developers and remote teams"
 hero:
   statement: "We provide a guarantee for the successful delivery of your project with an exclusive touch!"
   sub: "Our dedicated development team has in-depth knowledge and years of experience working on various technologies…"
