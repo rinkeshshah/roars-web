@@ -25,7 +25,7 @@ return [
     // printed in both email footers. contact.php defaults to these two values,
     // so an existing config file keeps working; set them to change either.
     'site_url'       => 'https://www.roarsinc.com',
-    'postal_address' => '4th Block, Jaynagar, Bengaluru, India 560041',
+    'postal_address' => '4th Block, Jayanagar, Bengaluru, India 560041',
 
     // Where the gated PDFs live on the webspace. ABSOLUTE path, and the only
     // directory contact.php will ever read a file from. A guide is attached

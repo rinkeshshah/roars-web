@@ -230,7 +230,7 @@ $first = $name !== '' ? explode(' ', $name)[0] : 'there';
 $site  = rtrim((string) ($cfg['site_url'] ?? 'https://www.roarsinc.com'), '/');
 // The registered office, from src/lib/site.ts. One line, because the email
 // footer is one line; the other four offices are on /contact-us/.
-$postal = (string) ($cfg['postal_address'] ?? '4th Block, Jaynagar, Bengaluru, India 560041');
+$postal = (string) ($cfg['postal_address'] ?? '4th Block, Jayanagar, Bengaluru, India 560041');
 
 // Sales first, and in plain text: it is a work notification, not a brand piece.
 @mail(
