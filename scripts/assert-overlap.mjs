@@ -262,16 +262,97 @@ for (const [name, url] of PAGES) for (const width of WIDTHS) {
     return [...seen].sort((a, b) => b[1] - a[1]).slice(0, 6)
   }, BLEEDS_BY_DESIGN.source)
 
-  const bad = real.length || overflowX || off.length
+  /* TEXT THAT IS IN THE MARKUP AND PAINTS NOTHING.
+   *
+   * The two checks above both skip a zero-width box — the overlap collector at
+   * `r.width <= 4`, the off-screen check at `q.width <= 0` — because a box with
+   * no width cannot collide with anything and has no right edge worth
+   * measuring. Which is how the case study H1 was invisible on every phone for
+   * as long as the template has existed and this file reported clean: the title
+   * block kept a desktop `margin-left: 452px` inside a 350px column, measured
+   * width 0, and both checks stepped over it.
+   *
+   * So: take every element with its own text, ask where its glyphs actually
+   * landed, and fail if the answer is nowhere a reader can see. That is the
+   * question the other two are each asking half of.
+   *
+   * WHAT IS NOT A FINDING. Text that is deliberately there for something other
+   * than eyes, and text inside a box the reader can drag sideways. Four
+   * idioms, all of them already in use on this site and each excluded by the
+   * property that makes it deliberate rather than by a class name:
+   *
+   *   aria-hidden="true"        the contact and guide honeypots. A field that
+   *                             is hidden from people AND from screen readers
+   *                             is doing exactly its job by painting nothing.
+   *   font-size: 0              the full-row overlay link on the homepage
+   *   color: transparent        services list. Its text is the accessible name
+   *                             for a link whose visible label is the h3 next
+   *                             to it, so it must not paint.
+   *   clip / clip-path          the classic screen-reader-only pattern.
+   *   <noscript>                its contents are markup, not rendered text,
+   *                             whenever scripting is on, which it is here.
+   */
+  const unpainted = await p.evaluate((bleed) => {
+    const re = new RegExp(bleed)
+    const out = new Map()
+    const range = document.createRange()
+    const transparent = (v) => /rgba?\([^)]*,\s*0(\.0+)?\s*\)$/.test(v)
+    document.querySelectorAll('main *').forEach((el) => {
+      if (el.closest('noscript')) return
+      const own = [...el.childNodes]
+        .filter((n) => n.nodeType === 3)
+        .map((n) => n.textContent)
+        .join('')
+        .trim()
+      if (!own) return
+      if (el.closest('[aria-hidden="true"]')) return
+      const c = getComputedStyle(el)
+      if (c.display === 'none' || c.visibility === 'hidden') return
+      if (parseFloat(c.opacity) < 0.05) return
+      if (parseFloat(c.fontSize) < 1 || transparent(c.color)) return
+      if (c.clipPath !== 'none' || c.clip !== 'auto') return
+      const cls = typeof el.className === 'string' ? el.className : ''
+      if (re.test(cls)) return
+      for (let a = el.parentElement; a; a = a.parentElement) {
+        const ac = getComputedStyle(a)
+        if (ac.display === 'none' || ac.visibility === 'hidden') return
+        if (parseFloat(ac.opacity) < 0.05) return
+        if (re.test(typeof a.className === 'string' ? a.className : '')) return
+        const ox = ac.overflowX
+        if (ox === 'auto' || ox === 'scroll') return
+      }
+      let painted = false
+      for (const n of el.childNodes) {
+        if (n.nodeType !== 3 || !n.textContent.trim()) continue
+        range.selectNodeContents(n)
+        for (const q of range.getClientRects()) {
+          if (q.width < 1 || q.height < 1) continue
+          /* Inside the viewport horizontally, by at least a few pixels. A rect
+             that starts past the right edge is glyphs nobody will ever see. */
+          if (q.right > 4 && q.left < window.innerWidth - 4) painted = true
+        }
+      }
+      if (painted) return
+      const key =
+        el.tagName.toLowerCase() +
+        (cls ? '.' + cls.split(' ').filter((x) => !x.startsWith('astro-')).join('.') : '')
+      if (!out.has(key)) out.set(key, own.slice(0, 40))
+    })
+    return [...out].slice(0, 6)
+  }, BLEEDS_BY_DESIGN.source)
+
+  const bad = real.length || overflowX || off.length || unpainted.length
   if (bad) failures++
   console.log(
     `${name.padEnd(10)} @${String(width).padStart(4)} ${String(r?.status() ?? 'ERR').padEnd(4)}` +
     ` h=${String(h).padEnd(6)} xScroll=${overflowX ? 'YES' : 'no '}` +
-    ` errs=${errs.length} overlaps=${real.length} offscreen=${off.length}`,
+    ` errs=${errs.length} overlaps=${real.length} offscreen=${off.length}` +
+    ` unpainted=${unpainted.length}`,
   )
   for (const e of errs.slice(0, 2)) console.log('      err: ' + e)
   for (const o of real) console.log('      overlap: ' + JSON.stringify(o))
   for (const [k, right] of off) console.log(`      offscreen: ${k} right=${right} (viewport ${width})`)
+  for (const [k, text] of unpainted) console.log(`      unpainted: ${k} — "${text}"`)
   await p.close()
 }
 await b.close()

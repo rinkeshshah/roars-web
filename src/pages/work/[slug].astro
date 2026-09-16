@@ -1043,7 +1043,17 @@ const nextProject = neighbour(1)
   /* ── below the design grid ──────────────────────────────── */
   @media (max-width: 1360px) {
     .pd { padding-block: 64px 72px; }
-    .pd__head { height: auto; }
+    /* THE TITLE WAS INVISIBLE ON A PHONE. Every child of .pd__head was reset
+       here except .pd__title itself, which kept the desktop
+       `margin-left: 452px` that clears the back link's rail. In a 350px column
+       that leaves the block NEGATIVE room, so it measured x=472, width 0: the
+       client name was laid out past the right edge of a box with no width, and
+       nothing painted. `min-height` and the 182px `padding-top` came along too,
+       which is why there was an empty half-screen above the place the title
+       was not. `height: auto` was the only thing being reset, and height was
+       never what was holding the box open. */
+    .pd__head { min-height: 0; height: auto; padding-top: 0; }
+    .pd__title { margin-left: 0; }
     .pd__back, .pd__client, .pd__date, .pd__team { position: static; width: auto; height: auto; }
     .pd__back { display: inline-block; }
     .pd__client { margin-top: 28px; line-height: 1.04; }
