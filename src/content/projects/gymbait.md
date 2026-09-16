@@ -11,10 +11,14 @@ heroImage: "/work/gymbait.jpg"
 about: "GymBAIT started with a clear insight: traditional fitness apps track workouts but don’t keep users committed. Users get frustrated when plans feel generic and motivation fades quickly."
 liveUrl: "https://apps.apple.com/app/gymbait/id6474441798"
 facts:
+  # "Typography: Fitness Friction to Intelligent Support" was the next block's
+  # HEADING sitting in the typeface slot, so the fact table answered the
+  # question "what type is this set in" with a sentence about AI. The specimen
+  # in the brand sheet below says Barlow Condensed.
   - k: "Branding"
-    v: "Color Therapy"
+    v: "Colour therapy, three tones"
   - k: "Typography"
-    v: "Fitness Friction to Intelligent Support"
+    v: "Barlow Condensed"
 blocks:
   - heading: "Fitness Friction to Intelligent Support"
     lead: "Most gym apps are reactive: you log a workout and hope it sticks. GymBAIT flipped the script by using AI to predict engagement gaps, adapt routines to individual goals, and offer encouragement when users lag. The focus was on meaningful, personalized fitness guidance rather than generic tracking."
@@ -26,23 +30,57 @@ blocks:
   - heading: "Result & Impact"
     lead: "The development of the AI-based gym fitness mobile app by Roars showcased the company's expertise in user experience design, AI integration, and agile methodologies."
     body: "By addressing the specific needs and frustrations of the target personas, the app achieved significant market success and user satisfaction in the UK."
+# THE BRAND SHEET, and one contact sheet.
+#
+# Two of these were tagged `app`, so the template put a 2.1:1 brand banner and
+# a typography specimen into a 9/16 portrait box. Neither is a phone screen.
+# They are all `study` now except the wireframe board, which is the one that
+# needs the whole column.
+#
+# The dimensions come from the client's own files. They matter twice: they
+# reserve the space, and they are what tells the template a 1497 x 1536 board
+# of eighteen screens is a board rather than a very tall screenshot.
+#
+# The eleven individual screens below are untouched. They are real phone
+# captures and the portrait grid is right for them.
 gallery:
-  - src: "/wp-content/uploads/2024/04/23-gymbait.png"
-    kind: "app"
-    alt: "gymbait Image"
+  - src: "/wp-content/uploads/2024/07/IMG-5765.png"
+    kind: "study"
+    w: 300
+    h: 124
+    alt: "The gymBAIT wordmark with the tagline Unleash Your Potential"
+    caption: "The mark"
   - src: "/wp-content/uploads/2024/04/gymbait-colortheraphy.png"
     kind: "study"
-    alt: "gymbait colortheraphy - Client Case study"
-showcase:
+    w: 300
+    h: 100
+    alt: "Three brand colours: near-black navy, bright cyan and ink black"
+    caption: "Colour"
   - src: "/wp-content/uploads/2024/04/H1.png"
-    kind: "app"
-    alt: "Text format image for Client website"
+    kind: "study"
+    w: 768
+    h: 341
+    alt: "Barlow Condensed set as a heading with a paragraph of body copy beneath"
+    caption: "Barlow Condensed"
+  - src: "/wp-content/uploads/2024/04/23-gymbait.png"
+    kind: "study"
+    w: 951
+    h: 452
+    alt: "Brand banner: a phone showing the AI workout plan screen over a blue gym scene"
+    caption: "The promise, in one frame"
   - src: "/wp-content/uploads/2024/04/MOODBAORD-GYMBAIT.png"
     kind: "study"
-    alt: "MOODBAORD GYMBAIT"
+    w: 1107
+    h: 761
+    alt: "A moodboard of dark dashboard and card interfaces in navy and cyan"
+    caption: "Where the dark interface came from"
+showcase:
   - src: "/wp-content/uploads/2024/04/wireframe-gymbait.png"
     kind: "wireframe"
-    alt: "Gymbit wire frame"
+    w: 1497
+    h: 1536
+    alt: "Eighteen gymBAIT screens: sign-in, onboarding questions, workout schedule, nutrition, challenges"
+    caption: "Sign-in to challenge, eighteen screens of it"
   - src: "/wp-content/uploads/2024/07/Add-Pills.png"
     kind: "app"
     alt: "gallery grid image"

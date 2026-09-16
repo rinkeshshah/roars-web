@@ -18,7 +18,7 @@ import GrainField from '../../components/GrainField.astro'
 import RingField from '../../components/RingField.astro'
 import { PORTRAIT, workHeroFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
-import { clientFor, isHeldBack } from '../../lib/projects'
+import { clientFor, isHeldBack, PROJECTS } from '../../lib/projects'
 import { site } from '../../lib/site'
 
 export async function getStaticPaths() {
@@ -110,22 +110,28 @@ const media = [...(d?.gallery ?? []), ...(d?.showcase ?? []), ...(d?.screens ?? 
 const pick = (...kinds: string[]) => media.filter((m) => m.kind && kinds.includes(m.kind))
 
 /**
- * WIDE OR NOT, WHICH IS A DIFFERENT QUESTION FROM WHAT IT IS.
+ * NOT PHONE-SHAPED, WHICH IS A DIFFERENT QUESTION FROM WHAT IT IS.
  *
  * A file 1536 across and 806 tall is a contact sheet: four phone screens laid
  * out side by side. A file 1170 across and 2532 tall is one screen. Both come
  * through the migration tagged `app`, and the template used to put both in a
- * 9/16 box — which is right for the second and destroys the first. On Parqly
- * that turned five sheets, twenty screens of interface, into five grey
- * squares with an unreadable band across the middle.
+ * 9/16 box — right for the second, and it destroys the first. On Parqly that
+ * turned five sheets, twenty screens of interface, into five grey squares
+ * with an unreadable band across the middle.
  *
- * 1.2 is the line between landscape and not. The three populations are miles
- * apart and nothing sits near it: phone captures come in at 0.46 to 0.56,
- * photographs at 1.33 (4:3) to 1.58, contact sheets at 1.8 to 1.93. It was
- * 1.35 for one build, which put 4:3 on the wrong side by sixteen thousandths
- * and dropped two photographs back into the grid.
+ * This asked "is it wider than 1.2" for two builds and that was the wrong
+ * test, in a way GymBait made obvious: its contact sheet is 1497 x 1536, an
+ * eighteen-screen board in six columns, and at a ratio of 0.97 it failed a
+ * wide test and went into the 9/16 portrait grid — the exact failure the
+ * whole rule was written to prevent, arrived at from a new direction.
+ *
+ * A single phone capture is the only thing that belongs in that grid, and a
+ * phone capture is unmistakable: 0.42 to 0.56, tall and narrow, because that
+ * is the shape of a phone. Everything else is a board, a sheet, a photograph
+ * or a study, and all of those want the column. So the line is 0.7, with a
+ * wide margin on both sides of it and nothing anywhere near.
  */
-const WIDE = 1.2
+const PHONE_MAX = 0.7
 /**
  * AND BIG ENOUGH TO FILL THE COLUMN.
  *
@@ -138,7 +144,7 @@ const WIDE = 1.2
  */
 const MIN_FULL = 1200
 const isWide = (m: { w?: number; h?: number }) =>
-  Boolean(m.w && m.h && m.w / m.h >= WIDE && m.w >= MIN_FULL)
+  Boolean(m.w && m.h && m.w / m.h > PHONE_MAX && m.w >= MIN_FULL)
 
 /** The process: how it was structured, and how it was dressed. Split by shape,
  *  because a wireframe sheet and a single wireframe want different room. */
@@ -164,6 +170,41 @@ const restGrid = rest.filter((m) => !isWide(m))
  *  reflowing the page as they load. */
 const ratio = (m: { w?: number; h?: number }) =>
   m.w && m.h ? `aspect-ratio:${m.w} / ${m.h}` : undefined
+
+/**
+ * THE PROJECT EITHER SIDE OF THIS ONE.
+ *
+ * Walks LISTED_PROJECTS, which is the same order /work/ prints, so "next" is
+ * the card that was below this one on the page the reader came from rather
+ * than an order invented here.
+ *
+ * IT WRAPS. Eleven listed projects, and stopping at the ends leaves the first
+ * and last case study with one lonely link and a gap where the other should
+ * be. Wrapping keeps the band the same shape everywhere and, at this length, a
+ * reader who walks off the end lands back at the start rather than at a dead
+ * stop. "All projects" sits between the two for anyone who wants out.
+ *
+ * EVERY DETAIL PAGE GETS A BAND, AND ONLY LISTED PROJECTS ARE DESTINATIONS.
+ * Twelve of the twenty-three are held back: off /work/ and noindex, but their
+ * URLs still resolve because industry and service pages name them. Walking
+ * LISTED_PROJECTS alone left those twelve with no way onward at all except
+ * the footer. So the walk runs over the FULL order, which is where a
+ * held-back project does have a position, and steps outward past anything
+ * held back until it finds one that is offered. A page nobody is meant to
+ * find is never the thing at the end of an arrow.
+ */
+const ORDER = PROJECTS.map((p) => p.slug)
+const hereAll = ORDER.indexOf(slug as string)
+const neighbour = (dir: 1 | -1) => {
+  if (hereAll < 0) return undefined
+  for (let step = 1; step <= ORDER.length; step++) {
+    const p = PROJECTS[(hereAll + dir * step + ORDER.length * ORDER.length) % ORDER.length]
+    if (p && p.slug !== slug && !isHeldBack(p.slug)) return p
+  }
+  return undefined
+}
+const prevProject = neighbour(-1)
+const nextProject = neighbour(1)
 ---
 
 {designed && d ? (
@@ -293,7 +334,15 @@ const ratio = (m: { w?: number; h?: number }) =>
               <ul class="pd__ground">
                 {groundGrid.map((m, i) => (
                   <li data-reveal style={`transition-delay:${Math.min(i, 5) * 60}ms`}>
-                    <img src={m.src} alt={m.alt} loading="lazy" decoding="async" />
+                    {/* Its own shape where we know it. A brand sheet is a
+                        palette strip at 3:1 next to a moodboard at 1.45:1, and
+                        forcing both into a 4/3 box leaves the strip as a thin
+                        line floating in grey. 4/3 stays as the fallback for
+                        the migrated entries that carry no dimensions. */}
+                    <img
+                      src={m.src} alt={m.alt} width={m.w} height={m.h}
+                      style={ratio(m)} loading="lazy" decoding="async"
+                    />
                     <span class="pd__cap">{m.caption ?? (m.kind === 'wireframe' ? 'Wireframe' : 'Colour and type')}</span>
                   </li>
                 ))}
@@ -466,6 +515,29 @@ const ratio = (m: { w?: number; h?: number }) =>
         )}
       </div>
     </Section>
+
+    {/* Where to go next, which until now was "back up to the header link or
+        out through the footer". A case study is the end of a path, and the
+        useful thing to offer at the end of one is the next one. */}
+    {(prevProject || nextProject) && (
+      <Section ground="surface">
+        <nav class="pdnav" aria-label="More case studies">
+          {prevProject && (
+            <a class="pdnav__side pdnav__side--prev" href={`/work/${prevProject.slug}/`} rel="prev">
+              <span class="pdnav__dir"><i aria-hidden="true">&larr;</i>Previous</span>
+              <span class="pdnav__name">{prevProject.client}</span>
+            </a>
+          )}
+          <a class="pdnav__all" href="/work/">All projects</a>
+          {nextProject && (
+            <a class="pdnav__side pdnav__side--next" href={`/work/${nextProject.slug}/`} rel="next">
+              <span class="pdnav__dir">Next<i aria-hidden="true">&rarr;</i></span>
+              <span class="pdnav__name">{nextProject.client}</span>
+            </a>
+          )}
+        </nav>
+      </Section>
+    )}
 
     <SiteFooter
       slot="footer"
@@ -777,6 +849,48 @@ const ratio = (m: { w?: number; h?: number }) =>
     object-fit: contain;
   }
 
+  /* ── previous / next ────────────────────────────────────────
+     Three columns with the middle one auto, so the two names sit hard against
+     the gutters and "All projects" stays centred on the page rather than
+     centred between two labels of different lengths. */
+  .pdnav {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    gap: 24px; padding-block: 64px;
+  }
+  .pdnav__side { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .pdnav__side--next { text-align: right; align-items: flex-end; }
+  /* The one in the middle is a way out, not a destination, so it reads at
+     label weight while the two names read as headings. */
+  .pdnav__all {
+    justify-self: center;
+    font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+    transition: color var(--dur-fast) ease;
+  }
+  .pdnav__all:hover { color: var(--c-ink-heading); }
+  .pdnav__dir {
+    display: flex; align-items: center; gap: 8px;
+    font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .pdnav__dir i { font-style: normal; transition: translate var(--dur-fast) var(--ease-out); }
+  .pdnav__name {
+    font-size: 30px; line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+    overflow-wrap: anywhere;
+  }
+  /* The arrow leans the way you are going. Nothing else moves, so the whole
+     band does not shift under the pointer. */
+  .pdnav__side--prev:hover .pdnav__dir i { translate: -4px 0; }
+  .pdnav__side--next:hover .pdnav__dir i { translate: 4px 0; }
+  .pdnav__side:hover .pdnav__name { color: rgb(90, 90, 90); }
+  @media (prefers-reduced-motion: reduce) {
+    .pdnav__dir i { transition: none; }
+    .pdnav__side--prev:hover .pdnav__dir i,
+    .pdnav__side--next:hover .pdnav__dir i { translate: none; }
+  }
+
   /* ── goals and outcome ──────────────────────────────────── */
   .pd__block { position: relative; margin-top: 82px; }
   .pd__block-h {
@@ -894,6 +1008,16 @@ const ratio = (m: { w?: number; h?: number }) =>
        and does not scroll away from the picture it names. It is also why the
        page itself still reports no horizontal scroll: the scrolling is inside
        this box, not on the document. */
+    /* Three columns become two rows: the two names side by side, and the way
+       out underneath both. Squeezing three items into 350px gave two names of
+       four characters each. */
+    .pdnav {
+      grid-template-columns: 1fr 1fr; gap: 28px 20px;
+      padding-block: 48px;
+    }
+    .pdnav__all { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
+    .pdnav__name { font-size: 20px; }
+
     .pd__sheets { gap: 28px; margin-top: 28px; }
     .pd__sheet-vp {
       overflow-x: auto;

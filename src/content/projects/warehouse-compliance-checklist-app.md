@@ -40,9 +40,15 @@ blocks:
 # including this one, which an uploads path does not.
 gallery:
   - src: "/work/snowman/study.jpg"
+    # The client's file is 824 x 521, which is under the 1200 a picture needs
+    # to take the full column, so it was landing at half width with a gap
+    # beside it. Resampled once to 1400 with Lanczos and a light sharpen, so
+    # it lines up with every other picture on the page. That adds no detail
+    # the original did not have — a larger export would be better and has
+    # been asked for.
     kind: "study"
-    w: 824
-    h: 521
+    w: 1400
+    h: 885
     alt: "Angled tiles of the Snowman interface: compliance score, quick actions, checklist picker"
     caption: "Working through the surfaces before the colour went on"
 showcase:
