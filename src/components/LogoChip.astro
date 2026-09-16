@@ -138,10 +138,23 @@ import mark from '../assets/roars-mark.png'
   :global(.topbar:not(.is-light)) .chip:hover .chip__mark { --mark-ink: var(--c-white); }
 
   /* THE SECTION-CHANGE PULSE.
-     A second of pink, a second of yellow, then back to whatever ink the
+     A 180ms flash of pink, a second of yellow, then back to whatever ink the
      section it has arrived on calls for. src/scripts/topbar.ts adds the class
      each time a new section crosses the middle of the viewport and takes it
      off when the animation ends.
+
+     THE SPLIT, AND HOW TO CHANGE IT. Keyframe offsets have to be literal
+     percentages — a custom property cannot be used for one — so the two
+     durations are written here and the percentage is derived by hand:
+
+         pink    180ms
+         yellow 1000ms
+         total  1180ms   -> the boundary is 180/1180 = 15.25%
+
+     Move either number and the boundary has to be recomputed with it. Pink
+     was a full second at first and read as a colour change rather than a
+     flash; at 180ms it registers without the logo looking like it has gone
+     pink for a living.
 
      HELD STOPS, NOT A FADE. The note above records that transitioning this
      ink was tried and pulled: the values between yellow and black come out
@@ -158,13 +171,13 @@ import mark from '../assets/roars-mark.png'
      `background: var(--mark-ink)` and lands on the right ground ink by
      itself — including white, on a dark section. */
   @keyframes logoPulse {
-    0%,  49.99% { background-color: var(--c-pulse); }
-    50%, 99.99% { background-color: var(--c-accent); }
-    100%        { background-color: var(--mark-ink); }
+    0%,     15.24% { background-color: var(--c-pulse); }
+    15.25%, 99.99% { background-color: var(--c-accent); }
+    100%           { background-color: var(--mark-ink); }
   }
 
   .chip__mark.is-pulsing {
-    animation: logoPulse 2000ms steps(1, end) 1 both;
+    animation: logoPulse 1180ms steps(1, end) 1 both;
   }
 
   @media (prefers-reduced-motion: reduce) {
