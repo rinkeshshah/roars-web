@@ -24,14 +24,19 @@ import { PORTRAIT } from '../lib/media'
 interface Props {
   cta?: 'contact' | 'meeting'
   /**
-   * The logo's section-change pulse — a second of pink, a second of yellow,
-   * then the ink the new ground calls for. OFF by default and set on the
-   * homepage alone while the effect is being judged; see initLogoPulse in
-   * src/scripts/topbar.ts. Turning it on elsewhere is this one prop.
+   * The logo's section-change flash — pink as a section boundary reaches the
+   * top of the screen, yellow either side of it, the ground ink elsewhere.
+   * See initLogoFlash in src/scripts/topbar.ts.
+   *
+   * ON EVERYWHERE, so this is an opt-OUT. It shipped opt-in while the effect
+   * was being judged and every page wanted it in the end; a default of true
+   * is one line here rather than the same word repeated across twenty-two
+   * call sites, where the twenty-third would have been forgotten. Pass
+   * pulse={false} for a page that should not have it.
    */
   pulse?: boolean
 }
-const { cta = 'contact', pulse = false } = Astro.props
+const { cta = 'contact', pulse = true } = Astro.props
 const CTA = {
   contact: { label: 'Contact Now', note: 'Reach out to start your project' },
   meeting: { label: 'Setup a Meeting', note: 'We reply within 24 hours' },

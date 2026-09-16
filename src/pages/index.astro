@@ -379,9 +379,7 @@ const schema = [
   ogType="website"
   schema={schema}
 >
-  {/* `pulse` turns on the logo's section-change flash. Homepage only for now,
-      while the effect is being judged. */}
-  <TopBar slot="topbar" pulse />
+  <TopBar slot="topbar" />
   <NavOverlay />
 
   {/* ── 1. Header ───────────────────────────────────────────── */}
@@ -549,7 +547,7 @@ const schema = [
   {/* ── 3. Services ─────────────────────────────────────────── */}
   <Section ground="surface">
     <div class="svc">
-      <div class="svc__head">
+      <div class="svc__head" data-reveal>
         <h2 class="display">Services</h2>
         <p class="svc__intro">
           Five services carry most of the work. The other seven sit one line
@@ -570,8 +568,8 @@ const schema = [
           hover styles can reach the name and the arrow with `~`, which only
           looks forwards. */}
       <ul class="svc__list">
-        {services.map((s) => (
-          <li class="svc__row">
+        {services.map((s, i) => (
+          <li class="svc__row" data-reveal style={`transition-delay:${i * 70}ms`}>
             {/* A rule is an ELEMENT, not a border-top. A border spans the
                 row's whole box, and the box is the full 1362 even where the
                 tracks stop short of it. */}
@@ -586,7 +584,7 @@ const schema = [
         ))}
       </ul>
 
-      <div class="svc__also">
+      <div class="svc__also" data-reveal>
         <span class="svc__also-label">ALSO</span>
         <ul class="svc__also-list">
           {servicesAlso.map((s) => (
@@ -595,7 +593,7 @@ const schema = [
         </ul>
       </div>
 
-      <div class="svc__foot">
+      <div class="svc__foot" data-reveal>
         <p class="intro">
           Roars helps founders stand out with bold product design and smart
           digital solutions. We mix strategy, creativity and technology.
@@ -616,7 +614,7 @@ const schema = [
     <RingField />
 
     <div class="wrap proj__inner">
-      <div class="proj__head">
+      <div class="proj__head" data-reveal>
         <h2 class="display display--on-dark">Projects</h2>
         <p class="proj__count">4,000<span>+</span></p>
         <ul class="proj__legend">
@@ -677,7 +675,7 @@ const schema = [
       </div>
       </div>
 
-      <div class="proj__foot">
+      <div class="proj__foot" data-reveal>
         <span class="proj__stars" aria-hidden="true">
           <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
           <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
@@ -841,7 +839,7 @@ const schema = [
     <div class="faq">
       <h2 class="display">FAQ</h2>
       {/* Founder block sits in the left rail, as in the prototype. */}
-      <div class="faq__rail">
+      <div class="faq__rail" data-reveal>
         <img class="faq__avatar" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
         <p class="faq__who">Rinkesh A Shah</p>
         <p class="faq__role">CEO / Founder</p>
@@ -852,7 +850,7 @@ const schema = [
 
       <Accordion items={faq} name="home-faq" />
 
-      <div class="faq__foot">
+      <div class="faq__foot" data-reveal style="transition-delay:80ms">
         <p class="faq__ask">Didn’t find the answer? Ask us about our services!</p>
         <Button href="/contact-us/" label="Ask your Question" />
       </div>
@@ -1223,6 +1221,26 @@ const schema = [
   .svc__rule {
     position: absolute; left: 0; right: 0; top: 0;
     height: 1px; background: var(--c-rule-strong);
+  }
+  /* THE RULE DRAWS ITSELF. Each row already fades and lifts with the shared
+     [data-reveal]; the hairline above it sweeps out from the left over the
+     same beat, so the list reads as being ruled off a line at a time rather
+     than five identical blocks arriving.
+     A scaleX on a 1px line costs nothing to composite and cannot shift
+     layout.
+     `transition-delay: inherit` is doing real work: the per-row stagger is an
+     inline style on the <li>, and transition-delay does NOT inherit on its
+     own, so without this the five rules would all draw at once under five
+     rows arriving 70ms apart. Asking for it explicitly keeps the stagger
+     written in one place. */
+  .svc__row .svc__rule {
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform var(--dur-reveal) var(--ease-out);
+    transition-delay: inherit;
+  }
+  .svc__row.is-in .svc__rule { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) {
+    .svc__row .svc__rule { transform: none; transition: none; }
   }
   /* The last row closes the list, so it gets a rule under it as well as over.
      Without it the ALSO line below reads as part of the fifth service. */
