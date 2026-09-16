@@ -977,9 +977,20 @@ const schema = [
      does not mean "235 then the rest" — fr distributes proportionally, so
      235fr 1fr gives the second track 1/236th of the row and the note
      collapsed to 2px. */
+  /* 268fr, up from the export's 235fr. The export drew this column around a
+     three-character figure; the real one is "4,000" at 222px, and with the
+     plus and its gap the number needs about 250. At 235 the sign had nowhere
+     to go but on top of the note. The note's own column is unchanged — it
+     caps at 170px of text, so the 33fr comes out of slack rather than off
+     the copy. */
   .about__stat-row {
     display: grid;
-    grid-template-columns: 235fr 200fr;
+    grid-template-columns: 268fr 200fr;
+    /* A real gap, not just a wider column. Widening alone left the plus
+       ending on the exact pixel the note began — measured at 0px clearance,
+       which is touching rather than colliding and reads as a typo. The gap
+       holds whatever the figure grows to. */
+    column-gap: 24px;
     align-items: start;
     margin-top: 9.5px;
   }
@@ -1011,7 +1022,10 @@ const schema = [
        below it. */
     font-weight: var(--fw-semi); line-height: 84px;
     letter-spacing: var(--ls-display); color: var(--c-black);
-    position: relative; display: block;
+    /* inline-block, not block: the box has to shrink to the digits so the
+       suffix's `left: 100%` lands at the end of the number rather than at the
+       far edge of the grid cell. See .about__plus. */
+    position: relative; display: inline-block; white-space: nowrap;
   }
   /* The export PLACES these — + at 152,71 and % at 110,73 against a number
      that starts at 0,54 — it does not run them on after the digits. Set
@@ -1021,13 +1035,34 @@ const schema = [
      at the two renders side by side.
      letter-spacing is re-declared because it INHERITS AS A COMPUTED PX value,
      so both were carrying the number's -4.2px rather than their own. */
+  /* THE SUFFIX IS PINNED TO THE END OF THE DIGITS, not to a pixel.
+     It used to be `left: 152px` for the plus and `left: 110px` for the per
+     cent — offsets measured off whatever figures were there at the time. The
+     per cent still worked because "63" is still two digits. The plus did not:
+     the figure is "4,000" now, 222px of digits, so a plus pinned at 152px sat
+     70px INSIDE the number and printed over the final nought. It was never
+     missing, it was underneath.
+     `left: 100%` against a number box that shrinks to its own digits puts the
+     sign immediately after them whatever they say, which is what 152px was
+     trying to approximate. That is why .about__stat-num is inline-block: as a
+     block it filled the grid cell and 100% would have meant the far edge of
+     the column.
+     AND IT FLOWS, which took three goes to get right. Absolute at a fixed
+     pixel printed it over the digits. Absolute at `left: 100%` cleared the
+     digits but landed on the note in the next column, because out of flow it
+     reserves nothing. In flow it can only fit or wrap, and wrapping is ruled
+     out by nowrap on the number and a column wide enough to hold it — so the
+     one remaining outcome is the right one. */
   .about__plus, .about__pct {
-    position: absolute;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5px;
     line-height: 31px;
     letter-spacing: var(--ls-display);
   }
-  .about__plus { left: 152px; top: 17px; font-size: 36px; font-weight: var(--fw-medium); }
-  .about__pct  { left: 110px; top: 19px; font-size: 26px; font-weight: 700; }
+  .about__plus { top: 17px; font-size: 36px; font-weight: var(--fw-medium); }
+  .about__pct  { top: 19px; font-size: 26px; font-weight: 700; }
   .about__stat-note, .about__est-note {
     max-width: 170px; margin-top: 19px;
     font-size: var(--fs-body); line-height: 22px;
@@ -1799,11 +1834,11 @@ const schema = [
     .proj__legend { margin-left: 0; }
     .proj__legend li { grid-template-columns: minmax(0, 1fr) 16px; }
     .say__nav { width: auto; }
-    /* The + and the % are absolutely placed at 152,17 and 110,19 against an
-       84px numeral. Below the design grid the numeral clamps down — 123px
-       wide at 768 instead of 200 — while the offsets do not, so both signs
-       landed past the figure and on top of the note beside it. Back to being
-       the next character along, which is what they read as anyway. */
+    /* Both signs flow after the digits on desktop now, raised to the top of
+       the line. Down here the numeral clamps smaller and the line box with
+       it, so the raise is dropped and they sit on the baseline as ordinary
+       next characters — position:static also makes the desktop `top` inert,
+       which is why there is no `top: 0` to write. */
     .about__stat-num { position: static; }
     .about__plus, .about__pct {
       position: static; margin-left: 6px; line-height: normal;
@@ -1899,9 +1934,7 @@ const schema = [
       display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
       margin-top: 10px;
     }
-    /* The + and % are absolutely placed against an 84px numeral on desktop.
-       At 72px those offsets land in the middle of the digits, so they go
-       back to being what they read as: the next character along. */
+    /* Baseline rather than raised at this size, as above. */
     .about__stat-num { font-size: 72px; line-height: 72px; }
     .about__plus, .about__pct {
       position: static; margin-left: 6px; line-height: normal;

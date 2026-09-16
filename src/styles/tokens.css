@@ -173,7 +173,13 @@
   --dur-base:     620ms;
   --dur-reveal:   720ms;
   --dur-intro:   1100ms;
-  --reveal-y:      26px;
+  /* 44px, up from 26. The reveals were firing correctly — measured, all
+     thirty-two of them entered on the lower half of the viewport, which is
+     exactly where they should — but 26px of travel over 720ms is a distance
+     the eye does not register, so the page read as static while technically
+     animating. 44px is still one quiet lift and nothing else; it is the
+     amount of movement, not the kind, that changed. */
+  --reveal-y:      44px;
 
   /* ---------- Elevation (used sparingly, by design) ---------- */
   --shadow-chip: 0 1px 0 rgba(10, 10, 10, 0.06);

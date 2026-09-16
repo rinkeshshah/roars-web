@@ -128,6 +128,31 @@ const CTA = {
   /* The note retires once the page has moved. */
   .topbar.is-scrolled .topbar__note { opacity: 0; translate: 0 -12px; pointer-events: none; }
 
+  /* THE CALL TO ACTION ARRIVES. The mark does its quarter turn at 300ms and
+     this follows it in: the pill drops in at 380, the founder's face pops
+     just behind it, and the line underneath settles last. Three beats over
+     about half a second, then the block is still — the trailing dot's
+     four-second pulse in GhostButton is what keeps it alive after that, and
+     two things competing for the same corner would be one too many.
+
+     from-ONLY KEYFRAMES, with `backwards` rather than `both`. The missing
+     `to` is synthesised from the element's own computed style, so each one
+     animates to whatever it would otherwise be and stops mattering after
+     that. It has to work this way for the note: its resting opacity is 0.75
+     and it drops to 0 on scroll, and a forwards fill would have pinned it at
+     1 and killed both. */
+  .topbar__meet-row { animation: meetIn 700ms var(--ease-spring) 380ms backwards; }
+  .topbar__face     { animation: faceIn 620ms var(--ease-spring) 520ms backwards; }
+  .topbar__note     { animation: noteIn 700ms var(--ease-out) 640ms backwards; }
+
+  @keyframes meetIn { from { opacity: 0; transform: translateY(-12px); } }
+  @keyframes faceIn { from { opacity: 0; transform: scale(0.55); } }
+  @keyframes noteIn { from { opacity: 0; transform: translateY(-8px); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .topbar__meet-row, .topbar__face, .topbar__note { animation: none; }
+  }
+
   .topbar__burger {
     display: flex;
     flex-direction: column;
