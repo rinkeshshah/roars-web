@@ -1106,13 +1106,17 @@ const schema = [
     width: var(--avatar); height: var(--avatar);
     margin: 0; border-radius: var(--r-circle);
     background: rgba(153, 152, 149, 0.18);
+    display: grid; place-items: center;
   }
-  /* Not centred — the export sets the numeral at 10,8 on a 43px leading,
-     which reads slightly high and left in the disc. Centring it moved the
-     figure 33px and lost the relationship to the star mark beside it. */
+  /* CENTRED. It used to sit at 10,8 on a 43px leading, which is what the
+     export draws and which reads high and left in a 42px disc. The note that
+     kept it there said centring "lost the relationship to the star mark
+     beside it" — there is no star mark in this cluster, only four faces and
+     this count, so that reason had stopped applying. Asked for and changed.
+     line-height 1 rather than 43px: a 43px line box inside a 42px disc cannot
+     be centred in it, and the leading was half of why the figure sat low. */
   .about__team-count > span {
-    position: absolute; left: 10px; top: 8px;
-    font-size: 18px; line-height: 43px; font-weight: var(--fw-semi);
+    font-size: 18px; line-height: 1; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
 

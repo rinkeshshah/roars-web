@@ -160,9 +160,14 @@ img.is-missing { object-fit: fill; }
 a:hover [data-dots] > *,
 button:hover [data-dots] > * { animation: none; }
 
+/* THE FLOOR IS 0.35, NOT 0.15. At 0.15 the blinking dot effectively vanished,
+   so for about an eighth of every cycle the pair showed as a single dot —
+   which is what it looked like in a screenshot, and the pair reading as a pair
+   matters more than the depth of the dip. 0.35 with the shrink still landing
+   at 0.7 is plainly a blink and never an absence. */
 @keyframes dotBlink {
   0%, 26%, 100% { opacity: 1; scale: 1; }
-  13%           { opacity: 0.15; scale: 0.7; }
+  13%           { opacity: 0.35; scale: 0.7; }
 }
 
 @media (prefers-reduced-motion: reduce) {
