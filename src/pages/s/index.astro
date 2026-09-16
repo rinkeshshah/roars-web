@@ -197,7 +197,24 @@ const schema = [
     font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.6);
   }
-  .hf__list a:hover b { color: rgb(90, 90, 90); }
+  /* THE WHOLE ROW ANSWERS, and it answers by getting STRONGER.
+     It used to take the name from #242424 to rgb(90,90,90) and nothing else,
+     so hovering a full-width row dimmed one word. That is the wrong
+     direction: a hover means "this one", not "not this one". Now the name
+     keeps its ink and steps 6px right, the line under it comes up out of 60%
+     grey, and the row's own rule takes the accent. The same three moves as
+     the homepage industry cards, for the same reason — the accent is a line
+     here, never a fill. */
+  .hf__list li { transition: border-color var(--dur-fast) ease; }
+  .hf__list span { transition: color var(--dur-fast) ease; }
+  .hf__list b { transition: color var(--dur-fast) ease, translate var(--dur-fast) var(--ease-out); }
+  .hf__list li:hover { border-bottom-color: var(--c-accent); }
+  .hf__list a:hover b { translate: 6px 0; }
+  .hf__list a:hover span { color: var(--c-ink-body); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hf__list a:hover b { translate: none; }
+  }
 
   @media (max-width: 1040px) {
     .hb__inner { padding-block: 130px 72px; }

@@ -117,9 +117,12 @@ const schema = [{
 
   {/* ── The desk strip ─────────────────────────────────────── */}
   <Section ground="dark">
+    {/* Staggered across the strip rather than one reveal on the whole row.
+        The cells are a grid of key/value pairs and they read better arriving
+        left to right than as a single black bar appearing at once. */}
     <ul class="cd">
-      {d.desk.map((x) => (
-        <li class="cd__item">
+      {d.desk.map((x, i) => (
+        <li class="cd__item" data-reveal style={`transition-delay:${i * 60}ms`}>
           <span class="cd__k">{x.k}</span>
           <span class="cd__v">{x.v}</span>
         </li>

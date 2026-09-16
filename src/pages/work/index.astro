@@ -169,9 +169,13 @@ const schema = [
     <div class="wf">
       <span class="w-rule" aria-hidden="true"></span>
       <span class="w-eyebrow">ALL PROJECTS / {LISTED_PROJECTS.length}</span>
+      {/* This band held no motion at all — three reveals on the whole page and
+          every one of them in the header, so eleven project cards arrived
+          dead. Same stagger the homepage lists use, capped at six steps so
+          the eleventh card is not still waiting 700ms after the first. */}
       <ul class="wf__rows">
-        {LISTED_PROJECTS.map((p) => (
-          <li>
+        {LISTED_PROJECTS.map((p, i) => (
+          <li data-reveal style={`transition-delay:${Math.min(i, 5) * 70}ms`}>
             <a href={`/work/${p.slug}/`}>
               {/* Day and month only. The year moved onto the card beside the
                   star, and printing it in both places on the five projects

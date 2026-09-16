@@ -177,7 +177,11 @@ const schema = [
       {/* An 880px yellow panel bled to the left edge, the form on the white
           beside it. The panel is the only yellow ground below the homepage
           hero, which is what makes the form the loudest thing on the page. */}
-      <div class="cs__panel">
+      {/* The band had no motion at all — the yellow panel and the form both
+          landed without moving. The panel lifts, the form follows it a beat
+          later, and nothing inside the form animates: a field that fades in
+          under a cursor already in it is a nuisance, not a flourish. */}
+      <div class="cs__panel" data-reveal>
         <GrainField tone="yellow" second />
         <div class="cs__panel-in">
           <span class="cs__eyebrow">Enquiry</span>
@@ -202,7 +206,7 @@ const schema = [
         </div>
       </div>
 
-      <div class="cs__form-wrap">
+      <div class="cs__form-wrap" data-reveal style="transition-delay:110ms">
         <span class="cs__form-label">Leave us a quick message.</span>
 
         <form class="cf" action="/api/contact.php" method="post" data-contact-form>

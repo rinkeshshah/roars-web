@@ -156,7 +156,22 @@ const schema = [
     letter-spacing: 0.1em; text-transform: uppercase; color: rgba(20, 20, 20, 0.5);
   }
   .hs__proof--none { color: rgba(20, 20, 20, 0.28); text-transform: none; letter-spacing: var(--ls-item); font-weight: var(--fw-medium); }
-  .hs__list a:hover .hs__name { color: rgb(90, 90, 90); }
+  /* THE WHOLE ROW ANSWERS, and it answers by getting STRONGER. It used to
+     take the name to rgb(90,90,90) and nothing else — one word dimming on a
+     full-width row, which reads as the row going away rather than coming
+     forward. The name keeps its ink and steps 6px right, the number comes up
+     to full, and the row's top rule takes the accent. Matches the homepage
+     industry cards and the /s/ list, so all three behave alike. */
+  .hs__list li { transition: border-color var(--dur-fast) ease; }
+  .hs__n { transition: color var(--dur-fast) ease; }
+  .hs__name { transition: color var(--dur-fast) ease, translate var(--dur-fast) var(--ease-out); }
+  .hs__list li:hover { border-top-color: var(--c-accent); }
+  .hs__list a:hover .hs__name { translate: 6px 0; }
+  .hs__list a:hover .hs__n { color: var(--c-ink-heading); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hs__list a:hover .hs__name { translate: none; }
+  }
 
   @media (max-width: 1040px) {
     .hb__inner { padding-block: 130px 72px; }

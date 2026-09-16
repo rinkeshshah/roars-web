@@ -385,8 +385,13 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
         <div class="isf" data-tabs>
           <span class="isf__tick" aria-hidden="true"></span>
           <span class="i-eyebrow">{d.surfaces.label}</span>
-          <h2 class="isf__h">{d.surfaces.heading}</h2>
-          {d.surfaces.sub && <p class="isf__sub">{d.surfaces.sub}</p>}
+          {/* The only band on this page with no motion in it. The heading and
+              its line lift in; the tab strip and its panels do NOT, because
+              the panels are switched by the tabs island and a reveal on a
+              hidden panel never intersects, so it would stay at opacity 0
+              until the panel was opened and then snap. */}
+          <h2 class="isf__h" data-reveal>{d.surfaces.heading}</h2>
+          {d.surfaces.sub && <p class="isf__sub" data-reveal style="transition-delay:70ms">{d.surfaces.sub}</p>}
 
           <div class="isf__tabs" role="tablist" aria-label={d.surfaces.heading}>
             {d.surfaces.tabs.map((t, i) => (
