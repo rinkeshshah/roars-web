@@ -53,7 +53,7 @@ surfaces:
   # wellness and healthcare that belongs to neither. The types have their own
   # band now; this is the five feature panels production names, which is what
   # a band headed "features" should contain.
-  sub: "The five panels a concierge product is actually made of"
+  sub: "The five panels a concierge product is made of"
   tabs:
     - n: "01"
       name: "Customer panel"

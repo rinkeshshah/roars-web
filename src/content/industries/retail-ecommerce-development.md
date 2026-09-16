@@ -10,13 +10,13 @@ headline:
 standfirst: "Retail and eCommerce app development"
 hero:
   statement: "Reach your customers with top-notch digital store experiences!"
-  sub: "We deliver unmatched and engaging shopping experiences that are innovative and customised according to your business…"
+  sub: "Engaging shopping experiences, innovative and built around your business."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "eCommerce app development, end to end"
-  intro: "Reach your customers with top-notch digital store experiences!"
+  intro: "Catalogue, checkout, and the drop-off between them, which is where the money is."
   moments:
     - n: "01"
       name: "Retail & eCommerce"
@@ -24,7 +24,7 @@ journey:
       tags: ["RETAIL", "ECOMMERCE"]
     - n: "02"
       name: "Custom eCommerce"
-      lead: "We use a wide range of technologies to develop brand-new eCommerce apps/stores so that…"
+      lead: "New eCommerce apps and stores, built on the right technology for you."
       body: "Leverage our expertise and build eCommerce storefronts, online shopping carts, plug-ins, and more as per your business needs."
       tags: ["CUSTOM", "ECOMMERCE"]
     - n: "03"
@@ -33,7 +33,7 @@ journey:
       tags: ["RETAIL", "SOFTWARE"]
     - n: "04"
       name: "Mobile commerce"
-      lead: "We have top-of-the-line expertise in delivering secure"
+      lead: "Secure, scalable mobile commerce, from shopping list to checkout."
       body: "Right from shopping list application to in-store navigation application, mobile payment solution, and product tracking application, we help you transform your digital journey."
       tags: ["MOBILE", "COMMERCE"]
     - n: "05"
@@ -42,37 +42,47 @@ journey:
       tags: ["OUR", "EXPERTISE"]
     - n: "06"
       name: "E-commerce portals"
-      lead: "Develop e-commerce portals & apps that help users browse the products online and quickly…"
+      lead: "Portals and apps that help shoppers find the right product quickly."
       body: "Creating such kind of web applications will also let you set up, sell, ship, and market the products from the online store itself."
       tags: ["E-COMMERCE", "PORTALS"]
 surfaces:
   label: "CAPABILITIES"
   heading: "eCommerce app features"
-  sub: "what else we bring"
+  sub: "Five things a store needs behind the storefront"
   tabs:
     - n: "01"
       name: "Inventory"
-      heading: "Inventory management systems"
+      heading: "Inventory management"
       points:
-        - "Automate your store operations like warehouse management…"
-        - "and give a fantastic approach to inventory management for…"
+        - "Automate warehousing, accounts, payroll and shipments"
+        - "Bring order to the inventory itself"
     - n: "02"
-      name: "Retail point sales"
-      heading: "Retail point of sales applications"
+      name: "Retail POS"
+      heading: "Retail point of sale"
       points:
-        - "With in-depth knowledge in the retail industry, we make…"
+        - "Point of sale built around your customers' needs"
+        - "The data to inform a business decision"
     - n: "03"
       name: "Digital"
-      heading: "Digital transformation solutions"
+      heading: "Digital transformation"
       points:
-        - "Enhance your digital transformation journey with our…"
-        - "Whether you want multi-store development, sales forecasting…"
+        - "Multi-store builds and sales forecasting"
+        - "Marketing automation, in the same place"
+        - "Product and business analytics"
     - n: "04"
-      name: "Custom ecommerce"
-      heading: "Custom ecommerce integrations"
+      name: "Integrations"
+      heading: "eCommerce integrations"
       points:
-        - "We can help you integrate eCommerce integrations like CRM…"
-        - "to use the data and make the right decision in automating…"
+        - "CRM, ERP, social, payment gateway and admin"
+        - "Automated marketing, upselling and segmentation"
+    # Fifth tab, new. Production names eCommerce chatbots as its own topic and
+    # this page did not carry it.
+    - n: "05"
+      name: "Chatbots"
+      heading: "eCommerce chatbots"
+      points:
+        - "AI chatbots that track an order end to end"
+        - "Manage a profile and take a payment"
 proof:
   label: "PROOF"
   heading: "Practised since 2005"

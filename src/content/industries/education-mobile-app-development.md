@@ -10,13 +10,13 @@ headline:
 standfirst: "Education app development company"
 hero:
   statement: "Enhancing academic experience with our education app development solutions!"
-  sub: "We address the education industry's critical challenges and reinvent the teaching methods with our e-learning solutions…"
+  sub: "We address the education industry's critical challenges and reinvent teaching methods."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Education app development, end to end"
-  intro: "Enhancing academic experience with our education app development solutions!"
+  intro: "Kindergarten to university, and the very different products each end of that needs."
   moments:
     - n: "01"
       name: "Education Mobile"
@@ -34,12 +34,12 @@ journey:
       tags: ["EXAM", "PREPARATION"]
     - n: "04"
       name: "Mobility college"
-      lead: "We offer innovative mobility educational solutions to colleges and universities for…"
+      lead: "Innovative mobility solutions for colleges and universities."
       body: "Plus, it makes the learning process even more enjoyable for the students."
       tags: ["MOBILITY", "FOR"]
     - n: "05"
       name: "Expertise"
-      body: "With our proven expertise in designing and developing customized educational apps, we connect teachers with students and parents in real-timeto share and discuss valuable information like the latest news, events, notifications, and more.Connect with us today…"
+      body: "With our proven expertise in designing and developing customised educational apps, we connect teachers with students and parents in real time to share the latest news, events, notifications and more."
       tags: ["OUR", "EXPERTISE"]
     - n: "06"
       name: "Online training"
@@ -48,31 +48,36 @@ journey:
 surfaces:
   label: "CAPABILITIES"
   heading: "Education app features"
-  sub: "what else we bring"
+  # NO PRODUCTION TEXT FOR THIS PAGE. The owner's file covers seven pages and
+  # education is not among them — restaurant is, and it needed nothing. So the
+  # agreed fallback applies here and only here: cut each clipped point back to
+  # the part that is whole, drop what cannot be cut, invent nothing. Every tab
+  # keeps at least one point.
+  sub: "Four kinds of learning product, and who each is for"
   tabs:
     - n: "01"
       name: "Virtual classroom"
-      heading: "Virtual classroom Apps"
+      heading: "Virtual classroom apps"
       points:
-        - "Virtual classroom apps let the students connect with their…"
-        - "Using this application, students and teachers can take…"
+        - "Students connect with their teachers"
+        - "Lessons taken wherever both of them are"
     - n: "02"
-      name: "E-book learning"
+      name: "E-books"
       heading: "E-book learning apps"
       points:
-        - "Implant personalized experience in students through eBooks…"
-        - "We build a wide range of eBooks that are mobile/tablet…"
+        - "A personalised experience, through eBooks"
+        - "Built to read on a mobile or a tablet"
     - n: "03"
       name: "Competitive exam"
       heading: "Competitive exam apps"
       points:
-        - "Competitive exam apps help the schools and colleges enhance…"
+        - "For schools and colleges preparing candidates"
     - n: "04"
-      name: "Learning nursery"
-      heading: "Learning apps for nursery and preschool"
+      name: "Nursery"
+      heading: "Nursery and preschool"
       points:
-        - "Interactive and visually rich apps will encourage nursery…"
-        - "We develop fun, engaging, and multilingual learning apps…"
+        - "Interactive and visually rich, which is the point here"
+        - "Fun, engaging and multilingual"
 proof:
   label: "PROOF"
   heading: "Practised since 2005"

@@ -528,28 +528,34 @@ for (const abs of proseFiles) {
    * anybody counted them, because each one looks like a deliberate trailing
    * ellipsis until you read it.
    *
-   * WARNING, NOT ERROR, AND ONLY FOR NOW. Every one outside src/content/
-   * industries has been repaired; the remaining 87 are on the eight Elementor
-   * industry pages, and the Elementor export they were clipped from is not in
-   * this repository, so there is nothing here to restore them from. Making
-   * this fatal today would block the launch build on content that cannot be
-   * written from inside the build. It prints a count on every run instead, and
-   * it becomes an error in the same change that fixes the last one.
+   * FATAL NOW. It was a warning with a count while the ninety were being
+   * worked through, because the copy to restore them from lived outside this
+   * repository. All ninety are done, so it stops counting and starts refusing.
    *
-   * THREE ARE DELIBERATE and are warned about anyway: "RUNNING EVALS…" and
-   * "The other 80% just… happens." on the AI page, and a quoted interface
-   * string in one journal post. They are not exempted by a list here, because
-   * a list of allowed ellipses is a thing that goes stale silently and this
-   * whole rule exists because of something that went stale silently. Three
-   * known warnings is cheaper than an allowlist nobody maintains.
+   * TERMINAL VERSUS QUOTED, NOT AN ALLOWLIST. A truncation is always at the
+   * END of the string, because that is what a character cap does, and the only
+   * thing after it is the YAML quote that closes the value. Two shapes are
+   * deliberate and neither needs naming:
+   *
+   *   mid-sentence   "The other 80% just… happens."   words follow it
+   *   inside a quote  like “You see this because…”    a CURLY quote closes it,
+   *                                                   which means the ellipsis
+   *                                                   is part of the thing
+   *                                                   being quoted
+   *
+   * So the test is where the ellipsis sits and what closes it, not a list of
+   * blessed lines. An allowlist of permitted ellipses is exactly the kind of
+   * thing that goes stale in silence, and this rule exists because of
+   * something that went stale in silence.
    */
+  const TRUNCATED = /…\s*"?\s*$/
   const lines = text.split('\n')
   for (let i = 0; i < lines.length; i++) {
-    if (!lines[i].includes('…')) continue
-    warnings.push({
+    if (!TRUNCATED.test(lines[i])) continue
+    errors.push({
       file: `${rel}:${i + 1}`,
       rule: 'truncated copy',
-      msg: `sentence cut by the migration's character cap: ...${lines[i].split('…')[0].slice(-52).trim()}[...]`,
+      msg: `sentence cut by the migration's character cap: ...${lines[i].split('…').slice(-2)[0].slice(-52).trim()}[...]`,
     })
   }
 }

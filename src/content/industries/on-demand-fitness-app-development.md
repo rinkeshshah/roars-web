@@ -10,13 +10,13 @@ headline:
 standfirst: "Fitness app development company"
 hero:
   statement: "Design and develop fitness apps that users, trainers, dietitians, and admins like!"
-  sub: "Right from out-of-shape to ripped model, we help you build fitness apps that allow users to stay fit and reach their…"
+  sub: "From out of shape to race ready, apps that help people reach their fitness goals."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Fitness app development, end to end"
-  intro: "Design and develop fitness apps that users, trainers, dietitians, and admins like!"
+  intro: "Four audiences in one product: the member, the trainer, the dietitian and the admin."
   moments:
     - n: "01"
       name: "Fitness"
@@ -32,7 +32,7 @@ journey:
       tags: ["SOCIAL", "INTEGRATION"]
     - n: "04"
       name: "Wearable"
-      lead: "Give a fantastic user experience along with real-time fitness tracking through…"
+      lead: "Real-time fitness tracking through smartwatches, as the user trains."
       body: "With our proven expertise in wearable integration, we provide personalized information to end-users in real-time."
       tags: ["WEARABLE", "TECHNOLOGY"]
     - n: "05"
@@ -42,38 +42,46 @@ journey:
       tags: ["OUR", "EXPERTISE"]
     - n: "06"
       name: "Fitness tracker"
-      lead: "We develop best-in-class customized fitness tracker apps to help users monitor their…"
+      lead: "Custom fitness trackers that let users count what they eat and what they burn."
       body: "With in-built features, users can calculate the calories intake & burnt, count steps walked, and do other fitness activities through a robust, feature-rich, and high-performing application."
       tags: ["FITNESS", "TRACKER"]
 surfaces:
   label: "CAPABILITIES"
   heading: "Fitness app features"
-  sub: "what else we bring"
+  sub: "Five kinds of fitness app, and what each is really for"
   tabs:
     - n: "01"
-      name: "Healthy recipe"
+      name: "Recipe finder"
       heading: "Healthy recipe finder"
       points:
-        - "You can let your users know what recipe would be the best…"
-        - "Apart from that, you can also let customers know about…"
+        - "Suggests the best meals for each user"
+        - "Names the vitamins and supplements each one provides"
     - n: "02"
       name: "Home workout"
       heading: "Home workout app"
       points:
-        - "Through hi-tech home workout apps, you can pre-store…"
-        - "Develop such kind of app with advanced technologies and…"
+        - "Pre-stored workout videos, ready when they are"
+        - "Reminders to train, and personalised plans"
     - n: "03"
-      name: "Yoga & meditation"
-      heading: "Yoga & meditation app"
+      name: "Yoga"
+      heading: "Yoga and meditation app"
       points:
-        - "Leverage our expertise to build a high-performing and…"
-        - "We integrate it with multiple features so that users can…"
+        - "Built for looking after mental health, not just muscle"
+        - "The features that beat what is already in the stores"
     - n: "04"
       name: "Diet planner"
       heading: "Diet planner app"
       points:
-        - "Provide a personalized diet chart to your users through a…"
-        - "Also, users can calculate dietary food values, count…"
+        - "Diet charts that meet each user's nutritional needs"
+        - "Check food values and count calories"
+    # Fifth tab, new. Production names the personal trainer app as its own
+    # topic and this page did not carry it.
+    - n: "05"
+      name: "Personal trainer"
+      heading: "Personal trainer app"
+      points:
+        - "Audio and video tutorials, using AI and machine learning"
+        - "Goal setting and progress tracking"
 proof:
   label: "PROOF"
   heading: "Practised since 2005"
@@ -91,7 +99,7 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "GymBait"
-    body: "Give a fantastic user experience along with real-time fitness tracking through smartwatches."
+    body: "GymBait saw a chance to use AI in a gym and fitness app built for the UK market, tackling the usual frustrations with personalised plans, progress tracking and flexible workouts."
     href: "/work/gymbait/"
     ctaLabel: "View Project"
 sectors:
@@ -176,10 +184,14 @@ failures:
 cases:
   label: "WHAT WE HAVE BUILT HERE"
   items:
-    - client: "GymBait.AI"
-      situation: "A fitness business asking whether coaching could reach a member at the moment it mattered rather than at their next session."
-      did: "Built a nudge that learns from how a member actually trains, with a coach reviewing what goes out rather than a model sending it unattended."
-      href: "/work/gymbait/"
+    # GymBait was here AND the featured card below, so it appeared twice while
+    # Go Champions Go appeared nowhere — production had it linked from the
+    # healthcare page, which is not where a steps-tracking app belongs. GymBait
+    # stays featured; these two slots go to the other two fitness projects.
+    - client: "Go Champions Go"
+      situation: "A corporation trying to raise employee health and its happiness index, with no way to see whether anything was working."
+      did: "Built the steps tracker around a leaderboard target, so the daily number has something to be for rather than just being recorded."
+      href: "/work/go-champions-go/"
     - client: "FlowRow"
       situation: "People signed up in good numbers and stopped opening the app somewhere in the first fortnight."
       did: "Rebuilt the opening around one session worth doing rather than around a profile, a plan and a goal."

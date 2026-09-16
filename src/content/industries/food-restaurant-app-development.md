@@ -43,7 +43,12 @@ hero:
     footnote: "BUILT BY ROARS"
 journey:
   label: "THE JOURNEY"
-  heading: "Restaurant app development, end to end"
+  # NOT renamed to "Restaurant app development, end to end" like the other
+  # eight. This one is the page's own concept: the band is one order moving
+  # through six moments, and "one order" is what the six numbered steps below
+  # it are. The generic rule would have swapped an idea for a keyword. Owner's
+  # call, 16 Sep. The features band keeps its rename.
+  heading: "One order, end to end"
   intro: "A restaurant is not one app. It is six moments that have to agree with each other."
   note: "We design and build the surfaces each moment needs, and the plumbing that keeps them in step."
   moments:
@@ -118,6 +123,29 @@ surfaces:
         - "Staff rota and delivery SLAs"
         - "Multi-outlet in one view"
       note: "ALL OUTLETS, ONE DASHBOARD"
+types:
+  label: "THE KINDS WE BUILD"
+  heading: "Types of restaurant app we build"
+  intro: "Six products behind the one order, depending on which part of the business you are fixing."
+  items:
+    - n: "01"
+      name: "Restaurant finder"
+      body: "Helps customers find the best restaurants nearby by menu, reviews, location, opening hours and contact details, matched to their tastes by location."
+    - n: "02"
+      name: "Restaurant web portal"
+      body: "Responsive web design that matches the restaurant's own theme, so a customer gets the right feel before they arrive."
+    - n: "03"
+      name: "Table booking"
+      body: "Guests book a table in advance and skip the queue, with the menu, the prices and the reviews shown while they book."
+    - n: "04"
+      name: "Loyalty programme"
+      body: "Rewards regulars with free meals, discounts and points on every order, delivered by push notifications so they come back."
+    - n: "05"
+      name: "Coupons and deals"
+      body: "Discounts by area, category and menu that drive more visits and give your best customers a reason to stay."
+    - n: "06"
+      name: "Restaurant management"
+      body: "Waiter tools and back of house together: confirm or change an order, handle several tables, generate a bill and see what a customer usually orders."
 proof:
   label: "PROOF"
   heading: "Practised since 2005"

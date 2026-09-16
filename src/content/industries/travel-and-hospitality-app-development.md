@@ -10,7 +10,7 @@ headline:
 standfirst: "Travel and hospitality app development"
 hero:
   statement: "We leverage innovative technology advancement to transform travel and hospitality."
-  sub: "Overcome all your software technology challenges and take your travel and hospitality business ideas to the next level…"
+  sub: "Overcome your software challenges and take your travel business further."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
@@ -20,7 +20,7 @@ journey:
   moments:
     - n: "01"
       name: "Travel Hospitality"
-      lead: "We specialize in catering to high-tech mobility solutions for the travel and hospitality…"
+      lead: "High-tech mobility solutions for travel and hospitality businesses."
       body: "Our developed Travel and hospitality solutions will help you stay ahead in the business competitively and make your brand a travel partner every time."
       tags: ["TRAVEL", "AND"]
     - n: "02"
@@ -49,29 +49,40 @@ journey:
 surfaces:
   label: "CAPABILITIES"
   heading: "Hospitality app features"
-  sub: "what else we bring"
+  sub: "Five more things a travel product is asked for"
   tabs:
     - n: "01"
-      name: "On-demand vehicle"
-      heading: "On-demand vehicle booking solutions"
+      name: "On-demand"
+      heading: "On-demand vehicle booking"
       points:
-        - "Design and develop an application that offers best-in-class…"
+        - "Book a vehicle on demand, simply"
+        - "Reliably enough to be used on the day"
     - n: "02"
-      name: "Vehicle rental"
-      heading: "Vehicle rental booking solutions"
+      name: "Rental"
+      heading: "Vehicle rental booking"
       points:
-        - "Leverage our expertise in building inter-city and…"
+        - "Intercity and international rental networks"
+        - "Book the vehicle in advance"
     - n: "03"
       name: "CRM"
-      heading: "CRM solutions"
+      heading: "CRM"
       points:
-        - "Whether you are in the hotel industry or in the travel…"
+        - "For hotels and travel companies alike"
+        - "Customer data that powers personalised service"
     - n: "04"
-      name: "GDS Integration"
-      heading: "GDS Integration"
+      name: "GDS"
+      heading: "GDS integration"
       points:
-        - "Offer your customers a competitive pricing choice by…"
-        - "We help you build such kind of solutions using GDS (Global…"
+        - "Custom work against global distribution system APIs"
+        - "Competitive pricing, offered to the customer"
+    # Fifth tab, new. Virtual tours is a production topic this page did not
+    # carry at all.
+    - n: "05"
+      name: "Virtual tours"
+      heading: "Virtual tours"
+      points:
+        - "VR tours of a destination or a hotel"
+        - "Explored from home, before anything is booked"
 proof:
   label: "PROOF"
   heading: "Practised since 2005"
@@ -89,7 +100,7 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "ONUS"
-    body: "We have top-of-the-line expertise in developing an online booking management system, integrated with operators and travel agencies software."
+    body: "An eCommerce logistics provider using digital software to handle a wide range of package delivery and travel needs."
     href: "/work/onus/"
     ctaLabel: "View Project"
 sectors:
@@ -174,10 +185,17 @@ failures:
 cases:
   label: "WHAT WE HAVE BUILT HERE"
   items:
-    - client: "ONUS"
-      situation: "A travel and hospitality operation that needed its product to hold up away from a desk and away from a good connection."
-      did: "Designed for the disruption rather than the booking, so the product is most useful at the point the plan stops working."
-      href: "/work/onus/"
+    # ONUS was here AND the featured card below, so it appeared twice. It stays
+    # featured; this slot goes to Community Social, the other travel case
+    # production links.
+    #
+    # Production links a third, /work/the-revolver-life-concierge-app/. It is
+    # NOT in docs/URL-INVENTORY.csv and does not build, so it is not linked
+    # here. CLAUDE.md rule 1: the inventory is the authority on what a URL is.
+    - client: "Community Social"
+      situation: "Residents with no reliable way to keep track of what was actually happening in their own community."
+      did: "Put notices, bookings and the day-to-day admin behind one product, so the answer is in one place rather than four group chats."
+      href: "/work/community-social-residential-community-app/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for travel and hospitality clients"

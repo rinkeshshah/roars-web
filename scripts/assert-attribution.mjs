@@ -79,6 +79,21 @@ export const ATTRIBUTIONS = [
     problem:
       'also on the about-us team list; same question. Spelling may also be "Khushboo".',
   },
+  {
+    name: 'Elena Elraie',
+    company: 'Lametus',
+    where: 'work/parqly-parking-solution testimonial',
+    source:
+      'two independent records. The quote is on the live Parqly page, verbatim, in ' +
+      'scripts/wordpress-export/work/out/parqly-parking-solution.json. The person, role and ' +
+      "company come from the owner's own testimonials export (SocialJuice, five stars, Cyprus).",
+    /* Recorded rather than resolved. The company on the record is Lametus and
+       the page is Parqly. Parqly is Cyprus-based and its mockups use "Elena's
+       Car", so they are very likely the same engagement — but the role prints
+       what the record says, not what would look tidier, and the owner has been
+       asked to confirm the relationship. */
+    note: 'role prints as "Digital Consultant, Lametus"; Parqly link not yet owner-confirmed',
+  },
 ]
 
 const unverified = ATTRIBUTIONS.filter((a) => !a.source)

@@ -10,13 +10,13 @@ headline:
 standfirst: "Healthcare app development company"
 hero:
   statement: "Bring Healthcare to Your Fingertips with our well-built solutions!"
-  sub: "We have years of experience in developing integrated healthcare mobile applications physician platforms, and a lot more…"
+  sub: "Years of experience building integrated healthcare apps, physician platforms and more."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Healthcare app development, end to end"
-  intro: "Bring Healthcare to Your Fingertips with our well-built solutions!"
+  intro: "Four things a healthcare build has to get right before any of it reaches a patient."
   moments:
     - n: "01"
       name: "Medical Practice"
@@ -29,16 +29,16 @@ journey:
       tags: ["PATIENT", "MANAGEMENT"]
     - n: "03"
       name: "Hospital"
-      body: "With healthcare app development services and the use of the Hospital and Clinic Information System, we assist the healthcare professionals to streamline various financial, operational, clinical, etc., activities and can help you streamline the existing…"
+      body: "Using hospital and clinic information systems, we help healthcare professionals streamline financial, operational and clinical activities and improve their existing workflows."
       tags: ["HOSPITAL", "MANAGEMENT"]
     - n: "04"
       name: "Cloud"
-      body: "Being the best-in-class medical apps development company We offer cloud-based solutions like AWS Managed Services, AWS professional services, DevOps Services and a lot more to make it easier for the healthcare professionals to solve their challenges with a…"
+      body: "We build cloud-based solutions, including AWS managed and professional services and DevOps, so healthcare teams can solve their technical challenges with less effort."
       tags: ["CLOUD", "BASED"]
     - n: "05"
       name: "Expertise"
-      lead: "Being the prominent healthcare app development company USA"
-      body: "Connect with us today to get into the market with a well-developed"
+      lead: "Our healthcare app developers have served organisations of every size."
+      body: "From applications through to wearable devices. Start with a well-built healthcare MVP and keep improving it from there."
       tags: ["OUR", "EXPERTISE"]
     # "HIPAA Compliant" as a capability name read as a certification we hold.
     # We build to the requirements; the covered entity is the one who is
@@ -52,32 +52,48 @@ journey:
 surfaces:
   label: "CAPABILITIES"
   heading: "Healthcare app features"
-  sub: "what else we bring"
+  # points are capped at 60 characters, which is what the migration extractor
+  # was cutting against when it left nine of these mid-clause. Restored from
+  # the production copy and written to fit the slot rather than overflow it.
+  sub: "Five kinds of healthcare product, and what each is for"
   tabs:
     - n: "01"
       name: "Wellness"
-      heading: "Wellness Apps"
+      heading: "Wellness apps"
       points:
-        - "Wellness apps are growing in popularity as they help people…"
-        - "However, not all wellness apps are made in the same manner."
-        - "We have expertise in developing state of the art wellness…"
+        - "Growing fast, because they help people live healthier"
+        - "Not all of them are built the same way"
+        - "Towards the goal, without physical or mental risk"
     - n: "02"
       name: "Medical"
-      heading: "Medical Apps"
+      heading: "Medical apps"
       points:
-        - "Mobile health care apps and Medical app development are a…"
-        - "Being the pioneer medical software development company, we…"
+        - "History, symptoms and medical reference in one place"
+        - "Built for the doctor and the provider, not the patient"
     - n: "03"
       name: "Remote Healthcare"
-      heading: "Remote Healthcare"
+      heading: "Remote healthcare"
       points:
-        - "Remote healthcare includes various healthcare apps…"
+        - "Apps and connected equipment, linked to the provider"
+        - "Clinicians, nurses and family stay up to date"
     - n: "04"
-      name: "Health Connectivity"
-      heading: "Health Connectivity"
+      name: "Connectivity"
+      # Production's health connectivity block is garbled. Replacement wording
+      # supplied by the owner, 16 Sep.
+      heading: "Health connectivity"
       points:
-        - "This is the platform that is making healthcare and supports…"
-        - "Most people today generally do not get the time for proper…"
+        - "Care available anytime, from anywhere"
+        - "Closes the gap for the people who skip check-ups"
+    # Fifth tab, new. Production names health monitoring as its own topic and
+    # our page did not carry it at all. The cap on surfaces.tabs went from four
+    # to five for the concierge features band, which is what makes room.
+    - n: "05"
+      name: "Monitoring"
+      heading: "Health monitoring"
+      points:
+        - "Finds workers at risk of occupational illness"
+        - "Toxicity guidance for hazardous gases and chemicals"
+        - "Recommended ways to keep the workspace safe"
 proof:
   label: "PROOF"
   heading: "Practised since 2005"
@@ -95,7 +111,7 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "GISAID OSS"
-    body: "Being the best-in-class medical apps development company We offer cloud-based solutions like AWS Managed Services, AWS professional services, DevOps Services…"
+    body: "We built a tool that gives GISAID's internal team access to one of the largest COVID-19 databases in the world, using the NCBI API to pull data from sources worldwide."
     href: "/work/gisaid-health-tech/"
     ctaLabel: "View Project"
 sectors:

@@ -9,31 +9,31 @@ headline:
   large: "saas"
 standfirst: "SaaS application development services"
 hero:
-  statement: "cloud-based SaaS applications"
-  sub: "We can help you develop feature-rich to bootstrap your business!"
+  statement: "Feature-rich cloud-based SaaS applications that get your business off the ground."
+  sub: "Secure, scalable, custom SaaS development."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "SaaS app development, end to end"
-  intro: "cloud-based SaaS applications"
+  intro: "Four stages of building cloud-based SaaS applications, from the first architecture decision to the data coming back out."
   moments:
     - n: "01"
       name: "SaaS"
       body: "Our end-to-end approach to SaaS development services can help you build industry-leading software-as-a-service applications that offer significant benefits over traditional application development."
       tags: ["OUR", "SAAS"]
     - n: "02"
-      name: "SaaS application"
-      lead: "Scale and grow your business by handling multiple real-time requests through custom SaaS…"
+      name: "Build"
+      lead: "Custom SaaS applications that handle many real-time requests as you grow."
       body: "We deliver eye-catching UX/UI, reliable cloud infrastructure, quality coding, etc., for a better user-friendly app experience."
       tags: ["SAAS", "APPLICATION"]
     - n: "03"
-      name: "Saas application"
-      lead: "Deliver intuitive and fast user-experience through your SaaS application by overcoming…"
+      name: "Optimisation"
+      lead: "Fast, intuitive SaaS that overcomes latency, congestion and low bandwidth."
       body: "Get in touch with us to optimize your SaaS application and get maximum returns out of it."
       tags: ["SAAS", "APPLICATION"]
     - n: "04"
-      name: "Saas application"
+      name: "Design"
       lead: "Meet the desired expectations through SaaS-based application design solutions."
       body: "We focus on designing the workflows, core architecture, and user movement mapping, so it becomes ready to be used on a mass scale without any laws in the framework."
       tags: ["SAAS", "APPLICATION"]
@@ -43,38 +43,59 @@ journey:
       tags: ["OUR", "CORE"]
     - n: "06"
       name: "SaaS consulting"
-      lead: "We provide SaaS app development consulting services to help organizations right from…"
+      lead: "We help organisations plan and deliver their SaaS roadmap."
       body: "Also, we help them identify the right technology, methodology, cloud hosting platform, and more for a smooth SaaS app development process."
       tags: ["SAAS", "APP"]
 surfaces:
   label: "CAPABILITIES"
   heading: "SaaS app features"
-  sub: "what else we bring"
+  # THIS BAND WAS SCRAMBLED ON PRODUCTION AND THE MIGRATION COPIED THE SCRAMBLE.
+  # Headings and bodies were shifted by one slot, one heading read "Medical
+  # Apps", and three of the four bodies were healthcare copy: wellness apps,
+  # remote healthcare, health connectivity, none of which is a SaaS topic.
+  # Rebuilt to the corrected mapping the owner supplied, 16 Sep. "Medical Apps"
+  # and "Health Monitoring" are gone from this page entirely.
+  sub: "Four things we get asked for after the first release"
   tabs:
     - n: "01"
       name: "Multi-tenant"
-      heading: "Multi-tenant architecture upgrade"
+      heading: "Multi-tenant architecture"
       points:
-        - "Wellness apps are growing in popularity as they help people…"
-        - "However, not all wellness apps are made in the same manner."
-        - "We have expertise in developing state of the art wellness…"
+        - "Upgrade an existing product to multi-tenant"
+        - "Opens up monetisation opportunities"
+        - "Lowers long-term maintenance cost"
     - n: "02"
-      name: "Medical"
-      heading: "Medical Apps"
+      name: "Integration"
+      # NO SOURCE on production: a heading with no real body under it. Written
+      # from the heading, per the owner's instruction.
+      heading: "Third-party integration"
       points:
-        - "Our expertise lies in upgrading and enhancing the process…"
-        - "Doing so will help you maximize monetisation opportunities…"
+        - "Connect to the tools your customers already use"
+        - "Payments, CRM, identity and analytics"
+        - "Through stable, well-documented APIs"
     - n: "03"
-      name: "Third party"
-      heading: "Third party Integration"
-      points:
-        - "Remote healthcare includes various healthcare apps…"
-    - n: "04"
-      name: "Analytics and data"
+      name: "Analytics"
       heading: "Analytics and data management"
       points:
-        - "This is the platform that is making healthcare and supports…"
-        - "Most people today generally do not get the time for proper…"
+        - "Analytics built in rather than bolted on later"
+        - "Past what traditional software offers"
+    - n: "04"
+      name: "Consulting"
+      heading: "SaaS consulting"
+      points:
+        - "Plan and deliver the SaaS roadmap"
+        - "The right technology, methodology and cloud host"
+    # Fifth tab, new. Production lists these as its Features band and this page
+    # carried none of them.
+    - n: "05"
+      name: "Delivery"
+      heading: "How it is delivered"
+      points:
+        - "Agile, which is what makes SaaS delivery quick"
+        - "DevOps, so a code change is a reliable one"
+        - "Rapid deployment, because the cloud rolls it out"
+        - "Ongoing support and maintenance after launch"
+        - "Mobile-first and scalable, with fast processing"
 proof:
   label: "PROOF"
   heading: "Practised since 2005"
@@ -92,7 +113,7 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "The Club Social"
-    body: "Meet the desired expectations through SaaS-based application design solutions."
+    body: "One app for members and clubs, with access to more than 300 private members’ clubs worldwide."
     href: "/work/club-social/"
     ctaLabel: "View Project"
 sectors:
@@ -177,10 +198,12 @@ failures:
 cases:
   label: "WHAT WE HAVE BUILT HERE"
   items:
-    - client: "The Club Social"
-      situation: "A membership operation running amenities, ordering and members across tools that each held part of the truth."
-      did: "Built one product where a member is one record, so the operations team could change what members see without waiting on an engineer."
-      href: "/work/club-social/"
+    # The Club Social was here AND the featured card below. It stays featured;
+    # this slot goes to Reward Butler, the other SaaS case production links.
+    - client: "Reward Butler"
+      situation: "A company running a rewards programme across tools that did not agree on who had earned what."
+      did: "Built one reward management app where the whole programme is coordinated in a single place, with an interface people will actually open."
+      href: "/work/reward-butler/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for SaaS clients"

@@ -10,22 +10,22 @@ headline:
 standfirst: "Logistics app development company"
 hero:
   statement: "Transform your business with our mobility solutions for transportation and logistics!"
-  sub: "We deliver next-gen logistics solutions to enhance productivity and meet the demand of your logistics and…"
+  sub: "Next-generation logistics software that raises productivity and keeps up with demand."
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Logistics app development, end to end"
-  intro: "Transform your business with our mobility solutions for transportation and logistics!"
+  intro: "What a logistics build has to survive: the depot, the road, and the audit afterwards."
   moments:
     - n: "01"
       name: "Logistics"
-      lead: "Track, analyze, and manage your operations with our enterprise logistics & Transportation…"
+      lead: "Track, analyse and manage operations with enterprise logistics software."
       body: "We offer unique solutions to simplify highly challenging and complex logistic and transport services."
       tags: ["LOGISTICS", "AND"]
     - n: "02"
       name: "Freight"
-      body: "Leverage our expertise and tailor your business needs with the smart logistics app development solutions that offer the right platform for your freight business to streamline supply chain operations, simplify the shipping process, and increase efficiency by…"
+      body: "A logistics platform built around your freight business that streamlines supply chain operations, simplifies shipping and improves efficiency by reducing risk, time and cost."
       tags: ["FREIGHT", "MANAGEMENT"]
     - n: "03"
       name: "Transport mobility"
@@ -38,46 +38,76 @@ journey:
       tags: ["FLEET", "MANAGEMENT"]
     - n: "05"
       name: "Expertise"
-      lead: "We make every effort to grow your business with our end-to-end logistic management…"
+      lead: "We grow your business with end-to-end logistics management."
       body: "Meet the evolving needs of the transport and logistics industry and stay ahead in your logistics business."
       tags: ["OUR", "EXPERTISE"]
     - n: "06"
       name: "Supply chain"
-      lead: "We integrate IoT and AI into your applications to make your agile logistics operations…"
+      lead: "We integrate IoT and AI to make logistics operations faster and more reliable."
       body: "Moreover, using this solution, you can co-ordinate with different integrated companies regarding your actions to deliver a product on-time to the destination."
       tags: ["SUPPLY", "CHAIN"]
 surfaces:
   label: "CAPABILITIES"
   heading: "Logistics app features"
-  sub: "what else we bring"
+  sub: "Five things the operation needs before the lorry moves"
   tabs:
     - n: "01"
       name: "Warehouse"
-      heading: "Warehouse management solutions"
+      heading: "Warehouse management"
       points:
-        - "Manage your inventory, save on unwanted storage, and…"
-        - "Our main focus is to design and develop a solution that…"
+        - "Manage inventory, avoid unnecessary storage cost"
+        - "AI-enabled, built around your own requirements"
+        - "Transparency, from the shelf to the report"
     - n: "02"
-      name: "Vehicle live"
-      heading: "Vehicle live location tracking solutions"
+      name: "Tracking"
+      heading: "Vehicle live location tracking"
       points:
-        - "Live location tracking with a geo-fencing tool is a…"
-        - "It is useful to track down your fleet and vehicle’s…"
-        - "Plus, you can see the location of your vehicle’s breakdown…"
+        - "Live tracking with geofencing, departure to arrival"
+        - "Follow every vehicle while it is on the road"
+        - "A breakdown, and the nearest service centre"
     - n: "03"
       name: "CRM tools"
       heading: "CRM tools"
       points:
         - "Managing shipments has never been easy."
-        - "Develop a CRM tool for real-time communication, feeds, and…"
-        - "With the help of this tool, you can improve the speed…"
+        - "Real-time communication, feeds and data sync"
+        - "Faster customer interactions, and better ones"
     - n: "04"
-      name: "Order tracking tools"
+      name: "Order tracking"
       heading: "Order tracking tools"
       points:
-        - "We have top-of-the-line expertise in developing a tool like…"
-        - "This tool will have multiple features like a Barcode…"
-        - "It allows you to receive real-time updates of locations…"
+        - "Barcode scanning and e-signature capture"
+        - "Package tracking, end to end"
+        - "Real-time updates on location and status"
+    # Fifth tab, new. Integrations is a production topic this page did not
+    # carry, and it is the one procurement asks about first.
+    - n: "05"
+      name: "Integrations"
+      heading: "Integrations"
+      points:
+        - "ERP, WMS, TMS and the rest of the stack"
+        - "Route planning and staff productivity"
+        - "Customer feedback, back where it is useful"
+types:
+  label: "IN EVERY BUILD"
+  heading: "What a logistics app ships with"
+  intro: "The five things every operator asks for, whichever of the above you start from."
+  items:
+    - n: "01"
+      name: "Admin dashboard"
+      body: "Manage users, driver profiles, trips, invoices and revenue, and share a manual or generated bill with a user from the same place."
+    - n: "02"
+      name: "In-app calling and messaging"
+      body: "A user talks to their assigned driver, and a service seeker talks to a provider, without either of them leaving the app."
+    - n: "03"
+      name: "GPS tracker"
+      body: "Nearby drivers and vehicles in real time, and the estimated arrival once a booking is confirmed."
+    - n: "04"
+      name: "Real-time notifications"
+      body: "Alerts for requests and ETAs, by push notification, SMS and email, for the user and the driver alike."
+    - n: "05"
+      name: "Multiple payment modes"
+      body: "The shipper app takes several gateways and methods, cards and wallets included."
 proof:
   label: "PROOF"
   heading: "Practised since 2005"
@@ -95,7 +125,7 @@ proof:
   featured:
     label: "FEATURED WORK"
     client: "Snowman Logistics"
-    body: "We design and develop integrated Fleet management solutions for enterprise companies."
+    body: "How Roars built a scalable operations platform for Snowman, turning warehouse checklists, compliance tracking and real-time reporting into one centralised, auditable system."
     href: "/work/warehouse-compliance-checklist-app/"
     ctaLabel: "View Project"
 sectors:
@@ -180,10 +210,18 @@ failures:
 cases:
   label: "WHAT WE HAVE BUILT HERE"
   items:
-    - client: "Snowman Logistics"
-      situation: "Warehouse staff in cold storage completing compliance checks on paper, in gloves, with no signal."
-      did: "Designed for the actual conditions: large targets, offline capture, no typing where a tap would do, and sync that assumes the network is absent rather than broken."
-      href: "/work/warehouse-compliance-checklist-app/"
+    # Production links three logistics case studies and this page carried one
+    # of them, Snowman, which is also the featured card below. So Snowman stays
+    # featured and these two slots go to the other two, which puts all three on
+    # the page and stops one project appearing twice.
+    - client: "Les Concierges"
+      situation: "Corporate employees needing things delivered wherever they happened to be, at work, at home or on the road."
+      did: "Built a B2B2C platform where one request reaches the right provider, whichever of the three places the employee is in."
+      href: "/work/les-concierges/"
+    - client: "Onus"
+      situation: "An eCommerce logistics provider handling package delivery and travel needs across a wide range of routes."
+      did: "Built the digital software that runs deliveries and trips through one system rather than several."
+      href: "/work/onus/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for logistics clients"

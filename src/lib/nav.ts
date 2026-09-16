@@ -147,7 +147,12 @@ export const MENU: MenuItem[] = [
     kind: 'cards',
     items: [
       { label: 'Snowman Logistics', href: '/work/warehouse-compliance-checklist-app/', meta: 'LOGISTICS' },
-      { label: 'GymBait.AI', href: '/work/flowrow-fitness-app/', meta: 'FITNESS' },
+      /* The href was /work/flowrow-fitness-app/ under this label. They are two
+         different projects: GymBait.AI is an AI gym and fitness app, FlowRow
+         is a rowing workout app, and both have their own live URL. This card
+         is the GymBait one — it is in FEATURED_ORDER in src/lib/projects.ts
+         under that slug — so the href moves, not the label. */
+      { label: 'GymBait.AI', href: '/work/gymbait/', meta: 'FITNESS' },
       { label: 'Parqly', href: '/work/parqly-parking-solution/', meta: 'MOBILITY' },
       { label: 'Concierge Loyalty', href: '/work/concierge-loyalty-program/', meta: 'CONCIERGE' },
       { label: 'GISAID', href: '/work/gisaid-health-tech/', meta: 'HEALTHCARE' },

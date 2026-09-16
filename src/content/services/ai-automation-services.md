@@ -32,7 +32,10 @@ hero:
       - k: "kb_answer_cited"
         v: "PASS · 0.99 · source req."
     statusLabel: "STATUS"
-    status: "RUNNING EVALS…"
+    # No ellipsis. The chip cycles its own states in the browser, so the
+    # motion already says "in progress", and a trailing ellipsis at the end of
+    # a string is indistinguishable from the ninety the migration left behind.
+    status: "RUNNING EVALS"
     progress: 20
     note: "Baseline +38%. Nothing ships without proof it beats the status quo."
     footnote: "EVALS BEFORE PROMPTS"

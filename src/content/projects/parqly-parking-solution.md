@@ -95,6 +95,23 @@ showcase:
     h: 853
     alt: "Four Parqly screens: map with Park and Pay, payment history, saved cards and device log"
     caption: "Map and pay, payment history, cards, device log"
+# SOURCED TWICE BEFORE IT WENT ON THE PAGE, per the rule in
+# scripts/assert-attribution.mjs that a near match is a wrong match.
+#   1. The quote is on the live Parqly page. It is in the WordPress export at
+#      scripts/wordpress-export/work/out/parqly-parking-solution.json, word for
+#      word, directly after the conclusion paragraph.
+#   2. The person is named in the owner's own testimonials export: Elena
+#      Elraie, Digital Consultant, Lametus, Cyprus, five stars, via SocialJuice.
+#
+# The role is printed exactly as the owner's record has it. It says Lametus
+# rather than Parqly, and that has NOT been quietly changed to match the page:
+# Parqly is Cyprus-based and the app mockups use "Elena's Car", so the two are
+# very likely the same engagement, but likely is not sourced. Flagged to the
+# owner 16 Sep.
+testimonial:
+  quote: "I had a great experience with Roars Technologies. Their service is professional, flexible, and friendly. I am very happy with the service and the results. The entire process stood out to me as exceptional."
+  name: "Elena Elraie"
+  role: "Digital Consultant, Lametus"
 seo:
   title: "Parqly: smart city parking, from app to BLE hardware"
   description: "Parqly is at the forefront of urban innovation, transforming how drivers and parking owners navigate the world of city parking. Based in Cyprus, Parqly set out to eliminate the daily parking struggle with a seamless, technology-driven platform, fusing the power of mobile apps with smart automation and future-ready hardware."
