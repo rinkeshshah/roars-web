@@ -138,11 +138,60 @@ for (const path of ['/wp-admin/', '/wp-login.php', '/xmlrpc.php']) {
 
 /* ------------------------------------- 6. legacy uploads still resolve */
 
+/**
+ * EVERY legacy image the build references, not a sample.
+ *
+ * These are the one class of asset scripts/assert-assets.mjs cannot check.
+ * They are deliberately not in dist/ — nginx aliases /wp-content/uploads/ to
+ * the WordPress uploads directory, so the only place the question "is this
+ * file actually there" can be answered is against a running server.
+ *
+ * It matters more than it sounds. The team portraits on /about-us/, the case
+ * study galleries and the industry page art are all in here. A missing one is
+ * a broken image on a live page that nothing in the repository can see.
+ *
+ * Requires a built dist/ next to this script, which a machine running this
+ * from a checkout will have. Without one it says so rather than passing.
+ */
 {
-  /* One real path from the build, not a guess: if this file is not on the
-     server the migrated pages are showing broken images right now. */
-  const { status } = await head('/wp-content/uploads/2022/08/coding-6.webp')
-  record(status === 200, 'legacy /wp-content/uploads/ still serves', `got ${status}`)
+  const { readFileSync, existsSync, readdirSync, statSync } = await import('node:fs')
+  const { join, dirname } = await import('node:path')
+  const { fileURLToPath } = await import('node:url')
+  const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
+
+  if (!existsSync(DIST)) {
+    console.log('  SKIP  legacy uploads: no dist/ next to this script. Run npm run build first.\n')
+  } else {
+    const paths = new Set()
+    const walk = (dir) => {
+      for (const n of readdirSync(dir)) {
+        const p = join(dir, n)
+        if (statSync(p).isDirectory()) walk(p)
+        else if (n.endsWith('.html')) {
+          const h = readFileSync(p, 'utf8').replace(/<script\b[\s\S]*?<\/script>/g, ' ')
+          for (const m of h.matchAll(
+            /(?:src|href|content)="(?:https:\/\/www\.roarsinc\.com)?(\/wp-content\/uploads\/[^"]+)"/g,
+          )) {
+            paths.add(m[1])
+          }
+        }
+      }
+    }
+    walk(DIST)
+
+    /* Sequential on purpose. Firing 244 requests at once is how a check gets
+       rate limited and reports failures that are the check's own fault. */
+    const broken = []
+    for (const p of paths) {
+      const { status } = await head(p, 'HEAD')
+      if (status !== 200) broken.push(`${status} ${p}`)
+    }
+    record(
+      broken.length === 0,
+      `all ${paths.size} legacy /wp-content/uploads/ files serve 200`,
+      `${broken.length} missing:\n            ${broken.slice(0, 15).join('\n            ')}`,
+    )
+  }
 }
 
 /* ------------------------------------------- 7. redirects are one hop */
@@ -161,7 +210,10 @@ for (const path of [
     hops.map((h) => `${h.status} ${h.url}`).join(' -> '),
   )
   for (const h of redirects) {
-    record(h.status === 301, `${path} redirects with 301 not ${h.status}`, `got ${h.status}`)
+    /* 301, not 302. A 302 says "this moved back later", and search engines
+       treat the equity accordingly. Every redirect in src/lib/redirects.mjs
+       is permanent by definition, so a 302 here means nginx, not us. */
+    record(h.status === 301, `${path} redirects permanently (301)`, `got ${h.status}, not 301`)
   }
 }
 
