@@ -26,13 +26,50 @@ blocks:
   - heading: "Outcome:"
     lead: "Intuitive control at every level, an app built for gloves and cold storage, with large targets, offline capture and no typing where a tap will do."
     body: "A streamlined system that highlights what matters and drives stronger engagement, with clear navigation and exception-first reporting for managers."
+# SERVED FROM THIS REPO, NOT FROM /wp-content/uploads/.
+#
+# The two pictures that were here — aboutus-strategy.jpg and
+# beautiful-experience.jpg — are generic stock from elsewhere on the old site.
+# Neither is Snowman. One was tagged `wireframe` and showed a strategy
+# meeting; the other was tagged `photo` and showed nobody's checklist.
+#
+# The real ones arrived from the client's own folder and are NOT in the
+# WordPress export, so there is no upload path to point at and guessing one
+# would be inventing a URL. They go in public/work/snowman/ for the same
+# reason the client logos do: a file in this repo resolves in every build,
+# including this one, which an uploads path does not.
 gallery:
-  - src: "/wp-content/uploads/2026/04/aboutus-strategy.jpg"
-    kind: "wireframe"
-    alt: "Planning the warehouse compliance flow"
-  - src: "/wp-content/uploads/2025/04/beautiful-experience.jpg"
+  - src: "/work/snowman/study.jpg"
+    kind: "study"
+    w: 824
+    h: 521
+    alt: "Angled tiles of the Snowman interface: compliance score, quick actions, checklist picker"
+    caption: "Working through the surfaces before the colour went on"
+showcase:
+  - src: "/work/snowman/fleet.jpg"
     kind: "photo"
-    alt: "The checklist interface in use"
+    w: 1800
+    h: 1013
+    alt: "A hand holding the Snowman app in front of a line of Snowman cold chain trucks"
+    caption: "Warehouse selection, at the depot it belongs to"
+  - src: "/work/snowman/warehouse.jpg"
+    kind: "photo"
+    w: 1800
+    h: 1013
+    alt: "The Snowman dashboard and checklist picker over racking in a cold store"
+    caption: "Pending tasks, open non-conformances, compliance at 87%"
+  - src: "/work/snowman/rails.jpg"
+    kind: "photo"
+    w: 1500
+    h: 807
+    alt: "The Snowman warehouse selection screen showing distribution centres and geofence range"
+    caption: "Inside the geofence, or out of range and told so"
+  - src: "/work/snowman/screens.jpg"
+    kind: "app"
+    w: 2000
+    h: 1066
+    alt: "Four Snowman screens: safety audit item, task calendar, non-conformance list and scoring"
+    caption: "Audit item, task calendar, non-conformances, scoring"
 testimonial:
   quote: "You showed a strong understanding of our business needs and prepared well-structured documentation. The user-friendly UI/UX design you created makes the system easy to use, and your guidance in improving business processes has been very valuable."
   name: "Bhushan Paralkar"

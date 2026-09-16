@@ -126,7 +126,19 @@ const pick = (...kinds: string[]) => media.filter((m) => m.kind && kinds.include
  * and dropped two photographs back into the grid.
  */
 const WIDE = 1.2
-const isWide = (m: { w?: number; h?: number }) => Boolean(m.w && m.h && m.w / m.h >= WIDE)
+/**
+ * AND BIG ENOUGH TO FILL THE COLUMN.
+ *
+ * Shape alone is not sufficient. Snowman's design study is 824 x 521 — the
+ * right shape, and a 1.65x upscale if it takes the 1362 column, which is a
+ * soft picture on a page whose whole argument is that you can read the
+ * interface. 1200 keeps the upscale under about 1.15x at the widest layout,
+ * and anything smaller goes in the grid where it is shown at a size it has
+ * the pixels for.
+ */
+const MIN_FULL = 1200
+const isWide = (m: { w?: number; h?: number }) =>
+  Boolean(m.w && m.h && m.w / m.h >= WIDE && m.w >= MIN_FULL)
 
 /** The process: how it was structured, and how it was dressed. Split by shape,
  *  because a wireframe sheet and a single wireframe want different room. */
@@ -637,10 +649,16 @@ const ratio = (m: { w?: number; h?: number }) =>
      at the same scale as a finished screen claims to be one. Three across,
      on paper rather than on the dark card the product screens sit on, and
      each one captioned with what it actually is. */
+  /* Two across by default, three once there are three of them. A single
+     groundwork picture in a three-column grid sits in the left third with two
+     thirds of nothing beside it, and at 430px a study collage is too small to
+     read. Two columns give it 660, which is also about the size the smaller
+     files have the pixels for. */
   .pd__ground {
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 28px; margin: 40px 0 0; padding: 0; list-style: none;
   }
+  .pd__ground:has(> :nth-child(3)) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pd__ground li { display: flex; flex-direction: column; gap: 12px; }
   /* SPACE IS RESERVED AND NOTHING IS CROPPED. These are migrated WordPress
      uploads with no dimensions in the content, so `height: auto` gives the
