@@ -714,18 +714,19 @@ const ratio = (m: { w?: number; h?: number }) =>
   .pd__sheets--ground { gap: 34px; }
 
   /* ── THE PHOTOGRAPH STAGE ───────────────────────────────────
-     IN THE CONTAINER, NOT EDGE TO EDGE.
-     This ran to the viewport with a 40px gutter for one build. Two problems:
-     a 4:3 mockup at 1360 wide is 1020px tall, which is most of a screen for a
-     picture of a phone, and a photograph that ignores the column the whole
-     rest of the page is set to reads as a different website for one scroll.
+     THE CONTAINER, AND THE WHOLE OF IT.
+     Two wrong answers before this one. First it ran to the viewport with a
+     40px gutter, which ignored the column the rest of the page is set to and
+     read as a different website for one scroll. Then it was capped at 1040,
+     which fixed that and introduced a worse problem: the photographs came out
+     narrower than the contact sheets directly above them, so a band of
+     pictures had two different left edges.
 
-     1040 is wider than the text column, which starts at 380 and runs to the
-     right edge, so a photograph still steps out and reads as a change of
-     register. It just steps out inside the grid rather than out of it. The
-     same 4:3 file now comes in at 780 tall. */
+     One measure. A photograph and a screen sheet are both pictures on the
+     same page and they line up. The height follows from the file's own aspect
+     ratio and is not something to negotiate with. */
   .pd__stage {
-    position: relative; margin: 64px auto 0; max-width: 1040px;
+    position: relative; margin: 64px 0 0;
     border-radius: 16px; overflow: clip;
   }
   .pd__stage img { display: block; width: 100%; height: auto; object-fit: cover; }
@@ -909,7 +910,7 @@ const ratio = (m: { w?: number; h?: number }) =>
     /* The stage stops reaching past the column: at this width the column IS
        the viewport minus the gutter, so the negative margin would only push
        the picture under the page edge. */
-    .pd__stage { margin: 40px auto 0; max-width: 100%; border-radius: 12px; }
+    .pd__stage { margin: 40px 0 0; border-radius: 12px; }
     .pd__stage-cap { left: 14px; bottom: 12px; }
     .pd__ch-h { font-size: var(--fs-stat-m); line-height: 1.1; }
     .pd__block { margin-top: 56px; }
