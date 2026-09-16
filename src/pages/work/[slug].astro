@@ -252,8 +252,16 @@ const nextProject = neighbour(1)
             <span class="pd__dot pd__dot--grey" aria-hidden="true"></span>
             <span class="pd__dot pd__dot--ink" aria-hidden="true"></span>
           </a>
-          <h1 class="pd__client">{d.headline ?? d.client}</h1>
-          {d.dateLabel && <p class="pd__date">{d.dateLabel}</p>}
+          {/* Title and date in one flowing block, absolutely placed as a
+              pair. They used to be two absolute boxes at top 182 and top 311,
+              which only works while the title is one line — and it is not.
+              "The President's Club" at the top of the clamp is about 1400px
+              of nowrap type starting at x=452, so it ran clean off the right
+              of the page. Now it wraps and the date follows it down. */}
+          <div class="pd__title">
+            <h1 class="pd__client">{d.headline ?? d.client}</h1>
+            {d.dateLabel && <p class="pd__date">{d.dateLabel}</p>}
+          </div>
 
           {faces.length > 0 && (
             <div class="pd__team">
@@ -585,7 +593,12 @@ const nextProject = neighbour(1)
   /* The head is a fixed 1358x330 with three anchors — back link at 206,
      client at 182, date at 311 — so the client name sits BESIDE the link
      rather than under it, which is the whole arrangement. */
-  .pd__head { position: relative; height: 330px; }
+  /* The title is IN FLOW and the offsets are padding, so a two-line name
+     pushes this band taller instead of spilling into the photograph below.
+     min-height keeps the export's 330 for the short names, which is every
+     other case study. The back link and the team cluster stay absolute:
+     neither grows, and both are anchored to the top of the band. */
+  .pd__head { position: relative; min-height: 330px; padding-top: 182px; }
   .pd__back {
     position: absolute; left: 0; top: 206px;
     font-size: 18px; line-height: 19px; font-weight: var(--fw-semi);
@@ -595,13 +608,21 @@ const nextProject = neighbour(1)
   .pd__back .pd__dot { top: 7px; }
   .pd__back .pd__dot--grey { left: 130px; background: rgb(153, 152, 149); opacity: 0.6; }
   .pd__back .pd__dot--ink { left: 141px; background: rgb(20, 20, 20); }
+  /* The title block. 452 is the export's left anchor, and the width runs to
+     the right edge of the 1362 column, which is what a long client name needs
+     and what nowrap was refusing to give it. */
+  .pd__title { margin-left: 452px; }
   .pd__client {
-    position: absolute; left: 452px; top: 182px; margin: 0;
-    font-size: clamp(56px, 8.62vw, 124px); line-height: 86px; font-weight: var(--fw-semi);
-    letter-spacing: -0.04em; color: rgb(20, 20, 20); white-space: nowrap;
+    margin: 0; max-width: 100%;
+    /* 0.86em rather than a fixed 86px: at 124px that is the export's exact
+       leading, and it stays proportional when the clamp shrinks the type, so
+       two lines of a long name set tight instead of drifting apart. */
+    font-size: clamp(48px, 7.4vw, 124px); line-height: 0.86;
+    font-weight: var(--fw-semi); letter-spacing: -0.04em; color: rgb(20, 20, 20);
+    text-wrap: balance;
   }
   .pd__date {
-    position: absolute; left: 457px; top: 311px; margin: 0;
+    margin: 28px 0 0 5px;
     font-size: 20px; line-height: 19px; font-weight: var(--fw-medium);
     letter-spacing: -0.06em; color: var(--c-black);
   }
