@@ -17,8 +17,6 @@ blocks:
     lead: "Built from day one for multi-tenant flexibility, so you effortlessly onboard enterprise clients and offer full white-label adaptability."
   - heading: "The Solution"
     lead: "A turnkey MVP and clear growth path for a new era concierge platform, future-ready and scalable to your ambitions."
-  - heading: "Loyalty & Personalization Engine"
-    lead: "Our strategic consulting delivers impactful loyalty solutions, from gold-tier memberships, to exclusive partner perks, to irresistible repeat booking rewards."
 gallery:
   - src: "/wp-content/uploads/2025/07/concierges-wireframe.png"
     alt: "App design wireframe"
@@ -39,11 +37,14 @@ screens:
   - src: "/wp-content/uploads/2025/07/1647845828301.jpg"
     alt: ""
 seo:
-  title: "Concierges: Case Study"
+  title: "Concierges: one AI platform for luxury concierge services"
   description: "Roars partnered with a fast-growing luxury concierge startup to transform its fragmented MVP into a unified, AI-powered platform tailored for high-net-worth travelers and enterprise clients."
   primaryIntent: "concierge loyalty program"
   schemaType: "CreativeWork"
-needsReview: true
+# Reviewed 16 Sep 2026: slot assignment checked against the live page, client
+# named consistently throughout, SEO block checked against this project.
+# See docs/OPEN-DECISIONS.md for what the pass covered and what it did not.
+needsReview: false
 ---
 This end-to-end product consulting approach, combining intelligent UX/UI with scalable system architecture, not only enhanced user engagement but also delivered a repeatable white-label solution, positioning the client as a tech-forward leader in the competitive premium travel and concierge sector.
 

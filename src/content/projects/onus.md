@@ -36,7 +36,10 @@ seo:
   description: "Onus we designed on-demand cab services App or on-demand Courier App user interface for bettering the user-experience with simplistic look."
   primaryIntent: "onus"
   schemaType: "CreativeWork"
-needsReview: true
+# Reviewed 16 Sep 2026: slot assignment checked against the live page, client
+# named consistently throughout, SEO block checked against this project.
+# See docs/OPEN-DECISIONS.md for what the pass covered and what it did not.
+needsReview: false
 ---
 UI,  UX, Strategy, Concept and Development
 

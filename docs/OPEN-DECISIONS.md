@@ -205,3 +205,59 @@ Still to confirm: the band's footer claims "37 reviews / 4.9 average" and the
 heading reads "4.9/5". The export holds 14, so those two figures come from
 somewhere else (Clutch or Google, most likely). Left alone — they were not
 part of this change — but they should be traced to a source or updated.
+
+## The eleven listed case studies are out of noindex — what the review covered
+
+`needsReview: true` meant "machine-extracted from the WordPress export and not
+yet read by anybody here; which paragraph landed in which slot is the
+extractor's decision." That read has now happened for the eleven projects
+listed on /work/, and the flag is cleared on those eleven. The twelve held-back
+ones keep it.
+
+**What the pass checked, page by page:** that the client named in `client`,
+`headline`, `about` and the SEO block is the same company throughout; that each
+`blocks` entry's lead actually belongs under its heading; that no block is
+duplicated; and that the SEO title and description describe this project.
+
+**Four real errors it found:**
+
+  - **GymBait.AI carried another company's metadata entirely.** Its SEO title
+    was "Tuma- Send money to your loved ones via Mobile Wallet or Bank" and its
+    description was Tuma's, a money-transfer service for immigrants in Canada.
+    Both rewritten from this project's own content. This is exactly what the
+    flag existed to catch.
+  - **"President''s Club"** — a doubled apostrophe from SQL escaping, which was
+    rendering in the live `<title>`. Four journal descriptions carried the same
+    artifact and were fixed with it.
+  - **The Concierges case study had a duplicated block**: "Loyalty &
+    Personalization Engine" appeared as blocks 1 and 4 with identical copy.
+  - **Two service pages linked to `/work/addictlab-collabration-tool/`, which
+    does not exist** — not in the inventory, never built, so "View Project" was
+    a 404 on both. Repointed to the project each page already names in its own
+    `frame.proof`: Innovation Design to GymBait.AI, DevOps to GISAID. Both of
+    those have photography, so two of the four picture-less bands are fixed too.
+
+**What the pass did NOT check**, and cannot: whether the claims the copy makes
+about each client's outcome are accurate. Those words are the client's own,
+migrated from pages that are live on roarsinc.com today, so publishing them on
+the new site is not a new claim — but nobody here has verified them against the
+projects.
+
+**Five of the eleven also carry `needsRewrite: true`** — GymBait, Advisee,
+GISAID, Tanishq and Onus. That flag is a Search Console signal (high
+impressions, near-zero clicks), not a migration problem. They are indexable now
+and their copy still wants work.
+
+## The launch switch
+
+The whole site is noindex until `PUBLIC_ALLOW_INDEXING=true` is set at build
+time. `scripts/deploy.sh` ships whatever is in `dist/`, so the flag is a
+property of the build, not the deploy — which is what keeps dev.roarsinc.com
+out of the index while the real domain goes live.
+
+Verified with a test build: with the flag on, the eleven listed projects and
+the homepage return `index,follow`, the twelve held-back projects stay
+`noindex,nofollow`, and `sitemap-0.xml` is written with 125 URLs, of which 12
+are under /work/ (the index plus the eleven).
+
+**To launch:** `PUBLIC_ALLOW_INDEXING=true npm run build` then deploy.

@@ -44,9 +44,9 @@ bands:
         body: "Build an effective IT infrastructure with Roars Technologies a DevOps company. With our proven expertise in DevOps practices and IT monitoring, we help you proactively eliminate hurdles, accelerate time-to-market, and ensure 100% system performance for an exceptional user experience."
 featured:
   label: "FEATURED WORK"
-  client: "Addictlab"
-  body: "We manage and enhance people, skills, culture, process, and tools in this phase in order to analyze, design, construct, automate and implement tailored DevOps solutions as part of our DevOps as a service. All aligned to each project’s unique requirements."
-  href: "/work/addictlab-collabration-tool/"
+  client: "GISAID"
+  body: "A platform holding one of the largest COVID data sets in the world, where availability was not negotiable. We built the tooling for a scale where a bad deploy is a public problem rather than an internal one."
+  href: "/work/gisaid-health-tech/"
 cta:
   label: "Start here"
   heading: "Looking for a DevOps partner?"
@@ -172,11 +172,11 @@ needsReview: true
 
 ![](/wp-content/uploads/2022/08/developing.webp)
 
-## Addictlab
+## GISAID
 
 ## Roars Technologies is a leading DevOps agency, companies rely on for cultural and process transformation.
 
-[View the project](/work/addictlab-collabration-tool/)
+[View the project](/work/gisaid-health-tech/)
 
 ## PLATFORM-AS-A-SERVICE
 

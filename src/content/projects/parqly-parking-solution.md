@@ -41,11 +41,14 @@ screens:
   - src: "/wp-content/uploads/2025/07/30086331_2046529808923903_764170214915964928_n.jpg"
     alt: ""
 seo:
-  title: "Parqly: Case Study"
+  title: "Parqly: smart city parking, from app to BLE hardware"
   description: "Parqly is at the forefront of urban innovation, transforming how drivers and parking owners navigate the world of city parking. Based in Cyprus, Parqly set out to eliminate the daily parking struggle with a seamless, technology-driven platform, fusing the power of mobile apps with smart automation…"
   primaryIntent: "parqly parking solution"
   schemaType: "CreativeWork"
-needsReview: true
+# Reviewed 16 Sep 2026: slot assignment checked against the live page, client
+# named consistently throughout, SEO block checked against this project.
+# See docs/OPEN-DECISIONS.md for what the pass covered and what it did not.
+needsReview: false
 ---
 Empower both drivers and parking lot providers with a unified, intelligent solution that brings transparency, convenience, and efficiency to every corner of the city.
 

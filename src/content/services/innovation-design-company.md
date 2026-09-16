@@ -44,9 +44,9 @@ bands:
         body: "Our tailored digital design services are built to enhance customer interaction across platforms. Whether it's a website, mobile application, or digital tool, we design intuitive and innovative digital experiences that keep users engaged."
 featured:
   label: "FEATURED WORK"
-  client: "Addictlab"
-  body: "In the final phase, we prototype and test concepts using a range of service design tools. These prototypes are evaluated for usability, functionality, feasibility, and market readiness. By integrating this step into our innovation design process, we ensure faster validation and smoother implementation of new services."
-  href: "/work/addictlab-collabration-tool/"
+  client: "GymBait.AI"
+  body: "A fitness business asking whether coaching could reach a member at the moment it mattered rather than at their next session. We built a nudge that learns from how a member actually trains, with a coach reviewing what goes out."
+  href: "/work/gymbait/"
 cta:
   label: "Start here"
   heading: "Want to know more about our innovation design work?"
@@ -172,11 +172,11 @@ needsReview: true
 
 ![](/wp-content/uploads/2022/08/ticket.png)
 
-## Addictlab
+## GymBait.AI
 
-## Addictlab is a bottom-up and self-managed cultural platform.
+## A fitness product that started as a question about coaching.
 
-[View the project](/work/addictlab-collabration-tool/)
+[View the project](/work/gymbait/)
 
 ## PRODUCT DEVELOPMENT
 

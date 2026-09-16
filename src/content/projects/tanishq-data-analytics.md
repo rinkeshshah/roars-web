@@ -26,7 +26,10 @@ seo:
   description: "Roars designed marketing automation data science and data analytics dashboard for Tanishq. That helps creating a lasting customer relationship and delightful customer experience by telling you exactly what to sell to whom."
   primaryIntent: "tanishq data analytics"
   schemaType: "CreativeWork"
-needsReview: true
+# Reviewed 16 Sep 2026: slot assignment checked against the live page, client
+# named consistently throughout, SEO block checked against this project.
+# See docs/OPEN-DECISIONS.md for what the pass covered and what it did not.
+needsReview: false
 ---
 Further, keeping in mind the importance of dates such as birthdays and anniversaries and festivals, the client can send targeted ads at the right time to the right customer.
 

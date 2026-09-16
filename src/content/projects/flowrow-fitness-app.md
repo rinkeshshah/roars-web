@@ -46,7 +46,10 @@ seo:
   description: "We designed on-Demand Fitness App for Rowing, gym membership app and Virtual fitness app for Home Workout."
   primaryIntent: "flowrow fitness app"
   schemaType: "CreativeWork"
-needsReview: true
+# Reviewed 16 Sep 2026: slot assignment checked against the live page, client
+# named consistently throughout, SEO block checked against this project.
+# See docs/OPEN-DECISIONS.md for what the pass covered and what it did not.
+needsReview: false
 ---
 UI,  UX, Strategy, Concept and Development
 

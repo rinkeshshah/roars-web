@@ -8,7 +8,7 @@ needsRewrite: true
 heroImage: "/wp-content/uploads/2022/08/0f203c2066eb91695f893cbf3094dac9-1.gif"
 seo:
   title: "What Exactly is an Experience Map? | Roars"
-  description: "User Experience Map deisng map is as the name suggests a map that tracks the experience of a buyer through the buyer''s journey. Find out how it is connected to the journey."
+  description: "User Experience Map deisng map is as the name suggests a map that tracks the experience of a buyer through the buyer’s journey. Find out how it is connected to the journey."
   primaryIntent: "user experience map"
   schemaType: "BlogPosting"
 ---

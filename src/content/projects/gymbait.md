@@ -63,11 +63,18 @@ screens:
     alt: "gallery grid image"
 needsRewrite: true
 seo:
-  title: "Tuma- Send money to your loved ones via Mobile Wallet or Bank"
-  description: "Tuma is a leading digital financial service provider for immigrants, enabling users to make person-to-person money transfers to a bank or wallet in over 100 countries. With the help of this platform, immigrants who live in Canada can choose to send money to over 70 currencies."
+  # WAS ANOTHER COMPANY'S. The migration put Tuma's title and description on
+  # this record: "Tuma is a leading digital financial service provider for
+  # immigrants..." on the GymBait case study. Rewritten from this project's own
+  # content. needsReview caught it, which is what the flag is for.
+  title: "GymBait.AI: AI coaching that reaches members at the right moment"
+  description: "A fitness business asked whether coaching could reach a member when it mattered rather than at their next session. We built a nudge that learns from how a member actually trains, with a coach reviewing what goes out."
   primaryIntent: "gymbait"
   schemaType: "CreativeWork"
-needsReview: true
+# Reviewed 16 Sep 2026: slot assignment checked against the live page, client
+# named consistently throughout, SEO block checked against this project.
+# See docs/OPEN-DECISIONS.md for what the pass covered and what it did not.
+needsReview: false
 ---
 UI,  UX, Strategy, Concept and Development
 

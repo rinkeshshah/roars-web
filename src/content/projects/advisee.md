@@ -49,11 +49,14 @@ screens:
     alt: ""
 needsRewrite: true
 seo:
-  title: "Advisee: Case Study"
+  title: "Advisee: a mutual fund investment platform, rebuilt"
   description: "Advisee, a trusted platform for mutual fund investments, partnered with Roars Technologies to revamp its digital presence. The goal was to create a seamless, engaging, and high-performing website that reflects the company’s credibility, enhances user experience, and simplifies investment decisions…"
   primaryIntent: "advisee"
   schemaType: "CreativeWork"
-needsReview: true
+# Reviewed 16 Sep 2026: slot assignment checked against the live page, client
+# named consistently throughout, SEO block checked against this project.
+# See docs/OPEN-DECISIONS.md for what the pass covered and what it did not.
+needsReview: false
 ---
 With strategic branding, intuitive UX/UI design, and a robust WordPress framework, we helped Advisee establish a modern, professional, and user-friendly platform tailored for investors.
 

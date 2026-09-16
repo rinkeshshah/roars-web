@@ -8,7 +8,7 @@ needsRewrite: true
 heroImage: "/wp-content/uploads/2022/08/laptop-2562211_1920-1.jpg"
 seo:
   title: "How Important Is Usability Research in UX Designing? | Roars"
-  description: "UX designing is key to an app''s success. If you can hit the bull''s eye with your user experience designing, you can say your app has made it."
+  description: "UX designing is key to an app’s success. If you can hit the bull’s eye with your user experience designing, you can say your app has made it."
   primaryIntent: "usability research in ux designing"
   schemaType: "BlogPosting"
 ---

@@ -8,7 +8,7 @@ needsRewrite: true
 heroImage: "/wp-content/uploads/2022/08/Hire_Dedicated_Developers.jpg"
 seo:
   title: "How To Hire Dedicated Developers: A Complete For 2022 | Roars"
-  description: "Hire dedicated developers can be a daunting task, and it''s often difficult to find qualified candidates. Here are some tips to help you prepare."
+  description: "Hire dedicated developers can be a daunting task, and it’s often difficult to find qualified candidates. Here are some tips to help you prepare."
   primaryIntent: "how to hire dedicated developers"
   schemaType: "BlogPosting"
 ---

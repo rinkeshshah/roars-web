@@ -27,7 +27,10 @@ seo:
   description: "We developed tool for GISAID’s health tech for internal team so that they can have the access to the largest database of COVID-19. NCBI API was used to develop this tool to pull data from across the world."
   primaryIntent: "gisaid health tech"
   schemaType: "CreativeWork"
-needsReview: true
+# Reviewed 16 Sep 2026: slot assignment checked against the live page, client
+# named consistently throughout, SEO block checked against this project.
+# See docs/OPEN-DECISIONS.md for what the pass covered and what it did not.
+needsReview: false
 ---
 The main goal of developing such a tool for GISAID is that the scientists and their internal employees can use it for further research and make their research & implementation on such viruses impactful.
 

@@ -7,7 +7,7 @@ migrated: true
 heroImage: "/wp-content/uploads/2022/08/thepresidentclub-logoo1-1.png"
 seo:
   title: "Designing a Loyalty Reward Program App | Roars"
-  description: "The President''s Club is a loyalty reward program app developed and designed by Roars. Get an insight of thinking process of an award winning design agency."
+  description: "The President’s Club is a loyalty reward program app developed and designed by Roars. Get an insight of thinking process of an award winning design agency."
   primaryIntent: "loyalty reward program app"
   schemaType: "BlogPosting"
 ---
