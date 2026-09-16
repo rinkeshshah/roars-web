@@ -379,7 +379,9 @@ const schema = [
   ogType="website"
   schema={schema}
 >
-  <TopBar slot="topbar" />
+  {/* `pulse` turns on the logo's section-change flash. Homepage only for now,
+      while the effect is being judged. */}
+  <TopBar slot="topbar" pulse />
   <NavOverlay />
 
   {/* ── 1. Header ───────────────────────────────────────────── */}

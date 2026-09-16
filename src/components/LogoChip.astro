@@ -63,6 +63,13 @@ import mark from '../assets/roars-mark.png'
     margin-left: -9px;
     border-radius: var(--r-circle);
     color: var(--c-accent);
+    /* The export's own intro: a quarter turn and a slight overshoot as the
+       page opens, 1100ms on a 300ms delay. It settles to nothing, so it costs
+       one animation and no layout. On the chip rather than the mark so the
+       pulse can own the mark's `animation` outright — see the note there.
+       The mark is centred in this 52px box, so scaling and rotating the box
+       puts it through exactly the same arc it went through before. */
+    animation: logoIntro 1100ms cubic-bezier(0.16, 1, 0.3, 1) 300ms both;
   }
   /* Appears once the page has actually moved, so it reads as progress rather
      than decoration sitting there at zero.
@@ -108,10 +115,12 @@ import mark from '../assets/roars-mark.png'
     -webkit-mask: var(--mark) center / contain no-repeat;
     mask: var(--mark) center / contain no-repeat;
     /* No transition on the ink. See the note above. */
-    /* The export's own intro: a quarter turn and a slight overshoot as the
-       page opens, 1100ms on a 300ms delay. It settles to nothing, so it costs
-       one animation and no layout. */
-    animation: logoIntro 1100ms cubic-bezier(0.16, 1, 0.3, 1) 300ms both;
+    /* The intro animation is on .chip, NOT here. Both it and the pulse want
+       the `animation` property, and one element cannot hold two of those from
+       two rules: the pulse would replace the intro, and removing the pulse
+       class at the end would set the intro running again — a logo that
+       re-introduces itself every time you cross a section. They are on
+       separate elements so neither can touch the other. */
   }
 
   @keyframes logoIntro {
@@ -128,7 +137,41 @@ import mark from '../assets/roars-mark.png'
   .chip:hover .chip__mark { --mark-ink: var(--c-footer); }
   :global(.topbar:not(.is-light)) .chip:hover .chip__mark { --mark-ink: var(--c-white); }
 
+  /* THE SECTION-CHANGE PULSE.
+     A second of pink, a second of yellow, then back to whatever ink the
+     section it has arrived on calls for. src/scripts/topbar.ts adds the class
+     each time a new section crosses the middle of the viewport and takes it
+     off when the animation ends.
+
+     HELD STOPS, NOT A FADE. The note above records that transitioning this
+     ink was tried and pulled: the values between yellow and black come out
+     around rgb(151,127,5), and a dark gold at 26px reads as red-brown. Pink
+     to yellow blends through orange and is no better. steps(1, end) means the
+     mark never holds an in-between value at all — it shows pink, then yellow,
+     then the ground ink, and nothing else. That is the same rule the earlier
+     note set, kept rather than worked around.
+
+     background-color, not --mark-ink: animating a custom property needs it
+     registered through @property before it will interpolate as a colour, and
+     painting the value directly does the same job with nothing to register.
+     When the class comes off, the element falls back to its own
+     `background: var(--mark-ink)` and lands on the right ground ink by
+     itself — including white, on a dark section. */
+  @keyframes logoPulse {
+    0%,  49.99% { background-color: var(--c-pulse); }
+    50%, 99.99% { background-color: var(--c-accent); }
+    100%        { background-color: var(--mark-ink); }
+  }
+
+  .chip__mark.is-pulsing {
+    animation: logoPulse 2000ms steps(1, end) 1 both;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .chip__mark { transition: none; }
+    /* Decoration carrying no information, so it does not run. topbar.ts tests
+       the same query and never adds the class; this is the belt to that
+       brace, for a preference switched on after the page loaded. */
+    .chip__mark.is-pulsing { animation: none; }
   }
 </style>

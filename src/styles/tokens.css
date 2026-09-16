@@ -25,6 +25,14 @@
   /* Accent. Never a background. Max two moments per viewport. */
   --c-accent:           #FFD400;
 
+  /* MOTION ONLY, AND NOT PART OF THE PALETTE. The one thing allowed to use
+     this is the logo's section-change pulse, where the mark flashes pink,
+     then yellow, then settles to its ground ink. It is never a background,
+     never a rule, never type, and nothing static may take it. It lives here
+     rather than inline in LogoChip so a reader grepping the palette finds it
+     and finds the fence around it at the same time. */
+  --c-pulse:            #FF3E9A;
+
   /* On dark grounds */
   --c-on-dark:          #FFFFFF;
   --c-on-dark-90:       rgba(255, 255, 255, 0.9);

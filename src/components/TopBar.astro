@@ -23,15 +23,22 @@ import { PORTRAIT } from '../lib/media'
  */
 interface Props {
   cta?: 'contact' | 'meeting'
+  /**
+   * The logo's section-change pulse — a second of pink, a second of yellow,
+   * then the ink the new ground calls for. OFF by default and set on the
+   * homepage alone while the effect is being judged; see initLogoPulse in
+   * src/scripts/topbar.ts. Turning it on elsewhere is this one prop.
+   */
+  pulse?: boolean
 }
-const { cta = 'contact' } = Astro.props
+const { cta = 'contact', pulse = false } = Astro.props
 const CTA = {
   contact: { label: 'Contact Now', note: 'Reach out to start your project' },
   meeting: { label: 'Setup a Meeting', note: 'We reply within 24 hours' },
 }[cta]
 ---
 
-<header class="topbar" data-topbar>
+<header class="topbar" data-topbar data-topbar-pulse={pulse ? '' : undefined}>
   <div class="wrap topbar__inner">
     <LogoChip />
 
