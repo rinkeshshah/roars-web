@@ -298,11 +298,27 @@ const nextProject = neighbour(1)
               ))}
             </dl>
           )}
-          {/* The export draws a "Live Version" pill here. NOT BUILT: this is
-              an internal warehouse system, there is no public URL for it, and
-              a button pointing at the client's marketing site would be a link
-              to the wrong thing. `liveUrl` is in the schema for the case
-              studies that do have one. */}
+          {/* THE "LIVE VERSION" PILL THE EXPORT DRAWS.
+              It went unbuilt because Snowman, the case study this template was
+              built against, is an internal warehouse system with no public URL
+              — and a button pointing at the client's marketing site would link
+              to the wrong thing. That reasoning was right about Snowman and
+              was then applied to everything: TEN case studies carry a liveUrl
+              in their frontmatter and not one of them was reachable from its
+              own page. App Store and Play Store listings for Gymbait,
+              Flowrow and this one, and live client sites for six others.
+              A visitor being able to go and open the thing is the strongest
+              proof a case study has, and it was sitting in the file.
+
+              Still nothing for a project without one: the pill only renders
+              when there is a URL, which is what should have happened here in
+              the first place. */}
+          {d.liveUrl && (
+            <a class="pd__live" href={d.liveUrl} target="_blank" rel="noopener">
+              {d.liveLabel}
+              <span class="pd__live-arrow" aria-hidden="true">&#8599;</span>
+            </a>
+          )}
         </div>
 
 
@@ -692,6 +708,24 @@ const nextProject = neighbour(1)
     width: 897px; height: 0.5px; background: rgba(71, 71, 71, 0.2);
   }
   .pd__facts > div + div { margin-top: 18px; }
+
+  /* The live link, on the same 457px rail as the fact table above it so the
+     two read as one block. An outline pill rather than a filled one: the page
+     already has a filled yellow call to action in the footer band, and two
+     competing buttons on one page is two buttons nobody presses. */
+  .pd__live {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin: 36px 0 0 457px; padding: 13px 24px;
+    border: 1px solid rgba(20, 20, 20, 0.22); border-radius: 999px;
+    font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-black);
+    transition: border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+  .pd__live:hover, .pd__live:focus-visible {
+    border-color: var(--c-black); background: var(--c-accent);
+  }
+  .pd__live-arrow { font-size: 14px; translate: 0 -1px; }
   .pd__facts dt {
     width: 465px;
     font-size: var(--fs-label); line-height: 24px; font-weight: var(--fw-medium);
@@ -857,6 +891,13 @@ const nextProject = neighbour(1)
     gap: 34px; margin: 44px 0 0; padding: 0; list-style: none;
   }
   .pd__web:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
+  /* A LAST CAPTURE ALONE ON ITS OWN ROW SPANS BOTH COLUMNS.
+     Six case studies have an odd number of web captures — 411Drives and
+     CompanyGuru have seven, Gypsy nine, Friendo five, Blelp and Tanishq three
+     — and every one of them ended with a half-width picture beside a hole.
+     One picture in a two-up grid does not read as a grid, it reads as a
+     missing picture. Spanning is the shape that says the set ended here. */
+  .pd__web > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .pd__web img {
     display: block; width: 100%; height: auto; aspect-ratio: 16 / 10;
     object-fit: cover; border-radius: 12px;
@@ -870,6 +911,19 @@ const nextProject = neighbour(1)
     display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 28px; margin: 44px 0 0; padding: 0; list-style: none;
   }
+  /* THE COLUMN COUNT FOLLOWS THE SCREEN COUNT WHERE FOUR WOULD ORPHAN ONE.
+     The President's Club ships five app screens. In a four-column grid that is
+     four across and then one on its own, which is the arrangement that reads
+     as a mistake rather than a layout. Five columns across 1362 gives each
+     screen 250px, which is still a readable interface — the reason the grid
+     was four in the first place was the four-screen contact sheets, not a
+     limit on how small a phone capture can go.
+
+     Six goes to three rather than six: 203px each is a pattern, and two even
+     rows of three is the better answer at that count. Seven and up keep four —
+     eleven falls 4/4/3 and Gymbait's board is meant to read as a board. */
+  .pd__app:has(> :nth-child(5):last-child) { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .pd__app:has(> :nth-child(6):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pd__app li {
     background: rgb(244, 244, 242);
     box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.08);
@@ -1031,6 +1085,26 @@ const nextProject = neighbour(1)
   .pd__prose :global(p + p) { margin-top: 20px; }
   .pd__prose :global(h2 + p) { margin-top: 18px; }
 
+  /* A QUOTATION IN THE BODY, for a client's words that have no name against
+     them. The President's Club ends with three sentences a client said about
+     this project, printed on production in the same type as the copy around
+     it, so the page appeared to be saying them about itself.
+
+     It reaches into the label column rather than sitting in column two with
+     the paragraphs, because the only job here is to be visibly not the same
+     voice. The rule down the left is the quotation mark; a real one at this
+     size is a piece of punctuation pretending to be a graphic. */
+  .pd__prose :global(blockquote) {
+    grid-column: 1 / -1; margin: 40px 0 0; padding: 4px 0 4px 28px;
+    border-left: 2px solid var(--c-accent);
+    max-width: 860px;
+    font-size: 22px; line-height: 34px; font-weight: var(--fw-medium);
+    letter-spacing: -0.02em; color: var(--c-black);
+  }
+  .pd__prose :global(blockquote p) {
+    grid-column: auto; font: inherit; letter-spacing: inherit; color: inherit;
+  }
+
   /* A hairline opens each section, drawn across both columns. It can hang off
      the heading now rather than off the first paragraph, because the heading
      is no longer floated and a section with no paragraph still gets its rule. */
@@ -1073,6 +1147,11 @@ const nextProject = neighbour(1)
     .pd__chapter { margin-top: 56px; }
     .pd__ground, .pd__web { grid-template-columns: 1fr; gap: 20px; margin-top: 28px; }
     .pd__app { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+    /* The count-based rules above are `:has()`, which outweighs a bare class
+       even from inside a media query, so the phone override has to match their
+       specificity or five screens stay five across at 390px. */
+    .pd__app:has(> :nth-child(5):last-child),
+    .pd__app:has(> :nth-child(6):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     /* THE SHEETS SCROLL SIDEWAYS ON A PHONE rather than shrink to nothing.
        A four-up sheet fitted to a 350px column gives each screen inside it
        about 85px, which is a pattern, not an interface — the same failure the
@@ -1126,6 +1205,7 @@ const nextProject = neighbour(1)
     .pd__prose { margin: 40px 0 0; max-width: 620px; grid-template-columns: minmax(0, 1fr); }
     .pd__prose :global(h2) { grid-column: 1; }
     .pd__prose :global(p) { grid-column: 1; }
+    .pd__prose :global(blockquote) { grid-column: 1; margin-top: 32px; padding-left: 20px; font-size: 19px; line-height: 30px; }
     .pd__prose :global(h2:not(:first-child)) { margin-top: 56px; padding-top: 32px; }
     .pd__prose :global(h2:has(+ h2) + h2) { margin-top: 28px; }
     .pd__prose :global(h2)::before { font-size: 32px; margin-bottom: 8px; }

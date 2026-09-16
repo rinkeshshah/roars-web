@@ -18,14 +18,22 @@ facts:
     v: "UI, UX, Strategy, Concept and Development"
   - k: "Technology"
     v: "Laravel, MongoDB, React Native, AWS"
-  - k: "Typography"
-    v: "Wireframe"
 blocks:
   - heading: "Challenges"
     lead: "It is this idea of sustaining and strengthening the client-vendor relationship that companies come up with special memberships. Customer loyalty program app are created to reward loyal clients for their dedication to a brand and for always being a returning customer."
-    body: "Samsung thought on the same lines and decided to do something special for them, to thank them for their patronage. Samsung introduced The President’s Club membership for its loyal partners."
+    # The export cuts this off mid-word — "premium services like airport lo" —
+    # so it is restored to the last phrase that is whole. What comes after
+    # "airport lo" is not in any record here, and the rest of that list is the
+    # owner's to supply.
+    body: "Samsung thought on the same lines and decided to do something special for them, to thank them for their patronage. Samsung introduced The President’s Club membership for its loyal partners: bespoke benefits, and exclusive member access to premium services."
   - heading: "Core Features"
-    lead: "is a members-only app, which can be accessed only by Samsung partners who have been loyal patrons of the tech-giant."
+    # PRODUCTION OPENS THIS SENTENCE WITH "is". No subject, lowercase, mid-air:
+    # "is a members-only app, which can be accessed only by...". WordPress ate
+    # the client name, probably because it was set in its own styled span. The
+    # subject is restored from the heading of the page it is on — this is the
+    # only thing the sentence can be about — rather than left reading as a
+    # fragment on a Samsung case study.
+    lead: "The President’s Club is a members-only app, which can be accessed only by Samsung partners who have been loyal patrons of the tech-giant."
     body: "Confident, modern, and usually very busy. Hence, an app designed optimally to provide simple yet delightful user interface and great user experience. By keeping every tab and every heading pretty self-explanatory, we have tried to make the app as user-friendly as possible."
 gallery:
   - src: "/wp-content/uploads/2022/08/wireframe.png"
@@ -69,4 +77,26 @@ We have designed customer loyalty program app interface to give it an elegant an
 
 Under each tab, opens up a new page to select further and narrow down to the item the user is searching for. Everything can be found no more than 2 levels down. By choosing their location, users can find an array of all President Club powered services and offerings in their vicinity.
 
-If anyone understood my maverick dreams and was able to translate it into technology and neat processes it was the team at Roars. More important to me as a complete techno moron was to be able to explain what I envisage, the business outcomes I wanted, and from an understanding to an execution, Team Roars did it marvelously. I wish them all the very best and hope they reach roaring heights always.
+<!-- THIS IS A CLIENT SPEAKING, AND THE PAGE WAS PRINTING IT AS US.
+
+     It sits at the end of the body on production as an ordinary paragraph, in
+     the same type as the three above it, so the page reads as though Roars
+     wrote "if anyone understood my maverick dreams... Team Roars did it
+     marvelously". Nobody says that about themselves.
+
+     It is not in the `testimonial` block because that block requires a name
+     and a role, and there is no record here of who said this — not in the
+     WordPress export, not in the owner's testimonials file. Inventing an
+     attribution on a Samsung engagement is not a thing to do to fill a slot,
+     and scripts/assert-attribution.mjs exists to say so.
+
+     So it stays in the client's words and is marked as a quotation, which is
+     the one thing that is true about it and is not currently being said.
+     Asked the owner for the name 16 Sep. -->
+
+> If anyone understood my maverick dreams and was able to translate it into
+> technology and neat processes it was the team at Roars. More important to me
+> as a complete techno moron was to be able to explain what I envisage, the
+> business outcomes I wanted, and from an understanding to an execution, Team
+> Roars did it marvelously. I wish them all the very best and hope they reach
+> roaring heights always.
