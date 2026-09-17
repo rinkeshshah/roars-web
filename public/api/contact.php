@@ -30,6 +30,11 @@
  */
 declare(strict_types=1);
 
+/* The key the two includes check for. They are in the document root because
+   the deploy puts them there, so each has a URL; this is what tells them the
+   difference between being required by this file and being fetched. */
+define('ROARS_ENTRY', true);
+
 /* Sendy list subscribes and the n8n forward. Shared, so there is one
    integration rather than one per form.
    NOT a bare require_once. A hard require of a file that is not there is a
@@ -46,6 +51,15 @@ if (is_file($smtp)) {
 } else {
     error_log('[roars] roars-smtp.php is missing from ' . __DIR__ . '; falling back to mail()');
 }
+
+/* DEFINED HERE, above everything that reads them. They were declared beside
+   the config fallbacks two hundred lines down, which is where they are used --
+   and ?diag=smtp reads them a hundred lines EARLIER than that. An undefined
+   constant is an Error, an Error is a fatal, and a fatal with display_errors
+   off is an empty 500 that says nothing. The diagnostic built to explain a
+   silent failure failed silently. */
+if (!defined('ROARS_SMTP_HOST_DEFAULT')) { define('ROARS_SMTP_HOST_DEFAULT', 'smtp-relay.gmail.com'); }
+if (!defined('ROARS_SMTP_PORT_DEFAULT')) { define('ROARS_SMTP_PORT_DEFAULT', 587); }
 
 $integrations = __DIR__ . '/roars-integrations.php';
 if (is_file($integrations)) {
@@ -368,9 +382,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { $fail(405, 'Method not allo
  * ships. They are a floor, not a config: a real file wins every key it sets,
  * because `+` on arrays keeps the left-hand side.
  */
-if (!defined('ROARS_SMTP_HOST_DEFAULT')) { define('ROARS_SMTP_HOST_DEFAULT', 'smtp-relay.gmail.com'); }
-if (!defined('ROARS_SMTP_PORT_DEFAULT')) { define('ROARS_SMTP_PORT_DEFAULT', 587); }
-
 $cfgFallback = [
     'notify_to'      => 'sales@roarsinc.com',
     'from'           => 'noreply@roarsinc.com',
@@ -596,6 +607,13 @@ if ((string) ($cfg['dsn'] ?? '') === '') {
 $render = function (string $file, array $vars): string {
     $tpl = (string) @file_get_contents(__DIR__ . '/' . $file);
     if ($tpl === '') { return ''; }
+    /* COMMENTS ARE FOR WHOEVER EDITS THE TEMPLATE, not for the recipient, and
+       every byte of them was being posted to Gmail. Stripped here rather than
+       deleted from the file, so the explanations stay where they are useful.
+       `[if` is excluded: those are Outlook's conditional comments and they are
+       markup, not documentation -- removing them breaks the layout in the one
+       client least able to recover. */
+    $tpl = preg_replace('/<!--(?!\[if)(?:(?!<!--).)*?-->/s', '', $tpl) ?? $tpl;
     $tpl = preg_replace_callback(
         '/\{\{#([a-z0-9_]+)\}\}(.*?)\{\{\/\1\}\}/s',
         static fn(array $m): string => ($vars[$m[1]] ?? '') === '' ? '' : $m[2],
@@ -623,14 +641,21 @@ $render = function (string $file, array $vars): string {
  */
 $send = function (string $to, string $subject, string $html, string $text, ?array $attach = null, string $replyTo = '', string $bcc = '') use ($cfg): void {
     $alt = '=_a' . bin2hex(random_bytes(12));
+    /* QUOTED-PRINTABLE, NOT BASE64, for both parts.
+       base64 inflates by a third no matter what it is given, and HTML is
+       almost entirely printable ASCII -- so a 16KB template went over the wire
+       as 22KB for no benefit. quoted_printable_encode leaves the ASCII alone
+       and escapes the handful of bytes that need it, which is about 3% on this
+       content and also leaves the message readable in a raw dump when
+       something needs debugging. */
     $inner = "--{$alt}\r\n"
         . "Content-Type: text/plain; charset=UTF-8\r\n"
-        . "Content-Transfer-Encoding: base64\r\n\r\n"
-        . chunk_split(base64_encode($text), 76, "\r\n")
+        . "Content-Transfer-Encoding: quoted-printable\r\n\r\n"
+        . quoted_printable_encode($text) . "\r\n"
         . "--{$alt}\r\n"
         . "Content-Type: text/html; charset=UTF-8\r\n"
-        . "Content-Transfer-Encoding: base64\r\n\r\n"
-        . chunk_split(base64_encode($html), 76, "\r\n")
+        . "Content-Transfer-Encoding: quoted-printable\r\n\r\n"
+        . quoted_printable_encode($html) . "\r\n"
         . "--{$alt}--\r\n";
 
     /* From is noreply@, because these are machine-sent and nobody watches that
@@ -699,6 +724,15 @@ $postal = (string) ($cfg['postal_address'] ?? '4th Block, Jayanagar, Bengaluru, 
    follow-ups. Overridable from config so it can be changed without a deploy. */
 $booking = rtrim((string) ($cfg['booking_url'] ?? 'https://meet.roarsinc.com/sales'), '/');
 
+/* WHERE THE EMAIL'S IMAGES LIVE. The Roars lockup used to be a 53KB base64
+   data URI inside both templates -- 76% of the acknowledgement's bytes, for a
+   180x47 logo, in every message. Gmail clips anything over about 102KB and
+   hides the rest behind "[Message clipped]", which is how a signature stops
+   arriving. It is a hosted 4.4KB file now, at 2x the display size.
+   site_url, so a dev message loads it from dev and nothing has to be
+   remembered at cutover. */
+$assetBase = rtrim($site, '/');
+
 /**
  * SUZANNE'S SIGNATURE, plain-text half. The exact bytes of the signature file
  * that sales@ uses, and the exact string the n8n flow pastes into its own
@@ -718,7 +752,7 @@ $signatureText = ''
     . "User Experience Matters*\r\n"
     . "\r\n"
     . "Property of ROARS Technologies Pvt. Ltd. This message is intended only for the use of the Addressee and may contain information that is PRIVILEGED and CONFIDENTIAL. If you are not the intended recipient, dissemination of this communication is prohibited. If you have received this communication in error, please erase all copies of the message and its attachments and notify us immediately at notify@roarsinc.com\r\n"
-    . "Head Office: Roars Technologies Pvt. Ltd., Jaynagar, Bengaluru, Karnataka, 560041\r\n";
+    . "Head Office: Roars Technologies Pvt. Ltd., Jayanagar, Bengaluru, Karnataka, 560041\r\n";
 
 /* The internal work notification. Plain text: it is a work notification, not a
    brand piece. Reply-To is the visitor so a reply from sales@ reaches them.
@@ -773,12 +807,13 @@ if ($guide !== null) {
         'chapter_2'         => $guide['chapters'][1] ?? '',
         'chapter_3'         => $guide['chapters'][2] ?? '',
         'postal_address'    => $postal,
+        'asset_base'     => $assetBase,
     ]);
     $text = "Hi {$first},\r\n\r\nYour copy of {$guide['title']} is "
         . ($guide['path'] !== null ? "attached, and also here:\r\n{$url}" : "here:\r\n{$url}")
-        . "\r\n\r\nIt is one page — print it, fill it in, take it into the room. "
+        . "\r\n\r\nIt is one page. Print it, fill it in, take it into the room. "
         . "If the problem turns out to be bigger than a page, reply to this email "
-        . "and we will take a look.\r\n\r\n— Roars Technologies\r\n{$postal}\r\n";
+        . "and we will take a look.\r\n\r\nRoars Technologies\r\n{$postal}\r\n";
     $attach = $guide['path'] !== null ? ['path' => $guide['path'], 'name' => $guide['name']] : null;
     $visitorMail = function () use ($send, $email, $guide, $html, $text, $attach, $cfg): void {
         $send($email, "Your copy of {$guide['title']}", $html, $text, $attach, $cfg['notify_to'], $cfg['notify_to']);
@@ -801,6 +836,7 @@ if ($guide !== null) {
         'ref_id'         => $ref,
         'submitted_at'   => gmdate('j M Y, H:i') . ' UTC',
         'postal_address' => $postal,
+        'asset_base'     => $assetBase,
         'booking_url'    => $booking,
     ]);
     /* The plain-text alternative says the same thing as the HTML, in the same
