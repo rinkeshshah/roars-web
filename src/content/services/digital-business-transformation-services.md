@@ -42,11 +42,6 @@ bands:
       - tag: "ENTERPRISE"
         name: "ENTERPRISE MOBILITY"
         body: "Our team has a proven record of combining advanced mobile technologies to deliver best-in-class mobile-first solutions. As part of our business digital transformation strategy, these solutions help clients improve revenue channels, enhance staff efficiency, and increase customer loyalty."
-featured:
-  label: "FEATURED WORK"
-  client: "Tanishq"
-  body: "We create a business digital transformation roadmap to ensure that the evolution of business is aligned with the changing digital landscape. We chart the technology needs, collaborate with suitable partners, and, based on redefined feedback, we make the transition seamless and strategic."
-  href: "/work/tanishq-data-analytics/"
 cta:
   label: "Start here"
   heading: "Are you ready for digital innovation?"

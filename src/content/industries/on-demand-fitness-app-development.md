@@ -96,12 +96,6 @@ proof:
       suffix: "%"
       pct: true
       label: "AI-DRIVEN SOLUTIONS"
-  featured:
-    label: "FEATURED WORK"
-    client: "GymBait"
-    body: "GymBait saw a chance to use AI in a gym and fitness app built for the UK market, tackling the usual frustrations with personalised plans, progress tracking and flexible workouts."
-    href: "/work/gymbait/"
-    ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
   heading: "Other industries we build for"

@@ -122,12 +122,6 @@ proof:
       suffix: "%"
       pct: true
       label: "AI-DRIVEN SOLUTIONS"
-  featured:
-    label: "FEATURED WORK"
-    client: "Snowman Logistics"
-    body: "How Roars built a scalable operations platform for Snowman, turning warehouse checklists, compliance tracking and real-time reporting into one centralised, auditable system."
-    href: "/work/warehouse-compliance-checklist-app/"
-    ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
   heading: "Other industries we build for"
@@ -210,21 +204,13 @@ failures:
 cases:
   label: "WHAT WE HAVE BUILT HERE"
   items:
-    # Production links three logistics case studies and this page carried one
-    # of them, Snowman, which is also the featured card below. So Snowman stays
-    # featured and these two slots go to the other two, which puts all three on
-    # the page and stops one project appearing twice.
-    # Les Concierges was here, and it is HELD BACK: noindex, off /work/. Parqly
-    # is the sector's other shown case — it is tagged into this industry in its
-    # own content file — and it is a transport problem end to end.
+    # ONE PROJECT PER PAGE. This band carried two cases and the proof band
+    # carried a third. Parqly is the one that stays: the transport problem
+    # end to end, hardware included.
     - client: "Parqly"
       situation: "Drivers circling for a space and owners with no way to sell the one standing empty behind a gate."
       did: "Built the app and the BLE hardware together, so finding a space, paying for it and opening the barrier are one action."
       href: "/work/parqly-parking-solution/"
-    - client: "Onus"
-      situation: "An eCommerce logistics provider handling package delivery and travel needs across a wide range of routes."
-      did: "Built the digital software that runs deliveries and trips through one system rather than several."
-      href: "/work/onus/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for logistics clients"

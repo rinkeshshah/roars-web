@@ -182,28 +182,6 @@ failures:
       body: "Prices and availability get cached optimistically, and the failure shows up as a booking that cannot be honoured."
     - name: "Notifications that arrive too late to help"
       body: "A gate change alert that lands after the gate change is worse than none. The timing is the feature."
-cases:
-  label: "WHAT WE HAVE BUILT HERE"
-  items:
-    # ONUS was here AND the featured card below, so it appeared twice. It stays
-    # featured; this slot goes to Community Social, the other travel case
-    # production links.
-    #
-    # The Revolver Life is the third production links. It was left off on 16 Sep
-    # because it was not in docs/URL-INVENTORY.csv and did not build — the right
-    # call under CLAUDE.md rule 1, and the wrong answer, because the inventory
-    # was the thing that was wrong. The page is live and indexed on production.
-    # It is now migrated, in the inventory, and linked here as production does.
-    # Community Social was here and is HELD BACK: noindex, off /work/. A card
-    # on an indexed page pointing at a page we have told search engines to
-    # ignore spends the link and strands the reader on a noindex dead end.
-    # Onus is the sector's other production case and is already the featured
-    # card below, so this slot goes to The Revolver Life on its own rather than
-    # being filled for the sake of two cards.
-    - client: "The Revolver Life"
-      situation: "Digital nomads running a job and planning the next leg from the same phone, across apps that knew nothing about each other."
-      did: "One on-demand concierge app: rooms, work needs and lifestyle in one place, with a marketplace where vendors quote on what you post."
-      href: "/work/the-revolver-life-concierge-app/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for travel and hospitality clients"

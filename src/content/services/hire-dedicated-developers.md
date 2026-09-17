@@ -42,11 +42,6 @@ bands:
       - tag: "PHP"
         name: "PHP DEVELOPMENT"
         body: "Outsource passionate PHP professionals from us and fulfill your business requirements with custom web development and advanced PHP frameworks. We have a variety of skilled programmers that have top-of-the-line expertise in PHP, Symfony, Laravel, and Codeigniter development."
-featured:
-  label: "FEATURED WORK"
-  client: "The Club Social"
-  body: "In here, our hired dedicated developers & testers kick-start the development process and bring your ideas to life, ensuring smooth operation. Once your project is deployed, we make sure that you get full support from us to keep your product up-to-date for the future too."
-  href: "/work/club-social/"
 cta:
   label: "Start here"
   heading: "We can help you find the best developers for the job!"

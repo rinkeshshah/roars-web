@@ -160,17 +160,6 @@ proof:
       suffix: "%"
       pct: true
       label: "AI-DRIVEN SOLUTIONS"
-  featured:
-    label: "FEATURED WORK"
-    client: "The Club Social"
-    body: "Single app to manage club amenities/ Restaurant from one single app for members and club"
-    meta:
-      - k: "INDUSTRY"
-        v: "Restaurant & clubs"
-      - k: "SURFACES"
-        v: "Member app · Amenities · Ordering"
-    href: "/work/club-social/"
-    ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
   heading: "Other industries we build for"

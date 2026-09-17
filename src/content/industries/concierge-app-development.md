@@ -134,14 +134,6 @@ proof:
       suffix: "%"
       pct: true
       label: "AI-DRIVEN SOLUTIONS"
-  featured:
-    label: "FEATURED WORK"
-    client: "Concierges"
-    # Was the loyalty capability's own sentence, reused here, so the featured
-    # card described a feature rather than the project it links to.
-    body: "AI-first concierge platform for enterprises. Roars turned a luxury concierge startup's fragmented MVP into one AI-powered platform for high-net-worth travellers and enterprise clients."
-    href: "/work/concierge-loyalty-program/"
-    ctaLabel: "View Project"
 sectors:
   label: "WHERE ELSE WE WORK"
   heading: "Other industries we build for"
@@ -223,24 +215,16 @@ failures:
       body: "Points added after launch sit outside the request model, so the thing that should reward good service cannot see it happening."
 cases:
   label: "WHAT WE HAVE BUILT HERE"
-  # Production links three concierge case studies and this page carried two of
-  # them, one of which was Concierge Loyalty, already the featured card below.
-  # Club Social was on neither. So: Concierge Loyalty stays as the featured
-  # card, and the two slots here go to the other two, which puts all three on
-  # the page and stops one project appearing twice.
+  # ONE PROJECT PER PAGE. Production linked three concierge case studies and
+  # this page carried two of them plus a featured card, which is three slots
+  # for a decision a reader makes once. Club Social is the one that stays:
+  # it is a listed case study with its own presentation, where The Revolver
+  # Life is off the /work/ grid and still awaiting a rewrite.
   items:
     - client: "Club Social"
       situation: "A membership business whose members could reach one club at a time, when what they had bought was access to more than 300 worldwide."
       did: "Built membership and booking as one responsive product, so a member sees every club they can use and reserves without the phone call."
       href: "/work/club-social/"
-    # Les Concierges was here, and it is HELD BACK: noindex, off /work/.
-    # The Revolver Life is the sector's other shown case: it is tagged into this
-    # industry in its own content file and it is indexed, so the link is worth
-    # something in both directions.
-    - client: "The Revolver Life"
-      situation: "Digital nomads running a job and planning the next leg from the same phone, across apps that knew nothing about each other."
-      did: "Built one on-demand concierge app, with a marketplace where vendors quote on what a member posts."
-      href: "/work/the-revolver-life-concierge-app/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for concierge and member businesses"

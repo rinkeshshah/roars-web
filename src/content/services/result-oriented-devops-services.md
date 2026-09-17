@@ -42,11 +42,6 @@ bands:
       - tag: "INFRASTRUCTURE"
         name: "INFRASTRUCTURE MONITORING"
         body: "Build an effective IT infrastructure with Roars Technologies a DevOps company. With our proven expertise in DevOps practices and IT monitoring, we help you proactively eliminate hurdles, accelerate time-to-market, and ensure 100% system performance for an exceptional user experience."
-featured:
-  label: "FEATURED WORK"
-  client: "GISAID"
-  body: "A platform holding one of the largest COVID data sets in the world, where availability was not negotiable. We built the tooling for a scale where a bad deploy is a public problem rather than an internal one."
-  href: "/work/gisaid-health-tech/"
 cta:
   label: "Start here"
   heading: "Looking for a DevOps partner?"

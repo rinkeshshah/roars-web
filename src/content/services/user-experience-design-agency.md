@@ -46,13 +46,6 @@ bands:
       - tag: "DESIGN"
         name: "DESIGN SPRINTS"
         body: "We use the latest tools and technologies to build and test a prototype that satisfies users’ needs and helps organisations achieve objectives. Our user experience team understands how your product users see the product and have expertise to deliver all possible solutions to user problems."
-featured:
-  label: "FEATURED WORK"
-  client: "FlowRow"
-  # Same splice as the process step above. "In this phase" is dropped here
-  # too, because in a featured band it refers to no phase the reader has seen.
-  body: "We design your product visually appealing and user-friendly to represent your brand as the best amongst your competitors. Our experts employ user-centric design to make your product look with a focus on ease of use."
-  href: "/work/flowrow-fitness-app/"
 cta:
   label: "Start here"
   heading: "Got a project in mind?"

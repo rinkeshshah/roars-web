@@ -49,11 +49,6 @@ bands:
 # Parqly is the replacement in both places. It is shown, and it is the better
 # example anyway: its own content file calls what shipped "a feature-rich MVP
 # and a clear growth roadmap", delivered end to end in under three months.
-featured:
-  label: "FEATURED WORK"
-  client: "Parqly"
-  body: "A feature-rich MVP and a clear growth roadmap: the whole platform, from UX to deployment, in under three months, with the hardware integration proven rather than promised."
-  href: "/work/parqly-parking-solution/"
 cta:
   label: "Start here"
   heading: "Need help from an expert MVP development team?"

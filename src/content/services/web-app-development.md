@@ -49,11 +49,6 @@ bands:
 # Club Social is the replacement in both places. It is shown, it is a web app —
 # membership and booking built as one responsive product — and every word below
 # comes from its own content file rather than being written to fill the slot.
-featured:
-  label: "FEATURED WORK"
-  client: "The Club Social"
-  body: "One app for members and clubs, with access to more than 300 private members’ clubs worldwide, built as a single responsive product rather than a site and an app that drift apart."
-  href: "/work/club-social/"
 cta:
   label: "Start here"
   heading: "Let’s build your app that never fails in delighting your customer!"

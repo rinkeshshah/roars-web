@@ -42,11 +42,6 @@ bands:
       - tag: "POS"
         name: "POS DEVELOPMENT"
         body: "We have expertise in developing innovative POS development solutions with the latest tools and technologies that will allow you to take control of your assets and commodities for stabilizing sales and enhancing the business productivity, backed by our capabilities in AI-Powered Product Development."
-featured:
-  label: "FEATURED WORK"
-  client: "The President’s Club"
-  body: "We are always there to continue supporting you even after the development of the product. Our team will provide you round-the-clock support and maintenance services if a product runs into any problems, errors, bugs, or needs any update."
-  href: "/work/the-presidents-club/"
 cta:
   label: "Start here"
   heading: "Let’s discuss your product idea and bring innovation to the life!"
