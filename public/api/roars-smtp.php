@@ -35,6 +35,24 @@
 
 declare(strict_types=1);
 
+/**
+ * NOT A PAGE. This file is an include, and it is inside the document root
+ * because that is where Plesk's git deploy puts everything -- so it has a URL
+ * whether it wants one or not.
+ *
+ * A direct GET currently returns 200 and an empty body, because the file only
+ * declares things. That is harmless today and one PHP misconfiguration away
+ * from not being: a handler that stops executing .php serves the source
+ * instead, and the source of an include that reads a secrets file is a map to
+ * it. .htaccess says no as well; this is the half that does not depend on the
+ * web server being configured the way we expect.
+ */
+if (!defined('ROARS_ENTRY')) {
+    http_response_code(403);
+    exit;
+}
+
+
 const ROARS_SMTP_HOST = 'smtp-relay.gmail.com';
 const ROARS_SMTP_PORT = 587;
 
