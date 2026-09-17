@@ -18,7 +18,7 @@ import GrainField from '../../components/GrainField.astro'
 import RingField from '../../components/RingField.astro'
 import { PORTRAIT, workHeroFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
-import { clientFor, isHeldBack, PROJECTS } from '../../lib/projects'
+import { clientFor, isHeldBack, isOffGrid, PROJECTS } from '../../lib/projects'
 import WorkPresentation from '../../components/WorkPresentation.astro'
 import { site } from '../../lib/site'
 
@@ -208,7 +208,12 @@ const neighbour = (dir: 1 | -1) => {
   if (hereAll < 0) return undefined
   for (let step = 1; step <= ORDER.length; step++) {
     const p = PROJECTS[(hereAll + dir * step + ORDER.length * ORDER.length) % ORDER.length]
-    if (p && p.slug !== slug && !isHeldBack(p.slug)) return p
+    /* The same eleven /work/ lists. Held back was already skipped; off the grid
+       was not, so Onus offered The Revolver Life as its next case — a page that
+       is indexed and reachable but deliberately not one of the eleven we put in
+       front of people, and with no cover image to draw on the plate. Prev and
+       next walk what the index walks. */
+    if (p && p.slug !== slug && !isHeldBack(p.slug) && !isOffGrid(p.slug)) return p
   }
   return undefined
 }

@@ -874,6 +874,10 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   .wp-label--sun { color: rgba(20, 20, 20, 0.66); }
   .wp-next__note--sun { color: var(--c-black); }
   .wp-ghost--sun {
+    /* `align-self: center` because .wp-ghost sets flex-start, which beats the
+       container's `align-items: center` — so the button sat on the first line
+       of a two-line note, 25px above the middle of the band. */
+    align-self: center;
     box-shadow: inset 0 0 0 2px rgba(20, 20, 20, 0.3); color: var(--c-black);
   }
   .wp-ghost--sun:hover, .wp-ghost--sun:focus-visible {
