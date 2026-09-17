@@ -30,6 +30,16 @@ export function initForms(): void {
 
       const body = new FormData(form)
       body.set('page_url', location.href)
+      /* Two signals the lead flow reads. Written here rather than in the
+         markup because they describe this submit, not the build.
+         `elapsed_ms` is milliseconds from navigation to submit. Someone
+         filling in a contact form takes seconds at least; a script posting one
+         takes almost none, and n8n scores on the difference. performance.now()
+         is monotonic, so a clock change cannot make it lie.
+         `page` is the path. `page_url` above is the whole href with its query
+         and hash, and n8n wants the path on its own. */
+      body.set('elapsed_ms', String(Math.round(performance.now())))
+      body.set('page', location.pathname)
 
       try {
         const res = await fetch(form.action, {

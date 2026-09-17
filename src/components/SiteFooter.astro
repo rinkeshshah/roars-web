@@ -179,6 +179,19 @@ const year = new Date().getFullYear()
         <div class="ft__rule ft__rule--short"></div>
         <form class="ft__sub" action="/api/contact.php" method="post" data-contact-form>
           <input type="hidden" name="form" value="newsletter" />
+
+          {/* Honeypots. Hidden from people, irresistible to bots. Two names:
+              this site's own and the one the n8n scoring step reads. */}
+          <div class="ft__pot" aria-hidden="true">
+            <label for="ft-website">Company website</label>
+            <input id="ft-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+            <label for="ft-website-2">Your website</label>
+            <input id="ft-website-2" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          {/* Written by the submit island, never by a person. */}
+          <input type="hidden" name="elapsed_ms" value="" data-elapsed />
+          <input type="hidden" name="page" value="" data-page />
           <div class="ft__field">
             <label for="ft-name">Your name *</label>
             <input id="ft-name" name="name" type="text" required autocomplete="name" />
@@ -399,6 +412,7 @@ const year = new Date().getFullYear()
   }
   .ft__nav a:hover, .ft__social a:hover, .ft__col--links a:hover { color: var(--c-accent); }
 
+  .ft__pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .ft__sub { display: flex; flex-direction: column; gap: var(--sp-4); max-width: 430px; }
   .ft__field { display: flex; flex-direction: column; gap: var(--sp-2); }
   .ft__field label {

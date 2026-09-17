@@ -209,11 +209,18 @@ const { Content } = entry ? await render(entry) : { Content: null }
           <input type="hidden" name="guide" value={slug} />
           <input type="hidden" name="message" value={`Guide request: ${name}`} />
 
-          {/* Honeypot. Hidden from people, irresistible to bots. */}
+          {/* Honeypots. Hidden from people, irresistible to bots. Two names:
+              this site's own and the one the n8n scoring step reads. */}
           <div class="gg__pot" aria-hidden="true">
             <label for="g-website">Company website</label>
             <input id="g-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+            <label for="g-website-2">Your website</label>
+            <input id="g-website-2" name="website" type="text" tabindex="-1" autocomplete="off" />
           </div>
+
+          {/* Written by the submit island, never by a person. */}
+          <input type="hidden" name="elapsed_ms" value="" data-elapsed />
+          <input type="hidden" name="page" value="" data-page />
 
           <div class="gg__grid">
             <div class="gg__row">
@@ -225,6 +232,14 @@ const { Content } = entry ? await render(entry) : { Content: null }
               <input id="g-email" name="email" type="email" required autocomplete="email" />
             </div>
           </div>
+
+          {/* Asking for the guide is what subscribes them to the guide list,
+              which the legal note below this form covers. This is the separate
+              ask for the newsletter, and it starts unticked. */}
+          <label class="gg__check" for="g-news">
+            <input id="g-news" name="newsletter" type="checkbox" value="1" />
+            <span>Send me the occasional Roars newsletter</span>
+          </label>
 
           {turnstileKey && (
             <div class="cf-turnstile" data-sitekey={turnstileKey} data-theme="light"></div>
@@ -464,6 +479,18 @@ const { Content } = entry ? await render(entry) : { Content: null }
     width: 100%; height: 1.5px; background: var(--c-rule-strong);
   }
   .gg__pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  /* The consent tick. 20px box in a 44px row so the whole line takes a thumb. */
+  .gg__check {
+    display: flex; align-items: center; gap: 12px;
+    min-height: 44px; margin-top: 22px; cursor: pointer;
+    font-size: 13px; line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.72);
+  }
+  .gg__check input {
+    flex: 0 0 auto; width: 20px; height: 20px; margin: 0;
+    accent-color: var(--c-black); cursor: pointer;
+  }
+  .gg__check input:focus-visible { outline: 2px solid rgb(20, 20, 20); outline-offset: 2px; }
   .gg__grid { display: grid; grid-template-columns: 390fr 42fr 390fr; }
   .gg__row:last-of-type { grid-column: 3; }
   .gg__row label {

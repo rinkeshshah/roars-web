@@ -11,3 +11,6 @@ dist/
 public/api/contact-config.php
 exports/
 .compare/
+
+# Never commit a filled secrets file. The real one lives outside the docroot.
+public/api/roars-secrets.php
