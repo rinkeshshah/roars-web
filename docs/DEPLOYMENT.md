@@ -128,40 +128,53 @@ repository does not grow by a copy of the site on every build.
 
 6. **Sendy and n8n secrets.** Separate from `contact-config.php`, and
    deliberately so: that file is one environment's database and Turnstile
-   credentials, and this one is the keys to two outside services that both
-   have live lists behind them. A dev submission reaching the production
-   Sendy list is not recoverable, so each environment gets its own file.
+   credentials, and this one is the keys to two outside services with live
+   lists behind them. A dev submission reaching the production Sendy list is
+   not recoverable, so each environment gets its own file.
 
-   Copy `public/api/roars-secrets.example.php` to
+   Copy `public/api/roars-secrets.example.php` twice, into the **subscription
+   root** — one level above `httpdocs`, beside the `dev.roarsinc.com` folder:
 
    ```
-   /var/www/vhosts/roarsinc.com/private/roars-secrets.php         # production
-   /var/www/vhosts/dev.roarsinc.com/private/roars-secrets.php     # dev
+   /var/www/vhosts/roarsinc.com/roars-secrets.php       # production
+   /var/www/vhosts/roarsinc.com/roars-secrets-dev.php   # dev.roarsinc.com
    ```
 
    `chmod 600` both. Fill in `SENDY_URL`, `SENDY_API_KEY`,
    `N8N_CONTACT_WEBHOOK` and `N8N_FORM_SECRET`. The form secret has to match
    `FORM_SECRET` in the n8n workflow character for character, or n8n rejects
-   every forward.
+   every forward. The two files are identical except the webhook:
 
-   Then point each domain at its own copy. Plesk > Websites & Domains >
-   `<domain>` > PHP Settings > Additional configuration directives:
+   | | webhook |
+   |---|---|
+   | production | `https://n8n-wpvi.srv1477810.hstgr.cloud/webhook/roars-contact` |
+   | dev | `https://n8n-wpvi.srv1477810.hstgr.cloud/webhook-test/roars-contact` |
 
+   **Nothing is set on the server, and nothing needs to be.** `roars_cfg()`
+   picks which file to read from its own path on disk: dev.roarsinc.com is
+   deployed under `/var/www/vhosts/roarsinc.com/dev.roarsinc.com/`, so a copy
+   of the helper running from inside that folder reads the `-dev` file and a
+   copy running from `httpdocs` reads the other. This is a property of where
+   the code sits, not of the request, so there is no Host header or path a
+   visitor can send to make production read dev's file or the reverse.
+
+   This replaced an `env[ROARS_SECRETS_FILE]` directive per domain. The hosting
+   plan has no "Additional Apache directives" box to put one in. The variable
+   is still honoured if it is ever set, but nothing sets it.
+
+   **Confirm the split once, before the first real submission.** The failure
+   mode is silent and it is the expensive direction — dev quietly reading
+   production's file and posting a test lead to the live list. Drop a file at
+   `dev.roarsinc.com/httpdocs/whoami.php` containing
+
+   ```php
+   <?php require __DIR__ . '/api/roars-integrations.php';
+   echo str_contains(roars_cfg('N8N_CONTACT_WEBHOOK'), '/webhook-test/') ? 'DEV OK' : 'WRONG FILE';
    ```
-   env[ROARS_SECRETS_FILE] = /var/www/vhosts/roarsinc.com/private/roars-secrets.php
-   ```
 
-   Without that line `roars_cfg()` falls back to a default path shared by both
-   domains, which is the mistake this whole arrangement exists to prevent.
-   Set it per domain and check it with a one-line `phpinfo()` before trusting
-   it.
-
-   **The webhooks are not the same on both.** Production posts to
-   `/webhook/roars-contact`. Dev posts to `/webhook-test/roars-contact`, which
-   only answers while the workflow is open and listening in the n8n editor.
-   When it is not listening the forward fails, `contact.php` falls back to
-   emailing sales@, and the visitor sees success either way. That is the
-   fallback doing its job, not a fault to chase.
+   load it once, and **delete it**. Anything but `DEV OK` means the dev
+   document root is not under a folder named `dev.roarsinc.com` and the path
+   test cannot see it.
 
    **Nothing here is required for a form to work.** Every integration logs a
    `[roars]` line to the PHP error log and returns false on any failure; the

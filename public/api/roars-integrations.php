@@ -12,8 +12,10 @@
  *     'N8N_FORM_SECRET'     => '...long random string, same as FORM_SECRET in n8n...',
  *   ];
  *
- * Point ROARS_SECRETS_FILE at it (Plesk > PHP Settings or .user.ini), or edit the default below.
- * Use a separate secrets file for dev.roarsinc.com so test submissions never hit the live lists.
+ * Files (both outside every web root):
+ *   /var/www/vhosts/roarsinc.com/roars-secrets.php      used by roarsinc.com
+ *   /var/www/vhosts/roarsinc.com/roars-secrets-dev.php  used by dev.roarsinc.com (picked automatically from this file's path)
+ * ROARS_SECRETS_FILE, if set in the environment, overrides both.
  */
 
 declare(strict_types=1);
@@ -28,7 +30,11 @@ function roars_cfg(string $key): string
 {
     static $cfg = null;
     if ($cfg === null) {
-        $file = getenv('ROARS_SECRETS_FILE') ?: '/var/www/vhosts/roarsinc.com/roars-secrets.php';
+        // Dev and production share one subscription; pick the file by where this code lives.
+        // dev.roarsinc.com is deployed under /var/www/vhosts/roarsinc.com/dev.roarsinc.com/
+        $isDev = str_contains(__DIR__, '/dev.roarsinc.com/') || str_ends_with(__DIR__, '/dev.roarsinc.com');
+        $default = '/var/www/vhosts/roarsinc.com/' . ($isDev ? 'roars-secrets-dev.php' : 'roars-secrets.php');
+        $file = getenv('ROARS_SECRETS_FILE') ?: $default;
         $cfg = is_file($file) ? (array) require $file : [];
     }
     $value = $cfg[$key] ?? getenv($key);
