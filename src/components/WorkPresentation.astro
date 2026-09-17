@@ -79,6 +79,52 @@ const PLINTHS = ['p0', 'p1', 'p2', 'p3']
    that reaches it anyway: all twenty-four projects have one, which assert-styles
    confirmed by reporting the rule as matching nothing. A project with neither
    simply opens without a plate. */
+/* THE FACTS RAIL, out of what the project already says about itself.
+ *
+ * `presentation.meta` is an authored k/v list and it is the only place these
+ * facts exist. The brief asks for Client, Services, Year and Platform, so
+ * those four lead, in that order, mapped onto the keys that hold them:
+ *
+ *   Client    meta.CLIENT      all eleven
+ *   Services  meta.SCOPE       all eleven
+ *   Year      from dateLabel   all eleven
+ *   Platform  meta.PLATFORM    TWO: GymBait and The President's Club
+ *
+ * Nothing is invented and nothing is relabelled to fill a row. The nine
+ * projects with no PLATFORM key simply have no Platform line. SURFACES is not
+ * pressed into that slot: it names which screens were built, which is a
+ * different fact from which platform they run on.
+ *
+ * The keys a project carries beyond those four -- SECTOR on ten of eleven,
+ * MARKET on GymBait -- follow underneath in their authored order rather than
+ * being dropped, because they are facts somebody wrote about that project.
+ *
+ * YEAR is the one derived value: the four digits out of dateLabel, which is
+ * the same date the head prints in full. It is a reformat of existing data,
+ * not a new claim, and a label with no year in it yields no row.
+ */
+const CANON = [
+  ['Client', 'CLIENT'],
+  ['Services', 'SCOPE'],
+] as const
+const metaBy = new Map(p.meta.map((m) => [m.k.toUpperCase(), m.v]))
+const year = d.dateLabel?.match(/\b(19|20)\d{2}\b/)?.[0]
+
+const facts: { k: string; v: string }[] = []
+for (const [label, key] of CANON) {
+  const v = metaBy.get(key)
+  if (v) facts.push({ k: label, v })
+}
+if (year) facts.push({ k: 'Year', v: year })
+const platform = metaBy.get('PLATFORM')
+if (platform) facts.push({ k: 'Platform', v: platform })
+
+/* Whatever else the project authored, in its own order, minus the four above. */
+const USED = new Set(['CLIENT', 'SCOPE', 'PLATFORM'])
+for (const m of p.meta) {
+  if (!USED.has(m.k.toUpperCase())) facts.push({ k: m.k, v: m.v })
+}
+
 const cover = p.coverPlate ?? (d.heroImage ? { src: d.heroImage, alt: '', w: 2400, h: 1200 } : undefined)
 const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
 ---
@@ -100,29 +146,52 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     <span class="wp-dots"><i></i><i class="on"></i></span>
   </a>
 
+  {/* TWO COLUMNS, because the right half of this band was empty on ten of the
+      eleven cases. It held the team faces, and only Snowman has a team list,
+      so every other case opened on a title, a line of summary and a void as
+      wide again. The facts were already on the page -- they sat under the
+      cover as a row of labels nobody had a reason to reach. Moving them up
+      fills the space with the thing a reader actually wants at this point:
+      who it was for, what we did, when. They stack under the summary below
+      880px, which is where the two columns stop fitting. */}
   <div class="wp-head" data-reveal>
     <div class="wp-head__main">
       {p.constraints.length > 0 && (
-        <div class="wp-pills">
-          {p.constraints.map((c) => <span>{c}</span>)}
-        </div>
+        <ul class="wp-tags">
+          {p.constraints.map((c) => <li>{c}</li>)}
+        </ul>
       )}
       <h1 class="wp-name">{d.headline ?? d.client}</h1>
       <p class="wp-line">{p.line}</p>
       {d.dateLabel && <span class="wp-date">{d.dateLabel}</span>}
     </div>
-    {faces.length > 0 && (
-      <div class="wp-team">
-        <div class="wp-team__faces">
-          {faces.map((f) => <img src={f} alt="" width="42" height="42" loading="lazy" />)}
-        </div>
-        <span class="wp-team__label">Team Members<br />Involved</span>
+
+    {(facts.length > 0 || faces.length > 0) && (
+      <div class="wp-head__aside">
+        {facts.length > 0 && (
+          <dl class="wp-facts">
+            {facts.map((f) => (
+              <div class="wp-facts__row">
+                <dt>{f.k}</dt>
+                <dd>{f.v}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {faces.length > 0 && (
+          <div class="wp-team">
+            <div class="wp-team__faces">
+              {faces.map((f) => <img src={f} alt="" width="42" height="42" loading="lazy" />)}
+            </div>
+            <span class="wp-team__label">Team Members<br />Involved</span>
+          </div>
+        )}
       </div>
     )}
   </div>
 
   {cover && (
-    <div class="wp-plate" data-reveal>
+    <div class="wp-plate wp-bleed" data-reveal>
       <img
         src={cover.src}
         alt={cover.alt}
@@ -137,13 +206,6 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     </div>
   )}
 
-  {p.meta.length > 0 && (
-    <div class="wp-meta" data-reveal>
-      {p.meta.map((m) => (
-        <div><span class="wp-meta__k">{m.k}</span><span class="wp-meta__v">{m.v}</span></div>
-      ))}
-    </div>
-  )}
 </section>
 
 {/* ── The Challenge ────────────────────────────────────────── */}
@@ -281,7 +343,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
       <span class="wp-tall__title">{p.tallTitle}</span>
       <span class="wp-tall__note">{p.tallNote}</span>
     </div>
-    <div class="wp-tall__scroll" data-reveal>
+    <div class:list={['wp-tall__scroll', p.tallFullBleed && 'wp-bleed']} data-reveal>
       <img src={p.tall.src} alt={p.tall.alt} width={p.tall.w} height={p.tall.h} loading="lazy" />
     </div>
   </section>
@@ -433,13 +495,61 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   .wp-act,
   .wp-tall,
   .wp-next {
-    --wp-gut: clamp(20px, 3vw, 39px);
+    /* THE SAME LEFT EDGE AS THE HEADER, AND NOT BY COINCIDENCE.
+       This was `clamp(20px, 3vw, 39px)` with no cap, which is a gutter and not
+       a container. TopBar sits in .wrap, which is 1362px of content centred
+       inside a 39px gutter, so the two agreed only up to 1440 and then walked
+       apart: at 1920 the logo started at 279 and the case study's title at 39,
+       224px to its left. They also drifted 5px at 768, where 3vw is 23 and the
+       page gutter is 28.
+
+       So the padding does the centring itself, out of .wrap's own two tokens.
+       Below 1362 + 2 gutters the second term is negative and the gutter wins;
+       above it, the padding grows to hold the content at --content-max. Every
+       width now lands on .wrap's left edge to the pixel, and it stays that way
+       if either token is ever changed, because there is no second copy of the
+       number here to fall out of date.
+
+       The sections stay full-width so their grounds still bleed; it is only
+       what is inside them that is held to the container. */
+    --wp-gut: max(var(--page-gutter), calc((100% - var(--content-max)) / 2));
     --wp-dark: linear-gradient(100deg, #0d0d0c 0%, #121110 46%, #17150e 78%, #0a0a0a 100%);
     --wp-accent: #ffd400;
     position: relative;
     padding-inline: var(--wp-gut);
   }
   .wp-strip { padding-inline: 0; }
+
+  /* FULL BLEED, out of the container and back to both viewport edges.
+     THE VW IS DELIBERATE, and it is the one place on this page that uses one.
+
+     `margin-inline: calc(-1 * var(--wp-gut))` is the obvious way to write this
+     and it is wrong, which cost a measurement to find: --wp-gut holds a
+     percentage, and a percentage in a custom property is resolved where it is
+     USED, not where it is declared. On the section it resolves against the
+     viewport and gives 279 at 1920; on a child inside that section it resolves
+     against the 1362px content box and gives 39. The plate came back 240px
+     short at each edge and looked, plausibly, like a container that was simply
+     too narrow.
+
+     So the bleed computes its own pull from 100vw, which does not depend on
+     the box it is written in. The two expressions differ on purpose: the
+     padding uses 100% because that is what keeps this page on the header's
+     left edge when a scrollbar narrows the viewport, and the bleed uses 100vw
+     because that is what reaches the actual edge of the glass. Where a
+     classic scrollbar exists the two disagree by its width, so the plate
+     overshoots by half of it at each side -- symmetric, invisible, and clipped
+     by the section rather than scrolled to. */
+  .wp-bleed {
+    margin-inline: calc(-1 * max(var(--page-gutter), (100vw - var(--content-max)) / 2));
+    border-radius: 0;
+  }
+  /* The clip that makes the overshoot above a non-event. .wp-cover already had
+     it; .wp-tall is the other section a bleed can appear in. `clip`, not
+     `hidden`: hidden on one axis forces the other to `auto` and would make
+     this a scroll container, which steals the sticky rail's containing block
+     and lands a focus ring inside a box nobody can scroll. */
+  .wp-tall { overflow-x: clip; }
 
   /* The strip has to CLEAR the header, not approximate it. Sized at the 42px
      pill alone it ended 19px short, so the bar's second line — "Reach out to
@@ -479,7 +589,11 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   .wp-dots i.on { background: rgb(20, 20, 20); }
   .wp-dots i.on--accent { background: var(--wp-accent); }
 
-  /* ── cover ───────────────────────────────────────────────── */
+  /* SQUARE CORNERS ON EVERY PICTURE ON THIS PAGE. The design rounds each
+     frame at 12px; at the sizes these run, a 12px radius is not a shape, it is
+     a softening you notice only as a slight lack of edge. The round things
+     left here are the ones that are meant to be round: 50% dots and 60px
+     avatars. ── cover ───────────────────────────────────────────── */
   .wp-cover {
     overflow: hidden; background: #fff;
     display: flex; flex-direction: column; gap: clamp(26px, 4vh, 44px);
@@ -501,11 +615,55 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     flex: 1 1 460px; min-width: 0;
     display: flex; flex-direction: column; gap: clamp(12px, 1.6vw, 18px);
   }
-  .wp-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-  .wp-pills span {
-    display: flex; align-items: center; height: 26px; padding: 0 12px;
-    border-radius: 60px; box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.16);
-    font-size: 10px; font-weight: 600; letter-spacing: 0.12em; color: rgba(20, 20, 20, 0.7);
+  /* The right column. flex-basis 300 with the main column's 460 means the two
+     sit side by side from about 880px up and wrap below it, which is the width
+     at which the facts stop having room to be a column rather than a squeeze. */
+  .wp-head__aside {
+    flex: 1 1 300px; max-width: 420px; min-width: 0;
+    display: flex; flex-direction: column; gap: clamp(20px, 3vh, 32px);
+  }
+
+  /* TAGS AS TYPE, NOT AS PILLS. They were 26px capsules with a 1px ring, which
+     reads as a control -- something to press -- for a row of words that does
+     nothing. Uppercase labels with a hairline between them say the same thing
+     and stop pretending to be buttons. 12px is the floor for this, up from the
+     10px the pills used, because at 0.12em tracking 10px stops being readable
+     before it stops being legible. */
+  .wp-tags {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 0 14px; margin: 0; padding: 0; list-style: none;
+  }
+  .wp-tags li {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(20, 20, 20, 0.72);
+  }
+  /* The rule belongs to the item BEFORE it, not the one after.
+     Written the other way -- a ::before on `li + li` -- a row that wraps opens
+     its second line with a divider and no tag to its left, which reads as a
+     missing word. On this side the stray rule lands at the END of the wrapped
+     line instead, where it reads as "continues below". Neither is perfect;
+     that one is the one a reader forgives. */
+  .wp-tags li:not(:last-child)::after {
+    content: ''; width: 1px; height: 11px; background: rgba(20, 20, 20, 0.28);
+  }
+
+  /* THE FACTS RAIL. Label over value, hairline between rows, nothing else --
+     no card, no ground, no shadow. The line is the same ink as the rules in
+     the rest of this page. */
+  .wp-facts { margin: 0; display: flex; flex-direction: column; }
+  .wp-facts__row {
+    display: flex; flex-direction: column; gap: 4px;
+    padding-block: 13px; border-top: 1px solid rgba(20, 20, 20, 0.16);
+  }
+  .wp-facts__row:last-child { border-bottom: 1px solid rgba(20, 20, 20, 0.16); }
+  .wp-facts dt {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(20, 20, 20, 0.5);
+  }
+  .wp-facts dd {
+    margin: 0; font-size: 16px; font-weight: 500; line-height: 1.45;
+    letter-spacing: -0.03em; color: rgb(20, 20, 20); text-wrap: pretty;
   }
   .wp-name {
     margin: 0; font-size: clamp(56px, 9vw, 124px); font-weight: 600;
@@ -516,9 +674,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     line-height: 1.42; letter-spacing: -0.04em; color: #000; text-wrap: pretty;
   }
   .wp-date { font-size: 16px; font-weight: 500; letter-spacing: -0.06em; color: #000; }
-  .wp-team {
-    flex: 0 0 auto; display: flex; align-items: center; gap: 14px; align-self: flex-end;
-  }
+  .wp-team { display: flex; align-items: center; gap: 14px; }
   .wp-team__faces { display: flex; align-items: center; }
   .wp-team__faces img {
     width: 42px; height: 42px; border-radius: 60px; object-fit: cover;
@@ -529,8 +685,10 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     font-size: 15px; font-weight: 500; line-height: 21px; letter-spacing: -0.03em;
     color: rgb(20, 20, 20);
   }
+  /* Square, and edge to edge. .wp-bleed cancels the container padding; the
+     radius went with the rounded corners on every other shot on this page. */
   .wp-plate {
-    position: relative; border-radius: 12px; overflow: hidden; background: rgb(30, 30, 30);
+    position: relative; overflow: hidden; background: rgb(30, 30, 30);
   }
   .wp-plate img { display: block; width: 100%; height: auto; }
   .wp-plate__scrim {
@@ -539,16 +697,6 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
       180deg, rgba(11, 11, 11, 0) 38%, rgba(11, 11, 11, 0.28) 74%, rgba(11, 11, 11, 0.6) 100%
     );
   }
-  .wp-meta {
-    display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 68px);
-    padding-top: clamp(18px, 3vh, 28px); border-top: 1.5px solid rgba(153, 152, 149, 0.7);
-  }
-  .wp-meta > div { display: flex; flex-direction: column; gap: 6px; min-width: 120px; }
-  .wp-meta__k { font-size: 12px; font-weight: 500; letter-spacing: -0.06em; color: #919191; }
-  .wp-meta__v {
-    font-size: 16px; font-weight: 500; letter-spacing: -0.04em; color: rgb(20, 20, 20);
-  }
-
   /* ── two-column acts: challenge, tech ────────────────────── */
   .wp-split {
     background: #fff; padding-block: clamp(76px, 14vh, 160px);
@@ -667,7 +815,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   }
   .wp-reel__stage {
     position: relative; flex: 1 1 560px; min-width: 0;
-    border-radius: 12px; overflow: hidden; background: #141414;
+    overflow: hidden; background: #141414;
     box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6);
   }
   /* Every slide is in the document — the reader can be on any of them, and a
@@ -724,7 +872,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   }
   .wp-tall__scroll {
     flex: 1 1 440px; min-width: 0; height: min(78vh, 760px); overflow: auto;
-    border-radius: 12px; background: rgb(30, 30, 30);
+    background: rgb(30, 30, 30);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
   }
   .wp-tall__scroll img { display: block; width: 100%; height: auto; }
@@ -739,7 +887,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   }
   .wp-hand__grid figure { margin: 0; display: flex; flex-direction: column; gap: 14px; }
   .wp-hand__frame {
-    position: relative; border-radius: 12px; overflow: hidden; background: rgb(30, 30, 30);
+    position: relative; overflow: hidden; background: rgb(30, 30, 30);
   }
   .wp-hand__frame img {
     display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
@@ -863,7 +1011,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     font-size: 16px; font-weight: 600; letter-spacing: -0.04em; color: var(--wp-accent);
   }
   .wp-next__shot {
-    flex: 1 1 440px; min-width: 0; border-radius: 12px; overflow: hidden;
+    flex: 1 1 440px; min-width: 0; overflow: hidden;
     background: rgb(30, 30, 30); aspect-ratio: 16 / 10;
   }
   .wp-next__shot { position: relative; }

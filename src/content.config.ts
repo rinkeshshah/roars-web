@@ -396,6 +396,21 @@ const projects = defineCollection({
         tall: projectImage.optional(),
         tallTitle: z.string().max(60).optional(),
         tallNote: z.string().max(400).optional(),
+        /**
+         * FULL BLEED IS AN EDITORIAL DECISION, so it is a field and not a rule.
+         *
+         * The cover always runs edge to edge; it is the opening image and
+         * there is nothing to weigh it against. Everything after it sits in
+         * the container by default, because a page where every picture breaks
+         * out has no emphasis left to spend. Setting this true on a case says
+         * "this one shot carries the project" and takes the depth capture out
+         * to both edges with it.
+         *
+         * False everywhere today. It exists so the answer to "can we make this
+         * one bigger" is a line of frontmatter rather than a class somebody
+         * adds to the template and the next case inherits by accident.
+         */
+        tallFullBleed: z.boolean().default(false),
         mobileTitle: z.string().max(60).optional(),
         /** Every phone frame is cropped to one ratio, so the row reads as a set. */
         mobileRatio: z.string().max(8).optional(),
