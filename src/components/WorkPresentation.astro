@@ -347,8 +347,14 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
 )}
 
 {/* ── Client ───────────────────────────────────────────────── */}
+{/* GREY, not the dark gradient. On the dark it made three grounds in a row at
+    the end of the page — dark quote, yellow band, dark next case — and the
+    yellow read as a stripe cut through rather than a place to land. On the
+    light grey it belongs to the Outcomes act above it, and the yellow band
+    below becomes the one change of ground at the end. A hairline separates the
+    two greys so they do not merge into one long panel. */}
 {d.testimonial && (
-  <section class="wp-act wp-act--dark wp-voice" id="voice">
+  <section class="wp-act wp-act--grey wp-voice" id="voice">
     <div data-reveal>
       <span class="wp-tick wp-tick--wide"></span>
       <blockquote>{d.testimonial.quote}</blockquote>
@@ -375,13 +381,18 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
       The next-case plate below stays black: a yellow ground there would fight
       the accent that marks "Open case", and the accent only works because it is
       rare. */}
-  {p.nextNote && (
+  {/* ALWAYS. This band is the one call to action on the page, and it was tied
+      to `nextNote` — so GISAID, which has no record of what comes next, lost
+      the "start a project" button along with the sentence. The sentence is the
+      optional part; the ask is not. */}
   <div class="wp-next__top" data-reveal>
     <GrainField tone="yellow" />
     <div class="wp-next__top-in">
       <div>
-        <span class="wp-label wp-label--sun">Where it goes next</span>
-        <span class="wp-next__note wp-next__note--sun">{p.nextNote}</span>
+        <span class="wp-label wp-label--sun">{p.nextNote ? 'Where it goes next' : 'Start here'}</span>
+        <span class="wp-next__note wp-next__note--sun">
+          {p.nextNote ?? 'Tell us what you are building. We will come back with what it takes and what it costs.'}
+        </span>
       </div>
       <a class="wp-ghost wp-ghost--sun" href="/contact-us/">
         <span>Start a project like this</span>
@@ -389,7 +400,6 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
       </a>
     </div>
   </div>
-  )}
   {next && (
     <a class="wp-next__case" href={`/work/${next.slug}/`} rel="next" data-reveal>
       <div class="wp-next__copy">
@@ -770,7 +780,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   }
   .wp-voice blockquote {
     margin: 0; font-size: clamp(24px, 3.2vw, 44px); font-weight: 500; line-height: 1.28;
-    letter-spacing: -0.045em; color: #fbfbfb; text-wrap: pretty;
+    letter-spacing: -0.045em; text-wrap: pretty;
   }
   .wp-voice__who { display: flex; align-items: center; gap: 16px; }
   .wp-voice__who img {
@@ -778,14 +788,16 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     object-position: top center; flex: 0 0 auto;
   }
   .wp-voice__who > div { display: flex; flex-direction: column; gap: 4px; }
-  .wp-voice__name {
-    font-size: 15px; font-weight: 600; letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.9);
-  }
-  .wp-voice__role {
-    font-size: 14px; font-weight: 500; letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.5);
-  }
+  .wp-voice__name { font-size: 15px; font-weight: 600; letter-spacing: -0.03em; }
+  .wp-voice__role { font-size: 14px; font-weight: 500; letter-spacing: -0.03em; }
+  .wp-voice { border-top: 1.5px solid rgba(153, 152, 149, 0.7); }
+  .wp-voice blockquote { color: #242424; }
+  .wp-voice .wp-voice__name { color: var(--c-black); }
+  .wp-voice .wp-voice__role { color: rgba(20, 20, 20, 0.6); }
 
   /* ── next ────────────────────────────────────────────────── */
+  /* No gap between a sun-ground quote and the band: they are one region, so the
+     band drops its own top padding when the section above it is yellow. */
   .wp-next {
     background: linear-gradient(100deg, #0a0a0a 0%, #121110 54%, #0d0d0c 100%);
     padding-block: 0 clamp(70px, 10vh, 120px);
@@ -796,25 +808,18 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   .wp-next__top {
     position: relative; overflow: hidden; isolation: isolate;
     margin-inline: calc(var(--wp-gut) * -1);
-    padding: clamp(40px, 6vh, 68px) var(--wp-gut) clamp(40px, 6vh, 68px);
+    padding: clamp(30px, 4vh, 44px) var(--wp-gut);
   }
   .wp-next__top-in {
     position: relative; z-index: 1;
-    display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 70px); align-items: flex-start;
+    display: flex; flex-wrap: wrap; gap: clamp(20px, 3vw, 44px);
+    align-items: center; justify-content: space-between;
   }
   .wp-next__top-in > div {
-    flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px;
-  }
-  .wp-label--sun { color: rgba(20, 20, 20, 0.62); }
-  .wp-next__note--sun { color: var(--c-black); }
-  .wp-ghost--sun {
-    box-shadow: inset 0 0 0 2px rgba(20, 20, 20, 0.28); color: var(--c-black);
-  }
-  .wp-ghost--sun:hover, .wp-ghost--sun:focus-visible {
-    box-shadow: inset 0 0 0 2px var(--c-black);
+    flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 10px;
   }
   .wp-next__note {
-    max-width: 32ch; font-size: clamp(20px, 2.2vw, 28px); font-weight: 500; line-height: 1.3;
+    max-width: 46ch; font-size: clamp(19px, 1.7vw, 24px); font-weight: 500; line-height: 1.32;
     letter-spacing: -0.04em; color: rgba(255, 255, 255, 0.86); text-wrap: pretty;
   }
   .wp-ghost {
@@ -862,6 +867,21 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     background: rgb(30, 30, 30); aspect-ratio: 16 / 10;
   }
   .wp-next__shot { position: relative; }
+  /* DARK INK ON THE YELLOW, and declared here rather than up beside
+     .wp-next__top — where these first went, above the rules they override, so
+     .wp-next__note won on source order and the sentence printed white on
+     yellow. Same specificity, later wins; that is the whole fix. */
+  .wp-label--sun { color: rgba(20, 20, 20, 0.66); }
+  .wp-next__note--sun { color: var(--c-black); }
+  .wp-ghost--sun {
+    box-shadow: inset 0 0 0 2px rgba(20, 20, 20, 0.3); color: var(--c-black);
+  }
+  .wp-ghost--sun:hover, .wp-ghost--sun:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--c-black); background: rgba(20, 20, 20, 0.06);
+  }
+  .wp-ghost--sun .wp-dots i { background: rgba(20, 20, 20, 0.35); }
+  .wp-ghost--sun .wp-dots i.on { background: var(--c-black); }
+
   .wp-next__shot img {
     display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
   }

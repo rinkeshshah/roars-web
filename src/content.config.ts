@@ -415,6 +415,20 @@ const projects = defineCollection({
         outcomeLead: z.string().max(120).optional(),
         outcomes: z.array(z.object({ big: z.string().max(8), label: z.string().max(80) })).max(4).default([]),
         nextNote: z.string().max(200).optional(),
+        /**
+         * AN EXPERIMENT, on one project at a time.
+         *
+         * The call-to-action band is yellow and it sits between a dark client
+         * quote and a dark next-case plate, so it reads as a stripe cut through
+         * the end of the page rather than as a place to land. This runs the
+         * quote on the same yellow, so the two become one region — the words a
+         * client said and the ask that follows them — with the next case as the
+         * only dark thing after it.
+         *
+         * Set on Parqly to be compared against the others. If it wins it stops
+         * being a flag and becomes the layout; if it does not, one line goes.
+         */
+        voiceOnSun: z.boolean().default(false),
       })
       .optional(),
   }),

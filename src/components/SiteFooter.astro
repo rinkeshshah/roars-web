@@ -76,14 +76,25 @@ const year = new Date().getFullYear()
       {/* The real mark, masked so it reads white on the dark ground. */}
       <div class="ft__brand">
         <span class="ft__mark" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
-        {/* The company profile. It has been in LEGAL at the bottom of this
-            footer as a text link among Privacy Policy and Terms of Service,
-            where it reads as a policy document rather than as the thing a
-            visitor came for. It is a download, and a download gets a button. */}
-        <a class="ft__profile" href={site.companyProfile} target="_blank" rel="noopener">
-          <span class="ft__profile-ico" aria-hidden="true"></span>
-          <span>Download<br />Company Profile</span>
-        </a>
+        {/* The company profile. It was a text link in LEGAL at the foot of this
+            footer, between Privacy Policy and Terms of Service, where the one
+            document a visitor might actually want reads as small print.
+
+            Two lines of why, then the site's own button — the 47px white pill
+            with the grey-and-accent dot pair that "Shall we chat?" uses, so the
+            footer has one button shape rather than two. The tray fills on
+            hover and the arrow drops into it, which is the only motion here
+            and is what the control is for. */}
+        <div class="ft__profile">
+          <p class="ft__profile-lead">Twenty years, in one document.</p>
+          <p class="ft__profile-sub">What we build, who for, and how an engagement runs.</p>
+          <a class="ft__cta ft__cta--dl" href={site.companyProfile} target="_blank" rel="noopener">
+            <span class="ft__dl-ico" aria-hidden="true"></span>
+            <span>Company Profile</span>
+            <i class="ft__cta-dot ft__cta-dot--grey" aria-hidden="true"></i>
+            <i class="ft__cta-dot ft__cta-dot--accent" aria-hidden="true"></i>
+          </a>
+        </div>
       </div>
       <div class="ft__blurb">
         <p class="ft__blurb-title">{blurbTitle}</p>
@@ -201,39 +212,53 @@ const year = new Date().getFullYear()
     grid-template-columns: 459fr 233fr 234fr 436fr;
   }
   .ft__top { margin-bottom: 125px; }
-  .ft__brand { display: flex; flex-direction: column; gap: 34px; align-items: flex-start; }
-  /* Outlined, not filled. The filled yellow pill in this footer is "Shall we
-     chat?", and two solid buttons in one band is two buttons nobody presses. */
-  .ft__profile {
-    display: inline-flex; align-items: center; gap: 12px;
-    padding: 13px 20px; border-radius: 14px;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
-    font-size: 14px; line-height: 19px; font-weight: var(--fw-semi);
+  .ft__brand { display: flex; flex-direction: column; gap: 30px; align-items: flex-start; }
+  .ft__profile { display: flex; flex-direction: column; }
+  .ft__profile-lead {
+    margin: 0; max-width: 15ch;
+    font-size: 18px; line-height: 25px; font-weight: var(--fw-semi);
     letter-spacing: -0.04em; color: rgba(255, 255, 255, 0.92);
-    transition: box-shadow var(--dur-fast) var(--ease-out),
-      background var(--dur-fast) var(--ease-out);
   }
-  .ft__profile:hover, .ft__profile:focus-visible {
-    box-shadow: inset 0 0 0 1px var(--c-accent); background: rgba(255, 212, 0, 0.08);
+  .ft__profile-sub {
+    margin: 8px 0 0; max-width: 24ch;
+    font-size: 14px; line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.5);
   }
-  /* A tray with an arrow into it, drawn rather than fetched: one more icon
-     file for one more glyph is not worth a request. */
-  .ft__profile-ico {
-    position: relative; flex: 0 0 auto; width: 16px; height: 16px;
-    border-bottom: 1.5px solid var(--c-accent);
-    border-left: 1.5px solid var(--c-accent);
-    border-right: 1.5px solid var(--c-accent);
+  /* The shared pill, with room made on the left for the tray. */
+  .ft__cta--dl { width: 204px; padding-left: 22px; gap: 10px; margin-top: 20px; }
+
+  /* A tray with an arrow above it. Drawn rather than fetched: one request for
+     one glyph is not worth it, and this one has to animate. */
+  .ft__dl-ico {
+    position: relative; flex: 0 0 auto; width: 15px; height: 15px;
+    border-bottom: 1.5px solid currentColor;
+    border-left: 1.5px solid currentColor;
+    border-right: 1.5px solid currentColor;
     border-radius: 0 0 3px 3px;
   }
-  .ft__profile-ico::before {
-    content: ''; position: absolute; left: 50%; top: -5px; translate: -50% 0;
-    width: 1.5px; height: 10px; background: var(--c-accent);
+  .ft__dl-ico::before {
+    content: ''; position: absolute; left: 50%; top: -5px;
+    width: 1.5px; height: 9px; background: currentColor;
+    translate: -50% 0;
+    transition: translate var(--dur-med) var(--ease-out);
   }
-  .ft__profile-ico::after {
-    content: ''; position: absolute; left: 50%; top: 1px; translate: -50% 0;
+  .ft__dl-ico::after {
+    content: ''; position: absolute; left: 50%; top: 0;
     width: 6px; height: 6px; rotate: 45deg;
-    border-bottom: 1.5px solid var(--c-accent);
-    border-right: 1.5px solid var(--c-accent);
+    border-bottom: 1.5px solid currentColor;
+    border-right: 1.5px solid currentColor;
+    translate: -50% 0;
+    transition: translate var(--dur-med) var(--ease-out);
+  }
+  /* The arrow drops into the tray. 3px, once, on the easing every other
+     control here uses — a download that looks like it is downloading. */
+  .ft__cta--dl:hover .ft__dl-ico::before,
+  .ft__cta--dl:focus-visible .ft__dl-ico::before { translate: -50% 3px; }
+  .ft__cta--dl:hover .ft__dl-ico::after,
+  .ft__cta--dl:focus-visible .ft__dl-ico::after { translate: -50% 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ft__dl-ico::before, .ft__dl-ico::after { transition: none; }
   }
 
   .ft__mark {

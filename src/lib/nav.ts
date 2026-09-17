@@ -36,7 +36,10 @@ export const SOCIAL: NavItem[] = [
 export const LEGAL: NavItem[] = [
   { label: 'Privacy Policy', href: '/privacy-policy/' },
   { label: 'Terms of Service', href: '/terms-of-service/' },
-  { label: 'Company Profile', href: 'https://link.roars.in/F39Mv' },
+  /* The company profile came out of here on 17 Sep. It is a download the
+     footer now offers as a button with two lines of copy, and listing it again
+     in the legal row put the one document a visitor might want between the
+     privacy policy and the terms. */
 ]
 
 /**

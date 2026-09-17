@@ -147,11 +147,16 @@ presentation:
       kicker: "MEMBERSHIP"
       title: "Loyalty made visible"
       note: "Itinerary, tier card and upcoming bookings sit on the member home. Gold status is shown as an object, which is what makes it worth keeping."
+    # The browser view, supplied 17 Sep. The reel stage is landscape and this
+    # slot was holding the 494x760 chatbot mock, which sat in it as a narrow
+    # column with the frame around it doing nothing. The tall act below still
+    # uses the mock, so the two acts now show the conversation twice at two
+    # different scales rather than the same picture twice.
     - img:
-        src: "/work/concierge/Ai-Concierges-Chatbot.png"
-        w: 494
-        h: 760
-        alt: "A concierge that writes like one"
+        src: "/work/concierge/concierge-browser.png"
+        w: 1702
+        h: 847
+        alt: "The Concierge app in a browser, with the AI chat panel open on a booking summary"
       kicker: "AI CONCIERGE"
       title: "A concierge that writes like one"
       note: "Mira answers in full sentences with local knowledge, converts the request into a backend ticket, and hands off to a lifestyle manager when the answer needs a person."

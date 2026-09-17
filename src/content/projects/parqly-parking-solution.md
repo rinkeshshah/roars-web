@@ -218,6 +218,10 @@ presentation:
       label: "Devices and locations under one profile"
     - big: "Log"
       label: "Every open, close and jam recorded per device"
+  # Running the client quote on the same yellow as the band below it, so the two
+  # read as one region instead of a stripe between two dark acts. On this project
+  # only, to be compared against the rest. See `voiceOnSun` in content.config.ts.
+  voiceOnSun: true
   nextNote: "Vendor onboarding and shared-bay scheduling are the next release on the same device model."
 seo:
   title: "Parqly: smart city parking, from app to BLE hardware"
