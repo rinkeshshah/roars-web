@@ -31,8 +31,18 @@
 declare(strict_types=1);
 
 /* Sendy list subscribes and the n8n forward. Shared, so there is one
-   integration rather than one per form. */
-require_once __DIR__ . '/roars-integrations.php';
+   integration rather than one per form.
+   NOT a bare require_once. A hard require of a file that is not there is a
+   fatal error, and a fatal error here is an empty 500 with no body and no
+   clue -- which is exactly what a visitor got, on every form, when this ran
+   before the file reached the server. The integrations are optional by
+   design; their absence is a log line, not an outage. */
+$integrations = __DIR__ . '/roars-integrations.php';
+if (is_file($integrations)) {
+    require_once $integrations;
+} else {
+    error_log('[roars] roars-integrations.php is missing from ' . __DIR__ . '; forms run without Sendy or n8n');
+}
 
 /**
  * TWO CALLERS, TWO REPLIES.
@@ -70,7 +80,32 @@ $done = function (array $payload, ?callable $after = null) use ($wantsJson): nev
         $form = isset($payload['form']) ? '?form=' . rawurlencode((string) $payload['form']) : '';
         header('Location: /thankyou/' . $form, true, 303);
     }
-    if ($after !== null) { roars_after_response($after); }
+    /* THE WORK AFTER THE RESPONSE MUST NEVER BECOME THE RESPONSE.
+       roars_after_response() closes the FastCGI request first, so on PHP-FPM
+       anything that goes wrong in here is already invisible. That is not true
+       on every SAPI: where fastcgi_finish_request() does not exist the helper
+       falls back to a flush, the connection is still open, and a fatal in the
+       work lands on the visitor as an empty 500 after they have already been
+       told it worked.
+       So the work is wrapped rather than trusted. \Throwable catches Error as
+       well as Exception, which is what makes an undefined curl_init() -- the
+       shape this takes when the curl extension is not loaded -- a logged line
+       instead of a dead form. And if the helper never loaded at all, the work
+       still runs; it just runs before the response instead of after. */
+    if ($after !== null) {
+        $guarded = static function () use ($after): void {
+            try {
+                $after();
+            } catch (\Throwable $e) {
+                error_log('[roars] after-response work failed: ' . $e::class . ': ' . $e->getMessage());
+            }
+        };
+        if (function_exists('roars_after_response')) {
+            roars_after_response($guarded);
+        } else {
+            $guarded();
+        }
+    }
     exit;
 };
 
@@ -90,7 +125,22 @@ $fail = function (int $code, string $msg) use ($wantsJson): never {
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { $fail(405, 'Method not allowed.'); }
 
-$cfg = require '/var/www/vhosts/roarsinc.com/private/contact-config.php';
+/* THE ONE FILE THIS ENDPOINT CANNOT WORK WITHOUT: the database credentials,
+   the Turnstile secret and the From address. A missing or unreadable config
+   was a fatal error too, and it fails in two ways that look identical from
+   outside -- the file is not there, or it is there and open_basedir will not
+   let this vhost read a path above its own webspace root. Both now say so in
+   the error log and answer the visitor in words. */
+$cfgFile = '/var/www/vhosts/roarsinc.com/private/contact-config.php';
+if (!is_file($cfgFile) || !is_readable($cfgFile)) {
+    error_log("[roars] contact-config.php missing or unreadable at {$cfgFile} (check it exists, and that open_basedir for this vhost includes it)");
+    $fail(500, 'The form is not configured on this server. Please email us instead.');
+}
+$cfg = require $cfgFile;
+if (!is_array($cfg)) {
+    error_log("[roars] contact-config.php at {$cfgFile} did not return an array");
+    $fail(500, 'The form is not configured on this server. Please email us instead.');
+}
 
 /* Honeypot: fields real people never see and never fill. Answered exactly like
    a success so a bot learns nothing from the difference — no row, no mail, no
@@ -430,7 +480,7 @@ $done(
         if ($visitorMail !== null) { $visitorMail(); }
 
         if ($form === 'contact') {
-            $forwarded = roars_forward_lead([
+            $forwarded = function_exists('roars_forward_lead') && roars_forward_lead([
                 'name'       => $name,
                 'email'      => $email,
                 'company'    => $company,
@@ -452,14 +502,14 @@ $done(
 
         /* The resource download is its own consent: someone asked for a guide,
            the guide list is what that subscribes them to. */
-        if ($form === 'guide') {
+        if ($form === 'guide' && function_exists('roars_sendy_subscribe')) {
             roars_sendy_subscribe('resources', $email, $name);
         }
 
         /* The ticked box, wherever it was ticked. gdpr=true because the box is
            unticked by default and the words beside it say what it is for,
            which is the consent Sendy is recording. */
-        if ($wantsNews || $form === 'newsletter') {
+        if (($wantsNews || $form === 'newsletter') && function_exists('roars_sendy_subscribe')) {
             roars_sendy_subscribe('newsletter', $email, $name, ['gdpr' => 'true']);
         }
     },
