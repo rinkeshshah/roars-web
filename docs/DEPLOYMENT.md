@@ -55,8 +55,22 @@ repository does not grow by a copy of the site on every build.
    No `SELECT`, no `DROP`. If the credentials leak, the worst case is junk
    rows, not a data breach.
 
-   Run these in Plesk's Databases > phpMyAdmin, or over SSH with `mysql -u
-   admin -p`. Set a real password first; do not use the literal below.
+   The scripts are in `docs/sql/`, which is the copy to paste rather than
+   the one below:
+
+   | file | when |
+   |---|---|
+   | `001-submissions-create.sql` | new install, production or dev |
+   | `002-dev-reset-numbering.sql` | dev only, to clear test rows and reset the numbering |
+   | `003-retention-purge.sql` | monthly, as a Plesk scheduled task |
+
+   Run them in Plesk's Databases > phpMyAdmin, or over SSH with `mysql -u
+   admin -p`, as the ADMIN user -- `roars_forms_insert` holds INSERT on one
+   table and cannot create or alter anything, which is the point of it.
+   Set a real password first; do not use the literal below.
+
+   THERE IS ONLY ONE TABLE. The rate limiter is a file per IP hash under
+   the system temp directory, not a row, so nothing else needs creating.
 
    ```sql
    CREATE DATABASE IF NOT EXISTS roars_forms
