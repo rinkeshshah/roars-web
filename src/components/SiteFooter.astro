@@ -21,12 +21,31 @@
  * is worse than one that plainly is not ready — and it exists now, so the
  * form is live and carries data-contact-form like the other three. On success
  * it lands on /thankyou/ with the rest of them.
+ *
+ * THE GROUND IS A WAVE. This footer used the shared GrainField — a warm linear
+ * gradient with two slow radial drifts under a grain tile. The design's footer
+ * ground is a different thing: a radial pool at the bottom centre with a
+ * dot-matrix ring wave expanding out of it, the origin sitting under the
+ * wordmark so the wave reads as radiating from the logo. Both cannot be true
+ * at once — the drifts are a second animation on a ground the design says
+ * carries one — so the drifts and the linear gradient went and the pool and
+ * the canvas took their place. The grain tile stayed: it is the film every
+ * dark band on this site carries, and the design was drawn without it.
+ *
+ * TWO NUMBERS ARE ADAPTED, the rest are the design's to the decimal. The
+ * handoff is a fixed 1440x1105 artboard and puts the wave origin at (720,
+ * 900); this footer is fluid and its height is whatever the content makes it,
+ * so the origin is written the way the design's own mobile rule writes it —
+ * horizontal centre, a fixed distance up from the bottom. At the artboard
+ * sizes those resolve to exactly (720, 900) and (195, 910), which is where
+ * the design put them. Everything else — 26/20px grid, 0.9 rad/s, SCALE,
+ * REACH, R0, RMAX, the alpha and colour rules — is transcribed.
  */
 import { site } from '../lib/site'
 import { FOOTER_NAV, SOCIAL, LEGAL } from '../lib/nav'
-import GrainField from './GrainField.astro'
 import { PORTRAIT } from '../lib/media'
 import mark from '../assets/roars-mark.png'
+import grain from '../assets/grain.png'
 
 interface Props {
   /** The closing CTA's two parts. Omit either for the shipped default. */
@@ -69,8 +88,13 @@ const year = new Date().getFullYear()
 ---
 
 <footer class="ft" data-ground="dark">
-  {/* Export 2: warm dark grain, not a photograph. */}
-  <GrainField tone="dark" second />
+  {/* The design's ground: a static radial pool, the wave over it, the site's
+      grain over that. The canvas is sized and driven by the script below and
+      paints nothing without it, so the pool has to stand on its own. */}
+  <div class="ft__wave" data-footer-wave aria-hidden="true">
+    <span class="ft__grain" style={`--grain:url(${grain.src})`}></span>
+    <canvas></canvas>
+  </div>
   <div class="wrap">
     <div class="ft__grid ft__top">
       {/* The real mark, masked so it reads white on the dark ground. */}
@@ -207,6 +231,33 @@ const year = new Date().getFullYear()
     overflow: hidden;
   }
   .ft > .wrap { position: relative; z-index: 1; }
+
+  /* The pool the wave rises out of. 90% x 70% of the box, anchored to the
+     bottom centre, which is the same point the origin is anchored to. */
+  .ft__wave {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+    background: radial-gradient(90% 70% at 50% 100%, #12110c 0%, #0a0a0a 70%);
+  }
+  .ft__wave canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+  /* UNDER the canvas, not over it. An overlay blend on a near-black ground
+     darkens what it covers, and over the canvas that took a third of the
+     brightness out of the dots — the one thing on this ground that is meant
+     to be bright. Behind them it does what it does everywhere else: put a
+     film on the ground. */
+  .ft__grain {
+    position: absolute; inset: 0; display: block;
+    background: var(--grain) repeat;
+    background-size: 128px 128px;
+    mix-blend-mode: overlay;
+    opacity: 0.34;
+    pointer-events: none;
+  }
+  /* 700, not the footer's own 760: this is the breakpoint the wave script
+     switches its constants on, and the ground and the wave have to turn over
+     together or the pool is the wrong shape for one width band. */
+  @media (max-width: 699px) {
+    .ft__wave { background: radial-gradient(90% 60% at 50% 100%, #12110c 0%, #0a0a0a 70%); }
+  }
   .ft__grid {
     display: grid;
     grid-template-columns: 459fr 233fr 234fr 436fr;
@@ -421,3 +472,169 @@ const year = new Date().getFullYear()
     .ft__legal .ft__grid { grid-template-columns: 1fr 1fr; }
   }
 </style>
+
+<script>
+  /**
+   * THE DOT-MATRIX WAVE, transcribed from the design's own reference loop.
+   *
+   * A grid of dots over the whole footer. Each one swells and warms from white
+   * to brand yellow as a ring passes through it, the ring expanding out of a
+   * point under the wordmark at a constant 0.9 rad/s. Per dot, per frame:
+   *
+   *   d      = distance(dot, origin) / SCALE
+   *   wave   = sin(t * 0.9 - d) * 0.5 + 0.5
+   *   near   = max(0, 1 - d / REACH)
+   *   alpha  = 0.05 + wave * 0.5 * near
+   *   radius = R0 + wave * near * RMAX
+   *   colour = near > 0.12 ? accent at alpha : white at alpha / 2
+   *
+   * WHAT IS NOT THE DESIGN'S. Three things, all of them consequences of this
+   * footer being a fluid block rather than a 1440x1105 artboard:
+   *
+   *   THE ORIGIN is measured off the wordmark rather than typed as (720, 900).
+   *   The handoff says what those coordinates are for — "the origin sits under
+   *   the wordmark on purpose; the wave looks like it radiates from the logo"
+   *   — and on a fixed artboard a number and a landmark are the same thing.
+   *   They stop being the same thing here: this footer is fluid, its height is
+   *   whatever the content makes it, and on a phone that is twice the design's
+   *   1100. So the rule is taken instead of the number: horizontal centre of
+   *   the box, vertical centre of the wordmark. On the 1440 artboard that
+   *   lands at (720, 882) against the design's (720, 900) — well inside the
+   *   spread between its own two breakpoints, which put the origin 73px below
+   *   the desktop wordmark's centre and 36px above the mobile one's.
+   *
+   *   THE DPR CEILING. The reference draws at 1x. Production needs HiDPI or
+   *   the dots are soft, so the canvas is backed at devicePixelRatio — capped
+   *   at 2, because a 3x phone would ask for nine times the fill for a
+   *   difference no one can see on a sub-pixel dot.
+   *
+   *   THE PAUSES. Off-screen the loop stops (this is below the fold on every
+   *   route), and under prefers-reduced-motion it draws the single frame at
+   *   t = 0 and never asks for another. Both are the handoff's instructions.
+   */
+  const host = document.querySelector<HTMLElement>('[data-footer-wave]')
+  const canvas = host?.querySelector('canvas')
+  const ctx = canvas?.getContext('2d')
+  const wordmark = document.querySelector<HTMLElement>('.ft__wordmark')
+
+  if (host && canvas && ctx) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    let w = 0
+    let h = 0
+    let gap = 26
+    let ox = 0
+    let oy = 0
+    let scale = 170
+    let reach = 5.2
+    let r0 = 0.7
+    let rmax = 2.1
+
+    let raf = 0
+    let onScreen = true
+
+    /** Re-reads the box and re-picks the constants. False if the box is not laid out yet. */
+    const measure = () => {
+      const cw = host.clientWidth
+      const ch = host.clientHeight
+      if (!cw || !ch) return false
+      if (cw === w && ch === h) return true
+
+      w = cw
+      h = ch
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = Math.round(w * dpr)
+      canvas.height = Math.round(h * dpr)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+      /* The reference's own breakpoint, and the one the ground gradient above
+         turns over on. */
+      const mobile = w < 700
+      gap = mobile ? 20 : 26
+      scale = mobile ? 120 : 170
+      reach = mobile ? 4.4 : 5.2
+      r0 = mobile ? 0.6 : 0.7
+      rmax = mobile ? 1.8 : 2.1
+      ox = w / 2
+      /* The wordmark, if it is on the page. The fallback reproduces the
+         design's two bottom offsets, which is where the wordmark sits on the
+         artboards it was drawn on. */
+      const wm = wordmark?.getBoundingClientRect()
+      oy = wm ? wm.top - host.getBoundingClientRect().top + wm.height / 2 : h - (mobile ? 190 : 205)
+      return true
+    }
+
+    const draw = (t: number) => {
+      ctx.clearRect(0, 0, w, h)
+      for (let x = gap / 2; x < w; x += gap) {
+        for (let y = gap / 2; y < h; y += gap) {
+          const dx = x - ox
+          const dy = y - oy
+          const d = Math.sqrt(dx * dx + dy * dy) / scale
+          const wave = Math.sin(t * 0.9 - d) * 0.5 + 0.5
+          const near = Math.max(0, 1 - d / reach)
+          const a = 0.05 + wave * 0.5 * near
+          ctx.beginPath()
+          ctx.arc(x, y, r0 + wave * near * rmax, 0, 6.2832)
+          ctx.fillStyle =
+            near > 0.12
+              ? `rgba(255,212,0,${a.toFixed(3)})`
+              : `rgba(255,255,255,${(a * 0.5).toFixed(3)})`
+          ctx.fill()
+        }
+      }
+    }
+
+    const frame = (now: number) => {
+      draw(now / 1000)
+      raf = requestAnimationFrame(frame)
+    }
+
+    const stop = () => {
+      if (raf) cancelAnimationFrame(raf)
+      raf = 0
+    }
+
+    const start = () => {
+      if (raf || !w) return
+      if (reduced.matches) {
+        draw(0)
+        return
+      }
+      raf = requestAnimationFrame(frame)
+    }
+
+    const sync = () => {
+      const ready = measure()
+      if (!ready) return
+      if (onScreen) {
+        /* Re-measuring mid-flight leaves the running loop to pick the new
+           numbers up on its next frame. A stopped one has to be redrawn by
+           hand or the canvas keeps the old box's last frame. */
+        if (raf) return
+        start()
+      } else {
+        stop()
+      }
+    }
+
+    new ResizeObserver(sync).observe(host)
+
+    new IntersectionObserver(
+      (entries) => {
+        onScreen = entries.some((e) => e.isIntersecting)
+        sync()
+      },
+      { rootMargin: '120px' },
+    ).observe(host)
+
+    /* A change of preference mid-session: a reader who turns motion off gets
+       the static frame, one who turns it on gets the loop. */
+    reduced.addEventListener('change', () => {
+      stop()
+      start()
+    })
+
+    sync()
+  }
+</script>
