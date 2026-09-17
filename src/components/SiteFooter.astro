@@ -43,6 +43,7 @@
  */
 import { site } from '../lib/site'
 import { FOOTER_NAV, SOCIAL, LEGAL } from '../lib/nav'
+import GrainField from './GrainField.astro'
 import { PORTRAIT } from '../lib/media'
 import mark from '../assets/roars-mark.png'
 import grain from '../assets/grain.png'
@@ -71,6 +72,21 @@ interface Props {
   ctaLabel?: string
   ctaHref?: string
   contact?: string
+  /**
+   * WHICH GROUND THE WAVE SITS ON. A comparison, live on one route.
+   *
+   * 'pool' is the handoff's: a radial pool at the bottom centre, the grain
+   * tile over it, nothing moving but the wave.
+   *
+   * 'grain' is the footer's old ground put back underneath the wave — the
+   * shared GrainField, which is a warm linear gradient with two slow radial
+   * drifts under the same tile. Richer and less even; the drifts are a second
+   * motion, thirty seconds a cycle against the wave's seven.
+   *
+   * The homepage is on 'grain' so the two can be looked at side by side.
+   * Whichever wins, this prop and the loser go.
+   */
+  ground?: 'pool' | 'grain'
 }
 const {
   blurbTitle = 'Let’s get your project started.',
@@ -79,6 +95,7 @@ const {
   ctaLabel,
   ctaHref,
   contact,
+  ground = 'pool',
 } = Astro.props
 
 /** Only leaves the site when it actually leaves the site. */
@@ -88,11 +105,15 @@ const year = new Date().getFullYear()
 ---
 
 <footer class="ft" data-ground="dark">
-  {/* The design's ground: a static radial pool, the wave over it, the site's
-      grain over that. The canvas is sized and driven by the script below and
-      paints nothing without it, so the pool has to stand on its own. */}
-  <div class="ft__wave" data-footer-wave aria-hidden="true">
-    <span class="ft__grain" style={`--grain:url(${grain.src})`}></span>
+  {/* The ground, then the wave over it. The canvas is sized and driven by the
+      script below and paints nothing without it, so whatever is underneath has
+      to stand on its own. Either ground puts its grain UNDER the canvas: an
+      overlay blend on near-black takes about a third of the brightness out of
+      the dots, which are the one thing here meant to be bright. */}
+  <div class={`ft__wave ft__wave--${ground}`} data-footer-wave aria-hidden="true">
+    {ground === 'grain'
+      ? <GrainField tone="dark" second />
+      : <span class="ft__grain" style={`--grain:url(${grain.src})`}></span>}
     <canvas></canvas>
   </div>
   <div class="wrap">
@@ -232,18 +253,23 @@ const year = new Date().getFullYear()
   }
   .ft > .wrap { position: relative; z-index: 1; }
 
-  /* The pool the wave rises out of. 90% x 70% of the box, anchored to the
-     bottom centre, which is the same point the origin is anchored to. */
+  /* isolate, so the layer is one group: the grain's overlay blend mixes with
+     the ground under it and nothing else, and the canvas's z-index stays
+     inside here instead of climbing out and racing .wrap for the top. */
   .ft__wave {
     position: absolute; inset: 0; overflow: hidden; pointer-events: none;
-    background: radial-gradient(90% 70% at 50% 100%, #12110c 0%, #0a0a0a 70%);
+    isolation: isolate;
   }
-  .ft__wave canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
-  /* UNDER the canvas, not over it. An overlay blend on a near-black ground
-     darkens what it covers, and over the canvas that took a third of the
-     brightness out of the dots — the one thing on this ground that is meant
-     to be bright. Behind them it does what it does everywhere else: put a
-     film on the ground. */
+  /* The pool the wave rises out of. 90% x 70% of the box, anchored to the
+     bottom centre, which is the same point the origin is anchored to. The
+     grain ground draws its own gradient, so this is on the variant, not on
+     the layer. */
+  .ft__wave--pool { background: radial-gradient(90% 70% at 50% 100%, #12110c 0%, #0a0a0a 70%); }
+  .ft__wave canvas {
+    position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+    /* Over whatever the ground is, including GrainField's own stacking. */
+    z-index: 1;
+  }
   .ft__grain {
     position: absolute; inset: 0; display: block;
     background: var(--grain) repeat;
@@ -256,7 +282,7 @@ const year = new Date().getFullYear()
      switches its constants on, and the ground and the wave have to turn over
      together or the pool is the wrong shape for one width band. */
   @media (max-width: 699px) {
-    .ft__wave { background: radial-gradient(90% 60% at 50% 100%, #12110c 0%, #0a0a0a 70%); }
+    .ft__wave--pool { background: radial-gradient(90% 60% at 50% 100%, #12110c 0%, #0a0a0a 70%); }
   }
   .ft__grid {
     display: grid;
