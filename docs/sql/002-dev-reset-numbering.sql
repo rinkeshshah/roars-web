@@ -10,7 +10,8 @@
 -- not reset it either. So both, in this order, or neither works.
 -- ---------------------------------------------------------------------------
 
-USE roars_forms;
+-- Pick the database in the phpMyAdmin sidebar first. No USE statement here on
+-- purpose: naming the wrong one is the mistake this script cannot undo.
 
 -- What is about to go. Look before you run the rest.
 SELECT id, form, email, created_at FROM submissions ORDER BY id;
@@ -19,7 +20,10 @@ DELETE FROM submissions;
 
 ALTER TABLE submissions AUTO_INCREMENT = 1008;
 
--- Expect 1008. Anything else means rows survived the DELETE.
-SELECT AUTO_INCREMENT AS next_enquiry_no
-  FROM information_schema.TABLES
- WHERE TABLE_SCHEMA = 'roars_forms' AND TABLE_NAME = 'submissions';
+-- Read Auto_increment in the result: expect 1008. Anything else means rows
+-- survived the DELETE.
+--
+-- SHOW TABLE STATUS, not information_schema: a Plesk database user is denied
+-- on information_schema and the error (#1044) reads like the whole script
+-- failed when only this last line did.
+SHOW TABLE STATUS LIKE 'submissions';

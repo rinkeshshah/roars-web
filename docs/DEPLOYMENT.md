@@ -60,7 +60,8 @@ repository does not grow by a copy of the site on every build.
 
    | file | when |
    |---|---|
-   | `001-submissions-create.sql` | new install, production or dev |
+   | `001-submissions-create.sql` | new install, run as the Plesk **admin** user |
+   | `001b-submissions-create-as-db-user.sql` | the same table when you only have a Plesk database user |
    | `002-dev-reset-numbering.sql` | dev only, to clear test rows and reset the numbering |
    | `003-retention-purge.sql` | monthly, as a Plesk scheduled task |
 
@@ -68,6 +69,14 @@ repository does not grow by a copy of the site on every build.
    admin -p`, as the ADMIN user -- `roars_forms_insert` holds INSERT on one
    table and cannot create or alter anything, which is the point of it.
    Set a real password first; do not use the literal below.
+
+   **If phpMyAdmin answers `#1044 - Access denied ... to database
+   'information_schema'`,** you are signed in as a Plesk database user, not
+   as admin. That account cannot create databases or users, grant, or read
+   information_schema. Run `001b` instead: it makes the same table and
+   checks itself with `SHOW TABLE STATUS`, which needs no extra right.
+   Whatever database and user Plesk gave you is then what `contact-config.php`
+   must name in `dsn`, `db_user` and `db_pass`.
 
    THERE IS ONLY ONE TABLE. The rate limiter is a file per IP hash under
    the system temp directory, not a row, so nothing else needs creating.

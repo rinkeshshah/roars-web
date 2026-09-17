@@ -6,7 +6,7 @@
 -- stays and the two forensic columns are emptied.
 -- ---------------------------------------------------------------------------
 
-USE roars_forms;
+-- Pick the database first, or add your own USE line.
 
 UPDATE submissions
    SET ip = NULL, user_agent = NULL
