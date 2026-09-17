@@ -338,6 +338,77 @@ const projects = defineCollection({
      * dropped because the designed slots were already full.
      */
     screens: z.array(projectImage).max(24).default([]),
+
+    /**
+     * THE PRESENTATION LAYOUT, from `Roars v2 - Work Presentation.dc.html`.
+     *
+     * Opt-in, and that is the whole design of it. A project with this block
+     * renders the acts the design draws; a project without keeps the previous
+     * template. The alternative was to move all twenty-four at once, and the
+     * non-collapsing acts — Challenge, Tech, Outcomes — need copy that exists
+     * for seven of them and for no others. Writing the rest would be inventing
+     * claims about a client's project to fill a layout, which is the one thing
+     * this repo does not do.
+     *
+     * Field names are the design's own, so the handoff and the content file
+     * can be read side by side.
+     */
+    presentation: z
+      .object({
+        /** The one-line claim under the name. */
+        line: z.string().max(120),
+        /** Pills above the name: the constraints the build ran against. */
+        constraints: z.array(z.string().max(40)).max(6).default([]),
+        coverPlate: projectImage.optional(),
+        /** A photograph takes the scrim; a screenshot takes nothing. */
+        coverIsPhoto: z.boolean().default(false),
+        meta: z.array(z.object({ k: z.string().max(20), v: z.string().max(80) })).max(6).default([]),
+        challengeLead: z.string().max(200),
+        challengeBody: z.string().max(600),
+        wires: z
+          .array(z.object({ img: projectImage, label: z.string().max(40), note: z.string().max(220) }))
+          .max(4)
+          .default([]),
+        artifacts: z
+          .array(z.object({ img: projectImage, label: z.string().max(30), note: z.string().max(220) }))
+          .max(6)
+          .default([]),
+        screens: z
+          .array(
+            z.object({
+              img: projectImage,
+              kicker: z.string().max(24),
+              title: z.string().max(60),
+              note: z.string().max(260),
+            }),
+          )
+          .max(10)
+          .default([]),
+        /** The one tall capture the reader scrolls inside its own frame. */
+        tall: projectImage.optional(),
+        tallTitle: z.string().max(60).optional(),
+        tallNote: z.string().max(400).optional(),
+        mobileTitle: z.string().max(60).optional(),
+        /** Every phone frame is cropped to one ratio, so the row reads as a set. */
+        mobileRatio: z.string().max(8).optional(),
+        mobile: z
+          .array(
+            z.object({
+              img: projectImage,
+              label: z.string().max(80),
+              /** True suppresses the rings. See the rule above coverIsPhoto. */
+              screenshot: z.boolean().default(false),
+            }),
+          )
+          .max(12)
+          .default([]),
+        buildLead: z.string().max(200),
+        stack: z.array(z.object({ k: z.string().max(24), v: z.string().max(160) })).max(6).default([]),
+        outcomeLead: z.string().max(120),
+        outcomes: z.array(z.object({ big: z.string().max(8), label: z.string().max(80) })).max(4).default([]),
+        nextNote: z.string().max(200),
+      })
+      .optional(),
   }),
 })
 

@@ -115,6 +115,110 @@ testimonial:
   quote: "I had a great experience with Roars Technologies. Their service is professional, flexible, and friendly. I am very happy with the service and the results. The entire process stood out to me as exceptional."
   name: "Elena Elraie"
   role: "Digital Consultant, Lametus"
+# THE PRESENTATION LAYOUT, from `Roars v2 - Work Presentation.dc.html`.
+# Content is the design's own, transcribed from the handoff of 17 Sep. Image
+# paths are remapped: the design reads from a local `uploads/` folder, this
+# site serves the client's own files from public/work/ and the migrated ones
+# from the WordPress uploads directory, which scripts/validate-content.mjs
+# checks against the export.
+presentation:
+  line: "A parking space that knows whose it is."
+  constraints:
+    - "Hardware state, on screen"
+    - "Guests without accounts"
+    - "Multiple devices per user"
+    - "Readable in daylight"
+  coverPlate:
+    src: "/work/parqly/parqly-device-scaled.jpg"
+    w: 2560
+    h: 1617
+    alt: "Parqly"
+  coverIsPhoto: true
+  meta:
+    - k: "CLIENT"
+      v: "Parqly"
+    - k: "SECTOR"
+      v: "Smart parking & IoT"
+    - k: "SCOPE"
+      v: "UX/UI · App · Connected device"
+    - k: "SURFACES"
+      v: "Mobile app · Parking lock · Guest links"
+  challengeLead: "A reserved space is only reserved if someone can enforce it — and nobody wants to stand guard."
+  challengeBody: "Parqly pairs a physical parking lock with an app, which means the product spans a driveway and a phone. The design problem was making a piece of hardware legible on screen: whether it is locked, whether it has battery, whether a guest can open it, and what happened while you were away. Every state the device can be in had to be readable in a glance from the pavement."
+  wires:
+    - img:
+        src: "/work/parqly/parqly-wireframe-1536x795.jpg"
+        w: 1536
+        h: 795
+        alt: "WIREFRAME · ACCESS & PAYMENT"
+      label: "WIREFRAME · ACCESS & PAYMENT"
+      note: "Guest invite, map search, notification log and saved cards resolved in grey — the invite was cut to name, number and a time window, because anything more and nobody sends it."
+    - img:
+        src: "/work/parqly/parqly-wireframe-2-1536x795.jpg"
+        w: 1536
+        h: 795
+        alt: "WIREFRAME · DEVICE CONTROL"
+      label: "WIREFRAME · DEVICE CONTROL"
+      note: "One device per screen with lock, unlock and battery on the same row, and history underneath. The dial came out of this stage: a state you can read at a distance, not a toggle you hunt for."
+  screens:
+    - img:
+        src: "/work/parqly/paqly-parking-solution-2-1536x853.jpg"
+        w: 1536
+        h: 853
+        alt: "The lock, drawn as itself"
+      kicker: "DEVICE CONTROL"
+      title: "The lock, drawn as itself"
+      note: "Onboarding, home, control and sign-up. The device is rendered rather than iconified, so the thing on the screen and the thing in the driveway are obviously the same object."
+    - img:
+        src: "/work/parqly/parqly-parking-solution3-1536x853.jpg"
+        w: 1536
+        h: 853
+        alt: "Map first, payment second"
+      kicker: "FIND & PAY"
+      title: "Map first, payment second"
+      note: "Spot, rate and capacity on one card with Park & Pay as the only action. Payment history and cards sit behind it, where they belong once the habit is formed."
+    - img:
+        src: "/work/parqly/paqly-parking-solution-1536x806.jpg"
+        w: 1536
+        h: 806
+        alt: "Every alert is an opt-in"
+      kicker: "CONTROL & TRUST"
+      title: "Every alert is an opt-in"
+      note: "Lock malfunction, battery low, car present, guest activity — each one a switch. Owners of connected hardware do not want a feed, they want to choose what is worth a buzz."
+  mobile:
+    - img:
+        src: "/work/parqly/iphone-parqly-map.jpg"
+        w: 1500
+        h: 1125
+        alt: "Finding a spot, one thumb, kerbside"
+      label: "Finding a spot, one thumb, kerbside"
+    - img:
+        src: "/work/parqly/parqly-device-scaled.jpg"
+        w: 2560
+        h: 1617
+        alt: "App and lock in the same frame"
+      label: "App and lock in the same frame"
+  buildLead: "An app whose job is to make a physical object trustworthy."
+  stack:
+    - k: "App"
+      v: "Mobile app pairing to the lock, with multi-device support per account"
+    - k: "Device layer"
+      v: "Lock, unlock and battery state surfaced as one readable status"
+    - k: "Access"
+      v: "Guest invites by SMS link, scoped to a date and time window"
+    - k: "Commerce"
+      v: "Subscription and per-use payment with saved cards and history"
+  outcomeLead: "Hardware that explains itself before anyone reads a manual."
+  outcomes:
+    - big: "1"
+      label: "Status object carrying lock, battery and presence"
+    - big: "SMS"
+      label: "Guest access without an account or an app install"
+    - big: "Multi"
+      label: "Devices and locations under one profile"
+    - big: "Log"
+      label: "Every open, close and jam recorded per device"
+  nextNote: "Vendor onboarding and shared-bay scheduling are the next release on the same device model."
 seo:
   title: "Parqly: smart city parking, from app to BLE hardware"
   description: "Parqly is at the forefront of urban innovation, transforming how drivers and parking owners navigate the world of city parking. Based in Cyprus, Parqly set out to eliminate the daily parking struggle with a seamless, technology-driven platform, fusing the power of mobile apps with smart automation and future-ready hardware."

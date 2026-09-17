@@ -59,6 +59,96 @@ screens:
   - src: "/wp-content/uploads/2022/08/presidentclub-mobileapp3.png"
     kind: "app"
     alt: "presidentclub-mobileapp3"
+# THE PRESENTATION LAYOUT, from `Roars v2 - Work Presentation.dc.html`.
+# Content is the design's own, transcribed from the handoff of 17 Sep. Image
+# paths are remapped: the design reads from a local `uploads/` folder, this
+# site serves the client's own files from public/work/ and the migrated ones
+# from the WordPress uploads directory, which scripts/validate-content.mjs
+# checks against the export.
+presentation:
+  line: "A Samsung thank-you, engineered as a membership app."
+  constraints:
+    - "Points as the currency"
+    - "Discovery by city"
+    - "One request, every service"
+    - "Restraint over decoration"
+  meta:
+    - k: "CLIENT"
+      v: "Samsung — The President’s Club"
+    - k: "SECTOR"
+      v: "Customer loyalty & privilege"
+    - k: "SCOPE"
+      v: "Design, interaction and development"
+    - k: "PLATFORM"
+      v: "iOS · Android · Web · API"
+  challengeLead: "Samsung wanted to thank the partners who made it a market leader — and mean it."
+  challengeBody: "The President’s Club is a members-only programme for Samsung’s loyal partners and distributors, giving them airport lounge access, concierge services and premium hotels, resorts and spas. The user base is confident, modern and very busy, so the interface had to be self-explanatory: every tab names itself, and nothing sits more than two levels down. Choose a location and every President’s Club service nearby is listed."
+  wires:
+    - img:
+        src: "/wp-content/uploads/2022/08/wireframe.png"
+        alt: "WIREFRAME · SERVICE TAXONOMY"
+      label: "WIREFRAME · SERVICE TAXONOMY"
+      note: "Club social, airport assistance, vacations, evenings, portraits, health, concierge — named and ordered in grey first, then made bookable through a single request form with the same fields each time."
+  artifacts:
+    - img:
+        src: "/wp-content/uploads/2022/08/president-colo-color-therpy.png"
+        alt: "Colour"
+      label: "Colour"
+      note: "Antique gold on black, and nothing else. A two-colour palette is what keeps a premium app from reading as a loyalty scheme."
+    - img:
+        src: "/wp-content/uploads/elementor/thumbs/411-fonts-therapy-pu2jdmebqhjwc651w0tdr3bpor11bc0g1yhkxo2cwe.png"
+        alt: "Typography"
+      label: "Typography"
+      note: "Montserrat across four weights, letterspaced wide in titles. Capitals carry the formality; the weights do the hierarchy."
+  mobileTitle: "The member app, screen by screen"
+  mobileRatio: "9/18"
+  mobile:
+    - img:
+        src: "/wp-content/uploads/2022/08/presidentclub-mobileapp1.png"
+        alt: "Map — privileges plotted by country and state, pinned by type"
+      label: "Map — privileges plotted by country and state, pinned by type"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/presidentclub-mobileapp2.png"
+        alt: "Listing — clubs by city, each with distance and category"
+      label: "Listing — clubs by city, each with distance and category"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/presidentclub-mobileapp3.png"
+        alt: "Detail — hours, rate in points, facilities, one request button"
+      label: "Detail — hours, rate in points, facilities, one request button"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/presidentclub-mobileapp-4.png"
+        alt: "Event — tier, time, party size and amenities on one sheet"
+      label: "Event — tier, time, party size and amenities on one sheet"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/presidentclub-mobileapp5.png"
+        alt: "Private pass — the points balance and everything it opens"
+      label: "Private pass — the points balance and everything it opens"
+      screenshot: true
+  buildLead: "One request pipeline behind seven different kinds of privilege."
+  stack:
+    - k: "Apps"
+      v: "React Native across iOS and Android"
+    - k: "Services"
+      v: "Laravel with MongoDB, hosted on AWS"
+    - k: "Discovery"
+      v: "Location-aware listings by country, city and category"
+    - k: "Fulfilment"
+      v: "Generate Request routed to the desk, with chat and alerts"
+  outcomeLead: "The club’s value, finally legible on a phone."
+  outcomes:
+    - big: "7"
+      label: "Service categories on one request pattern"
+    - big: "2"
+      label: "Levels deep, maximum, to anything in the app"
+    - big: "1"
+      label: "Form behind every booking, whatever the privilege"
+    - big: "Pts"
+      label: "Entitlement shown before the ask, not after"
+  nextNote: "Partner clubs, shared guest passes and a concierge chat history are the next layer on the same taxonomy."
 seo:
   title: "President’s Club - Customer loyalty program app Development"
   description: "Experience an innovative Loyalty Program with President's Club's mobile app. Our UI/UX design team creates high-end mobile app solutions to help you engage your customers and build long lasting relationships. Get the latest in customer loyalty program app development with President's Club."

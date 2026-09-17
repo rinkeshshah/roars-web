@@ -77,6 +77,125 @@ showcase:
     w: 494
     h: 760
     alt: "The AI Concierge chat, Mira, answering a request for a hotel reservation in Hyderabad"
+# THE PRESENTATION LAYOUT, from `Roars v2 - Work Presentation.dc.html`.
+# Content is the design's own, transcribed from the handoff of 17 Sep. Image
+# paths are remapped: the design reads from a local `uploads/` folder, this
+# site serves the client's own files from public/work/ and the migrated ones
+# from the WordPress uploads directory, which scripts/validate-content.mjs
+# checks against the export.
+presentation:
+  line: "One AI platform for luxury concierge services."
+  constraints:
+    - "Multi-tenant from day one"
+    - "White-label ready"
+    - "AI with human override"
+    - "Booking in under a minute"
+  coverPlate:
+    src: "/work/concierge/Concierges-1.08.jpg"
+    w: 1920
+    h: 1080
+    alt: "Concierges"
+  coverIsPhoto: true
+  meta:
+    - k: "CLIENT"
+      v: "Concierges"
+    - k: "SECTOR"
+      v: "Luxury travel & lifestyle"
+    - k: "SCOPE"
+      v: "Product consulting · UX/UI · Full stack"
+    - k: "SURFACES"
+      v: "Mobile app · AI concierge · Partner tools"
+  challengeLead: "A fragmented MVP, a high-net-worth clientele, and no room for friction."
+  challengeBody: "Requests arrived by phone, mail and chat, then died in spreadsheets. The work was to turn a partial product into one multi-tenant platform: a conversational concierge that handles the request, a booking flow that survives white-labelling, and an operations layer that lets a human step in at any point."
+  wires:
+    - img:
+        src: "/work/concierge/concierges-wireframe-1536x959.png"
+        w: 1536
+        h: 959
+        alt: "WIREFRAME · DISCOVERY"
+      label: "WIREFRAME · DISCOVERY"
+      note: "Destination-first browsing settled here: one full-bleed list, type as the interface, no card grid."
+    - img:
+        src: "/work/concierge/Concierge-Wireframe1-1536x955.png"
+        w: 1536
+        h: 955
+        alt: "WIREFRAME · BOOKING"
+      label: "WIREFRAME · BOOKING"
+      note: "Search to confirmation in four screens. Every field on the booking sheet had to justify its place against the concierge asking instead."
+  screens:
+    - img:
+        src: "/work/concierge/concierges-app-ui3.jpg"
+        w: 1536
+        h: 959
+        alt: "Type as the interface"
+      kicker: "DISCOVERY"
+      title: "Type as the interface"
+      note: "Destinations render as a scrolling type stack over live imagery. The selected city gains weight rather than a highlight box — it reads as editorial, not a dropdown."
+    - img:
+        src: "/work/concierge/concierges-app-ui1.jpg"
+        w: 1536
+        h: 959
+        alt: "Four screens, one request"
+      kicker: "BOOKING"
+      title: "Four screens, one request"
+      note: "Search, property, booking sheet, confirmation. Defaults are pre-filled from the member profile so the sheet is a review, not a form."
+    - img:
+        src: "/work/concierge/concierges-app-ui2.jpg"
+        w: 1536
+        h: 959
+        alt: "Loyalty made visible"
+      kicker: "MEMBERSHIP"
+      title: "Loyalty made visible"
+      note: "Itinerary, tier card and upcoming bookings sit on the member home. Gold status is shown as an object, which is what makes it worth keeping."
+    - img:
+        src: "/work/concierge/Ai-Concierges-Chatbot.png"
+        w: 494
+        h: 760
+        alt: "A concierge that writes like one"
+      kicker: "AI CONCIERGE"
+      title: "A concierge that writes like one"
+      note: "Mira answers in full sentences with local knowledge, converts the request into a backend ticket, and hands off to a lifestyle manager when the answer needs a person."
+  tall:
+    src: "/work/concierge/Ai-Concierges-Chatbot.png"
+    w: 494
+    h: 760
+    alt: "The conversation, in full"
+  tallTitle: "The conversation, in full"
+  tallNote: "The whole exchange, from greeting to reservation. Tone was designed alongside the interface: no bullet lists, no bot cheer, a named concierge, and a visible disclaimer where the AI could be wrong. Scroll it."
+  mobile:
+    - img:
+        src: "/work/concierge/concierges-mobileapp-1536x876.jpg"
+        w: 1536
+        h: 876
+        alt: "Discovery, in the hand"
+      label: "Discovery, in the hand"
+    - img:
+        src: "/work/concierge/Concierges-1.08.jpg"
+        w: 1920
+        h: 1080
+        alt: "Programme entry and member home"
+      label: "Programme entry and member home"
+  buildLead: "A turnkey MVP with a growth path the client can sell against."
+  stack:
+    - k: "Front end"
+      v: "React — one component set themed per tenant"
+    - k: "Back end"
+      v: "Node.js and Express.js with MongoDB"
+    - k: "AI layer"
+      v: "ChatGPT-driven concierge with ticket generation and human override"
+    - k: "Operations"
+      v: "Real-time request tracking wired to the existing partner tooling"
+  outcomeLead: "A single platform that scales to any high-end service request."
+  outcomes:
+    - big: "B2B2C"
+      label: "One platform serving enterprise and individual members"
+    - big: "1"
+      label: "Component set, white-labelled per partner"
+    - big: "4"
+      label: "Screens from search to confirmed booking"
+    - big: "24/7"
+      label: "AI coverage with a named human behind it"
+  nextNote: "Partner onboarding, tiered membership billing and a lifestyle-manager console are the next three releases on the same foundation."
 seo:
   title: "Concierges: one AI platform for luxury concierge services"
   description: "Roars partnered with a fast-growing luxury concierge startup to transform its fragmented MVP into a unified, AI-powered platform tailored for high-net-worth travelers and enterprise clients."

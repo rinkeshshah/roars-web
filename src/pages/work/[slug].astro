@@ -19,6 +19,7 @@ import RingField from '../../components/RingField.astro'
 import { PORTRAIT, workHeroFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { clientFor, isHeldBack, PROJECTS } from '../../lib/projects'
+import WorkPresentation from '../../components/WorkPresentation.astro'
 import { site } from '../../lib/site'
 
 export async function getStaticPaths() {
@@ -160,13 +161,11 @@ const isWide = (m: { w?: number; h?: number; kind?: string }) =>
 /** The process: how it was structured, and how it was dressed. Split by shape,
  *  because a wireframe sheet and a single wireframe want different room. */
 const groundwork = pick('wireframe', 'study')
-const groundSheets = groundwork.filter(isWide)
 const groundGrid = groundwork.filter((m) => !isWide(m))
 
 /** The product. Web screens are landscape and app screens portrait, so they
  *  keep their own grids; anything wide leaves both and gets the full column. */
 const shipped = pick('app', 'web')
-const sheets = shipped.filter(isWide)
 const appShots = pick('app').filter((m) => !isWide(m))
 const webShots = pick('web').filter((m) => !isWide(m))
 
@@ -174,7 +173,6 @@ const webShots = pick('web').filter((m) => !isWide(m))
  *  A photograph is the one picture on a case study that is of the real world,
  *  so it gets a stage of its own rather than a cell in a grid. */
 const rest = media.filter((m) => !m.kind || m.kind === 'photo')
-const photoStages = rest.filter(isWide)
 const restGrid = rest.filter((m) => !isWide(m))
 
 /** Inline style that both reserves the space and stops the wide pictures
@@ -216,9 +214,37 @@ const neighbour = (dir: 1 | -1) => {
 }
 const prevProject = neighbour(-1)
 const nextProject = neighbour(1)
+
+/* The presentation layout from `Roars v2 - Work Presentation.dc.html`, for the
+   projects that carry its content. See `presentation` in src/content.config.ts
+   for why this is opt-in rather than a straight swap. */
+const presented = Boolean(d?.presentation)
+/* The design's "Next case" plate wants the neighbour's own header photo, which
+   is the same file /work/ puts on its card. */
+const nextShot = nextProject ? workHeroFor(`/work/${nextProject.slug}/`) : undefined
 ---
 
-{designed && d ? (
+{presented && d ? (
+  <BaseLayout
+    title={d.seo.title}
+    description={d.seo.description}
+    path={path}
+    schema={schema}
+    noindex={d.needsReview || heldBack}
+  >
+    <TopBar slot="topbar" cta="contact" />
+    <NavOverlay />
+    <WorkPresentation d={d} next={nextProject} nextImg={nextShot} faces={faces} />
+    <SiteFooter
+      slot="footer"
+      blurbTitle="Got a floor that runs on clipboards?"
+      blurb="Most operations problems look like software problems once you watch the shift. Tell us what the shift looks like."
+      tagline="proof, not promises"
+      ctaLabel="Shall we chat?"
+      ctaHref="https://meet.roarsinc.com/sales"
+    />
+  </BaseLayout>
+) : designed && d ? (
   <BaseLayout
     title={d.seo.title}
     description={d.seo.description}
@@ -263,18 +289,6 @@ const nextProject = neighbour(1)
             {d.dateLabel && <p class="pd__date">{d.dateLabel}</p>}
           </div>
 
-          {faces.length > 0 && (
-            <div class="pd__team">
-              {/* A staggered cluster, not a row: the export offsets the second
-                  column 8px so five faces read as a team rather than a list. */}
-              <span class="pd__faces">
-                {faces.map((src, i) => (
-                  <img src={src} alt="" width="40" height="40" loading="lazy" style={`--i:${i}`} />
-                ))}
-              </span>
-              <span class="pd__team-label">Team Members Involved</span>
-            </div>
-          )}
         </div>
 
         {heroSrc && (
@@ -346,24 +360,6 @@ const nextProject = neighbour(1)
             {/* Wide sheets take the column. A wireframe sheet is four screens
                 of thinking and it is the only thing on this page that shows
                 the argument before the paint. */}
-            {groundSheets.length > 0 && (
-              <ul class="pd__sheets pd__sheets--ground">
-                {groundSheets.map((m, i) => (
-                  <li data-reveal style={`transition-delay:${Math.min(i, 4) * 70}ms`}>
-                    <span class="pd__sheet-vp">
-                      <img
-                        src={m.src} alt={m.alt} width={m.w} height={m.h}
-                        style={ratio(m)} loading="lazy" decoding="async"
-                      />
-                    </span>
-                    <span class="pd__cap">
-                      <b>{String(i + 1).padStart(2, '0')}</b>
-                      {m.caption ?? (m.kind === 'wireframe' ? 'Wireframe' : 'Colour and type')}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
 
             {groundGrid.length > 0 && (
               <ul class="pd__ground">
@@ -407,51 +403,21 @@ const nextProject = neighbour(1)
                 {b.body && <p class="pd__more">{b.body}</p>}
               </div>
             </div>
-            {photoStages[i] && (
-              <figure
-                class:list={['pd__stage', photoStages[i].ground === 'dark' && 'pd__stage--dark']}
-                data-reveal
-              >
-                <img
-                  src={photoStages[i].src}
-                  alt={photoStages[i].alt}
-                  width={photoStages[i].w}
-                  height={photoStages[i].h}
-                  style={ratio(photoStages[i])}
-                  loading="lazy"
-                  decoding="async"
-                />
-                {photoStages[i].caption && (
-                  <figcaption class="pd__stage-cap">{photoStages[i].caption}</figcaption>
-                )}
-              </figure>
-            )}
           </>
         ))}
 
-        {/* Any photograph the blocks ran out of room for still gets a stage. */}
-        {photoStages.slice(Math.max(0, d.blocks.length - 1)).map((m) => (
-          <figure class:list={['pd__stage', m.ground === 'dark' && 'pd__stage--dark']} data-reveal>
-            <img
-              src={m.src} alt={m.alt} width={m.w} height={m.h}
-              style={ratio(m)} loading="lazy" decoding="async"
-            />
-            {m.caption && <figcaption class="pd__stage-cap">{m.caption}</figcaption>}
-          </figure>
-        ))}
 
         {/* THE PRODUCT. Web screens are landscape and app screens portrait, so
             they get separate grids rather than one grid that suits neither.
             Either chapter is skipped when the project has none of that kind,
             which is how a three-picture case study and a sixteen-picture one
             use the same template. */}
-        {(webShots.length > 0 || appShots.length > 0 || sheets.length > 0 || restGrid.length > 0) && (
+        {(webShots.length > 0 || appShots.length > 0 || restGrid.length > 0) && (
           <section class="pd__chapter" data-reveal>
             <span class="pd__ch-tick" aria-hidden="true"></span>
             <h2 class="pd__ch-h">What shipped</h2>
             <p class="pd__ch-sub">
               {[
-                sheets.length && `${sheets.length} screen ${sheets.length === 1 ? 'sheet' : 'sheets'}`,
                 webShots.length && `${webShots.length} web`,
                 appShots.length && `${appShots.length} app`,
               ].filter(Boolean).join(' · ') || 'From the build'}
@@ -461,25 +427,6 @@ const nextProject = neighbour(1)
                 is a row of an interface, and a row of an interface read at a
                 quarter of the column is a texture, not a screen. Numbered,
                 because stacked at this size they are a sequence. */}
-            {sheets.length > 0 && (
-              <ul class="pd__sheets">
-                {sheets.map((m, i) => (
-                  <li data-reveal style={`transition-delay:${Math.min(i, 4) * 70}ms`}>
-                    <span class="pd__sheet-vp">
-                      <img
-                        src={m.src} alt={m.alt} width={m.w} height={m.h}
-                        style={ratio(m)} loading="lazy" decoding="async"
-                      />
-                    </span>
-                    {m.caption && (
-                      <span class="pd__cap">
-                        <b>{String(i + 1).padStart(2, '0')}</b>{m.caption}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
 
             {webShots.length > 0 && (
               <ul class="pd__web">
@@ -518,23 +465,6 @@ const nextProject = neighbour(1)
             trust; placed here it lands on something they have just seen.
             Only ever a quote whose role names this client outright — see the
             note on `testimonial` in content.config.ts. */}
-        {d.testimonial && (
-          <figure class="pd__say" data-reveal>
-            <span class="pd__say-mark" aria-hidden="true">&ldquo;</span>
-            <blockquote class="pd__say-q">{d.testimonial.quote}</blockquote>
-            <figcaption class="pd__say-who">
-              {d.testimonial.portrait
-                ? <img src={d.testimonial.portrait} alt="" width="56" height="56" loading="lazy" />
-                : <span class="pd__say-mono" aria-hidden="true">
-                    {d.testimonial.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
-                  </span>}
-              <span>
-                <b>{d.testimonial.name}</b>
-                <i>{d.testimonial.role}</i>
-              </span>
-            </figcaption>
-          </figure>
-        )}
 
         {/* The migrated body. The export has no slot for it; a case study with
             four sentences is not a case study, and this is the page that has
@@ -643,24 +573,6 @@ const nextProject = neighbour(1)
     letter-spacing: -0.06em; color: var(--c-black);
   }
 
-  .pd__team { position: absolute; left: 67.988%; top: 0; width: 31.718%; height: 134px; }
-  .pd__faces { position: relative; display: block; width: 83px; height: 134px; }
-  .pd__faces img {
-    position: absolute; width: 40px; height: 40px; border-radius: 50%;
-    background: rgb(217, 217, 217); object-fit: cover;
-  }
-  /* Two columns, the right one lifted 8px. The export places five faces by
-     hand; this is the same five positions expressed once. */
-  .pd__faces img:nth-child(1) { left: 0; top: 8px; }
-  .pd__faces img:nth-child(2) { left: 43px; top: 0; }
-  .pd__faces img:nth-child(3) { left: 0; top: 55px; }
-  .pd__faces img:nth-child(4) { left: 43px; top: 47px; }
-  .pd__faces img:nth-child(5) { left: 43px; top: 94px; }
-  .pd__team-label {
-    position: absolute; left: 117px; top: 4px; width: 180px;
-    font-size: 18px; line-height: 24px; font-weight: var(--fw-medium);
-    letter-spacing: -0.03em; color: rgb(20, 20, 20);
-  }
 
   /* AMBER DUSK, THE DETAIL-PAGE VERSION. The /work/ card and this header now
      belong to one family, which is the point — but they are not the same
@@ -737,35 +649,6 @@ const nextProject = neighbour(1)
     letter-spacing: var(--ls-item); color: var(--c-black);
   }
   /* ── the pair ───────────────────────────────────────────── */
-  /* ── the client's verdict ───────────────────────────────── */
-  .pd__say {
-    margin: 104px 0 0; padding: 48px 0 0;
-    border-top: 1.5px solid var(--c-rule-strong);
-    max-width: 900px;
-  }
-  .pd__say-mark {
-    display: block; font-size: 84px; line-height: 0.6;
-    font-weight: var(--fw-semi); color: var(--c-accent);
-  }
-  .pd__say-q {
-    margin: 24px 0 0; font-size: var(--fs-intro); line-height: var(--lh-intro);
-    font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: var(--c-ink-heading);
-  }
-  .pd__say-who { display: flex; align-items: center; gap: 16px; margin-top: 32px; }
-  .pd__say-who img, .pd__say-mono {
-    width: 56px; height: 56px; border-radius: var(--r-circle);
-    object-fit: cover; flex: none; background: rgb(233, 233, 231);
-  }
-  .pd__say-mono {
-    display: grid; place-items: center;
-    font-size: var(--fs-label); font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
-  }
-  .pd__say-who b, .pd__say-who i {
-    display: block; font-style: normal; letter-spacing: var(--ls-body);
-  }
-  .pd__say-who b { font-size: var(--fs-body); font-weight: var(--fw-semi); color: var(--c-ink-heading); }
-  .pd__say-who i { margin-top: 3px; font-size: var(--fs-label); font-weight: var(--fw-medium); color: var(--c-ink-muted); }
 
   /* ── chapters ───────────────────────────────────────────────
      FIXED HEIGHTS ARE GONE. The old showcase was four slots at 737, 700, 700
@@ -817,72 +700,7 @@ const nextProject = neighbour(1)
     letter-spacing: 0.16em; text-transform: uppercase; color: rgba(20, 20, 20, 0.5);
   }
 
-  /* ── CONTACT SHEETS ─────────────────────────────────────────
-     A sheet is several screens in one wide file. It gets the whole column and
-     nothing beside it, because at half the column each screen inside it is
-     about 160px across and you are looking at a pattern rather than an
-     interface.
 
-     aspect-ratio comes from the entry's own w and h as an inline style, so
-     the box is the picture's real shape: no letterboxing, no crop, and the
-     space is reserved before the file arrives. These are migrated uploads
-     with no dimensions in the markup, and without this the page grew by
-     several thousand pixels as each one landed.
-
-     PAPER, NOT A DARK CARD. Every one of these sheets is artwork on white, so
-     a dark frame around it draws a hard rectangle the designer never drew.
-     The hairline is enough to say where the picture ends. */
-  .pd__sheets { margin: 44px 0 0; padding: 0; list-style: none; display: grid; gap: 44px; }
-  /* min-width: 0, or the grid item sizes to its content instead of its track
-     and the sideways-scrolling viewport below just makes the row wider. */
-  .pd__sheets li { min-width: 0; }
-  .pd__sheet-vp { display: block; max-width: 100%; }
-  .pd__sheets img {
-    display: block; width: 100%; height: auto;
-    aspect-ratio: 16 / 9;            /* fallback until w/h override it inline */
-    object-fit: contain;
-    border-radius: 14px;
-    background: rgb(250, 250, 249);
-    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.07);
-  }
-  .pd__sheets .pd__cap { display: flex; align-items: baseline; gap: 10px; margin-top: 14px; }
-  .pd__sheets .pd__cap b { font-weight: var(--fw-semi); color: rgba(20, 20, 20, 0.28); }
-  /* Groundwork reads quieter than the product, here as everywhere else on
-     this page: the same sheet, inset, on a flatter ground. */
-  .pd__sheets--ground img { background: rgb(244, 244, 242); border-radius: 12px; }
-  .pd__sheets--ground { gap: 34px; }
-
-  /* ── THE PHOTOGRAPH STAGE ───────────────────────────────────
-     THE CONTAINER, AND THE WHOLE OF IT.
-     Two wrong answers before this one. First it ran to the viewport with a
-     40px gutter, which ignored the column the rest of the page is set to and
-     read as a different website for one scroll. Then it was capped at 1040,
-     which fixed that and introduced a worse problem: the photographs came out
-     narrower than the contact sheets directly above them, so a band of
-     pictures had two different left edges.
-
-     One measure. A photograph and a screen sheet are both pictures on the
-     same page and they line up. The height follows from the file's own aspect
-     ratio and is not something to negotiate with. */
-  .pd__stage {
-    position: relative; margin: 64px 0 0;
-    border-radius: 16px; overflow: clip;
-  }
-  .pd__stage img { display: block; width: 100%; height: auto; object-fit: cover; }
-  .pd__stage-cap {
-    position: absolute; left: 24px; bottom: 20px; margin: 0;
-    padding: 7px 14px; border-radius: 40px;
-    background: rgba(255, 255, 255, 0.86);
-    backdrop-filter: blur(6px);
-    font-size: var(--fs-micro); line-height: 1.4; font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
-  }
-  /* A picture that is already black on black needs no frame and no white
-     caption chip. The ground carries through to the edge of the file. */
-  .pd__stage--dark { background: rgb(12, 12, 12); }
-  .pd__stage--dark .pd__stage-cap {
-    background: rgba(20, 20, 20, 0.72); color: var(--c-white);
-  }
 
   /* WEB screens are landscape: two across, and one on its own goes full width
      rather than sitting in half a row with a gap beside it. */
@@ -1128,12 +946,9 @@ const nextProject = neighbour(1)
        never what was holding the box open. */
     .pd__head { min-height: 0; height: auto; padding-top: 0; }
     .pd__title { margin-left: 0; }
-    .pd__back, .pd__client, .pd__date, .pd__team { position: static; width: auto; height: auto; }
     .pd__back { display: inline-block; }
     .pd__client { margin-top: 28px; line-height: 1.04; }
     .pd__date { margin-top: 10px; }
-    .pd__team { display: flex; align-items: center; gap: 18px; margin-top: 32px; }
-    .pd__team-label { position: static; width: auto; }
     .pd__about { margin-top: 48px; }
     .pd__label { position: static; display: block; }
     .pd__statement { margin: 14px 0 0; max-width: 620px; }
@@ -1172,24 +987,6 @@ const nextProject = neighbour(1)
     .pdnav__all { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
     .pdnav__name { font-size: 20px; }
 
-    .pd__sheets { gap: 28px; margin-top: 28px; }
-    .pd__sheet-vp {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-x: contain;
-      border-radius: 12px;
-      /* The right edge softens, which is the one affordance that says "there
-         is more this way" on a touch device with no visible scrollbar. Safe
-         to make unconditional here: inside this query the sheet is 760px in a
-         column that is never that wide, so it always overflows. */
-      mask-image: linear-gradient(to right, #000 88%, transparent 100%);
-    }
-    .pd__sheets img { width: 760px; max-width: none; border-radius: 0; }
-    /* The stage stops reaching past the column: at this width the column IS
-       the viewport minus the gutter, so the negative margin would only push
-       the picture under the page edge. */
-    .pd__stage { margin: 40px 0 0; border-radius: 12px; }
-    .pd__stage-cap { left: 14px; bottom: 12px; }
     .pd__ch-h { font-size: var(--fs-stat-m); line-height: 1.1; }
     .pd__block { margin-top: 56px; }
     .pd__block-h { position: static; width: auto; }

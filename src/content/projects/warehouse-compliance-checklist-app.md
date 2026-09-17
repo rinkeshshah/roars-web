@@ -82,6 +82,103 @@ testimonial:
   role: "VP IT & Business Excellence, Snowman Logistics"
   portrait: "/wp-content/uploads/2026/02/vt6oz.Bhushan1.jpg"
 
+# THE PRESENTATION LAYOUT, from `Roars v2 - Work Presentation.dc.html`.
+# Content is the design's own, transcribed from the handoff of 17 Sep. Image
+# paths are remapped: the design reads from a local `uploads/` folder, this
+# site serves the client's own files from public/work/ and the migrated ones
+# from the WordPress uploads directory, which scripts/validate-content.mjs
+# checks against the export.
+presentation:
+  line: "Warehouse compliance, turned into a system of record."
+  constraints:
+    - "Role-based accountability"
+    - "Audit-grade logging"
+    - "Offline-tolerant on the floor"
+    - "Built for more sites"
+  coverPlate:
+    src: "/work/snowman/snowman-app-homepage.jpg"
+    w: 1920
+    h: 1080
+    alt: "Snowman"
+  coverIsPhoto: true
+  meta:
+    - k: "CLIENT"
+      v: "Snowman Logistics"
+    - k: "SECTOR"
+      v: "Cold chain & warehousing"
+    - k: "SCOPE"
+      v: "Product consulting · Mobile UX/UI · Full stack"
+    - k: "SURFACES"
+      v: "Mobile app · Web dashboards"
+  challengeLead: "Critical warehouse checklists were being run by hand, and leadership could only see them after the fact."
+  challengeBody: "Compliance tracking had no audit trail, reporting depended on follow-ups rather than the system, and every new location multiplied the coordination. The work was a centralised operations platform that enforces role-based responsibility, standardises how a checklist is executed, and shows the state of every site in real time."
+  screens:
+    - img:
+        src: "/work/snowman/snowman-app-homepage.jpg"
+        w: 1920
+        h: 1080
+        alt: "The shift, in four numbers"
+      kicker: "DASHBOARD"
+      title: "The shift, in four numbers"
+      note: "Pending tasks, open NCs, closed tasks, compliance percentage. A supervisor reads the state of the warehouse before choosing what to open."
+    - img:
+        src: "/work/snowman/snowman-app.jpg"
+        w: 1500
+        h: 807
+        alt: "One question at a time, with proof"
+      kicker: "EXECUTION"
+      title: "One question at a time, with proof"
+      note: "Score, remarks, photo, and a Mark as NC switch on the same card. Raising a non-conformance is part of answering, not a separate report written later."
+    - img:
+        src: "/work/snowman/snowman-wireframe.jpg"
+        w: 824
+        h: 521
+        alt: "Checklists as controlled documents"
+      kicker: "CHECKLIST LIBRARY"
+      title: "Checklists as controlled documents"
+      note: "Category, question count, duration and last use sit on every entry, so the right audit is chosen deliberately and the same one is run the same way each time."
+    - img:
+        src: "/work/snowman/Warehouse-solution-app1-scaled.png"
+        w: 2560
+        h: 1365
+        alt: "Where you stand decides what you can do"
+      kicker: "GEOFENCE"
+      title: "Where you stand decides what you can do"
+      note: "Warehouse selection is bounded by location: in range the button starts the shift, out of range it says so and stops. Accountability is enforced before data entry, not audited afterwards."
+  mobile:
+    - img:
+        src: "/work/snowman/snowman-logistics-warehouse-amagement.jpg"
+        w: 1920
+        h: 1080
+        alt: "Checked in at the depot, before the first pallet moves"
+      label: "Checked in at the depot, before the first pallet moves"
+    - img:
+        src: "/work/snowman/Warehouse-solution-app1-scaled.png"
+        w: 2560
+        h: 1365
+        alt: "Warehouse selection with the geofence state visible"
+      label: "Warehouse selection with the geofence state visible"
+  buildLead: "Business logic separated from the presentation layer, so the audit trail is the product."
+  stack:
+    - k: "Mobile"
+      v: "Flutter — built for gloves, poor light and intermittent signal"
+    - k: "Web"
+      v: "React dashboards for supervisors and leadership"
+    - k: "Services"
+      v: "Node.js with Firebase, hosted on Azure"
+    - k: "Controls"
+      v: "Role-based access with audit-grade logging on every submission"
+  outcomeLead: "Reactive firefighting became proactive operations control."
+  outcomes:
+    - big: "100%"
+      label: "Checklist digitisation across warehouse operations"
+    - big: "Live"
+      label: "Visibility across locations without chasing updates"
+    - big: "↓"
+      label: "Manual reporting errors and compliance misses"
+    - big: "1"
+      label: "Structured architecture behind web and mobile"
+  nextNote: "Predictive analytics, automation and AI-driven logistics insight sit on the same foundation, ready when the next set of sites comes online."
 seo:
   title: "Snowman Logistics: Warehouse Compliance App"
   description: "Manual checklists and fragmented reporting replaced by one system: evidence on the floor, timestamped sign-off, and reporting that rolls up to national views."

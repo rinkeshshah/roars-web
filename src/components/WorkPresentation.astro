@@ -1,0 +1,840 @@
+---
+/**
+ * THE CASE-STUDY PRESENTATION, from `Roars v2 - Work Presentation.dc.html`.
+ *
+ * Built from the handoff the owner sent on 17 Sep. Every number in here — type
+ * sizes, clamps, gutters, the ring-field pitches, the gradient stops — is the
+ * design's own, transcribed rather than interpreted. Where this departs from
+ * the artboard it is written down at the departure.
+ *
+ * THREE DEPARTURES, all deliberate:
+ *
+ *  1. NO CASE-SWITCHER RAIL. The design's dark strip carries a row of pills —
+ *     Advisee, Concierges, Snowman … — that swap the case in place. That is how
+ *     you review seven cases inside one document. On the site each case is its
+ *     own URL with its own canonical, so the rail would be seven links to
+ *     pages the reader is already one click from. Dropped on the owner's
+ *     instruction, and it would have gone anyway.
+ *
+ *  2. THE HEADER AND FOOTER ARE OURS. The artboard redraws the Roars top strip
+ *     and footer because a standalone document has to. This site already ships
+ *     both as components that assert-styles and assert-overlap cover. Drawing
+ *     them again here would be two copies of one design, diverging the first
+ *     time anybody edits one.
+ *
+ *  3. "NEXT CASE" IS COMPUTED, NOT AUTHORED. The design hardcodes a chain —
+ *     each case names the next. The site knows its own order, and which twelve
+ *     projects are held back, so the neighbour comes from the same function
+ *     prev/next already uses. A hardcoded chain would eventually point at a
+ *     noindex page, which is the thing assert-held-back exists to stop.
+ *
+ * The rest is the design.
+ */
+import type { CollectionEntry } from 'astro:content'
+import RingField from './RingField.astro'
+
+interface Props {
+  d: CollectionEntry<'projects'>['data']
+  next?: { slug: string; client: string }
+  nextImg?: string
+  faces: string[]
+}
+const { d, next, nextImg, faces } = Astro.props
+const p = d.presentation!
+
+/* The act numbers run 01, 02, 03 … over the acts this case actually has, which
+   is what makes an image-poor case read as complete rather than as one with
+   gaps in its numbering. The design computes the same way. */
+let step = 1
+const idx = () => String(++step).padStart(2, '0')
+const wiresIndex = p.wires.length ? idx() : null
+const systemIndex = p.artifacts.length ? idx() : null
+const screensIndex = p.screens.length ? idx() : null
+const buildIndex = idx()
+const outcomeIndex = idx()
+
+/* Four plinth grounds, cycled. Two white, one navy, one tinted — so a logo on
+   white and a colour ramp on navy both sit on something that suits them. */
+const PLINTHS = ['p0', 'p1', 'p2', 'p3']
+
+/* THE COVER FALLS BACK TO THE PROJECT'S OWN HEADER PHOTOGRAPH.
+   The design draws a striped "COVER IMAGE — TO BE SUPPLIED" plate when a case
+   has none, which is the right thing inside a design document and the wrong
+   thing on a live page — it tells a visitor we did not finish. Two of the seven
+   have no plate in the handoff: FlowRow's names a file that is in neither the
+   client folder nor the WordPress export, and the President's Club never had
+   one. Both already have a header photograph, the same file /work/ puts on
+   their card, so the page shows that instead. It is a photograph, so it takes
+   the scrim.
+
+   The design's striped placeholder is NOT built. It is the right thing inside
+   a design document and the wrong thing on a live page — it tells a visitor we
+   did not finish. With the header photograph as the fallback there is no case
+   that reaches it anyway: all twenty-four projects have one, which assert-styles
+   confirmed by reporting the rule as matching nothing. A project with neither
+   simply opens without a plate. */
+const cover = p.coverPlate ?? (d.heroImage ? { src: d.heroImage, alt: '', w: 2400, h: 1200 } : undefined)
+const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
+---
+
+{/* ── 01 Cover ─────────────────────────────────────────────── */}
+<section class="wp-cover" id="cover">
+  <a class="wp-back" href="/work/" data-reveal>
+    <span>See all Projects</span>
+    <span class="wp-dots"><i></i><i class="on"></i></span>
+  </a>
+
+  <div class="wp-head" data-reveal>
+    <div class="wp-head__main">
+      {p.constraints.length > 0 && (
+        <div class="wp-pills">
+          {p.constraints.map((c) => <span>{c}</span>)}
+        </div>
+      )}
+      <h1 class="wp-name">{d.headline ?? d.client}</h1>
+      <p class="wp-line">{p.line}</p>
+      {d.dateLabel && <span class="wp-date">{d.dateLabel}</span>}
+    </div>
+    {faces.length > 0 && (
+      <div class="wp-team">
+        <div class="wp-team__faces">
+          {faces.map((f) => <img src={f} alt="" width="42" height="42" loading="lazy" />)}
+        </div>
+        <span class="wp-team__label">Team Members<br />Involved</span>
+      </div>
+    )}
+  </div>
+
+  {cover && (
+    <div class="wp-plate" data-reveal>
+      <img
+        src={cover.src}
+        alt={cover.alt}
+        width={cover.w}
+        height={cover.h}
+        loading="lazy"
+        decoding="async"
+      />
+      {/* A photograph gets a scrim, a screenshot does not. The design's rule:
+          rings and gradients go ON photographs and BEHIND screenshots. */}
+      {coverIsPhoto && <div class="wp-plate__scrim" aria-hidden="true"></div>}
+    </div>
+  )}
+
+  {p.meta.length > 0 && (
+    <div class="wp-meta" data-reveal>
+      {p.meta.map((m) => (
+        <div><span class="wp-meta__k">{m.k}</span><span class="wp-meta__v">{m.v}</span></div>
+      ))}
+    </div>
+  )}
+</section>
+
+{/* ── 01 The Challenge ─────────────────────────────────────── */}
+<section class="wp-split" id="challenge">
+  <div class="wp-split__rail" data-reveal>
+    <span class="wp-label">01 &mdash; The Challenge</span>
+    <span class="wp-split__name">What we were handed</span>
+  </div>
+  <div class="wp-split__body">
+    <p class="wp-split__lead" data-reveal>{p.challengeLead}</p>
+    <p class="wp-split__more" data-reveal>{p.challengeBody}</p>
+  </div>
+</section>
+
+{/* ── Groundwork ───────────────────────────────────────────── */}
+{p.wires.length > 0 && (
+  <section class="wp-act wp-act--grey" id="groundwork">
+    <div class="wp-act__head" data-reveal>
+      <div>
+        <span class="wp-label">{wiresIndex} &mdash; Groundwork</span>
+        <h2 class="wp-h2">Structure before surface</h2>
+      </div>
+      <p class="wp-act__note">
+        Every flow was argued in grey first. Nothing went to visual design until the
+        journey held up.
+      </p>
+    </div>
+    <div class="wp-wires">
+      {p.wires.map((w) => (
+        <figure data-reveal>
+          <div class="wp-wires__frame">
+            <img src={w.img.src} alt={w.img.alt} width={w.img.w} height={w.img.h} loading="lazy" />
+          </div>
+          <figcaption>
+            <span class="wp-kicker">{w.label}</span>
+            <span class="wp-wires__note">{w.note}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+)}
+
+{/* ── Design system ────────────────────────────────────────── */}
+{p.artifacts.length > 0 && (
+  <section class="wp-act wp-act--grey" id="system">
+    <div class="wp-act__head" data-reveal>
+      <div>
+        <span class="wp-label">{systemIndex} &mdash; Design System</span>
+        <h2 class="wp-h2">The kit of parts</h2>
+      </div>
+      <p class="wp-act__note">
+        The decisions taken before a single screen was drawn. Everything after this is
+        assembly.
+      </p>
+    </div>
+    <div class="wp-arts">
+      {p.artifacts.map((a, i) => (
+        <div data-reveal>
+          <div class:list={['wp-arts__plinth', `wp-arts__plinth--${PLINTHS[i % PLINTHS.length]}`]}>
+            <img src={a.img.src} alt={a.img.alt} width={a.img.w} height={a.img.h} loading="lazy" />
+          </div>
+          <div class="wp-arts__cap">
+            <div class="wp-arts__name"><span class="wp-tick"></span>{a.label}</div>
+            <span class="wp-arts__note">{a.note}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
+{/* ── What shipped ─────────────────────────────────────────── */}
+{p.screens.length > 0 && (
+  <section class="wp-act wp-act--dark wp-reel" id="screens">
+    <RingField />
+    <div class="wp-act__head" data-reveal>
+      <div>
+        <span class="wp-label wp-label--dark">{screensIndex} &mdash; What shipped</span>
+        <h2 class="wp-h2 wp-h2--dark">One screen, one decision</h2>
+      </div>
+      <div class="wp-reel__ctrl">
+        <span class="wp-reel__count" data-reel-count>
+          01 / {String(p.screens.length).padStart(2, '0')}
+        </span>
+        <div>
+          <button type="button" data-reel-prev aria-label="Previous screen">&lsaquo;</button>
+          <button type="button" data-reel-next aria-label="Next screen">&rsaquo;</button>
+        </div>
+      </div>
+    </div>
+    <div class="wp-reel__body">
+      <div class="wp-reel__stage">
+        {p.screens.map((s, i) => (
+          <figure data-reel-slide={i} class={i === 0 ? 'is-on' : undefined}>
+            <img
+              src={s.img.src}
+              alt={s.img.alt}
+              width={s.img.w}
+              height={s.img.h}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          </figure>
+        ))}
+      </div>
+      <div class="wp-reel__side">
+        {p.screens.map((s, i) => (
+          <div class="wp-reel__copy" data-reel-copy={i} hidden={i !== 0}>
+            <span class="wp-reel__kicker">{s.kicker}</span>
+            <span class="wp-reel__title">{s.title}</span>
+            <span class="wp-reel__note">{s.note}</span>
+          </div>
+        ))}
+        <div class="wp-reel__list">
+          {p.screens.map((s, i) => (
+            <button type="button" data-reel-pick={i} class={i === 0 ? 'is-on' : undefined}>
+              <span class="wp-reel__n">{String(i + 1).padStart(2, '0')}</span>
+              <span>{s.title}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+{/* ── Full page ────────────────────────────────────────────── */}
+{p.tall && (
+  <section class="wp-tall" id="depth">
+    <div class="wp-tall__rail" data-reveal>
+      <span class="wp-label">Full page</span>
+      <span class="wp-tall__title">{p.tallTitle}</span>
+      <span class="wp-tall__note">{p.tallNote}</span>
+    </div>
+    <div class="wp-tall__scroll" data-reveal>
+      <img src={p.tall.src} alt={p.tall.alt} width={p.tall.w} height={p.tall.h} loading="lazy" />
+    </div>
+  </section>
+)}
+
+{/* ── In the hand ──────────────────────────────────────────── */}
+{p.mobile.length > 0 && (
+  <section class="wp-act wp-act--dark wp-hand" id="mobile">
+    <RingField />
+    <div class="wp-hand__head" data-reveal>
+      <span class="wp-label wp-label--dark">In the hand</span>
+      <h2 class="wp-h2 wp-h2--dark wp-h2--sm">{p.mobileTitle ?? 'Built for the phone first'}</h2>
+    </div>
+    <div class="wp-hand__grid">
+      {p.mobile.map((m) => (
+        <figure data-reveal>
+          <div class="wp-hand__frame" style={`aspect-ratio:${p.mobileRatio ?? '16/10'}`}>
+            <img src={m.img.src} alt={m.img.alt} width={m.img.w} height={m.img.h} loading="lazy" />
+            {/* Rings go ON a photograph, never on a screenshot. */}
+            {!m.screenshot && <span class="wp-hand__rings" aria-hidden="true"></span>}
+          </div>
+          <figcaption>{m.label}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+)}
+
+{/* ── Tech & architecture ──────────────────────────────────── */}
+<section class="wp-split" id="build">
+  <div class="wp-split__rail" data-reveal>
+    <span class="wp-label">{buildIndex} &mdash; How it runs</span>
+    <span class="wp-split__name">Tech &amp; architecture</span>
+  </div>
+  <div class="wp-split__body">
+    <p class="wp-split__lead wp-split__lead--sm" data-reveal>{p.buildLead}</p>
+    <div class="wp-stack">
+      {p.stack.map((s) => (
+        <div data-reveal><span class="wp-stack__k">{s.k}</span><span class="wp-stack__v">{s.v}</span></div>
+      ))}
+    </div>
+  </div>
+</section>
+
+{/* ── Outcomes ─────────────────────────────────────────────── */}
+<section class="wp-act wp-act--grey wp-out" id="outcome">
+  <div class="wp-out__head" data-reveal>
+    <span class="wp-label">{outcomeIndex} &mdash; Outcomes</span>
+    <h2 class="wp-h2">{p.outcomeLead}</h2>
+  </div>
+  <div class="wp-out__grid">
+    {p.outcomes.map((o) => (
+      <div data-reveal><span class="wp-out__big">{o.big}</span><span class="wp-out__label">{o.label}</span></div>
+    ))}
+  </div>
+</section>
+
+{/* ── Client ───────────────────────────────────────────────── */}
+{d.testimonial && (
+  <section class="wp-act wp-act--dark wp-voice" id="voice">
+    <div data-reveal>
+      <span class="wp-tick wp-tick--wide"></span>
+      <blockquote>{d.testimonial.quote}</blockquote>
+      <div class="wp-voice__who">
+        {d.testimonial.portrait && (
+          <img src={d.testimonial.portrait} alt={d.testimonial.name} width="64" height="64" loading="lazy" />
+        )}
+        <div>
+          <span class="wp-voice__name">{d.testimonial.name}</span>
+          <span class="wp-voice__role">{d.testimonial.role}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+{/* ── Next ─────────────────────────────────────────────────── */}
+<section class="wp-next" id="next">
+  <div class="wp-next__top" data-reveal>
+    <div>
+      <span class="wp-label wp-label--dark">Where it goes next</span>
+      <span class="wp-next__note">{p.nextNote}</span>
+    </div>
+    <a class="wp-ghost" href="/contact-us/">
+      <span>Start a project like this</span>
+      <span class="wp-dots"><i></i><i class="on on--white"></i></span>
+    </a>
+  </div>
+  {next && (
+    <a class="wp-next__case" href={`/work/${next.slug}/`} rel="next" data-reveal>
+      <div class="wp-next__copy">
+        <div>
+          <span class="wp-label wp-label--dark">Next case</span>
+          <span class="wp-next__name">{next.client}</span>
+        </div>
+        <span class="wp-next__open">
+          <span>Open case</span>
+          <span class="wp-dots"><i></i><i class="on on--accent"></i></span>
+        </span>
+      </div>
+      {nextImg && (
+        <div class="wp-next__shot">
+          <img src={nextImg} alt="" width="2400" height="1200" loading="lazy" />
+        </div>
+      )}
+    </a>
+  )}
+</section>
+
+<style>
+  /* ── tokens, from DESIGN-NOTES.md and the artboard ───────────
+     Scoped to this component so they cannot leak into the pages that still
+     run the previous template. */
+  .wp-cover,
+  .wp-split,
+  .wp-act,
+  .wp-tall,
+  .wp-next {
+    --wp-gut: clamp(20px, 3vw, 39px);
+    --wp-dark: linear-gradient(100deg, #0d0d0c 0%, #121110 46%, #17150e 78%, #0a0a0a 100%);
+    --wp-accent: #ffd400;
+    position: relative;
+    padding-inline: var(--wp-gut);
+  }
+
+  .wp-label {
+    font-size: 14px; font-weight: 600; letter-spacing: -0.06em; color: #919191;
+  }
+  .wp-label--dark { color: rgba(255, 255, 255, 0.55); }
+  .wp-h2 {
+    margin: 0; font-size: clamp(34px, 5vw, 72px); font-weight: 600;
+    line-height: 1; letter-spacing: -0.05em; color: #242424;
+  }
+  .wp-h2--dark { color: #fbfbfb; }
+  .wp-h2--sm { font-size: clamp(30px, 4.4vw, 62px); }
+  .wp-kicker {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em; color: #919191;
+  }
+  .wp-tick { display: block; width: 15px; height: 2px; background: var(--wp-accent); }
+  .wp-tick--wide { width: 38px; }
+  .wp-dots { display: flex; gap: 3px; }
+  .wp-dots i {
+    width: 8px; height: 8px; border-radius: 50%; background: rgba(153, 152, 149, 0.6);
+  }
+  .wp-dots i.on { background: rgb(20, 20, 20); }
+  .wp-dots i.on--white { background: #fff; }
+  .wp-dots i.on--accent { background: var(--wp-accent); }
+
+  /* ── cover ───────────────────────────────────────────────── */
+  .wp-cover {
+    overflow: hidden; background: #fff;
+    display: flex; flex-direction: column; gap: clamp(26px, 4vh, 44px);
+    padding-block: clamp(44px, 7vh, 76px) clamp(40px, 6vh, 72px);
+  }
+  /* The design draws this as bare 14px type, which measures 22px tall — under
+     the 24px a finger needs and well under the 44px that is comfortable. The
+     padding is vertical only and cancelled by an equal negative margin, so the
+     link sits exactly where the artboard puts it and the target is 44px. */
+  .wp-back {
+    display: inline-flex; align-items: center; gap: 10px; align-self: flex-start;
+    padding-block: 11px; margin-block: -11px;
+    font-size: 14px; font-weight: 600; letter-spacing: -0.06em; color: #000;
+  }
+  .wp-head {
+    display: flex; flex-wrap: wrap; align-items: flex-end; gap: clamp(24px, 4vw, 64px);
+  }
+  .wp-head__main {
+    flex: 1 1 460px; min-width: 0;
+    display: flex; flex-direction: column; gap: clamp(12px, 1.6vw, 18px);
+  }
+  .wp-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .wp-pills span {
+    display: flex; align-items: center; height: 26px; padding: 0 12px;
+    border-radius: 60px; box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.16);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em; color: rgba(20, 20, 20, 0.7);
+  }
+  .wp-name {
+    margin: 0; font-size: clamp(56px, 9vw, 124px); font-weight: 600;
+    line-height: 0.9; letter-spacing: -0.05em; color: rgb(20, 20, 20);
+  }
+  .wp-line {
+    margin: 0; max-width: 26ch; font-size: clamp(20px, 2.2vw, 26px); font-weight: 600;
+    line-height: 1.42; letter-spacing: -0.04em; color: #000; text-wrap: pretty;
+  }
+  .wp-date { font-size: 16px; font-weight: 500; letter-spacing: -0.06em; color: #000; }
+  .wp-team {
+    flex: 0 0 auto; display: flex; align-items: center; gap: 14px; align-self: flex-end;
+  }
+  .wp-team__faces { display: flex; align-items: center; }
+  .wp-team__faces img {
+    width: 42px; height: 42px; border-radius: 60px; object-fit: cover;
+    box-shadow: 0 0 0 2px #fff;
+  }
+  .wp-team__faces img + img { margin-left: -10px; }
+  .wp-team__label {
+    font-size: 15px; font-weight: 500; line-height: 21px; letter-spacing: -0.03em;
+    color: rgb(20, 20, 20);
+  }
+  .wp-plate {
+    position: relative; border-radius: 12px; overflow: hidden; background: rgb(30, 30, 30);
+  }
+  .wp-plate img { display: block; width: 100%; height: auto; }
+  .wp-plate__scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(
+      180deg, rgba(11, 11, 11, 0) 38%, rgba(11, 11, 11, 0.28) 74%, rgba(11, 11, 11, 0.6) 100%
+    );
+  }
+  .wp-meta {
+    display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 68px);
+    padding-top: clamp(18px, 3vh, 28px); border-top: 1.5px solid rgba(153, 152, 149, 0.7);
+  }
+  .wp-meta > div { display: flex; flex-direction: column; gap: 6px; min-width: 120px; }
+  .wp-meta__k { font-size: 12px; font-weight: 500; letter-spacing: -0.06em; color: #919191; }
+  .wp-meta__v {
+    font-size: 16px; font-weight: 500; letter-spacing: -0.04em; color: rgb(20, 20, 20);
+  }
+
+  /* ── two-column acts: challenge, tech ────────────────────── */
+  .wp-split {
+    background: #fff; padding-block: clamp(76px, 14vh, 160px);
+    display: flex; flex-wrap: wrap; gap: clamp(28px, 5vw, 88px);
+  }
+  .wp-split__rail { flex: 0 0 190px; display: flex; flex-direction: column; gap: 9px; }
+  .wp-split__name {
+    font-size: 19px; font-weight: 600; letter-spacing: -0.04em; color: #141414;
+  }
+  .wp-split__body {
+    flex: 1 1 430px; min-width: 0;
+    display: flex; flex-direction: column; gap: clamp(20px, 3vw, 34px);
+  }
+  .wp-split__lead {
+    margin: 0; font-size: clamp(23px, 2.7vw, 36px); font-weight: 500;
+    line-height: 1.32; letter-spacing: -0.04em; color: #141414; text-wrap: pretty;
+  }
+  .wp-split__lead--sm {
+    max-width: 44ch; font-size: clamp(21px, 2.4vw, 32px); line-height: 1.34;
+  }
+  .wp-split__more {
+    margin: 0; max-width: 60ch; font-size: 18px; font-weight: 500; line-height: 28px;
+    letter-spacing: -0.03em; color: rgb(71, 71, 71); opacity: 0.85; text-wrap: pretty;
+  }
+  .wp-stack { display: flex; flex-direction: column; }
+  .wp-stack > div {
+    display: flex; flex-wrap: wrap; gap: 16px; align-items: baseline;
+    padding: 18px 0; border-top: 1px solid rgba(20, 20, 20, 0.12);
+  }
+  .wp-stack__k {
+    flex: 0 0 150px; font-size: 14px; font-weight: 600; letter-spacing: -0.02em; color: #141414;
+  }
+  .wp-stack__v {
+    flex: 1 1 240px; min-width: 0; font-size: 15px; font-weight: 500; line-height: 1.55;
+    letter-spacing: -0.03em; color: rgba(20, 20, 20, 0.68);
+  }
+
+  /* ── generic act shell ───────────────────────────────────── */
+  .wp-act {
+    overflow: hidden; padding-block: clamp(76px, 13vh, 150px);
+    display: flex; flex-direction: column; gap: clamp(30px, 5vh, 58px);
+  }
+  .wp-act--grey { background: #f5f5f5; }
+  .wp-act--dark { background: var(--wp-dark); }
+  .wp-act__head {
+    position: relative; display: flex; flex-wrap: wrap;
+    align-items: flex-end; justify-content: space-between; gap: 22px;
+  }
+  .wp-act__head > div:first-child { display: flex; flex-direction: column; gap: 10px; }
+  .wp-act__note {
+    margin: 0; max-width: 32ch; font-size: 16px; font-weight: 500; line-height: 1.55;
+    letter-spacing: -0.03em; color: rgba(20, 20, 20, 0.62);
+  }
+
+  /* ── groundwork ──────────────────────────────────────────── */
+  .wp-wires {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: clamp(14px, 2vw, 26px);
+  }
+  .wp-wires figure { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .wp-wires__frame {
+    border: 1px solid rgba(20, 20, 20, 0.1); background: #fff; padding: clamp(12px, 1.4vw, 20px);
+  }
+  .wp-wires__frame img { display: block; width: 100%; height: auto; filter: grayscale(1); }
+  .wp-wires figcaption { display: flex; flex-direction: column; gap: 6px; }
+  .wp-wires__note {
+    font-size: 15px; font-weight: 500; line-height: 1.5; letter-spacing: -0.03em;
+    color: rgba(20, 20, 20, 0.78); text-wrap: pretty;
+  }
+
+  /* ── design system ───────────────────────────────────────── */
+  .wp-arts {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: clamp(14px, 1.8vw, 24px);
+  }
+  .wp-arts > div { display: flex; flex-direction: column; gap: 15px; }
+  .wp-arts__plinth {
+    display: flex; align-items: center; justify-content: center;
+    padding: clamp(18px, 2vw, 30px); aspect-ratio: 4 / 3; overflow: hidden;
+    border: 1px solid rgba(20, 20, 20, 0.08);
+  }
+  .wp-arts__plinth img {
+    display: block; max-width: 100%; max-height: 100%; width: auto; height: auto;
+    object-fit: contain;
+  }
+  .wp-arts__plinth--p0, .wp-arts__plinth--p2 { background: #fff; }
+  .wp-arts__plinth--p1 { background: #0b2e5e; }
+  .wp-arts__plinth--p3 { background: #eef4fb; }
+  .wp-arts__cap { display: flex; flex-direction: column; gap: 7px; }
+  .wp-arts__name {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; font-weight: 600; letter-spacing: -0.02em; color: #141414;
+  }
+  .wp-arts__note {
+    font-size: 14px; font-weight: 500; line-height: 1.55; letter-spacing: -0.02em;
+    color: rgba(20, 20, 20, 0.6); text-wrap: pretty;
+  }
+
+  /* ── what shipped: the reel ──────────────────────────────── */
+  .wp-reel { min-height: 100vh; gap: clamp(26px, 4vh, 44px); }
+  .wp-reel__ctrl { display: flex; align-items: center; gap: 18px; }
+  .wp-reel__count {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.55);
+  }
+  .wp-reel__ctrl > div { display: flex; gap: 10px; }
+  .wp-reel__ctrl button {
+    width: 46px; height: 46px; border-radius: 60px; border: 0;
+    background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 17px; cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .wp-reel__ctrl button:hover,
+  .wp-reel__ctrl button:focus-visible { background: var(--wp-accent); color: #000; }
+  .wp-reel__body {
+    position: relative; display: flex; flex-wrap: wrap;
+    gap: clamp(22px, 3vw, 48px); align-items: flex-start;
+  }
+  .wp-reel__stage {
+    position: relative; flex: 1 1 560px; min-width: 0;
+    border-radius: 12px; overflow: hidden; background: #141414;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6);
+  }
+  /* Every slide is in the document — the reader can be on any of them, and a
+     stack that swaps `hidden` keeps the stage height honest for the tallest. */
+  .wp-reel__stage figure { margin: 0; display: none; }
+  .wp-reel__stage figure.is-on { display: block; }
+  .wp-reel__stage img { display: block; width: 100%; height: auto; }
+  .wp-reel__side {
+    flex: 0 1 300px; min-width: 0; display: flex; flex-direction: column;
+    gap: clamp(20px, 3vh, 32px);
+  }
+  .wp-reel__copy { display: flex; flex-direction: column; gap: 12px; }
+  .wp-reel__copy[hidden] { display: none; }
+  .wp-reel__kicker {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em; color: var(--wp-accent);
+  }
+  .wp-reel__title {
+    font-size: clamp(22px, 2.4vw, 30px); font-weight: 600; line-height: 1.16;
+    letter-spacing: -0.04em; color: #fbfbfb; text-wrap: pretty;
+  }
+  .wp-reel__note {
+    font-size: 16px; font-weight: 500; line-height: 1.6; letter-spacing: -0.03em;
+    color: rgba(255, 255, 255, 0.66); text-wrap: pretty;
+  }
+  .wp-reel__list { display: flex; flex-direction: column; gap: 2px; }
+  .wp-reel__list button {
+    display: flex; align-items: baseline; gap: 14px; width: 100%; padding: 13px 0;
+    border: 0; border-top: 1px solid rgba(255, 255, 255, 0.12); background: transparent;
+    font: inherit; font-size: 14px; font-weight: 500; letter-spacing: -0.03em;
+    cursor: pointer; text-align: left; color: rgba(255, 255, 255, 0.55);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .wp-reel__list button.is-on { color: var(--wp-accent); }
+  .wp-reel__list button > span:last-child { text-align: left; flex: 1; }
+  .wp-reel__n { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; opacity: 0.6; }
+  .wp-reel__list button.is-on .wp-reel__n { opacity: 1; }
+
+  /* ── full page ───────────────────────────────────────────── */
+  .wp-tall {
+    background: #fff; padding-block: clamp(76px, 13vh, 140px);
+    display: flex; flex-wrap: wrap; gap: clamp(26px, 4vw, 64px); align-items: flex-start;
+  }
+  .wp-tall__rail {
+    flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 16px;
+    position: sticky; top: 110px;
+  }
+  .wp-tall__title {
+    font-size: clamp(26px, 3vw, 42px); font-weight: 600; line-height: 1.14;
+    letter-spacing: -0.05em; color: #242424; text-wrap: pretty;
+  }
+  .wp-tall__note {
+    max-width: 36ch; font-size: 18px; font-weight: 500; line-height: 28px;
+    letter-spacing: -0.03em; color: rgb(71, 71, 71); opacity: 0.85; text-wrap: pretty;
+  }
+  .wp-tall__scroll {
+    flex: 1 1 440px; min-width: 0; height: min(78vh, 760px); overflow: auto;
+    border-radius: 12px; background: rgb(30, 30, 30);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
+  }
+  .wp-tall__scroll img { display: block; width: 100%; height: auto; }
+
+  /* ── in the hand ─────────────────────────────────────────── */
+  .wp-hand { padding-block: clamp(60px, 10vh, 110px) clamp(76px, 13vh, 140px); }
+  .wp-hand__head { position: relative; display: flex; flex-direction: column; gap: 10px; }
+  .wp-hand__grid {
+    position: relative; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: clamp(16px, 2vw, 28px); align-items: end;
+  }
+  .wp-hand__grid figure { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .wp-hand__frame {
+    position: relative; border-radius: 12px; overflow: hidden; background: rgb(30, 30, 30);
+  }
+  .wp-hand__frame img {
+    display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  }
+  /* The ring construction from the photo-graphic system, at the tighter pitch
+     the design uses on a single frame: white hairlines at 42px, yellow at 214. */
+  .wp-hand__rings {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      repeating-radial-gradient(
+        circle at -6% 112%, rgba(255, 255, 255, 0.3) 0 1px, rgba(255, 255, 255, 0) 1px 42px
+      ),
+      repeating-radial-gradient(
+        circle at -6% 112%, rgba(255, 212, 0, 0.9) 0 1.5px, rgba(255, 212, 0, 0) 1.5px 214px
+      );
+    mask-image: radial-gradient(
+      circle at -6% 112%, rgba(0, 0, 0, 0.2) 0%, #000 26%, rgba(0, 0, 0, 0.4) 58%, rgba(0, 0, 0, 0) 94%
+    );
+  }
+  .wp-hand__grid figcaption {
+    font-size: 14px; font-weight: 500; line-height: 1.5; letter-spacing: -0.03em;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ── outcomes ────────────────────────────────────────────── */
+  .wp-out { gap: clamp(34px, 5vh, 60px); }
+  .wp-out__head { display: flex; flex-direction: column; gap: 12px; }
+  .wp-out .wp-h2 { max-width: 26ch; line-height: 1.02; text-wrap: pretty; }
+  .wp-out__grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: clamp(20px, 3vw, 44px);
+  }
+  .wp-out__grid > div {
+    display: flex; flex-direction: column; gap: 14px; padding-top: 20px;
+    border-top: 1.5px solid rgba(153, 152, 149, 0.7);
+  }
+  .wp-out__big {
+    font-size: clamp(44px, 5.4vw, 84px); font-weight: 600; line-height: 1;
+    letter-spacing: -0.05em; color: rgb(20, 20, 20);
+  }
+  .wp-out__label {
+    font-size: 16px; font-weight: 500; line-height: 23px; letter-spacing: -0.06em;
+    color: rgb(71, 71, 71); text-wrap: pretty;
+  }
+
+  /* ── client ──────────────────────────────────────────────── */
+  .wp-voice {
+    padding-block: clamp(76px, 14vh, 160px); align-items: center;
+  }
+  .wp-voice > div {
+    position: relative; max-width: 1000px;
+    display: flex; flex-direction: column; gap: clamp(24px, 4vh, 40px);
+  }
+  .wp-voice blockquote {
+    margin: 0; font-size: clamp(24px, 3.2vw, 44px); font-weight: 500; line-height: 1.28;
+    letter-spacing: -0.045em; color: #fbfbfb; text-wrap: pretty;
+  }
+  .wp-voice__who { display: flex; align-items: center; gap: 16px; }
+  .wp-voice__who img {
+    width: 64px; height: 64px; border-radius: 60px; object-fit: cover;
+    object-position: top center; flex: 0 0 auto;
+  }
+  .wp-voice__who > div { display: flex; flex-direction: column; gap: 4px; }
+  .wp-voice__name {
+    font-size: 15px; font-weight: 600; letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.9);
+  }
+  .wp-voice__role {
+    font-size: 14px; font-weight: 500; letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ── next ────────────────────────────────────────────────── */
+  .wp-next {
+    background: linear-gradient(100deg, #0a0a0a 0%, #121110 54%, #0d0d0c 100%);
+    padding-block: 0 clamp(70px, 10vh, 120px);
+    display: flex; flex-direction: column; gap: clamp(30px, 5vh, 56px);
+  }
+  .wp-next__top {
+    display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 70px);
+    padding-top: clamp(30px, 5vh, 56px); border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .wp-next__top > div {
+    flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px;
+  }
+  .wp-next__note {
+    max-width: 32ch; font-size: clamp(20px, 2.2vw, 28px); font-weight: 500; line-height: 1.3;
+    letter-spacing: -0.04em; color: rgba(255, 255, 255, 0.86); text-wrap: pretty;
+  }
+  .wp-ghost {
+    flex: 0 0 auto; align-self: flex-start;
+    display: flex; align-items: center; gap: 40px; height: 47px; padding: 0 25px;
+    border-radius: 60px; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25); color: #fff;
+    font-size: 14px; font-weight: 500; letter-spacing: -0.03em;
+    transition: box-shadow var(--dur-med) var(--ease-out);
+  }
+  .wp-ghost:hover, .wp-ghost:focus-visible { box-shadow: inset 0 0 0 2px var(--wp-accent); }
+  .wp-next__case {
+    display: flex; flex-wrap: wrap; align-items: stretch; gap: clamp(20px, 3vw, 44px);
+    padding-top: clamp(26px, 4vh, 44px); border-top: 1.5px solid rgba(255, 255, 255, 0.18);
+  }
+  .wp-next__copy {
+    flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column;
+    justify-content: space-between; gap: clamp(20px, 3vh, 30px);
+  }
+  .wp-next__copy > div { display: flex; flex-direction: column; gap: 12px; }
+  .wp-next__name {
+    font-size: clamp(40px, 6vw, 84px); font-weight: 600; line-height: 0.96;
+    letter-spacing: -0.05em; color: #fbfbfb;
+  }
+  .wp-next__open {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; font-weight: 600; letter-spacing: -0.06em; color: var(--wp-accent);
+  }
+  .wp-next__shot {
+    flex: 1 1 440px; min-width: 0; border-radius: 12px; overflow: hidden;
+    background: rgb(30, 30, 30); aspect-ratio: 16 / 10;
+  }
+  .wp-next__shot img {
+    display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  }
+
+  /* ── phone ───────────────────────────────────────────────────
+     The artboard is fluid — every size in it is a clamp against vw — so most
+     of it already holds at 390. These are the places where a flex-basis is
+     wider than the viewport and the row would otherwise wrap into a column
+     with a stranded second half. */
+  @media (max-width: 760px) {
+    .wp-split__rail { flex-basis: 100%; }
+    .wp-reel__side { flex: 1 1 100%; }
+    .wp-tall__rail { position: static; }
+    /* A tall plate inside a 78vh scroller is fine on a laptop and is most of
+       a phone screen. Shorter, so the section does not become the page. */
+    .wp-tall__scroll { height: min(60vh, 520px); }
+    .wp-team { align-self: flex-start; }
+  }
+</style>
+
+<script>
+  /* The reel. One picture at a time, a counter, prev/next and a list that
+     jumps. Progressive: with no JS the first screen and its copy are already
+     in the document and the list is a row of inert buttons. */
+  const reel = document.querySelector<HTMLElement>('.wp-reel')
+  if (reel) {
+    const slides = [...reel.querySelectorAll<HTMLElement>('[data-reel-slide]')]
+    const copies = [...reel.querySelectorAll<HTMLElement>('[data-reel-copy]')]
+    const picks = [...reel.querySelectorAll<HTMLButtonElement>('[data-reel-pick]')]
+    const count = reel.querySelector<HTMLElement>('[data-reel-count]')
+    const total = slides.length
+    let at = 0
+
+    const show = (n: number) => {
+      at = (n + total) % total
+      slides.forEach((s, i) => s.classList.toggle('is-on', i === at))
+      copies.forEach((c, i) => { c.hidden = i !== at })
+      picks.forEach((b, i) => b.classList.toggle('is-on', i === at))
+      if (count) {
+        count.textContent =
+          String(at + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0')
+      }
+    }
+
+    picks.forEach((b, i) => b.addEventListener('click', () => show(i)))
+    reel.querySelector('[data-reel-prev]')?.addEventListener('click', () => show(at - 1))
+    reel.querySelector('[data-reel-next]')?.addEventListener('click', () => show(at + 1))
+  }
+</script>
