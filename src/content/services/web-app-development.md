@@ -42,11 +42,18 @@ bands:
       - tag: "THIRD"
         name: "THIRD PARTY API INTEGRATION"
         body: "Being a leading web development company, we have established our reputation in creating intelligent APIs, custom data connectors, web services, and middleware to integrate with third-party solutions and leverage web solutions seamlessly in the open web world."
+# Blelp was the named client in both this block and `anchor` below, and Blelp is
+# HELD BACK: noindex, off /work/. Two cards on an indexed page pointing at a page
+# we have asked search engines to ignore.
+#
+# Club Social is the replacement in both places. It is shown, it is a web app —
+# membership and booking built as one responsive product — and every word below
+# comes from its own content file rather than being written to fill the slot.
 featured:
   label: "FEATURED WORK"
-  client: "Blelp"
-  body: "At this step, our motivated and skilled development team deploys customized solutions and ensures the project’s code quality. Once done, we test every stage of product development to make your solution bug-free, safe and reliable."
-  href: "/work/blelp/"
+  client: "The Club Social"
+  body: "One app for members and clubs, with access to more than 300 private members’ clubs worldwide, built as a single responsive product rather than a site and an app that drift apart."
+  href: "/work/club-social/"
 cta:
   label: "Start here"
   heading: "Let’s build your app that never fails in delighting your customer!"
@@ -91,12 +98,12 @@ engagement:
       delivers: "Test coverage, a migration of the real data, and a switchover plan that does not require a weekend nobody agreed to."
 anchor:
   label: "WHAT THIS LOOKS LIKE"
-  client: "Blelp"
-  situation: "A platform whose operations were spread across tools that each held part of the truth."
+  client: "The Club Social"
+  situation: "Members could reach one club at a time, when what they had bought was access to more than 300 of them worldwide."
   did:
-    - "Modelled the workflow once, properly, instead of building screens on top of the existing split."
-    - "Built the integrations so the surrounding tools feed one system rather than compete with it."
-  href: "/work/blelp/"
+    - "Modelled membership and booking once, so a member sees every club they can use rather than the one they happen to be looking at."
+    - "Built it as one responsive product, so the same booking works from a desk and from a phone at the door."
+  href: "/work/club-social/"
 scope:
   label: "SCOPE"
   heading: "What a web app engagement includes, and what it does not"

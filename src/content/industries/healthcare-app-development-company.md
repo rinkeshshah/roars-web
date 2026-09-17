@@ -193,17 +193,15 @@ failures:
       body: "Or the reverse. The two use it in completely different states and a single interface serving both usually serves neither."
     - name: "A portal nobody opens twice"
       body: "Access is granted, the login is awkward, and the phone call it was meant to replace keeps happening."
-cases:
-  label: "WHAT WE HAVE BUILT HERE"
-  items:
-    - client: "GISAID"
-      situation: "A platform holding one of the largest COVID data sets in the world, where availability was not negotiable."
-      did: "Built the tooling for a scale where a bad release is a public problem rather than an internal one."
-      href: "/work/gisaid-health-tech/"
-    - client: "Friendo"
-      situation: "A healthcare product that had to work for people who are not at their best when they open it."
-      did: "Designed the flows for the state the user is actually in rather than for an attentive reader."
-      href: "/work/friendo-healthcare-mobile-app-development/"
+# NO `cases` BAND ON THIS PAGE, deliberately.
+#
+# It held two. GISAID, which is also the featured card in `proof` above, so the
+# one healthcare case study appeared twice on its own sector page. And Friendo,
+# which is HELD BACK — noindex, off /work/ — so that card pointed readers and
+# crawlers at a page we have asked search engines to ignore.
+#
+# Take Friendo out and GISAID is left duplicating itself, so the band goes and
+# the featured card carries it. One project, one place.
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for healthcare clients"

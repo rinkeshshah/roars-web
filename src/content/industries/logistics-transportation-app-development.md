@@ -214,10 +214,13 @@ cases:
     # of them, Snowman, which is also the featured card below. So Snowman stays
     # featured and these two slots go to the other two, which puts all three on
     # the page and stops one project appearing twice.
-    - client: "Les Concierges"
-      situation: "Corporate employees needing things delivered wherever they happened to be, at work, at home or on the road."
-      did: "Built a B2B2C platform where one request reaches the right provider, whichever of the three places the employee is in."
-      href: "/work/les-concierges/"
+    # Les Concierges was here, and it is HELD BACK: noindex, off /work/. Parqly
+    # is the sector's other shown case — it is tagged into this industry in its
+    # own content file — and it is a transport problem end to end.
+    - client: "Parqly"
+      situation: "Drivers circling for a space and owners with no way to sell the one standing empty behind a gate."
+      did: "Built the app and the BLE hardware together, so finding a space, paying for it and opening the barrier are one action."
+      href: "/work/parqly-parking-solution/"
     - client: "Onus"
       situation: "An eCommerce logistics provider handling package delivery and travel needs across a wide range of routes."
       did: "Built the digital software that runs deliveries and trips through one system rather than several."

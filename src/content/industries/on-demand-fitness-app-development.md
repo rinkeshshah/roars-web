@@ -185,13 +185,13 @@ cases:
   label: "WHAT WE HAVE BUILT HERE"
   items:
     # GymBait was here AND the featured card below, so it appeared twice while
-    # Go Champions Go appeared nowhere — production had it linked from the
-    # healthcare page, which is not where a steps-tracking app belongs. GymBait
-    # stays featured; these two slots go to the other two fitness projects.
-    - client: "Go Champions Go"
-      situation: "A corporation trying to raise employee health and its happiness index, with no way to see whether anything was working."
-      did: "Built the steps tracker around a leaderboard target, so the daily number has something to be for rather than just being recorded."
-      href: "/work/go-champions-go/"
+    # Go Champions Go was moved here from the healthcare page, which is not
+    # where a steps-tracking app belongs — and it is HELD BACK: noindex, off
+    # /work/. Moving a card from the wrong sector to the right one does not help
+    # if the card points at a page we have asked search engines to ignore. It
+    # comes out; if it is ever un-held, this is where it goes.
+    #
+    # GymBait stays featured. FlowRow is the sector's other shown case.
     - client: "FlowRow"
       situation: "People signed up in good numbers and stopped opening the app somewhere in the first fortnight."
       did: "Rebuilt the opening around one session worth doing rather than around a profile, a plan and a goal."

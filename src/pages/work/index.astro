@@ -36,6 +36,12 @@ import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
 import { getCollection } from 'astro:content'
 import { LISTED_PROJECTS } from '../../lib/projects'
+
+/* Everything that says how many projects there are reads this, so the grid,
+   the eyebrow, the meta description and the menu cannot disagree with each
+   other. They already had: the page said twelve, the menu said eleven, and the
+   grid drew whatever the list happened to hold. */
+const COUNT = LISTED_PROJECTS.length
 import { workHeroFor, PORTRAIT } from '../../lib/media'
 import { site } from '../../lib/site'
 import star5 from '../../assets/star-5.svg'
@@ -124,7 +130,7 @@ const schema = [
 
 <BaseLayout
   title="Our Work: 4,000+ Products Since 2005 | Roars"
-  description="Twelve case studies across logistics, fitness, health-tech, hospitality, legal and SaaS. What we built, who for, and what it had to survive."
+  description={`${COUNT} case studies across logistics, fitness, health-tech, hospitality and SaaS. What we built, who for, and what it had to survive.`}
   path={path}
   schema={schema}
 >
@@ -144,7 +150,7 @@ const schema = [
           </span>
           <p class="wh__statement">
             4,000+ products delivered since 2005, across logistics, fitness, health-tech,
-            hospitality, legal and SaaS.
+            hospitality and SaaS.
           </p>
         </div>
 
@@ -153,11 +159,15 @@ const schema = [
             <span>roars</span>
             <span class="starmark wh__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
           </span>
-          <h1 class="wh__large">Projects</h1>
+          <h1 class="wh__large">Product development case studies</h1>
         </div>
 
         <div class="wh__count" data-reveal>
-          <span class="wh__disc">4,000</span>
+          {/* 4,000+, not 4,000. The plus is on this number everywhere else it
+              appears — the menu panel, the proof band on nine industry pages,
+              the statement two blocks up on this same page — and dropping it
+              here turns an approximation into a precise count that is wrong. */}
+          <span class="wh__disc">4,000+</span>
           <span class="wh__count-label">Products delivered</span>
         </div>
       </div>
@@ -168,7 +178,7 @@ const schema = [
   <Section ground="light">
     <div class="wf">
       <span class="w-rule" aria-hidden="true"></span>
-      <span class="w-eyebrow">ALL PROJECTS / {LISTED_PROJECTS.length}</span>
+      <span class="w-eyebrow">ALL PROJECTS / {COUNT}</span>
       {/* This band held no motion at all — three reveals on the whole page and
           every one of them in the header, so eleven project cards arrived
           dead. Same stagger the homepage lists use, capped at six steps so
@@ -259,10 +269,17 @@ const schema = [
     letter-spacing: var(--ls-item); color: rgb(251, 251, 251); padding-top: 4px;
   }
   .wh__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: rgb(251, 251, 251); }
+  /* SAME TREATMENT, SIZED FOR A SENTENCE INSTEAD OF A WORD.
+     This was "Projects" at 124px on one 86px line. The heading is now four
+     words, and four words at 124px is 1900px of type in a 913px column. The
+     weight, the tracking and the colour are untouched — what changes is the
+     size and the fact that it is allowed to wrap, which one word never had to.
+     `balance` so it breaks into two even lines rather than three words and an
+     orphan. */
   .wh__large {
-    margin: 28px 0 0 6px;
-    font-size: clamp(56px, 8.62vw, 124px); line-height: 86px; font-weight: var(--fw-semi);
-    letter-spacing: -0.04em; color: rgb(251, 251, 251);
+    margin: 28px 0 0 6px; max-width: 780px;
+    font-size: clamp(38px, 5.2vw, 74px); line-height: 1.02; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: rgb(251, 251, 251); text-wrap: balance;
   }
 
   /* The 250 badge sits on the header's own row, right of the masthead. */
@@ -270,9 +287,16 @@ const schema = [
     grid-column: 2; grid-row: 1; justify-self: end; align-self: start;
     display: flex; align-items: center; gap: 28px; margin-top: 344px;
   }
+  /* A PILL THAT STARTS AS A CIRCLE, not a fixed 42px circle.
+     "4,000" was already spilling out of both sides of the disc — black type on
+     a dark ground, so the overflow was invisible rather than absent — and
+     "4,000+" made it a character wider. Sizing to the content keeps the
+     circle's look for a short value and grows into a pill when the value needs
+     the room, instead of the figure hanging off the shape. */
   .wh__disc {
-    display: flex; align-items: center; justify-content: center;
-    width: 42px; height: 42px; border-radius: 50%; background: var(--c-white);
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 42px; height: 42px; padding-inline: 13px;
+    border-radius: 999px; background: var(--c-white);
     font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: var(--c-black);
   }

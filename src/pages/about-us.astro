@@ -201,8 +201,13 @@ const schema = [
   {/* ── About ───────────────────────────────────────────────── */}
   <Section ground="light">
     <div class="agb">
-      {/* Intro row at 168, then the stat row 303 below it. */}
-      <div class="agb__intro" data-reveal>
+      {/* Intro row at 168, then the stat row 303 below it.
+
+          `id="agency"` is the menu's target for "The agency". The About panel
+          had two rows both pointing at /about-us/, so picking either one did
+          the same thing. Set on the intro rather than the Section, so the
+          heading lands under the fixed top bar rather than behind it. */}
+      <div class="agb__intro" id="agency" data-reveal>
         <span class="agb__stars" aria-hidden="true">
           <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
           <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
@@ -231,7 +236,7 @@ const schema = [
       {/* Team. Four across, then ONE card under the second column and the
           counter under the fourth — the second row is not a row, and that
           gap is drawn. */}
-      <ul class="agb__grid agb__grid--team" data-reveal>
+      <ul class="agb__grid agb__grid--team" id="team" data-reveal>
         {team.map((m) => (
           <li class="agb__person">
             <span class="agb__disc"><img src={m.img} alt="" width="198" height="198" loading="lazy" /></span>

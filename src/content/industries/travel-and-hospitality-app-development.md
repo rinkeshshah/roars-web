@@ -194,10 +194,12 @@ cases:
     # call under CLAUDE.md rule 1, and the wrong answer, because the inventory
     # was the thing that was wrong. The page is live and indexed on production.
     # It is now migrated, in the inventory, and linked here as production does.
-    - client: "Community Social"
-      situation: "Residents with no reliable way to keep track of what was actually happening in their own community."
-      did: "Put notices, bookings and the day-to-day admin behind one product, so the answer is in one place rather than four group chats."
-      href: "/work/community-social-residential-community-app/"
+    # Community Social was here and is HELD BACK: noindex, off /work/. A card
+    # on an indexed page pointing at a page we have told search engines to
+    # ignore spends the link and strands the reader on a noindex dead end.
+    # Onus is the sector's other production case and is already the featured
+    # card below, so this slot goes to The Revolver Life on its own rather than
+    # being filled for the sake of two cards.
     - client: "The Revolver Life"
       situation: "Digital nomads running a job and planning the next leg from the same phone, across apps that knew nothing about each other."
       did: "One on-demand concierge app: rooms, work needs and lifestyle in one place, with a marketplace where vendors quote on what you post."

@@ -233,10 +233,14 @@ cases:
       situation: "A membership business whose members could reach one club at a time, when what they had bought was access to more than 300 worldwide."
       did: "Built membership and booking as one responsive product, so a member sees every club they can use and reserves without the phone call."
       href: "/work/club-social/"
-    - client: "Les Concierges"
-      situation: "A concierge business whose request handling ran across tools that did not share a view of the member."
-      did: "Built the staff side first, so the workflow decided the product rather than the other way round."
-      href: "/work/les-concierges/"
+    # Les Concierges was here, and it is HELD BACK: noindex, off /work/.
+    # The Revolver Life is the sector's other shown case: it is tagged into this
+    # industry in its own content file and it is indexed, so the link is worth
+    # something in both directions.
+    - client: "The Revolver Life"
+      situation: "Digital nomads running a job and planning the next leg from the same phone, across apps that knew nothing about each other."
+      did: "Built one on-demand concierge app, with a marketplace where vendors quote on what a member posts."
+      href: "/work/the-revolver-life-concierge-app/"
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for concierge and member businesses"

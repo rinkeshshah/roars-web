@@ -214,9 +214,23 @@ const schema = [
         <span class="apr__node apr__node--end" data-spine-node style="top:1493px"></span>
       </div>
 
+      {/* ANCHORS FOR THE MENU'S FOUR STAGES.
+
+          NOTE THE MISMATCH, because it is real and this does not resolve it.
+          The Approach panel in the menu calls the engagement Discovery,
+          Design, Build, Launch & scale. This page calls it Research, Define,
+          Ideate, Transform. Same engagement, four steps either way, two
+          different vocabularies — and until now nobody noticed, because all
+          four menu rows pointed at /about the top of this page.
+
+          The anchors are the menu's words, in order, so every row lands on a
+          distinct stage and none of them is dead. But #build sitting on a step
+          headed "Ideate" is a seam, not a fix. Agreeing one set of four names
+          for both is a copy decision; it is flagged in docs/OPEN-DECISIONS.md
+          rather than settled here. */}
       <ol class="apr__steps">
-        {phases.map((p) => (
-          <li class="apr__step" data-reveal>
+        {phases.map((p, i) => (
+          <li class="apr__step" id={['discovery', 'design', 'build', 'launch-and-scale'][i]} data-reveal>
             <span class="apr__step-n">{p.n}</span>
             <h3 class="apr__step-name">{p.name}</h3>
             <p class="apr__step-lead">{p.lead}</p>

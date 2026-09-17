@@ -256,6 +256,57 @@ for (const path of [
   )
 }
 
+/* ------------------------------------- 8. the live product links resolve */
+
+/**
+ * Ten case studies carry a `liveUrl` and each one now renders as a "Live
+ * Version" pill. A pill pointing at a dead domain or a delisted app is worse
+ * than no pill: it is a case study whose one checkable claim does not check.
+ *
+ * These are OTHER PEOPLE'S SITES, so this cannot be a build gate — the build
+ * agent has no route to them, and even from a machine that does, a client's
+ * site being down for ten minutes must not fail our deploy. It is a report,
+ * and it runs here because this script is the one that already has network.
+ *
+ * A 403 is a PASS. Apple and Google both answer a scripted HEAD that way while
+ * serving the page perfectly to a browser, and treating that as dead would
+ * remove two working App Store links.
+ */
+const LIVE_URLS = [
+  ['411drives', 'https://www.411drives.com/'],
+  ['blelp', 'https://www.blelp.co.uk/'],
+  ['concierge-loyalty-program', 'https://www.concierges.in'],
+  ['flowrow-fitness-app', 'https://play.google.com/store/apps/details?id=com.p9zqmh1342j8.p97akwqwapp'],
+  ['go-champions-go', 'https://www.orderdirect.ky/'],
+  ['gymbait', 'https://apps.apple.com/app/gymbait/id6474441798'],
+  ['gypsy', 'https://www.gypsyapp.co/'],
+  ['parqly-parking-solution', 'https://www.parqly.com'],
+  ['the-presidents-club', 'https://play.google.com/store/apps/details?id=com.thepresidentsclub'],
+  ['ventura-law-firm', 'https://www.venturalaw.com/'],
+]
+
+const dead = []
+for (const [slug, url] of LIVE_URLS) {
+  let status = 0
+  try {
+    const res = await fetch(url, {
+      redirect: 'follow',
+      headers: { 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/125 Safari/537.36' },
+      signal: AbortSignal.timeout(20_000),
+    })
+    status = res.status
+  } catch (e) {
+    status = `ERR ${String(e.name || e).slice(0, 30)}`
+  }
+  const ok = status === 200 || status === 403
+  if (!ok) dead.push(`${slug}: ${url} -> ${status}`)
+  record(ok, `liveUrl resolves: ${slug}`, `${url} -> ${status}`)
+}
+if (dead.length) {
+  console.log('\nDROP THESE liveUrl VALUES from src/content/projects/<slug>.md:')
+  for (const d of dead) console.log(`    ${d}`)
+}
+
 /* ------------------------------------------------------------ report */
 
 console.log(`--- verify-server ${BASE}${LIVE ? ' (live)' : ' (pre-launch/staging)'} ---`)

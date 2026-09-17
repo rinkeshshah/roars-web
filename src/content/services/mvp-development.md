@@ -42,11 +42,18 @@ bands:
       - tag: "PROTOTYPE"
         name: "PROTOTYPE DESIGN"
         body: "Unleash your business growth with our skilled and experienced MVP developers, having expertise in building interactive prototype designs that help your enterprise in developing or improving the product with great ideas and suggestions."
+# The Community Social was the named client in both this block and `anchor`
+# below, and it is HELD BACK: noindex, off /work/. Two cards on an indexed page
+# pointing at a page we have asked search engines to ignore.
+#
+# Parqly is the replacement in both places. It is shown, and it is the better
+# example anyway: its own content file calls what shipped "a feature-rich MVP
+# and a clear growth roadmap", delivered end to end in under three months.
 featured:
   label: "FEATURED WORK"
-  client: "The Community Social"
-  body: "With our proven expertise in product thinking and accelerating innovation, being the result-oriented MVP development service provider company we let you leverage frameworks like VPC and MoSCoW that have an agile delivery model to reduce the risks of new technology adoption and achieve the goals of developing MVP."
-  href: "/work/community-social-residential-community-app/"
+  client: "Parqly"
+  body: "A feature-rich MVP and a clear growth roadmap: the whole platform, from UX to deployment, in under three months, with the hardware integration proven rather than promised."
+  href: "/work/parqly-parking-solution/"
 cta:
   label: "Start here"
   heading: "Need help from an expert MVP development team?"
@@ -91,12 +98,12 @@ engagement:
       delivers: "What real use told you, and a recommendation: keep going, change the model, or stop. We will say stop if that is what the numbers say."
 anchor:
   label: "WHAT THIS LOOKS LIKE"
-  client: "The Community Social"
-  situation: "Residents in forty buildings were ordering daily essentials through a mix of phone calls and building WhatsApp groups."
+  client: "Parqly"
+  situation: "A parking idea that needed the app and the hardware to work together before anyone could tell whether the business worked at all."
   did:
-    - "Scoped the first version down to one path: order, track, receive. Nothing else shipped."
-    - "Built a single app for residents and building managers instead of two, which halved what had to be maintained while the model was still moving."
-  href: "/work/community-social-residential-community-app/"
+    - "Shipped a feature-rich MVP with a growth roadmap behind it, rather than a demo that proves nothing about the next version."
+    - "Proved the BLE hardware in the first build, because the one thing that could sink the model was the part that opens the barrier."
+  href: "/work/parqly-parking-solution/"
 scope:
   label: "SCOPE"
   heading: "What an MVP engagement includes, and what it does not"

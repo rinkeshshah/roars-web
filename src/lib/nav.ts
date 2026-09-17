@@ -5,6 +5,8 @@
  * the CSV wins. "Projects" therefore serves /work/ and "Insights" serves
  * /our-journal/. Nav labels do not have to match URLs and these do not.
  */
+import { LISTED_PROJECTS } from './projects'
+
 export interface NavItem { label: string; href: string }
 
 export const NAV: NavItem[] = [
@@ -116,8 +118,9 @@ export const MENU: MenuItem[] = [
     body: 'Founded in 2005 by Rinkesh A Shah. Eight senior people, five ventures of our own, and clients who come back for the next build.',
     kind: 'links',
     items: [
-      { label: 'The agency', href: '/about-us/' },
-      { label: 'Leadership & team', href: '/about-us/' },
+      /* Same as Approach above: two rows, one destination. */
+      { label: 'The agency', href: '/about-us/#agency' },
+      { label: 'Leadership & team', href: '/about-us/#team' },
       /* 'Brand guidelines' used to sit here with href: null, so it rendered as
          a span dressed like the two links above it, with the same rule and the
          same arrow, and went nowhere when clicked. It is the internal design
@@ -134,14 +137,21 @@ export const MENU: MenuItem[] = [
     body: 'Four stages, a named project manager, and a monthly cadence you can scale up or down.',
     kind: 'services',
     items: [
-      { label: 'Discovery', href: '/approach/', note: 'Workshops, market review, product definition' },
-      { label: 'Design', href: '/approach/', note: 'Flows, prototypes, a tested interface' },
-      { label: 'Build', href: '/approach/', note: 'Two-week sprints, demo every Friday' },
-      { label: 'Launch & scale', href: '/approach/', note: 'Release, measure, iterate on real usage' },
+      /* Four rows that all went to the same URL, so picking Build and picking
+         Discovery did the same thing: land at the top of /approach/ and scroll.
+         The stages now carry anchors on the page itself. */
+      { label: 'Discovery', href: '/approach/#discovery', note: 'Workshops, market review, product definition' },
+      { label: 'Design', href: '/approach/#design', note: 'Flows, prototypes, a tested interface' },
+      { label: 'Build', href: '/approach/#build', note: 'Two-week sprints, demo every Friday' },
+      { label: 'Launch & scale', href: '/approach/#launch-and-scale', note: 'Release, measure, iterate on real usage' },
     ],
   },
   {
-    n: '04', label: 'work', href: '/work/', meta: '11 PROJECTS',
+    /* The count was typed here as '11 PROJECTS' and again as 'All 11 projects'
+       below, against a grid built from LISTED_PROJECTS. Three numbers, one
+       fact, and nothing keeping them equal — the menu said eleven while the
+       page's own meta description said twelve. Both read the list now. */
+    n: '04', label: 'work', href: '/work/', meta: `${LISTED_PROJECTS.length} PROJECTS`,
     eyebrow: '04 / WORK',
     title: 'Selected projects',
     kind: 'cards',
@@ -158,7 +168,7 @@ export const MENU: MenuItem[] = [
       { label: 'GISAID', href: '/work/gisaid-health-tech/', meta: 'HEALTHCARE' },
       { label: 'Advisee', href: '/work/advisee/', meta: 'SAAS' },
     ],
-    all: { label: 'All 11 projects', href: '/work/' },
+    all: { label: `All ${LISTED_PROJECTS.length} projects`, href: '/work/' },
   },
   {
     n: '05', label: 'industries', href: null, meta: '9 SECTORS',
@@ -174,6 +184,11 @@ export const MENU: MenuItem[] = [
       { label: 'SaaS', href: '/industries/saas-application-development-services/', meta: 'VIEW SECTOR' },
       { label: 'Healthcare', href: '/industries/healthcare-app-development-company/', meta: 'VIEW SECTOR' },
       { label: 'Concierge', href: '/industries/concierge-app-development/', meta: 'VIEW SECTOR' },
+      /* The ninth. This panel's own meta has said '9 SECTORS' since it was
+         built and it listed eight: /industries/education-mobile-app-development/
+         was reachable from the sector grid at the foot of the other eight pages
+         and from nowhere in the navigation. */
+      { label: 'Education', href: '/industries/education-mobile-app-development/', meta: 'VIEW SECTOR' },
     ],
     footnote: 'We build in sectors we already know, so discovery starts from something, not nothing.',
   },

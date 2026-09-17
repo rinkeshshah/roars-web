@@ -160,9 +160,15 @@ const note = (path, where) => {
  *                 the first segment turns /work/parqly/device.jpg into
  *                 /work/parqly/, which is a directory in public/, not a page,
  *                 and the extension check in toPath never gets to see it.
+ *
+ *   [A-Za-z0-9]   the first character after the prefix, before the rest of the
+ *                 class opens up. A slug never begins with a dot, and without
+ *                 this the sentence "held back: noindex, off /work/." reports
+ *                 /work/./ as a missing URL — which it did, from seven files,
+ *                 the moment those comments were written.
  */
 const URL_RE =
-  /(?<![\w.:-])(?:https?:\/\/(?:www\.|dev\.)?roarsinc\.com)?\/(?:work|industries|industry|s|our-journal)\/[A-Za-z0-9._~%/-]+\/?/g
+  /(?<![\w.:-])(?:https?:\/\/(?:www\.|dev\.)?roarsinc\.com)?\/(?:work|industries|industry|s|our-journal)\/[A-Za-z0-9][A-Za-z0-9._~%/-]*\/?/g
 
 const scan = (file) => {
   const text = readFileSync(file, 'utf8')

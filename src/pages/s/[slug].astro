@@ -397,7 +397,10 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
                 <div><dt>{m.k}</dt><dd>{m.v}</dd></div>
               ))}
             </dl>
-            <a class="sv-ghost" href={d.featured.href}>
+            {/* `sv-feat__cta` carries no styling. It is a handle, so that
+                scripts/assert-held-back.mjs can tell this link — a receipt
+                naming a client — from the other `sv-ghost` links on the page. */}
+            <a class="sv-ghost sv-feat__cta" href={d.featured.href}>
               View Project
               <span class="sv-ghost__dot sv-ghost__dot--grey" aria-hidden="true"></span>
               <span class="sv-ghost__dot sv-ghost__dot--accent" aria-hidden="true"></span>

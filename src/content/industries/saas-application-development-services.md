@@ -195,15 +195,21 @@ failures:
       body: "Each one was reasonable in the room. Together they are a product with no shape, and a roadmap owned by whoever was last on a call."
     - name: "Onboarding treated as a marketing job"
       body: "A tour and an email sequence bolted onto a product that has not changed. Activation is a product problem, and tours are what people do instead of fixing it."
-cases:
-  label: "WHAT WE HAVE BUILT HERE"
-  items:
-    # The Club Social was here AND the featured card below. It stays featured;
-    # this slot goes to Reward Butler, the other SaaS case production links.
-    - client: "Reward Butler"
-      situation: "A company running a rewards programme across tools that did not agree on who had earned what."
-      did: "Built one reward management app where the whole programme is coordinated in a single place, with an interface people will actually open."
-      href: "/work/reward-butler/"
+# NO `cases` BAND ON THIS PAGE, deliberately.
+#
+# It held Reward Butler, which production links from here and which is HELD
+# BACK: noindex, off /work/. A card on an indexed page pointing at a page we
+# have asked search engines to ignore spends the link and strands the reader on
+# a dead end.
+#
+# There is no second SHOWN SaaS case to put in its place. Club Social is the
+# sector's only one and it is already the featured card in `proof` above, so a
+# card here would be the same project twice — which is the bug this band was
+# rewritten to fix in the first place. The featured card carries it.
+#
+# Advisee was the near miss and is NOT the answer: the menu's work panel tags
+# it SAAS, but its own content file says industry: ["finance"] and describes a
+# mutual fund investment platform. The menu tag is the thing that is wrong.
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for SaaS clients"
