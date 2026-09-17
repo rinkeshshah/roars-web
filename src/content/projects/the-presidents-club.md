@@ -149,6 +149,18 @@ presentation:
     - big: "Pts"
       label: "Entitlement shown before the ask, not after"
   nextNote: "Partner clubs, shared guest passes and a concierge chat history are the next layer on the same taxonomy."
+testimonial:
+  # SOURCED 17 Sep. The words are production's, verbatim from the WordPress
+  # export; the name and role came from the owner via the Work Presentation
+  # handoff, which is what the page had been missing since 16 Sep.
+  #
+  # The closing sentence of the production quote — "I wish them all the very
+  # best and hope they reach roaring heights always." — is not here. The design
+  # sets this at up to 44px and trims to three sentences; nothing is reworded
+  # and no meaning turns on a closing well-wish.
+  quote: "If anyone understood my maverick dreams and was able to translate it into technology and neat processes it was the team at Roars. More important to me as a complete techno moron was to be able to explain what I envisage, the business outcomes I wanted, and from an understanding to an execution, Team Roars did it marvelously."
+  name: "Dipali Sikand"
+  role: "Founder, Mindescapes · Club Concierges"
 seo:
   title: "President’s Club - Customer loyalty program app Development"
   description: "Experience an innovative Loyalty Program with President's Club's mobile app. Our UI/UX design team creates high-end mobile app solutions to help you engage your customers and build long lasting relationships. Get the latest in customer loyalty program app development with President's Club."
@@ -167,26 +179,3 @@ We have designed customer loyalty program app interface to give it an elegant an
 
 Under each tab, opens up a new page to select further and narrow down to the item the user is searching for. Everything can be found no more than 2 levels down. By choosing their location, users can find an array of all President Club powered services and offerings in their vicinity.
 
-<!-- THIS IS A CLIENT SPEAKING, AND THE PAGE WAS PRINTING IT AS US.
-
-     It sits at the end of the body on production as an ordinary paragraph, in
-     the same type as the three above it, so the page reads as though Roars
-     wrote "if anyone understood my maverick dreams... Team Roars did it
-     marvelously". Nobody says that about themselves.
-
-     It is not in the `testimonial` block because that block requires a name
-     and a role, and there is no record here of who said this — not in the
-     WordPress export, not in the owner's testimonials file. Inventing an
-     attribution on a Samsung engagement is not a thing to do to fill a slot,
-     and scripts/assert-attribution.mjs exists to say so.
-
-     So it stays in the client's words and is marked as a quotation, which is
-     the one thing that is true about it and is not currently being said.
-     Asked the owner for the name 16 Sep. -->
-
-> If anyone understood my maverick dreams and was able to translate it into
-> technology and neat processes it was the team at Roars. More important to me
-> as a complete techno moron was to be able to explain what I envisage, the
-> business outcomes I wanted, and from an understanding to an execution, Team
-> Roars did it marvelously. I wish them all the very best and hope they reach
-> roaring heights always.

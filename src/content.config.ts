@@ -363,8 +363,16 @@ const projects = defineCollection({
         /** A photograph takes the scrim; a screenshot takes nothing. */
         coverIsPhoto: z.boolean().default(false),
         meta: z.array(z.object({ k: z.string().max(20), v: z.string().max(80) })).max(6).default([]),
-        challengeLead: z.string().max(200),
-        challengeBody: z.string().max(600),
+        /* OPTIONAL, as of 17 Sep. These three acts did not collapse in the
+           artboard because all seven cases it draws have the copy. Four more
+           projects came to the template with a real challenge and a real stack
+           and no outcome figures at all, and the choice was to invent four
+           numbers about a client's results or to let the act go. The design's
+           own rule settles it: every act collapses when the case has nothing
+           of that class, so that image-rich and image-poor both read as
+           complete. Numbers are the same kind of asset as pictures. */
+        challengeLead: z.string().max(200).optional(),
+        challengeBody: z.string().max(600).optional(),
         wires: z
           .array(z.object({ img: projectImage, label: z.string().max(40), note: z.string().max(220) }))
           .max(4)
@@ -402,11 +410,11 @@ const projects = defineCollection({
           )
           .max(12)
           .default([]),
-        buildLead: z.string().max(200),
+        buildLead: z.string().max(200).optional(),
         stack: z.array(z.object({ k: z.string().max(24), v: z.string().max(160) })).max(6).default([]),
-        outcomeLead: z.string().max(120),
+        outcomeLead: z.string().max(120).optional(),
         outcomes: z.array(z.object({ big: z.string().max(8), label: z.string().max(80) })).max(4).default([]),
-        nextNote: z.string().max(200),
+        nextNote: z.string().max(200).optional(),
       })
       .optional(),
   }),

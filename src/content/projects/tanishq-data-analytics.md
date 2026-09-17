@@ -23,6 +23,53 @@ gallery:
     kind: "web"
     alt: ""
 needsRewrite: true
+# THE PRESENTATION LAYOUT. Written 17 Sep from this file's own two blocks and
+# its body. NO Tech act: nothing in this file names a technology, and a stack
+# table invented for a client's project is a claim nobody here can stand
+# behind. NO Outcomes act, for the same reason — this page carries no figures.
+# Both return the moment the copy does.
+presentation:
+  line: "Customer data, turned into the message worth sending."
+  constraints:
+    - "Built for the agents, not for IT"
+    - "Data collected in the field"
+    - "Targeting by date and occasion"
+    - "Clean enough to adopt"
+  meta:
+    - k: "CLIENT"
+      v: "Tanishq"
+    - k: "SECTOR"
+      v: "Retail"
+    - k: "SCOPE"
+      v: "Data analytics dashboard"
+  # THE PICTURES THIS FILE ALREADY HAD, in the design's "In the hand" grid.
+  # Labels are the images' own alt text where it says something, and a plain
+  # description of the surface where the alt was a filename. No kicker, title
+  # or note: the reel act wants a sentence about each screen and there is no
+  # record of one, so the grid is the act these belong in. `screenshot: true`
+  # keeps the ring treatment off them, which is the design's rule for a capture
+  # as opposed to a photograph.
+  mobileTitle: "The dashboard the agents run"
+  mobileRatio: "16/10"
+  mobile:
+    - img:
+        src: "/wp-content/uploads/2022/08/tanishq-report.png"
+        alt: "Reporting"
+      label: "Reporting"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/tanishq-report02.png"
+        alt: "Segments"
+      label: "Segments"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/tanishq-userprofile1.png"
+        alt: "The customer profile view"
+      label: "The customer profile view"
+      screenshot: true
+  challengeLead: "An established retailer with customer information and no way to act on it."
+  challengeBody: "The brief was a dashboard the client could feed with customer information and have it segregate the data — so reports could become targeted messages, sent at the moment a birthday, an anniversary or a festival makes them worth reading."
+  nextNote: "Name, age, interests, preferred channel and buying situation are already modelled, so new segments are a query rather than a build."
 seo:
   title: "Tanishq - Data Analytics | Marketing Automation Data Analytics"
   description: "Roars designed marketing automation data science and data analytics dashboard for Tanishq. That helps creating a lasting customer relationship and delightful customer experience by telling you exactly what to sell to whom."

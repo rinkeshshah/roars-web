@@ -32,26 +32,32 @@
  */
 import type { CollectionEntry } from 'astro:content'
 import RingField from './RingField.astro'
+import GrainField from './GrainField.astro'
 
 interface Props {
   d: CollectionEntry<'projects'>['data']
   next?: { slug: string; client: string }
   nextImg?: string
+  nextLine?: string
   faces: string[]
 }
-const { d, next, nextImg, faces } = Astro.props
+const { d, next, nextImg, nextLine, faces } = Astro.props
 const p = d.presentation!
 
 /* The act numbers run 01, 02, 03 … over the acts this case actually has, which
    is what makes an image-poor case read as complete rather than as one with
    gaps in its numbering. The design computes the same way. */
-let step = 1
+const hasChallenge = Boolean(p.challengeLead || p.challengeBody)
+const hasBuild = Boolean(p.buildLead || p.stack.length)
+const hasOutcome = Boolean(p.outcomeLead || p.outcomes.length)
+let step = 0
 const idx = () => String(++step).padStart(2, '0')
+const challengeIndex = hasChallenge ? idx() : null
 const wiresIndex = p.wires.length ? idx() : null
 const systemIndex = p.artifacts.length ? idx() : null
 const screensIndex = p.screens.length ? idx() : null
-const buildIndex = idx()
-const outcomeIndex = idx()
+const buildIndex = hasBuild ? idx() : null
+const outcomeIndex = hasOutcome ? idx() : null
 
 /* Four plinth grounds, cycled. Two white, one navy, one tinted — so a logo on
    white and a colour ramp on navy both sit on something that suits them. */
@@ -76,6 +82,16 @@ const PLINTHS = ['p0', 'p1', 'p2', 'p3']
 const cover = p.coverPlate ?? (d.heroImage ? { src: d.heroImage, alt: '', w: 2400, h: 1200 } : undefined)
 const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
 ---
+
+{/* ── The dark strip the page opens on ─────────────────────────
+    The design's top band: the gradient, the yellow glow bleeding off the left,
+    and the site header sitting over it. Only the row of case pills is gone.
+    `data-ground="dark"` is what src/scripts/topbar.ts reads to put the bar in
+    its light ink, which is why the logo comes back yellow and the hamburger
+    white instead of the black-on-white it had with no band under it. */}
+<div class="wp-strip" data-ground="dark" aria-hidden="true">
+  <span class="wp-strip__glow"></span>
+</div>
 
 {/* ── 01 Cover ─────────────────────────────────────────────── */}
 <section class="wp-cover" id="cover">
@@ -130,17 +146,19 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   )}
 </section>
 
-{/* ── 01 The Challenge ─────────────────────────────────────── */}
-<section class="wp-split" id="challenge">
-  <div class="wp-split__rail" data-reveal>
-    <span class="wp-label">01 &mdash; The Challenge</span>
-    <span class="wp-split__name">What we were handed</span>
-  </div>
-  <div class="wp-split__body">
-    <p class="wp-split__lead" data-reveal>{p.challengeLead}</p>
-    <p class="wp-split__more" data-reveal>{p.challengeBody}</p>
-  </div>
-</section>
+{/* ── The Challenge ────────────────────────────────────────── */}
+{hasChallenge && (
+  <section class="wp-split" id="challenge">
+    <div class="wp-split__rail" data-reveal>
+      <span class="wp-label">{challengeIndex} &mdash; The Challenge</span>
+      <span class="wp-split__name">What we were handed</span>
+    </div>
+    <div class="wp-split__body">
+      {p.challengeLead && <p class="wp-split__lead" data-reveal>{p.challengeLead}</p>}
+      {p.challengeBody && <p class="wp-split__more" data-reveal>{p.challengeBody}</p>}
+    </div>
+  </section>
+)}
 
 {/* ── Groundwork ───────────────────────────────────────────── */}
 {p.wires.length > 0 && (
@@ -272,7 +290,12 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
 {/* ── In the hand ──────────────────────────────────────────── */}
 {p.mobile.length > 0 && (
   <section class="wp-act wp-act--dark wp-hand" id="mobile">
-    <RingField />
+    {/* NOT WHEN THE REEL IS DIRECTLY ABOVE. Both acts are the same dark
+        gradient with the same ring field, so back to back they read as one
+        very long band with a seam through it — Parqly and Snowman have no
+        tall plate between them and showed exactly that. Where a white act
+        does separate them, the rings stay on both. */}
+    {!(p.screens.length > 0 && !p.tall) && <RingField />}
     <div class="wp-hand__head" data-reveal>
       <span class="wp-label wp-label--dark">In the hand</span>
       <h2 class="wp-h2 wp-h2--dark wp-h2--sm">{p.mobileTitle ?? 'Built for the phone first'}</h2>
@@ -282,8 +305,6 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
         <figure data-reveal>
           <div class="wp-hand__frame" style={`aspect-ratio:${p.mobileRatio ?? '16/10'}`}>
             <img src={m.img.src} alt={m.img.alt} width={m.img.w} height={m.img.h} loading="lazy" />
-            {/* Rings go ON a photograph, never on a screenshot. */}
-            {!m.screenshot && <span class="wp-hand__rings" aria-hidden="true"></span>}
           </div>
           <figcaption>{m.label}</figcaption>
         </figure>
@@ -293,13 +314,14 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
 )}
 
 {/* ── Tech & architecture ──────────────────────────────────── */}
+{hasBuild && (
 <section class="wp-split" id="build">
   <div class="wp-split__rail" data-reveal>
     <span class="wp-label">{buildIndex} &mdash; How it runs</span>
     <span class="wp-split__name">Tech &amp; architecture</span>
   </div>
   <div class="wp-split__body">
-    <p class="wp-split__lead wp-split__lead--sm" data-reveal>{p.buildLead}</p>
+    {p.buildLead && <p class="wp-split__lead wp-split__lead--sm" data-reveal>{p.buildLead}</p>}
     <div class="wp-stack">
       {p.stack.map((s) => (
         <div data-reveal><span class="wp-stack__k">{s.k}</span><span class="wp-stack__v">{s.v}</span></div>
@@ -307,12 +329,14 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     </div>
   </div>
 </section>
+)}
 
 {/* ── Outcomes ─────────────────────────────────────────────── */}
+{hasOutcome && (
 <section class="wp-act wp-act--grey wp-out" id="outcome">
   <div class="wp-out__head" data-reveal>
     <span class="wp-label">{outcomeIndex} &mdash; Outcomes</span>
-    <h2 class="wp-h2">{p.outcomeLead}</h2>
+    {p.outcomeLead && <h2 class="wp-h2">{p.outcomeLead}</h2>}
   </div>
   <div class="wp-out__grid">
     {p.outcomes.map((o) => (
@@ -320,6 +344,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     ))}
   </div>
 </section>
+)}
 
 {/* ── Client ───────────────────────────────────────────────── */}
 {d.testimonial && (
@@ -342,22 +367,36 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
 
 {/* ── Next ─────────────────────────────────────────────────── */}
 <section class="wp-next" id="next">
+  {/* THE YELLOW BAND SITS HERE, not under the next case.
+      This is the one call to action on the page — "where it goes next" and the
+      way to start one — and on the dark ground it was the quietest thing in the
+      act, under an 84px client name. The homepage hero's gradient is the site's
+      loudest ground and it is used exactly where something has to be taken up.
+      The next-case plate below stays black: a yellow ground there would fight
+      the accent that marks "Open case", and the accent only works because it is
+      rare. */}
+  {p.nextNote && (
   <div class="wp-next__top" data-reveal>
-    <div>
-      <span class="wp-label wp-label--dark">Where it goes next</span>
-      <span class="wp-next__note">{p.nextNote}</span>
+    <GrainField tone="yellow" />
+    <div class="wp-next__top-in">
+      <div>
+        <span class="wp-label wp-label--sun">Where it goes next</span>
+        <span class="wp-next__note wp-next__note--sun">{p.nextNote}</span>
+      </div>
+      <a class="wp-ghost wp-ghost--sun" href="/contact-us/">
+        <span>Start a project like this</span>
+        <span class="wp-dots"><i></i><i class="on"></i></span>
+      </a>
     </div>
-    <a class="wp-ghost" href="/contact-us/">
-      <span>Start a project like this</span>
-      <span class="wp-dots"><i></i><i class="on on--white"></i></span>
-    </a>
   </div>
+  )}
   {next && (
     <a class="wp-next__case" href={`/work/${next.slug}/`} rel="next" data-reveal>
       <div class="wp-next__copy">
         <div>
           <span class="wp-label wp-label--dark">Next case</span>
           <span class="wp-next__name">{next.client}</span>
+          {nextLine && <span class="wp-next__line">{nextLine}</span>}
         </div>
         <span class="wp-next__open">
           <span>Open case</span>
@@ -367,6 +406,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
       {nextImg && (
         <div class="wp-next__shot">
           <img src={nextImg} alt="" width="2400" height="1200" loading="lazy" />
+          <span class="wp-next__rings" aria-hidden="true"></span>
         </div>
       )}
     </a>
@@ -377,6 +417,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   /* ── tokens, from DESIGN-NOTES.md and the artboard ───────────
      Scoped to this component so they cannot leak into the pages that still
      run the previous template. */
+  .wp-strip,
   .wp-cover,
   .wp-split,
   .wp-act,
@@ -387,6 +428,23 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     --wp-accent: #ffd400;
     position: relative;
     padding-inline: var(--wp-gut);
+  }
+  .wp-strip { padding-inline: 0; }
+
+  /* The strip has to CLEAR the header, not approximate it. Sized at the 42px
+     pill alone it ended 19px short, so the bar's second line — "Reach out to
+     start your project" — was white type on the white cover below and simply
+     vanished. The design's column is the 42px pill, a 14px gap and that 20px
+     line, inside its own top and bottom padding. */
+  .wp-strip {
+    position: relative; overflow: hidden;
+    height: calc(clamp(28px, 4vh, 38px) + 76px + clamp(34px, 5vh, 44px));
+    background: linear-gradient(100deg, #0d0d0c 0%, #121110 46%, #17150e 78%, #0a0a0a 100%);
+  }
+  .wp-strip__glow {
+    position: absolute; left: 8%; top: -120%; width: 56%; height: 260%;
+    border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, rgba(255, 212, 0, 0.16) 0%, rgba(255, 212, 0, 0) 62%);
   }
 
   .wp-label {
@@ -409,7 +467,6 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     width: 8px; height: 8px; border-radius: 50%; background: rgba(153, 152, 149, 0.6);
   }
   .wp-dots i.on { background: rgb(20, 20, 20); }
-  .wp-dots i.on--white { background: #fff; }
   .wp-dots i.on--accent { background: var(--wp-accent); }
 
   /* ── cover ───────────────────────────────────────────────── */
@@ -677,21 +734,6 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   .wp-hand__frame img {
     display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
   }
-  /* The ring construction from the photo-graphic system, at the tighter pitch
-     the design uses on a single frame: white hairlines at 42px, yellow at 214. */
-  .wp-hand__rings {
-    position: absolute; inset: 0; pointer-events: none;
-    background:
-      repeating-radial-gradient(
-        circle at -6% 112%, rgba(255, 255, 255, 0.3) 0 1px, rgba(255, 255, 255, 0) 1px 42px
-      ),
-      repeating-radial-gradient(
-        circle at -6% 112%, rgba(255, 212, 0, 0.9) 0 1.5px, rgba(255, 212, 0, 0) 1.5px 214px
-      );
-    mask-image: radial-gradient(
-      circle at -6% 112%, rgba(0, 0, 0, 0.2) 0%, #000 26%, rgba(0, 0, 0, 0.4) 58%, rgba(0, 0, 0, 0) 94%
-    );
-  }
   .wp-hand__grid figcaption {
     font-size: 14px; font-weight: 500; line-height: 1.5; letter-spacing: -0.03em;
     color: rgba(255, 255, 255, 0.6);
@@ -749,12 +791,27 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     padding-block: 0 clamp(70px, 10vh, 120px);
     display: flex; flex-direction: column; gap: clamp(30px, 5vh, 56px);
   }
+  /* Full-bleed out of the section's own gutters, so the gradient runs edge to
+     edge the way every other yellow band on the site does. */
   .wp-next__top {
-    display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 70px);
-    padding-top: clamp(30px, 5vh, 56px); border-top: 1px solid rgba(255, 255, 255, 0.14);
+    position: relative; overflow: hidden; isolation: isolate;
+    margin-inline: calc(var(--wp-gut) * -1);
+    padding: clamp(40px, 6vh, 68px) var(--wp-gut) clamp(40px, 6vh, 68px);
   }
-  .wp-next__top > div {
+  .wp-next__top-in {
+    position: relative; z-index: 1;
+    display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 70px); align-items: flex-start;
+  }
+  .wp-next__top-in > div {
     flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px;
+  }
+  .wp-label--sun { color: rgba(20, 20, 20, 0.62); }
+  .wp-next__note--sun { color: var(--c-black); }
+  .wp-ghost--sun {
+    box-shadow: inset 0 0 0 2px rgba(20, 20, 20, 0.28); color: var(--c-black);
+  }
+  .wp-ghost--sun:hover, .wp-ghost--sun:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--c-black);
   }
   .wp-next__note {
     max-width: 32ch; font-size: clamp(20px, 2.2vw, 28px); font-weight: 500; line-height: 1.3;
@@ -781,16 +838,49 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     font-size: clamp(40px, 6vw, 84px); font-weight: 600; line-height: 0.96;
     letter-spacing: -0.05em; color: #fbfbfb;
   }
+  /* Three lines, then it stops. A project with the presentation block gives a
+     one-line claim and never reaches the clamp; one without falls back to its
+     about line, which runs to 320 characters and would be ten lines in a 28ch
+     column — a teaser that is longer than the thing it teases. */
+  .wp-next__line {
+    max-width: 28ch; font-size: 18px; font-weight: 500; line-height: 28px;
+    letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.68); text-wrap: pretty;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+  /* 16px rather than the 14 the design sets these at. At 14 with -0.06em
+     tracking they are the two smallest things in a band whose headline is 84px,
+     and on a phone they read as captions rather than as the two controls this
+     band exists for. Only this band; the section labels keep the design's 14. */
+  .wp-next .wp-label--dark { font-size: 16px; letter-spacing: -0.04em; }
   .wp-next__open {
     display: flex; align-items: center; gap: 10px;
-    font-size: 14px; font-weight: 600; letter-spacing: -0.06em; color: var(--wp-accent);
+    font-size: 16px; font-weight: 600; letter-spacing: -0.04em; color: var(--wp-accent);
   }
   .wp-next__shot {
     flex: 1 1 440px; min-width: 0; border-radius: 12px; overflow: hidden;
     background: rgb(30, 30, 30); aspect-ratio: 16 / 10;
   }
+  .wp-next__shot { position: relative; }
   .wp-next__shot img {
     display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  }
+  /* The photo-graphic treatment, ON the photograph — which is the design's own
+     rule for a photograph as opposed to a screenshot. Two masked layers centred
+     off the bottom-left: white hairlines at 42px pitch, yellow at 214. Without
+     it this plate is the one picture on the page wearing nothing. */
+  .wp-next__rings {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      repeating-radial-gradient(
+        circle at -6% 112%, rgba(255, 255, 255, 0.3) 0 1px, rgba(255, 255, 255, 0) 1px 42px
+      ),
+      repeating-radial-gradient(
+        circle at -6% 112%, rgba(255, 212, 0, 0.9) 0 1.5px, rgba(255, 212, 0, 0) 1.5px 214px
+      );
+    mask-image: radial-gradient(
+      circle at -6% 112%, rgba(0, 0, 0, 0.2) 0%, #000 26%, rgba(0, 0, 0, 0.4) 58%, rgba(0, 0, 0, 0) 94%
+    );
   }
 
   /* ── phone ───────────────────────────────────────────────────

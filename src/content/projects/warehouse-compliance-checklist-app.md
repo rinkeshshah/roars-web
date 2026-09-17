@@ -79,7 +79,11 @@ showcase:
 testimonial:
   quote: "You showed a strong understanding of our business needs and prepared well-structured documentation. The user-friendly UI/UX design you created makes the system easy to use, and your guidance in improving business processes has been very valuable."
   name: "Bhushan Paralkar"
-  role: "VP IT & Business Excellence, Snowman Logistics"
+  # AVP, not VP. Owner-confirmed 17 Sep against the Work Presentation handoff.
+  # The quote itself is unchanged: the handoff opens it with an extra sentence
+  # and says "Roars showed" where production says "You showed", and only the
+  # designation was confirmed. The production wording stands until it is.
+  role: "AVP — IT & Business Excellence, Snowman Logistics"
   portrait: "/wp-content/uploads/2026/02/vt6oz.Bhushan1.jpg"
 
 # THE PRESENTATION LAYOUT, from `Roars v2 - Work Presentation.dc.html`.

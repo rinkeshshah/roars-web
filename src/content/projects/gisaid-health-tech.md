@@ -28,6 +28,76 @@ showcase:
     alt: "The GISAID platform"
     kind: "web"
 needsRewrite: true
+# THE PRESENTATION LAYOUT. Written 17 Sep from this file's own content — the
+# about line, the Challenges block and the body — restructured into the acts,
+# not added to. Everything in `stack` and `outcomes` is named in the body:
+# seven algorithms, the six matchers, BLAST, and the twenty million records.
+#
+# NO Groundwork, System, Screens, Full page or In the hand acts: this project
+# has four pictures and none of them is a wireframe, a design artefact or a
+# phone capture. NO nextNote: there is no record of what comes next here.
+presentation:
+  line: "The world's largest COVID-19 database, searchable by the people who curate it."
+  constraints:
+    - "Trustable sources only"
+    - "Twenty million records"
+    - "Editable by scientists"
+    - "Built on their own API"
+  meta:
+    - k: "CLIENT"
+      v: "GISAID"
+    - k: "SECTOR"
+      v: "Health tech"
+    - k: "SCOPE"
+      v: "Internal tooling"
+  # THE PICTURES THIS FILE ALREADY HAD, in the design's "In the hand" grid.
+  # Labels are the images' own alt text where it says something, and a plain
+  # description of the surface where the alt was a filename. No kicker, title
+  # or note: the reel act wants a sentence about each screen and there is no
+  # record of one, so the grid is the act these belong in. `screenshot: true`
+  # keeps the ring treatment off them, which is the design's rule for a capture
+  # as opposed to a photograph.
+  mobileTitle: "The tool, on the desk it runs on"
+  mobileRatio: "16/10"
+  mobile:
+    - img:
+        src: "/wp-content/uploads/2022/08/gisaid-1.webp"
+        alt: "The dashboard"
+      label: "The dashboard"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/gisaid-2.webp"
+        alt: "Record comparison"
+      label: "Record comparison"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/gisaid-3.webp"
+        alt: "Search and filter"
+      label: "Search and filter"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/gisaid4.webp"
+        alt: "The GISAID platform"
+      label: "The GISAID platform"
+      screenshot: true
+  challengeLead: "Pulling data the world would act on, from sources it could trust."
+  challengeBody: "The hard part was never the volume. It was building functionality that could pull from trustable sources and then let the scientists who use it correct what it found — so a record that is wrong does not stay wrong while everyone waits for a release."
+  buildLead: "Seven algorithms doing the matching, against twenty million records."
+  stack:
+    - k: "Matching"
+      v: "NLP and sequence matching with BioPython, across seven algorithms"
+    - k: "Signals"
+      v: "Date of record, type of disease, author records and origin of virus"
+    - k: "At scale"
+      v: "BLAST, run against the twenty million records GISAID holds"
+    - k: "Surface"
+      v: "A dashboard built for the internal team rather than for a demo"
+  outcomeLead: "A tool their own researchers run, on the data they already trusted."
+  outcomes:
+    - big: "7"
+      label: "Matching algorithms behind one comparison"
+    - big: "20M"
+      label: "Records the matcher runs against"
 seo:
   title: "GISAID - Health Tech product for COVID"
   description: "We developed tool for GISAID’s health tech for internal team so that they can have the access to the largest database of COVID-19. NCBI API was used to develop this tool to pull data from across the world."

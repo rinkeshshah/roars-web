@@ -55,6 +55,89 @@ screens:
   - src: "/wp-content/uploads/2022/08/Rapid-Booking.jpg"
     kind: "app"
     alt: "Rapid-Booking"
+# THE PRESENTATION LAYOUT. Written 17 Sep from this file's own content: the
+# about line, both blocks, the facts table and the body. The stack is the facts
+# table verbatim; the one figure is the 300+ clubs this page already states.
+presentation:
+  line: "Every club you have paid for, in one membership."
+  constraints:
+    - "One subscription, many clubs"
+    - "Premium as the baseline"
+    - "Booking without a phone call"
+    - "Points that carry across clubs"
+  meta:
+    - k: "CLIENT"
+      v: "Club Social"
+    - k: "SECTOR"
+      v: "Membership & hospitality"
+    - k: "SCOPE"
+      v: "UI, UX, Strategy, Concept and Development"
+    - k: "SURFACES"
+      v: "iOS · Android · Web · API"
+  # THE PICTURES THIS FILE ALREADY HAD, in the design's "In the hand" grid.
+  # Labels are the images' own alt text where it says something, and a plain
+  # description of the surface where the alt was a filename. No kicker, title
+  # or note: the reel act wants a sentence about each screen and there is no
+  # record of one, so the grid is the act these belong in. `screenshot: true`
+  # keeps the ring treatment off them, which is the design's rule for a capture
+  # as opposed to a photograph.
+  mobileTitle: "One membership, in the hand"
+  mobileRatio: "9/16"
+  mobile:
+    - img:
+        src: "/wp-content/uploads/2022/08/Home.jpg"
+        alt: "Home"
+      label: "Home"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/Search-Club.jpg"
+        alt: "Search a club"
+      label: "Search a club"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/Club-Details.jpg"
+        alt: "Club details"
+      label: "Club details"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/Booking.jpg"
+        alt: "Booking"
+      label: "Booking"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/Rapid-Booking.jpg"
+        alt: "Rapid booking"
+      label: "Rapid booking"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/Events.jpg"
+        alt: "Events"
+      label: "Events"
+      screenshot: true
+    - img:
+        src: "/wp-content/uploads/2022/08/QR-Page.jpg"
+        alt: "Entry pass"
+      label: "Entry pass"
+      screenshot: true
+  challengeLead: "Membership management is an expensive affair, and that is the thing the idea had to beat."
+  challengeBody: "The client's proposition was to pool a number of premium global clubs behind a single subscription. So the product had to feel as premium as the offering — a member who can reach three hundred clubs should never be looking at an interface that suggests otherwise."
+  buildLead: "One responsive product rather than a site and an app that drift apart."
+  stack:
+    - k: "Expertise"
+      v: "Design, Interaction and Development"
+    - k: "Platform"
+      v: "iOS, Android, Web and API"
+    - k: "Deliverables"
+      v: "UI, UX, Strategy, Concept and Development"
+    - k: "Technology"
+      v: "PHP Laravel, Progressive Web App"
+  outcomeLead: "A member sees every club they can use, and books without the phone call."
+  outcomes:
+    - big: "300+"
+      label: "Premium clubs behind one subscription"
+    - big: "1"
+      label: "Responsive product across phone, tablet and desktop"
+  nextNote: "Listings, reservations, event passes and a points directory already run on the same component set."
 seo:
   title: "Membership management App | Club Membership"
   description: "We design high end UI/UX for membership management app. Our apps provide modern, intuitive, and user friendly experiences that make membership management easier than ever. Get in touch with us to learn more about how we can help you streamline your membership management today"

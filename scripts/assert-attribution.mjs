@@ -80,6 +80,30 @@ export const ATTRIBUTIONS = [
       'also on the about-us team list; same question. Spelling may also be "Khushboo".',
   },
   {
+    name: 'Bhushan Paralkar',
+    company: 'Snowman Logistics',
+    where: 'work/warehouse-compliance-checklist-app testimonial',
+    source:
+      'the quote is the client\'s own, carried across with the case study. The ' +
+      'designation was owner-confirmed on 17 Sep against the Work Presentation ' +
+      'handoff: AVP, not VP.',
+    /* The handoff also opens the quote with a sentence production does not have
+       and says "Roars showed" where production says "You showed". Only the
+       designation was confirmed, so the production wording stands. */
+    note: 'handoff quote text differs from production; not adopted, owner asked',
+  },
+  {
+    name: 'Dipali Sikand',
+    company: 'Mindescapes / Club Concierges',
+    where: 'work/the-presidents-club testimonial',
+    source:
+      'the words are production\'s, verbatim in scripts/wordpress-export/work/out/' +
+      'the-presidents-club.json. The name and role came from the owner via the ' +
+      'Work Presentation handoff and were confirmed on 17 Sep. Until then this ' +
+      'quote sat unattributed in the page body, printed in the same type as the ' +
+      'copy around it, so the page read as though Roars said it about itself.',
+  },
+  {
     name: 'Elena Elraie',
     company: 'Lametus',
     where: 'work/parqly-parking-solution testimonial',

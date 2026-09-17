@@ -74,7 +74,17 @@ const year = new Date().getFullYear()
   <div class="wrap">
     <div class="ft__grid ft__top">
       {/* The real mark, masked so it reads white on the dark ground. */}
-      <span class="ft__mark" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
+      <div class="ft__brand">
+        <span class="ft__mark" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
+        {/* The company profile. It has been in LEGAL at the bottom of this
+            footer as a text link among Privacy Policy and Terms of Service,
+            where it reads as a policy document rather than as the thing a
+            visitor came for. It is a download, and a download gets a button. */}
+        <a class="ft__profile" href={site.companyProfile} target="_blank" rel="noopener">
+          <span class="ft__profile-ico" aria-hidden="true"></span>
+          <span>Download<br />Company Profile</span>
+        </a>
+      </div>
       <div class="ft__blurb">
         <p class="ft__blurb-title">{blurbTitle}</p>
         <p class="ft__blurb-body">{blurb}</p>
@@ -191,6 +201,41 @@ const year = new Date().getFullYear()
     grid-template-columns: 459fr 233fr 234fr 436fr;
   }
   .ft__top { margin-bottom: 125px; }
+  .ft__brand { display: flex; flex-direction: column; gap: 34px; align-items: flex-start; }
+  /* Outlined, not filled. The filled yellow pill in this footer is "Shall we
+     chat?", and two solid buttons in one band is two buttons nobody presses. */
+  .ft__profile {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 13px 20px; border-radius: 14px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+    font-size: 14px; line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: rgba(255, 255, 255, 0.92);
+    transition: box-shadow var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+  .ft__profile:hover, .ft__profile:focus-visible {
+    box-shadow: inset 0 0 0 1px var(--c-accent); background: rgba(255, 212, 0, 0.08);
+  }
+  /* A tray with an arrow into it, drawn rather than fetched: one more icon
+     file for one more glyph is not worth a request. */
+  .ft__profile-ico {
+    position: relative; flex: 0 0 auto; width: 16px; height: 16px;
+    border-bottom: 1.5px solid var(--c-accent);
+    border-left: 1.5px solid var(--c-accent);
+    border-right: 1.5px solid var(--c-accent);
+    border-radius: 0 0 3px 3px;
+  }
+  .ft__profile-ico::before {
+    content: ''; position: absolute; left: 50%; top: -5px; translate: -50% 0;
+    width: 1.5px; height: 10px; background: var(--c-accent);
+  }
+  .ft__profile-ico::after {
+    content: ''; position: absolute; left: 50%; top: 1px; translate: -50% 0;
+    width: 6px; height: 6px; rotate: 45deg;
+    border-bottom: 1.5px solid var(--c-accent);
+    border-right: 1.5px solid var(--c-accent);
+  }
+
   .ft__mark {
     display: block; width: 21px; height: 27px;
     background: var(--c-white);
