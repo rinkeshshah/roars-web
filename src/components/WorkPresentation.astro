@@ -513,6 +513,17 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
        The sections stay full-width so their grounds still bleed; it is only
        what is inside them that is held to the container. */
     --wp-gut: max(var(--page-gutter), calc((100% - var(--content-max)) / 2));
+    /* THE SAME DISTANCE, MEASURED FROM THE VIEWPORT INSTEAD OF THE PARENT.
+       --wp-gut is a percentage, and a percentage is resolved against whatever
+       box uses it -- the containing block for padding, the element's own
+       containing block for margin. That is exactly what you want on the
+       sections, whose containing block IS the viewport, and exactly what you
+       do not want on anything nested inside one, where the same token silently
+       means 39 instead of 279. Two bugs came out of that: the cover plate
+       stopping 240px short of each edge, and the yellow band reading as an
+       inset panel. This one has no percentage in it, so it means the same
+       number wherever it is written. */
+    --wp-edge: max(var(--page-gutter), (100vw - var(--content-max)) / 2);
     --wp-dark: linear-gradient(100deg, #0d0d0c 0%, #121110 46%, #17150e 78%, #0a0a0a 100%);
     --wp-accent: #ffd400;
     position: relative;
@@ -541,7 +552,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
      overshoots by half of it at each side -- symmetric, invisible, and clipped
      by the section rather than scrolled to. */
   .wp-bleed {
-    margin-inline: calc(-1 * max(var(--page-gutter), (100vw - var(--content-max)) / 2));
+    margin-inline: calc(-1 * var(--wp-edge));
     border-radius: 0;
   }
   /* The clip that makes the overshoot above a non-event. .wp-cover already had
@@ -953,10 +964,27 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   }
   /* Full-bleed out of the section's own gutters, so the gradient runs edge to
      edge the way every other yellow band on the site does. */
+  /* THE YELLOW BAND RUNS THE FULL WIDTH OF THE GLASS.
+     It carried `margin-inline: calc(var(--wp-gut) * -1)`, which is the same
+     mistake the cover plate made: --wp-gut holds a percentage, and a
+     percentage in a custom property resolves against the box that USES it. On
+     this band, inside an already-padded section, that percentage sees 1362
+     rather than the viewport and the pull comes out at 39px instead of 279 --
+     so the ground stopped short of both edges and looked like a deliberately
+     inset panel. Same fix as .wp-bleed, for the same reason.
+     The padding stays on --wp-gut, and now that this box is viewport-wide the
+     percentage inside it resolves correctly, so the copy still starts on the
+     container's left edge with the ground running out past it. */
   .wp-next__top {
     position: relative; overflow: hidden; isolation: isolate;
-    margin-inline: calc(var(--wp-gut) * -1);
-    padding: clamp(30px, 4vh, 44px) var(--wp-gut);
+    margin-inline: calc(-1 * var(--wp-edge));
+    /* --wp-edge on BOTH, and the two cancel: the band is pulled out by one
+       edge distance and its copy pushed back in by the same, so the text lands
+       on the section's content edge -- the header's left edge -- while the
+       ground runs past it to the glass. --wp-gut cannot do this job: as
+       padding it resolves against .wp-next's 1362px content box and puts the
+       copy at 39 while the header sits at 279. */
+    padding: clamp(30px, 4vh, 44px) var(--wp-edge);
   }
   .wp-next__top-in {
     position: relative; z-index: 1;
