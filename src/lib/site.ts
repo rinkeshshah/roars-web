@@ -101,7 +101,7 @@ export const site = {
     yearsInBusiness: '20+',
     projectsDelivered: '1,500+',
     aiDriven: '63%',
-    happyCustomers: '2,500+',
+    happyCustomers: '1,000+',
     globalAwards: '7+',
   },
 
@@ -113,7 +113,7 @@ export const site = {
     ],
     alt: [
       { value: '20+', label: 'Years of Excellence' },
-      { value: '2,500+', label: 'Happy Customers' },
+      { value: '1,000+', label: 'Happy Customers' },
       { value: '7+', label: 'Global Awards' },
     ],
   },

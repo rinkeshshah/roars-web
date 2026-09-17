@@ -494,6 +494,7 @@ const RETIRED = [
      a different claim, so a page still carrying it is stating something the
      company no longer stands behind. */
   [/\b4,?000\+?/, '4,000+ (retired Sep 2026; site.ts stats.projectsDelivered is 1,500+)'],
+  [/\b2,?500\+?/, '2,500+ (retired Sep 2026; site.ts stats.happyCustomers is 1,000+)'],
 ]
 const walk = (dir, test, out = []) => {
   if (!existsSync(dir)) return out

@@ -37,9 +37,10 @@ import quote from '../assets/quote.svg'
    primary one: the homepage and /approach/ both show 20 / 1,500 / 63, and a
    third page repeating them reads as a template. See src/lib/site.ts.
    The offsets are per figure because the numerals they follow are different
-   widths, so "2,500" takes a wider one than "250" did. */
+   widths: the '+' after a five-character "1,000" sits at 168 where the one
+   after "20" sits at 83. Change a figure's digit count and its sx moves. */
 const stats = [
-  { n: '2,500', suffix: '+', sx: 168, sy: 20, ss: 39, sw: 400, label: 'Happy Customers' },
+  { n: '1,000', suffix: '+', sx: 168, sy: 20, ss: 39, sw: 400, label: 'Happy Customers' },
   { n: '20', suffix: '+', sx: 83, sy: 20, ss: 39, sw: 400, label: 'Years of Excellence' },
   { n: '7', suffix: '+', sx: 46, sy: 20, ss: 39, sw: 400, label: 'Global Awards' },
 ]
@@ -66,10 +67,10 @@ const clients = CLIENT_LOGOS
 /* THE COUNTER'S FIGURE, FROM THE TOKEN, IN BOTH PLACES.
    The design spec sets "250" in the disc AND "More than 250 Clients" beside
    it. The label was later moved to the owner's own figure and the disc was
-   not, so the tile read "250" next to "More than 2,500 Clients" — two
-   different numbers about the same thing, nine inches apart. Both now come
-   off site.stats.happyCustomers, which is the same '2,500+' the stats band at
-   the top of this page already prints. The '+' is dropped because "More
+   not, so the tile read "250" next to "More than 2,500 Clients" (the figure
+   at the time) — two different numbers about the same thing, nine inches
+   apart. Both now come off site.stats.happyCustomers, so a change to the
+   token moves both, which is what happened when it went to '1,000+'. The '+' is dropped because "More
    than" and "+" say the same thing twice. */
 const clientCount = site.stats.happyCustomers.replace('+', '')
 
@@ -535,7 +536,7 @@ const schema = [
     letter-spacing: var(--ls-display); color: var(--c-black);
   }
   /* THE CLIENTS FIGURE ONLY. This rule is shared with the team counter, which
-     shows "25" and keeps the export's 65px. The clients one is "2,500": five
+     shows "25" and keeps the export's 65px. The clients one is "1,000": five
      characters at 65px plus the 9px gap and the 17px star measure about 206px
      against a disc 198px across, and a circle has less than its diameter to
      give at any line off its centre, so it was over the curve well before

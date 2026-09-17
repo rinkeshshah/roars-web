@@ -74,7 +74,7 @@ why:
     body: "Working software every fortnight, so the plan survives contact with reality."
   - name: "Built to be handed over"
     body: "Documented, tested and running on infrastructure your own team can operate without us."
-  - name: "2,500+ clients since 2005"
+  - name: "1,000+ clients since 2005"
     body: "The clearest thing we can tell you about the work is how many of them commission the next build as well."
 seo:
   title: "Product Development Agency in London | Roars Technologies"
