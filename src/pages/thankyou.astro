@@ -140,6 +140,16 @@ const links = [
           <p class="ty__sub">
             Your message is with us. We reply within 24 hours, Monday to Friday.
           </p>
+          {/* THE ENQUIRY NUMBER, the same one the acknowledgement's subject
+              carries. It arrives as ?ref= on the redirect -- from the island
+              on a normal submit, from contact.php's own 303 when JavaScript
+              did not run -- so both routes land here knowing it.
+              HIDDEN UNTIL IT HAS ONE. This page is also reachable by typing
+              the URL, and "Your enquiry number is" followed by nothing is
+              worse than no line at all. The script below reveals it. */}
+          <p class="ty__ref" data-ref hidden>
+            Your enquiry number is <b data-ref-value></b>. Quote it if you reply.
+          </p>
         </div>
       </div>
     </div>
@@ -223,6 +233,26 @@ const links = [
   />
 </BaseLayout>
 
+<script>
+  /**
+   * Print the enquiry number the endpoint handed back.
+   *
+   * It is read from the URL and written as TEXT, never as markup, so a
+   * hand-edited ?ref= cannot put anything into this page. Length-capped and
+   * matched against the two shapes the server actually issues -- "#1008" and
+   * the "RS-" fallback -- so anything else is simply not shown.
+   */
+  const ref = new URLSearchParams(location.search).get('ref') ?? ''
+  if (/^(#\d{1,9}|RS-[A-Z0-9]{4,12})$/.test(ref)) {
+    const row = document.querySelector<HTMLElement>('[data-ref]')
+    const slot = document.querySelector<HTMLElement>('[data-ref-value]')
+    if (row && slot) {
+      slot.textContent = ref
+      row.hidden = false
+    }
+  }
+</script>
+
 <style>
   /* ── confirmation ───────────────────────────────────────── */
   .ty { position: relative; }
@@ -281,6 +311,16 @@ const links = [
     font-size: clamp(56px, 8.6vw, 124px); line-height: 0.72; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item); color: #FBFBFB;
   }
+  /* Sits under the sub-line, in the same ink as the flag above it. Yellow on
+     the number only, because it is the one thing on this page worth copying. */
+  .ty__ref {
+    margin-top: var(--sp-4);
+    font-size: var(--fs-body); line-height: var(--lh-body);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.72);
+  }
+  .ty__ref b { font-weight: var(--fw-semi); color: var(--c-accent); }
+  .ty__ref[hidden] { display: none; }
+
   .ty__sub {
     max-width: 320px; margin: 34px 0 0;
     font-size: 14px; line-height: 20px; font-weight: var(--fw-medium);

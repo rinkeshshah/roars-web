@@ -83,7 +83,31 @@ repository does not grow by a copy of the site on every build.
      KEY idx_form_created (form, created_at),
      KEY idx_created (created_at)
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+   -- THE ENQUIRY NUMBER IS THIS ID. It is printed to the visitor as #1008,
+   -- carried in the acknowledgement's subject, and filed against the lead in
+   -- n8n, so it starts somewhere that does not announce itself as the first
+   -- enquiry the company has ever taken.
+   ALTER TABLE submissions AUTO_INCREMENT = 1008;
    ```
+
+   **On dev, delete the test rows before the ALTER.** MySQL ignores an
+   AUTO_INCREMENT lower than the highest id already in the table, and it fails
+   silently -- the statement succeeds and the counter does not move. `DELETE`
+   alone does not reset it either, so both are needed and in this order:
+
+   ```sql
+   DELETE FROM submissions;
+   ALTER TABLE submissions AUTO_INCREMENT = 1008;
+   -- Confirm before submitting anything: expect 1008.
+   SELECT AUTO_INCREMENT FROM information_schema.TABLES
+    WHERE TABLE_SCHEMA = 'roars_forms' AND TABLE_NAME = 'submissions';
+   ```
+
+   Dev and production number independently and both start at 1008, so the same
+   number exists in both. n8n is what keeps them apart: the helper prefixes
+   `DEV-` on anything forwarded from dev.roarsinc.com, decided from the path
+   the code runs in, so a dev lead lands as `DEV-1008` in the shared sheet.
 
    The grant. `INSERT` and nothing else, on one table, from localhost only:
 

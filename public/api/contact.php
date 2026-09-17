@@ -77,8 +77,12 @@ $done = function (array $payload, ?callable $after = null) use ($wantsJson): nev
     } else {
         /* 303, not 302: the browser must re-issue as GET, so a refresh on
            /thankyou/ cannot repost the form. */
-        $form = isset($payload['form']) ? '?form=' . rawurlencode((string) $payload['form']) : '';
-        header('Location: /thankyou/' . $form, true, 303);
+        $q = [];
+        if (isset($payload['form'])) { $q['form'] = (string) $payload['form']; }
+        /* '#' would be read as a fragment delimiter, so it is encoded here and
+           decoded by the browser before the page ever sees it. */
+        if (isset($payload['ref'])) { $q['ref'] = (string) $payload['ref']; }
+        header('Location: /thankyou/' . ($q ? '?' . http_build_query($q) : ''), true, 303);
     }
     /* THE WORK AFTER THE RESPONSE MUST NEVER BECOME THE RESPONSE.
        roars_after_response() closes the FastCGI request first, so on PHP-FPM
@@ -418,8 +422,22 @@ $wantsNews = ($_POST['newsletter'] ?? '') !== '';
  * notification to sales@ says in its own body when there is no row behind it,
  * because that is the reader who would otherwise go looking in the table.
  */
+/**
+ * THE ENQUIRY NUMBER IS THE ROW'S OWN ID, and the table starts at 1008 so the
+ * first one does not read as a company's first ever enquiry. It is the number
+ * the visitor quotes, the number in the acknowledgement's subject, and the
+ * number n8n files the lead under, so all three are the same thing and there
+ * is nothing to reconcile later.
+ *
+ * $enquiryNo is the id or null. $ref is what a person reads: "#1008" when
+ * there is a row, and the time-based code when there is not -- because with no
+ * row there is no number, and printing one would be inventing a handle that
+ * matches nothing in the table. n8n is sent the id only, never the fallback:
+ * a lead sheet keyed on "RS-K3M9QX01" is worse than one with a gap.
+ */
 $saved = false;
-$refId = 'RS-' . strtoupper(substr(base_convert((string) time(), 10, 36) . bin2hex(random_bytes(3)), 0, 8));
+$enquiryNo = null;
+$ref = 'RS-' . strtoupper(substr(base_convert((string) time(), 10, 36) . bin2hex(random_bytes(3)), 0, 8));
 
 if ((string) ($cfg['dsn'] ?? '') === '') {
     error_log('[roars] no database configured; submission not saved, delivery unaffected');
@@ -438,7 +456,8 @@ if ((string) ($cfg['dsn'] ?? '') === '') {
             mb_substr((string) ($_SERVER['HTTP_REFERER'] ?? ''), 0, 500),
             $ip, mb_substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 255),
         ]);
-        $refId = 'RS-' . str_pad((string) $pdo->lastInsertId(), 6, '0', STR_PAD_LEFT);
+        $enquiryNo = (int) $pdo->lastInsertId();
+        $ref = '#' . $enquiryNo;
         $saved = true;
     } catch (\Throwable $e) {
         error_log('[roars] submission not saved: ' . $e::class . ': ' . $e->getMessage());
@@ -561,7 +580,7 @@ $signatureText = ''
    brand piece. Reply-To is the visitor so a reply from sales@ reaches them.
    It is a CLOSURE now rather than a statement, because on the contact form it
    is conditional — see the dispatch at the foot of this file. */
-$notifySales = function () use ($cfg, $refId, $form, $name, $email, $phone, $company, $country, $message, $saved): void {
+$notifySales = function () use ($cfg, $ref, $form, $name, $email, $phone, $company, $country, $message, $saved): void {
     $lines = ($saved ? '' : "NOT SAVED TO THE DATABASE. This email is the only record.\r\n\r\n")
         . "From: {$name} <{$email}>\r\n"
         . ($company !== '' ? "Company: {$company}\r\n" : '')
@@ -570,7 +589,7 @@ $notifySales = function () use ($cfg, $refId, $form, $name, $email, $phone, $com
         . "\r\n{$message}";
     @mail(
         $cfg['notify_to'],
-        "Roars enquiry {$refId}: {$form}",
+        "Roars enquiry {$ref}: {$form}",
         $lines,
         "From: {$cfg['from']}\r\nReply-To: {$email}",
     );
@@ -623,7 +642,7 @@ if ($guide !== null) {
         'country'        => $country,
         'form_label'     => $labels[$form] ?? $form,
         'message'        => $message,
-        'ref_id'         => $refId,
+        'ref_id'         => $ref,
         'submitted_at'   => gmdate('j M Y, H:i') . ' UTC',
         'postal_address' => $postal,
         'booking_url'    => $booking,
@@ -631,6 +650,7 @@ if ($guide !== null) {
     /* The plain-text alternative says the same thing as the HTML, in the same
        voice, with no em dashes in it. Some clients show this and nothing else. */
     $text = "Hi {$first},\r\n\r\nThanks for saying hello.\r\n\r\n"
+        . "Your enquiry number is {$ref}.\r\n\r\n"
         . "Your message just landed with our team. I'll personally get back to you "
         . "within one business day.\r\n\r\n"
         . "Can't wait? Grab a time that suits you:\r\n{$booking}\r\n\r\n"
@@ -642,8 +662,8 @@ if ($guide !== null) {
         . "\r\nSomething wrong above? Just reply to this email and correct it. "
         . "It reaches the same person.\r\n\r\n"
         . $signatureText;
-    $visitorMail = function () use ($send, $email, $html, $text, $cfg): void {
-        $send($email, "Got it! We're on it.", $html, $text, null, $cfg['notify_to']);
+    $visitorMail = function () use ($send, $email, $html, $text, $cfg, $ref): void {
+        $send($email, "Got it! We're on it. ({$ref})", $html, $text, null, $cfg['notify_to']);
     };
 }
 
@@ -661,15 +681,17 @@ if ($guide !== null) {
  * and sales@ still hears about it.
  */
 $done(
-    ['ok' => true, 'event' => 'generate_lead', 'form' => $form],
+    ['ok' => true, 'event' => 'generate_lead', 'form' => $form, 'ref' => $ref],
     function () use (
         $form, $visitorMail, $notifySales, $email, $name, $company, $country,
-        $phone, $message, $elapsed, $pagePath, $wantsNews
+        $phone, $message, $elapsed, $pagePath, $wantsNews, $enquiryNo
     ): void {
         if ($visitorMail !== null) { $visitorMail(); }
 
         if ($form === 'contact') {
-            $forwarded = function_exists('roars_forward_lead') && roars_forward_lead([
+            /* enquiry_no only when the row exists. The helper prefixes DEV-
+               on dev so the two environments cannot collide in one sheet. */
+            $lead = [
                 'name'       => $name,
                 'email'      => $email,
                 'company'    => $company,
@@ -679,7 +701,9 @@ $done(
                 'website'    => '', // the honeypot; a filled one never reaches here
                 'elapsed_ms' => $elapsed,
                 'page'       => $pagePath,
-            ]);
+            ];
+            if ($enquiryNo !== null) { $lead['enquiry_no'] = $enquiryNo; }
+            $forwarded = function_exists('roars_forward_lead') && roars_forward_lead($lead);
             /* Fallback only. n8n subscribes contact leads to the Sendy Contact
                list itself, after it has filtered out the spam and the vendors,
                so this file must not do it — a contact form is not a consent to

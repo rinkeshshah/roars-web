@@ -26,14 +26,18 @@ const ROARS_SENDY_LISTS = [
     'resources'  => '00TRm4sPdhw38HROORoOug',
 ];
 
+/** True when this code runs under dev.roarsinc.com (decided by file path, not the Host header). */
+function roars_is_dev(): bool
+{
+    return str_contains(__DIR__, '/dev.roarsinc.com/') || str_ends_with(__DIR__, '/dev.roarsinc.com');
+}
+
 function roars_cfg(string $key): string
 {
     static $cfg = null;
     if ($cfg === null) {
         // Dev and production share one subscription; pick the file by where this code lives.
-        // dev.roarsinc.com is deployed under /var/www/vhosts/roarsinc.com/dev.roarsinc.com/
-        $isDev = str_contains(__DIR__, '/dev.roarsinc.com/') || str_ends_with(__DIR__, '/dev.roarsinc.com');
-        $default = '/var/www/vhosts/roarsinc.com/' . ($isDev ? 'roars-secrets-dev.php' : 'roars-secrets.php');
+        $default = '/var/www/vhosts/roarsinc.com/' . (roars_is_dev() ? 'roars-secrets-dev.php' : 'roars-secrets.php');
         $file = getenv('ROARS_SECRETS_FILE') ?: $default;
         $cfg = is_file($file) ? (array) require $file : [];
     }
@@ -106,6 +110,8 @@ function roars_sendy_subscribe(string $listKey, string $email, string $name = ''
 
 /**
  * Forward a contact form submission to the n8n lead flow.
+ * Pass the enquiry number from the database as $form['enquiry_no'] (e.g. 1008).
+ * Dev numbers are sent as DEV-1008 so they never collide with production in the shared lead sheet.
  * n8n sends the acknowledgement, so the site should NOT send its own auto-reply for contact.
  * Returns false if n8n could not be reached, so the caller can fall back to its old notification email.
  */
@@ -124,6 +130,10 @@ function roars_forward_lead(array $form): bool
         $fields[$k] = is_scalar($v) ? (string) $v : '';
     }
     $fields['ip'] = $_SERVER['REMOTE_ADDR'] ?? '';
+    $no = $form['enquiry_no'] ?? '';
+    if (is_scalar($no) && (string) $no !== '') {
+        $fields['enquiry_no'] = (roars_is_dev() ? 'DEV-' : '') . preg_replace('/[^A-Za-z0-9-]/', '', (string) $no);
+    }
 
     $secret = roars_cfg('N8N_FORM_SECRET');
     $r = roars_http_post($url, $fields, $secret !== '' ? ['X-Roars-Secret: ' . $secret] : []);

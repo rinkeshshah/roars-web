@@ -82,6 +82,9 @@ export function initForms(): void {
            from, not re-submit the form they just sent. */
         const to = new URL('/thankyou/', location.origin)
         if (data.form) to.searchParams.set('form', String(data.form))
+        /* The enquiry number, so /thankyou/ can print the same one the
+           acknowledgement's subject carries. searchParams encodes the '#'. */
+        if (data.ref) to.searchParams.set('ref', String(data.ref))
         location.replace(to.toString())
       } catch {
         say('Could not reach the server. Please email us instead.', 'error')
