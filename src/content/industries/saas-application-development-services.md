@@ -207,9 +207,10 @@ failures:
 # card here would be the same project twice — which is the bug this band was
 # rewritten to fix in the first place. The featured card carries it.
 #
-# Advisee was the near miss and is NOT the answer: the menu's work panel tags
-# it SAAS, but its own content file says industry: ["finance"] and describes a
-# mutual fund investment platform. The menu tag is the thing that is wrong.
+# Advisee was the near miss and is NOT the answer. The menu's work panel tagged
+# it SAAS, but its own content file says industry: ["finance"] and the project
+# is a mutual fund investment platform. The tag was the thing that was wrong and
+# it has been corrected to FINANCE, in the menu and on the London city page.
 applies:
   label: "WHAT WE DO IN THIS SECTOR"
   heading: "What we do for SaaS clients"

@@ -29,34 +29,52 @@ import quote from '../assets/quote.svg'
 
 /* ------------------------------------------------------------ content */
 
+/**
+ * THE FOUR STAGES, NAMED THE SAME WAY EVERYWHERE.
+ *
+ * This page used to call them Explore, Define, Ideate, Transform while the
+ * Approach panel in the menu called them Discovery, Design, Build, Launch &
+ * scale. Four steps either way, two vocabularies, and nobody noticed because
+ * all four menu rows pointed at the top of this page rather than at a stage.
+ *
+ * The menu's names win, so the copy is redistributed rather than relabelled —
+ * the two sets do not line up one to one. Explore and Define were both
+ * discovery and are now one stage. Ideate was where the prototyping lived and
+ * is now Design, with the UX and UI work that was scattered across Ideate and
+ * Transform. Transform was carrying engineering AND release AND iteration in
+ * one step; it splits into Build and Launch & scale, and nothing about
+ * generating ideas is left under Build.
+ *
+ * The ids below the map are the menu's hrefs and match these names now.
+ */
 const phases = [
   {
     n: '01',
-    name: 'Explore',
-    lead: 'Understanding your customers, business, and where you’re losing opportunity',
-    body: 'Conduct focused interviews to uncover real customer behavior, not assumptions. Analyze how users currently interact with your product or service. Identify gaps, friction points, and missed opportunities in your existing experience. Map where your business can create more value through better journeys or new offerings.',
-    tags: ['PEOPLE', 'STRATEGY', 'INTERACTION', 'TECHNOLOGY'],
+    name: 'Discovery',
+    lead: 'Understanding your customers, your business, and where you are losing opportunity.',
+    body: 'Focused interviews that uncover real customer behaviour rather than assumptions. A read on how people use what you have now, and where the friction is. Then the problems worth solving, ranked by impact and feasibility, so what you leave with is a decision rather than a wish list.',
+    tags: ['PEOPLE', 'MARKET', 'STRATEGY'],
   },
   {
     n: '02',
-    name: 'Define',
-    lead: 'Aligning insights into clear product direction and priorities.',
-    body: 'Translate research into actionable insights that guide decisions. Define the problems worth solving based on impact and feasibility. Align business goals with user needs and product direction. Prioritize features and opportunities to avoid unnecessary complexity.',
-    tags: ['CUSTOMER', 'BUSINESS', 'OBJECTIVES', 'INSIGHT'],
+    name: 'Design',
+    lead: 'Flows, prototypes and an interface that is tested before anything is built.',
+    body: 'The journeys first, then the screens. Clickable prototypes early enough that a wrong turn costs a week rather than a quarter, put in front of real users and changed by what that tells us. The handover is something your engineers can build from directly.',
+    tags: ['UX', 'UI', 'PROTOTYPE', 'TEST'],
   },
   {
     n: '03',
-    name: 'Ideate',
-    lead: 'Exploring solutions and validating ideas before building.',
-    body: 'Generate multiple solution directions based on defined problems. Create quick prototypes to visualize and test concepts early. Gather feedback to refine ideas and remove weak assumptions. Iterate rapidly to arrive at solutions that are both usable and viable.',
-    tags: ['HYPOTHESIS', 'DESIGN', 'TEST', 'EVALUATE'],
+    name: 'Build',
+    lead: 'Engineering in two-week sprints, with something working to look at every Friday.',
+    body: 'Front end, back end, database and hosting, built by the people who designed it rather than handed to a different team. A named project manager who does not change. Test coverage and the integrations go in as the product is built, not bolted on before launch.',
+    tags: ['ENGINEERING', 'SPRINTS', 'QA'],
   },
   {
     n: '04',
-    name: 'Transform',
-    lead: 'Designing, building, and improving products that perform.',
-    body: 'Translate validated ideas into scalable product experiences. Design and develop with a focus on usability, speed, and clarity. Continuously test and optimize based on real user behavior. Evolve the product to improve performance, engagement, and growth.',
-    tags: ['GUIDE', 'IMPLEMENT', 'SUPPORT'],
+    name: 'Launch & scale',
+    lead: 'Release, measure, and keep improving on what real usage tells you.',
+    body: 'Store submission and launch support, then analytics wired in from the first day so the numbers exist to read. A written read of what the first users actually did. After that the product moves on evidence — performance, engagement and growth — rather than on the next idea in the queue.',
+    tags: ['RELEASE', 'MEASURE', 'ITERATE'],
   },
 ]
 
@@ -214,25 +232,19 @@ const schema = [
         <span class="apr__node apr__node--end" data-spine-node style="top:1493px"></span>
       </div>
 
-      {/* ANCHORS FOR THE MENU'S FOUR STAGES.
-
-          NOTE THE MISMATCH, because it is real and this does not resolve it.
-          The Approach panel in the menu calls the engagement Discovery,
-          Design, Build, Launch & scale. This page calls it Research, Define,
-          Ideate, Transform. Same engagement, four steps either way, two
-          different vocabularies — and until now nobody noticed, because all
-          four menu rows pointed at /about the top of this page.
-
-          The anchors are the menu's words, in order, so every row lands on a
-          distinct stage and none of them is dead. But #build sitting on a step
-          headed "Ideate" is a seam, not a fix. Agreeing one set of four names
-          for both is a copy decision; it is flagged in docs/OPEN-DECISIONS.md
-          rather than settled here. */}
+      {/* The menu's four Approach rows land on these. Same four names on both
+          sides now, so #build is the step headed Build. */}
       <ol class="apr__steps">
         {phases.map((p, i) => (
           <li class="apr__step" id={['discovery', 'design', 'build', 'launch-and-scale'][i]} data-reveal>
             <span class="apr__step-n">{p.n}</span>
-            <h3 class="apr__step-name">{p.name}</h3>
+            {/* A LONG NAME IS SET SMALLER, because this one has nowhere to go.
+                The name is absolutely placed at x=106 and the detail column
+                starts at 580, so it has 474px and no line to wrap onto — the
+                lead sits 156px below it. "Launch & scale" at the display 84px
+                measures 553 and ran 79px into the detail copy. Nine characters
+                is the line: "Discovery" is 369px and keeps full size. */}
+            <h3 class="apr__step-name" data-long={p.name.length > 9 || undefined}>{p.name}</h3>
             <p class="apr__step-lead">{p.lead}</p>
             <div class="apr__step-detail">
               <span class="apr__hair" aria-hidden="true"></span>
@@ -289,7 +301,7 @@ const schema = [
       <span class="apr__rule" aria-hidden="true"></span>
       <span class="apr__label">Where we apply it</span>
       <h2 class="aps__h">what we build</h2>
-      <p class="aps__intro" data-reveal>Twelve practices, one process. Every engagement runs Explore through Transform.</p>
+      <p class="aps__intro" data-reveal>Twelve practices, one process. Every engagement runs Discovery through Launch &amp; scale.</p>
       <ul class="aps__rows">
         {practices.map((p, i) => (
           <li data-reveal style={`transition-delay:${i * 40}ms`}>
@@ -455,7 +467,7 @@ const schema = [
   /* CLEAR OF THE SPINE. The rule sits at x=81 and its nodes are 19px wide
      centred on it, so they reach x=90.5. The name opened at 75 and the lead at
      78, which put both of them UNDER the spine: the rule ran straight through
-     the stem of "Ideate" and "Transform".
+     the stem of the step names.
      The number is at 110, so the lead joins it there and the three share a
      left edge. The name is pulled 4px back from that, because a display "T" or
      "I" carries almost no side bearing and sitting it on the same metric edge
@@ -465,6 +477,8 @@ const schema = [
     font-size: var(--fs-display); line-height: 86px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
   }
+  /* Same line, same baseline, smaller type. See the note on the markup. */
+  .apr__step-name[data-long] { font-size: 58px; }
   .apr__step-lead {
     position: absolute; left: 110px; top: 156px; width: 420px;
     font-size: 20px; line-height: 28px; font-weight: var(--fw-medium);

@@ -166,7 +166,11 @@ export const MENU: MenuItem[] = [
       { label: 'Parqly', href: '/work/parqly-parking-solution/', meta: 'MOBILITY' },
       { label: 'Concierge Loyalty', href: '/work/concierge-loyalty-program/', meta: 'CONCIERGE' },
       { label: 'GISAID', href: '/work/gisaid-health-tech/', meta: 'HEALTHCARE' },
-      { label: 'Advisee', href: '/work/advisee/', meta: 'SAAS' },
+      /* FINANCE, not SAAS. This card said SAAS and was the reason a SaaS case
+         card was nearly written for Advisee on the sector page — its own
+         content file says industry: ["finance"] and the project is a mutual
+         fund investment platform. The tag was the thing that was wrong. */
+      { label: 'Advisee', href: '/work/advisee/', meta: 'FINANCE' },
     ],
     all: { label: `All ${LISTED_PROJECTS.length} projects`, href: '/work/' },
   },

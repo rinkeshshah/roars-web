@@ -55,7 +55,10 @@ work:
     name: "GISAID"
     body: "A platform holding one of the largest COVID data sets in the world, where availability was not negotiable."
     href: "/work/gisaid-health-tech/"
-  - tag: "SAAS / UX-UI DESIGN"
+  # FINANCE, not SAAS — matching industry: ["finance"] in the project's own
+  # content file. The body below already described a mutual fund platform, so
+  # the tag was contradicting the sentence underneath it.
+  - tag: "FINANCE / UX-UI DESIGN"
     name: "Advisee"
     body: "A mutual fund investment platform rebuilt around credibility: structure, typography and a journey that does not ask for trust before it earns it."
     href: "/work/advisee/"
