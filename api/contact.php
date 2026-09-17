@@ -109,6 +109,116 @@ $done = function (array $payload, ?callable $after = null) use ($wantsJson): nev
     exit;
 };
 
+/**
+ * GET /api/contact.php?diag=1 -- THE DEV-ONLY CONFIG REPORT.
+ *
+ * Why this exists: "the form is not configured" is true but useless. There are
+ * two config files, in two different places, and six ways for this process not
+ * to be able to read one -- it is absent, it is owned by someone else, its mode
+ * is 600 and the pool runs as another user, open_basedir does not include the
+ * directory, the path is right for production and wrong for dev, or it is there
+ * and does not return an array. From outside they are one message.
+ *
+ * IT EMITS NO VALUES. Paths, booleans, ownership and the names of keys that are
+ * present. Never a key's contents, never a fragment of one. Read it once, fix
+ * what it names, and it has nothing left to tell you.
+ *
+ * DEV ONLY, decided from where this file sits on disk rather than from the
+ * request. A Host header is whatever the client typed; the directory this code
+ * is executing in is not, so production cannot be talked into answering by
+ * spoofing a hostname.
+ */
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET' && isset($_GET['diag'])) {
+    $onDev = str_contains(__DIR__, '/dev.roarsinc.com/') || str_contains(__DIR__, '/dev.roarsinc.com');
+    if (!$onDev) {
+        http_response_code(404);
+        exit;
+    }
+
+    /** Ownership and mode, which is what a 600 file and the wrong pool user look like. */
+    $who = static function (int|false $uid): string {
+        if ($uid === false) { return 'unknown'; }
+        if (function_exists('posix_getpwuid')) {
+            $e = posix_getpwuid($uid);
+            if (is_array($e) && isset($e['name'])) { return $e['name'] . " (uid {$uid})"; }
+        }
+        return "uid {$uid}";
+    };
+
+    /** Presence of the keys a file is supposed to carry. Names only, never values. */
+    $keysPresent = static function (string $file, array $expect): array {
+        $out = [];
+        foreach ($expect as $k) { $out[$k] = false; }
+        if (!is_file($file) || !is_readable($file)) { return $out; }
+        try {
+            $a = require $file;
+        } catch (\Throwable) {
+            return $out;
+        }
+        if (!is_array($a)) { return $out; }
+        foreach ($expect as $k) {
+            $out[$k] = array_key_exists($k, $a) && is_scalar($a[$k]) && (string) $a[$k] !== '';
+        }
+        return $out;
+    };
+
+    $report = static function (string $path, array $expect) use ($who, $keysPresent): array {
+        $exists = is_file($path);
+        return [
+            'path'        => $path,
+            'exists'      => $exists,
+            'readable'    => $exists && is_readable($path),
+            'owner'       => $exists ? $who(fileowner($path)) : null,
+            'mode'        => $exists ? substr(sprintf('%o', fileperms($path)), -4) : null,
+            'returnsArray'=> $exists && is_readable($path) ? is_array(@require $path) : false,
+            'keysSet'     => $keysPresent($path, $expect),
+        ];
+    };
+
+    /* The secrets file this vhost resolves to, by the same path test the
+       helper uses -- so the report names the file that is actually read, not
+       the one somebody meant to create. */
+    $secrets = '/var/www/vhosts/roarsinc.com/'
+        . (str_contains(__DIR__, '/dev.roarsinc.com') ? 'roars-secrets-dev.php' : 'roars-secrets.php');
+
+    header('Content-Type: application/json');
+    header('Cache-Control: no-store');
+    header('X-Robots-Tag: noindex, nofollow');
+    exit(json_encode([
+        'diag' => 'roars form config',
+        'process' => [
+            'user'          => $who(function_exists('posix_geteuid') ? posix_geteuid() : false),
+            'php'           => PHP_VERSION,
+            'sapi'          => PHP_SAPI,
+            'open_basedir'  => ini_get('open_basedir') ?: '(not set)',
+            'docroot'       => $_SERVER['DOCUMENT_ROOT'] ?? '(unknown)',
+            'thisDir'       => __DIR__,
+        ],
+        'extensions' => [
+            'curl'     => extension_loaded('curl'),
+            'pdo_mysql'=> extension_loaded('pdo_mysql'),
+            'mbstring' => extension_loaded('mbstring'),
+        ],
+        'helper' => [
+            'path'                 => __DIR__ . '/roars-integrations.php',
+            'exists'               => is_file(__DIR__ . '/roars-integrations.php'),
+            'roars_after_response' => function_exists('roars_after_response'),
+            'roars_forward_lead'   => function_exists('roars_forward_lead'),
+            'roars_sendy_subscribe'=> function_exists('roars_sendy_subscribe'),
+        ],
+        'files' => [
+            'contactConfig' => $report(
+                '/var/www/vhosts/roarsinc.com/private/contact-config.php',
+                ['dsn', 'db_user', 'db_pass', 'turnstile_secret', 'notify_to', 'from', 'tools_dir', 'rate_salt'],
+            ),
+            'secrets' => $report(
+                $secrets,
+                ['SENDY_URL', 'SENDY_API_KEY', 'N8N_CONTACT_WEBHOOK', 'N8N_FORM_SECRET'],
+            ),
+        ],
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+}
+
 $fail = function (int $code, string $msg) use ($wantsJson): never {
     http_response_code($code);
     // Fixed strings only. User input is never echoed back.
@@ -125,22 +235,54 @@ $fail = function (int $code, string $msg) use ($wantsJson): never {
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { $fail(405, 'Method not allowed.'); }
 
-/* THE ONE FILE THIS ENDPOINT CANNOT WORK WITHOUT: the database credentials,
-   the Turnstile secret and the From address. A missing or unreadable config
-   was a fatal error too, and it fails in two ways that look identical from
-   outside -- the file is not there, or it is there and open_basedir will not
-   let this vhost read a path above its own webspace root. Both now say so in
-   the error log and answer the visitor in words. */
+/**
+ * THE CONFIG, AND WHAT HAPPENS WITHOUT IT.
+ *
+ * This file holds the database credentials, the Turnstile secret and the
+ * addresses the mail goes between. It can be absent in two ways that look
+ * identical from outside -- it is not there, or it is there and open_basedir
+ * will not let this vhost read a path above its own webspace root -- and
+ * neither is the visitor's fault or the visitor's business.
+ *
+ * NOTHING ABOUT A SERVER MISCONFIGURATION REACHES THE PERSON FILLING IN THE
+ * FORM. They filled it in correctly; they get the normal success response,
+ * their acknowledgement, and their lead reaches sales@ by email even when the
+ * row cannot be written. What they must never get is "the form is not
+ * configured on this server", which tells them nothing they can act on and
+ * loses the enquiry.
+ *
+ * The fallbacks below are the two addresses and the three strings this file
+ * cannot run without, and they are the same values contact-config.example.php
+ * ships. They are a floor, not a config: a real file wins every key it sets,
+ * because `+` on arrays keeps the left-hand side.
+ */
+$cfgFallback = [
+    'notify_to'      => 'sales@roarsinc.com',
+    'from'           => 'noreply@roarsinc.com',
+    'site_url'       => 'https://www.roarsinc.com',
+    'postal_address' => '4th Block, Jayanagar, Bengaluru, India 560041',
+    'booking_url'    => 'https://meet.roarsinc.com/sales',
+    /* No tools_dir means no attachment; the guide email links the PDF
+       instead, which is the path a missing file already took. */
+    'tools_dir'      => '',
+    'max_attach'     => 8 * 1024 * 1024,
+    'rate_window'    => 3600,
+    'rate_max'       => 5,
+    'rate_salt'      => 'roars-no-config',
+];
+
 $cfgFile = '/var/www/vhosts/roarsinc.com/private/contact-config.php';
+$loaded = null;
 if (!is_file($cfgFile) || !is_readable($cfgFile)) {
-    error_log("[roars] contact-config.php missing or unreadable at {$cfgFile} (check it exists, and that open_basedir for this vhost includes it)");
-    $fail(500, 'The form is not configured on this server. Please email us instead.');
+    error_log("[roars] contact-config.php missing or unreadable at {$cfgFile} (check it exists, and that open_basedir for this vhost includes it); running on fallbacks");
+} else {
+    $loaded = require $cfgFile;
+    if (!is_array($loaded)) {
+        error_log("[roars] contact-config.php at {$cfgFile} did not return an array; running on fallbacks");
+        $loaded = null;
+    }
 }
-$cfg = require $cfgFile;
-if (!is_array($cfg)) {
-    error_log("[roars] contact-config.php at {$cfgFile} did not return an array");
-    $fail(500, 'The form is not configured on this server. Please email us instead.');
-}
+$cfg = ($loaded ?? []) + $cfgFallback;
 
 /* Honeypot: fields real people never see and never fill. Answered exactly like
    a success so a bot learns nothing from the difference — no row, no mail, no
@@ -161,21 +303,39 @@ $hits = is_file($bucket) && filemtime($bucket) > time() - $cfg['rate_window']
 if ($hits >= $cfg['rate_max']) { $fail(429, 'Too many submissions. Try again shortly.'); }
 file_put_contents($bucket, (string) ($hits + 1), LOCK_EX);
 
-// Turnstile, verified server-side. A token the browser never checks is theatre.
-$verify = @file_get_contents(
-    'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-    false,
-    stream_context_create(['http' => [
-        'method' => 'POST', 'timeout' => 10, 'ignore_errors' => true,
-        'header' => 'Content-Type: application/x-www-form-urlencoded',
-        'content' => http_build_query([
-            'secret' => $cfg['turnstile_secret'],
-            'response' => (string) ($_POST['cf-turnstile-response'] ?? ''),
-            'remoteip' => $ip,
-        ]),
-    ]]),
-);
-if (!$verify || !(json_decode($verify, true)['success'] ?? false)) { $fail(403, 'Verification failed.'); }
+/**
+ * Turnstile, verified server-side. A token the browser never checks is theatre.
+ *
+ * THREE OUTCOMES, NOT TWO, and the difference matters to whoever is filling in
+ * the form. Cloudflare saying "this token is not valid" is the check working,
+ * and that person is told. Cloudflare not answering at all is our problem, and
+ * blocking every enquiry for the length of an outage is a worse failure than
+ * letting a few through unverified -- the rate limit above and the honeypots
+ * are still in force either way. No secret configured is the same case.
+ */
+$secret = (string) ($cfg['turnstile_secret'] ?? '');
+if ($secret === '') {
+    error_log('[roars] no turnstile secret configured; submission accepted unverified');
+} else {
+    $verify = @file_get_contents(
+        'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+        false,
+        stream_context_create(['http' => [
+            'method' => 'POST', 'timeout' => 10, 'ignore_errors' => true,
+            'header' => 'Content-Type: application/x-www-form-urlencoded',
+            'content' => http_build_query([
+                'secret' => $secret,
+                'response' => (string) ($_POST['cf-turnstile-response'] ?? ''),
+                'remoteip' => $ip,
+            ]),
+        ]]),
+    );
+    if ($verify === false) {
+        error_log('[roars] turnstile siteverify unreachable; submission accepted unverified');
+    } elseif (!(json_decode($verify, true)['success'] ?? false)) {
+        $fail(403, 'Verification failed.');
+    }
+}
 
 $form  = in_array($_POST['form'] ?? '', ['contact', 'newsletter', 'guide', 'callback'], true)
     ? $_POST['form'] : $fail(422, 'Unknown form.');
@@ -222,11 +382,6 @@ if ($form === 'guide') {
     }
 }
 
-// Prepared statement. No value is ever concatenated into SQL.
-$pdo = new PDO($cfg['dsn'], $cfg['db_user'], $cfg['db_pass'], [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_EMULATE_PREPARES => false,
-]);
 $phone   = mb_substr(trim((string) ($_POST['phone'] ?? '')), 0, 40);
 $message = mb_substr(trim((string) ($_POST['message'] ?? '')), 0, 5000);
 /* The rest of what the n8n flow reads. They are not validated beyond a length
@@ -242,20 +397,53 @@ $elapsed  = mb_substr(trim((string) ($_POST['elapsed_ms'] ?? '')), 0, 12);
 $pagePath = mb_substr(trim((string) ($_POST['page'] ?? '')), 0, 190);
 /* An unticked checkbox posts nothing at all, so presence is the whole test. */
 $wantsNews = ($_POST['newsletter'] ?? '') !== '';
-$pdo->prepare(
-    'INSERT INTO submissions (form, name, email, phone, message, page_url, referrer, ip, user_agent)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-)->execute([
-    $form, mb_substr($name, 0, 190), $email, $phone, $message,
-    mb_substr((string) ($_POST['page_url'] ?? ''), 0, 500),
-    mb_substr((string) ($_SERVER['HTTP_REFERER'] ?? ''), 0, 500),
-    $ip, mb_substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 255),
-]);
+/**
+ * THE ROW, AND WHAT HAPPENS WITHOUT ONE.
+ *
+ * Prepared statement, no value ever concatenated into SQL. What is new is that
+ * the write is allowed to fail. A database that is down, or credentials this
+ * config does not carry, used to throw out of `new PDO` and take the whole
+ * request with it -- which is a database outage rendered as a broken form on
+ * every page of the site.
+ *
+ * It is a wrapped attempt instead. The lead is not lost when it fails: the
+ * acknowledgement still goes to the visitor, the forward still reaches n8n,
+ * and the notification still reaches sales@ carrying the whole message. The
+ * row is the record, not the delivery.
+ *
+ * THE REFERENCE. Normally the row's own id, printed as INQUIRY RS-000123 and
+ * put in the notification's subject -- a real handle both sides can quote.
+ * With no row there is nothing to quote, so it falls back to a time-based
+ * code of the same shape. The visitor sees a reference either way; the
+ * notification to sales@ says in its own body when there is no row behind it,
+ * because that is the reader who would otherwise go looking in the table.
+ */
+$saved = false;
+$refId = 'RS-' . strtoupper(substr(base_convert((string) time(), 10, 36) . bin2hex(random_bytes(3)), 0, 8));
 
-/* The row's own id, printed in the email as INQUIRY RS-000123 and put in the
-   notification's subject. A real handle both sides can quote, rather than a
-   random string that matches nothing. */
-$refId = 'RS-' . str_pad((string) $pdo->lastInsertId(), 6, '0', STR_PAD_LEFT);
+if ((string) ($cfg['dsn'] ?? '') === '') {
+    error_log('[roars] no database configured; submission not saved, delivery unaffected');
+} else {
+    try {
+        $pdo = new PDO($cfg['dsn'], $cfg['db_user'] ?? null, $cfg['db_pass'] ?? null, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ]);
+        $pdo->prepare(
+            'INSERT INTO submissions (form, name, email, phone, message, page_url, referrer, ip, user_agent)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        )->execute([
+            $form, mb_substr($name, 0, 190), $email, $phone, $message,
+            mb_substr((string) ($_POST['page_url'] ?? ''), 0, 500),
+            mb_substr((string) ($_SERVER['HTTP_REFERER'] ?? ''), 0, 500),
+            $ip, mb_substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 255),
+        ]);
+        $refId = 'RS-' . str_pad((string) $pdo->lastInsertId(), 6, '0', STR_PAD_LEFT);
+        $saved = true;
+    } catch (\Throwable $e) {
+        error_log('[roars] submission not saved: ' . $e::class . ': ' . $e->getMessage());
+    }
+}
 
 /**
  * THE TEMPLATE RENDERER. Two forms, and deliberately no more than two:
@@ -373,8 +561,9 @@ $signatureText = ''
    brand piece. Reply-To is the visitor so a reply from sales@ reaches them.
    It is a CLOSURE now rather than a statement, because on the contact form it
    is conditional — see the dispatch at the foot of this file. */
-$notifySales = function () use ($cfg, $refId, $form, $name, $email, $phone, $company, $country, $message): void {
-    $lines = "From: {$name} <{$email}>\r\n"
+$notifySales = function () use ($cfg, $refId, $form, $name, $email, $phone, $company, $country, $message, $saved): void {
+    $lines = ($saved ? '' : "NOT SAVED TO THE DATABASE. This email is the only record.\r\n\r\n")
+        . "From: {$name} <{$email}>\r\n"
         . ($company !== '' ? "Company: {$company}\r\n" : '')
         . ($phone   !== '' ? "Phone: {$phone}\r\n"   : '')
         . ($country !== '' ? "Country: {$country}\r\n" : '')
