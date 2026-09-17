@@ -37,6 +37,16 @@ declare(strict_types=1);
    clue -- which is exactly what a visitor got, on every form, when this ran
    before the file reached the server. The integrations are optional by
    design; their absence is a log line, not an outage. */
+/* SMTP, in place of mail(). Same guard, same reason: a missing file is a log
+   line, not a 500. Without it $send falls back to mail(), which is worse mail
+   but still mail. */
+$smtp = __DIR__ . '/roars-smtp.php';
+if (is_file($smtp)) {
+    require_once $smtp;
+} else {
+    error_log('[roars] roars-smtp.php is missing from ' . __DIR__ . '; falling back to mail()');
+}
+
 $integrations = __DIR__ . '/roars-integrations.php';
 if (is_file($integrations)) {
     require_once $integrations;
@@ -133,6 +143,104 @@ $done = function (array $payload, ?callable $after = null) use ($wantsJson): nev
  * spoofing a hostname.
  */
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET' && isset($_GET['diag'])) {
+    $onDevEarly = str_contains(__DIR__, '/dev.roarsinc.com');
+
+    /**
+     * ?diag=smtp -- THE RELAY, END TO END, WITHOUT DELIVERING ANYTHING.
+     *
+     * It runs roars_smtp_send() itself in probe mode, not a reimplementation of
+     * it, so what passes here is what the acknowledgement will do. The
+     * transaction stops after RCPT and is thrown away with RSET; DATA is never
+     * sent, so nothing lands in anybody's inbox and nothing appears in the
+     * Email Log Search as a delivery.
+     *
+     * THE OUTBOUND IP IS THE FIRST THING TO READ. The relay authorises by
+     * address, so if ipify reports something other than the allowlisted one --
+     * a NAT pool, a second interface, an IPv6 route -- every other line below
+     * can be perfect and Google will still refuse. That is also why it is
+     * fetched over IPv4 explicitly: asking over v6 answers with the v6 address
+     * and tells you nothing about the connection the relay will see.
+     */
+    if ($onDevEarly && $_GET['diag'] === 'smtp') {
+        header('Content-Type: application/json');
+        header('Cache-Control: no-store');
+        header('X-Robots-Tag: noindex, nofollow');
+
+        $out = ['diag' => 'smtp relay'];
+
+        /* 1. what address the relay will see us arrive from */
+        $out['outboundIPv4'] = ['ok' => false, 'ip' => null, 'error' => 'curl not loaded'];
+        if (function_exists('curl_init')) {
+            $ch = curl_init('https://api.ipify.org');
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4,
+                CURLOPT_CONNECTTIMEOUT => 4,
+                CURLOPT_TIMEOUT        => 8,
+            ]);
+            $ip = curl_exec($ch);
+            $out['outboundIPv4'] = [
+                'ok'       => is_string($ip) && $ip !== '',
+                'ip'       => is_string($ip) ? trim($ip) : null,
+                'error'    => curl_error($ch) ?: null,
+                'expected' => '195.201.86.11',
+                'matches'  => is_string($ip) && trim($ip) === '195.201.86.11',
+            ];
+            curl_close($ch);
+        }
+
+        /* 2. the conversation, through the real client */
+        $host = ROARS_SMTP_HOST_DEFAULT;
+        $port = ROARS_SMTP_PORT_DEFAULT;
+        $cfgPath = '/var/www/vhosts/roarsinc.com/private/contact-config.php';
+        if (is_file($cfgPath) && is_readable($cfgPath)) {
+            $c = @require $cfgPath;
+            if (is_array($c)) {
+                $host = (string) ($c['SMTP_HOST'] ?? $host);
+                $port = (int) ($c['SMTP_PORT'] ?? $port);
+            }
+        }
+        $out['smtp'] = ['host' => $host, 'port' => $port, 'clientLoaded' => function_exists('roars_smtp_send')];
+        if (function_exists('roars_smtp_send')) {
+            $trace = null;
+            $ok = roars_smtp_send(
+                'noreply@roarsinc.com',
+                ['sales@roarsinc.com'],
+                '',
+                ['host' => $host, 'port' => $port, 'probe' => true],
+                $trace,
+            );
+            $out['smtp']['accepted'] = $ok;
+            $out['smtp']['transcript'] = $trace;
+        }
+
+        /* 3. what the log has been saying */
+        $logPath = (string) ini_get('error_log');
+        $log = ['path' => $logPath ?: '(not set; php logs to the SAPI)', 'readable' => false, 'lines' => []];
+        if ($logPath !== '' && is_file($logPath) && is_readable($logPath)) {
+            $log['readable'] = true;
+            /* The tail only. These files run to hundreds of megabytes and the
+               interesting part is always the end. */
+            $fh = fopen($logPath, 'rb');
+            if ($fh) {
+                fseek($fh, 0, SEEK_END);
+                $size = ftell($fh);
+                $want = min($size, 256 * 1024);
+                fseek($fh, -$want, SEEK_END);
+                $tail = (string) fread($fh, $want);
+                fclose($fh);
+                $hits = array_values(array_filter(
+                    explode("\n", $tail),
+                    static fn($l) => str_contains($l, '[roars]'),
+                ));
+                $log['lines'] = array_slice($hits, -20);
+            }
+        }
+        $out['errorLog'] = $log;
+
+        exit(json_encode($out, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    }
+
     $onDev = str_contains(__DIR__, '/dev.roarsinc.com/') || str_contains(__DIR__, '/dev.roarsinc.com');
     if (!$onDev) {
         http_response_code(404);
@@ -260,6 +368,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { $fail(405, 'Method not allo
  * ships. They are a floor, not a config: a real file wins every key it sets,
  * because `+` on arrays keeps the left-hand side.
  */
+if (!defined('ROARS_SMTP_HOST_DEFAULT')) { define('ROARS_SMTP_HOST_DEFAULT', 'smtp-relay.gmail.com'); }
+if (!defined('ROARS_SMTP_PORT_DEFAULT')) { define('ROARS_SMTP_PORT_DEFAULT', 587); }
+
 $cfgFallback = [
     'notify_to'      => 'sales@roarsinc.com',
     'from'           => 'noreply@roarsinc.com',
@@ -273,6 +384,12 @@ $cfgFallback = [
     'rate_window'    => 3600,
     'rate_max'       => 5,
     'rate_salt'      => 'roars-no-config',
+    /* The Google Workspace relay. It authorises by sending IP -- the server's
+       address is on the allow list in the admin console -- so there is no user
+       and no password here to leak or rotate. Overridable from config for a
+       different relay or a local catcher. */
+    'SMTP_HOST'      => ROARS_SMTP_HOST_DEFAULT,
+    'SMTP_PORT'      => ROARS_SMTP_PORT_DEFAULT,
 ];
 
 $cfgFile = '/var/www/vhosts/roarsinc.com/private/contact-config.php';
@@ -504,7 +621,7 @@ $render = function (string $file, array $vars): string {
  * body can close its own part early. Base64 in 76-character lines, which is
  * what RFC 2045 asks for. The subject is encoded because these carry em dashes.
  */
-$send = function (string $to, string $subject, string $html, string $text, ?array $attach = null, string $replyTo = '') use ($cfg): void {
+$send = function (string $to, string $subject, string $html, string $text, ?array $attach = null, string $replyTo = '', string $bcc = '') use ($cfg): void {
     $alt = '=_a' . bin2hex(random_bytes(12));
     $inner = "--{$alt}\r\n"
         . "Content-Type: text/plain; charset=UTF-8\r\n"
@@ -520,26 +637,53 @@ $send = function (string $to, string $subject, string $html, string $text, ?arra
        mailbox. Reply-To is sales@, because a visitor who hits reply must reach
        a person — and because the n8n flow answers from that address, so the
        reply lands in the same thread as everything that follows. */
+    if ($attach === null) {
+        $body = $inner;
+        $ctype = "multipart/alternative; boundary=\"{$alt}\"";
+    } else {
+        $mix = '=_m' . bin2hex(random_bytes(12));
+        $body = "--{$mix}\r\n"
+            . "Content-Type: multipart/alternative; boundary=\"{$alt}\"\r\n\r\n"
+            . $inner
+            . "--{$mix}\r\n"
+            . "Content-Type: application/pdf; name=\"{$attach['name']}\"\r\n"
+            . "Content-Transfer-Encoding: base64\r\n"
+            . "Content-Disposition: attachment; filename=\"{$attach['name']}\"\r\n\r\n"
+            . chunk_split(base64_encode((string) file_get_contents($attach['path'])), 76, "\r\n")
+            . "--{$mix}--";
+        $ctype = "multipart/mixed; boundary=\"{$mix}\"";
+    }
+
+    /* THE RELAY, NOT THE LOCAL MTA. mail() hands the message to whatever this
+       box runs, which is not in the domain's SPF record and whose DKIM key is
+       currently unparseable -- so everything it sent arrived unauthenticated.
+       The relay is already authorised to send as roarsinc.com.
+       Bcc goes to the envelope and never into a header: see roars_smtp_mail.
+       A failure here is logged and nothing else. This runs after the response
+       has gone back, so there is no visitor left to show it to. */
+    if (function_exists('roars_smtp_mail')) {
+        $ok = roars_smtp_mail(
+            $cfg['from'],
+            $to,
+            $subject,
+            $body,
+            ['Reply-To' => $replyTo, 'Content-Type' => $ctype],
+            $bcc,
+            ['host' => (string) $cfg['SMTP_HOST'], 'port' => (int) $cfg['SMTP_PORT']],
+        );
+        if (!$ok) {
+            error_log("[roars] smtp: giving up on \"{$subject}\" to {$to}; not sent");
+        }
+        return;
+    }
+
+    /* No SMTP client on disk. Worse mail is better than none. */
     $subj = '=?UTF-8?B?' . base64_encode($subject) . '?=';
     $head = "From: {$cfg['from']}\r\n"
         . ($replyTo !== '' ? "Reply-To: {$replyTo}\r\n" : '')
+        . ($bcc !== '' ? "Bcc: {$bcc}\r\n" : '')
         . "MIME-Version: 1.0\r\n";
-
-    if ($attach === null) {
-        @mail($to, $subj, $inner, $head . "Content-Type: multipart/alternative; boundary=\"{$alt}\"");
-        return;
-    }
-    $mix = '=_m' . bin2hex(random_bytes(12));
-    $body = "--{$mix}\r\n"
-        . "Content-Type: multipart/alternative; boundary=\"{$alt}\"\r\n\r\n"
-        . $inner
-        . "--{$mix}\r\n"
-        . "Content-Type: application/pdf; name=\"{$attach['name']}\"\r\n"
-        . "Content-Transfer-Encoding: base64\r\n"
-        . "Content-Disposition: attachment; filename=\"{$attach['name']}\"\r\n\r\n"
-        . chunk_split(base64_encode((string) file_get_contents($attach['path'])), 76, "\r\n")
-        . "--{$mix}--";
-    @mail($to, $subj, $body, $head . "Content-Type: multipart/mixed; boundary=\"{$mix}\"");
+    @mail($to, $subj, $body, $head . "Content-Type: {$ctype}");
 };
 
 // Headers carry only the validated address — $email has been through
@@ -587,6 +731,18 @@ $notifySales = function () use ($cfg, $ref, $form, $name, $email, $phone, $compa
         . ($phone   !== '' ? "Phone: {$phone}\r\n"   : '')
         . ($country !== '' ? "Country: {$country}\r\n" : '')
         . "\r\n{$message}";
+    if (function_exists('roars_smtp_mail')) {
+        roars_smtp_mail(
+            $cfg['from'],
+            $cfg['notify_to'],
+            "Roars enquiry {$ref}: {$form}",
+            $lines,
+            ['Reply-To' => $email, 'Content-Type' => 'text/plain; charset=UTF-8'],
+            '', // no Bcc: this IS the copy to sales@
+            ['host' => (string) $cfg['SMTP_HOST'], 'port' => (int) $cfg['SMTP_PORT']],
+        );
+        return;
+    }
     @mail(
         $cfg['notify_to'],
         "Roars enquiry {$ref}: {$form}",
@@ -625,7 +781,7 @@ if ($guide !== null) {
         . "and we will take a look.\r\n\r\n— Roars Technologies\r\n{$postal}\r\n";
     $attach = $guide['path'] !== null ? ['path' => $guide['path'], 'name' => $guide['name']] : null;
     $visitorMail = function () use ($send, $email, $guide, $html, $text, $attach, $cfg): void {
-        $send($email, "Your copy of {$guide['title']}", $html, $text, $attach, $cfg['notify_to']);
+        $send($email, "Your copy of {$guide['title']}", $html, $text, $attach, $cfg['notify_to'], $cfg['notify_to']);
     };
 } elseif ($form === 'newsletter') {
     /* Nothing from us. The footer form is a list subscribe and nothing else;
@@ -663,7 +819,10 @@ if ($guide !== null) {
         . "It reaches the same person.\r\n\r\n"
         . $signatureText;
     $visitorMail = function () use ($send, $email, $html, $text, $cfg, $ref): void {
-        $send($email, "Got it! We're on it. ({$ref})", $html, $text, null, $cfg['notify_to']);
+        /* Bcc sales@: one copy of everything a visitor is sent, in the
+           mailbox that answers them. Envelope only -- see roars_smtp_mail --
+           so the visitor never sees who else was copied. */
+        $send($email, "Got it! We're on it. ({$ref})", $html, $text, null, $cfg['notify_to'], $cfg['notify_to']);
     };
 }
 
