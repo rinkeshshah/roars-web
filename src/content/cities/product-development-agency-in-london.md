@@ -68,7 +68,7 @@ why:
     body: "Strategy, design and engineering under one roof and one project manager. Nothing gets lost between agencies."
   - name: "In the room when it helps"
     body: "The UK office is in Marylebone. Workshops and reviews happen in person when that is the faster way to decide."
-  - name: "Twenty years, 4,000+ products"
+  - name: "Twenty years, 1,500+ products"
     body: "Since 2005, under the same leadership. Most of what reaches us has reached us before in another shape."
   - name: "Two-week cadence"
     body: "Working software every fortnight, so the plan survives contact with reality."
@@ -78,7 +78,7 @@ why:
     body: "The clearest thing we can tell you about the work is how many of them commission the next build as well."
 seo:
   title: "Product Development Agency in London | Roars Technologies"
-  description: "Product development in London: strategy, design and engineering in one team, from our Marylebone office. 20+ years, 4,000+ products shipped since 2005."
+  description: "Product development in London: strategy, design and engineering in one team, from our Marylebone office. 20+ years, 1,500+ products shipped since 2005."
   primaryIntent: "product development agency london"
   schemaType: "Service"
 ---

@@ -228,7 +228,7 @@ const COPY = {
         'For teams that need a native app built properly, or an existing one rescued. Not for a first test of an idea, an MVP will answer that faster and for less.',
       // Was '250+', the retired migration figure. The number of record is
       // site.ts stats.projectsDelivered.
-      proof: { value: '4,000+', label: 'PRODUCTS SHIPPED SINCE 2005' },
+      proof: { value: '1,500+', label: 'PRODUCTS SHIPPED SINCE 2005' },
     },
     cost: {
       heading: 'A shipped app that nobody returns to is a running cost.',

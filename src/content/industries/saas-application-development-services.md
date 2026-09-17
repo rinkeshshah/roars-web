@@ -103,7 +103,7 @@ proof:
     - n: "20"
       suffix: "+"
       label: "YEARS OF EXCELLENCE"
-    - n: "4,000"
+    - n: "1,500"
       suffix: "+"
       label: "PROJECTS DELIVERED"
     - n: "63"

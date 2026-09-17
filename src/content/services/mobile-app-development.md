@@ -46,7 +46,7 @@ frame:
   h1: "Your app is in the store. Nobody opens it twice."
   qualifier: "For teams that need a native app built properly, or an existing one rescued. Not for a first test of an idea, an MVP will answer that faster and for less."
   proof:
-    value: "4,000+"
+    value: "1,500+"
     label: "PRODUCTS SHIPPED SINCE 2005"
 cost:
   label: "THE COST OF WAITING"

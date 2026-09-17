@@ -85,7 +85,7 @@ export const MENU_REST = {
   statLabel: '20 YEARS OF EXCELLENCE IN PRODUCT CONSULTING',
   stats: [
     { value: '20+', label: 'YEARS OF EXCELLENCE' },
-    { value: '4,000+', label: 'PROJECTS DELIVERED' },
+    { value: '1,500+', label: 'PROJECTS DELIVERED' },
     { value: '63%', label: 'AI-DRIVEN SOLUTIONS' },
   ],
   hint: 'HOVER A SECTION TO EXPLORE',
@@ -117,7 +117,7 @@ export const MENU: MenuItem[] = [
   {
     n: '02', label: 'about us', href: '/about-us/',
     eyebrow: '02 / ABOUT US',
-    title: 'The team behind 4,000+ products',
+    title: 'The team behind 1,500+ products',
     body: 'Founded in 2005 by Rinkesh A Shah. Eight senior people, five ventures of our own, and clients who come back for the next build.',
     kind: 'links',
     items: [

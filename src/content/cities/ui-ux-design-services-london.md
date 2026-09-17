@@ -76,7 +76,7 @@ why:
   - name: "Two-week cycles"
     body: "The product keeps moving while the market does, and you see it every fortnight."
   - name: "Twenty years of pattern"
-    body: "4,000+ products since 2005 means most problems in front of us are not the first of their kind."
+    body: "1,500+ products since 2005 means most problems in front of us are not the first of their kind."
   - name: "One team throughout"
     body: "The people in discovery are the people at handover. No pass to a delivery team you have not met."
 seo:

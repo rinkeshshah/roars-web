@@ -72,11 +72,11 @@ why:
     body: "Nothing gets drawn that cannot be shipped on your budget, because the people drawing it also build it."
   - name: "Built to be handed over"
     body: "Documented, tested, and running on infrastructure your own team can operate."
-  - name: "4,000+ products since 2005"
+  - name: "1,500+ products since 2005"
     body: "Twenty years under the same leadership, across nine sectors."
 seo:
   title: "Product Development Agency in Manchester | Roars Technologies"
-  description: "Product development in Manchester: scoped MVPs, two-week sprints and a team you keep. 20+ years and 4,000+ products shipped since 2005."
+  description: "Product development in Manchester: scoped MVPs, two-week sprints and a team you keep. 20+ years and 1,500+ products shipped since 2005."
   primaryIntent: "product development agency manchester"
   schemaType: "Service"
 ---

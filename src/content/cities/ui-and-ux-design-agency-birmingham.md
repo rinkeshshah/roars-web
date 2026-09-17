@@ -76,7 +76,7 @@ why:
     body: "Analytics and test results settle the argument, not seniority."
 seo:
   title: "UI and UX Design Agency Birmingham | Roars Technologies"
-  description: "UI and UX design for Birmingham businesses: research, wireframes, usability testing and handover. 20+ years, 4,000+ products shipped. First reply within 24 hours."
+  description: "UI and UX design for Birmingham businesses: research, wireframes, usability testing and handover. 20+ years, 1,500+ products shipped. First reply within 24 hours."
   primaryIntent: "ui ux design agency birmingham"
   schemaType: "Service"
 ---

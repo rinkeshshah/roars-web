@@ -487,9 +487,13 @@ if (existsSync(MANIFEST)) {
  * switched off. If a figure belongs on a page, it comes from site.ts.
  */
 const RETIRED = [
-  [/\b250\+/, '250+ (retired; site.ts stats.projectsDelivered is 4,000+)'],
+  [/\b250\+/, '250+ (retired; site.ts stats.projectsDelivered is 1,500+)'],
   [/\b96\s*%\s*(returning|repeat)/i, '96% returning customers (retired, no replacement)'],
-  [/\b23\s+projects\b/i, '23 projects (retired; site.ts stats.projectsDelivered is 4,000+)'],
+  [/\b23\s+projects\b/i, '23 projects (retired; site.ts stats.projectsDelivered is 1,500+)'],
+  /* 4,000+ was the figure until Sep 2026. It is not a rounding of 1,500+, it is
+     a different claim, so a page still carrying it is stating something the
+     company no longer stands behind. */
+  [/\b4,?000\+?/, '4,000+ (retired Sep 2026; site.ts stats.projectsDelivered is 1,500+)'],
 ]
 const walk = (dir, test, out = []) => {
   if (!existsSync(dir)) return out

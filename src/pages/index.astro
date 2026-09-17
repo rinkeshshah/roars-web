@@ -60,7 +60,7 @@ import star5 from '../assets/star-5.svg'
  *
  * THE FIGURES COME FROM THE DESIGN, NOT FROM THE CONTENT. No service record
  * carries a project count and there is no source in the repo for 40, 35, 17 or
- * 12 weeks; 4,000+ is the company-wide total from site.stats, shown here against
+ * 12 weeks; 1,500+ is the company-wide total from site.stats, shown here against
  * Product Development. Raised with the owner, who asked for the design's
  * numbers as drawn. Recorded in docs/OPEN-DECISIONS.md so the next person does
  * not have to rediscover it.
@@ -70,7 +70,7 @@ const services = [
     n: '/01',
     name: 'Product Development',
     body: 'Idea to launch: strategy, design and engineering in one team.',
-    stat: '4,000', unit: 'shipped',
+    stat: '1,500', unit: 'shipped',
     href: '/s/product-development-company/',
   },
   {
@@ -376,7 +376,7 @@ const schema = [
 
 <BaseLayout
   title="Product Development for Startups & SMEs | Roars"
-  description="Roars is a product development and design agency. 4,000+ products shipped since 2005, across product strategy, UI/UX, mobile apps and AI automation."
+  description="Roars is a product development and design agency. 1,500+ products shipped since 2005, across product strategy, UI/UX, mobile apps and AI automation."
   path="/"
   ogType="website"
   schema={schema}
@@ -397,11 +397,11 @@ const schema = [
       <div class="wrap hero__inner">
         <h1 class="hero__h1">
           Ship product<br />that{' '}
-          <span class="hero__rotate" data-rotate data-words="scales|lasts|earns|works">scales</span>
+          <span class="hero__rotate" data-rotate data-words="works|matters|thinks">works</span>
         </h1>
         <p class="hero__lede">
-          Roars is a product studio working out of the USA, UK and India.
-          4,000+ products shipped for startups and SMEs since 2005.
+          Product design and engineering studio in India, the UK and the USA.
+          1,500+ products shipped in 20 years, now including AI.
         </p>
         <a class="hero__cta" href="/contact-us/">
           Start a project<span class="hero__dot" aria-hidden="true"></span>
@@ -439,7 +439,7 @@ const schema = [
             <p class="about__stat-name">Projects Delivered</p>
             <div class="rule about__stat-rule"></div>
             <div class="about__stat-row">
-              <span class="about__stat-num">4,000<span class="about__plus">+</span></span>
+              <span class="about__stat-num">1,500<span class="about__plus">+</span></span>
               <span class="about__stat-note">Products launched successfully since 2005</span>
             </div>
           </div>
@@ -618,7 +618,7 @@ const schema = [
     <div class="wrap proj__inner">
       <div class="proj__head" data-reveal>
         <h2 class="display display--on-dark">Projects</h2>
-        <p class="proj__count">4,000<span>+</span></p>
+        <p class="proj__count">1,500<span>+</span></p>
         <ul class="proj__legend">
           {['Recent Projects', 'Product Development', 'UI/UX and Product Design', 'Mobile and AI'].map((l) => (
             <li><span>{l}</span><i aria-hidden="true"></i></li>
@@ -909,7 +909,17 @@ const schema = [
     letter-spacing: -0.055em;
     color: var(--c-footer);
   }
-  .hero__rotate { display: inline-block; min-width: 360px; transition: opacity 260ms var(--ease-out); }
+  /* THE SLOT IS AS WIDE AS THE LONGEST WORD, so a swap cannot shift the line
+     under it. In em, not px, because the h1 clamps across every width and a
+     pixel reservation is only correct at one of them: 360px was right at 1440
+     and had to be switched off below 400 to avoid a scrollbar, which meant the
+     line jumped on exactly the devices where a jump is most obvious.
+     3.45em is measured. The widest of the three words sets at 3.32em at 1440
+     and 3.41em at 320 -- the ratio drifts a little because letter-spacing is
+     em-based but hinting is not -- so 3.45 clears all of them. rotate.ts
+     writes textContent straight into this span, so the width cannot come from
+     a hidden sizer inside it; re-measure if the words change. */
+  .hero__rotate { display: inline-block; min-width: 3.45em; transition: opacity 260ms var(--ease-out); }
   .hero__lede {
     max-width: 600px; margin: 60px 0 0;
     font-size: var(--fs-item); line-height: 34px;
@@ -980,7 +990,7 @@ const schema = [
      235fr 1fr gives the second track 1/236th of the row and the note
      collapsed to 2px. */
   /* 268fr, up from the export's 235fr. The export drew this column around a
-     three-character figure; the real one is "4,000" at 222px, and with the
+     three-character figure; the real one is "1,500" at 222px, and with the
      plus and its gap the number needs about 250. At 235 the sign had nowhere
      to go but on top of the note. The note's own column is unchanged — it
      caps at 170px of text, so the 33fr comes out of slack rather than off
@@ -1041,7 +1051,7 @@ const schema = [
      It used to be `left: 152px` for the plus and `left: 110px` for the per
      cent — offsets measured off whatever figures were there at the time. The
      per cent still worked because "63" is still two digits. The plus did not:
-     the figure is "4,000" now, 222px of digits, so a plus pinned at 152px sat
+     the figure is "1,500" now, 222px of digits, so a plus pinned at 152px sat
      70px INSIDE the number and printed over the final nought. It was never
      missing, it was underneath.
      `left: 100%` against a number box that shrinks to its own digits puts the
@@ -1402,7 +1412,7 @@ const schema = [
      the section 77 short once the all-line moved up to its measured y. */
   .proj__inner { position: relative; z-index: 1; padding-block: 142px 145px; }
   .proj__head { margin-left: var(--rail-width); }
-  /* margin-top was --sp-4 against "250+". "4,000+" is a third wider and the
+  /* margin-top was --sp-4 against "250+". "1,500+" is a third wider and the
      display heading above it has a tight line-height, so the two boxes met. */
   /* 48, where --sp-4 was enough for "250+". The display heading's line box
      runs well below its baseline and the count always sat inside it; at
@@ -1855,7 +1865,7 @@ const schema = [
     .svc__n { grid-column: 1; }
     .svc__name { grid-column: 2 / -1; font-size: 21px; line-height: 27px; }
     /* The figure drops to its own line beside the arrow. On one line with the
-       name it was fine at "250" and ran into it at "4,000". */
+       name it was fine at "250" and ran into it at "1,500". */
     .svc__stat { grid-row: 3; grid-column: 2; justify-self: start; }
     .svc__icon { grid-row: 3; grid-column: 4; }
     .svc__body { grid-row: 4; grid-column: 2 / -1; }
@@ -1941,9 +1951,6 @@ const schema = [
     /* The 130px line-height was fixed while the size clamped down to 56,
        which left two thirds of a line of air between every line. */
     .hero__h1 { font-size: clamp(44px, 13vw, 72px); line-height: 1.06; letter-spacing: -0.045em; }
-    /* 360px of reserved width does not fit a 350px content box. The word
-       swap shifts the line on a phone; that is better than a scrollbar. */
-    .hero__rotate { min-width: 0; }
     .hero__lede { margin-top: 32px; font-size: 17px; line-height: 26px; }
     .hero__cta { margin-top: 24px; }
     .hero__rule { margin-top: 44px; }

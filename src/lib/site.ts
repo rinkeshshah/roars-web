@@ -94,12 +94,12 @@ export const site = {
    * owner supplied a second set for exactly that reason.
    *
    * Individual values are also exported so prose can use one on its own
-   * ("4,000+ products shipped since 2005") without a second copy of the
+   * ("1,500+ products shipped since 2005") without a second copy of the
    * number going stale next to the trio.
    */
   stats: {
     yearsInBusiness: '20+',
-    projectsDelivered: '4,000+',
+    projectsDelivered: '1,500+',
     aiDriven: '63%',
     happyCustomers: '2,500+',
     globalAwards: '7+',
@@ -108,7 +108,7 @@ export const site = {
   statSets: {
     primary: [
       { value: '20+', label: 'Years of Excellence' },
-      { value: '4,000+', label: 'Projects Delivered' },
+      { value: '1,500+', label: 'Projects Delivered' },
       { value: '63%', label: 'AI-Driven Solutions' },
     ],
     alt: [

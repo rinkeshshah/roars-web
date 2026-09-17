@@ -71,7 +71,7 @@ why:
   - name: "Two-week cycles"
     body: "You see working design every fortnight and can change direction while that is still cheap."
   - name: "Twenty years of pattern"
-    body: "4,000+ products since 2005. Most first-version problems are not new."
+    body: "1,500+ products since 2005. Most first-version problems are not new."
   - name: "Engineering in the room"
     body: "We build as well as design, so nothing is drawn that cannot be shipped on your budget."
 seo:

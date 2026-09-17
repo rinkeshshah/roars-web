@@ -76,7 +76,7 @@ why:
     body: "The people who run discovery are the people at handover."
 seo:
   title: "UI and UX Design Agency Manchester | Roars Technologies"
-  description: "UI and UX design for Manchester businesses: UX audits, research, usability testing and build-ready handover. 20+ years and 4,000+ products shipped since 2005."
+  description: "UI and UX design for Manchester businesses: UX audits, research, usability testing and build-ready handover. 20+ years and 1,500+ products shipped since 2005."
   primaryIntent: "ui ux design agency manchester"
   schemaType: "Service"
 ---
