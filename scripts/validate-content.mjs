@@ -42,6 +42,38 @@ const TITLE_MIN = 30, TITLE_MAX = 65
 const DESC_MIN = 120, DESC_MAX = 165
 
 const errors = []
+/**
+ * THE UNIQUE-ASSET RULE IS WAIVED FOR EXACTLY THESE SIX PAGES.
+ *
+ * A DELIBERATE LAUNCH DECISION, 18 Sep 2026, taken with the trade-off stated
+ * on both sides. All six rank on WordPress today. The gate's judgement stands
+ * — none of them carries anything that could not appear on another page — but
+ * shipping them `noindex` would have asked Google to drop six pages that
+ * already earn impressions, and losing rankings you hold is a worse and much
+ * slower-to-reverse outcome than publishing a page that is thinner than the
+ * house standard. The owner made that call knowing it.
+ *
+ * WHY A LIST AND NOT A FLAG. `needsReview: true` would have done the same job
+ * in one character, and that is the problem: it reads as "a human has not
+ * looked at this yet", which is the opposite of what happened here. It also
+ * silently suppresses every other check that consults it. This says what it
+ * is, names the six, and cannot grow by accident — a seventh thin page fails
+ * the build exactly as before, which is the thing being protected.
+ *
+ * THIS IS A DEBT, NOT AN EXEMPTION FROM CARING. Each entry warns on every run
+ * until somebody gives the page one real asset: a named client and what
+ * changed for them, or a figure with its unit and timeframe. Then delete the
+ * line. An empty list is the goal.
+ */
+const LAUNCH_ASSET_EXEMPTIONS = [
+  'concierge-app-development',
+  'education-mobile-app-development',
+  'food-restaurant-app-development',
+  'logistics-transportation-app-development',
+  'on-demand-fitness-app-development',
+  'retail-ecommerce-development',
+]
+
 const warnings = []
 const fail = (file, rule, msg) => errors.push({ file, rule, msg })
 const warn = (file, rule, msg) => warnings.push({ file, rule, msg })
@@ -296,7 +328,19 @@ for (const e of entries) {
       /\b\d+([.,]\d+)?\s*(%|x|weeks?|days?|hours?|months?)\b/i.test(
         `${data.frame?.h1 ?? ''} ${data.cost?.body ?? ''} ${data.hero?.statement ?? ''}`,
       )
-    if (!asset && data.needsReview !== true) {
+    const exempt = LAUNCH_ASSET_EXEMPTIONS.find((slug) => file.endsWith(`/${slug}.md`))
+    if (!asset && data.needsReview !== true && exempt) {
+      /* WARNS, NEVER SILENT. The exemption removes the block, not the debt,
+         and this line is the only place the debt is still visible now that
+         the pages are indexed. Fix the page and the warning goes with it. */
+      warn(
+        file, 'no unique asset (launch exemption)',
+        'indexed by an explicit launch decision, 18 Sep 2026. Still has nothing on it ' +
+          'that could not appear on another page. Add a named client and what changed, ' +
+          'or a number with its unit and timeframe, and remove it from ' +
+          'LAUNCH_ASSET_EXEMPTIONS.',
+      )
+    } else if (!asset && data.needsReview !== true) {
       fail(
         file, 'no unique asset',
         'nothing on this page could not appear on another one. Add a named client and ' +

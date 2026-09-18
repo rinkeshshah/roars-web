@@ -230,7 +230,7 @@ applies:
 close:
   heading: "Tell us what your team still records on paper."
   body: "And why the last attempt to change that did not stick. We will come back in two working days with what we think would survive contact with the floor."
-needsReview: true
+needsReview: false
 ---
 ![](/wp-content/uploads/2022/08/freight.webp)
 

@@ -198,7 +198,7 @@ applies:
 close:
   heading: "Send us your checkout funnel for the last month."
   body: "A screenshot of the drop-off is enough. We will come back in two working days with where we think it is going and whether it is a rebuild or a fortnight of fixes."
-needsReview: true
+needsReview: false
 ---
 ![](/wp-content/uploads/2022/08/hotel-1.png)
 

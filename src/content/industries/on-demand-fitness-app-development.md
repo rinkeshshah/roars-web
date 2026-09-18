@@ -209,7 +209,7 @@ applies:
 close:
   heading: "Send us your retention curve for the first thirty days."
   body: "Just the shape of it. We will come back in two working days with where we think people are going and which part of the first session we would change."
-needsReview: true
+needsReview: false
 ---
 ![](/wp-content/uploads/2022/08/chip-1.png)
 

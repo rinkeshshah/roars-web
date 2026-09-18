@@ -231,7 +231,7 @@ applies:
 close:
   heading: "Tell us your completion rate, not your enrolment number."
   body: "That gap is usually the whole brief. We will come back in two working days with where we think learners are stopping and what we would change first."
-needsReview: true
+needsReview: false
 ---
 ![](/wp-content/uploads/2022/08/education.webp)
 

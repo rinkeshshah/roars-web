@@ -260,7 +260,7 @@ applies:
 close:
   heading: "Tell us which of the six moments is costing you most."
   body: "Discovery, ordering, payment, the pass, delivery, or the second visit. We will come back in two working days with where we think the money is going and what we would fix first."
-needsReview: true
+needsReview: false
 ---
 
 We build the best-in-class solutions that help you serve your diners better.
