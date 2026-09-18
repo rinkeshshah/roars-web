@@ -41,7 +41,9 @@
     "test:content": "node scripts/test-content-gate.mjs",
     "test:homepage": "node scripts/test-homepage.mjs",
     "test": "npm run test:content && npm run test:components && npm run test:homepage",
-    "migrate:dry": "node scripts/migrate-wordpress.mjs --dry-run"
+    "migrate:dry": "node scripts/migrate-wordpress.mjs --dry-run",
+    "verify:launch": "node scripts/verify-launch.mjs",
+    "_verify:launch": "The cutover checklist: main pages 200, canonical host everywhere it is written down, robots/sitemap on the right host, the email artwork, the diagnostics 404 in production, the form endpoint. Needs network, so it is NOT in `npm run verify`. Run it from a machine that can reach the host: `npm run verify:launch -- https://www.roarsinc.com`."
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",
