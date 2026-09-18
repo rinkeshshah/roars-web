@@ -49,7 +49,7 @@ cta:
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 seo:
-  title: "Digital Business Transformation Services In USA | Roar Technologies"
+  title: "Digital Business Transformation Services | Roars"
   description: "Solve complex business problems at speed and scale with our innovative digital business transformation services. Get your free quote now!"
   primaryIntent: "digital business transformation services"
   schemaType: "Service"

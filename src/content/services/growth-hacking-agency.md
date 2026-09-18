@@ -37,7 +37,7 @@ cta:
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
 seo:
-  title: "Digital Marketing Growth Hacking Agency In Texas, USA | Roars Technologies"
+  title: "Growth Hacking Agency for Startups & SMEs | Roars"
   description: "Looking for SEO, PPC, Social media or email marketing we provide 360° digital marketing service to SMEs. One of the preferred Growth hacking agency in Texas, USA."
   primaryIntent: "growth hacking agency"
   schemaType: "Service"
