@@ -623,7 +623,16 @@ const schema = [
     .agb__award { height: auto; margin-bottom: 32px; padding-top: 18px; }
     .agb__award-stub { width: 100%; }
     .agb__award-year, .agb__award-title, .agb__award-body, .agb__award-no { position: static; display: block; }
-    .agb__award-title { margin-top: 6px; }
+    /* THE 30% WIDTH IS A DESKTOP COLUMN, and it followed the title into the
+       flow. On the 1440 grid the titles are absolutely placed and 30% is
+       409px, which holds every one of them on a single line. The rule above
+       makes them static blocks on a phone and the width came with them: 105px
+       of a 350px column, so 24px type broke one word per line -- "Top /
+       Mobile / App / Developers" down four rows.
+       Released, the column is the measure: the longest award on the site,
+       "20 Most Promising UI/UX Solution Providers" at 42 characters, sets on
+       two lines at 390 and the other five set on one. */
+    .agb__award-title { margin-top: 6px; width: auto; }
     .agb__award-body { margin-top: 6px; }
     .agb__award-no { margin-top: 4px; }
   }
