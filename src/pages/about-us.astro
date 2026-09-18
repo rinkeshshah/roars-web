@@ -695,6 +695,13 @@ const schema = [
     }
     .agb__rest-disc { width: 128px; height: 128px; }
     .agb__rest-n { font-size: 42px; line-height: 42px; gap: 6px; }
+    /* Same story as the desktop rule above, one disc size down, and it needs
+       the same two-class selector to land: a bare `.agb__rest-n` here loses to
+       `.agb__grid--clients .agb__rest-n`, so the clients figure was still
+       drawing at 46px — "1000" plus the gap and the star came to 135px inside
+       a 128px disc and sat over the curve on both sides. The team's "25" is
+       two characters and keeps the 42px. */
+    .agb__grid--clients .agb__rest-n { font-size: 31px; line-height: 31px; }
     .agb__rest-label { font-size: 17px; line-height: 23px; }
 
 

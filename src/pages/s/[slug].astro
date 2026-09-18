@@ -1234,6 +1234,13 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
       min-height: 0; padding-block: 64px 72px;
     }
     .sv-band__h { line-height: 1.08; margin-left: 0; }
+    /* The FAQ heading needs saying twice. Its own rule above is
+       `.sv-faq .sv-band__h`, two classes, and it outranks the one-class rule
+       on the line above — so while every other band heading came down to
+       1.08 here, the FAQ kept the design's flat 86px leading against a font
+       that had dropped to 42px. Two lines of "Asked on real calls." sat 86px
+       apart with a hole between them. */
+    .sv-faq .sv-band__h { line-height: 1.08; }
     .sv-band__intro, .sv-proc__intro, .sv-rec__intro, .sv-feat__col {
       position: static; width: auto; max-width: 560px; margin-top: 28px; left: auto; top: auto;
     }

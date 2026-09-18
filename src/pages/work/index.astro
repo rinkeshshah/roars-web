@@ -366,12 +366,12 @@ const schema = [
   /* Amber, from the far corner. Under the ink. */
   .wf__shot::before {
     content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background: var(--dusk-amber);
+    background: var(--dusk-amber); border-radius: inherit;
   }
   /* Ink, dense on the copy side and thinning across. Over the amber. */
   .wf__shot::after {
     content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: var(--dusk-ink);
+    background: var(--dusk-ink); border-radius: inherit;
   }
   /* ── the copy block ─────────────────────────────────────────
      The supplied card sets sector, name and year as one left-aligned stack,
@@ -424,8 +424,23 @@ const schema = [
     .wf__rows li + li { margin-top: 52px; }
     .wf__rows a { height: auto; }
     .wf__date { position: static; display: flex; align-items: baseline; gap: 10px; width: auto; }
-    .wf__date b { border: 0; padding: 0; }
-    .wf__shot { position: static; margin-top: 14px; }
+    /* The rule stays. It is the only thing separating the date from the card
+       below it once the rail has collapsed into the flow, and without it the
+       date read as a caption belonging to the image rather than a label above
+       it. Shorter padding than the rail's 19px because there is 14px of card
+       margin under it here as well. */
+    .wf__date b { padding-bottom: 11px; }
+    /* RELATIVE, NOT STATIC. The two dusk gradients are absolute at inset 0 on
+       this element, so whatever is the containing block is what they cover —
+       and a static shot hands that job to the li. They were painting the
+       WHOLE CARD: a square-cornered ink band over the date (which is what
+       made it look clipped) and corners that ignored the 12px radius, because
+       `overflow: hidden` here cannot clip a descendant whose containing block
+       is further up the tree. In flow either way; only the reference box
+       changes — and `inset: auto` with it, because the rail's offsets are
+       still declared above and a relative box treats `left: 120px` as a
+       120px nudge, which pushed the card off the right edge. */
+    .wf__shot { position: relative; inset: auto; margin-top: 14px; }
     /* The block sits on the card's foot here rather than a third of the way
        down: the card is much shorter, so a top anchor would push the year off
        the bottom of the shorter names. */

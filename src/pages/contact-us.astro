@@ -639,7 +639,7 @@ const schema = [
 
     .cs { grid-template-columns: 1fr; min-height: 0; }
     .cs__panel-in { height: auto; padding: 64px 39px; }
-    .cs__eyebrow, .cs__h, .cs__lede, .cs__hair, .cs__ask, .cs__note, .cs__callback {
+    .cs__eyebrow, .cs__h, .cs__lede, .cs__hair, .cs__ask, .cs__note {
       position: static; left: auto; top: auto; width: auto; max-width: 620px;
     }
     .cs__h { font-size: var(--fs-display); line-height: 1.04; margin-top: 19px; }
@@ -647,7 +647,14 @@ const schema = [
     .cs__hair { margin-top: 40px; }
     .cs__ask { margin-top: 32px; }
     .cs__note { margin-top: 20px; }
-    .cs__callback { margin-top: 36px; }
+    /* NOT in the reset above, even though it also needs the position
+       unwinding. That rule's `width: auto` is right for a paragraph and wrong
+       for a pill: the button collapsed to its content, 147px, while the two
+       dots are placed at left 167 and 177 — so the label ran to the rounded
+       right edge with nothing after it and the dots painted outside the
+       button entirely. The base .c-pill width is the design's, and it fits:
+       204px inside a panel 312px wide at 390. */
+    .cs__callback { position: static; left: auto; top: auto; margin-top: 36px; }
     .cs__form-wrap { padding: 64px 39px; max-width: none; }
   }
   @media (max-width: 680px) {
