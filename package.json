@@ -12,7 +12,7 @@
     "prebuild": "node scripts/build-email-manifest.mjs && node scripts/generate-og-default.mjs",
     "build": "astro build",
     "_postbuild": "The 301 maps are part of the deployable output. Without this they are generated only when somebody remembers to run them by hand, and since dist/ is rebuilt from scratch every time, they never reached the server at all. prune-sitemap runs last: it reads the emitted HTML to find every page that says noindex and removes those URLs from the sitemap, then fails if any survived.",
-    "postbuild": "node scripts/generate-nginx-redirects.mjs && node scripts/generate-journal-htaccess.mjs && node scripts/prune-sitemap.mjs",
+    "postbuild": "node scripts/generate-nginx-redirects.mjs && node scripts/generate-htaccess.mjs && node scripts/prune-sitemap.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "validate:redirects": "node scripts/validate-redirects.mjs",
@@ -43,7 +43,8 @@
     "test": "npm run test:content && npm run test:components && npm run test:homepage",
     "migrate:dry": "node scripts/migrate-wordpress.mjs --dry-run",
     "verify:launch": "node scripts/verify-launch.mjs",
-    "_verify:launch": "The cutover checklist: main pages 200, canonical host everywhere it is written down, robots/sitemap on the right host, the email artwork, the diagnostics 404 in production, the form endpoint. Needs network, so it is NOT in `npm run verify`. Run it from a machine that can reach the host: `npm run verify:launch -- https://www.roarsinc.com`."
+    "_verify:launch": "The cutover checklist: main pages 200, canonical host everywhere it is written down, robots/sitemap on the right host, the email artwork, the diagnostics 404 in production, the form endpoint. Needs network, so it is NOT in `npm run verify`. Run it from a machine that can reach the host: `npm run verify:launch -- https://www.roarsinc.com`.",
+    "htaccess": "node scripts/generate-htaccess.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",

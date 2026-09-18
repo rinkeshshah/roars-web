@@ -229,6 +229,37 @@ export const missingFromInventoryRedirects = [
 ]
 
 /**
+ * THE SHORT PATHS PEOPLE TYPE, AND THAT CARELESS LINKS GUESS.
+ *
+ * Reported as "old WordPress URLs that 404". They do 404, and they would have
+ * gone on 404ing however the redirect map was deployed, because THEY WERE
+ * NEVER LIVE URLS HERE. Checked before writing a single one:
+ *
+ *   docs/search-console/pages.csv has no row for /services, /blog, /journal,
+ *   /contact or /about — not one impression between them. What it does have
+ *   is /about-us/ (84 impressions), /about-us without its slash (3), and
+ *   /contact-us/ (1). The old site used the long names too.
+ *
+ *   docs/URL-INVENTORY.csv, the 194 URLs that must keep resolving, has none
+ *   of them either.
+ *
+ * So these are not restorations of anything. They are the five paths a person
+ * guesses from the address bar, and each has exactly one plausible
+ * destination. A 301 costs nothing and turns a dead end into the right page.
+ *
+ * They are deliberately NOT added to docs/URL-INVENTORY.csv: that file is the
+ * record of what was actually live, and padding it with paths that never
+ * existed would stop it meaning that.
+ */
+export const guessedPathRedirects = [
+  { source: '/services/', destination: '/s/' },
+  { source: '/blog/', destination: '/our-journal/' },
+  { source: '/journal/', destination: '/our-journal/' },
+  { source: '/contact/', destination: '/contact-us/' },
+  { source: '/about/', destination: '/about-us/' },
+]
+
+/**
  * REGEX RULES, not exact paths. These are emitted after every exact rule and
  * only ever see a path none of them matched.
  *
@@ -263,6 +294,7 @@ export const redirects = Object.fromEntries(
     ...duplicateSlugRedirects,
     ...legacyIndustryRedirects,
     ...missingFromInventoryRedirects,
+    ...guessedPathRedirects,
     ...mvpClusterRedirects,
     ...cryptoTailRedirects,
     ...ukCityRedirects,
@@ -273,6 +305,7 @@ export const redirectList = [
   ...duplicateSlugRedirects,
   ...legacyIndustryRedirects,
   ...missingFromInventoryRedirects,
+  ...guessedPathRedirects,
   ...mvpClusterRedirects,
   ...cryptoTailRedirects,
   ...ukCityRedirects,

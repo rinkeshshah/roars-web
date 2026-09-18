@@ -36,6 +36,55 @@ import { join } from 'node:path'
 
 const DIST = 'dist'
 
+/**
+ * <lastmod>, FROM THE CONTENT'S OWN DATES.
+ *
+ * astro.config.mjs carries a `serialize: (item) => item` on the sitemap
+ * integration and a comment above it promising "lastmod comes from each
+ * entry's real updatedAt, never build time". That serialize is the identity
+ * function. It has never added anything, and the shipped sitemap had 0
+ * <lastmod> elements against 108 URLs — the comment described an intention,
+ * and nothing enforced it.
+ *
+ * It cannot be done there either: the config loads before astro:content
+ * exists, so the dates are not available at the point the integration is
+ * configured. Here they are just files on disk.
+ *
+ * ONLY REAL DATES. A URL whose page has no content file — the homepage,
+ * /about-us/, the listing pages — gets no <lastmod> at all rather than the
+ * build time. Build time would mark all 108 as changed on every deploy, which
+ * is precisely the signal that gets a sitemap's dates ignored. An absent
+ * lastmod is a valid sitemap and an honest one.
+ */
+const COLLECTION_URL = {
+  posts: (slug) => `/our-journal/${slug}/`,
+  projects: (slug) => `/work/${slug}/`,
+  services: (slug) => `/s/${slug}/`,
+  industries: (slug) => `/industries/${slug}/`,
+  resources: (slug) => `/resources/${slug}/`,
+  cities: (slug) => `/${slug}/`,
+}
+
+const lastmodByPath = new Map()
+const CONTENT = join('src', 'content')
+if (existsSync(CONTENT)) {
+  for (const [coll, toUrl] of Object.entries(COLLECTION_URL)) {
+    const dir = join(CONTENT, coll)
+    if (!existsSync(dir)) continue
+    for (const file of readdirSync(dir)) {
+      if (!file.endsWith('.md') && !file.endsWith('.mdx')) continue
+      const body = readFileSync(join(dir, file), 'utf8').slice(0, 4000)
+      /* updatedAt wins: it is what "last modified" means. publishedAt is the
+         fallback and is right for anything never edited since. */
+      const pick =
+        body.match(/^updatedAt:\s*['"]?(\d{4}-\d{2}-\d{2})/m) ??
+        body.match(/^publishedAt:\s*['"]?(\d{4}-\d{2}-\d{2})/m)
+      if (!pick) continue
+      lastmodByPath.set(toUrl(file.replace(/\.mdx?$/, '')), pick[1])
+    }
+  }
+}
+
 if (!existsSync(DIST)) {
   console.error('prune-sitemap: no dist/. Run the build first.')
   process.exit(1)
@@ -73,6 +122,7 @@ console.log('--- prune-sitemap ---')
 
 let removed = 0
 let kept = 0
+let dated = 0
 const stillWrong = []
 
 for (const file of sitemaps) {
@@ -88,6 +138,11 @@ for (const file of sitemaps) {
     try { p = new URL(loc).pathname } catch { return whole }
     if (noindexUrls.has(p)) { removed++; return '' }
     kept++
+    const date = lastmodByPath.get(p)
+    if (date && !inner.includes('<lastmod>')) {
+      dated++
+      return whole.replace('</loc>', `</loc><lastmod>${date}</lastmod>`)
+    }
     return whole
   })
 
@@ -102,6 +157,7 @@ for (const file of sitemaps) {
 console.log(`pages carrying noindex : ${noindexUrls.size}`)
 console.log(`sitemap URLs removed   : ${removed}`)
 console.log(`sitemap URLs kept      : ${kept}`)
+console.log(`with <lastmod>         : ${dated}  (from the content\u0027s own updatedAt/publishedAt)`)
 
 if (stillWrong.length) {
   console.error('\nFAIL: noindex URLs are still listed in the sitemap:')
