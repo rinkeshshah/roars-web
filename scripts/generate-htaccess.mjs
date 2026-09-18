@@ -275,7 +275,7 @@ say(
   '  #',
   '  # NO `preload` TOKEN, and that is not an oversight. Adding it is a',
   '  # submission to a list baked into browser binaries, it covers every',
-  '  # subdomain of roarsinc.com forever — dev.roarsinc.com included — and',
+  '  # subdomain of roarsinc.com forever — the dev host included — and',
   '  # removal takes months to reach users. includeSubDomains is already the',
   '  # aggressive part: from the first visit, any subdomain that is not on',
   '  # HTTPS becomes unreachable for a year rather than merely insecure.',
