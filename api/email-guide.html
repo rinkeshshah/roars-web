@@ -1,0 +1,196 @@
+<!--
+  Resource download, sent when a guide is requested.
+
+  PROVENANCE: exported from Claude Design ("Roars v2 - Email Templates") and
+  wired up here. Table-based with inline styles on purpose: this has to survive
+  Gmail, Outlook and Apple Mail, which is also why nothing in it is scoped CSS
+  and why it does not go through Astro.
+
+  RENDERED BY public/api/contact.php. Two placeholder forms, both handled there:
+    {{key}}                  a value, HTML-escaped at substitution
+    {{#key}}...{{/key}}      kept when key is non-empty, removed when it is not
+
+  Subject: Your copy of {{resource_title}}
+
+  FIELDS THE DESIGN ASKED FOR THAT THE SITE CANNOT FILL were removed rather
+  than left as placeholders or guessed at. See docs/OPEN-DECISIONS.md.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
+<meta name="supported-color-schemes" content="light dark" />
+<title>Your download | Roars</title>
+<!--[if mso]>
+<style>body,table,td,a{font-family:Arial,Helvetica,sans-serif !important}</style>
+<![endif]-->
+<style>
+  @media only screen and (max-width:620px){
+    .rx-pad{padding-left:24px !important;padding-right:24px !important}
+    .rx-title{font-size:32px !important;line-height:34px !important}
+    .rx-btn{display:block !important;width:100% !important}
+    .rx-stack{display:block !important;width:100% !important;padding:0 0 10px 0 !important}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#E7E7E3;">
+<span style="display:none;font-size:1px;color:#E7E7E3;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">{{resource_title}} · PDF link inside. No login, no expiry, yours to forward.</span>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#E7E7E3;">
+<tr><td align="center" style="padding:26px 12px 34px 12px;">
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px;max-width:600px;background-color:#FBFBFB;">
+
+  <!-- logo band -->
+  <tr>
+    <td style="background-color:#FBFBFB;padding:28px 36px 24px 36px;" class="rx-pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td align="left" valign="middle" width="190">
+          <a href="https://www.roarsinc.com/"><img src="{{asset_base}}/email/roars-lockup.png" width="180" height="47" alt="Roars · user experience matters" style="display:block;width:180px;height:auto;border:0;outline:none;" /></a>
+        </td>
+        <td align="right" valign="middle" style="font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">
+          LIBRARY {{resource_category}}<br />{{issued_at}}
+        </td>
+      </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr><td style="background-color:#FFD400;font-size:0;line-height:0;height:6px;">&nbsp;</td></tr>
+
+  <!-- the file, as a claim stub -->
+  <tr>
+    <td style="background-color:#0A0A0A;padding:38px 36px 0 36px;" class="rx-pad">
+      <p style="margin:0 0 14px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#FFD400;">Released to {{first_name}}</p>
+      <p class="rx-title" style="margin:0 0 20px 0;font-family:Helvetica,Arial,sans-serif;font-size:40px;line-height:42px;font-weight:bold;letter-spacing:-1.8px;color:#FBFBFB;mso-line-height-rule:exactly;">{{resource_title}}</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td width="33%" valign="top" style="border-top:1px solid #33332E;padding:12px 10px 16px 0;font-family:'Courier New',Courier,monospace;font-size:11px;line-height:18px;letter-spacing:1px;text-transform:uppercase;color:#8E8E87;">Format<br /><span style="color:#FBFBFB;font-size:13px;">PDF</span></td>
+        <td width="33%" valign="top" style="border-top:1px solid #33332E;padding:12px 10px 16px 0;font-family:'Courier New',Courier,monospace;font-size:11px;line-height:18px;letter-spacing:1px;text-transform:uppercase;color:#8E8E87;">{{#page_count}}Pages<br /><span style="color:#FBFBFB;font-size:13px;">{{page_count}}</span>{{/page_count}}</td>
+        <td width="34%" valign="top" style="border-top:1px solid #33332E;padding:12px 0 16px 0;font-family:'Courier New',Courier,monospace;font-size:11px;line-height:18px;letter-spacing:1px;text-transform:uppercase;color:#8E8E87;">Size<br /><span style="color:#FBFBFB;font-size:13px;">{{file_size}}</span></td>
+      </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- perforation -->
+  <tr>
+    <td style="background-color:#0A0A0A;padding:0 36px;" class="rx-pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td style="border-top:2px dashed #33332E;font-size:0;line-height:0;height:1px;">&nbsp;</td>
+      </tr></table>
+    </td>
+  </tr>
+
+  <!-- download -->
+  <tr>
+    <td style="background-color:#0A0A0A;padding:26px 36px 38px 36px;" class="rx-pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td bgcolor="#FFD400" style="border-radius:60px;padding:0 24px 0 26px;" align="center">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+            <td style="padding:15px 0;"><a class="rx-btn" href="{{download_url}}" style="font-family:Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold;letter-spacing:-0.3px;color:#0A0A0A;text-decoration:none;">Download the PDF</a></td>
+            <td width="34" align="right" style="font-family:Arial,sans-serif;font-size:15px;line-height:15px;color:#0A0A0A;letter-spacing:2px;padding-left:22px;">&bull;&bull;</td>
+          </tr></table>
+        </td>
+      </tr>
+      </table>
+      <p style="margin:16px 0 0 0;font-family:'Courier New',Courier,monospace;font-size:11px;line-height:18px;letter-spacing:0.5px;color:#8E8E87;">
+        NO LOGIN &middot; NO EXPIRY &middot; YOURS TO FORWARD<br />
+        <a href="{{download_url}}" style="color:#A3A39E;text-decoration:underline;word-break:break-all;">{{download_url}}</a>
+      </p>
+    </td>
+  </tr>
+
+  <!-- contents -->
+  <tr>
+    <td style="padding:34px 36px 0 36px;" class="rx-pad">
+      <p style="margin:0 0 10px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8C8C88;">Contents</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td width="44" valign="top" style="border-top:1.5px solid #141414;padding:13px 10px 13px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;color:#FFD400;">01</td>
+        <td valign="top" style="border-top:1.5px solid #141414;padding:13px 0;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:23px;letter-spacing:-0.4px;color:#141414;mso-line-height-rule:exactly;">{{chapter_1}}</td>
+      </tr>
+      <tr>
+        <td width="44" valign="top" style="border-top:1px solid #DEDED9;padding:13px 10px 13px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;color:#FFD400;">02</td>
+        <td valign="top" style="border-top:1px solid #DEDED9;padding:13px 0;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:23px;letter-spacing:-0.4px;color:#141414;mso-line-height-rule:exactly;">{{chapter_2}}</td>
+      </tr>
+      {{#chapter_3}}<tr>
+        <td width="44" valign="top" style="border-top:1px solid #DEDED9;border-bottom:1px solid #DEDED9;padding:13px 10px 13px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;color:#FFD400;">03</td>
+        <td valign="top" style="border-top:1px solid #DEDED9;border-bottom:1px solid #DEDED9;padding:13px 0;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:23px;letter-spacing:-0.4px;color:#141414;mso-line-height-rule:exactly;">{{chapter_3}}</td>
+      </tr>{{/chapter_3}}
+      </table>
+    </td>
+  </tr>
+
+  <!-- next -->
+  <tr>
+    <td style="padding:28px 36px 34px 36px;" class="rx-pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td valign="top" style="font-family:Helvetica,Arial,sans-serif;font-size:17px;line-height:25px;letter-spacing:-0.5px;color:#141414;padding-bottom:18px;mso-line-height-rule:exactly;">
+          Want the same checklist run against your product? We do it live in 30 minutes and you keep the notes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td class="rx-stack" style="padding:0 10px 0 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td bgcolor="#0A0A0A" style="border-radius:60px;" align="center">
+                  <a class="rx-btn" href="https://meet.roarsinc.com/sales" style="display:block;padding:14px 28px;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.3px;color:#FFFFFF;text-decoration:none;border-radius:60px;">Book the 30 minutes</a>
+                </td>
+              </tr>
+              </table>
+            </td>
+            <td class="rx-stack" style="padding:0;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td bgcolor="#FBFBFB" style="border-radius:60px;border:1.5px solid #141414;" align="center">
+                  <a class="rx-btn" href="https://www.roarsinc.com/resources/" style="display:block;padding:13px 26px;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:-0.3px;color:#141414;text-decoration:none;border-radius:60px;">The full library &rarr;</a>
+                </td>
+              </tr>
+              </table>
+            </td>
+          </tr>
+          </table>
+        </td>
+      </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- footer -->
+  <tr>
+    <td style="background-color:#141412;padding:26px 36px 30px 36px;" class="rx-pad">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td valign="top" style="font-family:Helvetica,Arial,sans-serif;font-size:19px;font-weight:bold;letter-spacing:-0.9px;color:#FBFBFB;padding-bottom:14px;">roars<span style="color:#FFD400;">.</span></td>
+        <td valign="top" align="right" style="font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#FFD400;padding-bottom:14px;">User experience matters</td>
+      </tr>
+      <tr>
+        <td colspan="2" style="border-top:1px solid #2E2E2A;padding-top:14px;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:21px;color:#C2C2BC;mso-line-height-rule:exactly;">
+          <a href="mailto:sales@roarsinc.com" style="color:#FBFBFB;text-decoration:none;">sales@roarsinc.com</a>
+          &nbsp; USA +1 (302) 505-1200 &nbsp; UK +44 (7537) 183399
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="padding-top:10px;font-family:'Courier New',Courier,monospace;font-size:10px;line-height:17px;letter-spacing:0.5px;color:#8E8E87;">
+          ROARS TECHNOLOGIES &middot; {{postal_address}}<br />
+          Sent because you requested {{resource_title}} on roarsinc.com.
+        </td>
+      </tr>
+      </table>
+    </td>
+  </tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>
