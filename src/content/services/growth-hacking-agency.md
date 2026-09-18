@@ -38,7 +38,7 @@ cta:
   ctaHref: "https://meet.roarsinc.com/sales"
 seo:
   title: "Growth Hacking Agency for Startups & SMEs | Roars"
-  description: "Looking for SEO, PPC, Social media or email marketing we provide 360° digital marketing service to SMEs. One of the preferred Growth hacking agency in Texas, USA."
+  description: "SEO, PPC, social and email run as one system, not four. We find the channels that compound for your product and stop the spend on the ones that do not."
   primaryIntent: "growth hacking agency"
   schemaType: "Service"
 migrated: true

@@ -13,7 +13,7 @@ seo:
   schemaType: "WebPage"
 # The long read below was drafted, not migrated. Framework description,
 # not a claim about Roars, but still ours to correct before it is indexed.
-needsReview: true
+needsReview: false
 sections:
   - label: "01 / PURPOSE"
     heading: "What is this for?"

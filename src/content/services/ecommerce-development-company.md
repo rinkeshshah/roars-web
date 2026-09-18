@@ -38,7 +38,7 @@ cta:
   ctaHref: "https://meet.roarsinc.com/sales"
 seo:
   title: "Best eCommerce Development Company In USA | Roars Technologies"
-  description: "Hire eCommerce expert & experienced web developers at reasonable cost from best eCommerce development company based in Texas, USA. We Provide custom ecommerce development services, mCommerce Development, eCommerce Plugin & Integration and more."
+  description: "Custom storefronts, mCommerce and the integrations behind them, built to survive a real catalogue and a real checkout load. Shipped, measured, iterated."
   primaryIntent: "ecommerce development company"
   schemaType: "Service"
 migrated: true

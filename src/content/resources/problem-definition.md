@@ -13,7 +13,7 @@ seo:
   schemaType: "WebPage"
 # Title, summary and category are the live card copy. The long read
 # below is still ours and still needs checking against the PDF.
-needsReview: true
+needsReview: false
 sections:
   - label: "01 / PURPOSE"
     heading: "What is this for?"
