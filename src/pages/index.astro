@@ -1388,7 +1388,18 @@ const schema = [
     list-style: none; margin: 0; padding: 0;
     display: flex; flex-wrap: wrap; column-gap: 28px; row-gap: 10px;
   }
+  /* 44px OF THUMB, AND THE TYPE DOES NOT MOVE.
+     Vertical padding to make the target, an equal negative margin to give the
+     space back, so the link sits exactly where the artboard puts it and is
+     hittable. Same pattern as .wp-back and .pd__back, for the same reason:
+     these are bare text set at 14-20px, which measures about 20px tall -- under
+     the 24px floor a finger needs and well under the 44px that is comfortable.
+     A list of links is a list of controls, not a sentence, so there is no
+     inline-text exemption to lean on here. */
   .svc__also-list :global(a) {
+    display: inline-block;
+    padding-block: 12px;
+    margin-block: -12px;
     font-size: var(--fs-body); line-height: 23px;
     font-weight: var(--fw-semi); letter-spacing: var(--ls-item);
     color: var(--c-black); text-decoration: none;
@@ -1604,9 +1615,17 @@ const schema = [
   .say__nav { display: grid; grid-template-columns: 8px 102px 42px 8px; gap: 0 10px; width: 190px; align-items: center; margin-top: 14px; font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-medium); letter-spacing: var(--ls-display); }
   /* These are <button>s now, so the UA's own chrome has to come off before
      they look like the marks the prototype draws. */
+  /* 44px OF THUMB, AND THE TYPE DOES NOT MOVE.
+     Vertical padding to make the target, an equal negative margin to give the
+     space back, so the link sits exactly where the artboard puts it and is
+     hittable. Same pattern as .wp-back and .pd__back, for the same reason:
+     these are bare text set at 14-20px, which measures about 20px tall -- under
+     the 24px floor a finger needs and well under the 44px that is comfortable.
+     These are the only way through the testimonials on a phone. */
   .say__prev, .say__next {
-    border: 0; padding: 0; background: none; cursor: pointer;
+    border: 0; background: none; cursor: pointer;
     font: inherit; letter-spacing: inherit;
+    padding-block: 11px; padding-inline: 0; margin-block: -11px;
   }
   .say__prev { color: rgba(0, 0, 0, 0.4); }
   .say__next { color: rgb(8, 8, 8); }

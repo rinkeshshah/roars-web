@@ -461,6 +461,16 @@ const year = new Date().getFullYear()
   .ft__legal .ft__dim, .ft__legal .ft__col:first-child span { color: var(--c-on-dark-50); }
   .ft__legal .ft__col--links { color: var(--c-on-dark-80); }
   .ft__legal .ft__col--links span, .ft__legal .ft__col--links a { color: var(--c-on-dark-80); }
+  /* 44px OF THUMB, AND THE TYPE DOES NOT MOVE.
+     Vertical padding to make the target, an equal negative margin to give the
+     space back, so the link sits exactly where the artboard puts it and is
+     hittable. Same pattern as .wp-back and .pd__back, for the same reason:
+     these are bare text set at 14-20px, which measures about 20px tall -- under
+     the 24px floor a finger needs and well under the 44px that is comfortable.
+     Privacy, Terms and the profile download, stacked one per line. */
+  .ft__legal .ft__col--links a {
+    display: inline-block; padding-block: 12px; margin-block: -12px;
+  }
 
   @media (max-width: 1040px) {
     .ft__grid { grid-template-columns: 1fr 1fr; row-gap: var(--sp-6); }

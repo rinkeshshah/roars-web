@@ -481,7 +481,17 @@ const schema = [
     font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-item);
   }
-  .co__email { top: 176px; color: rgb(20, 20, 20); }
+  /* 44px OF THUMB, AND THE TYPE DOES NOT MOVE.
+     Vertical padding to make the target, an equal negative margin to give the
+     space back, so the link sits exactly where the artboard puts it and is
+     hittable. Same pattern as .wp-back and .pd__back, for the same reason:
+     these are bare text set at 14-20px, which measures about 20px tall -- under
+     the 24px floor a finger needs and well under the 44px that is comfortable.
+     The mailto is the whole point of this block. */
+  .co__email {
+    top: 176px; color: rgb(20, 20, 20);
+    display: inline-block; padding-block: 11px; margin-block: -11px;
+  }
   .co__phone { top: 201px; font-weight: var(--fw-semi); color: rgba(20, 20, 20, 0.62); }
 
   /* ── say hello ──────────────────────────────────────────── */
@@ -580,7 +590,15 @@ const schema = [
     display: flex; flex-wrap: wrap; gap: 24px;
     border-top: 0.5px solid var(--c-rule-soft);
   }
+  /* 44px OF THUMB, AND THE TYPE DOES NOT MOVE.
+     Vertical padding to make the target, an equal negative margin to give the
+     space back, so the link sits exactly where the artboard puts it and is
+     hittable. Same pattern as .wp-back and .pd__back, for the same reason:
+     these are bare text set at 14-20px, which measures about 20px tall -- under
+     the 24px floor a finger needs and well under the 44px that is comfortable.
+     A 17px row of five links side by side is the worst case on the site. */
   .cs__social a {
+    display: inline-block; padding-block: 14px; margin-block: -14px;
     font-size: var(--fs-label); line-height: 24px; font-weight: var(--fw-medium);
     letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
     transition: color var(--dur-fast) ease;

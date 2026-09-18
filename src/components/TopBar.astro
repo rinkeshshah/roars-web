@@ -89,6 +89,58 @@ const CTA = {
     z-index: 50;
     pointer-events: none;
   }
+
+  /**
+   * THE BAR NEEDS A GROUND ONCE THE PAGE IS MOVING.
+   *
+   * It is transparent on purpose at the top, where it composes with the hero.
+   * Scrolled, that same transparency put the page's own copy straight through
+   * the mark and the burger: "Awarded" reading as the logo with an A behind
+   * it on /about-us/, the "AI automation" paragraph running through both on an
+   * industry page, the client logos colliding with the mark on /work/. Every
+   * page, every width, for as long as the bar has existed -- it never showed
+   * up in a gate because assert-overlap measures the page at rest and nothing
+   * overlaps at scroll zero.
+   *
+   * ON is-scrolled, which already existed and already fades the pill's note at
+   * exactly this point: the author was thinking about this state and gave it
+   * no ground. Same trigger, so the bar simplifies and becomes opaque in one
+   * movement rather than two.
+   *
+   * SOLID, NOT FROSTED, and that was a decision rather than the first idea.
+   * A translucent ground with a blur is the prettier answer -- it takes the
+   * colour of whatever is behind it and leaves no seam against the greys and
+   * photographs this bar crosses. It was built that way first and measured at
+   * 0.82 alpha: the about page's grey plate read straight through it and took
+   * the burger's contrast with it, which is the reported bug at a lower
+   * opacity rather than a fix for it. backdrop-filter compositing cannot be
+   * verified in the environment these gates run in, so the legibility of the
+   * only navigation on the page is not going to depend on it. Opaque, with a
+   * hairline under it so the edge reads as an edge and not as a mistake.
+   *
+   * inset: 0 covers it -- measured, the bar's box encloses both controls at
+   * every width (390: bar 0-68, mark 24-60, burger 21-63).
+   */
+  .topbar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--c-footer);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    opacity: 0;
+    transition: opacity var(--dur-med) var(--ease-out);
+    pointer-events: none;
+  }
+  .topbar.is-scrolled::before { opacity: 1; }
+  /* is-light means the bar is NOT over a dark section, so the ground is pale. */
+  .topbar.is-light::before {
+    background: var(--c-white);
+    border-bottom-color: rgba(20, 20, 20, 0.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .topbar::before { transition: none; }
+  }
   .topbar__inner {
     display: flex;
     align-items: flex-start;

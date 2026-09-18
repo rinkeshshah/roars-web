@@ -637,6 +637,24 @@ const schema = [
     .agh__intro { width: 100%; }
     .agb__stat-rule { width: 100%; }
 
+    /* THE STAT LABEL SITS UNDER THE FIGURE, not beside it.
+       The rule above was widened for this band and the label was not: it is
+       still absolute at left 235 with a 137px width, which needs 372px of
+       room. There is 712 at 768, so it fitted and looked deliberate, and 280
+       at 320 -- where it painted 92px past the edge and lost its last words
+       inside a clipping section. Found by widening this gate past /work/.
+       The figure stays where it is and the label goes below it. The suffix
+       keeps its absolute offsets, which are measured from this box rather
+       than from the figure, so the '+' stays on the numeral. */
+    .agb__stat { height: auto; min-height: 76px; padding-top: 11px; }
+    .agb__stat-n { position: static; display: block; }
+    .agb__stat-label {
+      position: static;
+      width: auto;
+      max-width: 30ch;
+      margin-top: 8px;
+    }
+
     /* ── Team and clients: TWO PER ROW, not one ──────────────
        These were one per row at a fixed 198px disc, which on a 390 phone is
        half the viewport per face and eight scroll-screens of portraits. The

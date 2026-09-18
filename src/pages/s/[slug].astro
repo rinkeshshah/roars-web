@@ -1209,7 +1209,13 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
      card grids fall to two columns and then one. */
   @media (max-width: 1360px) {
     .sv-hero__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 130px 72px; row-gap: 40px; }
-    .sv-hero__rail, .sv-hero__mast, .sv-console { grid-column: 1; grid-row: auto; margin-top: 0; width: auto; max-width: 520px; }
+    /* min-width: 0, because a grid item's default `auto` floors its track at
+       its own min-content width. Something in this hero measures 319px at its
+       narrowest, so the 1fr column grew to 319 inside a 280px page and the
+       whole hero -- eyebrow, mast, standfirst, chips -- painted 39px past the
+       right gutter on a 320 phone, inside a section that clips. The track is
+       allowed to shrink and the content wraps instead. */
+    .sv-hero__rail, .sv-hero__mast, .sv-console { grid-column: 1; grid-row: auto; margin-top: 0; width: auto; max-width: 520px; min-width: 0; }
     .sv-hero__statement, .sv-hero__sub, .sv-hero__pills { width: auto; max-width: 460px; }
     .sv-hero__large { white-space: normal; line-height: 1.02; }
     .sv-hero__small { line-height: 1.05; }
@@ -1256,7 +1262,47 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
     .sv-faq__list { margin-top: 48px; }
   }
 
+  /**
+   * THE MAST'S FLOOR IS TOO BIG FOR A SMALL PHONE.
+   *
+   * font-size is clamp(56px, 9.17vw, 132px), so below about 611px it is pinned
+   * at 56 and stops responding. The masts are single words -- "development",
+   * "transformation" -- which cannot wrap, and at 56px "development" measures
+   * 319px inside a 280px page on a 320 screen. It painted straight off the
+   * right edge of a section that clips, so the word lost its tail.
+   *
+   * 470px, not 760: between 470 and 611 the 56px floor fits, and at 470 12vw
+   * is 56.4 -- so this hands over to the clamp with no step in it. 12vw, not a
+   * second px floor, because the constraint is the width of the screen and the
+   * longest mast on the site is 14 characters.
+   */
+  @media (max-width: 470px) {
+    .sv-hero__large { font-size: 12vw; }
+  }
+
   @media (max-width: 760px) {
+    /**
+     * THE 62% MEASURE IS A DESKTOP RATIO, AND IT COLLAPSES ON A PHONE.
+     *
+     * Every section heading on this template caps at 62% of its column. On the
+     * 1440 artboard that is 844px and holds a heading on two lines, which is
+     * what it was drawn for. A percentage shrinks with its container though,
+     * and at 390 the same rule gives 217px of a 350px column -- so 38px type
+     * breaks one word per line: "Healthcare / app / development, / end to end"
+     * beside a paragraph using the full width.
+     *
+     * A measure belongs to the text, not to the container, so below the fold
+     * of the artboard it is simply released: on one column there is nothing to
+     * hold the heading away from, and the column is already the measure.
+     * Nothing above 760px changes.
+     */
+    .sv-feat__client,
+    .sv-eng__h,
+    .sv-scope__h,
+    .sv-shape__h,
+    .sv-next__h {
+      max-width: none;
+    }
     .sv-cards, .sv-cards--tall, .sv-proc__steps, .sv-rec__stats { grid-template-columns: 1fr; }
   }
 </style>
