@@ -230,7 +230,7 @@ applies:
 close:
   heading: "Tell us what percentage of signups reach your activation moment."
   body: "And what you count as that moment. If the second answer is hard, that is the thing worth working on. We will come back in two working days."
-needsReview: true
+needsReview: false
 ---
 ![](/wp-content/uploads/2022/08/coding-8.webp)
 

@@ -159,7 +159,7 @@ close:
   ctaLabel: "Shall we chat?"
   ctaHref: "https://meet.roarsinc.com/sales"
   contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
-needsReview: true
+needsReview: false
 ---
 ![](/wp-content/uploads/2022/08/puzzle-piece.webp)
 

@@ -236,7 +236,7 @@ domain:
 close:
   heading: "Tell us which regime you have to satisfy, and who the user is."
   body: "Those two answers decide most of the architecture. We will come back in two working days with what we think that means for the build."
-needsReview: true
+needsReview: false
 ---
 ![](/wp-content/uploads/2022/08/image_2022_08_03T08_28_35_807Z.png)
 

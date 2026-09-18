@@ -201,7 +201,7 @@ applies:
 close:
   heading: "Tell us what your product does when a booking changes."
   body: "That answer usually explains the rest of the product. We will come back in two working days with what we would fix first."
-needsReview: true
+needsReview: false
 ---
 ![](/wp-content/uploads/2022/08/hotel.png)
 
