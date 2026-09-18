@@ -141,7 +141,15 @@ const CTA = {
   @media (prefers-reduced-motion: reduce) {
     .topbar::before { transition: none; }
   }
+  /* POSITIONED, AND THAT IS NOT DECORATION. The plate above is an absolutely
+     positioned ::before, and a positioned descendant paints above every
+     non-positioned in-flow one however early it appears in the tree. With
+     this row left static the plate covered the mark and the burger the moment
+     the bar scrolled — a solid band with nothing on it, which is exactly what
+     "the hamburger is missing" looked like. */
   .topbar__inner {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;

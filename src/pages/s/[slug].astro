@@ -1233,6 +1233,18 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
     .sv-band, .sv-band--tall, .sv-proc, .sv-rec, .sv-faq, .sv-feat {
       min-height: 0; padding-block: 64px 72px;
     }
+    /* ONE COLUMN, WHICH IS WHAT THE HEADINGS WERE MISSING.
+       These sections are a two-column grid, `minmax(0, 1fr) 32.305%`, and the
+       second column was still being reserved at phone widths. At 390 that
+       leaves the heading column 197px of a 350px measure — so while every
+       other heading on the page ran the full width, the three band headings
+       broke one and two words to a line inside a column half the page wide,
+       with the other half empty beside them. Nothing occupies that column
+       here: the intro is released below and stacks. */
+    .sv-band, .sv-faq, .sv-proc { grid-template-columns: minmax(0, 1fr); column-gap: 0; }
+    .sv-band__head, .sv-proc__head, .sv-band__intro, .sv-proc__intro {
+      grid-column: 1 / -1; grid-row: auto;
+    }
     .sv-band__h { line-height: 1.08; margin-left: 0; }
     /* The FAQ heading needs saying twice. Its own rule above is
        `.sv-faq .sv-band__h`, two classes, and it outranks the one-class rule
@@ -1311,5 +1323,28 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
       max-width: none;
     }
     .sv-cards, .sv-cards--tall, .sv-proc__steps, .sv-rec__stats { grid-template-columns: 1fr; }
+
+    /**
+     * BALANCED, NOW THAT THE MEASURE IS RIGHT.
+     *
+     * Once a heading has the full column it wraps where the words happen to
+     * run out, which on a phone is usually a long first line and two words
+     * on the second. `balance` evens the lines instead, without changing how
+     * many there are or the size of anything — the browser picks the break,
+     * we do not hand-tune one per heading.
+     *
+     * HERE AND NOT ABOVE 760: at desktop widths almost every one of these is
+     * a single line, so balancing would be a no-op on most and a change to a
+     * designed break on the rest. The phone is where they all wrap.
+     */
+    .sv-band__h,
+    .sv-cost__h,
+    .sv-eng__h,
+    .sv-scope__h,
+    .sv-shape__h,
+    .sv-next__h,
+    .sv-feat__client {
+      text-wrap: balance;
+    }
   }
 </style>
