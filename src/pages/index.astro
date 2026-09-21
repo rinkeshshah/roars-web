@@ -22,7 +22,7 @@ import Button from '../components/Button.astro'
 import Accordion from '../components/Accordion.astro'
 import { getCollection } from 'astro:content'
 import { site } from '../lib/site'
-import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL_IMG } from '../lib/media'
+import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL_IMG, workAltFor } from '../lib/media'
 import { JOURNAL } from '../lib/journal'
 import GrainField from '../components/GrainField.astro'
 import RingField from '../components/RingField.astro'
@@ -466,8 +466,8 @@ const schema = [
               {/* Two 28px portraits under the year. Files arrive with the
                   Phase 5 uploads import; the discs hold their places. */}
               <span class="about__est-faces" aria-hidden="true">
-                <img src={PORTRAIT.suzanne} alt="" width="28" height="28" loading="lazy" />
-                <img src={PORTRAIT.nitin} alt="" width="28" height="28" loading="lazy" />
+                <img src={PORTRAIT.suzanne} alt="" data-decorative width="28" height="28" loading="lazy" />
+                <img src={PORTRAIT.nitin} alt="" data-decorative width="28" height="28" loading="lazy" />
               </span>
             </span>
           </div>
@@ -482,10 +482,10 @@ const schema = [
             sits in that gap. Portraits arrive with the Phase 5 uploads
             import; the discs hold their places until then. */}
         <div class="about__cluster">
-          <img class="about__face about__face--a" src={PORTRAIT.suzanne} alt="" width="42" height="42" loading="lazy" />
-          <img class="about__face about__face--b" src={PORTRAIT.chetna} alt="" width="42" height="42" loading="lazy" />
-          <img class="about__face about__face--c" src={PORTRAIT.nitin} alt="" width="42" height="42" loading="lazy" />
-          <img class="about__face about__face--d" src={PORTRAIT.atul} alt="" width="42" height="42" loading="lazy" />
+          <img class="about__face about__face--a" src={PORTRAIT.suzanne} alt="" data-decorative width="42" height="42" loading="lazy" />
+          <img class="about__face about__face--b" src={PORTRAIT.chetna} alt="" data-decorative width="42" height="42" loading="lazy" />
+          <img class="about__face about__face--c" src={PORTRAIT.nitin} alt="" data-decorative width="42" height="42" loading="lazy" />
+          <img class="about__face about__face--d" src={PORTRAIT.atul} alt="" data-decorative width="42" height="42" loading="lazy" />
           {/* From the token, not typed. This figure agreed with the about
               page's counter by luck rather than by construction, and the
               about hero disagreed with both. */}
@@ -496,7 +496,7 @@ const schema = [
       <div data-reveal class="about__who" style="transition-delay:160ms">
         <p class="about__who-name">Roars</p>
         <p class="about__who-sub">Product Company</p>
-        <img class="about__who-face" src={PORTRAIT.founder} alt="" width="60" height="60" loading="lazy" />
+        <img class="about__who-face" src={PORTRAIT.founder} alt="" data-decorative width="60" height="60" loading="lazy" />
         <p class="about__who-person">Rinkesh A Shah</p>
         <p class="about__who-role">CEO / Founder</p>
       </div>
@@ -535,7 +535,9 @@ const schema = [
                 {CLIENT_LOGOS.map((l, i) => (
                   <img
                     src={l.src}
-                    alt={clone ? '' : l.alt}
+                    alt={clone ? '' : `${l.alt} logo`} data-decorative={clone ? true : undefined}
+                    width={l.w}
+                    height={l.h}
                     style={`--i:${i}`}
                     loading="lazy"
                     decoding="async"
@@ -650,6 +652,7 @@ const schema = [
             data-slide
             style={`opacity:${i === 0 ? 1 : 0}`}
             aria-hidden={i === 0 ? undefined : 'true'}
+            {...(i === 0 ? {} : { inert: true })}
           >
             {/* Day and month only. The year is on the card beside the star,
                 the way /work/ sets it — see the note on `featured` above. */}
@@ -658,9 +661,9 @@ const schema = [
               <div class="rule rule--thin"></div>
             </div>
             <a class="proj__card" href={f.href}>
-              <img class="proj__ph" src={f.img} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+              <img class="proj__ph" src={f.img} alt={workAltFor(f.name)} width="2400" height="1200" loading="lazy" decoding="async" />
               <span class="proj__faces" aria-hidden="true">
-                {f.faces.map((src) => <img src={src} alt="" width="42" height="42" loading="lazy" />)}
+                {f.faces.map((src) => <img src={src} alt="" data-decorative width="42" height="42" loading="lazy" />)}
               </span>
               {/* Sector, name, year — stacked and left-aligned on the flat-ink
                   side, which is the same caption /work/ sets on its cards. */}
@@ -721,7 +724,7 @@ const schema = [
                 <p class="say__name">{t.name}</p>
                 <p class="say__role">{t.role}</p>
                 <div class="say__rule"></div>
-                <div class="say__stars" aria-label="Rated 5 out of 5">
+                <div class="say__stars" role="img" aria-label="Rated 5 out of 5">
                   {[0, 1, 2, 3, 4].map(() => (
                     <span class="starmark" style={`--m:url(${star5.src});width:var(--st);height:var(--st)`} aria-hidden="true"></span>
                   ))}
@@ -804,7 +807,7 @@ const schema = [
       <h2 class="display">Insights</h2>
       <div class="ins__head">
         <div class="ins__who">
-          <img class="ins__avatar" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
+          <img class="ins__avatar" src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" loading="lazy" />
           <p class="ins__name">Rinkesh A Shah</p>
           <p class="ins__role">Founder</p>
         </div>
@@ -819,7 +822,7 @@ const schema = [
         {insights.map((post, i) => (
           <li data-reveal style={`transition-delay:${i * 70}ms`}>
             <a class="ins__card" href={post.href}>
-              <img class="ins__ph" src={post.img} alt="" width="138" height="138" loading="lazy" decoding="async" />
+              <img class="ins__ph" src={post.img} alt={`${post.title}, article illustration`} width="138" height="138" loading="lazy" decoding="async" />
               <span class="ins__rule"></span>
               <span class="ins__day">{post.day}</span>
               <span class="ins__month">{post.month}</span>
@@ -845,7 +848,7 @@ const schema = [
       <h2 class="display">FAQ</h2>
       {/* Founder block sits in the left rail, as in the prototype. */}
       <div class="faq__rail" data-reveal>
-        <img class="faq__avatar" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
+        <img class="faq__avatar" src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" loading="lazy" />
         <p class="faq__who">Rinkesh A Shah</p>
         <p class="faq__role">CEO / Founder</p>
         <p class="faq__intro">

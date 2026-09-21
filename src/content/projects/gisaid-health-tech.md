@@ -16,14 +16,14 @@ blocks:
 gallery:
   - src: "/wp-content/uploads/2022/08/gisaid-3.webp"
     kind: "web"
-    alt: ""
+    alt: "GISAID, screen 3"
   - src: "/wp-content/uploads/2022/08/gisaid-2.webp"
     kind: "web"
-    alt: ""
+    alt: "GISAID, screen 2"
 showcase:
   - src: "/wp-content/uploads/2022/08/gisaid-1.webp"
     kind: "web"
-    alt: ""
+    alt: "GISAID, screen 1"
   - src: "/wp-content/uploads/2022/08/gisaid4.webp"
     alt: "The GISAID platform"
     kind: "web"

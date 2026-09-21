@@ -1,0 +1,76 @@
+---
+/**
+ * A case-study cover, served as AVIF or WebP where the browser takes them.
+ *
+ * The derivatives are made by scripts/build-work-responsive.mjs, which runs in
+ * `npm run build` — see that file for why these are not imported assets going
+ * through Astro's own pipeline.
+ *
+ * FALLS BACK TO THE PLAIN <img>, not to nothing. Four of the twenty-three
+ * projects have no cover in public/work/ and keep whatever /wp-content/uploads/
+ * path their content file carries, so `src` here is not always one of ours.
+ * When there is no matching derivative set, this renders exactly the tag the
+ * page rendered before, which is the point: a missing file degrades to today's
+ * behaviour rather than to a broken picture element.
+ *
+ * `sizes` is measured, not guessed. On /work/ the card is a little under half
+ * the 1362 content box at desktop and full width below the stack breakpoint,
+ * so the browser is told 46vw and 92vw; it then picks from srcset itself.
+ */
+interface Props {
+  src: string
+  alt: string
+  width: number
+  height: number
+  /** The first card is above the fold on every viewport; the rest are not. */
+  eager?: boolean
+  sizes?: string
+  class?: string
+}
+const {
+  src,
+  alt,
+  width,
+  height,
+  eager = false,
+  sizes = '(max-width: 900px) 92vw, 46vw',
+  class: className,
+} = Astro.props
+
+const WIDTHS = [640, 1024, 1600, 2400]
+
+/* Only our own /work/<slug>.jpg covers have derivatives. Anything else — the
+   four on /wp-content/uploads/ — goes through as it always did. */
+const m = src.match(/^\/work\/([^/]+)\.jpe?g$/i)
+const slug = m?.[1]
+const set = (ext: string) =>
+  WIDTHS.map((w) => `/work/r/${slug}-${w}.${ext} ${w}w`).join(', ')
+---
+
+{slug ? (
+  <picture>
+    <source type="image/avif" srcset={set('avif')} sizes={sizes} />
+    <source type="image/webp" srcset={set('webp')} sizes={sizes} />
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      class={className}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      decoding={eager ? 'sync' : 'async'}
+    />
+  </picture>
+) : (
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    class={className}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+    decoding={eager ? 'sync' : 'async'}
+  />
+)}

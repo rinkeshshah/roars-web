@@ -28,7 +28,7 @@ blocks:
 gallery:
   - src: "/wp-content/uploads/2022/08/clubsocial-wireframe.jpg"
     kind: "wireframe"
-    alt: ""
+    alt: "Clubsocial wireframe"
   - src: "/wp-content/uploads/2022/08/Home.jpg"
     kind: "app"
     alt: "Home"

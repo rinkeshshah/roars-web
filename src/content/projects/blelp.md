@@ -32,12 +32,12 @@ blocks:
     lead: "users can review their experience on this platform quickly and faster."
 gallery:
   - src: "/wp-content/uploads/2022/08/tuma-Fonts-typography.webp"
-    alt: ""
+    alt: "Tuma fonts typography"
   - src: "/wp-content/uploads/2022/08/blelp-home.png"
-    alt: ""
+    alt: "Blelp home"
 showcase:
   - src: "/wp-content/uploads/2022/08/listpage-blelp01.png"
-    alt: ""
+    alt: "Listpage blelp01"
 needsRewrite: true
 seo:
   title: "Blelp - Customer Ratings and Reviews platform website development"

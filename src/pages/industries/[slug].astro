@@ -277,7 +277,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
               <span class:list={['icz__shot', d.cases.items.length === 1 && 'icz__shot--sweep']}>
                 {workHeroFor(c.href) && (
                   <Fragment>
-                    <img src={workHeroFor(c.href)} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+                    <img src={workHeroFor(c.href)} alt="" data-decorative width="2400" height="1200" loading="lazy" decoding="async" />
                     {d.cases.items.length === 1 && <RingField variant="sweep" />}
                   </Fragment>
                 )}
@@ -482,7 +482,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
               beside it is the content. */}
           {featuredShot && (
             <div class="ip__bg" aria-hidden="true">
-              <img src={featuredShot} alt="" width="1440" height="1000" loading="lazy" decoding="async" />
+              <img src={featuredShot} alt="" data-decorative width="1440" height="1000" loading="lazy" decoding="async" />
               <RingField variant="sweep" />
             </div>
           )}

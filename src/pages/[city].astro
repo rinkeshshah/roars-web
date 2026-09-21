@@ -207,7 +207,7 @@ const schema = [{
                   case-study page's own header. */}
               {workHeroFor(w.href) && (
                 <span class="cw__shot" aria-hidden="true">
-                  <img src={workHeroFor(w.href)} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+                  <img src={workHeroFor(w.href)} alt="" data-decorative width="2400" height="1200" loading="lazy" decoding="async" />
                 </span>
               )}
               <span class="cw__tag">{w.tag}</span>
@@ -264,7 +264,6 @@ const schema = [{
     heading="Ready to kickstart your project?"
     body="Tell us what you are building and who it is for. We will come back within a day with a view on scope, sequence and what we would do first."
     ctaLabel="Shall we chat?"
-    ctaHref="https://meet.roarsinc.com/sales"
   />
 
   <SiteFooter />

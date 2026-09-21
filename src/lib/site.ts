@@ -40,7 +40,7 @@ export const site = {
     UK: { display: '+44 (7537) 183399', tel: '+447537183399' },
   },
 
-  booking: 'https://meet.roarsinc.com/sales',
+  booking: 'https://meet.roarsinc.com/suzanne/sales',
   companyProfile: 'https://link.roars.in/F39Mv',
 
   /** Used as Organization.sameAs. Order is deliberate: strongest first. */
@@ -50,7 +50,7 @@ export const site = {
        carries the client reviews — the strongest third-party corroboration
        the business has, and the one that links back here. */
     'https://clutch.co/profile/roars-technologies',
-    'https://twitter.com/roarstech',
+    'https://x.com/roarstech',
     'https://www.instagram.com/roarstech',
     'https://www.facebook.com/roarstech/',
   ],
@@ -163,6 +163,27 @@ export const ROBOTS_INDEX =
 
 export const ROBOTS_NOINDEX = 'noindex,nofollow'
 
-/** Resolve the robots value for one page. */
-export const robotsFor = (pageNoindex = false): string =>
-  !ALLOW_INDEXING || pageNoindex ? ROBOTS_NOINDEX : ROBOTS_INDEX
+/**
+ * Keep this page out of the index, but follow what it links to.
+ *
+ * For paginated archives. /our-journal/page/2..5/ are thin by nature — a list
+ * of cards already shown elsewhere — so they should not be indexed. But pages
+ * 2 to 5 are the ONLY internal path to posts 11 through 60, and `nofollow`
+ * told a crawler to stop there, orphaning fifty posts behind a door marked do
+ * not open. noindex keeps them out of results; follow keeps the posts reachable.
+ */
+export const ROBOTS_NOINDEX_FOLLOW = 'noindex,follow'
+
+/**
+ * Resolve the robots value for one page.
+ *
+ * `'follow'` asks for noindex,follow. Plain `true` still means nofollow, which
+ * is right for a utility page or a held-back case study: those link nowhere we
+ * want crawled from. The dev switch overrides both — an unindexed build says
+ * nofollow everywhere, because on dev there is nothing worth following.
+ */
+export const robotsFor = (pageNoindex: boolean | 'follow' = false): string => {
+  if (!ALLOW_INDEXING) return ROBOTS_NOINDEX
+  if (pageNoindex === 'follow') return ROBOTS_NOINDEX_FOLLOW
+  return pageNoindex ? ROBOTS_NOINDEX : ROBOTS_INDEX
+}

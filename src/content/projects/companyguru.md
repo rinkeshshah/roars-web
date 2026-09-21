@@ -33,21 +33,21 @@ blocks:
     lead: "Seamless connectivity with the Australian ASIC system facilitates immediate validation and processing of registration details, significantly speeding up the approval process."
 gallery:
   - src: "/wp-content/uploads/2022/08/tuma-Fonts-typography.webp"
-    alt: ""
+    alt: "Tuma fonts typography"
   - src: "/wp-content/uploads/2025/03/companyguru-1.png"
-    alt: ""
+    alt: "Company Guru, screen 1"
 showcase:
   - src: "/wp-content/uploads/2025/03/Companyguru-2.png"
-    alt: ""
+    alt: "Company Guru, screen 2"
   - src: "/wp-content/uploads/2025/03/Companyguru-3.png"
-    alt: ""
+    alt: "Company Guru, screen 3"
   - src: "/wp-content/uploads/2025/03/Cguru-4.png"
-    alt: ""
+    alt: "Cguru"
   - src: "/wp-content/uploads/2025/03/cguru-5.png"
-    alt: ""
+    alt: "Cguru"
 screens:
   - src: "/wp-content/uploads/2025/03/cguru-6.png"
-    alt: ""
+    alt: "Cguru"
 seo:
   title: "Company Guru: Case Study"
   description: "Roars Technologies collaborated with CompanyGuru to revolutionize the traditional company registration process in Australia. By developing an intuitive online platform, we enabled users to register their companies remotely with the Australian ASIC."

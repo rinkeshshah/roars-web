@@ -122,9 +122,9 @@ const awards = [
  * row reserves its space before the images load.
  */
 const VENTURES = [
-  { name: 'Produit', domain: 'produit.co', logo: '/ventures/produit.png', w: 253, h: 60 },
-  { name: 'Hostwala', domain: 'hostwala.co', logo: '/ventures/hostwala.png', w: 250, h: 60 },
-  { name: 'UX Audit Pro', domain: 'uxauditpro.com', logo: '/ventures/uxauditpro.png', w: 280, h: 59 },
+  { name: 'Produit', domain: 'produit.co', url: 'https://www.produit.co/', logo: '/ventures/produit.png', w: 253, h: 60 },
+  { name: 'Hostwala', domain: 'hostwala.co', url: 'https://www.hostwala.co/', logo: '/ventures/hostwala.png', w: 250, h: 60 },
+  { name: 'UX Audit Pro', domain: 'uxauditpro.com', url: 'https://www.uxauditpro.com/', logo: '/ventures/uxauditpro.png', w: 280, h: 59 },
   { name: 'MicroKopy', domain: 'microkopy.com', logo: '/ventures/microkopy.png', w: 280, h: 58 },
   { name: 'GetAutomation', domain: 'getautomation.ai', logo: '/ventures/getautomation.png', w: 280, h: 60 },
 ]
@@ -166,10 +166,10 @@ const schema = [
       <div class="wrap agh__inner">
         {/* Founder block at 39,96, width 384. */}
         <div class="agh__founder" data-reveal>
-          <img class="agh__face" src={PORTRAIT.founder} alt="" width="42" height="42" />
+          <img class="agh__face" src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" />
           <span class="agh__name">Rinkesh A Shah</span>
           <span class="agh__role">CEO</span>
-          <img class="agh__quote" src={quote.src} alt="" width="32" height="27" />
+          <img class="agh__quote" src={quote.src} alt="" data-decorative width="32" height="27" />
           <p class="agh__intro">
             We work alongside entrepreneurs and visionaries, using agile
             methodologies to produce brilliant, scalable, technology-based
@@ -194,8 +194,8 @@ const schema = [
 
         {/* Trust row at 929 in the box, 26 below the masthead's top. */}
         <div class="agh__trust" data-reveal>
-          <img class="agh__trust-face" src={PORTRAIT.suzanne} alt="" width="42" height="42" />
-          <img class="agh__trust-face" src={PORTRAIT.chetna} alt="" width="42" height="42" />
+          <img class="agh__trust-face" src={PORTRAIT.suzanne} alt="" data-decorative width="42" height="42" />
+          <img class="agh__trust-face" src={PORTRAIT.chetna} alt="" data-decorative width="42" height="42" />
           <span class="agh__count"><span>{site.stats.teamSize}</span>
             <span class="starmark" style={`--m:url(${star3.src});width:9px;height:9px`}></span>
           </span>
@@ -255,7 +255,7 @@ const schema = [
       <ul class="agb__grid agb__grid--team" id="team" data-reveal>
         {team.map((m) => (
           <li class="agb__person">
-            <span class="agb__disc"><img src={m.img} alt="" width="198" height="198" loading="lazy" /></span>
+            <span class="agb__disc"><img src={m.img} alt={`${m.name}, ${m.role}`} width="198" height="198" loading="lazy" /></span>
             <span class="agb__person-name">{m.name}</span>
             <span class="agb__person-role">{m.role}</span>
           </li>
@@ -350,7 +350,7 @@ const schema = [
       <ul class="agv__grid">
         {VENTURES.map((v, i) => (
           <li data-reveal style={`transition-delay:${i * 60}ms`}>
-            <a class="agv__card" href={`https://${v.domain}`} target="_blank" rel="noopener">
+            <a class="agv__card" href={v.url ?? `https://${v.domain}`} target="_blank" rel="noopener">
               <span class="agv__shot">
                 <img src={v.logo} alt={v.name} width={v.w} height={v.h} loading="lazy" decoding="async" />
               </span>

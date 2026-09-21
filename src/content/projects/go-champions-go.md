@@ -31,7 +31,7 @@ blocks:
     body: "The happy index keeps a tab on employees’ emotional wellbeing by asking them simple close-ended questions. It helps the HR understand and know about employee morale, if they are happy with their work-life balance or if there is anything that needs to be worked upon."
 gallery:
   - src: "/wp-content/uploads/2022/08/gochampions-wireframe.png"
-    alt: ""
+    alt: "Gochampions wireframe"
   - src: "/wp-content/uploads/2022/08/gcg-mobileapp-1-2.png"
     alt: "gcg-mobileapp-1"
 showcase:

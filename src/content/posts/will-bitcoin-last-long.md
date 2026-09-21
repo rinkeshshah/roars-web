@@ -30,7 +30,7 @@ Finally, **Ethereum (ETH)** is the cryptocurrency market cap ruler, just next to
 There are [hundreds of cryptocurrencies in the market](https://coinmarketcap.com). Some of them are offering the benefits of easier, secure, and faster transactions, while others are using the blockchain platform to provide something more differentiated. It is onto each to find out how they make the best of it and survive the market. The same applies to bitcoin.
 Hi Blockchain enthusiasts! Here are some of our other posts on Blockchain and Cryptocurrency, which you might like to read:
 
-- [How Blockchain Will Revolutionise The Digital World](https://www.roarsinc.com/our-journal/blockchain-revolutionise-digital-world/)
+- [How Blockchain Will Revolutionise The Digital World](https://www.roarsinc.com/our-journal/top-fintech-marketing-trends-that-drive-growth/)
 
 - [Understanding Blockchain The Easy Way](https://www.roarsinc.com/our-journal/understanding-blockchain-easy-way/)
 

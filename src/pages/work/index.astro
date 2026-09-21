@@ -42,7 +42,8 @@ import { LISTED_PROJECTS } from '../../lib/projects'
    other. They already had: the page said twelve, the menu said eleven, and the
    grid drew whatever the list happened to hold. */
 const COUNT = LISTED_PROJECTS.length
-import { workHeroFor, PORTRAIT } from '../../lib/media'
+import { workHeroFor, PORTRAIT, workAltFor } from '../../lib/media'
+import WorkCover from '../../components/WorkCover.astro'
 import { site } from '../../lib/site'
 import star5 from '../../assets/star-5.svg'
 
@@ -144,7 +145,7 @@ const schema = [
       <div class="wrap wh__inner">
         <div class="wh__rail" data-reveal>
           <span class="wh__who">
-            <img src={PORTRAIT.founder} alt="" width="42" height="42" />
+            <img src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" />
             <span class="wh__name">Rinkesh A Shah</span>
             <span class="wh__role">CEO</span>
           </span>
@@ -197,7 +198,13 @@ const schema = [
               )}
               <span class="wf__shot">
                 {art(p.slug) && (
-                  <img src={art(p.slug)} alt="" width="2400" height="1200" loading="lazy" decoding="async" />
+                  <WorkCover
+                    src={art(p.slug)!}
+                    alt={workAltFor(p.client)}
+                    width={2400}
+                    height={1200}
+                    eager={i === 0}
+                  />
                 )}
               </span>
               {/* Sector, name, year — stacked on the flat-ink side, which is
@@ -227,7 +234,6 @@ const schema = [
     blurb="If one of these is close to what you are carrying, say which. It is a faster conversation when we both already know the shape of it."
     tagline="1,500+ products since 2005"
     ctaLabel="Shall we chat?"
-    ctaHref="https://meet.roarsinc.com/sales"
   />
 </BaseLayout>
 

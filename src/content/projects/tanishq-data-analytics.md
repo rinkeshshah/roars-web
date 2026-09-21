@@ -18,10 +18,10 @@ blocks:
 gallery:
   - src: "/wp-content/uploads/2022/08/tanishq-report.png"
     kind: "web"
-    alt: ""
+    alt: "Tanishq report"
   - src: "/wp-content/uploads/2022/08/tanishq-report02.png"
     kind: "web"
-    alt: ""
+    alt: "Tanishq, screen 2"
 needsRewrite: true
 # THE PRESENTATION LAYOUT. Written 17 Sep from this file's own two blocks and
 # its body. NO Tech act: nothing in this file names a technology, and a stack

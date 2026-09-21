@@ -152,7 +152,7 @@ const { Content } = entry ? await render(entry) : { Content: null }
               <span class="gh__cover">
                 <CanvasPlate shape={d.category === 'OUR FAVOURITE' ? 'quad' : 'grid'} />
                 {cover && (
-                  <img src={cover} alt="" width="256" height="186" loading="lazy" decoding="async" />
+                  <img src={cover} alt="" data-decorative width="256" height="186" loading="lazy" decoding="async" />
                 )}
               </span>
               <em class="gh__stamp">PREVIEW</em>
@@ -301,7 +301,6 @@ const { Content } = entry ? await render(entry) : { Content: null }
       blurb="A template gets you to the right question. If the answer needs a team, that is the conversation we are good at."
       tagline="ours to make, yours to download"
       ctaLabel="Shall we chat?"
-      ctaHref="https://meet.roarsinc.com/sales"
     />
 
     {turnstileKey && (

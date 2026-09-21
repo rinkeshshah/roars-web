@@ -34,4 +34,4 @@ An idea cannot be tested by bouncing it off people. It is only when your product
 
 There are many benefits of a Minimum Viable Product. If you are looking to build one for your product idea, we would be happy to help you with it. Through Produit™, our MVP offering, we provide you with a product scope in just 2 business days and an MVP in just 30 days. [Contact us](https://www.roarsinc.com/contact-us/) now to get started on your MVP.
 
-You might be interested in [**The One Thing About MVP That No One Is Talking About**](https://www.roarsinc.com/our-journal/one-thing-mvp-no-one-talking/)
+You might be interested in [**The One Thing About MVP That No One Is Talking About**](https://www.roarsinc.com/our-journal/steps-towards-success-with-mvp-development/)

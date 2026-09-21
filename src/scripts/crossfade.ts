@@ -75,6 +75,12 @@ export function initCrossfade(): void {
     slides.forEach((s, n) => {
       const on = n === i
       s.setAttribute('aria-hidden', String(!on))
+      /* `inert` as well as aria-hidden, and they are not the same thing.
+         aria-hidden takes the slide out of the accessibility tree; the link
+         inside it stays in the TAB ORDER, so a keyboard user tabs into a card
+         that no screen reader will describe. inert removes both. Set here as
+         well as in the markup so it tracks the slide that is actually showing. */
+      s.toggleAttribute('inert', !on)
       /* A half-faded card must not be clickable, or the link under the cursor
          is whichever one happens to be painted on top. */
       s.style.pointerEvents = on ? '' : 'none'

@@ -152,7 +152,7 @@ const schema = [
           <span class="gh__sheet gh__sheet--1">
             <span class="gh__cover">
               <CanvasPlate />
-              <img src={GUIDE_SET} alt="" width="256" height="186" loading="lazy" decoding="async" />
+              <img src={GUIDE_SET} alt="" data-decorative width="256" height="186" loading="lazy" decoding="async" />
             </span>
             <em class="gh__stamp">THE GUIDE SET</em>
             <em class="gh__page">PDF · 01</em>
@@ -195,7 +195,7 @@ const schema = [
               <span class="rl__thumb" aria-hidden="true">
                 <CanvasPlate shape={it.category === 'OUR FAVOURITE' ? 'quad' : 'grid'} />
                 {it.cover && (
-                  <img src={it.cover} alt="" width="434" height="200" loading="lazy" decoding="async" />
+                  <img src={it.cover} alt={`${it.name}, cover of the one-page guide`} width="434" height="200" loading="lazy" decoding="async" />
                 )}
               </span>
               <span class="rl__name">{it.name}</span>
@@ -214,7 +214,6 @@ const schema = [
     blurb="Take a template into the room first. If the problem turns out to be bigger than a page, that is worth a call."
     tagline="ours to make, yours to download"
     ctaLabel="Shall we chat?"
-    ctaHref="https://meet.roarsinc.com/sales"
   />
 </BaseLayout>
 

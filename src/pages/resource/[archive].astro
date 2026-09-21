@@ -213,7 +213,7 @@ const schema = [
                   <span class="al__thumb" aria-hidden="true">
                     <CanvasPlate shape={it.category === 'OUR FAVOURITE' ? 'quad' : 'grid'} />
                     {it.cover && (
-                      <img src={it.cover} alt="" width="434" height="200" loading="lazy" decoding="async" />
+                      <img src={it.cover} alt={`${it.name}, cover of the one-page guide`} width="434" height="200" loading="lazy" decoding="async" />
                     )}
                   </span>
                   <span class="al__name">{it.name}</span>
@@ -238,7 +238,6 @@ const schema = [
     blurb={a.blurb}
     tagline={a.tagline}
     ctaLabel="Shall we chat?"
-    ctaHref="https://meet.roarsinc.com/sales"
   />
 </BaseLayout>
 

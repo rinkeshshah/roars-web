@@ -26,14 +26,14 @@ blocks:
     body: "At Roars, we are proud to offer our expertise in creating websites for law firms. Our work with Ventura Law exemplifies how our knowledge of the legal landscape allowed us to quickly understand the firm's goals and the needs of their clients."
 gallery:
   - src: "/wp-content/uploads/2023/02/ventura-submenu.png"
-    alt: ""
+    alt: "Ventura submenu"
   - src: "/wp-content/uploads/2023/02/lawyer-bio.png"
-    alt: ""
+    alt: "Lawyer bio"
 showcase:
   - src: "/wp-content/uploads/2023/02/lawyer-bio-ventura-law.png"
-    alt: ""
+    alt: "Lawyer bio ventura law"
   - src: "/wp-content/uploads/2023/02/ventura-law-footer.png"
-    alt: ""
+    alt: "Ventura law footer"
 needsRewrite: true
 seo:
   title: "Ventura Law: The Accident Law Firm"

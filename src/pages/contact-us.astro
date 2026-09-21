@@ -35,7 +35,7 @@ const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
 const socials = [
   { label: 'Facebook', href: 'https://www.facebook.com/roarstech/' },
   { label: 'Instagram', href: 'https://www.instagram.com/roarstech' },
-  { label: 'Twitter', href: 'https://twitter.com/roarstech' },
+  { label: 'Twitter', href: 'https://x.com/roarstech' },
   { label: 'Linkedin', href: 'https://www.linkedin.com/company/roars-technologies-pvt.-ltd.' },
   { label: 'Envelope', href: `mailto:${site.email.sales}` },
 ]
@@ -76,7 +76,7 @@ const schema = [
       <div class="wrap ch__inner">
         <div class="ch__rail" data-reveal>
           <span class="ch__who">
-            <img src={PORTRAIT.founder} alt="" width="42" height="42" />
+            <img src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" />
             <span class="ch__name">Rinkesh A Shah</span>
             <span class="ch__role">Founder</span>
           </span>
@@ -296,7 +296,6 @@ const schema = [
     blurb="Whichever timezone you are in, somebody here is awake. We reply within 24 hours, and it is a person rather than a queue."
     tagline="five countries, one team"
     ctaLabel="Setup a Meeting"
-    ctaHref="https://meet.roarsinc.com/sales"
   />
 
   {turnstileKey && (

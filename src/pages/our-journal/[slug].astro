@@ -187,7 +187,10 @@ const month = iso ? MONTHS[Number(iso.slice(5, 7)) - 1] : ''
               cropped to. */}
           <img
             src={d.heroImage}
-            alt={d.heroAlt || ''}
+            /* Falls back to the post's name, not to silence. Line 140 already does
+               exactly this for og:image — the same picture was being named for
+               a social card and left unnamed for a screen reader. */
+            alt={d.heroAlt || name}
             width="1000"
             height="425"
             loading="eager"
@@ -232,7 +235,6 @@ const month = iso ? MONTHS[Number(iso.slice(5, 7)) - 1] : ''
       blurb="Most of what is here we worked out the expensive way. If it is the problem in front of you, we can go deeper than a post does."
       tagline="twenty years, written down"
       ctaLabel="Shall we chat?"
-      ctaHref="https://meet.roarsinc.com/sales"
     />
   </BaseLayout>
 ) : (

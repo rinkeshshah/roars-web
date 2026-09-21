@@ -304,6 +304,20 @@ if (toolRules.length) {
 }
 
 say(
+  '# 4c. The journal feed. /feed/ is the WordPress address every existing',
+  '#     reader still polls; it has 404d since the cutover. Served INTERNALLY',
+  '#     from the file rather than 301d to /our-journal/rss.xml, because some',
+  '#     readers treat a moved feed as a dead one and drop the subscription.',
+  '#     ForceType, because Apache would otherwise send application/xml and',
+  '#     a few readers refuse that for a feed.',
+  'RewriteRule ^feed/?$ /feed/index.xml [L]',
+  '<Files "index.xml">',
+  '  ForceType application/rss+xml',
+  '</Files>',
+  '',
+)
+
+say(
   '# 5. Indexed legacy image paths, BEFORE the 410 block below — which would',
   '#    otherwise match /wp-content/ and return 410 for every migrated image',
   '#    on the site. Internal rewrite, not a redirect: the old URL keeps',

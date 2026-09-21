@@ -10,7 +10,7 @@ heroImage: "/wp-content/uploads/2022/08/super-social-homepage.png"
 about: "Create a professional and attractive micro-webpage with Super Social's customizable, D.I.Y. generator in minutes! Publish and share access to any and everything you want with our easy-to-use platform. Get started now and create your own social media landing page!"
 gallery:
   - src: "/wp-content/uploads/2022/08/super-social-mobileversion.png"
-    alt: ""
+    alt: "Super social mobileversion"
 needsRewrite: true
 seo:
   title: "Social media landing page | one link in Bio"

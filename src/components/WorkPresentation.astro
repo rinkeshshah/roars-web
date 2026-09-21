@@ -31,6 +31,7 @@
  * The rest is the design.
  */
 import type { CollectionEntry } from 'astro:content'
+import { workAltFor } from '../lib/media'
 import RingField from './RingField.astro'
 import GrainField from './GrainField.astro'
 
@@ -125,7 +126,7 @@ for (const m of p.meta) {
   if (!USED.has(m.k.toUpperCase())) facts.push({ k: m.k, v: m.v })
 }
 
-const cover = p.coverPlate ?? (d.heroImage ? { src: d.heroImage, alt: '', w: 2400, h: 1200 } : undefined)
+const cover = p.coverPlate ?? (d.heroImage ? { src: d.heroImage, alt: workAltFor(d.title ?? p.name ?? ''), w: 2400, h: 1200 } : undefined)
 const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
 ---
 
@@ -181,7 +182,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
         {faces.length > 0 && (
           <div class="wp-team">
             <div class="wp-team__faces">
-              {faces.map((f) => <img src={f} alt="" width="42" height="42" loading="lazy" />)}
+              {faces.map((f) => <img src={f} alt="" data-decorative width="42" height="42" loading="lazy" />)}
             </div>
             <span class="wp-team__label">Team Members<br />Involved</span>
           </div>
@@ -477,7 +478,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
       </div>
       {nextImg && (
         <div class="wp-next__shot">
-          <img src={nextImg} alt="" width="2400" height="1200" loading="lazy" />
+          <img src={nextImg} alt={workAltFor(next.name)} width="2400" height="1200" loading="lazy" />
           <span class="wp-next__rings" aria-hidden="true"></span>
         </div>
       )}

@@ -16,7 +16,7 @@ import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
 import RingField from '../../components/RingField.astro'
-import { PORTRAIT, workHeroFor } from '../../lib/media'
+import { PORTRAIT, workHeroFor, workAltFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { clientFor, isHeldBack, isOffGrid, PROJECTS } from '../../lib/projects'
 import WorkPresentation from '../../components/WorkPresentation.astro'
@@ -256,7 +256,6 @@ const nextLine = nextEntry?.data.presentation?.line ?? nextEntry?.data.about
       blurb="Most operations problems look like software problems once you watch the shift. Tell us what the shift looks like."
       tagline="proof, not promises"
       ctaLabel="Shall we chat?"
-      ctaHref="https://meet.roarsinc.com/sales"
     />
   </BaseLayout>
 ) : designed && d ? (
@@ -310,7 +309,9 @@ const nextLine = nextEntry?.data.presentation?.line ?? nextEntry?.data.about
           <div class="pd__hero" data-reveal>
             <img
               src={heroSrc}
-              alt={d.heroAlt || ''}
+              /* The case study's own header shot. Falls back to the project's
+                 name rather than to silence — same fix as the journal hero. */
+              alt={d.heroAlt || workAltFor(client)}
               width="2400" height="1200" loading="lazy" decoding="async"
             />
             <RingField variant="sweep" />
@@ -499,7 +500,6 @@ const nextLine = nextEntry?.data.presentation?.line ?? nextEntry?.data.about
       blurb="Most operations problems look like software problems once you watch the shift. Tell us what the shift looks like."
       tagline="proof, not promises"
       ctaLabel="Shall we chat?"
-      ctaHref="https://meet.roarsinc.com/sales"
     />
   </BaseLayout>
 ) : (

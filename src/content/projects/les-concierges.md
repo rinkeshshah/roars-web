@@ -24,7 +24,7 @@ blocks:
     body: "A unique B2B and further B2C solution, this concierge mobile app works with some of major multinationals across the country. Once a company is registered with Les concierges, their employees can reach out to the Les concierges desk themselves or through the app to put in their service requests."
 gallery:
   - src: "/wp-content/uploads/2022/08/lc-wireframe.jpg"
-    alt: ""
+    alt: "Lc wireframe"
   - src: "/wp-content/uploads/2022/08/lc-mobileapp-1.jpg"
     alt: "lc-mobileapp-1"
 showcase:

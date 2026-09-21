@@ -53,21 +53,21 @@ export const PORTRAIT = {
  * is read left to right and the first row is the one anybody remembers.
  */
 export const CLIENT_LOGOS = [
-  { slug: 'samsung', src: '/clients/samsung.png', alt: 'Samsung' },
-  { slug: 'tata', src: '/clients/tata.png', alt: 'TATA' },
-  { slug: 'forbes', src: '/clients/forbes.png', alt: 'Forbes' },
-  { slug: 'reliance', src: '/clients/reliance.png', alt: 'Reliance' },
-  { slug: 'gisaid', src: '/clients/gisaid.png', alt: 'GISAID' },
-  { slug: 'jwt', src: '/clients/jwt.png', alt: 'JWT' },
-  { slug: 'ddb-mudra', src: '/clients/ddb-mudra.png', alt: 'DDB Mudra Group' },
-  { slug: 'zee-cinema', src: '/clients/zee-cinema.png', alt: 'Zee Cinema' },
-  { slug: 'tanishq', src: '/clients/tanishq.png', alt: 'Tanishq' },
-  { slug: 'woodland', src: '/clients/woodland.png', alt: 'Woodland' },
-  { slug: 'facedrive', src: '/clients/facedrive.png', alt: 'Facedrive' },
-  { slug: 'airlift', src: '/clients/airlift.png', alt: 'Airlift' },
-  { slug: 'bollywood-hungama', src: '/clients/bollywood-hungama.png', alt: 'Bollywood Hungama' },
-  { slug: 'zapak', src: '/clients/zapak.png', alt: 'Zapak' },
-  { slug: 'rmg-connect', src: '/clients/rmg-connect.png', alt: 'RMG Connect' },
+  { slug: 'samsung', src: '/clients/samsung.png', alt: 'Samsung', w: 320, h: 49 },
+  { slug: 'tata', src: '/clients/tata.png', alt: 'TATA', w: 320, h: 75 },
+  { slug: 'forbes', src: '/clients/forbes.png', alt: 'Forbes', w: 320, h: 79 },
+  { slug: 'reliance', src: '/clients/reliance.png', alt: 'Reliance', w: 320, h: 52 },
+  { slug: 'gisaid', src: '/clients/gisaid.png', alt: 'GISAID', w: 320, h: 106 },
+  { slug: 'jwt', src: '/clients/jwt.png', alt: 'JWT', w: 320, h: 131 },
+  { slug: 'ddb-mudra', src: '/clients/ddb-mudra.png', alt: 'DDB Mudra Group', w: 320, h: 142 },
+  { slug: 'zee-cinema', src: '/clients/zee-cinema.png', alt: 'Zee Cinema', w: 320, h: 130 },
+  { slug: 'tanishq', src: '/clients/tanishq.png', alt: 'Tanishq', w: 320, h: 111 },
+  { slug: 'woodland', src: '/clients/woodland.png', alt: 'Woodland', w: 320, h: 140 },
+  { slug: 'facedrive', src: '/clients/facedrive.png', alt: 'Facedrive', w: 320, h: 72 },
+  { slug: 'airlift', src: '/clients/airlift.png', alt: 'Airlift', w: 320, h: 81 },
+  { slug: 'bollywood-hungama', src: '/clients/bollywood-hungama.png', alt: 'Bollywood Hungama', w: 320, h: 89 },
+  { slug: 'zapak', src: '/clients/zapak.png', alt: 'Zapak', w: 320, h: 75 },
+  { slug: 'rmg-connect', src: '/clients/rmg-connect.png', alt: 'RMG Connect', w: 320, h: 130 },
 ] as const
 
 /**
@@ -136,6 +136,18 @@ const WORK_HEADER = new Set([
   'advisee', 'community-social-residential-community-app', 'club-social',
   'go-champions-go', 'counter-cabinet', 'onus',
 ])
+
+/**
+ * Alt text for a work cover.
+ *
+ * These are project header shots, not decoration: on /work/ they ARE the card,
+ * and a screen reader that meets nineteen images called nothing has been told
+ * the page is empty. Named after the project and what the picture is, which is
+ * as much as is honestly known about a photograph this module never sees.
+ * Not the project's tagline, and not its keywords — an alt that reads like a
+ * meta description is a different kind of empty.
+ */
+export const workAltFor = (name: string): string => `${name}, project cover`
 
 export const workHeroFor = (href: string): string | undefined => {
   const slug = href.replace(/^\/work\//, '').replace(/\/$/, '')

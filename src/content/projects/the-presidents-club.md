@@ -38,7 +38,7 @@ blocks:
 gallery:
   - src: "/wp-content/uploads/2022/08/wireframe.png"
     kind: "wireframe"
-    alt: ""
+    alt: "Wireframe"
   - src: "/wp-content/uploads/2022/08/president-colo-color-therpy.png"
     alt: "Colour study"
     kind: "study"

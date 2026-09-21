@@ -21,7 +21,7 @@ blocks:
 gallery:
   - src: "/wp-content/uploads/2022/08/onus-wireframe.png"
     kind: "wireframe"
-    alt: ""
+    alt: "Onus wireframe"
   - src: "/wp-content/uploads/2022/08/onus-mobileapp-1.png"
     kind: "app"
     alt: "onus-mobileapp-1"

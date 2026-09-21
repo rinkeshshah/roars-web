@@ -26,7 +26,7 @@ gallery:
   - src: "/wp-content/uploads/elementor/thumbs/411-fonts-therapy-r1yz7f0pgf3xfr16orjuxw2vjihzscpwl6lgx9odzi.png"
     alt: "411-fonts-therapy"
   - src: "/wp-content/uploads/2022/08/wireframe-411.jpg"
-    alt: ""
+    alt: "Wireframe"
 showcase:
   - src: "/wp-content/uploads/2022/08/ondemand-car-loan-screen1.jpg"
     alt: "ondemand-car-loan-screen1"

@@ -79,7 +79,7 @@ const schema = [
   description="We have a lot to say about product work, how we approach the process, and the nuances of building for founders. Twenty years of it, written down."
   path={path}
   schema={schema}
-  noindex={page > 1}
+  noindex={page > 1 ? 'follow' : false}
 >
   <TopBar slot="topbar" cta="contact" />
   <NavOverlay />
@@ -91,7 +91,7 @@ const schema = [
       <div class="wrap jh__inner">
         <div class="jh__rail" data-reveal>
           <span class="jh__who">
-            <img src={PORTRAIT.founder} alt="" width="42" height="42" />
+            <img src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" />
             <span class="jh__name">Rinkesh A Shah</span>
             <span class="jh__role">Founder</span>
           </span>
@@ -145,7 +145,7 @@ const schema = [
                 {(f.hero ?? JOURNAL_IMG[f.slug]) && (
                   <img
                     src={f.hero ?? JOURNAL_IMG[f.slug]}
-                    alt=""
+                    alt="" data-decorative
                     width="1000"
                     height="425"
                     loading={i === 0 ? 'eager' : 'lazy'}
@@ -187,7 +187,7 @@ const schema = [
                   be. */}
               <span class="jl__disc" aria-hidden="true">
                 {(p.hero ?? JOURNAL_IMG[p.slug]) && (
-                  <img src={p.hero ?? JOURNAL_IMG[p.slug]} alt="" width="138" height="138" loading="lazy" decoding="async" />
+                  <img src={p.hero ?? JOURNAL_IMG[p.slug]} alt="" data-decorative width="138" height="138" loading="lazy" decoding="async" />
                 )}
               </span>
               <span class="jl__hair" aria-hidden="true"></span>
@@ -206,7 +206,10 @@ const schema = [
             class="jl__step"
             href={page > 1 ? pageUrl(page - 1) : undefined}
             aria-disabled={page === 1 ? 'true' : undefined}
-            rel="prev"
+            /* rel only when there is an href for it to describe. On page 1 the
+               Previous control has no destination, and `rel` without `href` is
+               invalid — it describes a relationship to nothing. */
+            rel={page > 1 ? 'prev' : undefined}
           >← Previous</a>
 
           <span class="jl__nums">
@@ -222,7 +225,7 @@ const schema = [
             class="jl__step"
             href={page < lastPage ? pageUrl(page + 1) : undefined}
             aria-disabled={page === lastPage ? 'true' : undefined}
-            rel="next"
+            rel={page < lastPage ? 'next' : undefined}
           >Next →</a>
         </nav>
       )}
@@ -235,7 +238,6 @@ const schema = [
     blurb="Most of what is here we worked out the expensive way. If one of these is the problem in front of you, we can go deeper than the post does."
     tagline="twenty years, written down"
     ctaLabel="Shall we chat?"
-    ctaHref="https://meet.roarsinc.com/sales"
   />
 </BaseLayout>
 

@@ -28,7 +28,7 @@ export const NAV: NavItem[] = [
 export const FOOTER_NAV: NavItem[] = NAV.filter((i) => i.label !== 'Approach')
 
 export const SOCIAL: NavItem[] = [
-  { label: 'Twitter', href: 'https://www.twitter.com/roarstech' },
+  { label: 'Twitter', href: 'https://x.com/roarstech' },
   { label: 'Instagram', href: 'https://www.instagram.com/roarstech' },
   { label: 'LinkedIn', href: 'https://in.linkedin.com/company/roars-technologies-pvt.-ltd./' },
 ]
@@ -251,7 +251,11 @@ export const MENU: MenuItem[] = [
     title: 'Notes from the studio',
     kind: 'posts',
     items: [
-      { label: 'AI App Development vs Traditional App Development', meta: '15 MAY', href: '/our-journal/ai-app-development-vs-traditional-app-development-which-is-better-for-customer-engagement/' },
+      /* The slug this used to name is a 301 source, not a page: it was the
+         one internal link on the site that redirected, and being in the menu
+         it did so from all 207 pages. Label and date are the destination
+         post's own, trimmed at the colon to match its two siblings here. */
+      { label: 'AI + UX in Harmony: Elevating AI User Experience', meta: '30 JUN', href: '/our-journal/ai-ux-in-harmony-elevating-ai-user-experience/' },
       { label: '20 Years of Roars: Built on Purpose, Driven by Impact', meta: '04 MAY', href: '/our-journal/20-years-of-roars-built-on-purpose-driven-by-impact/' },
       { label: 'The Unexpected Insight: we built a meal planning app', meta: '11 DEC', href: '/our-journal/the-unexpected-insight-we-built-a-meal-planning-app/' },
     ],

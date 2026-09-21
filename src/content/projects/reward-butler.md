@@ -27,7 +27,7 @@ blocks:
     body: "The ‘Experiences’ panel gives a brief overview of the cities where employees can go on vacations to. Right from learning some basic information about the city, their visa requirements to checking out their photos and finding out about the things to do there; all information can be found here."
 gallery:
   - src: "/wp-content/uploads/2022/08/reward-butler-wireframe.jpg"
-    alt: ""
+    alt: "Reward butler wireframe"
   - src: "/wp-content/uploads/2022/08/rewardbutler-1-mobileapp.jpg"
     alt: "rewardbutler-1-mobileapp"
 showcase:

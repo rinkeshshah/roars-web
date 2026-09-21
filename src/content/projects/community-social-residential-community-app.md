@@ -23,7 +23,7 @@ gallery:
   - src: "/wp-content/uploads/elementor/thumbs/tuma-Fonts-typography-pu2jdlghjnim0k6f1ier6lk93d5o3mwpptu3ge3r6s.webp"
     alt: "tuma-Fonts-typography"
   - src: "/wp-content/uploads/2022/08/comsoc-wireframe.jpg"
-    alt: ""
+    alt: "Comsoc wireframe"
 showcase:
   - src: "/wp-content/uploads/2022/08/community-socialapp-1.jpg"
     alt: "community-socialapp-1"

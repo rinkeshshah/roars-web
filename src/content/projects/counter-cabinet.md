@@ -26,7 +26,7 @@ gallery:
   - src: "/wp-content/uploads/elementor/thumbs/tuma-Fonts-typography-r1yz7f0pgf3xfr16orjuxw2vjihzscpwl6lgx9oe3o.webp"
     alt: "Font style"
   - src: "/wp-content/uploads/2022/08/countercabinet-wireframe.jpg"
-    alt: ""
+    alt: "Countercabinet wireframe"
 showcase:
   - src: "/wp-content/uploads/2022/08/leaderboard-cc.jpg"
     alt: "leaderboard-cc"

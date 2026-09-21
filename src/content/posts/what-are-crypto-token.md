@@ -12,7 +12,7 @@ seo:
   primaryIntent: "what are crypto token"
   schemaType: "BlogPosting"
 ---
-We have already spoken about [blockchain](https://www.roarsinc.com/our-journal/blockchain-revolutionise-digital-world/) and [whether you should be putting your money into Bitcoins](https://www.roarsinc.com/our-journal/blockchain-bitcoin-one-betting-money/), in our previous posts. Blockchain is not just about Bitcoins. Although bitcoins happen to be the most successful cryptocurrency due to its inherent characteristics of being a reliable store of value and a medium of exchange, there are some other cryptocurrencies, too, that are being traded in the digital market. These are called crypto-tokens. And word is that VCs too are taking these tokens seriously.
+We have already spoken about [blockchain](https://www.roarsinc.com/our-journal/top-fintech-marketing-trends-that-drive-growth/) and [whether you should be putting your money into Bitcoins](https://www.roarsinc.com/our-journal/blockchain-bitcoin-one-betting-money/), in our previous posts. Blockchain is not just about Bitcoins. Although bitcoins happen to be the most successful cryptocurrency due to its inherent characteristics of being a reliable store of value and a medium of exchange, there are some other cryptocurrencies, too, that are being traded in the digital market. These are called crypto-tokens. And word is that VCs too are taking these tokens seriously.
 
 So what are crypto-tokens? How are they different from cryptocurrency? And what are they used for?
 

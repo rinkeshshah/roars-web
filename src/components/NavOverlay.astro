@@ -68,7 +68,7 @@ const rowsIn = (n: number) => (isTwoCol(n) ? Math.ceil(n / 2) : n)
   <!-- ── desktop: the export's 1440x900 canvas, scaled to fit ── -->
   <div class="nav__canvas" data-nav-canvas>
     <a class="nav__mark" href="/" aria-label="Roars, home">
-      <img src={mark.src} alt="" width="26" height="26" />
+      <img src={mark.src} alt="" data-decorative width="26" height="26" />
     </a>
     <span class="nav__close-label" aria-hidden="true">CLOSE</span>
     <button class="nav__close" type="button" data-nav-close>
@@ -299,7 +299,7 @@ const rowsIn = (n: number) => (isTwoCol(n) ? Math.ceil(n / 2) : n)
   <!-- ── mobile: the export's flowing accordion ── -->
   <div class="navm">
     <div class="navm__top">
-      <a class="navm__mark" href="/" aria-label="Roars, home"><img src={mark.src} alt="" width="24" height="24" /></a>
+      <a class="navm__mark" href="/" aria-label="Roars, home"><img src={mark.src} alt="" data-decorative width="24" height="24" /></a>
       <button class="navm__close" type="button" data-nav-close>
         <span class="visually-hidden">Close menu</span>
         <span class="navm__close-label" aria-hidden="true">CLOSE</span>

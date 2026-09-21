@@ -88,7 +88,7 @@ Accessibility means that anyone, no matter their physical or mental ability, can
 
 When you build **app design principles** in mind, you show consumers that your business cares about fairness and inclusiveness. This may make your reputation much better.
 
-![](/wp-content/uploads/2023/01/design-thinking-process-1024x451.png)
+![Design thinking process](/wp-content/uploads/2023/01/design-thinking-process-1024x451.png)
 
 ## Best Practices That Go Beyond the Basics
 

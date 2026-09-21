@@ -25,7 +25,7 @@ blocks:
 gallery:
   - src: "/wp-content/uploads/2022/08/flowrow-app-wireframe.png"
     kind: "wireframe"
-    alt: ""
+    alt: "Flowrow app wireframe"
   - src: "/wp-content/uploads/2022/08/flowrow-colortherpy.png"
     alt: "Colour study"
     kind: "study"

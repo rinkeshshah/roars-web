@@ -31,15 +31,15 @@ As per the studies of how colors can have an impact on the audience's psychology
 
 Needless to say the 3 colors together, create an air of an offering which is a class apart. Something that we strove to create ever since we started working on the President's Club project.
 
-![](/wp-content/uploads/2022/08/presidentclub-mobileapp3.png)
+![Presidentclub mobileapp3](/wp-content/uploads/2022/08/presidentclub-mobileapp3.png)
 
-![](/wp-content/uploads/2022/08/presidentclub-mobileapp5.png)
+![Presidentclub mobileapp5](/wp-content/uploads/2022/08/presidentclub-mobileapp5.png)
 
-![](/wp-content/uploads/2022/08/presidentclub-mobileapp2.png)
+![Presidentclub mobileapp2](/wp-content/uploads/2022/08/presidentclub-mobileapp2.png)
 
-![](/wp-content/uploads/2022/08/presidentclub-mobileapp1.png)
+![Presidentclub mobileapp1](/wp-content/uploads/2022/08/presidentclub-mobileapp1.png)
 
-![](/wp-content/uploads/2022/08/presidentclub-mobileapp-4.png)
+![Presidentclub mobileapp](/wp-content/uploads/2022/08/presidentclub-mobileapp-4.png)
 
 ## **Design**
 
