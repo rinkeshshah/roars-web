@@ -1157,16 +1157,27 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   /* ── proof ──────────────────────────────────────────────── */
   /* isolation, so the ground can sit at z-index -1 without dropping behind
      the section's own background and out of the band entirely. */
-  /* 1400px, up 40% from 1000.
-     THIS BAND DOES NOT TAKE PADDING THE WAY THE OTHERS DO. Its stats row and
+  /* THIS BAND DOES NOT TAKE PADDING THE WAY THE OTHERS DO. Its stats row and
      its featured row are absolutely positioned at fixed offsets from .ip, so
      padding moves the heading that flows and leaves those two where they are —
      the first attempt at 40% dropped "Practised since 2005" straight through
      the 84px "20+". The offsets below are scaled by the same 1.4 instead, and
      the padding only takes the share that belongs to the flow.
      Everything here is overridden at 1360px, where the whole band goes static
-     and keeps its own 64/72 padding. */
-  .ip { position: relative; isolation: isolate; padding-block: 126px 362px; min-height: 1400px; }
+     and keeps its own 64/72 padding.
+
+     1166, not the 1400 this started as. That number came from scaling the old
+     1000px box by the same 1.4 as the offsets, which is not the same thing as
+     asking what is in the box — the same mistake .ip--flat below fixes at the
+     other end. Measured at 1440 on all three pages that carry a featured
+     project: the lowest ink is the "View Project" button, .ip__feat sitting at
+     728 and .ip__feat-cta at +270 inside it, so the content floor is 1040 and
+     identical on every one of them (the body copy varies in length but ends at
+     786, well clear). 1400 left 360px of empty black under the button. 1166
+     gives it the same 126px of air the top of the band has, which is where
+     .ip--flat landed too. The bottom padding comes down with it: at 362 it was
+     part of the same reservation, and it is not needed twice. */
+  .ip { position: relative; isolation: isolate; padding-block: 126px; min-height: 1166px; }
   /* No featured project, so the reservation shrinks to what the stats need
      -- it does not go away. `min-height: 0` was the obvious first answer and
      it was wrong: .ip__stats is ABSOLUTELY positioned at this width, so it

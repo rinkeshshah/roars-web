@@ -196,6 +196,49 @@ for (const path of ['/wp-admin/', '/wp-login.php', '/xmlrpc.php']) {
   }
 }
 
+/* ------------------------------------ 6b. the gated guide PDFs resolve */
+
+/**
+ * The same blind spot as the legacy uploads above, and it is the one that
+ * actually bit. All 15 PDFs lived in the WordPress httpdocs/tools/. Nothing
+ * on the site links them — contact.php builds the URL in PHP at send time —
+ * so neither assert-assets nor section 6 above had any way to see them, and
+ * when httpdocs became a checkout of `production` they were simply gone.
+ * Every download 404d, silently, because contact.php treats a missing file
+ * as a soft failure so that the lead is never lost.
+ *
+ * scripts/assert-guides.mjs checks the build. This checks the server, which
+ * is the half that matters for as long as the files live outside the repo.
+ *
+ * Reads guides.php, the same manifest contact.php reads, so a guide added to
+ * the site is covered here the moment the manifest is rebuilt.
+ */
+{
+  const { readFileSync, existsSync } = await import('node:fs')
+  const { join, dirname } = await import('node:path')
+  const { fileURLToPath } = await import('node:url')
+  const MANIFEST = join(dirname(fileURLToPath(import.meta.url)), '..', 'public/api/guides.php')
+
+  if (!existsSync(MANIFEST)) {
+    console.log('  SKIP  guide PDFs: public/api/guides.php not found.\n')
+  } else {
+    const php = readFileSync(MANIFEST, 'utf8')
+    const files = [...php.matchAll(/'file'\s*=>\s*'([^']+)'/g)].map((m) => m[1])
+    const broken = []
+    for (const f of files) {
+      const { status } = await head(`/tools/${encodeURIComponent(f)}`, 'HEAD')
+      if (status !== 200) broken.push(`${status} /tools/${f}`)
+    }
+    record(
+      broken.length === 0,
+      `all ${files.length} gated guide PDFs serve 200 from /tools/`,
+      `${broken.length} of ${files.length} missing. Each one is a download that`
+        + ` 404s and an email with no attachment:\n            `
+        + broken.join('\n            '),
+    )
+  }
+}
+
 /* ------------------------------------------- 7. redirects are one hop */
 
 /**

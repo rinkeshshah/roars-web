@@ -379,8 +379,51 @@ For an immediate rollback without waiting for a build, Plesk can pull an
 earlier `deploy` commit directly from the Git panel. Plesk's own backup is the
 third line.
 
+## The guide PDFs: /tools/
+
+**Open, and it is an outage.** All 15 gated guide PDFs are missing from
+production. Every `/resources/` download 404s and the email that goes
+with it carries no attachment.
+
+It happened at the cutover. The PDFs lived in the WordPress
+`httpdocs/tools/`. Repointing Plesk at the `production` branch made
+`httpdocs` a checkout of a repo that has never contained them, so they
+went with everything else that was not in the build. Nothing failed,
+because `contact.php` treats a missing file as a soft failure on
+purpose — the submission is still saved and sales is still notified, so
+the lead is not lost. The visitor gets an email with a dead link.
+
+Both halves read the same directory, which is why the link and the
+attachment broke together:
+
+    'tools_dir' => '/var/www/vhosts/roarsinc.com/httpdocs/tools'   # the attachment
+    $url = "{$site}/tools/" . rawurlencode($guide['name']);        # the link
+
+**The fix is `public/tools/`, not the server.** Restoring the files
+into `httpdocs/tools/` works — untracked files survive `git pull` — and
+it is also how this happened. Anything that lives only in `httpdocs`
+survives exactly until someone rebuilds it. Put the 15 PDFs in
+`public/tools/` in the repo and the build carries them, `production`
+carries them, and `tools_dir` resolves again because the directory is
+part of the checkout.
+
+To recover them: they are in the pre-launch `httpdocs` backup under
+`tools/`, or on any machine holding the old WordPress tree. Copy them
+into `public/tools/`, then delete the matching slugs from
+`MISSING_PDFS` in `scripts/assert-guides.mjs`.
+
+`npm run assert:guides` is the gate. It reads `public/api/guides.php` —
+the same manifest `contact.php` reads — and fails on a PDF that is
+missing, zero bytes, or still listed as missing after it has come back.
+`assert-assets` could never have caught this: it walks emitted HTML,
+and these URLs are built in PHP at send time and appear on no page.
+
 ## Post-cutover cleanup
 
 Once the static site is stable for two weeks: archive the WordPress
 database dump and `wp-content` off-server, then delete both from the
 subscription. This is what brings 50 GB back under the 25 GB quota.
+
+Do not delete the WordPress tree before the 15 guide PDFs above are in
+`public/tools/` and `npm run assert:guides` reports no known gaps. That
+tree is currently the only copy.
