@@ -41,4 +41,16 @@ return [
     // Salts the IP before it becomes a filename, so /tmp does not leak a
     // visitor list to anything else on the box.
     'rate_salt'   => '',
+
+    // Signs the form's minimum-fill-time stamp. Any long random string; it
+    // never leaves the server and nothing derives from it, so it can be
+    // changed whenever you like -- the only effect is that stamps issued in
+    // the previous few seconds stop validating.
+    //
+    // OPTIONAL. Left empty, the rate limiter's salt above is used instead, so
+    // an existing config file keeps working untouched. Empty BOTH and the
+    // minimum fill time is not enforced at all: every signature would
+    // validate against '', which is a check that looks armed and is not, so
+    // contact.php logs a line saying exactly that.
+    'stamp_secret' => '',
 ];
