@@ -50,6 +50,13 @@ import GrainField from './GrainField.astro'
 import { PORTRAIT } from '../lib/media'
 import mark from '../assets/roars-mark.png'
 
+/* Same source as contact-us.astro and resources/[slug].astro: the PUBLIC_
+   prefix is Astro's own marker for a value that is safe in the browser, and
+   a Turnstile SITE key is exactly that -- it identifies the widget and is
+   useless without the secret, which never leaves the server. Unset, the
+   markup below is simply not emitted. */
+const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
+
 interface Props {
   /** The closing CTA's two parts. Omit either for the shipped default. */
   blurbTitle?: string
@@ -200,6 +207,23 @@ const year = new Date().getFullYear()
             <label for="ft-email">Email *</label>
             <input id="ft-email" name="email" type="email" required autocomplete="email" />
           </div>
+          {/* LAZY, AND THAT IS THE WHOLE POINT. This form sits in the footer
+              of all 207 pages. Rendering the widget on load would have every
+              page on the site fetch a third-party script and draw a
+              challenge for a field almost nobody touches. `data-lazy` tells
+              the island to load Cloudflare's script on first focus instead,
+              so the cost lands only on somebody actually subscribing.
+              `hidden` until then, so the reserved height below does not
+              leave a gap on 207 pages either. */}
+          {turnstileKey && (
+            <div
+              class="cf-turnstile ft__turnstile"
+              data-sitekey={turnstileKey}
+              data-lazy="1"
+              hidden
+            ></div>
+          )}
+
           <button class="ft__submit" type="submit">
             <span>Subscribe</span>
             <span class="ft__dots" data-dots aria-hidden="true"><i></i><i></i></span>
@@ -427,6 +451,19 @@ const year = new Date().getFullYear()
     font-family: inherit; font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-white);
   }
   .ft__field input:focus { outline: 0; border-bottom-color: var(--c-accent); }
+  /* RESERVED, so the button does not jump when the widget draws. Cloudflare's
+     managed widget is 65px tall at its default size and it arrives
+     asynchronously; without a reserved box everything below it moves the
+     moment it lands, which is a layout shift on the one element somebody is
+     reaching for. `hidden` collapses it to nothing until the form is focused,
+     so the 207 pages that never use it pay no space either. */
+  .ft__turnstile { min-height: 65px; margin-top: 18px; }
+  /* The footer button had no disabled state at all, so gating it would have
+     looked like nothing happening. */
+  .ft__submit:disabled { cursor: not-allowed; opacity: 0.7; }
+  form[data-sending='1'] .ft__submit:disabled { cursor: progress; }
+  .ft__turnstile[hidden] { display: none; }
+
   .ft__submit {
     display: inline-flex; align-items: center; justify-content: space-between;
     width: 195px; height: var(--btn-ghost-h); padding-inline: 21px;

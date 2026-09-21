@@ -242,7 +242,7 @@ const { Content } = entry ? await render(entry) : { Content: null }
           </label>
 
           {turnstileKey && (
-            <div class="cf-turnstile" data-sitekey={turnstileKey} data-theme="light"></div>
+            <div class="cf-turnstile gf__turnstile" data-sitekey={turnstileKey} data-theme="light"></div>
           )}
 
           <button class="gg__submit" type="submit">
@@ -506,6 +506,10 @@ const { Content } = entry ? await render(entry) : { Content: null }
   }
   .gg__row input:focus-visible { outline: none; border-bottom-color: rgb(20, 20, 20); }
 
+  /* Reserved. Cloudflare's managed widget is 65px and arrives async; without
+     a box held for it the submit button moves as it lands. */
+  .gf__turnstile { min-height: 65px; }
+
   .gg__submit {
     position: relative; display: inline-flex; align-items: center;
     width: 204px; height: 47px; margin-top: 46px; padding-left: 25px;
@@ -515,7 +519,11 @@ const { Content } = entry ? await render(entry) : { Content: null }
     transition: background var(--dur-fast) ease;
   }
   .gg__submit:hover { background: rgb(38, 38, 38); }
-  .gg__submit:disabled { cursor: progress; opacity: 0.7; }
+  /* `progress` says "sending". While the check is still to be solved the
+     button is not sending anything, it is waiting on the visitor, and the
+     cursor should not claim otherwise. */
+  .gg__submit:disabled { cursor: not-allowed; opacity: 0.7; }
+  form[data-sending='1'] .gg__submit:disabled { cursor: progress; }
   .gg__dots { position: absolute; left: 142px; top: 19px; display: flex; gap: 2px; }
   .gg__dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(153, 152, 149, 0.6); }
   .gg__dots i:last-child { background: var(--c-accent); }

@@ -35,6 +35,69 @@ WT="$(mktemp -d)/production"
 # --- the indexed-build assertions ------------------------------------------
 fail() { echo "REFUSING: $1"; echo; echo "This looks like a DEV build. Rebuild with:"; echo "  PUBLIC_ALLOW_INDEXING=true npm run build"; exit 1; }
 
+# --- the Turnstile widget -----------------------------------------------
+# Its own message. The indexed-build fail() above tells you to set
+# PUBLIC_ALLOW_INDEXING, which is the wrong advice for this failure and is
+# the sort of misdirection that costs an hour.
+failTs() {
+  echo "REFUSING: $1"
+  echo
+  echo "The Turnstile widget is missing from the build. Set the SITE key in"
+  echo ".env.production (gitignored) and rebuild:"
+  echo "  PUBLIC_TURNSTILE_SITE_KEY=0x4AAA...   # public, ships in the HTML"
+  echo "  PUBLIC_ALLOW_INDEXING=true npm run build"
+  echo
+  echo "The SECRET key never goes in the repo. It belongs in"
+  echo "/var/www/vhosts/roarsinc.com/private/contact-config.php on the server."
+  exit 1
+}
+# A production build without the widget is the bug that let the bots in: the
+# markup is conditional on PUBLIC_TURNSTILE_SITE_KEY, so an unset variable
+# does not weaken the check, it deletes it, and nothing anywhere says so. The
+# site went out that way once and nobody could have seen it from the outside.
+#
+# TWO CHECKS, AND THE SECOND IS THE REAL ONE. The first tells the operator
+# what to fix; the second reads what is actually in dist/, because the
+# variable being present in a file proves nothing about the build that
+# happened. Same reasoning as the indexed-build assertions above.
+#
+# astro build runs in production mode, so it loads .env.production by itself.
+# That file is gitignored and holds the SITE key only -- it is public, it
+# ships in the HTML. The secret is never here; it lives in
+# contact-config.php on the server.
+if [ ! -f .env.production ]; then
+  echo "REFUSING: .env.production is missing."
+  echo
+  echo "It must carry the Turnstile SITE key (public, ships in the HTML):"
+  echo "  PUBLIC_TURNSTILE_SITE_KEY=0x4AAA..."
+  echo "The SECRET key does NOT go here. It goes in contact-config.php on the server."
+  exit 1
+fi
+grep -q '^PUBLIC_TURNSTILE_SITE_KEY=..*' .env.production \
+  || failTs ".env.production has no PUBLIC_TURNSTILE_SITE_KEY (or it is empty)."
+
+# Cloudflare's TEST keys, which are public and documented: 1x... always passes,
+# 2x... always blocks, 3x... always challenges. On dev they are exactly right.
+# On production the first is WORSE THAN NO WIDGET -- the form would look
+# protected, every visitor would sail through, and every bot would too, with
+# nothing in any log to say so. The same file is used for both builds, so the
+# only thing standing between dev's key and a production deploy is this check.
+if grep -qE '^PUBLIC_TURNSTILE_SITE_KEY=[123]x0{20}A[AB]' .env.production; then
+  failTs ".env.production still holds a Cloudflare TEST site key. Those are for dev."
+fi
+grep -q 'data-sitekey="[123]x0\{20\}A[AB]"' dist/contact-us/index.html \
+  && failTs "the build carries a Cloudflare TEST site key. Rebuild with the real one."
+true
+
+for page in dist/contact-us/index.html dist/resources/swot-analysis/index.html; do
+  [ -f "$page" ] || continue
+  grep -q 'cf-turnstile' "$page" \
+    || failTs "$page has no Turnstile widget. The build did not see the site key."
+done
+grep -rq 'challenges\.cloudflare\.com' dist/contact-us/index.html \
+  || failTs "the contact page does not load the Turnstile script."
+echo "--- turnstile widget present in the build ---"
+
 [ -f dist/sitemap-index.xml ] || fail "dist/sitemap-index.xml is missing."
 grep -q '^Sitemap: https://www\.roarsinc\.com/sitemap-index\.xml$' dist/robots.txt \
   || fail "robots.txt does not carry the live Sitemap line."
