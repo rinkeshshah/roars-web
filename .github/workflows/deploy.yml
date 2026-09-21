@@ -12,10 +12,29 @@ name: Build and deploy
 # only the built output, force-pushed. That keeps build artefacts out of the
 # source history and stops the repository growing by a full copy of the site
 # on every build.
+#
+# ── THE PUSH TRIGGER IS OFF ON PURPOSE. DO NOT PUT IT BACK YET. ────────────
+#
+# The publish step below does `git init` and `git push --force`, which is a
+# REWRITTEN HISTORY every run. scripts/deploy.sh exists because that is
+# exactly what broke dev once already: a force-push is a non-fast-forward,
+# Plesk's `git pull` refuses it, and the branch on GitHub goes on looking
+# perfectly correct while the server sits on the build before the rewrite.
+# It is silent, and it stays silent until somebody notices the site is old.
+#
+# Today nothing pushes to `main` -- every branch in flight is a feature
+# branch -- so this workflow has never run and the landmine has never gone
+# off. The first merge to main would have set it off, with no warning and no
+# obvious cause. Hence: workflow_dispatch only, so it cannot fire by
+# accident, and it is still there to run by hand if anyone wants to.
+#
+# WHAT HAS TO HAPPEN BEFORE THE TRIGGER COMES BACK: the publish step must
+# fast-forward the existing branch the way scripts/deploy.sh does, and it
+# must learn to publish `production` as well -- production is currently built
+# and pushed from a developer's machine, which is the other half of the same
+# problem. Restoring the trigger before both are done re-arms this.
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
