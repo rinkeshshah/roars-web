@@ -65,16 +65,24 @@ failTs() {
 # That file is gitignored and holds the SITE key only -- it is public, it
 # ships in the HTML. The secret is never here; it lives in
 # contact-config.php on the server.
-if [ ! -f .env.production ]; then
-  echo "REFUSING: .env.production is missing."
+# TWO WAYS IN, because this script has two callers. A developer builds from
+# .env.production, which is gitignored and stays on their machine. CI has no
+# such file and never can, so it passes the key in the environment. Either is
+# fine; NEITHER is not.
+SITE_KEY="${PUBLIC_TURNSTILE_SITE_KEY:-}"
+if [ -z "$SITE_KEY" ] && [ -f .env.production ]; then
+  SITE_KEY="$(sed -n 's/^PUBLIC_TURNSTILE_SITE_KEY=//p' .env.production | head -1 | tr -d '\r\042\047')"
+fi
+if [ -z "$SITE_KEY" ]; then
+  echo "REFUSING: no Turnstile SITE key."
   echo
-  echo "It must carry the Turnstile SITE key (public, ships in the HTML):"
-  echo "  PUBLIC_TURNSTILE_SITE_KEY=0x4AAA..."
-  echo "The SECRET key does NOT go here. It goes in contact-config.php on the server."
+  echo "Either set it in the environment (this is what CI does):"
+  echo "  PUBLIC_TURNSTILE_SITE_KEY=0x4AAA... ./scripts/deploy-production.sh"
+  echo "or put it in .env.production (gitignored) for a local build."
+  echo
+  echo "The SECRET key goes in NEITHER. It belongs in contact-config.php on the server."
   exit 1
 fi
-grep -q '^PUBLIC_TURNSTILE_SITE_KEY=..*' .env.production \
-  || failTs ".env.production has no PUBLIC_TURNSTILE_SITE_KEY (or it is empty)."
 
 # Cloudflare's TEST keys, which are public and documented: 1x... always passes,
 # 2x... always blocks, 3x... always challenges. On dev they are exactly right.
@@ -82,9 +90,10 @@ grep -q '^PUBLIC_TURNSTILE_SITE_KEY=..*' .env.production \
 # protected, every visitor would sail through, and every bot would too, with
 # nothing in any log to say so. The same file is used for both builds, so the
 # only thing standing between dev's key and a production deploy is this check.
-if grep -qE '^PUBLIC_TURNSTILE_SITE_KEY=[123]x0{20}A[AB]' .env.production; then
-  failTs ".env.production still holds a Cloudflare TEST site key. Those are for dev."
-fi
+case "$SITE_KEY" in
+  1x00000000000000000000A[AB]|2x00000000000000000000A[AB]|3x00000000000000000000A[AB])
+    failTs "the site key is a Cloudflare TEST key. Those are for dev." ;;
+esac
 grep -q 'data-sitekey="[123]x0\{20\}A[AB]"' dist/contact-us/index.html \
   && failTs "the build carries a Cloudflare TEST site key. Rebuild with the real one."
 true

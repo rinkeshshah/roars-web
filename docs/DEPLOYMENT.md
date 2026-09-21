@@ -9,7 +9,8 @@ is the main reason this stack was chosen.
 ```
 GitHub push (main)
    -> Actions: npm ci, validate, build, assert URLs, browser tests
-   -> force-push dist/ to the ORPHAN `deploy` branch
+   -> scripts/deploy.sh fast-forwards dist/ onto the `deploy` branch
+   -> scripts/deploy-production.sh does the same for `production`
    -> Plesk pulls `deploy` from GitHub
    -> nginx serves static files
 ```
@@ -22,9 +23,15 @@ credential for the box: no SSH key, no `PLESK_*` secrets. If the repository or
 an Action were ever compromised, the blast radius stops at the repository.
 Deployment is a pull the server chooses to make.
 
-`deploy` is an **orphan** branch, rebuilt from scratch and force-pushed each
-run. It holds one commit of built output and no source history, so the
-repository does not grow by a copy of the site on every build.
+`deploy` and `production` are **continuous** branches. Each publish commits
+the new `dist/` on top of what is already there and pushes without `--force`.
+
+It used to be an orphan branch, rebuilt and force-pushed every run, and that
+was a bug rather than a design: a force-push is a non-fast-forward, Plesk's
+`git pull` refuses it, and the branch on GitHub goes on looking correct while
+the server keeps serving the build from before the rewrite. Nothing errors.
+If a publish is ever rejected now, something else moved the branch, and that
+is worth looking at rather than forcing past.
 
 ## One-time Plesk setup
 
@@ -365,8 +372,8 @@ each a patch surface, with an admin login exposed to the internet.
 
 ## Rollback
 
-`git revert` on `main` and push. Actions rebuilds and force-pushes `deploy`,
-Plesk pulls it. Under two minutes, and no database state to unwind.
+`git revert` on `main` and push. Actions rebuilds and fast-forwards `deploy`
+and `production`, Plesk pulls them. Under two minutes, and no database state to unwind.
 
 For an immediate rollback without waiting for a build, Plesk can pull an
 earlier `deploy` commit directly from the Git panel. Plesk's own backup is the
