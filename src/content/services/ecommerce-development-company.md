@@ -22,14 +22,6 @@ process:
       body: "Our dedicated eCommerce developers draw a complete development roadmap for your project and implement it with the right themes in this stage. After that, we start developing eCommerce website for the convenience of your shoppers. If needed, we enhance it and deploy it into the store."
     - name: "Support"
       body: "Once your app is deployed and need the optimisation of an e-commerce store or website, we provide complete support & maintenance to your product. We start troubleshooting it until all bugs and errors are fixed."
-bands:
-  - key: "capabilities"
-    label: "WHAT WE DO"
-    heading: "Our eCommerce Development Services"
-    items:
-      - tag: "ECOMMERCE"
-        name: "Our eCommerce Development Services"
-        body: "We are ranked among the best eCommerce development companies worldwide, and proudly recognized as a leading eCommerce development company."
 cta:
   label: "Start here"
   heading: "Grow your online business with us!"

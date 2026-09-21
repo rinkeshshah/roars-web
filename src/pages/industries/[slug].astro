@@ -464,7 +464,13 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     {/* ── Proof, 1440x1000 on black ────────────────────────── */}
     {d.proof && (
       <Section ground="dark">
-        <div class="ip">
+        {/* THE HEIGHT IS FOR THE FEATURED BLOCK, so it only applies when
+            there is one. `.ip` reserves 1400px and 362px of bottom padding
+            to make room for `.ip__feat`, which is absolutely placed inside
+            it. Six of the nine industry pages carry no featured project, and
+            on those the reservation was simply a hole: measured at 1440,
+            888px of empty black below the last stat. */}
+        <div class:list={['ip', !d.proof.featured && 'ip--flat']}>
           {/* The ground is the featured project's own header shot, resolved by
               the same workHeroFor the /work/ card and the case-study header
               use, so a project looks the same everywhere it is named. Under
@@ -1161,6 +1167,14 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
      Everything here is overridden at 1360px, where the whole band goes static
      and keeps its own 64/72 padding. */
   .ip { position: relative; isolation: isolate; padding-block: 126px 362px; min-height: 1400px; }
+  /* No featured project, so the reservation shrinks to what the stats need
+     -- it does not go away. `min-height: 0` was the obvious first answer and
+     it was wrong: .ip__stats is ABSOLUTELY positioned at this width, so it
+     contributes nothing to the section's height, and the section collapsed
+     to 355px while its own content ran to 553. Measured, not guessed: the
+     stats sit at 370 and end at 512, and their labels reach 553. 680 clears
+     that with the same 126px of air the top of the band has. */
+  .ip--flat { min-height: 680px; padding-bottom: 126px; }
   /* Bleeds the full band, not the 1362 content box, so it reads as ground
      rather than as a picture sitting on one. The wash is heaviest at the top
      and bottom, where the 11px labels are, and thinnest across the middle

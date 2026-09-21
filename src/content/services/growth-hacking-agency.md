@@ -22,14 +22,6 @@ process:
       body: "As a leading growth hacking agency, we prioritize timing and run strategic experiments to define key growth parameters. Our experts test, analyze data for statistically significant results, identify winning tactics, and continuously optimize for further growth."
     - name: "Implement Results"
       body: "In the last stage, we implement the results we received from conducting tests and getting winning experiences on to your website so that we can provide a better understanding to your audience and get them to convert at a higher rate, and start the process again."
-bands:
-  - key: "capabilities"
-    label: "WHAT WE DO"
-    heading: "Growth Hacking Agency Services"
-    items:
-      - tag: "GROWTH"
-        name: "Growth Hacking Agency Services"
-        body: "Leverage our expertise in maximizing the growth results and ROI of your company. We offer a wide range of growth hacking services that will help your business conquer the market."
 cta:
   label: "Start here"
   heading: "Supercharge the growth of your business with us!"
