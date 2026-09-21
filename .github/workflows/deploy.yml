@@ -57,6 +57,16 @@ jobs:
         run: npm run build
         env:
           PUBLIC_ALLOW_INDEXING: ${{ vars.PUBLIC_ALLOW_INDEXING }}
+          # The Turnstile SITE key, which is public by design: it ships in the
+          # HTML of every page that carries a form, and is useless without the
+          # secret, which lives only in contact-config.php on the server and
+          # must never appear here.
+          #
+          # IT IS THE ONLY THING RENDERING THE WIDGET. The markup is
+          # conditional on this value, so an unset variable does not degrade
+          # the defence -- it removes it silently, leaves the server verifying
+          # a token nobody sent, and is exactly how the bot submissions got in.
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
 
       # Emits real nginx 301s. Astro's own redirects are meta-refresh pages,
       # which pass equity poorly, so they are applied in dev only.
