@@ -22,11 +22,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="color-scheme" content="light dark" />
 <meta name="supported-color-schemes" content="light dark" />
+<!-- Stops iOS and Apple Mail turning phone numbers, dates and addresses into
+     their own links. Left to itself the client paints them its default blue,
+     which on the #141412 footer is very close to unreadable — that is exactly
+     what happened to the USA number and to "roarsinc.com". The meta covers
+     iOS; the a[x-apple-data-detectors] rule below covers the macOS client,
+     which detects anyway and needs its styling handed back. -->
+<meta name="format-detection" content="telephone=no,date=no,address=no,email=no" />
 <title>Your download | Roars</title>
 <!--[if mso]>
 <style>body,table,td,a{font-family:Arial,Helvetica,sans-serif !important}</style>
 <![endif]-->
 <style>
+  /* Apple Mail detects phone numbers and the like even with the meta above,
+     and restyles them in place. This gives the inherited colour back, so a
+     detected number keeps the colour the cell already set for it. */
+  a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font-size:inherit !important;font-family:inherit !important;font-weight:inherit !important;line-height:inherit !important}
   @media only screen and (max-width:620px){
     .rx-pad{padding-left:24px !important;padding-right:24px !important}
     .rx-title{font-size:32px !important;line-height:34px !important}
@@ -51,7 +62,7 @@
         <td align="left" valign="middle" width="190">
           <a href="https://www.roarsinc.com/"><img src="{{asset_base}}/email/roars-lockup.png" width="180" height="47" alt="Roars · user experience matters" style="display:block;width:180px;height:auto;border:0;outline:none;" /></a>
         </td>
-        <td align="right" valign="middle" style="font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">
+        <td align="right" valign="middle" style="font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6E6E6A;">
           LIBRARY {{resource_category}}<br />{{issued_at}}
         </td>
       </tr>
@@ -106,20 +117,26 @@
   </tr>
 
   <!-- contents -->
+  <!-- The 01/02/03 numerals are #8A6D00, not the brand #FFD400. This is the
+       only place in either template where amber lands on the light ground,
+       and there it is 1.6:1 against #FBFBFB — the numbers were legibly
+       invisible in the sent email. Same hue, luminance dropped until it
+       clears 4.5:1, which is how the accent has to behave on white. Amber
+       stays #FFD400 everywhere it belongs, which is on the dark bands. -->
   <tr>
     <td style="padding:34px 36px 0 36px;" class="rx-pad">
-      <p style="margin:0 0 10px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8C8C88;">Contents</p>
+      <p style="margin:0 0 10px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6E6E6A;">Contents</p>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
       <tr>
-        <td width="44" valign="top" style="border-top:1.5px solid #141414;padding:13px 10px 13px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;color:#FFD400;">01</td>
+        <td width="44" valign="top" style="border-top:1.5px solid #141414;padding:13px 10px 13px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;color:#8A6D00;">01</td>
         <td valign="top" style="border-top:1.5px solid #141414;padding:13px 0;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:23px;letter-spacing:-0.4px;color:#141414;mso-line-height-rule:exactly;">{{chapter_1}}</td>
       </tr>
       <tr>
-        <td width="44" valign="top" style="border-top:1px solid #DEDED9;padding:13px 10px 13px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;color:#FFD400;">02</td>
+        <td width="44" valign="top" style="border-top:1px solid #DEDED9;padding:13px 10px 13px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;color:#8A6D00;">02</td>
         <td valign="top" style="border-top:1px solid #DEDED9;padding:13px 0;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:23px;letter-spacing:-0.4px;color:#141414;mso-line-height-rule:exactly;">{{chapter_2}}</td>
       </tr>
       {{#chapter_3}}<tr>
-        <td width="44" valign="top" style="border-top:1px solid #DEDED9;border-bottom:1px solid #DEDED9;padding:13px 10px 13px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;color:#FFD400;">03</td>
+        <td width="44" valign="top" style="border-top:1px solid #DEDED9;border-bottom:1px solid #DEDED9;padding:13px 10px 13px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;color:#8A6D00;">03</td>
         <td valign="top" style="border-top:1px solid #DEDED9;border-bottom:1px solid #DEDED9;padding:13px 0;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:23px;letter-spacing:-0.4px;color:#141414;mso-line-height-rule:exactly;">{{chapter_3}}</td>
       </tr>{{/chapter_3}}
       </table>
@@ -175,14 +192,18 @@
       </tr>
       <tr>
         <td colspan="2" style="border-top:1px solid #2E2E2A;padding-top:14px;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:21px;color:#C2C2BC;mso-line-height-rule:exactly;">
+          <!-- Real anchors, not bare text. A client will not re-detect
+               something that is already a link, so these keep our colour
+               instead of being repainted blue on near-black. -->
           <a href="mailto:sales@roarsinc.com" style="color:#FBFBFB;text-decoration:none;">sales@roarsinc.com</a>
-          &nbsp; USA +1 (302) 505-1200 &nbsp; UK +44 (7537) 183399
+          &nbsp; USA <a href="tel:+13025051200" style="color:#FBFBFB;text-decoration:none;">+1 (302) 505-1200</a>
+          &nbsp; UK <a href="tel:+447537183399" style="color:#FBFBFB;text-decoration:none;">+44 (7537) 183399</a>
         </td>
       </tr>
       <tr>
         <td colspan="2" style="padding-top:10px;font-family:'Courier New',Courier,monospace;font-size:10px;line-height:17px;letter-spacing:0.5px;color:#8E8E87;">
           ROARS TECHNOLOGIES &middot; {{postal_address}}<br />
-          Sent because you requested {{resource_title}} on roarsinc.com.
+          Sent because you requested {{resource_title}} on <a href="https://www.roarsinc.com/" style="color:#8E8E87;text-decoration:none;">roarsinc.com</a>.
         </td>
       </tr>
       </table>

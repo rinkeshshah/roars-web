@@ -28,11 +28,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="color-scheme" content="light dark" />
 <meta name="supported-color-schemes" content="light dark" />
+<!-- See email-guide.html for why. Short version: without this the client
+     auto-links the footer phone numbers and paints them its own blue, which
+     on #141412 is unreadable. -->
+<meta name="format-detection" content="telephone=no,date=no,address=no,email=no" />
 <title>Inquiry logged | Roars</title>
 <!--[if mso]>
 <style>body,table,td,a{font-family:Arial,Helvetica,sans-serif !important}</style>
 <![endif]-->
 <style>
+  a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font-size:inherit !important;font-family:inherit !important;font-weight:inherit !important;line-height:inherit !important}
   @media only screen and (max-width:620px){
     .rx-pad{padding-left:24px !important;padding-right:24px !important}
     .rx-display{font-size:58px !important;line-height:52px !important}
@@ -58,7 +63,7 @@
         <td align="left" valign="middle" width="190">
           <a href="https://www.roarsinc.com/"><img src="{{asset_base}}/email/roars-lockup.png" width="180" height="47" alt="Roars · user experience matters" style="display:block;width:180px;height:auto;border:0;outline:none;" /></a>
         </td>
-        <td align="right" valign="middle" style="font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">
+        <td align="right" valign="middle" style="font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6E6E6A;">
           INQUIRY {{ref_id}}<br />{{submitted_at}}
         </td>
       </tr>
@@ -91,38 +96,38 @@
     <td style="padding:34px 36px 0 36px;" class="rx-pad">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
       <tr>
-        <td colspan="2" style="padding:0 0 10px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8C8C88;">On record</td>
+        <td colspan="2" style="padding:0 0 10px 0;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6E6E6A;">On record</td>
       </tr>
       <tr>
-        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1.5px solid #141414;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">Name</td>
+        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1.5px solid #141414;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6E6E6A;">Name</td>
         <td valign="top" style="padding:12px 0;border-top:1.5px solid #141414;font-family:Helvetica,Arial,sans-serif;font-size:17px;line-height:23px;font-weight:bold;letter-spacing:-0.5px;color:#141414;mso-line-height-rule:exactly;">{{full_name}}</td>
       </tr>
       {{#company}}<tr>
-        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">Company</td>
+        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6E6E6A;">Company</td>
         <td valign="top" style="padding:12px 0;border-top:1px solid #DEDED9;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;color:#141414;mso-line-height-rule:exactly;">{{company}}</td>
       </tr>{{/company}}
       {{#phone}}<tr>
-        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">Phone</td>
+        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6E6E6A;">Phone</td>
         <td valign="top" style="padding:12px 0;border-top:1px solid #DEDED9;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;color:#141414;mso-line-height-rule:exactly;">{{phone}}</td>
       </tr>{{/phone}}
       {{#country}}<tr>
-        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">Country</td>
+        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6E6E6A;">Country</td>
         <td valign="top" style="padding:12px 0;border-top:1px solid #DEDED9;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;color:#141414;mso-line-height-rule:exactly;">{{country}}</td>
       </tr>{{/country}}
       <tr>
-        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">Reply to</td>
+        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6E6E6A;">Reply to</td>
         <td valign="top" style="padding:12px 0;border-top:1px solid #DEDED9;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;color:#141414;mso-line-height-rule:exactly;">{{email}}</td>
       </tr>
       <tr>
-        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">Form</td>
+        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6E6E6A;">Form</td>
         <td valign="top" style="padding:12px 0;border-top:1px solid #DEDED9;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;color:#141414;mso-line-height-rule:exactly;">{{form_label}}</td>
       </tr>
       {{#message}}<tr>
-        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;border-bottom:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8C8C88;">Brief</td>
+        <td width="150" valign="top" style="padding:12px 14px 12px 0;border-top:1px solid #DEDED9;border-bottom:1px solid #DEDED9;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6E6E6A;">Brief</td>
         <td valign="top" style="padding:12px 0;border-top:1px solid #DEDED9;border-bottom:1px solid #DEDED9;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:23px;color:#4A4A48;mso-line-height-rule:exactly;">{{message}}</td>
       </tr>{{/message}}
       </table>
-      <p style="margin:14px 0 0 0;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#8C8C88;mso-line-height-rule:exactly;">
+      <p style="margin:14px 0 0 0;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#6E6E6A;mso-line-height-rule:exactly;">
         Something wrong above? Just reply to this email and correct it. It reaches the same person.
       </p>
     </td>
@@ -168,7 +173,7 @@
            the two have to match or the same person appears to sign two
            different ways. Do not reformat, re-indent or tidy it. If it
            changes, it changes at the source and both copies are replaced. -->
-<p style="margin:18px 0 0">Cheers,</p><div style="color:#9aa0a6;margin:12px 0 10px">--</div><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Tahoma,Arial,sans-serif"><tr><td valign="top" style="width:20px;padding:78px 18px 0 0"><a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=linkedin&amp;color=%23000000&amp;size=md" width="20" height="20" alt="LinkedIn" style="display:block;border:0;margin:0 0 10px"></a><a href="https://www.twitter.com/roarstech" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=twitter&amp;color=%23000000&amp;size=md" width="20" height="20" alt="Twitter" style="display:block;border:0;margin:0 0 10px"></a><a href="https://www.facebook.com/roarstech/" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=facebook&amp;color=%23000000&amp;size=md" width="20" height="20" alt="Facebook" style="display:block;border:0;margin:0 0 10px"></a><a href="https://www.instagram.com/roarstech" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=instagram&amp;color=%23000000&amp;size=md" width="20" height="20" alt="Instagram" style="display:block;border:0;margin:0 0 10px"></a><a href="https://medium.com/roars" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=medium-m&amp;color=%23000000&amp;size=md" width="20" height="20" alt="Medium" style="display:block;border:0;margin:0 0 10px"></a></td><td valign="top" style="padding:0"><img src="https://public-emailbadge.b-cdn.net/media/haV67eKyrxLLGkNMVaiTZLLwHrjriq2qT9gbZHqG.png" width="65" height="65" alt="Suzanne Martin" style="display:block;border:0;border-radius:39px;margin:0 0 13px"><div style="font-size:15px;color:#000000;line-height:1.2;margin:0 0 4px">Suzanne Martin</div><div style="font-size:12px;color:#acaeb9;line-height:1.2">Global Sales</div><div style="font-size:12px;line-height:1.2;padding:20px 0 5px"><a href="https://www.roarsinc.com" style="color:#1a0dab">roarsinc.com</a></div><div style="font-size:12px;color:#acaeb9;line-height:1.4">UK: <a href="tel:+447537183399" style="color:#1a0dab">+44 753 718 3399</a> | USA: <a href="tel:+13025051200" style="color:#1a0dab">+1 302 505 1200</a></div><div style="font-size:12px;color:#acaeb9;font-weight:bold;line-height:1.2;padding:2px 0 14px">User Experience Matters*</div><div style="width:400px;max-width:100%;border-top:2px solid #fed51c;font-size:0;line-height:0">&nbsp;</div></td></tr></table><div style="max-width:550px;border-top:2px dotted #dddddd;margin:18px 0 8px;font-size:0;line-height:0">&nbsp;</div><p style="max-width:550px;margin:0;font-family:Arial,sans-serif;font-size:11px;line-height:1.35;color:#c4c4c4">Property of ROARS Technologies Pvt. Ltd. This message is intended only for the use of the Addressee and may contain information that is PRIVILEGED and CONFIDENTIAL. If you are not the intended recipient, dissemination of this communication is prohibited. If you have received this communication in error, please erase all copies of the message and its attachments and notify us immediately at <a href="mailto:notify@roarsinc.com" style="color:#1a0dab">notify@roarsinc.com</a></p><div style="max-width:550px;border-top:2px dotted #dddddd;margin:8px 0;font-size:0;line-height:0">&nbsp;</div><p style="max-width:550px;margin:0;font-family:Arial,sans-serif;font-size:11px;line-height:1.35;color:#c4c4c4">Head Office: Roars Technologies Pvt. Ltd., Jayanagar, Bengaluru, Karnataka, 560041</p>
+<p style="margin:18px 0 0">Cheers,</p><div style="color:#6B6B6B;margin:12px 0 10px">--</div><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Tahoma,Arial,sans-serif"><tr><td valign="top" style="width:20px;padding:78px 18px 0 0"><a href="https://in.linkedin.com/company/roars-technologies-pvt.-ltd./" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=linkedin&amp;color=%23000000&amp;size=md" width="20" height="20" alt="LinkedIn" style="display:block;border:0;margin:0 0 10px"></a><a href="https://www.twitter.com/roarstech" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=twitter&amp;color=%23000000&amp;size=md" width="20" height="20" alt="Twitter" style="display:block;border:0;margin:0 0 10px"></a><a href="https://www.facebook.com/roarstech/" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=facebook&amp;color=%23000000&amp;size=md" width="20" height="20" alt="Facebook" style="display:block;border:0;margin:0 0 10px"></a><a href="https://www.instagram.com/roarstech" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=instagram&amp;color=%23000000&amp;size=md" width="20" height="20" alt="Instagram" style="display:block;border:0;margin:0 0 10px"></a><a href="https://medium.com/roars" style="text-decoration:none"><img src="https://asset-emailbadge.b-cdn.net/customize-image?icon=medium-m&amp;color=%23000000&amp;size=md" width="20" height="20" alt="Medium" style="display:block;border:0;margin:0 0 10px"></a></td><td valign="top" style="padding:0"><img src="https://public-emailbadge.b-cdn.net/media/haV67eKyrxLLGkNMVaiTZLLwHrjriq2qT9gbZHqG.png" width="65" height="65" alt="Suzanne Martin" style="display:block;border:0;border-radius:39px;margin:0 0 13px"><div style="font-size:15px;color:#000000;line-height:1.2;margin:0 0 4px">Suzanne Martin</div><div style="font-size:12px;color:#63656F;line-height:1.2">Global Sales</div><div style="font-size:12px;line-height:1.2;padding:20px 0 5px"><a href="https://www.roarsinc.com" style="color:#1a0dab">roarsinc.com</a></div><div style="font-size:12px;color:#63656F;line-height:1.4">UK: <a href="tel:+447537183399" style="color:#1a0dab">+44 753 718 3399</a> | USA: <a href="tel:+13025051200" style="color:#1a0dab">+1 302 505 1200</a></div><div style="font-size:12px;color:#63656F;font-weight:bold;line-height:1.2;padding:2px 0 14px">User Experience Matters*</div><div style="width:400px;max-width:100%;border-top:2px solid #fed51c;font-size:0;line-height:0">&nbsp;</div></td></tr></table><div style="max-width:550px;border-top:2px dotted #dddddd;margin:18px 0 8px;font-size:0;line-height:0">&nbsp;</div><p style="max-width:550px;margin:0;font-family:Arial,sans-serif;font-size:11px;line-height:1.35;color:#6B6B6B">Property of ROARS Technologies Pvt. Ltd. This message is intended only for the use of the Addressee and may contain information that is PRIVILEGED and CONFIDENTIAL. If you are not the intended recipient, dissemination of this communication is prohibited. If you have received this communication in error, please erase all copies of the message and its attachments and notify us immediately at <a href="mailto:notify@roarsinc.com" style="color:#1a0dab">notify@roarsinc.com</a></p><div style="max-width:550px;border-top:2px dotted #dddddd;margin:8px 0;font-size:0;line-height:0">&nbsp;</div><p style="max-width:550px;margin:0;font-family:Arial,sans-serif;font-size:11px;line-height:1.35;color:#6B6B6B">Head Office: Roars Technologies Pvt. Ltd., Jayanagar, Bengaluru, Karnataka, 560041</p>
     </td>
   </tr>
 
@@ -183,13 +188,14 @@
       <tr>
         <td colspan="2" style="border-top:1px solid #2E2E2A;padding-top:14px;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:21px;color:#C2C2BC;mso-line-height-rule:exactly;">
           <a href="mailto:sales@roarsinc.com" style="color:#FBFBFB;text-decoration:none;">sales@roarsinc.com</a>
-          &nbsp; USA +1 (302) 505-1200 &nbsp; UK +44 (7537) 183399
+          &nbsp; USA <a href="tel:+13025051200" style="color:#FBFBFB;text-decoration:none;">+1 (302) 505-1200</a>
+          &nbsp; UK <a href="tel:+447537183399" style="color:#FBFBFB;text-decoration:none;">+44 (7537) 183399</a>
         </td>
       </tr>
       <tr>
         <td colspan="2" style="padding-top:10px;font-family:'Courier New',Courier,monospace;font-size:10px;line-height:17px;letter-spacing:0.5px;color:#8E8E87;">
           ROARS TECHNOLOGIES &middot; {{postal_address}}<br />
-          Sent because you submitted the contact form on roarsinc.com.
+          Sent because you submitted the contact form on <a href="https://www.roarsinc.com/" style="color:#8E8E87;text-decoration:none;">roarsinc.com</a>.
         </td>
       </tr>
       </table>
