@@ -4,7 +4,7 @@ publishedAt: 2026-09-14
 category: "PROBLEM DISCOVERY"
 summary: "Identify your customer’s major jobs to be done, the pains they face when trying to accomplish their jobs and the gains they perceive by getting their jobs done."
 pills: ["PDF", "ONE PAGE", "PROBLEM DISCOVERY"]
-file: "value-proposition.pdf"
+file: "Value-proposition.pdf"
 seo:
   title: "Value Proposition Canvas, Free One Page Download"
   description: "Identify your customer's major jobs to be done, the pains they face trying to accomplish them, and the gains they perceive by getting those jobs done."

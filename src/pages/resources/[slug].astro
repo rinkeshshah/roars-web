@@ -192,7 +192,15 @@ const { Content } = entry ? await render(entry) : { Content: null }
           <span class="gg__sheet gg__sheet--3"></span>
           <span class="gg__sheet gg__sheet--2"></span>
           <span class="gg__sheet gg__sheet--1">
-            <em class="gg__file">{(d.file ?? `${slug}.pdf`).toUpperCase()}</em>
+            {/* The SLUG, not d.file. These agreed until the real filenames on
+                the server turned out to be things like "Business-plans.pdf"
+                and "People-connection.pdf" — WordPress-era names that are not
+                just differently cased but differently worded. Printing those
+                put "BUSINESS-PLANS.PDF" on a page whose guide is called
+                Business Plan, which reads as a typo. d.file is now purely a
+                delivery detail: which bytes contact.php fetches and links.
+                What the card promises the visitor is the guide. */}
+            <em class="gg__file">{`${slug}.pdf`.toUpperCase()}</em>
             <span class="gg__hair"></span>
             <em class="gg__meta">ONE PAGE · FREE</em>
             <em class="gg__meta gg__meta--2">FILL THE FORM →</em>

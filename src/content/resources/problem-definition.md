@@ -4,7 +4,7 @@ publishedAt: 2026-09-15
 category: "PITCHING"
 summary: "Problem Definition is a deceptively simple task. What at first seems to be the problem is often merely a symptom of a deeper problem. This tool works to both open a problem up, presenting it in a way that can be examined from a number of angles."
 pills: ["PDF", "ONE PAGE", "PITCHING"]
-file: "problem-definition.pdf"
+file: "Problem-Definition.pdf"
 collections: ["tools"]
 seo:
   title: "Problem Definition Template, Free One Page Download"

@@ -4,7 +4,7 @@ publishedAt: 2026-09-15
 category: "PITCHING"
 summary: "If you want to sell a killer business idea, your pitch needs to pack a punch. This 5-part checklist is the best way to make sure your pitch hits home."
 pills: ["PDF", "ONE PAGE", "PITCHING"]
-file: "pitching-checklist.pdf"
+file: "Pitching-Checklist.pdf"
 collections: ["tools"]
 seo:
   title: "Pitching Checklist Template, Free One Page Download"

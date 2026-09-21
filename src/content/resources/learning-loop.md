@@ -4,7 +4,7 @@ publishedAt: 2026-09-14
 category: "OUR FAVOURITE"
 summary: "The Learning Loop is a tool that helps you to define how the work you do now informs what you do next. It provides a high-level perspective on how implementing social change can be broken down into iterative cycles."
 pills: ["PDF", "ONE PAGE", "OUR FAVOURITE"]
-file: "learning-loop.pdf"
+file: "Learning-loop.pdf"
 seo:
   title: "Learning Loop Template, Free One Page Download"
   description: "Define how the work you do now informs what you do next, and how implementing change breaks down into iterative cycles you can actually run."

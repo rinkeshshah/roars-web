@@ -4,7 +4,7 @@ publishedAt: 2026-09-15
 category: "STRATEGY"
 summary: "The Innovation Flowchart gives a detailed overview of the various stages in an innovation process, listing the activities, requirements and goals of each stage."
 pills: ["PDF", "ONE PAGE", "STRATEGY"]
-file: "innovation-flowchart.pdf"
+file: "Innovation-Flowchart.pdf"
 collections: ["tools", "staff-picks"]
 seo:
   title: "Innovation Flowchart Template, Free One Page Download"

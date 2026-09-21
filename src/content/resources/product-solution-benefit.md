@@ -4,7 +4,7 @@ publishedAt: 2026-09-14
 category: "PROBLEM DISCOVERY"
 summary: "Storyboarding to help find out customer pain points and find a magical solutions for there problems."
 pills: ["PDF", "ONE PAGE", "PROBLEM DISCOVERY"]
-file: "product-solution-benefit.pdf"
+file: "Product-solution-benefit.pdf"
 seo:
   title: "Product Solution Benefit Template, Free Download"
   description: "Storyboarding that helps you find customer pain points and work out which solution actually answers them, before anyone writes a line of code."

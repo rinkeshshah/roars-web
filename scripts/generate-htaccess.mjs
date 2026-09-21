@@ -58,7 +58,7 @@
  * right host over https. Arriving at the right host, it does not fire at all,
  * so it cannot loop whatever the proxy reports.
  */
-import { writeFileSync, existsSync } from 'node:fs'
+import { writeFileSync, existsSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { redirectList, patternRedirects } from '../src/lib/redirects.mjs'
@@ -226,6 +226,83 @@ for (const p of patternRedirects) {
 }
 say('')
 
+/*
+ * 4b. THE GUIDE PDFs, whose real filenames on the server are not the names
+ * the emails were sent with.
+ *
+ * The files were never lost at the cutover — they are in httpdocs/tools/ under
+ * WordPress-era names, and Linux is case-sensitive, so every download 404d.
+ *
+ * "IT IS A CASE MISMATCH" IS TRUE FOR NINE OF THEM AND A TRAP FOR TWO.
+ * Two are differently WORDED, not differently cased:
+ *
+ *     business-plan.pdf          ->  Business-plans.pdf        (plural)
+ *     people-connection-map.pdf  ->  People-connection.pdf     (word dropped)
+ *
+ * So a rule that lowercases and compares — or a single [NC] pattern — fixes
+ * nine and leaves two broken, and they are the two nobody would re-test.
+ *
+ * TWO SOURCES PER GUIDE, and that is the point of generating this:
+ *
+ *   <slug>.pdf            what the emails actually contain. Every guide email
+ *                         sent since launch carries this, because the old
+ *                         manifest derived the filename from the slug. This is
+ *                         the one that repairs mail already in people's
+ *                         inboxes.
+ *   lower(<real name>)    the plausible hand-typed or hand-linked form. For
+ *                         the nine case-only guides this is the same string as
+ *                         above and collapses away; for the two odd ones it is
+ *                         a second, different rule.
+ *
+ * NO [NC], deliberately. A case-insensitive match would also match the
+ * DESTINATION — /tools/Business-Model-canvas.pdf lowercases to the very
+ * pattern that just fired — and Apache would redirect it to itself forever.
+ * Matching case-sensitively means the target cannot re-enter the rule.
+ *
+ * BEFORE RULE 7. The trailing-slash rule only skips paths that are real files
+ * (!-f), and these source names are NOT real files — that is the whole
+ * problem. Left to rule 7, /tools/business-plan.pdf would 301 to
+ * /tools/business-plan.pdf/ and the visitor would land on a 404 with a slash
+ * on the end.
+ *
+ * DERIVED FROM guides.php, the same manifest contact.php reads, so this can
+ * never drift from what the emails are being sent with. When the PDFs move
+ * into public/tools/ under the clean slug names, the two sides agree again
+ * and every rule here disappears on its own.
+ */
+const guidesPhp = readFileSync(join(ROOT, 'public/api/guides.php'), 'utf8')
+const guideRows = [...guidesPhp.matchAll(/'([a-z0-9-]+)'\s*=>\s*\[[^\]]*?'file'\s*=>\s*'([^']+)'/gs)]
+  .map((m) => ({ slug: m[1], file: m[2] }))
+
+if (guideRows.length === 0) {
+  console.error('FAIL: read no guides out of public/api/guides.php.')
+  console.error('      The manifest format changed and the /tools/ redirects are now silently empty.')
+  process.exit(1)
+}
+
+const toolRules = []
+for (const g of guideRows) {
+  const sources = new Set([`${g.slug}.pdf`, g.file.toLowerCase()])
+  sources.delete(g.file) // a source identical to the target would loop
+  for (const src of [...sources].sort()) {
+    toolRules.push(
+      `RewriteRule ^tools/${src.replace(/\./g, '\\.')}$ ${abs(`/tools/${g.file}`)} [R=301,L]`,
+    )
+  }
+}
+
+if (toolRules.length) {
+  say(
+    '# 4b. Guide PDFs: the names the emails went out with -> the names the',
+    '#     files actually have. Case-sensitive on purpose (an [NC] match would',
+    '#     also match the destination and loop). Two of these are word',
+    '#     differences, not case: business-plan -> Business-plans, and',
+    '#     people-connection-map -> People-connection.',
+    ...toolRules,
+    '',
+  )
+}
+
 say(
   '# 5. Indexed legacy image paths, BEFORE the 410 block below — which would',
   '#    otherwise match /wp-content/ and return 410 for every migrated image',
@@ -263,7 +340,22 @@ say(
   '#    with this rule sitting right there saying https. Dropping !-d hands',
   '#    the case back to this rule; DirectorySlash Off below stops mod_dir',
   '#    racing it. No loop: a path already ending in / cannot match ^(.*[^/])$.',
+  '#',
+  '#    AND NOTHING THAT LOOKS LIKE A FILE, which !-f does not cover.',
+  '#    !-f exempts a file that EXISTS. A file that does not is the case that',
+  '#    matters: /tools/business-plan.pdf, before the rules above existed,',
+  '#    301d to /tools/business-plan.pdf/ — a slash welded onto a PDF, which',
+  '#    then 404s. So a dead link answered with a redirect to a nonsense URL',
+  '#    instead of a clean 404, and a crawler was told the nonsense URL is',
+  '#    canonical. Found by putting the generated file under a real Apache and',
+  '#    asking for a PDF that is not there.',
+  '#    Safe to exclude: no URL in the inventory and no redirect source has a',
+  '#    dot in its last path segment — checked, not assumed. Real files with',
+  '#    extensions (/robots.txt, /api/contact.php, /_astro/*.js) were already',
+  '#    served by the !-f line above; this only changes what happens to the',
+  '#    ones that are missing.',
   'RewriteCond %{REQUEST_FILENAME} !-f',
+  'RewriteCond $1 !\\.[A-Za-z0-9]{2,5}$',
   `RewriteRule ^(.*[^/])$ https://${HOST}/$1/ [R=301,L]`,
   '</IfModule>',
   '',

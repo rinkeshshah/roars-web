@@ -4,7 +4,7 @@ publishedAt: 2026-09-15
 category: "STRATEGY"
 summary: "The People and Connections Map is a quick and simple way to visualise exactly who you are trying to reach and how."
 pills: ["PDF", "ONE PAGE", "STRATEGY"]
-file: "people-connection-map.pdf"
+file: "People-connection.pdf"
 collections: ["tools"]
 seo:
   title: "People and Connection Map Template, Free Download"

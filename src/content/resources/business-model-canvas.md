@@ -4,7 +4,7 @@ publishedAt: 2026-09-13
 category: "BUSINESS MODEL"
 summary: "The Business Model Canvas is a one page overview that lays out both what you do (or want to do), and how you go about doing it ; enabling structured conversations around management and strategy."
 pills: ["PDF", "ONE PAGE", "BUSINESS MODEL"]
-file: "business-model-canvas.pdf"
+file: "Business-Model-canvas.pdf"
 sections:
   - label: "01 / PURPOSE"
     heading: "What is this for?"

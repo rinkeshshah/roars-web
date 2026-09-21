@@ -4,7 +4,7 @@ publishedAt: 2026-09-14
 category: "PROBLEM DISCOVERY"
 summary: "IDEA: TRY: TEST: SPECIFY. Prototyping is more than just ‘trying out’; it is a structured way to check that you have an efficient and fitting solution."
 pills: ["PDF", "ONE PAGE", "PROBLEM DISCOVERY"]
-file: "prototype-testing-plan.pdf"
+file: "Prototype-Testing-plan.pdf"
 collections: ["staff-picks"]
 seo:
   title: "Prototype Testing Plan, Free One Page Download"

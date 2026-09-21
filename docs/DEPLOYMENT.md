@@ -381,17 +381,33 @@ third line.
 
 ## The guide PDFs: /tools/
 
-**Open, and it is an outage.** All 15 gated guide PDFs are missing from
-production. Every `/resources/` download 404s and the email that goes
-with it carries no attachment.
+**The files were never lost.** They are in `httpdocs/tools/` and always
+were. The manifest just asked for the wrong names.
 
-It happened at the cutover. The PDFs lived in the WordPress
-`httpdocs/tools/`. Repointing Plesk at the `production` branch made
-`httpdocs` a checkout of a repo that has never contained them, so they
-went with everything else that was not in the build. Nothing failed,
-because `contact.php` treats a missing file as a soft failure on
-purpose — the submission is still saved and sales is still notified, so
-the lead is not lost. The visitor gets an email with a dead link.
+The PDFs carry WordPress-era filenames — `Business-Model-canvas.pdf`,
+`Evidence-Planning.pdf` — while the manifest derived its filenames from
+the slug and asked for `business-model-canvas.pdf`. Linux serves files
+case-sensitively, so all 15 downloads were 404s pointing at files
+sitting right there. Nothing failed loudly, because `contact.php`
+treats a missing file as a soft failure on purpose — the submission is
+saved and sales is notified, so the lead is not lost. The visitor gets
+an email with a dead link.
+
+**Two of them are not case differences at all.** These are differently
+worded, and any fix built on lowercase-and-compare misses them:
+
+| the emails say | the file is called |
+|---|---|
+| `business-plan.pdf` | `Business-plans.pdf` |
+| `people-connection-map.pdf` | `People-connection.pdf` |
+
+The manifest now carries the exact server filenames, and
+`scripts/generate-htaccess.mjs` emits a 301 per guide from the name the
+emails went out with to the name the file actually has, so mail already
+in people's inboxes works. Those redirects are derived from
+`guides.php`, so they cannot drift from what is being sent — and when
+the PDFs move into `public/tools/` under the clean slug names, the two
+sides agree again and the rules disappear on their own.
 
 Both halves read the same directory, which is why the link and the
 attachment broke together:
@@ -399,24 +415,75 @@ attachment broke together:
     'tools_dir' => '/var/www/vhosts/roarsinc.com/httpdocs/tools'   # the attachment
     $url = "{$site}/tools/" . rawurlencode($guide['name']);        # the link
 
-**The fix is `public/tools/`, not the server.** Restoring the files
-into `httpdocs/tools/` works — untracked files survive `git pull` — and
-it is also how this happened. Anything that lives only in `httpdocs`
-survives exactly until someone rebuilds it. Put the 15 PDFs in
-`public/tools/` in the repo and the build carries them, `production`
-carries them, and `tools_dir` resolves again because the directory is
-part of the checkout.
+**Working now, but still standing on the server copy.** Those files are
+untracked, so they survive `git pull` — and equally, nothing in the
+repository knows they exist. Put the 15 PDFs in `public/tools/` and the
+build carries them, `production` carries them, and `tools_dir` resolves
+out of the checkout itself.
 
-To recover them: they are in the pre-launch `httpdocs` backup under
-`tools/`, or on any machine holding the old WordPress tree. Copy them
-into `public/tools/`, then delete the matching slugs from
-`MISSING_PDFS` in `scripts/assert-guides.mjs`.
+Name the repo copies with the clean slug names
+(`business-plan.pdf`, not `Business-plans.pdf`). Then set `file:` in
+each `src/content/resources/<slug>.md` back to that name, re-run
+`scripts/build-email-manifest.mjs`, and the `/tools/` redirects vanish
+from the generated `.htaccess` by themselves, because the generator
+only emits a rule where the two names differ. Every email, past and
+future, then resolves with no redirect at all.
 
-`npm run assert:guides` is the gate. It reads `public/api/guides.php` —
-the same manifest `contact.php` reads — and fails on a PDF that is
-missing, zero bytes, or still listed as missing after it has come back.
-`assert-assets` could never have caught this: it walks emitted HTML,
-and these URLs are built in PHP at send time and appear on no page.
+Finally delete the matching slugs from `MISSING_PDFS` in
+`scripts/assert-guides.mjs`.
+
+### The fifteenth guide has no file
+
+`httpdocs/tools/` holds **14 PDFs for 15 guides**. The missing one is
+`website-redesign-roi-calculator`, and it is not a file that went
+astray — there is no evidence it ever existed.
+
+Its `file:` value was never observed. The guide was one of five drafted
+in `b90e5899` with no content file of their own, and the filename was
+derived from the slug at that moment. What *was* read off the live
+archives (`scripts/resource-collections.mjs`) is its title, category
+and summary. Nothing about a download. Its frontmatter still carries
+the note that the long read "needs checking against the PDF" — a check
+that never happened, because there was nothing to check against.
+
+Search Console: 0 clicks, 35 impressions, average position 24.7. The
+URL ranks but has never earned a click, so there is no search traffic
+to protect.
+
+Right now the page takes a submission, sends an email, and the link in
+it 404s. Three ways out, cheapest first:
+
+1. **Find or make the file.** It is on both `/resource/tools/` and
+   `/resource/staff-picks/`, so it is a guide the site promotes twice.
+   A one-page calculator is a plausible thing to rebuild; the long read
+   describing it is already written.
+2. **Unlist it.** Drop the slug from `MEMBERSHIP` in
+   `scripts/resource-collections.mjs` and from the grid on
+   `/resources/guides/`, and `noindex` the page so it leaves the
+   sitemap. The URL keeps resolving, which `assert-urls` requires and
+   the inventory marks `keep`, but nothing leads a visitor to a form
+   that cannot deliver.
+3. **Retire the URL.** A 301 to `/resources/`. Cleanest for the
+   visitor, but it gives up a ranking URL and needs the inventory row
+   changed from `keep`, so it is the one to choose deliberately rather
+   than by default.
+
+Option 2 is the recommendation while the file is being decided: it
+stops the broken journey today and costs nothing that cannot be undone
+in one commit.
+
+`npm run assert:guides` is the build gate. It reads
+`public/api/guides.php` — the same manifest `contact.php` reads — and
+fails on a PDF that is missing, zero bytes, on disk under a different
+case, or still listed as missing after it has come back. It compares
+filenames as bytes rather than folding case, so it gives the same
+answer on Linux as on a macOS checkout, where `existsSync` would
+happily match the wrong case and pass locally before 404ing in
+production.
+
+`assert-assets` could never have caught any of this: it walks emitted
+HTML, and these URLs are built in PHP at send time and appear on no
+page. The live half is section 6b of `npm run verify:server`.
 
 ## Post-cutover cleanup
 

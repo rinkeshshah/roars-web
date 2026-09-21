@@ -4,7 +4,7 @@ publishedAt: 2026-09-14
 category: "OUR FAVOURITE"
 summary: "SWOT stands for Strengths, Weaknesses, Opportunities and Threats. A SWOT analysis can be carried out for a specific project, organisation or even a whole sector."
 pills: ["PDF", "ONE PAGE", "OUR FAVOURITE"]
-file: "swot-analysis.pdf"
+file: "SWOT-analysis.pdf"
 seo:
   title: "SWOT Analysis Template, Free One Page Download"
   description: "Strengths, Weaknesses, Opportunities and Threats on one page. A SWOT can be carried out for a specific project, an organisation, or even a whole sector."
