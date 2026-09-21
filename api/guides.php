@@ -20,7 +20,7 @@ return [
     ],
     'business-model-canvas' => [
         'title' => 'Business Model Canvas',
-        'file' => 'business-model-canvas.pdf',
+        'file' => 'Business-Model-canvas.pdf',
         'category' => 'BUSINESS MODEL',
         'pages' => '1',
         'summary' => 'The Business Model Canvas is a one page overview that lays out both what you do (or want to do), and how you go about doing it ; enabling structured conversations around management and strategy.',
@@ -28,7 +28,7 @@ return [
     ],
     'business-plan' => [
         'title' => 'Business Plan',
-        'file' => 'business-plan.pdf',
+        'file' => 'Business-plans.pdf',
         'category' => 'BUSINESS MODEL',
         'pages' => '1',
         'summary' => 'A structured description of how you do what you do. The plan needs to articulate the problem the business proposes to solve, a vision for how that will be accomplished.',
@@ -36,7 +36,7 @@ return [
     ],
     'evidence-planning' => [
         'title' => 'Evidence Planning',
-        'file' => 'evidence-planning.pdf',
+        'file' => 'Evidence-Planning.pdf',
         'category' => 'STRATEGY',
         'pages' => '1',
         'summary' => 'The Evidence Planning tool is a quick way to help articulate and improve what you are trying to accomplish. It gives you an easy way to define and share what it is that you’re trying to do.',
@@ -44,7 +44,7 @@ return [
     ],
     'innovation-flowchart' => [
         'title' => 'Innovation Flowchart',
-        'file' => 'innovation-flowchart.pdf',
+        'file' => 'Innovation-Flowchart.pdf',
         'category' => 'STRATEGY',
         'pages' => '1',
         'summary' => 'The Innovation Flowchart gives a detailed overview of the various stages in an innovation process, listing the activities, requirements and goals of each stage.',
@@ -52,7 +52,7 @@ return [
     ],
     'learning-loop' => [
         'title' => 'Learning Loop',
-        'file' => 'learning-loop.pdf',
+        'file' => 'Learning-loop.pdf',
         'category' => 'OUR FAVOURITE',
         'pages' => '1',
         'summary' => 'The Learning Loop is a tool that helps you to define how the work you do now informs what you do next. It provides a high-level perspective on how implementing social change can be broken down into iterative cycles.',
@@ -60,7 +60,7 @@ return [
     ],
     'people-connection-map' => [
         'title' => 'People & Connection Map',
-        'file' => 'people-connection-map.pdf',
+        'file' => 'People-connection.pdf',
         'category' => 'STRATEGY',
         'pages' => '1',
         'summary' => 'The People and Connections Map is a quick and simple way to visualise exactly who you are trying to reach and how.',
@@ -68,7 +68,7 @@ return [
     ],
     'pitching-checklist' => [
         'title' => 'Pitching Checklist',
-        'file' => 'pitching-checklist.pdf',
+        'file' => 'Pitching-Checklist.pdf',
         'category' => 'PITCHING',
         'pages' => '1',
         'summary' => 'If you want to sell a killer business idea, your pitch needs to pack a punch. This 5-part checklist is the best way to make sure your pitch hits home.',
@@ -76,7 +76,7 @@ return [
     ],
     'problem-definition' => [
         'title' => 'Problem Definition',
-        'file' => 'problem-definition.pdf',
+        'file' => 'Problem-Definition.pdf',
         'category' => 'PITCHING',
         'pages' => '1',
         'summary' => 'Problem Definition is a deceptively simple task. What at first seems to be the problem is often merely a symptom of a deeper problem. This tool works to both open a problem up, presenting it in a way that can be examined from a number of angles.',
@@ -84,7 +84,7 @@ return [
     ],
     'product-solution-benefit' => [
         'title' => 'Product Solution Benefit',
-        'file' => 'product-solution-benefit.pdf',
+        'file' => 'Product-solution-benefit.pdf',
         'category' => 'PROBLEM DISCOVERY',
         'pages' => '1',
         'summary' => 'Storyboarding to help find out customer pain points and find a magical solutions for there problems.',
@@ -92,7 +92,7 @@ return [
     ],
     'prototype-testing-plan' => [
         'title' => 'Prototype Testing Plan',
-        'file' => 'prototype-testing-plan.pdf',
+        'file' => 'Prototype-Testing-plan.pdf',
         'category' => 'PROBLEM DISCOVERY',
         'pages' => '1',
         'summary' => 'IDEA: TRY: TEST: SPECIFY. Prototyping is more than just ‘trying out’; it is a structured way to check that you have an efficient and fitting solution.',
@@ -100,7 +100,7 @@ return [
     ],
     'swot-analysis' => [
         'title' => 'SWOT Analysis',
-        'file' => 'swot-analysis.pdf',
+        'file' => 'SWOT-analysis.pdf',
         'category' => 'OUR FAVOURITE',
         'pages' => '1',
         'summary' => 'SWOT stands for Strengths, Weaknesses, Opportunities and Threats. A SWOT analysis can be carried out for a specific project, organisation or even a whole sector.',
@@ -116,7 +116,7 @@ return [
     ],
     'value-proposition' => [
         'title' => 'Value Proposition',
-        'file' => 'value-proposition.pdf',
+        'file' => 'Value-proposition.pdf',
         'category' => 'PROBLEM DISCOVERY',
         'pages' => '1',
         'summary' => 'Identify your customer’s major jobs to be done, the pains they face when trying to accomplish their jobs and the gains they perceive by getting their jobs done.',
