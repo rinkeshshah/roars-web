@@ -608,9 +608,16 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
     transition: box-shadow var(--dur-fast) ease;
   }
   .sv-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--c-accent); color: var(--c-white); }
-  .sv-ghost__dot { position: absolute; top: 17px; width: 8px; height: 8px; border-radius: 50%; }
-  .sv-ghost__dot--grey { left: 158px; background: rgb(153, 152, 149); }
-  .sv-ghost__dot--accent { left: 169px; background: var(--c-accent); }
+  /* In flow, for the reason written out on .c-pill in contact-us.astro: two
+     absolute dots pinned to magic lefts only land on the button while the
+     button is a containing block, and a mobile rule setting `position: static`
+     silently throws them somewhere else on the page. Nothing here does that
+     today; this is the same pattern that has now broken three buttons, so it
+     is removed rather than watched. */
+  .sv-ghost { padding-right: 18px; gap: 3px; }
+  .sv-ghost__dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .sv-ghost__dot--grey { margin-left: auto; background: rgb(153, 152, 149); }
+  .sv-ghost__dot--accent { background: var(--c-accent); }
 
 
   .sv-chip { display: flex; align-items: flex-start; height: 24px; margin-left: 8px; }

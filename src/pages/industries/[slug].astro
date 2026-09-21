@@ -599,8 +599,16 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
      so it stays correct whatever the pill's width becomes. It carries
      data-dots as well, so these blink like every other pair on the site;
      they were the last ones left out. */
+  /* IN FLOW. Anchoring to `right: 18px` was already better than two magic
+     lefts, but it still needed the button to be a containing block -- and the
+     mobile rule that unwinds this section's absolute layout sets
+     `.ip__feat-cta { position: static }`. Measured at 390: the button at
+     y=9020, its dots at y=8461. Both this one and the cases band's button
+     rendered as empty pills. A flex pair pushed right by `margin-left: auto`
+     is part of the button's own line box and has nowhere else to go. */
+  .i-ghost { padding-right: 18px; }
   .i-ghost__dots {
-    position: absolute; right: 18px; top: 50%; translate: 0 -50%;
+    margin-left: auto;
     display: flex; gap: 3px;
   }
   .i-ghost__dots i { width: 8px; height: 8px; border-radius: 50%; display: block; }

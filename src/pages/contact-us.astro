@@ -321,10 +321,23 @@ const schema = [
     transition: background var(--dur-fast) ease;
   }
   .c-pill:hover { background: rgb(38, 38, 38); }
-  .c-pill__dot { position: absolute; top: 20px; width: 8px; height: 8px; border-radius: 50%; }
-  .c-pill__dot--grey { left: 167px; background: rgba(153, 152, 149, 0.6); }
-  .c-pill__dot--white { left: 177px; background: var(--c-white); }
-  .c-pill__dot--accent { left: 177px; background: var(--c-accent); }
+  /* THE DOTS ARE IN FLOW, NOT ABSOLUTE, AND THAT IS THE WHOLE POINT.
+     They were `position: absolute; top: 20px; left: 167px/177px`, which only
+     lands on the pill while the pill is a containing block. The mobile rule
+     unwinding this panel's absolute layout sets the button back to
+     `position: static`, and at that moment the dots resolve against whatever
+     ancestor is positioned instead -- measured at 390: the pill at y=4402 and
+     its own dots at y=3500, nine hundred pixels up the page, invisible.
+     The button rendered as a pill with nothing after the label.
+     In flow they are flex children of the pill and cannot be anywhere else,
+     whatever any rule does to `position` later. `margin-left: auto` puts the
+     pair against the right edge; the 19px of padding is what the two magic
+     lefts used to reserve (204 - 177 - 8). */
+  .c-pill { padding-right: 19px; gap: 3px; }
+  .c-pill__dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .c-pill__dot--grey { margin-left: auto; background: rgba(153, 152, 149, 0.6); }
+  .c-pill__dot--white { background: var(--c-white); }
+  .c-pill__dot--accent { background: var(--c-accent); }
 
   /* ── header ─────────────────────────────────────────────── */
   .ch { position: relative; }

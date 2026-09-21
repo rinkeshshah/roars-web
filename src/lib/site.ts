@@ -103,6 +103,14 @@ export const site = {
     aiDriven: '63%',
     happyCustomers: '1,000+',
     globalAwards: '7+',
+    /* THE TEAM, IN ONE PLACE, for the same reason happyCustomers is in one
+       place. Three figures claimed to be the team and all three were typed by
+       hand: the homepage said 25, the about page's counter said 25 on top of
+       five named portraits (so the page totalled thirty), and the about hero
+       said 37. A reader who visited two of those pages was told two different
+       things about the same company. Every one of them now derives from here,
+       so moving this moves all of them. */
+    teamSize: 25,
   },
 
   statSets: {

@@ -486,7 +486,10 @@ const schema = [
           <img class="about__face about__face--b" src={PORTRAIT.chetna} alt="" width="42" height="42" loading="lazy" />
           <img class="about__face about__face--c" src={PORTRAIT.nitin} alt="" width="42" height="42" loading="lazy" />
           <img class="about__face about__face--d" src={PORTRAIT.atul} alt="" width="42" height="42" loading="lazy" />
-          <p class="about__team-count"><span>25</span></p>
+          {/* From the token, not typed. This figure agreed with the about
+              page's counter by luck rather than by construction, and the
+              about hero disagreed with both. */}
+          <p class="about__team-count"><span>{site.stats.teamSize}</span></p>
         </div>
       </div>
 

@@ -58,6 +58,14 @@ const team = [
   { name: 'Chetna Shah', role: 'UI/UX Lead', img: PORTRAIT.chetna },
 ]
 
+/* THE REST, AND IT HAS TO BE A SUBTRACTION.
+   The disc used to be a typed 25 sitting beside five named portraits, so the
+   page added up to thirty while the homepage said twenty-five. "The rest of
+   the Roars Fam" means the ones not already pictured, so it is the team
+   figure minus the people in the grid — and it stays right if either the
+   token or the list changes. */
+const restOfTeam = site.stats.teamSize - team.length
+
 /** The client marks, drawn as discs rather than as the strip on the homepage. */
 /* All fifteen, from the one registry, so the about grid and the homepage
    strip cannot drift apart. The year is gone: every client carried "2021",
@@ -188,10 +196,17 @@ const schema = [
         <div class="agh__trust" data-reveal>
           <img class="agh__trust-face" src={PORTRAIT.suzanne} alt="" width="42" height="42" />
           <img class="agh__trust-face" src={PORTRAIT.chetna} alt="" width="42" height="42" />
-          <span class="agh__count"><span>37</span>
+          <span class="agh__count"><span>{site.stats.teamSize}</span>
             <span class="starmark" style={`--m:url(${star3.src});width:9px;height:9px`}></span>
           </span>
-          <span class="agh__trust-label">Trusted by our Clients</span>
+          {/* WAS "37", LABELLED "Trusted by our Clients", BESIDE TWO TEAM FACES.
+              Three things disagreed at once: the figure had no source, the
+              label said clients while the portraits were staff, and 37 is not
+              the client count either — that is 1,000+ and is stated as such
+              four sections down. The faces decide what this badge is about,
+              so it is the team, with the team's own figure and a label that
+              matches. */}
+          <span class="agh__trust-label">The Roars team</span>
         </div>
 
         <span class="agh__caption" data-reveal>About Our<br />Product Company</span>
@@ -247,7 +262,7 @@ const schema = [
         ))}
         <li class="agb__rest">
           <span class="agb__rest-disc" aria-hidden="true">
-            <span class="agb__rest-n">25<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
+            <span class="agb__rest-n">{restOfTeam}<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
           </span>
           <span class="agb__rest-label">The rest of the<br />Roars Fam</span>
         </li>
