@@ -61,6 +61,17 @@ if (is_file($smtp)) {
 if (!defined('ROARS_SMTP_HOST_DEFAULT')) { define('ROARS_SMTP_HOST_DEFAULT', 'smtp-relay.gmail.com'); }
 if (!defined('ROARS_SMTP_PORT_DEFAULT')) { define('ROARS_SMTP_PORT_DEFAULT', 587); }
 
+/* The spam layer. Same guard as the other two: if the file is gone the form
+   still takes the enquiry, it just takes it with the honeypot and the rate
+   limit alone -- which is where this site was before, and is a log line
+   rather than an outage. */
+$spam = __DIR__ . '/roars-spam.php';
+if (is_file($spam)) {
+    require_once $spam;
+} else {
+    error_log('[roars] roars-spam.php is missing from ' . __DIR__ . '; stamp, logging and turnstile helper are off');
+}
+
 $integrations = __DIR__ . '/roars-integrations.php';
 if (is_file($integrations)) {
     require_once $integrations;
@@ -359,7 +370,6 @@ $fail = function (int $code, string $msg) use ($wantsJson): never {
     exit($msg);
 };
 
-if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { $fail(405, 'Method not allowed.'); }
 
 /**
  * THE CONFIG, AND WHAT HAPPENS WITHOUT IT.
@@ -416,17 +426,106 @@ if (!is_file($cfgFile) || !is_readable($cfgFile)) {
 }
 $cfg = ($loaded ?? []) + $cfgFallback;
 
+/**
+ * GET /api/contact.php?stamp=1 -- MINT A SIGNED TIMESTAMP.
+ *
+ * Why this exists at all: the site is a static build. "A signed timestamp of
+ * when the form rendered" is one line on a server-rendered page and is
+ * impossible here -- the HTML is generated once on a build machine and served
+ * to everybody, so a baked-in timestamp would be identical for every visitor
+ * and hours old before anyone saw it. Useless as a minimum-age test.
+ *
+ * So the page asks for one when somebody first touches a form. What gets
+ * measured is time since this person started filling it in, read off the
+ * server's clock at both ends, which is the thing the rule is actually about
+ * and is not something a client can drift or fake.
+ *
+ * IT GIVES AWAY NOTHING. The response is a timestamp anybody could have read
+ * off a Date header and an HMAC of it. The secret stays here. A bot is
+ * welcome to ask for a stamp -- it then has to wait three seconds before the
+ * stamp is usable, which is the entire cost being imposed, and it is free to
+ * a human who is typing.
+ *
+ * NOT DEV-ONLY, unlike the diagnostics below: production needs this to work.
+ */
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET' && isset($_GET['stamp'])) {
+    header('Content-Type: application/json');
+    header('Cache-Control: no-store');
+    header('X-Robots-Tag: noindex, nofollow');
+    if (!function_exists('roars_stamp_make')) {
+        /* The helper is missing from this deploy. Answer with an empty stamp
+           rather than an error: the form then posts without one, which the
+           POST path treats as a logged signal and not as spam. */
+        error_log('[roars] ?stamp requested but roars-spam.php is not loaded');
+        exit(json_encode(['t' => '', 'sig' => '']));
+    }
+    exit(json_encode(roars_stamp_make($cfg)));
+}
+
+/* EVERYTHING BELOW IS THE POST PATH. The guard sits here rather than higher up
+   because ?stamp=1 above is a GET and needs $cfg, which is assembled between
+   the two. Nothing between the old position and this one depends on the
+   method: it is the config fallback table and the config load. */
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { $fail(405, 'Method not allowed.'); }
+
+
 /* Honeypot: fields real people never see and never fill. Answered exactly like
    a success so a bot learns nothing from the difference — no row, no mail, no
    n8n, no Sendy.
    TWO NAMES. `company_website` is this site's own and is on every form;
    `website` is the one the n8n flow expects and is what the bot-scoring step
    downstream reads. Filling either is disqualifying. */
+$ip       = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+$formName = (string) ($_POST['form'] ?? 'unknown');
+
+/* Rejections are logged where a person can count them. `roars_spam_log` is
+   guarded by function_exists for the same reason every other helper is: the
+   file it lives in can be absent from a deploy, and a missing log must not
+   be the thing that stops a form working. */
+$logSpam = static function (string $reason) use ($formName, $ip): void {
+    if (function_exists('roars_spam_log')) { roars_spam_log($formName, $reason, $ip); }
+};
+
 if (($_POST['company_website'] ?? '') !== '' || ($_POST['website'] ?? '') !== '') {
+    $logSpam('honeypot');
     $done(['ok' => true]);
 }
 
-$ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+/* THE MINIMUM FILL TIME, AND IT IS NOW ENFORCED.
+   `elapsed_ms` has been posted by the form for months and read by nobody: it
+   went into the n8n payload as a scoring signal and nothing on this side ever
+   looked at it. It also could not be trusted if it had been -- it is a number
+   the browser writes, so anything posting directly just writes a bigger one.
+   The stamp replaces that. It is minted by ?stamp=1 below, signed with a
+   server secret, and the age is measured between two readings of the server's
+   own clock. A bot can still ask for one; it then has to wait three seconds
+   before using it, which is free to a person typing and expensive to a script
+   doing this ten thousand times.
+   ANSWERED AS SUCCESS, like the honeypot: a bot that learns which of its
+   submissions were rejected learns how to stop being rejected. */
+if (function_exists('roars_stamp_check')) {
+    $stampReason = roars_stamp_check(
+        $cfg,
+        (string) ($_POST['ts'] ?? ''),
+        (string) ($_POST['ts_sig'] ?? ''),
+    );
+    /* AN ABSENT STAMP IS NOT A REJECTION, and getting this wrong would have
+       been expensive. When fetch() fails -- an extension, a WAF, a dropped
+       connection -- form.ts falls back to a native form post, and a native
+       post carries whatever is in the markup, which is an empty stamp because
+       only JavaScript ever fills it in. Treating that as spam would silently
+       bin exactly the enquiries from the people already having the worst time
+       reaching us. It is logged, because a lot of it means our own script is
+       broken, and the honeypot and Turnstile still stand on that path.
+       A stamp that is present and WRONG is a different matter: nothing
+       legitimate forges a signature. */
+    if ($stampReason === 'no_stamp') {
+        $logSpam('no_stamp');
+    } elseif ($stampReason !== '') {
+        $logSpam($stampReason);
+        $done(['ok' => true]);
+    }
+}
 
 // Rate limit: one file per IP hash, N posts per window. Cheap, no extra service.
 $bucket = sys_get_temp_dir() . '/rl_' . hash('sha256', $ip . $cfg['rate_salt']);
@@ -436,38 +535,52 @@ if ($hits >= $cfg['rate_max']) { $fail(429, 'Too many submissions. Try again sho
 file_put_contents($bucket, (string) ($hits + 1), LOCK_EX);
 
 /**
- * Turnstile, verified server-side. A token the browser never checks is theatre.
+ * Turnstile, through the shared helper in roars-spam.php.
  *
- * THREE OUTCOMES, NOT TWO, and the difference matters to whoever is filling in
- * the form. Cloudflare saying "this token is not valid" is the check working,
- * and that person is told. Cloudflare not answering at all is our problem, and
- * blocking every enquiry for the length of an outage is a worse failure than
- * letting a few through unverified -- the rate limit above and the honeypots
- * are still in force either way. No secret configured is the same case.
+ * FOUR OUTCOMES, AND THE MIDDLE TWO ARE NOT THE VISITOR'S FAULT.
+ *
+ *   ok            verified. Normal service.
+ *   rejected      Cloudflare answered and said no. Refused, and told.
+ *   unreachable   Cloudflare did not answer. ACCEPTED, but marked unverified:
+ *                 the lead is kept and sales is told, and the visitor-facing
+ *                 acknowledgement is NOT sent, because an automatic email is
+ *                 the one thing a spammer actually wants out of a form and
+ *                 the only step here that can be aimed at a third party. A
+ *                 human reads the flagged lead and replies if it is real.
+ *   unconfigured  no secret on this server. Logged loudly, otherwise normal.
+ *
+ * UNCONFIGURED IS DELIBERATELY NOT TREATED AS UNREACHABLE, and that is a
+ * decision worth stating: production is sitting at an empty turnstile_secret
+ * on purpose right now, while the widget is being proved out. Folding it into
+ * the unverified path would silently stop every acknowledgement the business
+ * sends, today, as the price of a setting that is temporary by arrangement.
+ * It is a loud log line instead.
  */
-$secret = (string) ($cfg['turnstile_secret'] ?? '');
-if ($secret === '') {
-    error_log('[roars] no turnstile secret configured; submission accepted unverified');
-} else {
-    $verify = @file_get_contents(
-        'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-        false,
-        stream_context_create(['http' => [
-            'method' => 'POST', 'timeout' => 10, 'ignore_errors' => true,
-            'header' => 'Content-Type: application/x-www-form-urlencoded',
-            'content' => http_build_query([
-                'secret' => $secret,
-                'response' => (string) ($_POST['cf-turnstile-response'] ?? ''),
-                'remoteip' => $ip,
-            ]),
-        ]]),
-    );
-    if ($verify === false) {
-        error_log('[roars] turnstile siteverify unreachable; submission accepted unverified');
-    } elseif (!(json_decode($verify, true)['success'] ?? false)) {
-        $fail(403, 'Verification failed.');
-    }
+$verdict = function_exists('roars_turnstile_check')
+    ? roars_turnstile_check(
+        (string) ($cfg['turnstile_secret'] ?? ''),
+        (string) ($_POST['cf-turnstile-response'] ?? ''),
+        $ip,
+    )
+    : 'unconfigured';
+
+if ($verdict === 'rejected') {
+    $logSpam('turnstile');
+    $fail(403, 'Verification failed.');
 }
+
+/* Logged under its own name so the two are tellable apart in the log. A run
+   of `turnstile_missing` means the widget is not reaching visitors -- a build
+   without the site key, or a script somebody's browser is blocking -- and it
+   is the difference between "we are being attacked" and "we broke our own
+   form", which is not a distinction to be guessing at later. */
+if ($verdict === 'missing') { $logSpam('turnstile_missing'); }
+
+/* Carried the whole way down the file. Everything downstream asks this rather
+   than re-deriving it. `unconfigured` is deliberately absent: an empty secret
+   is a deliberate temporary state, and folding it in here would stop every
+   acknowledgement the business sends. */
+$unverified = ($verdict === 'unreachable' || $verdict === 'missing');
 
 $form  = in_array($_POST['form'] ?? '', ['contact', 'newsletter', 'guide', 'callback'], true)
     ? $_POST['form'] : $fail(422, 'Unknown form.');
@@ -758,8 +871,9 @@ $signatureText = ''
    brand piece. Reply-To is the visitor so a reply from sales@ reaches them.
    It is a CLOSURE now rather than a statement, because on the contact form it
    is conditional — see the dispatch at the foot of this file. */
-$notifySales = function () use ($cfg, $ref, $form, $name, $email, $phone, $company, $country, $message, $saved): void {
-    $lines = ($saved ? '' : "NOT SAVED TO THE DATABASE. This email is the only record.\r\n\r\n")
+$notifySales = function () use ($cfg, $ref, $form, $name, $email, $phone, $company, $country, $message, $saved, $unverified): void {
+    $lines = ($unverified ? "UNVERIFIED: Cloudflare could not be reached, so this submission was not\r\nchecked. No acknowledgement was sent to the address below. Treat with care.\r\n\r\n" : '')
+        . ($saved ? '' : "NOT SAVED TO THE DATABASE. This email is the only record.\r\n\r\n")
         . "From: {$name} <{$email}>\r\n"
         . ($company !== '' ? "Company: {$company}\r\n" : '')
         . ($phone   !== '' ? "Phone: {$phone}\r\n"   : '')
@@ -879,9 +993,16 @@ $done(
     ['ok' => true, 'event' => 'generate_lead', 'form' => $form, 'ref' => $ref],
     function () use (
         $form, $visitorMail, $notifySales, $email, $name, $company, $country,
-        $phone, $message, $elapsed, $pagePath, $wantsNews, $enquiryNo
+        $phone, $message, $elapsed, $pagePath, $wantsNews, $enquiryNo, $unverified
     ): void {
-        if ($visitorMail !== null) { $visitorMail(); }
+        /* NO ACKNOWLEDGEMENT ON AN UNVERIFIED LEAD. Cloudflare was unreachable,
+           so nothing has established that a person filled this in. The
+           acknowledgement is the only step on this page that sends mail to an
+           address somebody else typed, which makes it the only one that can be
+           pointed at a third party. Sales still hears about the lead below and
+           a human can reply by hand, so nothing is lost except the automatic
+           part -- which is the part worth losing while we cannot tell. */
+        if ($visitorMail !== null && !$unverified) { $visitorMail(); }
 
         if ($form === 'contact') {
             /* enquiry_no only when the row exists. The helper prefixes DEV-
@@ -896,6 +1017,10 @@ $done(
                 'website'    => '', // the honeypot; a filled one never reaches here
                 'elapsed_ms' => $elapsed,
                 'page'       => $pagePath,
+                /* n8n reads this. An unverified lead is still a lead; it just
+                   arrives labelled, so the flow can hold it for a human
+                   instead of treating it like any other. */
+                'verified'   => $unverified ? 'unverified' : 'verified',
             ];
             if ($enquiryNo !== null) { $lead['enquiry_no'] = $enquiryNo; }
             $forwarded = function_exists('roars_forward_lead') && roars_forward_lead($lead);
@@ -908,16 +1033,24 @@ $done(
             $notifySales();
         }
 
-        /* The resource download is its own consent: someone asked for a guide,
-           the guide list is what that subscribes them to. */
-        if ($form === 'guide' && function_exists('roars_sendy_subscribe')) {
+        /* NOT ON AN UNVERIFIED LEAD, for the same reason the acknowledgement
+           is not sent. A Sendy subscribe is the other step here that is aimed
+           at an address somebody else typed: it puts a stranger on a mailing
+           list and starts sending them things. If we cannot establish that a
+           person filled this in, we have no consent to record, and "nothing
+           downstream should ever see a bot submission" covers a mailing list
+           at least as much as it covers an email.
+           The lead is still kept and sales is still told, so a real person
+           who was blocked by their own ad blocker is one human reply away
+           from the guide. */
+        if ($form === 'guide' && !$unverified && function_exists('roars_sendy_subscribe')) {
             roars_sendy_subscribe('resources', $email, $name);
         }
 
         /* The ticked box, wherever it was ticked. gdpr=true because the box is
            unticked by default and the words beside it say what it is for,
            which is the consent Sendy is recording. */
-        if (($wantsNews || $form === 'newsletter') && function_exists('roars_sendy_subscribe')) {
+        if (($wantsNews || $form === 'newsletter') && !$unverified && function_exists('roars_sendy_subscribe')) {
             roars_sendy_subscribe('newsletter', $email, $name, ['gdpr' => 'true']);
         }
     },
