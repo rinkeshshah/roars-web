@@ -68,6 +68,24 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = join(ROOT, 'dist/.htaccess')
 const HOST = 'www.roarsinc.com'
 
+/**
+ * Is this the INDEXED build — the one that goes to production?
+ *
+ * The same switch the pages read (src/lib/site.ts, ALLOW_INDEXING). Unset
+ * means this is a dev build, and two rules below change because of it: dev
+ * does not redirect to the production host, and dev asks for a password.
+ *
+ * Read from the environment rather than sniffing dist/, because this file is
+ * written before the pages are and there is nothing to sniff yet. It is the
+ * same variable the build itself was given, so the .htaccess and the HTML
+ * cannot disagree about which site this is.
+ */
+const INDEXED = process.env.PUBLIC_ALLOW_INDEXING === 'true'
+
+/** Where the password file lives on the dev webspace. Outside the docroot,
+ *  beside the other secrets, so it is never served as a file. */
+const HTPASSWD = '/var/www/vhosts/roarsinc.com/private/.htpasswd-dev'
+
 if (!existsSync(join(ROOT, 'dist'))) {
   console.error('generate-htaccess: no dist/. Run the build first.')
   process.exit(1)
@@ -95,7 +113,31 @@ const rx = (path) => {
 }
 
 /** A destination, always absolute, always on the canonical host. */
-const abs = (dest) => (dest.startsWith('http') ? dest : `https://${HOST}${dest}`)
+/**
+ * A destination, always absolute — but to WHICH host depends on the build.
+ *
+ * PRODUCTION names www.roarsinc.com literally. That keeps an apex request
+ * single-hop: roarsinc.com/industry/x goes straight to the final www URL
+ * rather than being moved to www first and redirected again.
+ *
+ * DEV keeps the requesting host, so staging is somewhere the full redirect
+ * map can actually be exercised. With the literal host, testing an old
+ * journal URL on dev silently landed you on the live site — you would see a
+ * 301 and a 200 and conclude the rule worked, having never touched dev's copy
+ * of it. All 79 destinations are relative, so this function is the only place
+ * that decides, and there is no rule that quietly opts out.
+ *
+ * Relative is still not an option either way: behind Plesk's proxy Apache
+ * rebuilds a relative target from the scheme it can see, which is http, and
+ * that costs an extra hop through the HTTPS redirect.
+ *
+ * %{HTTP_HOST} only appears in a target when the host is one we recognise —
+ * see the allowlist near the top of the emitted file.
+ */
+const abs = (dest) => {
+  if (dest.startsWith('http')) return dest
+  return INDEXED ? `https://${HOST}${dest}` : `https://%{HTTP_HOST}${dest}`
+}
 
 const L = []
 const say = (...lines) => L.push(...lines)
@@ -148,6 +190,74 @@ say(
 
 say(...journalRules.guardedIncludes)
 
+/**
+ * The canonical-host rules, emitted AFTER the 301 maps rather than before.
+ *
+ * They used to sit at position 2, and the file said that was so "a legacy URL
+ * on the apex is host+path in a single 301". Measured, it was the opposite:
+ * roarsinc.com/industry/on-demand-fitness-app took TWO hops, because the host
+ * rule fired first and moved it to www with the path untouched, and only then
+ * did the legacy rule get a look. Slashed or slashless, same two hops.
+ *
+ * Running the maps first fixes it. Every destination in them is already
+ * absolute and already on the right host, so a legacy URL arriving on the
+ * apex is answered with the final URL immediately — host and path in one
+ * 301, which is what the old comment claimed and never did.
+ *
+ * Nothing else moves. The maps still beat the trailing-slash rule, which is
+ * the ordering that was always load-bearing.
+ */
+const HOST_RULES = INDEXED ? [
+
+  '# 2a. WRONG HOST *AND* NO TRAILING SLASH, in one hop.',
+  '#',
+  '#     Without this the two corrections run as separate rules and a visitor',
+  '#     arriving at https://roarsinc.com/s/mvp-development takes TWO 301s:',
+  '#     rule 2b moves it to www keeping the path as-is, then rule 7 adds the',
+  '#     slash on the next request. Search Console counts the middle URL as a',
+  '#     page, which is how a redirect chain becomes a row in a report.',
+  '#',
+  '#     Conditions match rule 7 exactly, so the two cannot disagree about',
+  '#     what deserves a slash: not a real file, and nothing that looks like',
+  '#     one. The root is excluded by the last condition — REQUEST_URI is "/"',
+  '#     there, which already ends in a slash, and without that test the rule',
+  '#     would build https://www.roarsinc.com// out of an empty capture.',
+  'RewriteCond %{HTTP_HOST} ^roarsinc\\.com(:[0-9]+)?$ [NC]',
+  'RewriteCond %{REQUEST_FILENAME} !-f',
+  'RewriteCond %{REQUEST_URI} !\\.[A-Za-z0-9]{2,5}$',
+  'RewriteCond %{REQUEST_URI} !/$',
+  `RewriteRule ^(.*)$ https://${HOST}/$1/ [R=301,L]`,
+  '',
+  '# 2b. One canonical host. Tests the HOST only, never the scheme: Apache is',
+  '#    behind the proxy and %{HTTPS} is "off" here even for a TLS request,',
+  '#    so a scheme test would loop. Arriving on the right host, this does',
+  '#    not match, so there is nothing to loop on.',
+  '#',
+  '#    IT MATCHES THE APEX, not "any host that is not www". The negative form',
+  '#    read as the same thing and was not: it fires on EVERY host that is not',
+  '#    www.roarsinc.com, which includes the Plesk preview domain, the server',
+  '#    IP, and any hostname temporarily pointed at this docroot. Each would',
+  '#    301 to production the moment somebody used it, and the preview domain',
+  '#    is the one you would only find out about by needing it. roarsinc.com',
+  '#    is the only other host this site answers to, so it is the only one',
+  '#    named. Anything else is served as itself and the canonical tag on the',
+  '#    page says which URL counts.',
+  '#',
+  '#    PRODUCTION ONLY, and that is not tidiness. This rule sends every host',
+  '#    that is not www.roarsinc.com to www.roarsinc.com — which on dev means',
+  '#    every single request, including the one you are trying to test. The',
+  '#    dev build shipped it for weeks; if Apache there had been reading this',
+  '#    file, dev.roarsinc.com would have been a redirect to production and',
+  '#    nothing else.',
+  'RewriteCond %{HTTP_HOST} ^roarsinc\\.com(:[0-9]+)?$ [NC]',
+  `RewriteRule ^(.*)$ https://${HOST}/$1 [R=301,L]`
+] : [
+
+  '# 2. No canonical-host redirect in a dev build. On production this sends',
+  '#    the apex and any other host to www.roarsinc.com; here it would send',
+  '#    dev.roarsinc.com there too, which is the whole site.'
+]
+
 say(
   '<IfModule mod_rewrite.c>',
   'RewriteEngine On',
@@ -158,12 +268,33 @@ say(
   '#    the kind of breakage that arrives with no deploy to blame.',
   'RewriteRule ^\\.well-known/ - [L]',
   '',
-  '# 2. One canonical host. Tests the HOST only, never the scheme: Apache is',
-  '#    behind the proxy and %{HTTPS} is "off" here even for a TLS request,',
-  '#    so a scheme test would loop. Arriving on the right host, this does',
-  '#    not match, so there is nothing to loop on.',
-  `RewriteCond %{HTTP_HOST} !^${HOST.replace(/\./g, '\\.')}$ [NC]`,
-  `RewriteRule ^(.*)$ https://${HOST}/$1 [R=301,L]`,
+  '# 1b. KNOWN HOSTS ONLY, past this point.',
+  '#',
+  '#     Several rules below put %{HTTP_HOST} in the destination — rule 7',
+  '#     always, and on dev every legacy 301 as well. A redirect that echoes',
+  '#     the Host header back is an open redirect if the header can be',
+  '#     anything: ask for this site with `Host: evil.example` and a slashless',
+  '#     path, and Apache answers 301 https://evil.example/that/path/ over our',
+  '#     name and our certificate.',
+  '#',
+  '#     The previous answer was "nginx in front only routes hostnames',
+  '#     configured for this subscription, so the Host is already constrained".',
+  '#     That is true today and is somebody else\'s config: it holds until a',
+  '#     default vhost, a catch-all, or a direct request to the backend port',
+  '#     changes it, and nothing here would notice. So the constraint is',
+  '#     written down where the rules that depend on it live.',
+  '#',
+  '#     Anything not on this list gets NO redirect at all. [L] with no',
+  '#     substitution stops the rewrite round; the request is then served as',
+  '#     whatever it literally is.',
+  'SetEnvIfNoCase Host "^www\\.roarsinc\\.com(:[0-9]+)?$" ROARS_KNOWN_HOST',
+  'SetEnvIfNoCase Host "^roarsinc\\.com(:[0-9]+)?$" ROARS_KNOWN_HOST',
+  'SetEnvIfNoCase Host "^dev\\.roarsinc\\.com(:[0-9]+)?$" ROARS_KNOWN_HOST',
+  '#     Plesk builds its preview URL as <domain>.<hash>.plesk.page.',
+  'SetEnvIfNoCase Host "\\.plesk\\.page(:[0-9]+)?$" ROARS_KNOWN_HOST',
+  'RewriteCond %{ENV:ROARS_KNOWN_HOST} !^1$',
+  'RewriteRule ^ - [L]',
+  '',
   '',
 )
 
@@ -225,6 +356,8 @@ for (const p of patternRedirects) {
   say(`RewriteRule ${a.pattern} ${abs(a.destination)} [R=301,L]`)
 }
 say('')
+
+say(...HOST_RULES)
 
 /*
  * 4b. THE GUIDE PDFs, whose real filenames on the server are not the names
@@ -370,7 +503,20 @@ say(
   '#    ones that are missing.',
   'RewriteCond %{REQUEST_FILENAME} !-f',
   'RewriteCond $1 !\\.[A-Za-z0-9]{2,5}$',
-  `RewriteRule ^(.*[^/])$ https://${HOST}/$1/ [R=301,L]`,
+  '#',
+  '#    %{HTTP_HOST}, NOT the literal host. The destination has to be absolute',
+  '#    (see above: a relative one is rebuilt from the proxy-visible http and',
+  '#    costs a hop), but hardcoding www.roarsinc.com meant this rule dragged',
+  '#    EVERY host to production. On dev, asking for /s/mvp-development — no',
+  '#    trailing slash, which is what a typed URL usually is — left dev and',
+  '#    landed on the live site. The host rules above were scoped to the apex',
+  '#    to stop exactly that, and this line was still doing it from further',
+  '#    down the file. Keeping the requesting host makes the rule mean "add a',
+  '#    slash", which is all it was ever for.',
+  '#    Not an open redirect: nginx in front only routes the hostnames',
+  '#    configured for this subscription, so %{HTTP_HOST} cannot be an',
+  '#    arbitrary attacker-chosen domain by the time Apache sees it.',
+  '  RewriteRule ^(.*[^/])$ https://%{HTTP_HOST}/$1/ [R=301,L]'.trim(),
   '</IfModule>',
   '',
 )

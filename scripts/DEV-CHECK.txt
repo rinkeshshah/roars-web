@@ -1,0 +1,35 @@
+# Dev verification — run these once dev has the new build.
+# The site is behind HTTP Basic auth, but mod_rewrite runs BEFORE auth, so
+# every redirect below answers without credentials. Add -u user:pass only if
+# you want to see a page body.
+
+# 1. Slashless path -> slashed, ONE hop, and it must stay on dev.
+curl -sIL https://dev.roarsinc.com/s/mvp-development | grep -Ei '^HTTP|^location'
+#    want: 301 -> https://dev.roarsinc.com/s/mvp-development/   then 401 or 200
+#    FAIL if any Location says www.roarsinc.com
+
+# 2. Legacy journal URL -> its new home, on dev.
+curl -sIL https://dev.roarsinc.com/our-journal/the-presidents-club-2/ | grep -Ei '^HTTP|^location'
+#    want: 301 -> https://dev.roarsinc.com/work/the-presidents-club/
+
+# 3. Legacy /industry/ URL -> the industries page, on dev.
+curl -sIL https://dev.roarsinc.com/industry/on-demand-fitness-app/ | grep -Ei '^HTTP|^location'
+#    want: 301 -> https://dev.roarsinc.com/industries/on-demand-fitness-app-development/
+
+# 4. A real file must NOT gain a trailing slash and must NOT redirect.
+curl -sIL https://dev.roarsinc.com/robots.txt | grep -Ei '^HTTP|^location'
+#    want: 200 (or 401). FAIL if you see 301 -> /robots.txt/
+
+# --- two extra worth doing while you are there ---
+
+# 5. Guide PDF, case-corrected, on dev.
+curl -sIL https://dev.roarsinc.com/tools/business-plan.pdf | grep -Ei '^HTTP|^location'
+#    want: 301 -> https://dev.roarsinc.com/tools/Business-plans.pdf
+
+# 6. The open-redirect allowlist: an unknown Host gets NO redirect.
+curl -sI -H 'Host: evil.example' https://dev.roarsinc.com/s/mvp-development | grep -Ei '^HTTP|^location'
+#    want: 404, and NO Location header at all.
+#    FAIL if anything says Location: https://evil.example/...
+
+# If 1 to 4 all return 401 with no Location, .htaccess is not being read:
+# check AllowOverride is on for dev.roarsinc.com in Plesk.
