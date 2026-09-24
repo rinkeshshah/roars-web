@@ -27,9 +27,9 @@ When designing a system using sensation and perception, it is important to consi
 
 When we design, it is important to take into account the user's physical and mental capabilities. This includes their ability to see, hear, smell, taste, touch, and remember. It is important to consider how the user may perceive and process the information presented to them. For example, if a user has a visual impairment, you may need to design the interface with larger fonts and brighter colors. Likewise, if a user has difficulty understanding complex concepts, you may need to simplify the language and the design of the interface. Taking into account the user's physical and mental capabilities is an important factor to consider when designing a product or user  experience.
 
-![](/wp-content/uploads/2022/12/874700.jpeg)
+![Müller-Lyer illusion: two equal lines look different lengths because of their inward and outward arrowheads](/wp-content/uploads/2022/12/874700.jpeg)
 
-![](/wp-content/uploads/2022/12/874702.jpeg)
+![Ponzo illusion: two identical orange bars on converging railway tracks, the upper one appearing longer](/wp-content/uploads/2022/12/874702.jpeg)
 
 ### 4. Combining the right elements to create a pleasing experience
 

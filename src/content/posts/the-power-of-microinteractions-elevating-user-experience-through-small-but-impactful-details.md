@@ -24,7 +24,7 @@ This blog post will explore the importance of microinteractions and share tips a
 
 Microinteractions are small design details that can elevate user experience and make user interfaces more engaging. They are the little things that make a big difference in how a user interacts with a product or service. Microinteractions involve the use of animation, sounds, and visual feedback to create a seamless interaction that is both intuitive and engaging. They can be found in all kinds of products, from mobile apps to websites to physical devices. When done well, microinteractions can add delight and personality to a user experience, making it more memorable and enjoyable. As a user experience design agency, it is our responsibility to create these delightful microinteractions that help users interact with products in meaningful ways, ultimately creating user experiences that feel intuitive and pleasurable.
 
-![](/wp-content/uploads/2023/05/Dribble.gif)
+![Animated microinteraction: a folder filling with a progress counter next to a heart like button](/wp-content/uploads/2023/05/Dribble.gif)
 
 Source [Dribble](https://dribbble.com/shots/15168619-Glassmorphism-tabbar-animation-CodePen?ref=perpet.io)
 
@@ -36,7 +36,7 @@ Understanding the Power of Microinteractions is crucial to elevating user experi
 
 Microinteractions are a key component of user experience design that are often overlooked but can significantly impact user satisfaction and engagement. Microinteractions are small interactions within the user interface that occur based on user input or system events. They can include animations, sounds, and visual feedback, and provide users with immediate and satisfying responses to their actions. Effective microinteractions can improve overall user experience by providing a sense of control over the system, reducing user frustration, and creating a sense of delight. By incorporating microinteractions into a design, an agency can elevate user experience and create a more engaging product. Therefore, it is crucial for any user experience design agency to focus on creating delightful microinteractions that can improve the user experience and increase user engagement.
 
-![](/wp-content/uploads/2023/05/image_processing20210222-14085-19mebxy-12.15.00-PM-1024x768.gif)
+![Animated tab bar where a blue shape slides to highlight the selected icon](/wp-content/uploads/2023/05/image_processing20210222-14085-19mebxy-12.15.00-PM-1024x768.gif)
 
 Source [Dribble](https://dribbble.com/shots/15168619-Glassmorphism-tabbar-animation-CodePen?ref=perpet.io)
 

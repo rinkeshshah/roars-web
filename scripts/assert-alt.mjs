@@ -40,26 +40,25 @@ if (!existsSync(DIST)) {
 }
 
 /**
- * Images nobody here can describe, listed rather than guessed at.
+ * Images nobody here could describe. Empty, and it should stay that way.
  *
- * These five live on the webspace under /wp-content/uploads/, not in this
- * repository, so no process in this build has ever seen one — and their
- * filenames are an upload hash, a stock photographer's slug and "Dribble.gif",
- * which describe nothing. Every other migrated image got its alt from a
- * filename that actually said what the picture was (scripts/fill-journal-alt.mjs).
+ * Five migrated journal images once sat here: a stock photographer's slug, an
+ * upload hash, "Dribble.gif". They live on the webspace, not in this repo, so
+ * no process in this build has ever seen one, and their filenames said
+ * nothing. Writing alt for them from the surrounding article would have
+ * produced confident sentences about pictures nobody had looked at — worse
+ * than silence, because a screen reader user would be told what the image
+ * shows and it might simply be wrong.
  *
- * The alternative was to write alt text from the surrounding article, which
- * produces confident sentences about pictures nobody looked at. That is worse
- * than silence: a screen reader user is told what the image shows, and it may
- * simply not be true. So they stay listed here until someone opens them.
+ * So they were listed rather than guessed at, and a human opened them and
+ * wrote the alt text. Two turned out to be optical illusions — Müller-Lyer
+ * and Ponzo — which is exactly the case where an invented description would
+ * have been confidently, uselessly wrong.
+ *
+ * Add to this list only when an image genuinely cannot be seen from here, and
+ * treat every entry as a question for a person rather than a permanent pass.
  */
-const CANNOT_DESCRIBE = new Set([
-  '/wp-content/uploads/2023/05/bence-boros-anapPhJFRhM-unsplash.jpg',
-  '/wp-content/uploads/2023/05/Dribble.gif',
-  '/wp-content/uploads/2023/05/image_processing20210222-14085-19mebxy-12.15.00-PM-1024x768.gif',
-  '/wp-content/uploads/2022/12/874700.jpeg',
-  '/wp-content/uploads/2022/12/874702.jpeg',
-])
+const CANNOT_DESCRIBE = new Set([])
 
 const pages = []
 const walk = (d) => {
