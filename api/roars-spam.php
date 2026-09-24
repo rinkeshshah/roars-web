@@ -217,8 +217,9 @@ if (!defined('ROARS_TURNSTILE_URL')) {
  *
  *   'ok'           verified.
  *   'unconfigured' no secret on this server. Accept, unverified.
+ *   'missing'      no token in the submission at all. Accept, unverified.
  *   'unreachable'  Cloudflare did not answer. Accept, unverified.
- *   'rejected'     Cloudflare answered and said no. Refuse.
+ *   'rejected'     Cloudflare answered about a REAL token and said no. Refuse.
  *
  * THE MIDDLE TWO ARE NOT FAILURES OF THE VISITOR and must never be answered
  * as if they were. An outage at Cloudflare would otherwise turn into every
@@ -232,6 +233,35 @@ function roars_turnstile_check(string $secret, string $token, string $ip): strin
     if ($secret === '') {
         error_log('[roars] no turnstile secret configured; submission accepted unverified');
         return 'unconfigured';
+    }
+
+    /* NO TOKEN AT ALL IS OUR PROBLEM, NOT THE VISITOR'S.
+     *
+     * Cloudflare answers an empty token with success:false and
+     * `missing-input-response`, which is a correct rejection of a question we
+     * should not have asked -- and the old code passed that straight through
+     * as "Verification failed." to somebody who had done nothing wrong and
+     * had no way to act on it.
+     *
+     * It is a live failure, not a hypothetical: a build that went out without
+     * PUBLIC_TURNSTILE_SITE_KEY renders no widget, so every submission from
+     * every page carried an empty token and every one of them was refused.
+     * The same thing happens to a real person whose ad blocker, corporate
+     * proxy or CSP stops Cloudflare's script loading.
+     *
+     * So an absent token is treated the way an unreachable Cloudflare is: the
+     * lead is kept, tagged unverified, gets no automatic acknowledgement, and
+     * sales is told. A bot posting straight to the endpoint with no token
+     * lands in the same place -- flagged, silent, and still facing the
+     * honeypot, the stamp and the rate limit. A bot that sends a BAD token is
+     * a different thing and is still refused outright.
+     *
+     * Checked here rather than at Cloudflare, because there is nothing to ask
+     * about and the round trip would only slow the answer down.
+     */
+    if (trim($token) === '') {
+        error_log('[roars] no turnstile token in the submission; accepted unverified (is the widget rendering?)');
+        return 'missing';
     }
 
     $verify = @file_get_contents(

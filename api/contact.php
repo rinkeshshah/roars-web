@@ -568,9 +568,19 @@ if ($verdict === 'rejected') {
     $logSpam('turnstile');
     $fail(403, 'Verification failed.');
 }
+
+/* Logged under its own name so the two are tellable apart in the log. A run
+   of `turnstile_missing` means the widget is not reaching visitors -- a build
+   without the site key, or a script somebody's browser is blocking -- and it
+   is the difference between "we are being attacked" and "we broke our own
+   form", which is not a distinction to be guessing at later. */
+if ($verdict === 'missing') { $logSpam('turnstile_missing'); }
+
 /* Carried the whole way down the file. Everything downstream asks this rather
-   than re-deriving it. */
-$unverified = ($verdict === 'unreachable');
+   than re-deriving it. `unconfigured` is deliberately absent: an empty secret
+   is a deliberate temporary state, and folding it in here would stop every
+   acknowledgement the business sends. */
+$unverified = ($verdict === 'unreachable' || $verdict === 'missing');
 
 $form  = in_array($_POST['form'] ?? '', ['contact', 'newsletter', 'guide', 'callback'], true)
     ? $_POST['form'] : $fail(422, 'Unknown form.');
@@ -1023,16 +1033,24 @@ $done(
             $notifySales();
         }
 
-        /* The resource download is its own consent: someone asked for a guide,
-           the guide list is what that subscribes them to. */
-        if ($form === 'guide' && function_exists('roars_sendy_subscribe')) {
+        /* NOT ON AN UNVERIFIED LEAD, for the same reason the acknowledgement
+           is not sent. A Sendy subscribe is the other step here that is aimed
+           at an address somebody else typed: it puts a stranger on a mailing
+           list and starts sending them things. If we cannot establish that a
+           person filled this in, we have no consent to record, and "nothing
+           downstream should ever see a bot submission" covers a mailing list
+           at least as much as it covers an email.
+           The lead is still kept and sales is still told, so a real person
+           who was blocked by their own ad blocker is one human reply away
+           from the guide. */
+        if ($form === 'guide' && !$unverified && function_exists('roars_sendy_subscribe')) {
             roars_sendy_subscribe('resources', $email, $name);
         }
 
         /* The ticked box, wherever it was ticked. gdpr=true because the box is
            unticked by default and the words beside it say what it is for,
            which is the consent Sendy is recording. */
-        if (($wantsNews || $form === 'newsletter') && function_exists('roars_sendy_subscribe')) {
+        if (($wantsNews || $form === 'newsletter') && !$unverified && function_exists('roars_sendy_subscribe')) {
             roars_sendy_subscribe('newsletter', $email, $name, ['gdpr' => 'true']);
         }
     },

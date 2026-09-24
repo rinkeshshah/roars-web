@@ -1,0 +1,97 @@
+<!--
+  The 401 body for dev.roarsinc.com.
+
+  Served by the password wall in the generated .htaccess, which is emitted
+  only in a dev build. It is a plain file in public/ rather than an Astro
+  route on purpose: it has to render when the rest of the site is behind a
+  password and when no JavaScript, no font and no stylesheet has loaded, so
+  everything it needs is in this file.
+
+  The live site is www.roarsinc.com, and that is the one thing a person who
+  lands here needs to be told.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Private — Roars</title>
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+<style>
+  :root {
+    --ink: #FBFBFB;
+    --ground: #0A0A0A;
+    --muted: #8E8E87;
+    --accent: #FFD400;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  main { width: 100%; max-width: 560px; }
+  .rule { height: 6px; background: var(--accent); width: 64px; margin-bottom: 40px; }
+  .mark {
+    font-size: 22px; font-weight: bold; letter-spacing: -1px; margin: 0 0 40px 0;
+  }
+  .mark i { color: var(--accent); font-style: normal; }
+  .eyebrow {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 16px 0;
+  }
+  h1 {
+    font-size: 40px; line-height: 1.04; letter-spacing: -1.6px;
+    font-weight: bold; margin: 0 0 20px 0;
+  }
+  p { font-size: 17px; line-height: 26px; color: #A3A39E; margin: 0 0 14px 0; }
+  p strong { color: var(--ink); font-weight: normal; }
+  .go {
+    display: inline-block; margin-top: 26px; padding: 15px 28px;
+    background: var(--accent); color: var(--ground);
+    font-size: 15px; font-weight: bold; letter-spacing: -0.3px;
+    text-decoration: none; border-radius: 60px;
+  }
+  .foot {
+    margin-top: 48px; padding-top: 18px; border-top: 1px solid #2E2E2A;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .foot a { color: var(--muted); }
+  @media (max-width: 520px) { h1 { font-size: 30px; letter-spacing: -1px; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="rule"></div>
+  <p class="mark">roars<i>.</i></p>
+
+  <p class="eyebrow">Private</p>
+  <h1>This is not the Roars website.</h1>
+  <p>
+    It is the staging copy the team builds against. It is unfinished on
+    purpose, it is not indexed, and it needs a password.
+  </p>
+  <p>
+    <strong>The live site is www.roarsinc.com.</strong>
+  </p>
+
+  <a class="go" href="https://www.roarsinc.com/">Go to roarsinc.com →</a>
+
+  <p class="foot">
+    Work here? Sign in with the dev credentials. Need them, or landed here by
+    mistake? <a href="mailto:sales@roarsinc.com">sales@roarsinc.com</a>
+  </p>
+</main>
+</body>
+</html>
