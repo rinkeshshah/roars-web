@@ -1,0 +1,55 @@
+# Run these against production immediately after the Plesk pull.
+# Same format as DEV-CHECK.txt. A PASS is stated under each one.
+
+# 1. The homepage is the new site and asks to be indexed.
+curl -sIL https://www.roarsinc.com/ | grep -Ei '^HTTP|^location'
+curl -s https://www.roarsinc.com/ | grep -o 'content="index,follow[^"]*"'
+#    PASS: a single 200 (no Location), and the robots line prints.
+#    FAIL: "noindex" anywhere — that is a dev build on production. Roll back.
+
+# 2. Slashless path -> slashed, ONE hop, on www.
+curl -sIL https://www.roarsinc.com/s/mvp-development | grep -Ei '^HTTP|^location'
+#    PASS: 301 -> https://www.roarsinc.com/s/mvp-development/ then 200. One 301.
+
+# 3. The apex resolves host and path together, in ONE hop.
+curl -sIL https://roarsinc.com/s/mvp-development | grep -Ei '^HTTP|^location'
+#    PASS: 301 -> https://www.roarsinc.com/s/mvp-development/ then 200.
+#    FAIL: two 301s, i.e. a stop at https://www.roarsinc.com/s/mvp-development
+
+# 4. A legacy WordPress URL lands on its new home.
+curl -sIL https://www.roarsinc.com/industry/on-demand-fitness-app/ | grep -Ei '^HTTP|^location'
+#    PASS: 301 -> .../industries/on-demand-fitness-app-development/ then 200.
+
+# 5. A real file must not gain a slash or move.
+curl -sIL https://www.roarsinc.com/robots.txt | grep -Ei '^HTTP|^location'
+curl -s https://www.roarsinc.com/robots.txt | grep -i '^sitemap:'
+#    PASS: 200, no Location, and "Sitemap: https://www.roarsinc.com/sitemap-index.xml".
+
+# 6. The sitemap is real and on the right host.
+curl -sI https://www.roarsinc.com/sitemap-index.xml | head -1
+curl -s https://www.roarsinc.com/sitemap-0.xml | grep -c '<loc>'
+#    PASS: 200, and the count is 128.
+
+# 7. The WordPress surface is gone, deliberately.
+curl -sI https://www.roarsinc.com/wp-admin/ | head -1
+#    PASS: 410. (404 also survives, but 410 is what is configured.)
+
+# 8. NO PASSWORD WALL ON PRODUCTION. This is the one to check twice.
+curl -sI https://www.roarsinc.com/ | grep -i 'www-authenticate' && echo "FAIL: production is asking for a password" || echo "PASS: no auth challenge"
+
+# 9. The guide PDFs resolve (case-corrected names).
+curl -sIL https://www.roarsinc.com/tools/business-plan.pdf | grep -Ei '^HTTP|^location'
+#    PASS: 301 -> .../tools/Business-plans.pdf then 200.
+
+# 10. The feed the old subscribers still poll.
+curl -sI https://www.roarsinc.com/feed/ | grep -Ei '^HTTP|^content-type'
+#    PASS: 200 and application/rss+xml.
+
+# --- the full sweep ---
+# scripts/check-live-redirects.sh prints the whole hop chain for every URL
+# Search Console flagged, plus the host and scheme variants:
+#
+#     bash scripts/check-live-redirects.sh
+#
+# PASS: every line is either a bare 200, or exactly one 301 followed by a 200.
+# Any line with two 301s, or ending in 404, is worth sending to me.
