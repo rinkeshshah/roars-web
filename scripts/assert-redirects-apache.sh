@@ -70,8 +70,18 @@ fi
 echo "=== $MODE build, docroot $ROOT ==="
 
 H=https://www.roarsinc.com
-# On dev a legacy rule keeps the requesting host; on production it names www.
-if [ "$MODE" = dev ]; then LEG=https://dev.roarsinc.com; LH=dev.roarsinc.com
+# WHICH HOST EXERCISES THE LEGACY RULES.
+#
+# Production names www. A dev build used to be tested on dev.roarsinc.com,
+# because its rules keep the requesting host — but dev now 301s EVERYTHING to
+# www before any legacy rule is reached, by request, so dev is the one host on
+# which none of them can be observed.
+#
+# The Plesk preview host is allowlisted, is not redirected, and takes the same
+# host-relative rules, so it is what the dev build is measured on. The rules
+# under test are identical; only the host asking is different.
+PREVIEW=roarsinc.com.abc123.plesk.page
+if [ "$MODE" = dev ]; then LEG=https://$PREVIEW; LH=$PREVIEW
 else LEG=$H; LH=www.roarsinc.com; fi
 
 # --- 1. slashless -> slashed, one hop, on the site's own host --------------
@@ -119,11 +129,26 @@ if [ "$MODE" = production ]; then
   chk /feed/ 200 "" www.roarsinc.com
 fi
 
-# --- 6. dev-only: nothing may leave dev ------------------------------------
+# --- 6. dev-only: EVERYTHING leaves dev, on purpose ------------------------
+#
+# This assertion used to say the opposite — nothing may leave dev — and it was
+# what caught rule 7 hardcoding www and dragging every host to production.
+# That leak was accidental. This one is asked for: the staging copy should not
+# be a second crawlable version of the site on another hostname, so dev sends
+# every path to the same path on www.
+#
+# The check is still worth having, because the failure modes are real: a
+# redirect that drops the path, one that loops, or one that swallows the ACME
+# challenge and quietly breaks certificate renewal a month later.
 if [ "$MODE" = dev ]; then
   for p in / /work/ /s/mvp-development /our-journal/the-presidents-club-2/ /industry/on-demand-fitness-app/ /tools/business-plan.pdf; do
-    chk_no_host "$p" www.roarsinc.com dev.roarsinc.com
+    chk "$p" 301 "$H$p" dev.roarsinc.com
   done
+  # ACME is the exemption that matters. It must answer on dev, not redirect.
+  mkdir -p "$ROOT/.well-known/acme-challenge"
+  echo probe > "$ROOT/.well-known/acme-challenge/probe"
+  chk /.well-known/acme-challenge/probe 200 "" dev.roarsinc.com
+  rm -rf "$ROOT/.well-known"
 fi
 
 echo "  ---"
