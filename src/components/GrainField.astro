@@ -66,6 +66,29 @@ const { tone, second = false, grainOpacity = tone === 'yellow' ? 0.3 : 0.34 } = 
     animation: gfDriftB 40s ease-in-out infinite;
   }
 
+  /* NO DRIFT ON MOBILE. The dither canvas already stops its loop below 1040 —
+     that was the call: no motion on a phone, a still pixelated ground. These
+     two radial drifts are CSS, so they carried on regardless, and because the
+     canvas is masked on mobile they show through it. Reported from a phone as
+     "there is motion animation also in mobile view"; the canvas was measured
+     at 0 frames, so this was the thing moving.
+
+     `will-change` goes with them: it pins a compositor layer for the life of
+     the page, and there is nothing left to composite. */
+  @media (max-width: 1040px) {
+    /* Matched selector for selector against the four rules above. A bare
+       `.gf__drift` loses to `.gf--dark .gf__drift--a` on specificity and the
+       drifts carry on animating — which is exactly what happened on the first
+       attempt, and the page still reported them running. */
+    .gf--yellow .gf__drift--a,
+    .gf--yellow .gf__drift--b,
+    .gf--dark .gf__drift--a,
+    .gf--dark .gf__drift--b {
+      animation: none;
+      will-change: auto;
+    }
+  }
+
   @keyframes gfDriftA {
     0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
     50% { transform: translate3d(-110px, 40px, 0) scale(1.13); }
