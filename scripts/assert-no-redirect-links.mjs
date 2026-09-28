@@ -51,10 +51,21 @@ if (!existsSync(DIST) || !existsSync(HTACCESS)) {
   process.exit(1)
 }
 
-/** Exact 301 sources, as site paths, mapped to where they send you. */
+/**
+ * Exact 301 sources, as site paths, mapped to where they send you.
+ *
+ * BOTH SHAPES OF TARGET. A production build writes
+ * `https://www.roarsinc.com/x/`; a dev build writes `https://%{HTTP_HOST}/x/`,
+ * so that dev.roarsinc.com and the Plesk preview domains redirect to
+ * themselves instead of being dragged to production. This parse only knew the
+ * first, so on every dev build it matched nothing and the gate stopped the
+ * build with "the generator changed shape" — which was true of the generator
+ * and not of the gate's purpose. Accepting either host is the fix; the paths
+ * it compares are the same either way.
+ */
 const dest = new Map()
 for (const line of readFileSync(HTACCESS, 'utf8').split('\n')) {
-  const m = line.match(/^RewriteRule \^(\S+?)\s+https:\/\/www\.roarsinc\.com(\S*)\s+\[R=301/)
+  const m = line.match(/^RewriteRule \^(\S+?)\s+https:\/\/(?:www\.roarsinc\.com|%\{HTTP_HOST\})(\S*)\s+\[R=301/)
   if (!m) continue
   const pat = m[1].replace(/\\\./g, '.').replace(/\/\?\$$/, '/').replace(/\$$/, '')
   if (/[()*+?\[\]|]/.test(pat)) continue // a pattern, not a literal path
