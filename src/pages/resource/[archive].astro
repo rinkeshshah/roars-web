@@ -36,6 +36,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
 import CanvasPlate from '../../components/CanvasPlate.astro'
 import { GUIDE_COVER } from '../../lib/media'
 import { site } from '../../lib/site'
@@ -158,6 +159,8 @@ const schema = [
   <Section ground="dark" bleed>
     <div class="ah">
       <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
       <div class="wrap ah__inner">
         <div class="ah__rail" data-reveal>
           <a class="ah__back" href="/resources/">← RESOURCES / {a.name.toUpperCase()}</a>
@@ -257,7 +260,7 @@ const schema = [
   .a-chip__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: #fbfbfb; }
 
   /* ── hero ───────────────────────────────────────────────── */
-  .ah { position: relative; }
+  .ah { isolation: isolate; position: relative; }
   .ah__inner {
     position: relative; z-index: 1;
     display: grid; grid-template-columns: 380px minmax(0, 1fr);

@@ -24,6 +24,7 @@ import TopBar from './TopBar.astro'
 import NavOverlay from './NavOverlay.astro'
 import SiteFooter from './SiteFooter.astro'
 import GrainField from './GrainField.astro'
+import DitherHero from './DitherHero.astro'
 import { PORTRAIT, JOURNAL_IMG } from '../lib/media'
 import { site } from '../lib/site'
 import star5 from '../assets/star-5.svg'
@@ -88,6 +89,8 @@ const schema = [
   <Section ground="dark" bleed>
     <div class="jh">
       <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
       <div class="wrap jh__inner">
         <div class="jh__rail" data-reveal>
           <span class="jh__who">
@@ -243,7 +246,7 @@ const schema = [
 
 <style>
   /* ── header ─────────────────────────────────────────────── */
-  .jh { position: relative; }
+  .jh { isolation: isolate; position: relative; }
   .jh__inner {
     position: relative; z-index: 1;
     display: grid; grid-template-columns: 449px minmax(0, 1fr);

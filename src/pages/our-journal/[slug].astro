@@ -39,6 +39,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { site, abs } from '../../lib/site'
 
@@ -154,6 +155,8 @@ const month = iso ? MONTHS[Number(iso.slice(5, 7)) - 1] : ''
     <Section ground="dark" bleed>
       <div class="jp__band">
         <GrainField tone="dark" second />
+        {/* Design ref 3a. Background only — nothing in this band moves. */}
+        <DitherHero variant="carbon-heat" />
       </div>
     </Section>
 
@@ -255,7 +258,7 @@ const month = iso ? MONTHS[Number(iso.slice(5, 7)) - 1] : ''
 <style>
   /* ── the band ───────────────────────────────────────────── */
   /* Spec: Header, 196px, nothing in it. */
-  .jp__band { position: relative; height: 196px; }
+  .jp__band { isolation: isolate; position: relative; height: 196px; }
 
   /* ── the masthead ───────────────────────────────────────── */
   /* One grid for the whole page: 419 rail + 943 column, which sums to the

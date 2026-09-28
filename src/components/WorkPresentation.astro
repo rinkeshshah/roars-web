@@ -34,6 +34,7 @@ import type { CollectionEntry } from 'astro:content'
 import { workAltFor } from '../lib/media'
 import RingField from './RingField.astro'
 import GrainField from './GrainField.astro'
+import DitherHero from './DitherHero.astro'
 
 interface Props {
   d: CollectionEntry<'projects'>['data']
@@ -138,6 +139,10 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     white instead of the black-on-white it had with no band under it. */}
 <div class="wp-strip" data-ground="dark" aria-hidden="true">
   <span class="wp-strip__glow"></span>
+  {/* Design ref 3a, in the small header a presented project opens on. Same
+      treatment as every other dark band on the site; the strip keeps its
+      height, its gradient and its glow, and the field sits over them. */}
+  <DitherHero variant="carbon-heat" />
 </div>
 
 {/* ── 01 Cover ─────────────────────────────────────────────── */}
@@ -569,7 +574,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
      vanished. The design's column is the 42px pill, a 14px gap and that 20px
      line, inside its own top and bottom padding. */
   .wp-strip {
-    position: relative; overflow: hidden;
+    position: relative; isolation: isolate; overflow: hidden;
     height: calc(clamp(28px, 4vh, 38px) + 76px + clamp(34px, 5vh, 44px));
     background: linear-gradient(100deg, #0d0d0c 0%, #121110 46%, #17150e 78%, #0a0a0a 100%);
   }

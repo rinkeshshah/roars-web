@@ -34,6 +34,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
 import { getCollection } from 'astro:content'
 import { LISTED_PROJECTS } from '../../lib/projects'
 
@@ -142,6 +143,8 @@ const schema = [
   <Section ground="dark" bleed>
     <div class="wh">
       <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
       <div class="wrap wh__inner">
         <div class="wh__rail" data-reveal>
           <span class="wh__who">
@@ -247,7 +250,7 @@ const schema = [
   .w-rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
 
   /* ── header ─────────────────────────────────────────────── */
-  .wh { position: relative; }
+  .wh { isolation: isolate; position: relative; }
   .wh__inner {
     position: relative; z-index: 1;
     display: grid; grid-template-columns: 449px minmax(0, 1fr);

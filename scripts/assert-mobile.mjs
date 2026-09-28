@@ -29,6 +29,7 @@
  *   node scripts/assert-mobile.mjs            every case study
  *   node scripts/assert-mobile.mjs /work/gymbait/ /about-us/
  */
+import sharp from 'sharp'
 import { chromium } from 'playwright'
 import { createServer } from 'node:http'
 import { readFile, readdir } from 'node:fs/promises'
@@ -56,7 +57,7 @@ const WIDTHS = [320, 360, 390, 414, 768]
 /* Deliberately wider than their box, and the same list assert-overlap keeps:
    the logo marquee is a strip inside an overflow:hidden window and the grain
    drift is a decorative blur that bleeds past the section edge on purpose. */
-const BLEEDS_BY_DESIGN = 'about__logo-track|about__logo-row|gf__drift|ins__grid'
+const BLEEDS_BY_DESIGN = 'about__logo-track|about__logo-row|gf__drift|ins__grid|\\bdh\\b'
 const MIN_TAP = 24
 const MIN_TYPE = 10
 
@@ -294,6 +295,56 @@ for (const path of paths) {
         })
         if (solid) return null
 
+        /* FROSTED IS ALLOWED, BUT IT HAS TO EARN IT.
+         *
+         * This check used to demand a fully opaque fill, and the note in
+         * TopBar.astro explains why: a blur cannot be trusted sight unseen,
+         * and the only navigation on the page is not going to depend on one.
+         * The bar is frosted now by request, so the rule is no longer "is it
+         * opaque" but "does it actually hide what is under it" — which is the
+         * question the alpha test was standing in for all along.
+         *
+         * Three conditions, and all three have to hold. The first two are
+         * declarations and are cheap; the third is a measurement, taken from
+         * the rendered page further down, and it is the one that matters.
+         *
+         *   1. alpha >= 0.8. A blur over a nearly clear fill still lets
+         *      shapes through; this is a floor, not a pass.
+         *   2. a real backdrop-filter, AND an @supports rule guarding it with
+         *      an opaque fallback — so a browser that cannot composite the
+         *      blur gets the solid plate instead of a see-through bar.
+         *   3. the clashing text, sampled where it actually lands under the
+         *      bar, comes back flat. Measured in Node with sharp.
+         *
+         * Fail any of them and this is an ordinary see-through header again.
+         */
+        const frostedCandidate = [bar, null].some((el) => {
+          const cs = el ? getComputedStyle(el) : getComputedStyle(bar, '::before')
+          const bd = cs.backdropFilter || cs.webkitBackdropFilter || 'none'
+          return bd !== 'none' && alpha(cs.backgroundColor) >= 0.8
+        })
+
+        /* The guard has to be in the stylesheet, not in the computed value:
+           a computed backdrop-filter says the browser understood it, not that
+           the author left anything behind for a browser that does not. */
+        const guarded = (() => {
+          const walk = (rules) => {
+            for (const r of rules) {
+              if (r.conditionText && /backdrop-filter/i.test(r.conditionText)) return true
+              if (r.cssRules && walk(r.cssRules)) return true
+            }
+            return false
+          }
+          for (const sheet of document.styleSheets) {
+            try {
+              if (walk(sheet.cssRules)) return true
+            } catch {
+              /* cross-origin sheet, nothing to read */
+            }
+          }
+          return false
+        })()
+
         const hits = []
         const range = document.createRange()
         document.querySelectorAll('h1, h2, h3, h4, p, li, dt, dd, span, a, blockquote').forEach((el) => {
@@ -306,18 +357,77 @@ for (const path of paths) {
             for (const t of range.getClientRects()) {
               if (t.width < 1 || t.height < 1) continue
               if (t.top < box.bottom && t.bottom > box.top && t.left < box.right && t.right > box.left) {
-                hits.push(`"${n.textContent.trim().slice(0, 30)}"`)
+                hits.push({
+                  label: `"${n.textContent.trim().slice(0, 30)}"`,
+                  rect: { x: t.left, y: t.top, w: t.width, h: t.height },
+                })
               }
             }
           }
         })
-        return [...new Set(hits)].slice(0, 3)
+        const labels = [...new Set(hits.map((h) => h.label))].slice(0, 3)
+
+        /* THE BAR'S OWN CONTROLS ARE NOT TEXT SHOWING THROUGH, and the first
+           version of this measured them anyway: a clashing rect that happens
+           to lie across the mark came back at stdev 91 — black glyph on a
+           white plate, the most contrast on the page — while every rect that
+           was genuinely behind the blur measured 0 to 1.3. One overlap with
+           the logo was failing pages that were completely correct.
+           So each sample is clipped to the widest horizontal run of the rect
+           that no control sits on, and a rect with no such run is dropped. */
+        const own = [...bar.querySelectorAll('*')]
+          .map((el) => el.getBoundingClientRect())
+          .filter((r) => r.width > 2 && r.height > 2)
+
+        const clear = (rect) => {
+          const blockers = own
+            .filter((o) => o.top < rect.y + rect.h && o.bottom > rect.y)
+            .map((o) => [o.left, o.right])
+            .sort((a, b) => a[0] - b[0])
+          let best = null
+          let cursor = rect.x
+          for (const [l, r] of [...blockers, [rect.x + rect.w, rect.x + rect.w]]) {
+            const gap = Math.min(l, rect.x + rect.w) - cursor
+            if (gap > 4 && (!best || gap > best.w)) best = { x: cursor, w: gap }
+            cursor = Math.max(cursor, r)
+            if (cursor >= rect.x + rect.w) break
+          }
+          return best ? { x: best.x, y: rect.y, w: best.w, h: rect.h } : null
+        }
+
+        return {
+          labels,
+          rects: hits.map((h) => clear(h.rect)).filter(Boolean).slice(0, 6),
+          frosted: frostedCandidate && guarded,
+          bar: { x: box.left, y: box.top, w: box.width, h: box.height },
+        }
       })
 
-      if (clash && clash.length) {
+      /* The measurement. A frosted bar that is doing its job leaves the text
+         under it as a flat wash; text that is genuinely showing through has
+         the hard light-dark edges of glyphs. Sample each clashing rect from
+         the rendered page and take the standard deviation of its greyscale —
+         letterforms put it in the tens, a smooth panel keeps it in single
+         figures. 12 sits well clear of both in the samples this repo has. */
+      if (clash && clash.labels.length && clash.frosted) {
+        let showsThrough = false
+        for (const r of clash.rects) {
+          const x = Math.max(0, Math.round(Math.max(r.x, clash.bar.x)))
+          const y = Math.max(0, Math.round(Math.max(r.y, clash.bar.y)))
+          const w = Math.round(Math.min(r.x + r.w, clash.bar.x + clash.bar.w) - x)
+          const h = Math.round(Math.min(r.y + r.h, clash.bar.y + clash.bar.h) - y)
+          if (w < 2 || h < 2) continue
+          const png = await page.screenshot({ clip: { x, y, width: w, height: h } })
+          const { channels } = await sharp(png).greyscale().stats()
+          if (channels[0].stdev > 12) { showsThrough = true; break }
+        }
+        if (!showsThrough) continue
+      }
+
+      if (clash && clash.labels.length) {
         findings++
         console.log(`FAIL ${path} @${width}`)
-        console.log(`       text under a see-through sticky header at ${Math.round(frac * 100)}% scroll: ${clash.join(', ')}`)
+        console.log(`       text under a see-through sticky header at ${Math.round(frac * 100)}% scroll: ${clash.labels.join(', ')}`)
       }
     }
 

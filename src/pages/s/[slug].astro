@@ -26,6 +26,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
 import RingField from '../../components/RingField.astro'
 import Accordion from '../../components/Accordion.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
@@ -123,6 +124,8 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
     <Section ground="dark" bleed>
       <div class="sv-hero">
         <GrainField tone="dark" second />
+        {/* Design ref 3a. Background only — nothing in this band moves. */}
+        <DitherHero variant="carbon-heat" />
         <div class="wrap sv-hero__inner">
           {/* Left column at the gutter, 400 wide, opening at 168. */}
           <div class="sv-hero__rail" data-reveal>
@@ -627,7 +630,7 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
   }
 
   /* ── hero ───────────────────────────────────────────────── */
-  .sv-hero { position: relative; }
+  .sv-hero { isolation: isolate; position: relative; }
   .sv-hero__inner {
     position: relative; z-index: 1;
     display: grid;

@@ -37,6 +37,7 @@ import TopBar from '../components/TopBar.astro'
 import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import GrainField from '../components/GrainField.astro'
+import DitherHero from '../components/DitherHero.astro'
 import { site } from '../lib/site'
 import { PORTRAIT } from '../lib/media'
 import quote from '../assets/quote.svg'
@@ -95,6 +96,8 @@ const links = [
   <Section ground="dark" bleed>
     <div class="ty">
       <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
       <div class="wrap ty__inner">
         <div class="ty__note" data-reveal>
           <div class="ty__who">
@@ -255,7 +258,7 @@ const links = [
 
 <style>
   /* ── confirmation ───────────────────────────────────────── */
-  .ty { position: relative; }
+  .ty { isolation: isolate; position: relative; }
   .ty__inner {
     position: relative; z-index: 1;
     display: grid; grid-template-columns: 384px minmax(0, 1fr);

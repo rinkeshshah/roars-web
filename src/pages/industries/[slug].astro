@@ -27,6 +27,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
 import RingField from '../../components/RingField.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { site } from '../../lib/site'
@@ -98,6 +99,8 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     <Section ground="dark" bleed>
       <div class="ih">
         <GrainField tone="dark" second />
+        {/* Design ref 3a. Background only — nothing in this band moves. */}
+        <DitherHero variant="carbon-heat" />
         <div class="wrap ih__inner">
           <div class="ih__rail" data-reveal>
             {d.eyebrow && <span class="i-eyebrow i-eyebrow--dark">{d.eyebrow}</span>}
@@ -622,7 +625,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
   .i-ghost__dots i:last-child { background: var(--c-accent); }
 
   /* ── hero ───────────────────────────────────────────────── */
-  .ih { position: relative; }
+  .ih { isolation: isolate; position: relative; }
   .ih__inner {
     position: relative; z-index: 1;
     display: grid; grid-template-columns: 401fr 734fr 227fr;

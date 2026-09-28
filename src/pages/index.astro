@@ -26,6 +26,7 @@ import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL_IMG, workAltFor } from '..
 import { JOURNAL } from '../lib/journal'
 import GrainField from '../components/GrainField.astro'
 import RingField from '../components/RingField.astro'
+import DitherHero from '../components/DitherHero.astro'
 /* Decorative furniture still used by About and Insights. The hero's own
    set — planet, starbelt, slash mark — went with the export 2 redesign. */
 import star3 from '../assets/star-3.svg'
@@ -393,6 +394,9 @@ const schema = [
         services rail — is gone with it, and space.jpg with that. */}
     <div class="hero">
       <GrainField tone="yellow" second />
+      {/* Design ref 5d. hoverTarget defaults to this .hero, so the cursor's
+          ring source follows the pointer over the headline too. */}
+      <DitherHero variant="roar-wave" />
 
       <div class="wrap hero__inner">
         <h1 class="hero__h1">
@@ -900,7 +904,10 @@ const schema = [
   }
 
   /* 1. hero ------------------------------------------------------------ */
-  .hero { position: relative; min-height: 900px; display: flex; align-items: stretch; }
+  /* isolation: isolate so the three layers inside — GrainField, the dither
+     canvas at z-index 0, the content at 1 — sort against each other and not
+     against the section. Same guard as .sec[data-rings] and .ip. */
+  .hero { position: relative; isolation: isolate; min-height: 900px; display: flex; align-items: stretch; }
 
   .hero__inner {
     position: relative; z-index: 1; width: 100%;

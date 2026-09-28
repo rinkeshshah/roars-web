@@ -121,10 +121,27 @@ const CTA = {
    * inset: 0 covers it -- measured, the bar's box encloses both controls at
    * every width (390: bar 0-68, mark 24-60, burger 21-63).
    */
+  /* FROSTED AND SHORTER, BY REQUEST — and the note above says this was tried
+     and rejected once, so here is what is different. That attempt sat at 0.82
+     alpha with the about page's grey plate reading through it and taking the
+     burger's contrast with it. This one runs higher (0.88 light, 0.82 dark on
+     a near-black that is already close to the page) and, more to the point,
+     falls back to the solid colour wherever backdrop-filter is unavailable,
+     via @supports. The old note's real worry was a blur that silently does
+     not composite; that case now keeps the opaque plate.
+
+     THE HEIGHT IS THE PLATE'S, NOT THE BAR'S. Nothing in the bar moves — the
+     mark, the pill and the burger keep their positions and only the ground
+     behind them is shorter. It can be, because is-scrolled already hides the
+     pill's note, which was the lowest thing in the box; with that gone the
+     tallest content is the 52px mark sitting at 32, so 96 clears it where the
+     full box was 123. Measured at 1440. Below 760 the bar is 68 tall already
+     and --tb-plate-h drops to match it. */
   .topbar::before {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: 0 0 auto;
+    height: var(--tb-plate-h, 96px);
     background: var(--c-footer);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     opacity: 0;
@@ -136,6 +153,17 @@ const CTA = {
   .topbar.is-light::before {
     background: var(--c-white);
     border-bottom-color: rgba(20, 20, 20, 0.1);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .topbar::before {
+      background: rgba(11, 11, 11, 0.82);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      backdrop-filter: blur(16px) saturate(140%);
+    }
+    .topbar.is-light::before {
+      background: rgba(255, 255, 255, 0.88);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -267,6 +295,9 @@ const CTA = {
 
   @media (max-width: 1040px) { .topbar__right { gap: var(--sp-5); } }
   @media (max-width: 760px) {
+    /* The bar is 68 tall here — mark at 24-60 — so the plate matches the box
+       and there is nothing to trim. */
+    .topbar { --tb-plate-h: 68px; }
     .topbar__inner { padding-top: var(--sp-3); align-items: center; }
     .topbar__meet { display: none; }
   }

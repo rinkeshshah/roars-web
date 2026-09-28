@@ -41,6 +41,7 @@ import TopBar from '../components/TopBar.astro'
 import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import GrainField from '../components/GrainField.astro'
+import DitherHero from '../components/DitherHero.astro'
 import { site } from '../lib/site'
 import mark from '../assets/roars-mark.png'
 
@@ -75,6 +76,8 @@ const reportHref = `mailto:${site.email.sales}?subject=${encodeURIComponent('Bro
   <Section ground="dark" bleed>
     <div class="nf" data-nf>
       <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
 
       <div class="wrap nf__inner">
         <div class="nf__flag">
@@ -145,7 +148,7 @@ const reportHref = `mailto:${site.email.sales}?subject=${encodeURIComponent('Bro
 
 <style>
   /* ── the band ───────────────────────────────────────────── */
-  .nf { position: relative; }
+  .nf { isolation: isolate; position: relative; }
   .nf__inner {
     position: relative; z-index: 1;
     display: flex; flex-direction: column;

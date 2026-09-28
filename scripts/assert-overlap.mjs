@@ -124,7 +124,11 @@ const WIDTHS = [1440, 768, 390]
 /* Deliberately wider than their box: the logo marquee is a scrolling strip
    inside an overflow:hidden window, and the grain drift is a decorative blur
    that bleeds past the section edge on purpose. */
-const BLEEDS_BY_DESIGN = /about__logo-track|about__logo-row|gf__drift|ins__grid/
+/* `dh` is the dither hero canvas: below 1040 it is 230% of its band and
+   pushed right so the shader's ring core lands off the screen. aria-hidden,
+   pointer-events:none, no text, and the section clips it. Word-bounded — a
+   bare `dh` would match any class containing those two letters. */
+const BLEEDS_BY_DESIGN = /about__logo-track|about__logo-row|gf__drift|ins__grid|\bdh\b/
 
 let failures = 0
 const b = await chromium.launch()

@@ -15,6 +15,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
 import RingField from '../../components/RingField.astro'
 import { PORTRAIT, workHeroFor, workAltFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
@@ -280,6 +281,8 @@ const nextLine = nextEntry?.data.presentation?.line ?? nextEntry?.data.about
     <Section ground="dark" bleed>
       <div class="pb">
         <GrainField tone="dark" second />
+        {/* Design ref 3a. Background only — nothing in this band moves. */}
+        <DitherHero variant="carbon-heat" />
       </div>
     </Section>
 
@@ -519,7 +522,7 @@ const nextLine = nextEntry?.data.presentation?.line ?? nextEntry?.data.about
 
 <style>
   /* ── banner ─────────────────────────────────────────────── */
-  .pb { position: relative; height: 196px; overflow: hidden; background: var(--c-black); }
+  .pb { isolation: isolate; position: relative; height: 196px; overflow: hidden; background: var(--c-black); }
 
   /* ── the case study ─────────────────────────────────────── */
   .pd { position: relative; padding-block: 102px 120px; }

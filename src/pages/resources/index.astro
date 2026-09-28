@@ -30,6 +30,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
 import { getCollection } from 'astro:content'
 import { site } from '../../lib/site'
 import star5 from '../../assets/star-5.svg'
@@ -112,6 +113,8 @@ const schema = [
   <Section ground="dark" bleed>
     <div class="rh">
       <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
       <div class="wrap rh__inner">
         <div class="rh__rail" data-reveal>
           <span class="r-eyebrow r-eyebrow--dark">RESOURCES / 03 COLLECTIONS</span>
@@ -201,7 +204,7 @@ const schema = [
   .r-chip__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: #fbfbfb; }
 
   /* ── hero ───────────────────────────────────────────────── */
-  .rh { position: relative; }
+  .rh { isolation: isolate; position: relative; }
   .rh__inner {
     position: relative; z-index: 1;
     display: grid; grid-template-columns: 380px minmax(0, 1fr);

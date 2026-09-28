@@ -25,6 +25,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
 import CanvasPlate from '../../components/CanvasPlate.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { GUIDE_COVER, GUIDE_SET } from '../../lib/media'
@@ -119,6 +120,8 @@ const schema = [
   <Section ground="dark" bleed>
     <div class="gh">
       <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
       <div class="wrap gh__inner">
         <div class="gh__rail" data-reveal>
           <a class="gh__back" href="/resources/">← RESOURCES / GUIDES</a>
@@ -233,7 +236,7 @@ const schema = [
   .g-chip__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: #fbfbfb; }
 
   /* ── hero ────────────────────────────────── */
-  .gh { position: relative; }
+  .gh { isolation: isolate; position: relative; }
   .gh__inner {
     position: relative; z-index: 1;
     display: grid; grid-template-columns: 380px 632px minmax(0, 1fr);

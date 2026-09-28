@@ -23,6 +23,7 @@ import TopBar from '../components/TopBar.astro'
 import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import GrainField from '../components/GrainField.astro'
+import DitherHero from '../components/DitherHero.astro'
 import { PORTRAIT } from '../lib/media'
 import { site } from '../lib/site'
 import quote from '../assets/quote.svg'
@@ -162,6 +163,9 @@ const schema = [
   <Section ground="dark" bleed>
     <div class="aph">
       <GrainField tone="dark" second />
+      {/* Design ref 3a — the inner-page half of one system: the homepage's ink
+          on yellow, inverted to graphite, yellow and warm white on near-black. */}
+      <DitherHero variant="carbon-heat" />
       <div class="wrap aph__inner">
         {/* Quote block at the gutter, 384 wide, opening at 150. */}
         <div class="aph__quote" data-reveal>
@@ -334,7 +338,8 @@ const schema = [
      at 696, the phase list at 1050. align-content:start, or the 780
      min-height is handed to the auto rows and everything in row two drops —
      the same trap as /about-us/. */
-  .aph { position: relative; }
+  .aph { position: relative; isolation: isolate; }
+
   .aph__inner {
     position: relative; z-index: 1;
     display: grid;

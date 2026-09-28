@@ -21,6 +21,7 @@ import TopBar from '../components/TopBar.astro'
 import NavOverlay from '../components/NavOverlay.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import GrainField from '../components/GrainField.astro'
+import DitherHero from '../components/DitherHero.astro'
 import Button from '../components/Button.astro'
 import { PORTRAIT, AGENCY_IMG, CLIENT_LOGOS } from '../lib/media'
 import { site } from '../lib/site'
@@ -162,6 +163,8 @@ const schema = [
   <Section ground="dark" bleed>
     <div class="agh">
       <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
 
       <div class="wrap agh__inner">
         {/* Founder block at 39,96, width 384. */}
@@ -380,7 +383,7 @@ const schema = [
   /* ── Header, section 1440x802 ───────────────────────────────
      Four tracks summing to the 1362 content box: the masthead opens at 450,
      the caption at 696, the trust row at 929. */
-  .agh { position: relative; }
+  .agh { isolation: isolate; position: relative; }
   .agh__inner {
     position: relative; z-index: 1;
     display: grid;

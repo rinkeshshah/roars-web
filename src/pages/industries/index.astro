@@ -17,6 +17,7 @@ import TopBar from '../../components/TopBar.astro'
 import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
 import { site } from '../../lib/site'
 
 const path = '/industries/'
@@ -57,6 +58,8 @@ const schema = [
   <Section ground="dark" bleed>
     <div class="hb">
       <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
       <div class="wrap hb__inner">
         <span class="hb__eyebrow">INDUSTRIES</span>
         <span class="hb__tick" aria-hidden="true"></span>
@@ -104,7 +107,7 @@ const schema = [
 </BaseLayout>
 
 <style>
-  .hb { position: relative; }
+  .hb { isolation: isolate; position: relative; }
   .hb__inner { position: relative; z-index: 1; padding-block: 170px 96px; }
   .hb__eyebrow {
     display: block;
