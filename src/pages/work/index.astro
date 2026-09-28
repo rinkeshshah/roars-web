@@ -1,37 +1,117 @@
 ---
 /**
- * /work/ — STUB, deliberately.
+ * /work/ — the case study index. Eleven listed; twelve more are built but
+ * held back (see HELD_BACK in src/lib/projects.ts).
  *
- * TODO: layout is an open design decision, not an implementation question.
- * The approved design draws five projects at roughly 707px per row. There are
- * 23, which is a 16,000px page and about twenty screens. A brief proposing a
- * two-tier index (four or five featured at full height, the rest in a denser
- * ~320px row) is at docs/briefs/work-index-at-real-scale.md, unanswered.
+ * THE EXPORT'S DESIGN, FOR ALL TWENTY-THREE. `Roars v2 - Projects` draws one
+ * full-height row per project and that is what ships, by decision, after a
+ * two-tier version was built and rejected.
  *
- * Pagination is the obvious fix and is the wrong one here: /work/page/2/ has
- * to be noindex under our own rules, which would strip the crawl path from
- * eighteen case studies, thirteen of which are already orphaned from the nav.
- * Whatever the answer is, all 23 stay on one crawlable URL.
+ * The cost is recorded rather than hidden: 23 rows at 707px is roughly
+ * 17,000px, against the homepage's 10,022. docs/briefs/work-index-at-real-
+ * scale.md argues the case for compressing the tail; that brief is now
+ * ANSWERED — no. Do not re-propose it as a fix; it was considered and
+ * declined.
  *
- * Until that is settled this returns 200 with a correct canonical and links
- * every case study, so no URL 404s and every detail page stays reachable. It
- * is not the designed page and does not pretend to be.
+ * Pagination is separately ruled out and that has not changed: /work/page/2/
+ * has to be noindex under our own SEO rules, which would strip the crawl path
+ * from eighteen case studies, thirteen of which are already orphaned from the
+ * nav. All 23 stay on one crawlable URL.
+ *
+ * Fourteen have no photograph and five have no date, because neither exists
+ * anywhere yet. Those rows draw the export's dark card without an image and
+ * without a date rail, rather than a guessed date or somebody else's stock
+ * shot. Both arrive with the content migration.
+ *
+ * NO INDUSTRY FILTER, though the brief wants one. Industry tagging is
+ * deliberately absent from src/lib/projects.ts: the brief says the 23 span
+ * eight sectors but not which project is which, and guessing would put a real
+ * client in the wrong sector on a public page. It arrives with the migration.
  */
-import MarketingPage from '../../components/MarketingPage.astro'
-import { PROJECTS } from '../../lib/projects'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
+import { getCollection } from 'astro:content'
+import { LISTED_PROJECTS } from '../../lib/projects'
+
+/* Everything that says how many projects there are reads this, so the grid,
+   the eyebrow, the meta description and the menu cannot disagree with each
+   other. They already had: the page said twelve, the menu said eleven, and the
+   grid drew whatever the list happened to hold. */
+const COUNT = LISTED_PROJECTS.length
+import { workHeroFor, PORTRAIT, workAltFor } from '../../lib/media'
+import WorkCover from '../../components/WorkCover.astro'
 import { site } from '../../lib/site'
+import star5 from '../../assets/star-5.svg'
+
+const path = '/work/'
+
+/**
+ * EACH CARD DRAWS ITS OWN PROJECT'S HEADER — the same file /work/[slug]/ puts
+ * at the top of that project's page.
+ *
+ * It used to read WORK[p.image] straight out of the registry, which holds nine
+ * entries against twenty-three projects: fourteen rows drew a bare dark plate,
+ * and of the nine that drew anything, not all were the shot the detail page
+ * opens with.
+ *
+ * The resolution order here is the detail page's, exactly: the content file's
+ * own heroImage first, the registry as the fallback. All twenty-three content
+ * files carry one. scripts/validate-content.mjs already fails the build if
+ * those two sources ever disagree, so the index and the page it links to
+ * cannot drift apart.
+ */
+const projectEntries = await getCollection('projects')
+const heroBySlug = new Map(
+  projectEntries.map((e) => [e.id, e.data.heroImage as string | undefined]),
+)
+const art = (slug: string) => heroBySlug.get(slug) ?? workHeroFor(`/work/${slug}/`)
+
+/**
+ * THE SECTOR LINE over each card.
+ *
+ * Every project names its own industry in frontmatter, so nothing here is
+ * guessed — projects.ts still refuses to carry industry tags for exactly that
+ * reason, and this reads the migrated content instead.
+ *
+ * Nine of the ten sectors have an /industries/ page and the label comes from
+ * that page's own title, so the card and the sector page can never disagree
+ * about what a sector is called. The other three — legal, finance,
+ * entertainment — have no page, so their slug is title-cased. They are single
+ * words, which is why that is safe here and would not be for the hyphenated
+ * ones.
+ */
+const industryEntries = await getCollection('industries')
+const industryTitle = new Map(industryEntries.map((e) => [e.id, e.data.title as string]))
+const sectorBySlug = new Map(
+  projectEntries.map((e) => {
+    const key = (e.data.industry as string[] | undefined)?.[0]
+    if (!key) return [e.id, undefined]
+    return [e.id, industryTitle.get(key) ?? key.charAt(0).toUpperCase() + key.slice(1)]
+  }),
+)
+
+/** The year, from the project's own publishedAt. All twenty-three carry one,
+ *  unlike projects.ts `date`, which only the five the export names have. */
+const yearBySlug = new Map(
+  projectEntries.map((e) => [e.id, (e.data.publishedAt as Date | undefined)?.getFullYear()]),
+)
 
 const schema = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    '@id': `${site.url}/work/#collection`,
+    '@id': `${site.url}${path}#collection`,
     name: 'Our Work',
     isPartOf: { '@id': `${site.url}/#website` },
     mainEntity: {
       '@type': 'ItemList',
-      numberOfItems: PROJECTS.length,
-      itemListElement: PROJECTS.map((p, i) => ({
+      numberOfItems: LISTED_PROJECTS.length,
+      itemListElement: LISTED_PROJECTS.map((p, i) => ({
         '@type': 'ListItem',
         position: i + 1,
         name: p.client,
@@ -39,44 +119,344 @@ const schema = [
       })),
     },
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Work' },
+    ],
+  },
 ]
 ---
 
-<MarketingPage
-  topCta="contact"
-  title="Our Work | Roars Technologies"
-  description="Twenty-three product case studies across logistics, fitness, healthcare, concierge, travel, retail, SaaS, legal and finance. Built since 2005."
-  path="/work/"
-  label="Work"
-  heading="Work"
-  intro="Twenty-three case studies. The index layout is being designed; every project is linked below in the meantime."
+<BaseLayout
+  title="Our Work: 1,500+ Products Since 2005 | Roars"
+  description={`${COUNT} case studies across logistics, fitness, health-tech, hospitality and SaaS. What we built, who for, and what it had to survive.`}
+  path={path}
   schema={schema}
 >
-  <ul class="work">
-    {PROJECTS.map((p) => (
-      <li class="work__item">
-        <a class="work__link" href={`/work/${p.slug}/`}>
-          <span class="work__name">{p.client}</span>
-          <span class="work__go" aria-hidden="true">&rarr;</span>
-        </a>
-      </li>
-    ))}
-  </ul>
-</MarketingPage>
+  <TopBar slot="topbar" cta="contact" />
+  <NavOverlay />
+
+  {/* ── Header, 1440x780 ───────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="wh">
+      <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
+      <div class="wrap wh__inner">
+        <div class="wh__rail" data-reveal>
+          <span class="wh__who">
+            <img src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" />
+            <span class="wh__name">Rinkesh A Shah</span>
+            <span class="wh__role">CEO</span>
+          </span>
+          <p class="wh__statement">
+            1,500+ products delivered since 2005, across logistics, fitness, health-tech,
+            hospitality and SaaS.
+          </p>
+        </div>
+
+        <div class="wh__mast" data-reveal>
+          <span class="wh__chip">
+            <span>roars</span>
+            <span class="starmark wh__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+          </span>
+          <h1 class="wh__large">Product development case studies</h1>
+        </div>
+
+        <div class="wh__count" data-reveal>
+          {/* 1,500+, not 1,500. The plus is on this number everywhere else it
+              appears — the menu panel, the proof band on nine industry pages,
+              the statement two blocks up on this same page — and dropping it
+              here turns an approximation into a precise count that is wrong. */}
+          <span class="wh__disc">1,500+</span>
+          <span class="wh__count-label">Products delivered</span>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── The projects, one row each at 1363x626 ───────────── */}
+  <Section ground="light">
+    <div class="wf">
+      <span class="w-rule" aria-hidden="true"></span>
+      <span class="w-eyebrow">ALL PROJECTS / {COUNT}</span>
+      {/* This band held no motion at all — three reveals on the whole page and
+          every one of them in the header, so eleven project cards arrived
+          dead. Same stagger the homepage lists use, capped at six steps so
+          the eleventh card is not still waiting 700ms after the first. */}
+      <ul class="wf__rows">
+        {LISTED_PROJECTS.map((p, i) => (
+          <li data-reveal style={`transition-delay:${Math.min(i, 5) * 70}ms`}>
+            <a href={`/work/${p.slug}/`}>
+              {/* Day and month only. The year moved onto the card beside the
+                  star, and printing it in both places on the five projects
+                  that have a rail read as a mistake. */}
+              {p.date && (
+                <span class="wf__date">
+                  <b>{p.date.slice(0, 6)}</b>
+                </span>
+              )}
+              <span class="wf__shot">
+                {art(p.slug) && (
+                  <WorkCover
+                    src={art(p.slug)!}
+                    alt={workAltFor(p.client)}
+                    width={2400}
+                    height={1200}
+                    eager={i === 0}
+                  />
+                )}
+              </span>
+              {/* Sector, name, year — stacked on the flat-ink side, which is
+                  what the ink gradient exists to keep clear. */}
+              <span class="wf__cap">
+                {sectorBySlug.get(p.slug) && (
+                  <span class="wf__sector">{sectorBySlug.get(p.slug)}</span>
+                )}
+                <span class="wf__client">{p.client}</span>
+                {yearBySlug.get(p.slug) && (
+                  <span class="wf__meta">
+                    <span class="wf__star" style={`--m:url(${star5.src})`} aria-hidden="true"></span>
+                    <span>{yearBySlug.get(p.slug)}</span>
+                  </span>
+                )}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    blurbTitle="Does any of this look like your problem?"
+    blurb="If one of these is close to what you are carrying, say which. It is a faster conversation when we both already know the shape of it."
+    tagline="1,500+ products since 2005"
+    ctaLabel="Shall we chat?"
+  />
+</BaseLayout>
 
 <style>
-  .work { list-style: none; margin: 0; padding: 0; }
-  .work__item { border-top: 0.5px solid var(--c-rule-soft); }
-  .work__item:last-child { border-bottom: 0.5px solid var(--c-rule-soft); }
-  .work__link {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: var(--sp-4) var(--sp-3);
-    transition: background var(--dur-fast) ease;
+  /* ── shared ─────────────────────────────────────────────── */
+  .w-eyebrow {
+    display: block; margin-top: 24px;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
   }
-  .work__link:hover { background: rgba(255, 212, 0, 0.1); }
-  .work__name {
-    font-size: clamp(var(--fs-item), 2.2vw, 32px); font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  .w-rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+
+  /* ── header ─────────────────────────────────────────────── */
+  .wh { isolation: isolate; position: relative; }
+  .wh__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 449px minmax(0, 1fr);
+    align-content: start; padding-block: 96px 0; min-height: 780px;
   }
-  .work__go { font-size: 24px; color: rgba(20, 20, 20, 0.45); }
+  .wh__rail { grid-column: 1; grid-row: 1; width: 384px; }
+  .wh__who { position: relative; display: block; height: 42px; }
+  .wh__who img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: rgba(255, 255, 255, 0.12); }
+  .wh__name, .wh__role {
+    position: absolute; left: 56px;
+    font-size: var(--fs-label); line-height: 20px; letter-spacing: -0.05em;
+  }
+  .wh__name { top: 6px; font-weight: var(--fw-semi); color: rgba(255, 255, 255, 0.95); }
+  .wh__role { top: 25px; font-weight: var(--fw-medium); color: rgba(255, 255, 255, 0.6); }
+  .wh__statement {
+    margin: 32px 0 0; width: 384px;
+    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.92);
+  }
+
+  .wh__mast { grid-column: 2; grid-row: 1; margin-top: 367px; }
+  .wh__chip { position: relative; display: flex; align-items: flex-start; height: 24px; margin-left: 13px; }
+  .wh__chip > span:first-child {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: rgb(251, 251, 251); padding-top: 4px;
+  }
+  .wh__star { position: absolute; left: 52px; top: 0; width: 10px; height: 10px; color: rgb(251, 251, 251); }
+  /* SAME TREATMENT, SIZED FOR A SENTENCE INSTEAD OF A WORD.
+     This was "Projects" at 124px on one 86px line. The heading is now four
+     words, and four words at 124px is 1900px of type in a 913px column. The
+     weight, the tracking and the colour are untouched — what changes is the
+     size and the fact that it is allowed to wrap, which one word never had to.
+     `balance` so it breaks into two even lines rather than three words and an
+     orphan. */
+  .wh__large {
+    margin: 28px 0 0 6px; max-width: 780px;
+    font-size: clamp(38px, 5.2vw, 74px); line-height: 1.02; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: rgb(251, 251, 251); text-wrap: balance;
+  }
+
+  /* The 250 badge sits on the header's own row, right of the masthead. */
+  .wh__count {
+    grid-column: 2; grid-row: 1; justify-self: end; align-self: start;
+    display: flex; align-items: center; gap: 28px; margin-top: 344px;
+  }
+  /* A PILL THAT STARTS AS A CIRCLE, not a fixed 42px circle.
+     "1,500" was already spilling out of both sides of the disc — black type on
+     a dark ground, so the overflow was invisible rather than absent — and
+     "1,500+" made it a character wider. Sizing to the content keeps the
+     circle's look for a short value and grows into a pill when the value needs
+     the room, instead of the figure hanging off the shape. */
+  .wh__disc {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 42px; height: 42px; padding-inline: 13px;
+    border-radius: 999px; background: var(--c-white);
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .wh__count-label {
+    width: 127px;
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ── featured rows ──────────────────────────────────────── */
+  .wf { padding-block: 80px 110px; }
+  .wf__rows { list-style: none; margin: 60px 0 0; padding: 0; }
+  .wf__rows li + li { margin-top: 81px; }
+  .wf__rows a { position: relative; display: block; height: 626px; }
+
+  /* The date rail: day and month over a rule. The year used to sit under it
+     and now sits on the card beside the star. */
+  .wf__date { position: absolute; left: 0; top: 3px; width: 86px; }
+  .wf__date b {
+    display: block; padding-bottom: 19px;
+    font-size: var(--fs-item); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: -0.06em; color: var(--c-black);
+    border-bottom: 1.25px solid rgba(71, 71, 71, 0.8);
+  }
+
+  /* 2:1 AT EVERY WIDTH, so one export fits everywhere.
+     The box used to be two different shapes: a fixed 625px height against a
+     1242px column here, 1.99:1, and aspect-ratio 1129/625 below the design
+     grid, 1.81:1. With `object-fit: cover` no single file could satisfy both —
+     whichever shape the artwork was cut for, the other breakpoint cropped it.
+     One ratio means the supplied 2:1 art lands whole at every size. */
+  .wf__shot {
+    position: absolute; left: 120px; top: 1px; right: 0;
+    display: block; aspect-ratio: 2 / 1; overflow: hidden;
+    border-radius: 12px; background: rgb(30, 30, 30);
+  }
+  /* ── AMBER DUSK ─────────────────────────────────────────────
+     The supplied treatment, 3c, applied to every card:
+
+       brightness(.44)
+       amber radial at 88% 96%, .30 → 0 @70%
+       ink gradient 90deg, 1 → .10
+       copy on flat ink
+
+     TWO OF THOSE NUMBERS ARE OPENED UP, on the brief that the cards were
+     coming out too dark to read as photographs at all: brightness .44 → .62,
+     and the ink's dense end 1 → .82 with its far end .10 → .06. Measured
+     behind the title afterwards, white on the lightest ground any of the
+     twenty-three produces still clears 7:1, so the copy did not pay for it.
+     The amber, the geometry and the layer order are exactly as specified.
+
+     Three layers, and the ORDER IS THE POINT. The amber sits ON TOP of the
+     photograph but UNDER the ink, so the one place
+     yellow touches the image is the far corner where the ink has thinned to
+     a tenth — the moment the ink goes dense towards the copy side, it covers
+     the amber completely. That is what "the yellow never crosses into the
+     copy side" means, and putting the amber above the ink instead would tint
+     the type's own ground and lose it.
+     Everything is on the shot, not the image, so the hover scale moves the
+     photograph underneath a treatment that stays put. */
+  .wf__shot img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(var(--dusk-exposure-card));
+    transition: transform var(--dur-slow) ease;
+  }
+  .wf__rows a:hover .wf__shot img { transform: scale(1.03); }
+  /* Amber, from the far corner. Under the ink. */
+  .wf__shot::before {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: var(--dusk-amber); border-radius: inherit;
+  }
+  /* Ink, dense on the copy side and thinning across. Over the amber. */
+  .wf__shot::after {
+    content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: var(--dusk-ink); border-radius: inherit;
+  }
+  /* ── the copy block ─────────────────────────────────────────
+     The supplied card sets sector, name and year as one left-aligned stack,
+     not a single name floating in the middle of the photograph — which is
+     what this was, at 56% across, where the ink has already thinned and the
+     amber is coming up. It now sits on the flat end of the ink gradient,
+     which is the whole reason that gradient runs the way it does.
+     Anchored from the TOP so the sector line rules across all twenty-three
+     rows; anchoring the block's foot instead would leave the eyebrow at a
+     different height on every one- and two-line name. */
+  /* 176px = the shot's own 120px offset plus a 56px inset. The containing
+     block here is the row, not the shot, so an inset measured from the card
+     would start the copy in the date rail — which is exactly where it went. */
+  .wf__cap {
+    position: absolute; left: 176px; top: 33%; right: 46%; z-index: 3;
+    display: flex; flex-direction: column; align-items: flex-start;
+  }
+  .wf__sector {
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255, 255, 255, 0.66);
+  }
+  .wf__client {
+    margin-top: 16px;
+    font-size: 56px; line-height: 1.07; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-white);
+    text-wrap: pretty;
+  }
+  .wf__meta {
+    display: flex; align-items: center; gap: 12px; margin-top: 22px;
+    font-size: var(--fs-body); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.78);
+  }
+  /* Masked, not an <img>: the star has to take the accent token, and the same
+     asset is already on this page in the header. */
+  .wf__star {
+    width: 13px; height: 13px; background: var(--c-accent);
+    mask: var(--m) center / contain no-repeat;
+    -webkit-mask: var(--m) center / contain no-repeat;
+  }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .wh__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 120px 72px; row-gap: 36px; }
+    .wh__rail, .wh__mast, .wh__count { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 0; width: auto; }
+    .wh__statement { width: auto; max-width: 440px; }
+    .wh__large { line-height: 1.04; margin-left: 0; }
+
+    .wf { padding-block: 64px 24px; }
+    .wf__rows { margin-top: 44px; }
+    .wf__rows li + li { margin-top: 52px; }
+    .wf__rows a { height: auto; }
+    .wf__date { position: static; display: flex; align-items: baseline; gap: 10px; width: auto; }
+    /* The rule stays. It is the only thing separating the date from the card
+       below it once the rail has collapsed into the flow, and without it the
+       date read as a caption belonging to the image rather than a label above
+       it. Shorter padding than the rail's 19px because there is 14px of card
+       margin under it here as well. */
+    .wf__date b { padding-bottom: 11px; }
+    /* RELATIVE, NOT STATIC. The two dusk gradients are absolute at inset 0 on
+       this element, so whatever is the containing block is what they cover —
+       and a static shot hands that job to the li. They were painting the
+       WHOLE CARD: a square-cornered ink band over the date (which is what
+       made it look clipped) and corners that ignored the 12px radius, because
+       `overflow: hidden` here cannot clip a descendant whose containing block
+       is further up the tree. In flow either way; only the reference box
+       changes — and `inset: auto` with it, because the rail's offsets are
+       still declared above and a relative box treats `left: 120px` as a
+       120px nudge, which pushed the card off the right edge. */
+    .wf__shot { position: relative; inset: auto; margin-top: 14px; }
+    /* The block sits on the card's foot here rather than a third of the way
+       down: the card is much shorter, so a top anchor would push the year off
+       the bottom of the shorter names. */
+    .wf__cap { left: 24px; right: 24px; top: auto; bottom: 24px; }
+    .wf__client { margin-top: 10px; font-size: 30px; line-height: 1.12; }
+    .wf__meta { margin-top: 12px; }
+    .wf__rows li { position: relative; }
+
+  }
 </style>

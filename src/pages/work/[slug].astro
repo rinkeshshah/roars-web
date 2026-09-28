@@ -8,9 +8,19 @@
  * noindex until then.
  */
 import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
 import MarketingPage from '../../components/MarketingPage.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
+import RingField from '../../components/RingField.astro'
+import { PORTRAIT, workHeroFor, workAltFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
-import { clientFor } from '../../lib/projects'
+import { clientFor, isHeldBack, isOffGrid, PROJECTS } from '../../lib/projects'
+import WorkPresentation from '../../components/WorkPresentation.astro'
 import { site } from '../../lib/site'
 
 export async function getStaticPaths() {
@@ -25,6 +35,12 @@ export async function getStaticPaths() {
 const { slug } = Astro.params
 const { entry } = Astro.props
 const path = `/work/${slug}/`
+
+/* Built, but not offered: off the /work/ index and noindex here. The URL keeps
+   resolving to the real case study, so the named receipts that industry and
+   service pages carry for these projects still land somewhere true. See
+   HELD_BACK in src/lib/projects.ts for why this is not a redirect. */
+const heldBack = isHeldBack(slug as string)
 const client = entry?.data.client ?? clientFor(slug) ?? nameFromSlug(slug)
 
 const schema = entry
@@ -52,8 +68,444 @@ const schema = entry
   : []
 
 const { Content } = entry ? await render(entry) : { Content: null }
+const d = entry?.data
+/* Designed when the case study has its about line. One of the twenty-three
+   today; the rest keep the pending state, which is noindex, rather than a
+   layout wrapped around a client name. */
+const designed = Boolean(d?.about)
+
+/* The header photo. One value shared with every band that credits this
+   project, so what a reader sees on an industry page is what they get when
+   they follow the link.
+   A content file's own heroImage wins; the registry is the fallback, and the
+   two must not disagree — a band showing one photo and the page showing
+   another is the bug this is here to prevent. */
+const registryHero = workHeroFor(`/work/${slug}/`)
+if (d?.heroImage && registryHero && d.heroImage !== registryHero) {
+  throw new Error(
+    `work/${slug}: heroImage is "${d.heroImage}" but src/lib/projects.ts says ` +
+      `"${registryHero}". The work page header and the featured bands that ` +
+      'credit this project must show the same photograph. Fix one of them.',
+  )
+}
+const heroSrc = d?.heroImage ?? registryHero
+const faces = (d?.team ?? [])
+  .map((k) => PORTRAIT[k as keyof typeof PORTRAIT])
+  .filter(Boolean)
+
+/**
+ * THE PICTURES, GROUPED BY WHAT THEY ARE.
+ *
+ * gallery / showcase / screens record where the old WordPress page put a
+ * picture, not what the picture is. Reading them as three layout slots is
+ * what gave Tanishq and Snowman four empty dark boxes — the showcase drew
+ * its frames whether or not there was anything to put in them — while
+ * GymBait's thirteen app screens were tipped into one undifferentiated grid
+ * at the bottom under "13 MORE FROM THE BUILD".
+ *
+ * So the three arrays are flattened and re-sorted by `kind`, and the page is
+ * built from chapters that appear only when they hold something. Eleven case
+ * studies carrying between two and sixteen pictures then use one template,
+ * and the thin ones come out short rather than broken.
+ */
+const media = [...(d?.gallery ?? []), ...(d?.showcase ?? []), ...(d?.screens ?? [])]
+const pick = (...kinds: string[]) => media.filter((m) => m.kind && kinds.includes(m.kind))
+
+/**
+ * NOT PHONE-SHAPED, WHICH IS A DIFFERENT QUESTION FROM WHAT IT IS.
+ *
+ * A file 1536 across and 806 tall is a contact sheet: four phone screens laid
+ * out side by side. A file 1170 across and 2532 tall is one screen. Both come
+ * through the migration tagged `app`, and the template used to put both in a
+ * 9/16 box — right for the second, and it destroys the first. On Parqly that
+ * turned five sheets, twenty screens of interface, into five grey squares
+ * with an unreadable band across the middle.
+ *
+ * This asked "is it wider than 1.2" for two builds and that was the wrong
+ * test, in a way GymBait made obvious: its contact sheet is 1497 x 1536, an
+ * eighteen-screen board in six columns, and at a ratio of 0.97 it failed a
+ * wide test and went into the 9/16 portrait grid — the exact failure the
+ * whole rule was written to prevent, arrived at from a new direction.
+ *
+ * A single phone capture is the only thing that belongs in that grid, and a
+ * phone capture is unmistakable: 0.42 to 0.56, tall and narrow, because that
+ * is the shape of a phone. Everything else is a board, a sheet, a photograph
+ * or a study, and all of those want the column. So the line is 0.7, with a
+ * wide margin on both sides of it and nothing anywhere near.
+ */
+const PHONE_MAX = 0.7
+/**
+ * AND IT ONLY APPLIES TO `app`. A web capture is a picture of a website, and a
+ * website is a wide thing whatever the capture's height: Advisee's are 1.05 to
+ * 1.59 and one full blog page is 0.70, all of them taller than the 16/10 box
+ * the web grid was cropping them into, so every one lost its bottom half. A
+ * `web` entry with dimensions takes the column at its own shape, full stop.
+ * The portrait grid exists for one thing, a phone screen, and nothing else
+ * belongs in it.
+ */
+const isPhoneShaped = (m: { w?: number; h?: number; kind?: string }) =>
+  m.kind === 'app' && Boolean(m.w && m.h && m.w / m.h <= PHONE_MAX)
+/**
+ * AND BIG ENOUGH TO FILL THE COLUMN.
+ *
+ * Shape alone is not sufficient. Snowman's design study is 824 x 521 — the
+ * right shape, and a 1.65x upscale if it takes the 1362 column, which is a
+ * soft picture on a page whose whole argument is that you can read the
+ * interface. 1200 keeps the upscale under about 1.15x at the widest layout,
+ * and anything smaller goes in the grid where it is shown at a size it has
+ * the pixels for.
+ */
+const MIN_FULL = 1200
+const isWide = (m: { w?: number; h?: number; kind?: string }) =>
+  Boolean(m.w && m.h && m.w >= MIN_FULL && !isPhoneShaped(m))
+
+/** The process: how it was structured, and how it was dressed. Split by shape,
+ *  because a wireframe sheet and a single wireframe want different room. */
+const groundwork = pick('wireframe', 'study')
+const groundGrid = groundwork.filter((m) => !isWide(m))
+
+/** The product. Web screens are landscape and app screens portrait, so they
+ *  keep their own grids; anything wide leaves both and gets the full column. */
+const shipped = pick('app', 'web')
+const appShots = pick('app').filter((m) => !isWide(m))
+const webShots = pick('web').filter((m) => !isWide(m))
+
+/** Photographs and anything nobody classified. Never dropped.
+ *  A photograph is the one picture on a case study that is of the real world,
+ *  so it gets a stage of its own rather than a cell in a grid. */
+const rest = media.filter((m) => !m.kind || m.kind === 'photo')
+const restGrid = rest.filter((m) => !isWide(m))
+
+/** Inline style that both reserves the space and stops the wide pictures
+ *  reflowing the page as they load. */
+const ratio = (m: { w?: number; h?: number }) =>
+  m.w && m.h ? `aspect-ratio:${m.w} / ${m.h}` : undefined
+
+/**
+ * THE PROJECT EITHER SIDE OF THIS ONE.
+ *
+ * Walks LISTED_PROJECTS, which is the same order /work/ prints, so "next" is
+ * the card that was below this one on the page the reader came from rather
+ * than an order invented here.
+ *
+ * IT WRAPS. Eleven listed projects, and stopping at the ends leaves the first
+ * and last case study with one lonely link and a gap where the other should
+ * be. Wrapping keeps the band the same shape everywhere and, at this length, a
+ * reader who walks off the end lands back at the start rather than at a dead
+ * stop. "All projects" sits between the two for anyone who wants out.
+ *
+ * EVERY DETAIL PAGE GETS A BAND, AND ONLY LISTED PROJECTS ARE DESTINATIONS.
+ * Twelve of the twenty-three are held back: off /work/ and noindex, but their
+ * URLs still resolve because industry and service pages name them. Walking
+ * LISTED_PROJECTS alone left those twelve with no way onward at all except
+ * the footer. So the walk runs over the FULL order, which is where a
+ * held-back project does have a position, and steps outward past anything
+ * held back until it finds one that is offered. A page nobody is meant to
+ * find is never the thing at the end of an arrow.
+ */
+const ORDER = PROJECTS.map((p) => p.slug)
+const hereAll = ORDER.indexOf(slug as string)
+const neighbour = (dir: 1 | -1) => {
+  if (hereAll < 0) return undefined
+  for (let step = 1; step <= ORDER.length; step++) {
+    const p = PROJECTS[(hereAll + dir * step + ORDER.length * ORDER.length) % ORDER.length]
+    /* The same eleven /work/ lists. Held back was already skipped; off the grid
+       was not, so Onus offered The Revolver Life as its next case — a page that
+       is indexed and reachable but deliberately not one of the eleven we put in
+       front of people, and with no cover image to draw on the plate. Prev and
+       next walk what the index walks. */
+    if (p && p.slug !== slug && !isHeldBack(p.slug) && !isOffGrid(p.slug)) return p
+  }
+  return undefined
+}
+const prevProject = neighbour(-1)
+const nextProject = neighbour(1)
+
+/* The presentation layout from `Roars v2 - Work Presentation.dc.html`, for the
+   projects that carry its content. See `presentation` in src/content.config.ts
+   for why this is opt-in rather than a straight swap. */
+const presented = Boolean(d?.presentation)
+/* The design's "Next case" plate wants the neighbour's own header photo, which
+   is the same file /work/ puts on its card. */
+const nextShot = nextProject ? workHeroFor(`/work/${nextProject.slug}/`) : undefined
+/* And a line about it. The design authors this per case alongside a hardcoded
+   chain; since the neighbour is computed here, the line has to be too — it is
+   read off the project it points at, so it is right whichever project that
+   turns out to be. Its own one-liner where it has one, its about line where it
+   does not. */
+const allProjects = await getCollection('projects')
+const nextEntry = nextProject
+  ? allProjects.find((e) => e.id === nextProject.slug)
+  : undefined
+const nextLine = nextEntry?.data.presentation?.line ?? nextEntry?.data.about
 ---
 
+{presented && d ? (
+  <BaseLayout
+    title={d.seo.title}
+    description={d.seo.description}
+    path={path}
+    schema={schema}
+    noindex={d.needsReview || heldBack}
+  >
+    <TopBar slot="topbar" cta="contact" />
+    <NavOverlay />
+    <WorkPresentation d={d} next={nextProject} nextImg={nextShot} nextLine={nextLine} faces={faces} />
+    <SiteFooter
+      slot="footer"
+      blurbTitle="Got a floor that runs on clipboards?"
+      blurb="Most operations problems look like software problems once you watch the shift. Tell us what the shift looks like."
+      tagline="proof, not promises"
+      ctaLabel="Shall we chat?"
+    />
+  </BaseLayout>
+) : designed && d ? (
+  <BaseLayout
+    title={d.seo.title}
+    description={d.seo.description}
+    path={path}
+    schema={schema}
+    noindex={d.needsReview || heldBack}
+  >
+    <TopBar slot="topbar" cta="contact" />
+    <NavOverlay />
+
+    {/* ── Banner, 1440x196 ──────────────────────────────────────
+        The export crops the project's own photo into this strip under a 0.35
+        wash. At 196px that is a sliver of a picture — you cannot read it, and
+        it competes with the same photo shown properly 250px lower.
+        So it takes the ground every other inner page opens on instead: the
+        warm dark gradient, the drift and the grain, at the export's height.
+        The project image is then shown once, large, with nothing arguing
+        with it. ────────────────────────────────────────────────────────── */}
+    <Section ground="dark" bleed>
+      <div class="pb">
+        <GrainField tone="dark" second />
+        {/* Design ref 3a. Background only — nothing in this band moves. */}
+        <DitherHero variant="carbon-heat" />
+      </div>
+    </Section>
+
+    {/* ── The case study, 1440x5534 in the export ──────────────────────── */}
+    <Section ground="light">
+      <div class="pd">
+        <div class="pd__head">
+          <a class="pd__back" href="/work/">
+            See all Projects
+            <span class="pd__dot pd__dot--grey" aria-hidden="true"></span>
+            <span class="pd__dot pd__dot--ink" aria-hidden="true"></span>
+          </a>
+          {/* Title and date in one flowing block, absolutely placed as a
+              pair. They used to be two absolute boxes at top 182 and top 311,
+              which only works while the title is one line — and it is not.
+              "The President's Club" at the top of the clamp is about 1400px
+              of nowrap type starting at x=452, so it ran clean off the right
+              of the page. Now it wraps and the date follows it down. */}
+          <div class="pd__title">
+            <h1 class="pd__client">{d.headline ?? d.client}</h1>
+            {d.dateLabel && <p class="pd__date">{d.dateLabel}</p>}
+          </div>
+
+        </div>
+
+        {heroSrc && (
+          <div class="pd__hero" data-reveal>
+            <img
+              src={heroSrc}
+              /* The case study's own header shot. Falls back to the project's
+                 name rather than to silence — same fix as the journal hero. */
+              alt={d.heroAlt || workAltFor(client)}
+              width="2400" height="1200" loading="lazy" decoding="async"
+            />
+            <RingField variant="sweep" />
+          </div>
+        )}
+
+        <div class="pd__about" data-reveal>
+          <span class="pd__label">About:</span>
+          <p class="pd__statement">{d.about}</p>
+          {d.facts.length > 0 && (
+            <dl class="pd__facts">
+              {d.facts.map((f) => (
+                <div><dt>{f.k}</dt><dd>{f.v}</dd></div>
+              ))}
+            </dl>
+          )}
+          {/* THE "LIVE VERSION" PILL THE EXPORT DRAWS.
+              It went unbuilt because Snowman, the case study this template was
+              built against, is an internal warehouse system with no public URL
+              — and a button pointing at the client's marketing site would link
+              to the wrong thing. That reasoning was right about Snowman and
+              was then applied to everything: TEN case studies carry a liveUrl
+              in their frontmatter and not one of them was reachable from its
+              own page. App Store and Play Store listings for Gymbait,
+              Flowrow and this one, and live client sites for six others.
+              A visitor being able to go and open the thing is the strongest
+              proof a case study has, and it was sitting in the file.
+
+              Still nothing for a project without one: the pill only renders
+              when there is a URL, which is what should have happened here in
+              the first place. */}
+          {d.liveUrl && (
+            <a class="pd__live" href={d.liveUrl} target="_blank" rel="noopener">
+              {d.liveLabel}
+              <span class="pd__live-arrow" aria-hidden="true">&#8599;</span>
+            </a>
+          )}
+        </div>
+
+
+        {d.blocks[0] && (
+          <div class="pd__block" data-reveal>
+            <h2 class="pd__block-h">{d.blocks[0].heading}</h2>
+            <div class="pd__block-body">
+              <p class="pd__lead">{d.blocks[0].lead}</p>
+              {d.blocks[0].body && <p class="pd__more">{d.blocks[0].body}</p>}
+            </div>
+          </div>
+        )}
+
+        {/* GROUNDWORK — the wireframes and the colour and type studies.
+            These are working documents, not the product, and they used to be
+            shown at the same size and in the same grid as finished screens,
+            which flattered neither. Smaller, captioned, on their own rule, so
+            the page reads process first and product second. */}
+        {groundwork.length > 0 && (
+          <section class="pd__chapter pd__chapter--ground" data-reveal>
+            <span class="pd__ch-tick" aria-hidden="true"></span>
+            <h2 class="pd__ch-h">Groundwork</h2>
+            <p class="pd__ch-sub">Structure first, then the look of it.</p>
+
+            {/* Wide sheets take the column. A wireframe sheet is four screens
+                of thinking and it is the only thing on this page that shows
+                the argument before the paint. */}
+
+          </section>
+        )}
+
+        {/* THE PHOTOGRAPHS ARE DEALT BETWEEN THE PARAGRAPHS, one after each
+            block, rather than swept into the grid at the bottom.
+
+            A case study that puts every picture after every word asks the
+            reader to hold four paragraphs in their head and then go looking
+            for what they described. Parqly's photograph of a hand holding the
+            app next to the actual yellow lock on the actual driveway is the
+            single most convincing thing on the page, and it belongs against
+            the paragraph about hardware integration, not eight screens later
+            in a 16/10 crop.
+
+            Run out of photographs and the blocks simply carry on. */}
+        {d.blocks.slice(1).map((b, i) => (
+          <>
+            <div class="pd__block" data-reveal>
+              <h2 class="pd__block-h">{b.heading}</h2>
+              <div class="pd__block-body">
+                <p class="pd__lead">{b.lead}</p>
+                {b.body && <p class="pd__more">{b.body}</p>}
+              </div>
+            </div>
+          </>
+        ))}
+
+
+        {/* THE PRODUCT. Web screens are landscape and app screens portrait, so
+            they get separate grids rather than one grid that suits neither.
+            Either chapter is skipped when the project has none of that kind,
+            which is how a three-picture case study and a sixteen-picture one
+            use the same template. */}
+        {(webShots.length > 0 || appShots.length > 0 || restGrid.length > 0) && (
+          <section class="pd__chapter" data-reveal>
+            <span class="pd__ch-tick" aria-hidden="true"></span>
+            <h2 class="pd__ch-h">What shipped</h2>
+            <p class="pd__ch-sub">
+              {[
+                webShots.length && `${webShots.length} web`,
+                appShots.length && `${appShots.length} app`,
+              ].filter(Boolean).join(' · ') || 'From the build'}
+            </p>
+
+            {/* THE SHEETS, FULL COLUMN AND STACKED. Four screens in one file
+                is a row of an interface, and a row of an interface read at a
+                quarter of the column is a texture, not a screen. Numbered,
+                because stacked at this size they are a sequence. */}
+
+            {webShots.length > 0 && (
+              <ul class="pd__web">
+                {webShots.map((m, i) => (
+                  <li data-reveal style={`transition-delay:${Math.min(i, 4) * 60}ms`}>
+                    <img src={m.src} alt={m.alt} loading="lazy" decoding="async" />
+                  </li>
+                ))}
+              </ul>
+            )}
+
+
+            {restGrid.length > 0 && (
+              <ul class="pd__web">
+                {restGrid.map((m, i) => (
+                  <li data-reveal style={`transition-delay:${Math.min(i, 4) * 60}ms`}>
+                    <img src={m.src} alt={m.alt} loading="lazy" decoding="async" />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
+
+        {/* THE CLIENT'S VERDICT, after the work rather than before it. A quote
+            placed above the pictures asks the reader to take the outcome on
+            trust; placed here it lands on something they have just seen.
+            Only ever a quote whose role names this client outright — see the
+            note on `testimonial` in content.config.ts. */}
+
+        {/* The migrated body. The export has no slot for it; a case study with
+            four sentences is not a case study, and this is the page that has
+            to answer "have they done logistics". Given its own header and
+            numbered sections so it reads as part of the page rather than as
+            text that got appended to it. */}
+        {Content && (
+          <div class="pd__long" data-reveal>
+            <span class="pd__long-tick" aria-hidden="true"></span>
+            <span class="pd__long-eyebrow">THE LONG VERSION</span>
+            <div class="pd__prose"><Content /></div>
+          </div>
+        )}
+      </div>
+    </Section>
+
+    {/* Where to go next, which until now was "back up to the header link or
+        out through the footer". A case study is the end of a path, and the
+        useful thing to offer at the end of one is the next one. */}
+    {(prevProject || nextProject) && (
+      <Section ground="accent" bleed>
+        <GrainField tone="yellow" />
+        <nav class="wrap pdnav" aria-label="More case studies">
+          {prevProject && (
+            <a class="pdnav__side pdnav__side--prev" href={`/work/${prevProject.slug}/`} rel="prev">
+              <span class="pdnav__dir"><i aria-hidden="true">&larr;</i>Previous</span>
+              <span class="pdnav__name">{prevProject.client}</span>
+            </a>
+          )}
+          <a class="pdnav__all" href="/work/">All projects</a>
+          {nextProject && (
+            <a class="pdnav__side pdnav__side--next" href={`/work/${nextProject.slug}/`} rel="next">
+              <span class="pdnav__dir">Next<i aria-hidden="true">&rarr;</i></span>
+              <span class="pdnav__name">{nextProject.client}</span>
+            </a>
+          )}
+        </nav>
+      </Section>
+    )}
+
+    <SiteFooter
+      slot="footer"
+      blurbTitle="Got a floor that runs on clipboards?"
+      blurb="Most operations problems look like software problems once you watch the shift. Tell us what the shift looks like."
+      tagline="proof, not promises"
+      ctaLabel="Shall we chat?"
+    />
+  </BaseLayout>
+) : (
 <MarketingPage
   topCta="contact"
   title={entry?.data.seo.title ?? `${client} Case Study | ${site.name}`}
@@ -66,3 +518,428 @@ const { Content } = entry ? await render(entry) : { Content: null }
 >
   {Content && <Content />}
 </MarketingPage>
+)}
+
+<style>
+  /* ── banner ─────────────────────────────────────────────── */
+  .pb { isolation: isolate; position: relative; height: 196px; overflow: hidden; background: var(--c-black); }
+
+  /* ── the case study ─────────────────────────────────────── */
+  .pd { position: relative; padding-block: 102px 120px; }
+
+  /* The head is a fixed 1358x330 with three anchors — back link at 206,
+     client at 182, date at 311 — so the client name sits BESIDE the link
+     rather than under it, which is the whole arrangement. */
+  /* The title is IN FLOW and the offsets are padding, so a two-line name
+     pushes this band taller instead of spilling into the photograph below.
+     min-height keeps the export's 330 for the short names, which is every
+     other case study. The back link and the team cluster stay absolute:
+     neither grows, and both are anchored to the top of the band. */
+  .pd__head { position: relative; min-height: 330px; padding-top: 182px; }
+  /* Padding cancelled by an equal negative margin: the link sits exactly where
+     the export puts it and the target clears 24px. It measured 119x19, which is
+     not something a thumb can hit. */
+  .pd__back {
+    padding-block: 13px; margin-block: -13px;
+    position: absolute; left: 0; top: 206px;
+    font-size: 18px; line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: -0.06em; color: var(--c-black);
+  }
+  .pd__dot { position: absolute; width: 8px; height: 8px; border-radius: 50%; }
+  .pd__back .pd__dot { top: 7px; }
+  .pd__back .pd__dot--grey { left: 130px; background: rgb(153, 152, 149); opacity: 0.6; }
+  .pd__back .pd__dot--ink { left: 141px; background: rgb(20, 20, 20); }
+  /* The title block. 452 is the export's left anchor, and the width runs to
+     the right edge of the 1362 column, which is what a long client name needs
+     and what nowrap was refusing to give it. */
+  .pd__title { margin-left: 452px; }
+  .pd__client {
+    margin: 0; max-width: 100%;
+    /* 0.86em rather than a fixed 86px: at 124px that is the export's exact
+       leading, and it stays proportional when the clamp shrinks the type, so
+       two lines of a long name set tight instead of drifting apart. */
+    font-size: clamp(48px, 7.4vw, 124px); line-height: 0.86;
+    font-weight: var(--fw-semi); letter-spacing: -0.04em; color: rgb(20, 20, 20);
+    text-wrap: balance;
+  }
+  .pd__date {
+    margin: 28px 0 0 5px;
+    font-size: 20px; line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: -0.06em; color: var(--c-black);
+  }
+
+
+  /* AMBER DUSK, THE DETAIL-PAGE VERSION. The /work/ card and this header now
+     belong to one family, which is the point — but they are not the same
+     picture doing the same job, so they are not the same treatment.
+
+     The CARD carries the client name, the sector and the year ON the
+     photograph, so it needs brightness .62 and a directional ink gradient
+     dense enough to hold white type. Neither of those is about the picture;
+     both are about the copy.
+
+     THIS HEADER CARRIES NO TYPE AT ALL. The name and the date sit above it on
+     white. So the ink gradient is dropped — there is nothing to protect, and a
+     dense left edge would just be a dark half for no reason — and the
+     exposure comes back to .82, because here the photograph IS the subject
+     rather than a ground. What carries across is the amber from the far
+     corner, which is the family resemblance and the one place yellow touches
+     an image anywhere on the site. */
+  .pd__hero { position: relative; margin-top: 27px; overflow: hidden; border-radius: 12px; background: rgb(30, 30, 30); }
+  /* 2:1, THE SHAPE THE FILES ARE CUT TO. The box was a fixed 737px on a
+     1358px column, 1.84:1, so a 2:1 photograph lost a strip off each side to
+     `object-fit: cover` — the same fault the /work/ card had before it was
+     unified. scripts/build-work-headers.mjs crops every header to 2:1 once, at
+     build time, so nothing needs cropping again here.
+     Saturation is baked into the file at 0.8 rather than applied as a CSS
+     filter: one source of truth, and no filter to composite on a 2400px image
+     at paint time. */
+  .pd__hero img { display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; filter: var(--sweep-grade); }
+
+  /* ── about ──────────────────────────────────────────────── */
+  .pd__about { position: relative; margin-top: 83px; }
+  .pd__label {
+    position: absolute; left: 0; top: 0;
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(71, 71, 71, 0.8);
+  }
+  .pd__statement {
+    margin: 0 0 0 461px; max-width: 689px;
+    font-size: 26px; line-height: 37px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .pd__facts { margin: 74px 0 0 457px; }
+  .pd__facts > div { position: relative; display: flex; height: 42px; padding-top: 17px; }
+  .pd__facts > div::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 897px; height: 0.5px; background: rgba(71, 71, 71, 0.2);
+  }
+  .pd__facts > div + div { margin-top: 18px; }
+
+  /* The live link, on the same 457px rail as the fact table above it so the
+     two read as one block. An outline pill rather than a filled one: the page
+     already has a filled yellow call to action in the footer band, and two
+     competing buttons on one page is two buttons nobody presses. */
+  .pd__live {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin: 36px 0 0 457px; padding: 13px 24px;
+    border: 1px solid rgba(20, 20, 20, 0.22); border-radius: 999px;
+    font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-black);
+    transition: border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+  .pd__live:hover, .pd__live:focus-visible {
+    border-color: var(--c-black); background: var(--c-accent);
+  }
+  .pd__live-arrow { font-size: 14px; translate: 0 -1px; }
+  .pd__facts dt {
+    width: 465px;
+    font-size: var(--fs-label); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: -0.02em; color: rgba(71, 71, 71, 0.8);
+  }
+  .pd__facts dd {
+    margin: 0;
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  /* ── the pair ───────────────────────────────────────────── */
+
+  /* ── chapters ───────────────────────────────────────────────
+     FIXED HEIGHTS ARE GONE. The old showcase was four slots at 737, 700, 700
+     and 754px that drew whether or not they held an image, which is why four
+     of the eleven case studies shipped dark holes. Nothing here has a height:
+     a chapter that has no pictures is not rendered at all, and the grids size
+     to what is in them. */
+  .pd__chapter { margin-top: 104px; }
+  .pd__ch-tick { display: block; width: 16px; height: 1.5px; background: var(--c-rule-strong); }
+  .pd__ch-h {
+    margin: 22px 0 0; font-size: var(--fs-stat); line-height: var(--lh-stat);
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .pd__ch-sub {
+    margin: 10px 0 0; font-size: var(--fs-body); line-height: var(--lh-body);
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-ink-muted);
+  }
+
+  /* GROUNDWORK reads smaller than the product on purpose. A wireframe shown
+     at the same scale as a finished screen claims to be one. Three across,
+     on paper rather than on the dark card the product screens sit on, and
+     each one captioned with what it actually is. */
+
+
+
+  /* WEB screens are landscape: two across, and one on its own goes full width
+     rather than sitting in half a row with a gap beside it. */
+  .pd__web {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 34px; margin: 44px 0 0; padding: 0; list-style: none;
+  }
+  .pd__web:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
+  /* A LAST CAPTURE ALONE ON ITS OWN ROW SPANS BOTH COLUMNS.
+     Six case studies have an odd number of web captures — 411Drives and
+     CompanyGuru have seven, Gypsy nine, Friendo five, Blelp and Tanishq three
+     — and every one of them ended with a half-width picture beside a hole.
+     One picture in a two-up grid does not read as a grid, it reads as a
+     missing picture. Spanning is the shape that says the set ended here. */
+  .pd__web > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .pd__web img {
+    display: block; width: 100%; height: auto; aspect-ratio: 16 / 10;
+    object-fit: cover; border-radius: 12px;
+    background: rgb(30, 30, 30);
+  }
+
+
+  /* ── previous / next ────────────────────────────────────────
+     Three columns with the middle one auto, so the two names sit hard against
+     the gutters and "All projects" stays centred on the page rather than
+     centred between two labels of different lengths. */
+  /* THE SAME GROUND AS THE HOMEPAGE HERO. GrainField tone="yellow" is the one
+     place that gradient is written down, so this cannot drift from the hero;
+     z-index 1 lifts the links above it because GrainField paints inset 0. */
+  .pdnav {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    gap: 24px; padding-block: 82px;
+  }
+  .pdnav__side { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .pdnav__side--next { text-align: right; align-items: flex-end; }
+  /* The one in the middle is a way out, not a destination, so it reads at
+     label weight while the two names read as headings. */
+  .pdnav__all {
+    /* 113x12 before the padding. Same treatment as .pd__back above. */
+    padding-block: 16px; margin-block: -16px;
+    justify-self: center;
+    font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted);
+    transition: color var(--dur-fast) ease;
+  }
+  .pdnav__all:hover { color: var(--ink); }
+  .pdnav__dir {
+    display: flex; align-items: center; gap: 8px;
+    font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted);
+  }
+  .pdnav__dir i { font-style: normal; transition: translate var(--dur-fast) var(--ease-out); }
+  .pdnav__name {
+    font-size: 30px; line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--ink);
+    transition: opacity var(--dur-fast) ease;
+    overflow-wrap: anywhere;
+  }
+  /* The arrow leans the way you are going. Nothing else moves, so the whole
+     band does not shift under the pointer. */
+  .pdnav__side--prev:hover .pdnav__dir i { translate: -4px 0; }
+  .pdnav__side--next:hover .pdnav__dir i { translate: 4px 0; }
+  .pdnav__side:hover .pdnav__name { opacity: 0.66; }
+  @media (prefers-reduced-motion: reduce) {
+    .pdnav__dir i { transition: none; }
+    .pdnav__side--prev:hover .pdnav__dir i,
+    .pdnav__side--next:hover .pdnav__dir i { translate: none; }
+  }
+
+  /* ── goals and outcome ──────────────────────────────────── */
+  .pd__block { position: relative; margin-top: 82px; }
+  .pd__block-h {
+    position: absolute; left: 0; top: 0; margin: 0; width: 380px;
+    font-size: 26px; line-height: 37px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .pd__block-body { margin-left: 461px; max-width: 707px; }
+  .pd__lead {
+    margin: 0;
+    font-size: 26px; line-height: 37px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .pd__more {
+    margin: 25px 0 0;
+    font-size: 18px; line-height: 28px; font-weight: var(--fw-medium);
+    letter-spacing: -0.03em; color: rgba(71, 71, 71, 0.85);
+  }
+
+  /* ── the migrated body ──────────────────────────────────────
+     The page has one rhythm — label left at 0, prose right at 461 — and
+     Goals and Outcome both use it. Left in a single column the body ignored
+     it and ran as one slab against an empty rail.
+     Each heading FLOATS back into that rail with a negative margin, so it
+     lines up with the paragraph it belongs to instead of sitting above it.
+     That is the only way to get the pairing out of plain markdown, which has
+     no element to wrap a section in. `clear: left` keeps one section's
+     heading from riding up beside the previous one's. */
+  .pd__long { margin-top: 104px; }
+  .pd__long-tick { display: block; width: 16px; height: 1.5px; background: var(--c-rule-strong); }
+  .pd__long-eyebrow {
+    display: block; margin-top: 20px;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
+  }
+  /* The screens grid. Sized by the image rather than by a fixed panel: these
+     are phone captures of wildly different crops, and forcing them into one
+     aspect ratio would crop the interface the page exists to show. */
+
+  /**
+   * THE LONG VERSION. A GRID, NOT A FLOAT.
+   *
+   * This paired a heading with its paragraph by floating the heading into the
+   * rail and letting the paragraph flow beside it. That is the only two-column
+   * pairing plain markdown allows, since markdown gives no element to wrap a
+   * section in — and it is pairing by visual adjacency, which is not the same
+   * thing as pairing by markup.
+   *
+   * It broke twice on Advisee. Its body has two group titles with no paragraph
+   * of their own, "Objectives" and "Project Outcome", so each captured the next
+   * item's copy and everything below slid up by one. Fixing that left a second
+   * failure: a paragraph SHORTER than its heading does not push the next
+   * heading past it, so the next heading floats up beside the previous
+   * paragraph. Measured on the built page, six of nine sections were still
+   * showing another section's copy.
+   *
+   * So the pairing stops being positional. The heading spans both columns and
+   * the paragraph sits in the second one, which is a grid placement rather
+   * than a float, and a heading with no paragraph simply has nothing under it.
+   * There is no arrangement of headings and paragraphs that can mis-pair,
+   * because nothing is being paired: each element is placed where it belongs.
+   */
+  .pd__prose {
+    counter-reset: sec; margin: 56px 0 0; max-width: 1168px;
+    display: grid; grid-template-columns: 461px minmax(0, 707px);
+  }
+  .pd__prose :global(h2) {
+    grid-column: 1 / -1; margin: 0;
+    font-size: 26px; line-height: 37px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  /* Numbered by CSS counter, because markdown gives no element to hang a
+     number on and the copy should not carry one — "01" is presentation.
+     Set LARGE, because the rail is otherwise empty for the whole depth of
+     each section and a 11px label left it looking like a mistake. The big
+     tinted numeral is the same device the proof stats use. */
+  .pd__prose :global(h2)::before {
+    counter-increment: sec;
+    content: '0' counter(sec);
+    display: block; margin-bottom: 10px;
+    font-size: 52px; line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgba(20, 20, 20, 0.18);
+  }
+  /* A HEADING WITH NO PARAGRAPH IS A GROUP LABEL, NOT AN ITEM. "Objectives"
+     and "Project Outcome" are titles over the items beneath them, not items.
+     `content: none` on the ::before also stops the counter, which is what
+     keeps the numbering on the items rather than the labels. */
+  .pd__prose :global(h2:has(+ h2)) {
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .pd__prose :global(h2:has(+ h2))::before { content: none; }
+
+  /* Column two, always. The paragraph lands under its own heading and beside
+     nothing, whatever the heading above it did. */
+  .pd__prose :global(p) {
+    grid-column: 2; margin: 0;
+    font-size: 18px; line-height: 28px; font-weight: var(--fw-medium);
+    letter-spacing: -0.03em; color: rgba(71, 71, 71, 0.85);
+  }
+  .pd__prose :global(p + p) { margin-top: 20px; }
+  .pd__prose :global(h2 + p) { margin-top: 18px; }
+
+  /* A QUOTATION IN THE BODY, for a client's words that have no name against
+     them. The President's Club ends with three sentences a client said about
+     this project, printed on production in the same type as the copy around
+     it, so the page appeared to be saying them about itself.
+
+     It reaches into the label column rather than sitting in column two with
+     the paragraphs, because the only job here is to be visibly not the same
+     voice. The rule down the left is the quotation mark; a real one at this
+     size is a piece of punctuation pretending to be a graphic. */
+  .pd__prose :global(blockquote) {
+    grid-column: 1 / -1; margin: 40px 0 0; padding: 4px 0 4px 28px;
+    border-left: 2px solid var(--c-accent);
+    max-width: 860px;
+    font-size: 22px; line-height: 34px; font-weight: var(--fw-medium);
+    letter-spacing: -0.02em; color: var(--c-black);
+  }
+  .pd__prose :global(blockquote p) {
+    grid-column: auto; font: inherit; letter-spacing: inherit; color: inherit;
+  }
+
+  /* A hairline opens each section, drawn across both columns. It can hang off
+     the heading now rather than off the first paragraph, because the heading
+     is no longer floated and a section with no paragraph still gets its rule. */
+  .pd__prose :global(h2:not(:first-child)) {
+    margin-top: 96px; padding-top: 46px;
+    border-top: 0.5px solid var(--c-rule-soft);
+  }
+  .pd__prose :global(h2:has(+ h2) + h2) { margin-top: 40px; padding-top: 0; border-top: 0; }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .pd { padding-block: 64px 72px; }
+    /* THE TITLE WAS INVISIBLE ON A PHONE. Every child of .pd__head was reset
+       here except .pd__title itself, which kept the desktop
+       `margin-left: 452px` that clears the back link's rail. In a 350px column
+       that leaves the block NEGATIVE room, so it measured x=472, width 0: the
+       client name was laid out past the right edge of a box with no width, and
+       nothing painted. `min-height` and the 182px `padding-top` came along too,
+       which is why there was an empty half-screen above the place the title
+       was not. `height: auto` was the only thing being reset, and height was
+       never what was holding the box open. */
+    .pd__head { min-height: 0; height: auto; padding-top: 0; }
+    .pd__title { margin-left: 0; }
+    .pd__back { display: inline-block; }
+    .pd__client { margin-top: 28px; line-height: 1.04; }
+    .pd__date { margin-top: 10px; }
+    .pd__about { margin-top: 48px; }
+    .pd__label { position: static; display: block; }
+    .pd__statement { margin: 14px 0 0; max-width: 620px; }
+    .pd__facts { margin: 40px 0 0; }
+    .pd__facts > div { flex-direction: column; height: auto; gap: 4px; padding-bottom: 14px; }
+    .pd__facts > div::before { width: 100%; }
+    .pd__facts dt { width: auto; }
+    .pd__live { margin: 32px 0 0; }
+    /* Narrow: groundwork and web go to one column, app screens to two. Four
+       phone screens across a 390px viewport is 80px each, which shows nothing. */
+    .pd__chapter { margin-top: 56px; }
+    /* The count-based rules above are `:has()`, which outweighs a bare class
+       even from inside a media query, so the phone override has to match their
+       specificity or five screens stay five across at 390px. */
+    .pd__app:has(> :nth-child(5):last-child),
+    /* THE SHEETS SCROLL SIDEWAYS ON A PHONE rather than shrink to nothing.
+       A four-up sheet fitted to a 350px column gives each screen inside it
+       about 85px, which is a pattern, not an interface — the same failure the
+       9/16 box caused, arrived at from the other direction.
+
+       760px keeps each screen around 185px, readable, and the reader drags.
+       The overflow is on the viewport span, so the caption below stays put
+       and does not scroll away from the picture it names. It is also why the
+       page itself still reports no horizontal scroll: the scrolling is inside
+       this box, not on the document. */
+    /* Three columns become two rows: the two names side by side, and the way
+       out underneath both. Squeezing three items into 350px gave two names of
+       four characters each. */
+    .pdnav {
+      grid-template-columns: 1fr 1fr; gap: 28px 20px;
+      padding-block: 48px;
+    }
+    .pdnav__all { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
+    .pdnav__name { font-size: 20px; }
+
+    .pd__ch-h { font-size: var(--fs-stat-m); line-height: 1.1; }
+    .pd__block { margin-top: 56px; }
+    .pd__block-h { position: static; width: auto; }
+    .pd__block-body { margin: 18px 0 0; max-width: 620px; }
+    .pd__long { margin-top: 64px; }
+    .pd__screens { margin-top: 64px; }
+    .pd__screens ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    /* One column below the breakpoint. The two-column grid has a fixed 461px
+       label column, which is wider than a 390px viewport on its own, so it
+       has to collapse rather than shrink. Heading and paragraph both take the
+       single track and keep their markup order, which is what the grid was
+       for in the first place. */
+    .pd__prose { margin: 40px 0 0; max-width: 620px; grid-template-columns: minmax(0, 1fr); }
+    .pd__prose :global(h2) { grid-column: 1; }
+    .pd__prose :global(p) { grid-column: 1; }
+    .pd__prose :global(blockquote) { grid-column: 1; margin-top: 32px; padding-left: 20px; font-size: 19px; line-height: 30px; }
+    .pd__prose :global(h2:not(:first-child)) { margin-top: 56px; padding-top: 32px; }
+    .pd__prose :global(h2:has(+ h2) + h2) { margin-top: 28px; }
+    .pd__prose :global(h2)::before { font-size: 32px; margin-bottom: 8px; }
+  }
+</style>

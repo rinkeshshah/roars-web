@@ -1,0 +1,187 @@
+---
+/**
+ * /schedule-ux-ui-meeting/ — a live, indexed URL and the last red row in
+ * docs/URL-INVENTORY.csv.
+ *
+ * A REAL PAGE, NOT A REDIRECT. The obvious shortcut was a 301 to
+ * meet.roarsinc.com/sales, but that is a different host: the equity on this
+ * URL would leave the site rather than move within it, and a booking tool is
+ * not a page search can rank. So the URL keeps a page, and the page's job is
+ * to send you to the booking tool.
+ *
+ * What it says is what actually happens when you book: a 30-minute call with
+ * somebody who has read your product, not a discovery questionnaire. Nothing
+ * here claims an outcome; it describes the meeting.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import TopBar from '../components/TopBar.astro'
+import NavOverlay from '../components/NavOverlay.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import GrainField from '../components/GrainField.astro'
+import Button from '../components/Button.astro'
+import { site } from '../lib/site'
+
+const path = '/schedule-ux-ui-meeting/'
+
+const covers = [
+  {
+    n: '01',
+    name: 'What you are building, and for whom',
+    body: 'Ten minutes on the product and the person it is for. If there is something live, we will have opened it before the call.',
+  },
+  {
+    n: '02',
+    name: 'Where it is losing people',
+    body: 'If you have analytics we will read them with you. If you do not, we will say what we would measure first.',
+  },
+  {
+    n: '03',
+    name: 'What we would do first',
+    body: 'A view on scope and sequence: the one thing worth doing before the rest, and roughly what it takes.',
+  },
+  {
+    n: '04',
+    name: 'Whether we are the right people',
+    body: 'Sometimes the answer is no, or not yet. You get that on the call rather than three proposals later.',
+  },
+]
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Schedule a UX and UI meeting',
+    url: site.url + path,
+    description:
+      'Book a 30-minute UX and UI consultation with Roars. We come back with a view on scope, sequence and what we would do first.',
+  },
+]
+---
+
+<BaseLayout
+  title="Schedule a UX and UI Meeting | Roars Technologies"
+  description="Book a 30-minute UX and UI consultation. We read your product before the call and come back with a view on scope, sequence and what we would do first."
+  path={path}
+  schema={schema}
+>
+  <TopBar />
+  <NavOverlay />
+
+  <Section ground="accent" bleed>
+    <div class="sm">
+      <GrainField tone="yellow" second />
+      <div class="wrap sm__in">
+        <span class="sm__eyebrow">Book a call</span>
+        <h1 class="sm__h">Schedule a UX and UI meeting</h1>
+        <p class="sm__lead">
+          Thirty minutes with someone who has read your product first. You leave
+          with a view on scope, sequence and what we would do first.
+        </p>
+        <div class="sm__cta">
+          <Button href={site.booking} label="Pick a time" external />
+          <span class="sm__note">Or reply to any email and we will find one</span>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section ground="light">
+    <div class="sc">
+      <span class="i-eyebrow">What the call covers</span>
+      <h2 class="sc__h" data-reveal>Four things, in half an hour</h2>
+      <ul class="sc__grid">
+        {covers.map((c, i) => (
+          <li class="sc__item" data-reveal style={`transition-delay:${(i % 2) * 70}ms`}>
+            <span class="sc__rule" aria-hidden="true"></span>
+            <span class="sc__n">{c.n}</span>
+            <h3 class="sc__name">{c.name}</h3>
+            <p class="sc__body">{c.body}</p>
+          </li>
+        ))}
+      </ul>
+
+      <div class="sc__foot">
+        <p class="sc__line">
+          Prefer to write first? <a href="/contact-us/">Send us the brief</a> and we
+          reply within 24 hours, or call the UK line on{' '}
+          <a href={`tel:${site.phones.UK.tel}`}>{site.phones.UK.display}</a>.
+        </p>
+        <Button href={site.booking} label="Pick a time" external />
+      </div>
+    </div>
+  </Section>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .sm { position: relative; }
+  .sm__in { position: relative; z-index: 1; padding-block: 148px 128px; }
+  .sm__eyebrow {
+    display: block;
+    font-size: var(--fs-label); line-height: var(--lh-label);
+    font-weight: var(--fw-medium); letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(20, 20, 20, 0.62);
+  }
+  .sm__h {
+    margin: 22px 0 0 -5px; max-width: 16ch;
+    font-size: clamp(42px, 5.6vw, 80px); line-height: 1.04;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-display);
+    color: var(--c-black);
+  }
+  .sm__lead {
+    margin: 22px 0 0; max-width: 48ch;
+    font-size: var(--fs-intro); line-height: 30px;
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-item);
+    color: rgba(20, 20, 20, 0.78);
+  }
+  .sm__cta { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; margin-top: 38px; }
+  .sm__note {
+    font-size: var(--fs-label); line-height: var(--lh-label);
+    font-weight: var(--fw-medium); letter-spacing: var(--ls-item);
+    color: rgba(20, 20, 20, 0.6);
+  }
+
+  .sc { padding-block: 104px 96px; }
+  .sc__h {
+    margin: 14px 0 0 -3px;
+    font-size: clamp(28px, 3vw, 44px); line-height: 1.12;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-display);
+    color: var(--c-ink-heading);
+  }
+  .sc__grid {
+    list-style: none; margin: 56px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 44px 40px;
+  }
+  .sc__item { position: relative; padding-top: 26px; }
+  .sc__rule { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--c-rule-strong); }
+  .sc__n { font-size: var(--fs-micro); line-height: 1; font-weight: var(--fw-medium); letter-spacing: 2px; color: rgb(168, 166, 161); }
+  .sc__name { margin: 16px 0 0; font-size: var(--fs-intro); line-height: 26px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
+  .sc__body { margin: 12px 0 0; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: -0.045em; color: rgb(90, 90, 88); }
+
+  .sc__foot {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center; column-gap: 32px;
+    margin-top: 64px; padding-top: 32px;
+    border-top: 1.5px solid var(--c-rule-strong);
+  }
+  .sc__line {
+    margin: 0; max-width: 54ch;
+    font-size: var(--fs-body); line-height: 23px;
+    font-weight: var(--fw-medium); letter-spacing: -0.045em;
+    color: rgb(90, 90, 88);
+  }
+  .sc__line :global(a) { color: var(--c-ink-heading); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 1360px) {
+    .sm__in { padding-block: 116px 88px; }
+    .sc { padding-block: 72px 64px; }
+  }
+  @media (max-width: 760px) {
+    .sm__in { padding-block: 96px 68px; }
+    .sc { padding-block: 56px 52px; }
+    .sc__foot { grid-template-columns: 1fr; row-gap: 20px; justify-items: start; }
+  }
+</style>

@@ -9,7 +9,8 @@ is the main reason this stack was chosen.
 ```
 GitHub push (main)
    -> Actions: npm ci, validate, build, assert URLs, browser tests
-   -> force-push dist/ to the ORPHAN `deploy` branch
+   -> scripts/deploy.sh fast-forwards dist/ onto the `deploy` branch
+   -> scripts/deploy-production.sh does the same for `production`
    -> Plesk pulls `deploy` from GitHub
    -> nginx serves static files
 ```
@@ -22,9 +23,15 @@ credential for the box: no SSH key, no `PLESK_*` secrets. If the repository or
 an Action were ever compromised, the blast radius stops at the repository.
 Deployment is a pull the server chooses to make.
 
-`deploy` is an **orphan** branch, rebuilt from scratch and force-pushed each
-run. It holds one commit of built output and no source history, so the
-repository does not grow by a copy of the site on every build.
+`deploy` and `production` are **continuous** branches. Each publish commits
+the new `dist/` on top of what is already there and pushes without `--force`.
+
+It used to be an orphan branch, rebuilt and force-pushed every run, and that
+was a bug rather than a design: a force-push is a non-fast-forward, Plesk's
+`git pull` refuses it, and the branch on GitHub goes on looking correct while
+the server keeps serving the build from before the rewrite. Nothing errors.
+If a publish is ever rejected now, something else moved the branch, and that
+is worth looking at rather than forcing past.
 
 ## One-time Plesk setup
 
@@ -55,8 +62,31 @@ repository does not grow by a copy of the site on every build.
    No `SELECT`, no `DROP`. If the credentials leak, the worst case is junk
    rows, not a data breach.
 
-   Run these in Plesk's Databases > phpMyAdmin, or over SSH with `mysql -u
-   admin -p`. Set a real password first; do not use the literal below.
+   The scripts are in `docs/sql/`, which is the copy to paste rather than
+   the one below:
+
+   | file | when |
+   |---|---|
+   | `001-submissions-create.sql` | new install, run as the Plesk **admin** user |
+   | `001b-submissions-create-as-db-user.sql` | the same table when you only have a Plesk database user |
+   | `002-dev-reset-numbering.sql` | dev only, to clear test rows and reset the numbering |
+   | `003-retention-purge.sql` | monthly, as a Plesk scheduled task |
+
+   Run them in Plesk's Databases > phpMyAdmin, or over SSH with `mysql -u
+   admin -p`, as the ADMIN user -- `roars_forms_insert` holds INSERT on one
+   table and cannot create or alter anything, which is the point of it.
+   Set a real password first; do not use the literal below.
+
+   **If phpMyAdmin answers `#1044 - Access denied ... to database
+   'information_schema'`,** you are signed in as a Plesk database user, not
+   as admin. That account cannot create databases or users, grant, or read
+   information_schema. Run `001b` instead: it makes the same table and
+   checks itself with `SHOW TABLE STATUS`, which needs no extra right.
+   Whatever database and user Plesk gave you is then what `contact-config.php`
+   must name in `dsn`, `db_user` and `db_pass`.
+
+   THERE IS ONLY ONE TABLE. The rate limiter is a file per IP hash under
+   the system temp directory, not a row, so nothing else needs creating.
 
    ```sql
    CREATE DATABASE IF NOT EXISTS roars_forms
@@ -83,7 +113,31 @@ repository does not grow by a copy of the site on every build.
      KEY idx_form_created (form, created_at),
      KEY idx_created (created_at)
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+   -- THE ENQUIRY NUMBER IS THIS ID. It is printed to the visitor as #1008,
+   -- carried in the acknowledgement's subject, and filed against the lead in
+   -- n8n, so it starts somewhere that does not announce itself as the first
+   -- enquiry the company has ever taken.
+   ALTER TABLE submissions AUTO_INCREMENT = 1008;
    ```
+
+   **On dev, delete the test rows before the ALTER.** MySQL ignores an
+   AUTO_INCREMENT lower than the highest id already in the table, and it fails
+   silently -- the statement succeeds and the counter does not move. `DELETE`
+   alone does not reset it either, so both are needed and in this order:
+
+   ```sql
+   DELETE FROM submissions;
+   ALTER TABLE submissions AUTO_INCREMENT = 1008;
+   -- Confirm before submitting anything: expect 1008.
+   SELECT AUTO_INCREMENT FROM information_schema.TABLES
+    WHERE TABLE_SCHEMA = 'roars_forms' AND TABLE_NAME = 'submissions';
+   ```
+
+   Dev and production number independently and both start at 1008, so the same
+   number exists in both. n8n is what keeps them apart: the helper prefixes
+   `DEV-` on anything forwarded from dev.roarsinc.com, decided from the path
+   the code runs in, so a dev lead lands as `DEV-1008` in the shared sheet.
 
    The grant. `INSERT` and nothing else, on one table, from localhost only:
 
@@ -126,11 +180,113 @@ repository does not grow by a copy of the site on every build.
 
    That runs as the admin user, not the insert-only one.
 
-6. **Let's Encrypt.** Standard Plesk issuance, auto-renew on.
+6. **Sendy and n8n secrets.** Separate from `contact-config.php`, and
+   deliberately so: that file is one environment's database and Turnstile
+   credentials, and this one is the keys to two outside services with live
+   lists behind them. A dev submission reaching the production Sendy list is
+   not recoverable, so each environment gets its own file.
 
-7. **Redirects.** Paste `dist/nginx-redirects.conf` into Apache & nginx
-   Settings for the domain, under "Additional nginx directives", or include
-   it from a file. Regenerated by CI on every build.
+   Copy `public/api/roars-secrets.example.php` twice, into the **subscription
+   root** — one level above `httpdocs`, beside the `dev.roarsinc.com` folder:
+
+   ```
+   /var/www/vhosts/roarsinc.com/roars-secrets.php       # production
+   /var/www/vhosts/roarsinc.com/roars-secrets-dev.php   # dev.roarsinc.com
+   ```
+
+   `chmod 600` both. Fill in `SENDY_URL`, `SENDY_API_KEY`,
+   `N8N_CONTACT_WEBHOOK` and `N8N_FORM_SECRET`. The form secret has to match
+   `FORM_SECRET` in the n8n workflow character for character, or n8n rejects
+   every forward. The two files are identical except the webhook:
+
+   | | webhook |
+   |---|---|
+   | production | `https://n8n-wpvi.srv1477810.hstgr.cloud/webhook/roars-contact` |
+   | dev | `https://n8n-wpvi.srv1477810.hstgr.cloud/webhook-test/roars-contact` |
+
+   **Nothing is set on the server, and nothing needs to be.** `roars_cfg()`
+   picks which file to read from its own path on disk: dev.roarsinc.com is
+   deployed under `/var/www/vhosts/roarsinc.com/dev.roarsinc.com/`, so a copy
+   of the helper running from inside that folder reads the `-dev` file and a
+   copy running from `httpdocs` reads the other. This is a property of where
+   the code sits, not of the request, so there is no Host header or path a
+   visitor can send to make production read dev's file or the reverse.
+
+   This replaced an `env[ROARS_SECRETS_FILE]` directive per domain. The hosting
+   plan has no "Additional Apache directives" box to put one in. The variable
+   is still honoured if it is ever set, but nothing sets it.
+
+   **Confirm the split once, before the first real submission.** The failure
+   mode is silent and it is the expensive direction — dev quietly reading
+   production's file and posting a test lead to the live list. Drop a file at
+   `dev.roarsinc.com/httpdocs/whoami.php` containing
+
+   ```php
+   <?php require __DIR__ . '/api/roars-integrations.php';
+   echo str_contains(roars_cfg('N8N_CONTACT_WEBHOOK'), '/webhook-test/') ? 'DEV OK' : 'WRONG FILE';
+   ```
+
+   load it once, and **delete it**. Anything but `DEV OK` means the dev
+   document root is not under a folder named `dev.roarsinc.com` and the path
+   test cannot see it.
+
+   **Nothing here is required for a form to work.** Every integration logs a
+   `[roars]` line to the PHP error log and returns false on any failure; the
+   visitor still gets their acknowledgement and sales@ still gets the lead.
+
+7. **Let's Encrypt.** Standard Plesk issuance, auto-renew on.
+
+8. **Redirects.** Nothing to paste on the production host — see the next
+   section. `dist/nginx-redirects.conf` is still generated for a host that
+   exposes the directives box.
+
+## Where the rules actually live: dist/.htaccess
+
+**On the production host, none of the nginx directives below are used.** That
+Plesk hides both "Additional nginx directives" and "Additional Apache
+directives", so there is nowhere to paste them. Proxy mode is on and Apache
+serves the requests, so everything in this section is generated into
+`dist/.htaccess` by `scripts/generate-htaccess.mjs` and ships with the build.
+
+That file carries, in this order and for these reasons:
+
+1. `.well-known` passed through untouched, before any rule can claim it —
+   Let's Encrypt renewal fetches a file under there with no trailing slash.
+2. The canonical host, testing the **host only**. Apache is behind the proxy,
+   so `%{HTTPS}` reads the back-end connection and is `off` even for a request
+   that arrived over TLS; a `RewriteCond %{HTTPS} off` redirect loops forever.
+   HTTP→HTTPS belongs to Plesk's own checkbox, at the nginx layer.
+3. The 72 exact 301s — 18 from `src/lib/redirects.mjs`, 54 from the journal
+   migration map — then the 2 pattern rules they are the fallback for.
+4. `/wp-content/uploads/` rewritten to `/assets/legacy/`, **before** the 410
+   block, which would otherwise match `/wp-content/` and return 410 for every
+   indexed image on the old site.
+5. The WordPress surface, 410.
+6. The trailing slash, last, so a redirect is one hop and not two.
+
+Every redirect is `mod_rewrite`. Mixing `mod_alias`'s `Redirect` with
+`RewriteRule` puts two modules in charge of one request in an order neither
+file states, and the ordering here is load-bearing.
+
+Two things the Apache version had to do differently, both found by running it
+rather than by reading it:
+
+- The trailing-slash rule names `https://www.roarsinc.com/$1/` in full. A
+  relative `/$1/` makes Apache build the URL from the connection it can see,
+  which behind the proxy is `http`.
+- `DirectorySlash Off`, and no `!-d` condition on that rule. Astro builds
+  directory-format output, so `/about-us` **is** a directory: with `!-d` the
+  rewrite skipped every page on the site and `mod_dir` answered instead, with
+  the same http:// problem.
+
+Verified against a real Apache 2.4 serving the build with this `.htaccess`:
+35 assertions covering the redirect map, ordering, `/api/*.php`, the denied
+includes, the 410 block, legacy images, `.well-known`, headers and caching.
+
+**It needs `AllowOverride All`** (Plesk's default for a domain). If the site
+returns 500 right after deploy, that is the first thing to check.
+
+The nginx section below is kept for a host that does expose the box.
 
 ## Required nginx directives
 
@@ -142,10 +298,35 @@ if ($host != 'www.roarsinc.com') {
 
 # Trailing slash, to match all 194 live URLs.
 # Astro builds directory-format output, so /about-us/index.html exists.
+#
+# ORDER MATTERS. The 301 map from dist/nginx-redirects.conf goes ABOVE this
+# rewrite: every source path in it already ends in a slash, so a legacy URL
+# arriving without one would be slash-rewritten first and reach the map as a
+# second hop. One redirect, not two.
 rewrite ^/(.*[^/])$ /$1/ permanent;
 
+# The WordPress surface is gone. Say so, rather than 404.
+#
+# 410 and not 404, and not a 301 to the homepage. A 404 means "maybe later",
+# and Google recrawls it for months; a 410 means "deliberately gone" and it
+# drops out much faster. Redirecting to the homepage would be a soft 404 and
+# would also hand a bot scanning for logins a 200.
+#
+# These paths get scanned constantly whether or not WordPress was ever here,
+# so this also stops the scan traffic reaching PHP at all.
+location ~ ^/(wp-admin|wp-login\.php|xmlrpc\.php|wp-json|wp-includes|wp-cron\.php) {
+  return 410;
+}
+
 # Indexed legacy image paths must keep resolving 200.
-location /wp-content/uploads/ {
+#
+# `^~`, not a plain prefix. In nginx a regex location beats a prefix location
+# regardless of which is written first, so if the 410 block above ever grows a
+# broader pattern this would silently start returning 410 for every migrated
+# image on the site. `^~` stops the regex matching being considered at all,
+# which turns "do not break the images" from a thing to remember into a thing
+# the config enforces.
+location ^~ /wp-content/uploads/ {
   alias /var/www/vhosts/roarsinc.com/httpdocs/assets/legacy/;
   expires 1y;
   add_header Cache-Control "public, immutable";
@@ -191,15 +372,125 @@ each a patch surface, with an admin login exposed to the internet.
 
 ## Rollback
 
-`git revert` on `main` and push. Actions rebuilds and force-pushes `deploy`,
-Plesk pulls it. Under two minutes, and no database state to unwind.
+`git revert` on `main` and push. Actions rebuilds and fast-forwards `deploy`
+and `production`, Plesk pulls them. Under two minutes, and no database state to unwind.
 
 For an immediate rollback without waiting for a build, Plesk can pull an
 earlier `deploy` commit directly from the Git panel. Plesk's own backup is the
 third line.
+
+## The guide PDFs: /tools/
+
+**The files were never lost.** They are in `httpdocs/tools/` and always
+were. The manifest just asked for the wrong names.
+
+The PDFs carry WordPress-era filenames — `Business-Model-canvas.pdf`,
+`Evidence-Planning.pdf` — while the manifest derived its filenames from
+the slug and asked for `business-model-canvas.pdf`. Linux serves files
+case-sensitively, so all 15 downloads were 404s pointing at files
+sitting right there. Nothing failed loudly, because `contact.php`
+treats a missing file as a soft failure on purpose — the submission is
+saved and sales is notified, so the lead is not lost. The visitor gets
+an email with a dead link.
+
+**Two of them are not case differences at all.** These are differently
+worded, and any fix built on lowercase-and-compare misses them:
+
+| the emails say | the file is called |
+|---|---|
+| `business-plan.pdf` | `Business-plans.pdf` |
+| `people-connection-map.pdf` | `People-connection.pdf` |
+
+The manifest now carries the exact server filenames, and
+`scripts/generate-htaccess.mjs` emits a 301 per guide from the name the
+emails went out with to the name the file actually has, so mail already
+in people's inboxes works. Those redirects are derived from
+`guides.php`, so they cannot drift from what is being sent — and when
+the PDFs move into `public/tools/` under the clean slug names, the two
+sides agree again and the rules disappear on their own.
+
+Both halves read the same directory, which is why the link and the
+attachment broke together:
+
+    'tools_dir' => '/var/www/vhosts/roarsinc.com/httpdocs/tools'   # the attachment
+    $url = "{$site}/tools/" . rawurlencode($guide['name']);        # the link
+
+**Working now, but still standing on the server copy.** Those files are
+untracked, so they survive `git pull` — and equally, nothing in the
+repository knows they exist. Put the 15 PDFs in `public/tools/` and the
+build carries them, `production` carries them, and `tools_dir` resolves
+out of the checkout itself.
+
+Name the repo copies with the clean slug names
+(`business-plan.pdf`, not `Business-plans.pdf`). Then set `file:` in
+each `src/content/resources/<slug>.md` back to that name, re-run
+`scripts/build-email-manifest.mjs`, and the `/tools/` redirects vanish
+from the generated `.htaccess` by themselves, because the generator
+only emits a rule where the two names differ. Every email, past and
+future, then resolves with no redirect at all.
+
+Finally delete the matching slugs from `MISSING_PDFS` in
+`scripts/assert-guides.mjs`.
+
+### The fifteenth guide has no file
+
+`httpdocs/tools/` holds **14 PDFs for 15 guides**. The missing one is
+`website-redesign-roi-calculator`, and it is not a file that went
+astray — there is no evidence it ever existed.
+
+Its `file:` value was never observed. The guide was one of five drafted
+in `b90e5899` with no content file of their own, and the filename was
+derived from the slug at that moment. What *was* read off the live
+archives (`scripts/resource-collections.mjs`) is its title, category
+and summary. Nothing about a download. Its frontmatter still carries
+the note that the long read "needs checking against the PDF" — a check
+that never happened, because there was nothing to check against.
+
+Search Console: 0 clicks, 35 impressions, average position 24.7. The
+URL ranks but has never earned a click, so there is no search traffic
+to protect.
+
+Right now the page takes a submission, sends an email, and the link in
+it 404s. Three ways out, cheapest first:
+
+1. **Find or make the file.** It is on both `/resource/tools/` and
+   `/resource/staff-picks/`, so it is a guide the site promotes twice.
+   A one-page calculator is a plausible thing to rebuild; the long read
+   describing it is already written.
+2. **Unlist it.** Drop the slug from `MEMBERSHIP` in
+   `scripts/resource-collections.mjs` and from the grid on
+   `/resources/guides/`, and `noindex` the page so it leaves the
+   sitemap. The URL keeps resolving, which `assert-urls` requires and
+   the inventory marks `keep`, but nothing leads a visitor to a form
+   that cannot deliver.
+3. **Retire the URL.** A 301 to `/resources/`. Cleanest for the
+   visitor, but it gives up a ranking URL and needs the inventory row
+   changed from `keep`, so it is the one to choose deliberately rather
+   than by default.
+
+Option 2 is the recommendation while the file is being decided: it
+stops the broken journey today and costs nothing that cannot be undone
+in one commit.
+
+`npm run assert:guides` is the build gate. It reads
+`public/api/guides.php` — the same manifest `contact.php` reads — and
+fails on a PDF that is missing, zero bytes, on disk under a different
+case, or still listed as missing after it has come back. It compares
+filenames as bytes rather than folding case, so it gives the same
+answer on Linux as on a macOS checkout, where `existsSync` would
+happily match the wrong case and pass locally before 404ing in
+production.
+
+`assert-assets` could never have caught any of this: it walks emitted
+HTML, and these URLs are built in PHP at send time and appear on no
+page. The live half is section 6b of `npm run verify:server`.
 
 ## Post-cutover cleanup
 
 Once the static site is stable for two weeks: archive the WordPress
 database dump and `wp-content` off-server, then delete both from the
 subscription. This is what brings 50 GB back under the 25 GB quota.
+
+Do not delete the WordPress tree before the 15 guide PDFs above are in
+`public/tools/` and `npm run assert:guides` reports no known gaps. That
+tree is currently the only copy.

@@ -1,16 +1,48 @@
 ---
 /**
- * Shared footer. Identical on every page.
+ * Shared footer. The chrome is identical on every page; the OPENING BLURB is
+ * not.
+ *
+ * That paragraph is the page's closing pitch, and it was shipping the CTA
+ * band's sentence verbatim on all fourteen routes — so a visitor who read the
+ * band then reached the footer read the same line twice, and every page
+ * offered search engines the same closing copy. It takes the page's own
+ * sentence now. The founder chip under it does not change: it is an
+ * attribution, not a message.
  *
  * One four-column grid carries all three bands: 459 / 233 / 234 / 436 of the
  * 1362 content width, taken from the measured x positions in the specs
  * (contact 0, navigation 459, social 692, subscribe 926).
  *
- * The newsletter fields are rendered with real labels and post to the Phase 4
- * PHP endpoint. That endpoint does not exist yet, so the form is marked
- * data-pending and the submit button is disabled until Phase 4 wires it.
- * Shipping a form that silently swallows submissions is worse than one that
- * plainly is not ready.
+ * The newsletter fields post to public/api/contact.php, which handles the
+ * `newsletter` form alongside contact, guide and callback. This was disabled
+ * with a "sign-up opens when the new site goes live" note for as long as that
+ * endpoint did not exist — shipping a form that silently swallows submissions
+ * is worse than one that plainly is not ready — and it exists now, so the
+ * form is live and carries data-contact-form like the other three. On success
+ * it lands on /thankyou/ with the rest of them.
+ *
+ * THE GROUND IS A WAVE OVER THE GRAIN. The design's footer ground is a
+ * dot-matrix ring wave expanding out of a point under the wordmark, so the
+ * wave reads as radiating from the logo. Under it the handoff draws a radial
+ * pool at the bottom centre; this footer draws the shared GrainField instead —
+ * the warm linear gradient with two slow radial drifts that every dark band on
+ * this site carries, which the design was drawn without knowledge of.
+ *
+ * That was decided by looking rather than arguing: both grounds shipped for a
+ * day, the homepage on the grain and every other route on the pool. The pool
+ * is cleaner and the dots pop harder on it, but it leaves the top third of the
+ * footer flat black — four hundred pixels of nothing above the contact rule on
+ * desktop — and the drifts put a soft glow behind the closing blurb there. The
+ * warmth was worth the dots. Its cost is a second motion on the ground, thirty
+ * seconds a cycle against the wave's seven.
+ *
+ * THE GRAIN GOES UNDER THE CANVAS, not over it. An overlay blend on near-black
+ * darkens what it covers, and over the dots it took about a third of their
+ * brightness — and they are the one thing on this ground meant to be bright.
+ *
+ * The wave's own numbers are the design's to the decimal, bar the three
+ * departures written down beside the loop at the foot of this file.
  */
 import { site } from '../lib/site'
 import { FOOTER_NAV, SOCIAL, LEGAL } from '../lib/nav'
@@ -18,31 +50,110 @@ import GrainField from './GrainField.astro'
 import { PORTRAIT } from '../lib/media'
 import mark from '../assets/roars-mark.png'
 
+/* Same source as contact-us.astro and resources/[slug].astro: the PUBLIC_
+   prefix is Astro's own marker for a value that is safe in the browser, and
+   a Turnstile SITE key is exactly that -- it identifies the widget and is
+   useless without the secret, which never leaves the server. Unset, the
+   markup below is simply not emitted. */
+const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
+
+interface Props {
+  /** The closing CTA's two parts. Omit either for the shipped default. */
+  blurbTitle?: string
+  blurb?: string
+  /**
+   * The line beside it. The export prints "Space of Product Solutions*" on
+   * every page; it is the page's own tagline, and the house line is the
+   * fallback. The asterisk is added here, in the accent — it is not part of
+   * the string, so a page never has to remember to type it.
+   */
+  tagline?: string
+  /**
+   * The closing action, when the page has one.
+   *
+   * A service page used to end on a grey band that said the same thing the
+   * footer says, one scroll apart — the same heading, the same paragraph, the
+   * same offer. The band went; its button and its contact line came here, so
+   * the page still closes on something to press.
+   *
+   * Optional: a page with no specific action does not grow a button.
+   */
+  ctaLabel?: string
+  ctaHref?: string
+  contact?: string
+}
+const {
+  blurbTitle = 'Let’s get your project started.',
+  blurb = 'Find how we can help you get from A to B. Our love for innovation design and technology is evident in all our work. No detail is too small.',
+  tagline = 'user experience matters',
+  ctaLabel,
+  ctaHref,
+  contact,
+} = Astro.props
+
+/** Only leaves the site when it actually leaves the site. */
+const ctaExternal = ctaHref ? /^https?:\/\//.test(ctaHref) : false
+
 const year = new Date().getFullYear()
 ---
 
 <footer class="ft" data-ground="dark">
-  {/* Export 2: warm dark grain, not a photograph. */}
-  <GrainField tone="dark" second />
+  {/* The ground, then the wave over it. The canvas is sized and driven by the
+      script at the foot of this file and paints nothing without it, so the
+      ground under it has to stand on its own. */}
+  <div class="ft__wave" data-footer-wave aria-hidden="true">
+    <GrainField tone="dark" second />
+    <canvas></canvas>
+  </div>
   <div class="wrap">
     <div class="ft__grid ft__top">
       {/* The real mark, masked so it reads white on the dark ground. */}
-      <span class="ft__mark" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
+      <div class="ft__brand">
+        <span class="ft__mark" style={`--mark:url(${mark.src})`} aria-hidden="true"></span>
+        {/* The company profile. It was a text link in LEGAL at the foot of this
+            footer, between Privacy Policy and Terms of Service, where the one
+            document a visitor might actually want reads as small print.
+
+            Two lines of why, then the site's own button — the 47px white pill
+            with the grey-and-accent dot pair that "Shall we chat?" uses, so the
+            footer has one button shape rather than two. The tray fills on
+            hover and the arrow drops into it, which is the only motion here
+            and is what the control is for. */}
+        <div class="ft__profile">
+          <p class="ft__profile-lead">Twenty years, in one document.</p>
+          <p class="ft__profile-sub">What we build, who for, and how an engagement runs.</p>
+          <a class="ft__cta ft__cta--dl" href={site.companyProfile} target="_blank" rel="noopener">
+            <span class="ft__dl-ico" aria-hidden="true"></span>
+            <span>Company Profile</span>
+            <i class="ft__cta-dot ft__cta-dot--grey" aria-hidden="true"></i>
+            <i class="ft__cta-dot ft__cta-dot--accent" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
       <div class="ft__blurb">
-        <p>
-          Find how we can help you get from A to B. Our love for innovation
-          design and technology is evident in all our work. No detail is too
-          small.
-        </p>
+        <p class="ft__blurb-title">{blurbTitle}</p>
+        <p class="ft__blurb-body">{blurb}</p>
+        {ctaLabel && ctaHref && (
+          <a
+            class="ft__cta"
+            href={ctaHref}
+            {...(ctaExternal ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            <span>{ctaLabel}</span>
+            <i class="ft__cta-dot ft__cta-dot--grey" aria-hidden="true"></i>
+            <i class="ft__cta-dot ft__cta-dot--accent" aria-hidden="true"></i>
+          </a>
+        )}
+        {contact && <p class="ft__contact">{contact}</p>}
         <div class="ft__by">
-          <img class="ft__face" src={PORTRAIT.founder} alt="" width="42" height="42" loading="lazy" />
+          <img class="ft__face" src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" loading="lazy" />
           <span class="ft__by-text">
             <span class="ft__by-name">Rinkesh A Shah</span>
             <span class="ft__by-role">CEO / Founder</span>
           </span>
         </div>
       </div>
-      <p class="ft__tagline">Space of Product<br />Solutions<i>*</i></p>
+      <p class="ft__tagline">{tagline}<i>*</i></p>
     </div>
 
     <div class="ft__grid ft__mid">
@@ -73,21 +184,53 @@ const year = new Date().getFullYear()
       <div class="ft__col">
         <span class="ft__label">Subscribe our News</span>
         <div class="ft__rule ft__rule--short"></div>
-        <form class="ft__sub" data-pending action="/api/contact.php" method="post">
+        <form class="ft__sub" action="/api/contact.php" method="post" data-contact-form>
           <input type="hidden" name="form" value="newsletter" />
+
+          {/* Honeypots. Hidden from people, irresistible to bots. Two names:
+              this site's own and the one the n8n scoring step reads. */}
+          <div class="ft__pot" aria-hidden="true">
+            <label for="ft-website">Company website</label>
+            <input id="ft-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+            <label for="ft-website-2">Your website</label>
+            <input id="ft-website-2" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          {/* Written by the submit island, never by a person. */}
+          <input type="hidden" name="elapsed_ms" value="" data-elapsed />
+          <input type="hidden" name="page" value="" data-page />
           <div class="ft__field">
             <label for="ft-name">Your name *</label>
-            <input id="ft-name" name="name" type="text" required autocomplete="name" disabled />
+            <input id="ft-name" name="name" type="text" required autocomplete="name" />
           </div>
           <div class="ft__field">
             <label for="ft-email">Email *</label>
-            <input id="ft-email" name="email" type="email" required autocomplete="email" disabled />
+            <input id="ft-email" name="email" type="email" required autocomplete="email" />
           </div>
-          <button class="ft__submit" type="submit" disabled>
+          {/* LAZY, AND THAT IS THE WHOLE POINT. This form sits in the footer
+              of all 207 pages. Rendering the widget on load would have every
+              page on the site fetch a third-party script and draw a
+              challenge for a field almost nobody touches. `data-lazy` tells
+              the island to load Cloudflare's script on first focus instead,
+              so the cost lands only on somebody actually subscribing.
+              `hidden` until then, so the reserved height below does not
+              leave a gap on 207 pages either. */}
+          {turnstileKey && (
+            <div
+              class="cf-turnstile ft__turnstile"
+              data-sitekey={turnstileKey}
+              data-lazy="1"
+              hidden
+            ></div>
+          )}
+
+          <button class="ft__submit" type="submit">
             <span>Subscribe</span>
-            <span class="ft__dots" aria-hidden="true"><i></i><i></i></span>
+            <span class="ft__dots" data-dots aria-hidden="true"><i></i><i></i></span>
           </button>
-          <p class="ft__pending">Sign-up opens when the new site goes live.</p>
+          {/* Empty until the island writes into it. It keeps the reserved line
+              so the button does not jump when the first message lands. */}
+          <p class="ft__pending" data-form-status role="status"></p>
         </form>
       </div>
     </div>
@@ -128,11 +271,73 @@ const year = new Date().getFullYear()
     overflow: hidden;
   }
   .ft > .wrap { position: relative; z-index: 1; }
+
+  /* isolate, so the layer is one group: the grain's overlay blend mixes with
+     the ground under it and nothing else, and the canvas's z-index stays
+     inside here instead of climbing out and racing .wrap for the top. */
+  .ft__wave {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+    isolation: isolate;
+  }
+  /* Over the ground, including GrainField's grain and its own stacking. */
+  .ft__wave canvas {
+    position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+    z-index: 1;
+  }
   .ft__grid {
     display: grid;
     grid-template-columns: 459fr 233fr 234fr 436fr;
   }
   .ft__top { margin-bottom: 125px; }
+  .ft__brand { display: flex; flex-direction: column; gap: 30px; align-items: flex-start; }
+  .ft__profile { display: flex; flex-direction: column; }
+  .ft__profile-lead {
+    margin: 0; max-width: 15ch;
+    font-size: 18px; line-height: 25px; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: rgba(255, 255, 255, 0.92);
+  }
+  .ft__profile-sub {
+    margin: 8px 0 0; max-width: 24ch;
+    font-size: 14px; line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: -0.03em; color: rgba(255, 255, 255, 0.5);
+  }
+  /* The shared pill, with room made on the left for the tray. */
+  .ft__cta--dl { width: 204px; padding-left: 22px; gap: 10px; margin-top: 20px; }
+
+  /* A tray with an arrow above it. Drawn rather than fetched: one request for
+     one glyph is not worth it, and this one has to animate. */
+  .ft__dl-ico {
+    position: relative; flex: 0 0 auto; width: 15px; height: 15px;
+    border-bottom: 1.5px solid currentColor;
+    border-left: 1.5px solid currentColor;
+    border-right: 1.5px solid currentColor;
+    border-radius: 0 0 3px 3px;
+  }
+  .ft__dl-ico::before {
+    content: ''; position: absolute; left: 50%; top: -5px;
+    width: 1.5px; height: 9px; background: currentColor;
+    translate: -50% 0;
+    transition: translate var(--dur-med) var(--ease-out);
+  }
+  .ft__dl-ico::after {
+    content: ''; position: absolute; left: 50%; top: 0;
+    width: 6px; height: 6px; rotate: 45deg;
+    border-bottom: 1.5px solid currentColor;
+    border-right: 1.5px solid currentColor;
+    translate: -50% 0;
+    transition: translate var(--dur-med) var(--ease-out);
+  }
+  /* The arrow drops into the tray. 3px, once, on the easing every other
+     control here uses — a download that looks like it is downloading. */
+  .ft__cta--dl:hover .ft__dl-ico::before,
+  .ft__cta--dl:focus-visible .ft__dl-ico::before { translate: -50% 3px; }
+  .ft__cta--dl:hover .ft__dl-ico::after,
+  .ft__cta--dl:focus-visible .ft__dl-ico::after { translate: -50% 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ft__dl-ico::before, .ft__dl-ico::after { transition: none; }
+  }
+
   .ft__mark {
     display: block; width: 21px; height: 27px;
     background: var(--c-white);
@@ -140,11 +345,50 @@ const year = new Date().getFullYear()
     mask: var(--mark) center / contain no-repeat;
   }
   .ft__blurb { grid-column: 2 / 4; max-width: 384px; }
-  .ft__blurb p {
+  /* Two parts, not one paragraph. The export draws only the description here;
+     the title is the live site's, and without it the block is a statement
+     with nothing to act on. Both are existing steps — 24 and 22 — so this
+     adds a line, not an eleventh size. */
+  .ft__blurb-title {
+    font-size: var(--fs-item);
+    line-height: 1.28;
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item);
+    color: var(--c-white);
+    margin-bottom: var(--sp-3);
+  }
+  .ft__blurb-body {
     font-size: var(--fs-intro);
     line-height: 1.36;
     letter-spacing: var(--ls-item);
     color: rgb(147, 147, 147);
+  }
+  /* Light on the dark ground, so it is the brightest thing in the block —
+     which is what a closing action should be. */
+  .ft__cta {
+    position: relative; display: inline-flex; align-items: center;
+    width: 204px; height: 47px; margin-top: var(--sp-5); padding-left: 25px;
+    border-radius: var(--r-pill); background: var(--c-white); color: var(--c-footer);
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-button);
+    transition: background var(--dur-fast) ease;
+  }
+  .ft__cta:hover { background: var(--c-accent); color: var(--c-footer); }
+  /* Grey then ACCENT, which is the pair every other button on the site draws
+     and the one piece of brand in the mark. It was near-black here, so the
+     button read as two smudges — worst on hover, where a yellow pill under a
+     grey and a black dot has no accent in it at all.
+     The accent cannot show on the yellow hover ground, so on hover the second
+     dot takes the footer ink instead: rest is white + grey/yellow, hover is
+     yellow + grey/ink, and neither state has a dot that vanishes. */
+  .ft__cta-dot { position: absolute; top: 20px; width: 8px; height: 8px; border-radius: 50%; }
+  .ft__cta-dot--grey { left: 167px; background: rgba(11, 11, 11, 0.28); }
+  .ft__cta-dot--accent { left: 177px; background: var(--c-accent); transition: background var(--dur-fast) ease; }
+  .ft__cta:hover .ft__cta-dot--accent { background: var(--c-footer); }
+  .ft__contact {
+    margin-top: var(--sp-4);
+    font-size: 11px; font-weight: var(--fw-medium); letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.45);
   }
   .ft__by { display: flex; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
   .ft__face { width: var(--avatar); height: var(--avatar); border-radius: var(--r-circle); object-fit: cover; background: rgba(255, 255, 255, 0.22); }
@@ -192,6 +436,7 @@ const year = new Date().getFullYear()
   }
   .ft__nav a:hover, .ft__social a:hover, .ft__col--links a:hover { color: var(--c-accent); }
 
+  .ft__pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .ft__sub { display: flex; flex-direction: column; gap: var(--sp-4); max-width: 430px; }
   .ft__field { display: flex; flex-direction: column; gap: var(--sp-2); }
   .ft__field label {
@@ -206,6 +451,19 @@ const year = new Date().getFullYear()
     font-family: inherit; font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-white);
   }
   .ft__field input:focus { outline: 0; border-bottom-color: var(--c-accent); }
+  /* RESERVED, so the button does not jump when the widget draws. Cloudflare's
+     managed widget is 65px tall at its default size and it arrives
+     asynchronously; without a reserved box everything below it moves the
+     moment it lands, which is a layout shift on the one element somebody is
+     reaching for. `hidden` collapses it to nothing until the form is focused,
+     so the 207 pages that never use it pay no space either. */
+  .ft__turnstile { min-height: 65px; margin-top: 18px; }
+  /* The footer button had no disabled state at all, so gating it would have
+     looked like nothing happening. */
+  .ft__submit:disabled { cursor: not-allowed; opacity: 0.7; }
+  form[data-sending='1'] .ft__submit:disabled { cursor: progress; }
+  .ft__turnstile[hidden] { display: none; }
+
   .ft__submit {
     display: inline-flex; align-items: center; justify-content: space-between;
     width: 195px; height: var(--btn-ghost-h); padding-inline: 21px;
@@ -240,6 +498,16 @@ const year = new Date().getFullYear()
   .ft__legal .ft__dim, .ft__legal .ft__col:first-child span { color: var(--c-on-dark-50); }
   .ft__legal .ft__col--links { color: var(--c-on-dark-80); }
   .ft__legal .ft__col--links span, .ft__legal .ft__col--links a { color: var(--c-on-dark-80); }
+  /* 44px OF THUMB, AND THE TYPE DOES NOT MOVE.
+     Vertical padding to make the target, an equal negative margin to give the
+     space back, so the link sits exactly where the artboard puts it and is
+     hittable. Same pattern as .wp-back and .pd__back, for the same reason:
+     these are bare text set at 14-20px, which measures about 20px tall -- under
+     the 24px floor a finger needs and well under the 44px that is comfortable.
+     Privacy, Terms and the profile download, stacked one per line. */
+  .ft__legal .ft__col--links a {
+    display: inline-block; padding-block: 12px; margin-block: -12px;
+  }
 
   @media (max-width: 1040px) {
     .ft__grid { grid-template-columns: 1fr 1fr; row-gap: var(--sp-6); }
@@ -254,3 +522,169 @@ const year = new Date().getFullYear()
     .ft__legal .ft__grid { grid-template-columns: 1fr 1fr; }
   }
 </style>
+
+<script>
+  /**
+   * THE DOT-MATRIX WAVE, transcribed from the design's own reference loop.
+   *
+   * A grid of dots over the whole footer. Each one swells and warms from white
+   * to brand yellow as a ring passes through it, the ring expanding out of a
+   * point under the wordmark at a constant 0.9 rad/s. Per dot, per frame:
+   *
+   *   d      = distance(dot, origin) / SCALE
+   *   wave   = sin(t * 0.9 - d) * 0.5 + 0.5
+   *   near   = max(0, 1 - d / REACH)
+   *   alpha  = 0.05 + wave * 0.5 * near
+   *   radius = R0 + wave * near * RMAX
+   *   colour = near > 0.12 ? accent at alpha : white at alpha / 2
+   *
+   * WHAT IS NOT THE DESIGN'S. Three things, all of them consequences of this
+   * footer being a fluid block rather than a 1440x1105 artboard:
+   *
+   *   THE ORIGIN is measured off the wordmark rather than typed as (720, 900).
+   *   The handoff says what those coordinates are for — "the origin sits under
+   *   the wordmark on purpose; the wave looks like it radiates from the logo"
+   *   — and on a fixed artboard a number and a landmark are the same thing.
+   *   They stop being the same thing here: this footer is fluid, its height is
+   *   whatever the content makes it, and on a phone that is twice the design's
+   *   1100. So the rule is taken instead of the number: horizontal centre of
+   *   the box, vertical centre of the wordmark. On the 1440 artboard that
+   *   lands at (720, 882) against the design's (720, 900) — well inside the
+   *   spread between its own two breakpoints, which put the origin 73px below
+   *   the desktop wordmark's centre and 36px above the mobile one's.
+   *
+   *   THE DPR CEILING. The reference draws at 1x. Production needs HiDPI or
+   *   the dots are soft, so the canvas is backed at devicePixelRatio — capped
+   *   at 2, because a 3x phone would ask for nine times the fill for a
+   *   difference no one can see on a sub-pixel dot.
+   *
+   *   THE PAUSES. Off-screen the loop stops (this is below the fold on every
+   *   route), and under prefers-reduced-motion it draws the single frame at
+   *   t = 0 and never asks for another. Both are the handoff's instructions.
+   */
+  const host = document.querySelector<HTMLElement>('[data-footer-wave]')
+  const canvas = host?.querySelector('canvas')
+  const ctx = canvas?.getContext('2d')
+  const wordmark = document.querySelector<HTMLElement>('.ft__wordmark')
+
+  if (host && canvas && ctx) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    let w = 0
+    let h = 0
+    let gap = 26
+    let ox = 0
+    let oy = 0
+    let scale = 170
+    let reach = 5.2
+    let r0 = 0.7
+    let rmax = 2.1
+
+    let raf = 0
+    let onScreen = true
+
+    /** Re-reads the box and re-picks the constants. False if the box is not laid out yet. */
+    const measure = () => {
+      const cw = host.clientWidth
+      const ch = host.clientHeight
+      if (!cw || !ch) return false
+      if (cw === w && ch === h) return true
+
+      w = cw
+      h = ch
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = Math.round(w * dpr)
+      canvas.height = Math.round(h * dpr)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+      /* The reference's own breakpoint, and the one the ground gradient above
+         turns over on. */
+      const mobile = w < 700
+      gap = mobile ? 20 : 26
+      scale = mobile ? 120 : 170
+      reach = mobile ? 4.4 : 5.2
+      r0 = mobile ? 0.6 : 0.7
+      rmax = mobile ? 1.8 : 2.1
+      ox = w / 2
+      /* The wordmark, if it is on the page. The fallback reproduces the
+         design's two bottom offsets, which is where the wordmark sits on the
+         artboards it was drawn on. */
+      const wm = wordmark?.getBoundingClientRect()
+      oy = wm ? wm.top - host.getBoundingClientRect().top + wm.height / 2 : h - (mobile ? 190 : 205)
+      return true
+    }
+
+    const draw = (t: number) => {
+      ctx.clearRect(0, 0, w, h)
+      for (let x = gap / 2; x < w; x += gap) {
+        for (let y = gap / 2; y < h; y += gap) {
+          const dx = x - ox
+          const dy = y - oy
+          const d = Math.sqrt(dx * dx + dy * dy) / scale
+          const wave = Math.sin(t * 0.9 - d) * 0.5 + 0.5
+          const near = Math.max(0, 1 - d / reach)
+          const a = 0.05 + wave * 0.5 * near
+          ctx.beginPath()
+          ctx.arc(x, y, r0 + wave * near * rmax, 0, 6.2832)
+          ctx.fillStyle =
+            near > 0.12
+              ? `rgba(255,212,0,${a.toFixed(3)})`
+              : `rgba(255,255,255,${(a * 0.5).toFixed(3)})`
+          ctx.fill()
+        }
+      }
+    }
+
+    const frame = (now: number) => {
+      draw(now / 1000)
+      raf = requestAnimationFrame(frame)
+    }
+
+    const stop = () => {
+      if (raf) cancelAnimationFrame(raf)
+      raf = 0
+    }
+
+    const start = () => {
+      if (raf || !w) return
+      if (reduced.matches) {
+        draw(0)
+        return
+      }
+      raf = requestAnimationFrame(frame)
+    }
+
+    const sync = () => {
+      const ready = measure()
+      if (!ready) return
+      if (onScreen) {
+        /* Re-measuring mid-flight leaves the running loop to pick the new
+           numbers up on its next frame. A stopped one has to be redrawn by
+           hand or the canvas keeps the old box's last frame. */
+        if (raf) return
+        start()
+      } else {
+        stop()
+      }
+    }
+
+    new ResizeObserver(sync).observe(host)
+
+    new IntersectionObserver(
+      (entries) => {
+        onScreen = entries.some((e) => e.isIntersecting)
+        sync()
+      },
+      { rootMargin: '120px' },
+    ).observe(host)
+
+    /* A change of preference mid-session: a reader who turns motion off gets
+       the static frame, one who turns it on gets the loop. */
+    reduced.addEventListener('change', () => {
+      stop()
+      start()
+    })
+
+    sync()
+  }
+</script>

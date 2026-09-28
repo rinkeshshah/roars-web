@@ -1,0 +1,149 @@
+---
+/**
+ * The dither hero background — design refs 5d (`roar-wave`) and 3a
+ * (`carbon-heat`), from the 28 Sep handoff.
+ *
+ * A canvas at inset:0 and nothing else. This is the handoff's own integration
+ * snippet, unchanged:
+ *
+ *   <header class="hero" style="position:relative;overflow:hidden">
+ *     <canvas class="hero-bg" aria-hidden="true"
+ *             style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+ *     <div class="hero-content" style="position:relative">…</div>
+ *   </header>
+ *
+ * NOTHING IS MASKED, MOVED OR RESIZED. An earlier pass cleared the canvas
+ * behind the top bar and the small type below it, and reframed it on narrow
+ * screens so the ring core fell off the edge. All of that is gone by
+ * instruction: the field is the background, edge to edge, exactly as drawn.
+ * The consequence is in the design and is not a defect in this file — small
+ * type that sits over the field sits over the field. The designer's own demo
+ * pages do the same thing.
+ *
+ * If it needs to change, it changes in the shader or in the page's layout, not
+ * here.
+ *
+ * The shader itself is in src/scripts/dither-hero.ts.
+ */
+import type { DitherVariant } from '../scripts/dither-hero'
+
+interface Props {
+  variant?: DitherVariant
+  /** CSS pixels per buffer pixel. Omit for the design's 1.5. */
+  pixelScale?: number
+  /** Mark contrast, 0-1. 1 is the design. Lower softens the dots. */
+  inkStrength?: number
+  /** false drops the cursor-following ring source. Default on. */
+  interactive?: boolean
+}
+const { variant = 'roar-wave', pixelScale, inkStrength, interactive } = Astro.props
+---
+
+<canvas
+  class="dh"
+  aria-hidden="true"
+  data-dither-hero={variant}
+  data-pixel-scale={pixelScale ? String(pixelScale) : undefined}
+  data-ink-strength={inkStrength !== undefined ? String(inkStrength) : undefined}
+  data-interactive={interactive === false ? 'false' : undefined}></canvas>
+
+<style>
+  .dh {
+    /* z-index 0, not -1: it has to paint above the band's own ground and
+       below the band's content at z-index 1. Same reasoning as RingField. */
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* Set again from JS, but it has to be true for the first synchronous
+       frame as well or the 1-bit dots are smoothed on paint. */
+    image-rendering: pixelated;
+    /* Decoration under the band's own links and headings. It must never take
+       a tap; the cursor source is driven from the band, not from here. No
+       visual effect — it only stops the canvas swallowing a click. */
+    pointer-events: none;
+  }
+
+  /* MOBILE ONLY, AND ONLY THE CANVAS MOVES. The shader is tuned to a
+     1440x820 band with the copy on the left: it fades its ink out below 40%
+     of the WIDTH and parks the ring core at 79% / 47%. Turn that to 390x880
+     and 40% of the width is 156px, so the core lands in the middle of the
+     screen and the rings close over the lede, the button and the service
+     labels. Reported from a phone, and the screenshot is unambiguous.
+
+     Nothing in the band is touched — no type moves, no padding changes, the
+     shader's own constants are untouched. The canvas is 230% of the band and
+     pushed right, which parks the core off-screen and leaves the outer arcs
+     sweeping in from the right edge; an ellipse holds them to the headline so
+     the smaller type below sits on clean ground. Desktop is unaffected and
+     stays exactly as delivered.
+
+     The breakpoint is the WIDTH, not the orientation: 1040 is where these
+     bands go single column, and a single-column band is a tall box whichever
+     way the device is held. A phone turned sideways is 844x390 with a 1130px
+     hero and needs this too. */
+  @media (max-width: 1040px) {
+    .dh {
+      left: auto;
+      right: 0;
+      width: 230%;
+      max-width: none;
+      height: 100%;
+      transform: translateX(34%);
+      /* An ellipse, not a horizontal band: the canvas is opaque, so a mask
+         that ran straight across left a visible tonal step where it met the
+         ground below. Fading on both axes puts that meeting on a soft curve.
+         The geometry is in the canvas's own box, so 58% across it is about
+         75% across the screen, out where the arcs are. */
+      -webkit-mask-image: radial-gradient(
+        ellipse 32% var(--dh-ry, 15%) at 58% var(--dh-cy, 22%),
+        #000 0,
+        #000 42%,
+        transparent 100%
+      );
+      mask-image: radial-gradient(
+        ellipse 32% var(--dh-ry, 15%) at 58% var(--dh-cy, 22%),
+        #000 0,
+        #000 42%,
+        transparent 100%
+      );
+    }
+  }
+
+  /* CARBON-HEAT NEEDS MORE PUSH THAN ROAR-WAVE, and for a reason in the
+     shader rather than in any one page. 5d is 1-bit: ink or yellow, and its
+     worst case behind type is a dot. 3a runs graphite -> yellow -> warm white,
+     and only the top two hurt — #423F38 dots on #070706 read as texture under
+     white copy, while the yellow and white peaks read as damage. The inner
+     bands are also copy-dense at mobile in a way the homepage hero is not:
+     about-us opens with a five-line quote where the homepage has a headline.
+
+     So the canvas goes wider and further right, which puts the heat centre
+     well off-screen and leaves the visible window inside 3a's own left
+     vignette — the cool end of the field. Same instrument, no yellow over
+     type, and again nothing in the band moves. */
+  @media (max-width: 1040px) {
+    .dh[data-dither-hero='carbon-heat'] {
+      width: 260%;
+      transform: translateX(52%);
+      --dh-cy: 40%;
+      --dh-ry: 34%;
+    }
+  }
+
+  /* 761-1040: same framing, ellipse re-centred. These bands switch to 180px
+     of top padding and a taller heading at 761, so the phone's centre sits
+     above the type it is meant to sit behind. */
+  @media (min-width: 761px) and (max-width: 1040px) {
+    .dh {
+      --dh-cy: 27%;
+    }
+  }
+</style>
+
+<script>
+  import { initDitherHero } from '../scripts/dither-hero'
+  initDitherHero()
+</script>

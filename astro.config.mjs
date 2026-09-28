@@ -2,12 +2,36 @@ import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 import mdx from '@astrojs/mdx'
 import { redirects } from './src/lib/redirects.mjs'
+import { isHeldBackWorkUrl } from './src/lib/held-back.mjs'
+import { existsSync, readdirSync } from 'node:fs'
 
 /** `npm run dev` sets this. `astro build` never does. */
 const DEV = process.env.ASTRO_DEV === '1'
 
 /** Indexing is OFF unless explicitly switched on. See src/lib/site.ts. */
 const ALLOW_INDEXING = process.env.PUBLIC_ALLOW_INDEXING === 'true'
+
+/**
+ * Unmigrated /our-journal/ URLs stay out of the sitemap.
+ *
+ * They still build, and they must: those URLs are live and indexed, and a 200
+ * with a noindex holding page is the right answer until each one is migrated
+ * or redirected. But a sitemap is a list of pages you are asking to be
+ * indexed, and these carry noindex. Listing them asks and refuses in the same
+ * breath, which is how a sitemap loses its credibility.
+ *
+ * Read off the filesystem rather than the content collection, because this
+ * runs while the config loads, before `astro:content` exists.
+ */
+const MIGRATED_POSTS = new Set(
+  (existsSync('src/content/posts') ? readdirSync('src/content/posts') : [])
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => f.replace(/\.md$/, '')),
+)
+const isMigratedJournalUrl = (page) => {
+  const slug = (new URL(page).pathname.match(/^\/our-journal\/([^/]+)\/$/) || [])[1]
+  return !slug || slug === 'page' || MIGRATED_POSTS.has(slug)
+}
 
 export default defineConfig({
   site: 'https://www.roarsinc.com',
@@ -48,7 +72,12 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/thankyou') &&
         !page.includes('/404') &&
-        !/\/page\/[2-9]/.test(page),
+        /* Held-back case studies are noindex, so they must not be in the
+           sitemap either — a sitemap that lists a noindex URL is asking to be
+           crawled and then telling the crawler to go away. */
+        !isHeldBackWorkUrl(page) &&
+        !/\/page\/[2-9]/.test(page) &&
+        isMigratedJournalUrl(page),
     })] : []),
   ],
 

@@ -19,6 +19,8 @@
  * is missing on the server the slot renders empty rather than broken; nothing
  * invented, nothing substituted.
  */
+import { PROJECTS } from './projects'
+
 const U = '/wp-content/uploads'
 
 /** People. Filenames are the live ones; the captions they carry are not. */
@@ -33,27 +35,181 @@ export const PORTRAIT = {
   ankush: `${U}/2022/07/Ankush.webp`,
 } as const
 
-/** Client marks in the About strip, in the export's order. */
+/**
+ * Client marks. Fifteen, served from this repo rather than the webspace.
+ *
+ * WHY THESE ARE NOT UNDER /wp-content/uploads/ like everything else. The six
+ * that were there are the six the old site had; the other nine were supplied
+ * as loose files and never uploaded anywhere. Processing them into one
+ * consistent set is a build step (scripts/build-client-logos.mjs), so the
+ * output belongs with the code that makes it. It also means they resolve in
+ * every build, including this one, which the uploads paths do not.
+ *
+ * Each is black on transparent, trimmed to its own ink and levelled so the
+ * lightest mark and the heaviest carry the same weight at one CSS opacity.
+ * The page tints them; the files are not grey.
+ *
+ * ORDER IS EDITORIAL, strongest recognition first, not alphabetical. A wall
+ * is read left to right and the first row is the one anybody remembers.
+ */
 export const CLIENT_LOGOS = [
-  { src: `${U}/2022/07/home-brand01.png`, alt: 'Samsung', h: 22 },
-  { src: `${U}/2022/07/home-brand02.png`, alt: 'TATA', h: 27 },
-  { src: `${U}/2022/07/home-brand03.png`, alt: 'GISAID', h: 24 },
-  { src: `${U}/2022/07/home-brand04.png`, alt: 'Forbes', h: 22 },
-  { src: `${U}/2022/07/home-brand05.png`, alt: 'Reliance', h: 27 },
-  { src: `${U}/2022/07/home-brand06.png`, alt: 'DDB', h: 22 },
+  { slug: 'samsung', src: '/clients/samsung.png', alt: 'Samsung', w: 320, h: 49 },
+  { slug: 'tata', src: '/clients/tata.png', alt: 'TATA', w: 320, h: 75 },
+  { slug: 'forbes', src: '/clients/forbes.png', alt: 'Forbes', w: 320, h: 79 },
+  { slug: 'reliance', src: '/clients/reliance.png', alt: 'Reliance', w: 320, h: 52 },
+  { slug: 'gisaid', src: '/clients/gisaid.png', alt: 'GISAID', w: 320, h: 106 },
+  { slug: 'jwt', src: '/clients/jwt.png', alt: 'JWT', w: 320, h: 131 },
+  { slug: 'ddb-mudra', src: '/clients/ddb-mudra.png', alt: 'DDB Mudra Group', w: 320, h: 142 },
+  { slug: 'zee-cinema', src: '/clients/zee-cinema.png', alt: 'Zee Cinema', w: 320, h: 130 },
+  { slug: 'tanishq', src: '/clients/tanishq.png', alt: 'Tanishq', w: 320, h: 111 },
+  { slug: 'woodland', src: '/clients/woodland.png', alt: 'Woodland', w: 320, h: 140 },
+  { slug: 'facedrive', src: '/clients/facedrive.png', alt: 'Facedrive', w: 320, h: 72 },
+  { slug: 'airlift', src: '/clients/airlift.png', alt: 'Airlift', w: 320, h: 81 },
+  { slug: 'bollywood-hungama', src: '/clients/bollywood-hungama.png', alt: 'Bollywood Hungama', w: 320, h: 89 },
+  { slug: 'zapak', src: '/clients/zapak.png', alt: 'Zapak', w: 320, h: 75 },
+  { slug: 'rmg-connect', src: '/clients/rmg-connect.png', alt: 'RMG Connect', w: 320, h: 130 },
 ] as const
 
-/** Case-study imagery. */
+/**
+ * Case-study imagery.
+ *
+ * The five the /work/ index draws are taken from design/specs/Projects.md, in
+ * its row order, because that export is the authority for that page. Three of
+ * them pointed at different live files carried over from an earlier session —
+ * also real, also on the server, but not the ones the design uses. Where a
+ * future page needs a different shot of the same client it gets its own key
+ * rather than editing one of these.
+ */
 export const WORK = {
   parqly: `${U}/2025/07/parqly-parking-mobile-app.jpg`,
   snowman: `${U}/2026/02/Snowman-Logistics-app-solution.jpg`,
-  gymbait: `${U}/2024/07/gymbait-ai-fitness-1.png`,
-  gisaid: `${U}/2022/08/GISAID-work-python.jpeg`,
+  gymbait: `${U}/2025/07/ai-fitness-home.jpg`,
+  gisaid: `${U}/2025/07/health-tech-covid.jpg`,
   advisee: `${U}/2025/03/advisee-finance-featured.jpg`,
   companyguru: `${U}/2025/03/companyguru.jpg`,
-  concierge: `${U}/2025/07/ai-concierges-mobile-app.jpg`,
+  concierge: `${U}/2025/07/concierge-ai-home.jpg`,
   ventura: `${U}/2023/02/ventura-law-header-12.jpg`,
+  clubSocial: `${U}/2022/08/club-social.jpg`,
 } as const
+
+/**
+ * THE PHOTOGRAPH AT THE TOP OF A /work/[slug]/ PAGE, by slug.
+ *
+ * One value, two readers: the work page draws it as its own header, and any
+ * band that credits that project draws the same file. That is the point — a
+ * featured band is meant to show the project's header, so it must not be able
+ * to show anything else.
+ *
+ * Read off PROJECTS rather than kept as a second list. A separate map beside
+ * it went stale the moment a band credited a project it had never heard of:
+ * it had exactly one entry, club-social, so the featured block on eight
+ * industry pages drew nothing at all.
+ *
+ * Where a project has a content file with its own heroImage, that wins and
+ * this is the fallback. scripts/validate-content.mjs fails the build if the
+ * two ever disagree, so the work page and the bands cannot drift apart.
+ *
+ * A project with no art returns undefined and the caller draws no image. That
+ * is deliberate: the live paths are not derivable (the /YYYY/MM/ segment is
+ * whatever month the file was uploaded), and a guessed one is a 404 that
+ * looks like a bug rather than a gap.
+ */
+/**
+ * THE EIGHTEEN CASE STUDIES WITH COMMISSIONED PHOTOGRAPHY.
+ *
+ * Served from this repo at /work/<slug>.jpg, cropped to 2:1 and saturation-
+ * capped at 0.8 by scripts/build-work-headers.mjs. They are listed rather than
+ * discovered from the filesystem because this module is imported by pages that
+ * must not do I/O, and because a missing file should be a visible gap rather
+ * than a silent one.
+ *
+ * The four absent — blelp, companyguru, gypsy, super-social — keep whatever
+ * /wp-content/uploads/ path their content file already carried. All four are
+ * held back, so every card on the /work/ index is on the new photography.
+ */
+const WORK_HEADER = new Set([
+  'warehouse-compliance-checklist-app', 'parqly-parking-solution',
+  '411drives-on-demand-car-loan-app', 'gisaid-health-tech',
+  'friendo-healthcare-mobile-app-development', 'the-presidents-club',
+  'les-concierges', 'reward-butler', 'concierge-loyalty-program', 'gymbait',
+  'flowrow-fitness-app', 'tanishq-data-analytics', 'ventura-law-firm',
+  'advisee', 'community-social-residential-community-app', 'club-social',
+  'go-champions-go', 'counter-cabinet', 'onus',
+])
+
+/**
+ * Alt text for a work cover.
+ *
+ * These are project header shots, not decoration: on /work/ they ARE the card,
+ * and a screen reader that meets nineteen images called nothing has been told
+ * the page is empty. Named after the project and what the picture is, which is
+ * as much as is honestly known about a photograph this module never sees.
+ * Not the project's tagline, and not its keywords — an alt that reads like a
+ * meta description is a different kind of empty.
+ */
+export const workAltFor = (name: string): string => `${name}, project cover`
+
+export const workHeroFor = (href: string): string | undefined => {
+  const slug = href.replace(/^\/work\//, '').replace(/\/$/, '')
+  if (WORK_HEADER.has(slug)) return `/work/${slug}.jpg`
+  const key = PROJECTS.find((p) => p.slug === slug)?.image
+  return key ? WORK[key as keyof typeof WORK] : undefined
+}
+
+
+/**
+ * Guide cover art, by /resources/ slug.
+ *
+ * THE FILE CALLED "PLACEHOLDER" IS NOT A PLACEHOLDER. Five of these were held
+ * out of this map because the live filename says placeholder, on the reasoning
+ * that shipping a file called placeholder.png to a download page is not
+ * honest. That reasoning was about the NAME. The live pages show finished
+ * illustrated covers on every one of those cards: Business Plan and Prototype
+ * Testing Plan both have real art on /resource/staff-picks/ today. The name is
+ * a leftover from whoever uploaded them, not a description of the file.
+ *
+ * So they are all here now. Drawing an empty grey plate instead of the
+ * client's own artwork was the worse of the two outcomes.
+ *
+ * Filenames are the live ones, typos included — "Srartup", "plannig",
+ * "building-partnership" singular. They are what the server has, and renaming
+ * them would 404.
+ *
+ * ALL FIFTEEN ARE THE LIVE FILES. The last five were supplied by hand, and
+ * they are the reason nothing here is ever derived from a slug:
+ *
+ *   innovation-flowchart1.webp          a trailing 1, and .webp
+ *   startup-problem-definition-1.png    a "startup-" prefix and a -1
+ *   pitching-checklist.webp             the clean one
+ *   website-redesign-calculator-roi1.png   words reordered, then a 1
+ *   people-connection-placeholder.webp  "placeholder" again, and .webp
+ *
+ * Five files, five different conventions, three of them with a digit welded
+ * on. No rule would have produced those, and each wrong guess is a broken
+ * image on a download page.
+ */
+export const GUIDE_COVER: Record<string, string> = {
+  'business-model-canvas': `${U}/2022/08/business-model-canvas.png`,
+  'swot-analysis': `${U}/2022/08/Startup-Swot-analysis.png`,
+  'learning-loop': `${U}/2022/08/Srartup-learning-loop.png`,
+  'value-proposition': `${U}/2022/08/startup-value-proposition.png`,
+  'evidence-planning': `${U}/2022/08/startup-evidence-plannig.png`,
+  /* The five whose live filename reads "placeholder". Same upload batch as
+     the five above, so the same /2022/08/ folder. */
+  'building-partnerships': `${U}/2022/08/building-partnership-placeholder.png`,
+  'business-plan': `${U}/2022/08/business-plan-placeholder.png`,
+  'product-solution-benefit': `${U}/2022/08/placeholder.png`,
+  'target-group': `${U}/2022/08/target-group-placeholder.png`,
+  'prototype-testing-plan': `${U}/2022/08/prototyping-placeholder.png`,
+  'innovation-flowchart': `${U}/2022/08/innovation-flowchart1.webp`,
+  'problem-definition': `${U}/2022/08/startup-problem-definition-1.png`,
+  'pitching-checklist': `${U}/2022/08/pitching-checklist.webp`,
+  'website-redesign-roi-calculator': `${U}/2022/08/website-redesign-calculator-roi1.png`,
+  'people-connection-map': `${U}/2022/08/people-connection-placeholder.webp`,
+}
+
+/** The stack on the Guides hero. One image for the set, not per guide. */
+export const GUIDE_SET = `${U}/2022/08/startup-guides-books.png`
 
 /** Service row imagery on the homepage accordion. */
 export const SERVICE_IMG = {
@@ -66,6 +222,31 @@ export const JOURNAL = {
   aiVsTraditional: `${U}/2025/07/ai-fitness-home.jpg`,
   twentyYears: `${U}/2024/11/roars-office-upscale-768x768.jpg`,
   mealPlanning: `${U}/2025/07/concierge-ai-home.jpg`,
+} as const
+
+/**
+ * Post imagery, by /our-journal/ slug.
+ *
+ * THREE OF 115. These are the ones the exports actually name — the homepage
+ * insight row and the Insights featured card. The other 112 are on the
+ * webspace but nothing in this repo records their filenames, and a guessed
+ * /wp-content/uploads/YYYY/MM/<slug>.jpg is a 404 that looks like a bug
+ * rather than a gap. An unlisted slug draws the flat tinted circle.
+ */
+export const JOURNAL_IMG: Record<string, string> = {
+  'ai-app-development-vs-traditional-app-development-which-is-better-for-customer-engagement':
+    JOURNAL.aiVsTraditional,
+  '20-years-of-roars-built-on-purpose-driven-by-impact': JOURNAL.twentyYears,
+  'the-unexpected-insight-we-built-a-meal-planning-app': JOURNAL.mealPlanning,
+}
+
+/** The office photograph on /about-us/.
+ *  `strategy` and `experience` were the two shots below the awards; that pair
+ *  was removed from the page, so they are removed here rather than left as a
+ *  map nobody reads. beautiful-experience is still served from SERVICE_IMG,
+ *  which is where the homepage accordion draws it. */
+export const AGENCY_IMG = {
+  office: `${U}/2024/11/roars-office-upscale-768x768.jpg`,
 } as const
 
 /** Gated PDFs. Root-level /tools/, NOT under the wp-content rewrite. */

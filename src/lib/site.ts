@@ -19,9 +19,20 @@ export const site = {
   twitter: '@roarstech',
   founded: '2005',
 
+  /**
+   * ONE PUBLIC ADDRESS. There used to be a `contact` key here as well, and the
+   * site printed both: the footer, the menu band, the forms, the thank-you
+   * page and the transactional email templates all said sales@, while the five
+   * office records and one envelope link on /contact-us/ said contact@. Two
+   * addresses on one page is a question the reader should not have to answer,
+   * and nothing on the site explained the difference. Settled on sales@,
+   * which was already the one on every call to action.
+   *
+   * Belgium keeps be@roarsinc.com below. That is a different desk, not a
+   * second spelling of this one.
+   */
   email: {
     sales: 'sales@roarsinc.com',
-    contact: 'contact@roarsinc.com',
   },
 
   phones: {
@@ -29,13 +40,17 @@ export const site = {
     UK: { display: '+44 (7537) 183399', tel: '+447537183399' },
   },
 
-  booking: 'https://meet.roarsinc.com/sales',
+  booking: 'https://meet.roarsinc.com/suzanne/sales',
   companyProfile: 'https://link.roars.in/F39Mv',
 
   /** Used as Organization.sameAs. Order is deliberate: strongest first. */
   sameAs: [
     'https://www.linkedin.com/company/roars-technologies-pvt.-ltd.',
-    'https://twitter.com/roarstech',
+    /* Clutch, added 16 Sep. It sits second because it is the profile that
+       carries the client reviews — the strongest third-party corroboration
+       the business has, and the one that links back here. */
+    'https://clutch.co/profile/roars-technologies',
+    'https://x.com/roarstech',
     'https://www.instagram.com/roarstech',
     'https://www.facebook.com/roarstech/',
   ],
@@ -48,17 +63,67 @@ export const site = {
    * ran into it. The five country names measure 185px and fit with room.
    */
   offices: [
-    { code: 'IN', label: 'India',   city: 'Bengaluru',         region: 'Karnataka', country: 'IN' },
-    { code: 'US', label: 'USA',     city: 'Frisco',            region: 'TX',        country: 'US' },
-    { code: 'UK', label: 'UK',      city: 'London',            region: '',          country: 'GB' },
-    { code: 'BE', label: 'Belgium', city: 'Heist op den Berg', region: '',          country: 'BE' },
-    { code: 'DE', label: 'Germany', city: 'München',           region: '',          country: 'DE' },
+    { code: 'IN', label: 'India',   city: 'Bengaluru',         region: 'Karnataka', country: 'IN',
+      street: '4th Block, Jayanagar, Bengaluru', postal: 'India, 560041',
+      email: 'sales@roarsinc.com', phone: '+91 7990050464' },
+    { code: 'US', label: 'USA',     city: 'Frisco',            region: 'TX',        country: 'US',
+      street: '9300 John Hickman Parkway,', postal: 'Frisco TX 75035',
+      email: 'sales@roarsinc.com', phone: '+1 (302) 505-1200' },
+    { code: 'UK', label: 'UK',      city: 'London',            region: '',          country: 'GB',
+      street: '11 Tennyson Court, Marylebone,', postal: 'London, NW1 6QB, UK',
+      email: 'sales@roarsinc.com', phone: '+44 (7537) 183399' },
+    { code: 'BE', label: 'Belgium', city: 'Heist op den Berg', region: '',          country: 'BE',
+      street: 'Kleine Steenweg 1.88', postal: '2221 Heist op den Berg, België',
+      email: 'be@roarsinc.com', phone: '+32 495/483948' },
+    /* The export prints no number for Germany. It is not invented here. */
+    { code: 'DE', label: 'Germany', city: 'München',           region: '',          country: 'DE',
+      street: 'Herzog-Wilhelm-Straße 17', postal: 'München, Germany',
+      email: 'sales@roarsinc.com', phone: '' },
   ],
 
+  /**
+   * THE HEADLINE FIGURES, IN ONE PLACE.
+   *
+   * Supplied by the owner. They replace the set the build had been carrying
+   * since the migration (250+ projects, 96% returning customers), which came
+   * from the old site.
+   *
+   * TWO TRIOS, NOT ONE. A page that shows three figures uses `primary` unless
+   * it already sits next to a page that does, in which case it takes `alt` —
+   * the same three numbers on every section reads as a template, and the
+   * owner supplied a second set for exactly that reason.
+   *
+   * Individual values are also exported so prose can use one on its own
+   * ("1,500+ products shipped since 2005") without a second copy of the
+   * number going stale next to the trio.
+   */
   stats: {
     yearsInBusiness: '20+',
-    projectsDelivered: '250+',
-    returningCustomers: '96%',
+    projectsDelivered: '1,500+',
+    aiDriven: '63%',
+    happyCustomers: '1,000+',
+    globalAwards: '7+',
+    /* THE TEAM, IN ONE PLACE, for the same reason happyCustomers is in one
+       place. Three figures claimed to be the team and all three were typed by
+       hand: the homepage said 25, the about page's counter said 25 on top of
+       five named portraits (so the page totalled thirty), and the about hero
+       said 37. A reader who visited two of those pages was told two different
+       things about the same company. Every one of them now derives from here,
+       so moving this moves all of them. */
+    teamSize: 25,
+  },
+
+  statSets: {
+    primary: [
+      { value: '20+', label: 'Years of Excellence' },
+      { value: '1,500+', label: 'Projects Delivered' },
+      { value: '63%', label: 'AI-Driven Solutions' },
+    ],
+    alt: [
+      { value: '20+', label: 'Years of Excellence' },
+      { value: '1,000+', label: 'Happy Customers' },
+      { value: '7+', label: 'Global Awards' },
+    ],
   },
 } as const
 
@@ -98,6 +163,27 @@ export const ROBOTS_INDEX =
 
 export const ROBOTS_NOINDEX = 'noindex,nofollow'
 
-/** Resolve the robots value for one page. */
-export const robotsFor = (pageNoindex = false): string =>
-  !ALLOW_INDEXING || pageNoindex ? ROBOTS_NOINDEX : ROBOTS_INDEX
+/**
+ * Keep this page out of the index, but follow what it links to.
+ *
+ * For paginated archives. /our-journal/page/2..5/ are thin by nature — a list
+ * of cards already shown elsewhere — so they should not be indexed. But pages
+ * 2 to 5 are the ONLY internal path to posts 11 through 60, and `nofollow`
+ * told a crawler to stop there, orphaning fifty posts behind a door marked do
+ * not open. noindex keeps them out of results; follow keeps the posts reachable.
+ */
+export const ROBOTS_NOINDEX_FOLLOW = 'noindex,follow'
+
+/**
+ * Resolve the robots value for one page.
+ *
+ * `'follow'` asks for noindex,follow. Plain `true` still means nofollow, which
+ * is right for a utility page or a held-back case study: those link nowhere we
+ * want crawled from. The dev switch overrides both — an unindexed build says
+ * nofollow everywhere, because on dev there is nothing worth following.
+ */
+export const robotsFor = (pageNoindex: boolean | 'follow' = false): string => {
+  if (!ALLOW_INDEXING) return ROBOTS_NOINDEX
+  if (pageNoindex === 'follow') return ROBOTS_NOINDEX_FOLLOW
+  return pageNoindex ? ROBOTS_NOINDEX : ROBOTS_INDEX
+}

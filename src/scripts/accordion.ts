@@ -1,8 +1,17 @@
 /**
- * Accordion. Approved island 2 of 4. One row open at a time.
+ * Accordion. Approved island 2 of 4. One row open at a time, none required.
  *
  * Height is animated from the panel's real content height rather than a fixed
  * open height, then released to auto, so a three-line answer does not clip.
+ *
+ * IT USED TO SERVE TWO ROW KINDS. The homepage Services band was a "swap" row:
+ * the open row had six grid tracks, a photo and a client list where a closed
+ * row had four tracks and a count, so there was no box whose height could be
+ * animated and both states shipped in the DOM behind `display: contents`. That
+ * band is now a plain list of twelve links — a row goes to its service page
+ * rather than opening — so the swap branch and the one-must-stay-open rule
+ * that went with it are gone. The FAQ is the only caller left, and an FAQ
+ * should be able to close everything.
  */
 export function initAccordions(): void {
   const groups = document.querySelectorAll<HTMLElement>('[data-accordion]')
@@ -14,17 +23,6 @@ export function initAccordions(): void {
       const panel = document.getElementById(trigger.getAttribute('aria-controls') || '')
       if (!panel) return
       trigger.setAttribute('aria-expanded', String(open))
-
-      /* A SWAP row, not a panel row. The Services rows change layout between
-         states — the open row has six grid tracks, a photo and a client list
-         where the closed row has a count — so there is no box whose height
-         can be animated. Both states ship in the DOM behind
-         `display: contents` and this flips which one the grid sees. The FAQ
-         below still animates a real panel; same island, two row kinds. */
-      if (panel.hasAttribute('data-svc-row')) {
-        panel.setAttribute('data-open', String(open))
-        return
-      }
 
       if (open) {
         panel.hidden = false
@@ -42,9 +40,9 @@ export function initAccordions(): void {
 
     triggers.forEach((trigger) => {
       trigger.addEventListener('click', () => {
-        const willOpen = trigger.getAttribute('aria-expanded') !== 'true'
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true'
         triggers.forEach((other) => { if (other !== trigger) setRow(other, false) })
-        setRow(trigger, willOpen)
+        setRow(trigger, !isOpen)
       })
     })
   })

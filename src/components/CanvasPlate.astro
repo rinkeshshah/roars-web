@@ -1,0 +1,56 @@
+---
+/**
+ * A drawn one-page template: the thing every guide on the shelf actually is.
+ *
+ * WHY THIS EXISTS. Five of the ten guides serve cover art named
+ * building-partnership-placeholder.png, business-plan-placeholder.png,
+ * placeholder.png, target-group-placeholder.png and prototyping-placeholder.png.
+ * CLAUDE.md's known landmines say that art is replaced at migration rather than
+ * carried across, so those slugs have no cover and their slot was empty.
+ *
+ * An empty grey box is honest but it is not a design. This is: a schematic of a
+ * one-page canvas — a header band, a grid of cells and a footer rule — drawn in
+ * CSS, so it needs no file, cannot 404, and weighs nothing.
+ *
+ * It is DECORATION, not a claim. It does not show a particular guide's layout;
+ * it shows what a guide is. aria-hidden, no text, no alt.
+ *
+ * It also sits UNDER every real cover, so the slot is never empty in this build
+ * — where /wp-content/uploads/ 404s — and never empty for the split second a
+ * real cover is still loading.
+ */
+interface Props {
+  /** Cell layout. The two the export's own guides have; `grid` is the default. */
+  shape?: 'grid' | 'quad'
+}
+const { shape = 'grid' } = Astro.props
+---
+
+<span class:list={['plate', `plate--${shape}`]} aria-hidden="true">
+  <span class="plate__bar"></span>
+  <span class="plate__cells">
+    {Array.from({ length: shape === 'quad' ? 4 : 9 }).map(() => <span></span>)}
+  </span>
+  <span class="plate__foot"></span>
+</span>
+
+<style>
+  /* Sized by its slot, not by itself, so one component serves the 434x200 card
+     and the 256x186 hero preview without a second set of numbers. */
+  .plate {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; gap: 6%;
+    padding: 9% 8%;
+    background: rgb(244, 244, 242);
+  }
+  .plate__bar { flex: none; height: 7%; background: rgba(20, 20, 20, 0.16); }
+  .plate__cells { flex: 1; display: grid; gap: 4%; }
+  .plate--grid .plate__cells { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); }
+  .plate--quad .plate__cells { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); }
+  .plate__cells span { background: rgba(20, 20, 20, 0.06); box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.07); }
+  /* One cell carries the accent, so the plate reads as Roars' rather than as a
+     generic wireframe. The first is the one every canvas starts from. */
+  .plate--grid .plate__cells span:nth-child(1),
+  .plate--quad .plate__cells span:nth-child(1) { background: rgba(255, 212, 0, 0.5); box-shadow: none; }
+  .plate__foot { flex: none; height: 4%; width: 42%; background: rgba(20, 20, 20, 0.12); }
+</style>

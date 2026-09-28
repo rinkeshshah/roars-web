@@ -3,12 +3,34 @@
  * Service pages. Twelve live URLs at /s/[slug]/.
  *
  * Routes come from docs/URL-INVENTORY.csv, not from the collection, so every
- * ranking URL resolves even before its body is migrated. Seeded entries render
- * their real content; the rest render the pending state and carry noindex.
+ * ranking URL resolves even before its body is migrated.
+ *
+ * TWO RENDERINGS, ONE ROUTE:
+ *   - An entry carrying `hero` gets the full designed page, built against
+ *     design/prototypes/Roars v2 - AI Automation.dc.html, which the handoff
+ *     names as the pattern for every service. Canvas 1440x6800: Hero 840,
+ *     Services 1060, Featured work 620, Process 1000, Engagements 1120,
+ *     Receipts 760, FAQ 940, CTA 460.
+ *   - Anything else falls back to MarketingPage — prose if the body exists,
+ *     the pending state if it does not. Eleven of the twelve are there today.
+ *
+ * Coordinates in the comments are SECTION-relative as the export authors
+ * them; the content box starts at the 39px gutter, so a child at x504 sits
+ * 465 into the box.
  */
 import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
 import MarketingPage from '../../components/MarketingPage.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
+import RingField from '../../components/RingField.astro'
+import Accordion from '../../components/Accordion.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
+import { workHeroFor } from '../../lib/media'
 import { site } from '../../lib/site'
 
 export async function getStaticPaths() {
@@ -24,6 +46,7 @@ const { slug } = Astro.params
 const { entry } = Astro.props
 const path = `/s/${slug}/`
 const name = entry?.data.title ?? nameFromSlug(slug)
+const d = entry?.data
 
 const schema = entry
   ? [
@@ -53,6 +76,12 @@ const schema = entry
             }
           : {}),
       },
+      /* An FAQPage node was here and has been dropped, for the same reason as
+         the homepage: since August 2023 Google shows FAQ rich results for
+         government and health sites only, so on a service page the markup is
+         read and discarded. It was a second copy of every answer that had to
+         track the first exactly. The questions and answers stay on the page
+         in full; only the duplicate goes. */
       {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
@@ -65,16 +94,1267 @@ const schema = entry
   : []
 
 const { Content } = entry ? await render(entry) : { Content: null }
+
+/** The designed layout only applies where the entry supplies it. */
+const designed = Boolean(d?.hero)
+const capabilities = d?.bands?.find((b) => b.key === 'capabilities')
+const engagements = d?.bands?.find((b) => b.key === 'engagements')
+
+/** The anchor case's own photograph, from the same resolver /work/ uses.
+ *  Undefined for a slug with no header file, and the band then reads as the
+ *  flat dark ground it was before. */
+const anchorShot = d?.anchor?.href ? workHeroFor(d.anchor.href) : undefined
+
+/** Same for the featured-work band lower down, which names a second project. */
+const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefined
 ---
 
-<MarketingPage
-  title={entry?.data.seo.title ?? `${name} | ${site.name}`}
-  description={entry?.data.seo.description}
-  path={path}
-  label="Service"
-  heading={name}
-  schema={schema}
-  pending={!entry}
->
-  {Content && <Content />}
-</MarketingPage>
+{designed && d ? (
+  <BaseLayout
+    title={d.seo.title}
+    description={d.seo.description}
+    path={path}
+    schema={schema}
+    noindex={d.needsReview}
+  >
+    <TopBar slot="topbar" cta="meeting" />
+    <NavOverlay />
+
+    {/* ── Hero, 1440x840 ───────────────────────────────────── */}
+    <Section ground="dark" bleed>
+      <div class="sv-hero">
+        <GrainField tone="dark" second />
+        {/* Design ref 3a. Background only — nothing in this band moves. */}
+        <DitherHero variant="carbon-heat" />
+        <div class="wrap sv-hero__inner">
+          {/* Left column at the gutter, 400 wide, opening at 168. */}
+          <div class="sv-hero__rail" data-reveal>
+            {d.eyebrow && <span class="sv-eyebrow sv-eyebrow--dark">{d.eyebrow}</span>}
+            {/* S1. The failure state, not the service name. The eyebrow above
+                carries the service for wayfinding and for search; the reader
+                gets the problem they arrived with. */}
+            {d.frame && (
+              <Fragment>
+                <p class="sv-frame__h">{d.frame.h1}</p>
+                {/* THE QUALIFIER IS NOT DRAWN. It sat directly under the H1 —
+                    two paragraphs of similar measure with 18px between them,
+                    then the rule and the proof figure — and the rail read as
+                    congested. The field is still in the schema and still
+                    written on eleven of the twelve services, so this is a
+                    rendering decision and no copy has been thrown away. See
+                    the note in src/content.config.ts. */}
+                {d.frame.proof && (
+                  <p class="sv-frame__proof">
+                    <b>{d.frame.proof.value}</b>
+                    <i>{d.frame.proof.label}</i>
+                  </p>
+                )}
+              </Fragment>
+            )}
+            <span class="sv-hero__tick" aria-hidden="true"></span>
+            {/* The migrated statement, for pages that have no frame yet. A
+                page with S1 says the same thing better and does not need
+                both. */}
+            {!d.frame && <p class="sv-hero__statement">{d.hero!.statement}</p>}
+            {!d.frame && d.hero!.sub && <p class="sv-hero__sub">{d.hero!.sub}</p>}
+            {d.hero!.pills.length > 0 && (
+              <ul class="sv-hero__pills">
+                {d.hero!.pills.map((p) => <li>{p}</li>)}
+              </ul>
+            )}
+            {d.hero!.ctaLabel && d.hero!.ctaHref && (
+              <a class="sv-ghost" href={d.hero!.ctaHref} target="_blank" rel="noopener">
+                {d.hero!.ctaLabel}
+                <span class="sv-ghost__dot sv-ghost__dot--grey" aria-hidden="true"></span>
+                <span class="sv-ghost__dot sv-ghost__dot--accent" aria-hidden="true"></span>
+              </a>
+            )}
+          </div>
+
+          {/* Masthead. The small word sits above the large one and the two are
+              set at different tracking — 66/-0.05 over 132/-0.055 — so they
+              are separate elements, not one heading with a break. */}
+          {d.headline && (
+            <div class="sv-hero__mast" data-reveal>
+              <span class="sv-chip"><span>roars</span></span>
+              <span class="sv-hero__small">{d.headline.small}</span>
+              <span class="sv-hero__large">{d.headline.large}</span>
+              {/* THE PAGE'S ONE H1, AND IT CARRIES THE KEYWORD.
+                  There used to be two: the pain line above, and the lockup's
+                  single word — "development", "healthcare", "saas" — which
+                  says nothing on its own. The lockup keeps its look as spans;
+                  the standfirst, which already held the full phrase and
+                  already sat here, becomes the heading. Nothing moved. */}
+              {d.standfirst && <h1 class="sv-hero__standfirst">{d.standfirst}</h1>}
+            </div>
+          )}
+
+          {/* The readout panel. Real copy from the entry, so it is content and
+              not decoration, but nothing on the page depends on its height. */}
+          {d.hero!.console && (
+            <aside class="sv-console" data-reveal>
+              <div class="sv-console__head">
+                <span>{d.hero!.console.label}</span>
+                {d.hero!.console.ref && <span class="sv-console__ref">{d.hero!.console.ref}</span>}
+              </div>
+              <ul class="sv-console__rows">
+                {d.hero!.console.rows.map((r, i) => (
+                  <li style={`--i:${i}`}>
+                    <span class="sv-console__k">{r.k}</span>
+                    <span class="sv-console__v">{r.v}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="sv-console__label">{d.hero!.console.statusLabel}</p>
+              <p class="sv-console__status">
+                <span class="sv-console__led" aria-hidden="true"></span>{d.hero!.console.status}
+              </p>
+              <div class="sv-console__bar" aria-hidden="true">
+                <span style={`width:${d.hero!.console.progress}%`}></span>
+              </div>
+              {d.hero!.console.note && <p class="sv-console__note">{d.hero!.console.note}</p>}
+              {d.hero!.console.footnote && <p class="sv-console__foot">{d.hero!.console.footnote}</p>}
+            </aside>
+          )}
+        </div>
+      </div>
+    </Section>
+
+    {/* ── Capabilities, 1440x1060 on #F5F5F5 ───────────────── */}
+    {/* S2. What continuing as-is costs. Short on purpose: past about sixty
+        words this stops being a cost and starts being a funnel. */}
+    {d.cost && (
+      <Section ground="light">
+        <div class="sv-cost">
+          <span class="sv-eyebrow">{d.cost.label}</span>
+          <h2 class="sv-cost__h" data-reveal>{d.cost.heading}</h2>
+          <p class="sv-cost__body" data-reveal>{d.cost.body}</p>
+        </div>
+      </Section>
+    )}
+
+    {/* S3. Phases named by what you HAVE at the end of each one. */}
+    {d.engagement && (
+      <Section ground="surface">
+        <div class="sv-eng">
+          <span class="sv-eyebrow">{d.engagement.label}</span>
+          <h2 class:list={['sv-eng__h', d.engagement.heading.length > 30 && 'sv-band__h--long']}>
+            {d.engagement.heading}
+          </h2>
+          <ol class="sv-eng__list">
+            {d.engagement.phases.map((ph, i) => (
+              <li class="sv-eng__phase" data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
+                <span class="sv-eng__rule" aria-hidden="true"></span>
+                <span class="sv-eng__n">{ph.n}</span>
+                <span class="sv-eng__dur">{ph.duration}</span>
+                <h3 class="sv-eng__name">{ph.name}</h3>
+                <p class="sv-eng__delivers">{ph.delivers}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Section>
+    )}
+
+    {/* S4. One case, in full. Not a carousel, and no logo grid on this page. */}
+    {d.anchor && (
+      <Section ground="dark">
+        {/* THE BAND'S GROUND IS THE CASE'S PHOTOGRAPH. Full bleed, edge to
+            edge and top to bottom, with no black left behind the section.
+
+            TWO BOXES, NOT ONE. .sv-anchor carries the full-bleed ground and
+            nothing else; .sv-anchor__inner carries the 820px cap the copy has
+            always had. They cannot be the same element: a 100vw child resolves
+            `left: 50%` against its container's padding box, so hanging it off
+            a capped, left-aligned box centres the picture on the text column
+            instead of the viewport. */}
+        <div class="sv-anchor">
+          {anchorShot && (
+            <div class="sv-anchor__bg" aria-hidden="true">
+              <img src={anchorShot} alt="" data-decorative width="2400" height="1200" loading="lazy" decoding="async" />
+              <RingField variant="sweep" />
+            </div>
+          )}
+          <div class="sv-anchor__inner">
+            <span class="sv-eyebrow sv-eyebrow--dark">{d.anchor.label}</span>
+            <h2 class="sv-anchor__client" data-reveal>{d.anchor.client}</h2>
+            <p class="sv-anchor__sit" data-reveal>{d.anchor.situation}</p>
+            <ul class="sv-anchor__did" data-reveal>
+              {d.anchor.did.map((x) => <li>{x}</li>)}
+            </ul>
+            {d.anchor.outcome && <p class="sv-anchor__out" data-reveal>{d.anchor.outcome}</p>}
+            <a class="sv-ghost sv-anchor__cta" href={d.anchor.href}>
+              {d.anchor.ctaLabel}
+              {/* The two dots every other ghost button carries. This one asked
+                  for `.sv-dots`, which is a class that exists nowhere in the
+                  project — so the pair rendered as two empty <i> elements at
+                  zero size and the button lost its dots. */}
+              <span class="sv-ghost__dot sv-ghost__dot--grey" aria-hidden="true"></span>
+              <span class="sv-ghost__dot sv-ghost__dot--accent" aria-hidden="true"></span>
+            </a>
+          </div>
+        </div>
+      </Section>
+    )}
+
+    {/* S5. In and out. Saying what we do not do makes the rest credible. */}
+    {d.scope && (
+      <Section ground="light">
+        <div class="sv-scope">
+          <span class="sv-eyebrow">{d.scope.label}</span>
+          <h2 class:list={['sv-scope__h', d.scope.heading.length > 30 && 'sv-band__h--long']}>
+            {d.scope.heading}
+          </h2>
+          <div class="sv-scope__cols">
+            <div data-reveal>
+              <h3 class="sv-scope__col-h">In</h3>
+              <ul class="sv-scope__list">{d.scope.includes.map((x) => <li>{x}</li>)}</ul>
+            </div>
+            <div data-reveal style="transition-delay:80ms">
+              <h3 class="sv-scope__col-h sv-scope__col-h--out">Out</h3>
+              <ul class="sv-scope__list sv-scope__list--out">{d.scope.excludes.map((x) => <li>{x}</li>)}</ul>
+            </div>
+          </div>
+        </div>
+      </Section>
+    )}
+
+    {/* S6. Duration, team, what we need from you, how pricing works. */}
+    {d.shape && (
+      <Section ground="surface">
+        <div class="sv-shape">
+          <span class="sv-eyebrow">{d.shape.label}</span>
+          <h2 class:list={['sv-shape__h', d.shape.heading.length > 30 && 'sv-band__h--long']}>
+            {d.shape.heading}
+          </h2>
+          <dl class="sv-shape__grid">
+            <div data-reveal>
+              <dt>Typical duration</dt>
+              <dd>{d.shape.duration}</dd>
+            </div>
+            <div data-reveal style="transition-delay:60ms">
+              <dt>Who you work with</dt>
+              <dd>
+                <ul class="sv-shape__list">
+                  {d.shape.team.map((t) => <li><b>{t.role}</b>{t.does}</li>)}
+                </ul>
+              </dd>
+            </div>
+            <div data-reveal style="transition-delay:120ms">
+              <dt>What we need from you</dt>
+              <dd>
+                <ul class="sv-shape__list">{d.shape.needs.map((x) => <li>{x}</li>)}</ul>
+              </dd>
+            </div>
+            <div data-reveal style="transition-delay:180ms">
+              <dt>How pricing works</dt>
+              <dd>{d.shape.pricing}</dd>
+            </div>
+          </dl>
+        </div>
+      </Section>
+    )}
+
+    {capabilities && (
+      <Section ground="surface">
+        <div class="sv-band">
+          <span class="sv-band__rule" aria-hidden="true"></span>
+          <div class="sv-band__head" data-reveal>
+            <span class="sv-eyebrow">{capabilities.label}</span>
+            <h2 class:list={['sv-band__h', (capabilities.heading).length > 30 && 'sv-band__h--long']}>{capabilities.heading}</h2>
+          </div>
+          {capabilities.intro && <p class="sv-band__intro" data-reveal>{capabilities.intro}</p>}
+          <ul class="sv-cards">
+            {capabilities.items.map((it, i) => (
+              <li class="sv-card" data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
+                <span class="sv-card__rule" aria-hidden="true"></span>
+                <span class="sv-card__tag">{it.tag}</span>
+                <h3 class="sv-card__name">{it.name}</h3>
+                <p class="sv-card__body">{it.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    )}
+
+    {/* ── Featured work, 1440x620 on black ─────────────────── */}
+    {d.featured && (
+      <Section ground="dark">
+        <div class="sv-feat">
+          {/* The featured project's own photograph as the band's ground, full
+              bleed. Same treatment as the anchor case above it and the cases
+              band on the industry pages. */}
+          {featuredShot && (
+            <div class="sv-feat__bg" aria-hidden="true">
+              <img src={featuredShot} alt="" data-decorative width="2400" height="1200" loading="lazy" decoding="async" />
+              <RingField variant="sweep" />
+            </div>
+          )}
+          <span class="sv-eyebrow sv-eyebrow--dark" data-reveal>{d.featured.label}</span>
+          <h2 class="sv-feat__client" data-reveal>{d.featured.client}</h2>
+          <div class="sv-feat__col" data-reveal style="transition-delay:60ms">
+            <p class="sv-feat__body">{d.featured.body}</p>
+            <dl class="sv-feat__meta">
+              {d.featured.meta.map((m) => (
+                <div><dt>{m.k}</dt><dd>{m.v}</dd></div>
+              ))}
+            </dl>
+            {/* `sv-feat__cta` carries no styling. It is a handle, so that
+                scripts/assert-held-back.mjs can tell this link — a receipt
+                naming a client — from the other `sv-ghost` links on the page. */}
+            <a class="sv-ghost sv-feat__cta" href={d.featured.href}>
+              View Project
+              <span class="sv-ghost__dot sv-ghost__dot--grey" aria-hidden="true"></span>
+              <span class="sv-ghost__dot sv-ghost__dot--accent" aria-hidden="true"></span>
+            </a>
+          </div>
+        </div>
+      </Section>
+    )}
+
+    {/* ── Process, 1440x1000 on white ──────────────────────── */}
+    {d.process && (
+      <Section ground="light">
+        <div class="sv-proc">
+          <span class="sv-proc__tick" aria-hidden="true"></span>
+          <div class="sv-proc__head" data-reveal>
+            <span class="sv-eyebrow">{d.process.label}</span>
+            <h2 class:list={['sv-band__h', (d.process.heading).length > 30 && 'sv-band__h--long']}>{d.process.heading}</h2>
+          </div>
+          {d.process.intro && <p class="sv-proc__intro" data-reveal>{d.process.intro}</p>}
+          {/* The track runs behind the four steps, with the accent marking the
+              first. It is one rule, not four borders.
+              It is wrapped WITH the steps so it can be placed against them
+              rather than against the section: the steps are in flow now, so
+              their top is no longer a number this file knows. */}
+          {/* COLUMN COUNT AND ACCENT LENGTH COME FROM THE STEPS THEMSELVES.
+              Both were hardcoded to four — the artboard's number — and eleven
+              of the twelve services write three, so those pages drew an empty
+              fourth column and marked the first step with a quarter of a track
+              that only spanned three. */}
+          <div class="sv-proc__flow" style={`--n:${d.process.steps.length}`}>
+          <div class="sv-proc__track" aria-hidden="true"><span></span></div>
+          <ol class="sv-proc__steps">
+            {d.process.steps.map((st, i) => (
+              <li data-reveal style={`transition-delay:${i * 60}ms`}>
+                {st.when && <span class="sv-proc__when">{st.when}</span>}
+                {st.phase && <span class="sv-proc__phase">{st.phase}</span>}
+                <h3 class="sv-proc__name">{st.name}</h3>
+                <p class="sv-proc__body">{st.body}</p>
+              </li>
+            ))}
+          </ol>
+          </div>
+          {d.process.closing && (
+            <p class="sv-proc__closing" data-reveal>{d.process.closing}</p>
+          )}
+        </div>
+      </Section>
+    )}
+
+    {/* ── Engagements, 1440x1120 on #F5F5F5 ────────────────── */}
+    {engagements && (
+      <Section ground="surface">
+        <div class="sv-band sv-band--tall">
+          <span class="sv-band__rule" aria-hidden="true"></span>
+          <div class="sv-band__head" data-reveal>
+            <span class="sv-eyebrow">{engagements.label}</span>
+            <h2 class:list={['sv-band__h', (engagements.heading).length > 30 && 'sv-band__h--long']}>{engagements.heading}</h2>
+          </div>
+          {engagements.intro && <p class="sv-band__intro" data-reveal>{engagements.intro}</p>}
+          <ul class="sv-cards sv-cards--tall">
+            {engagements.items.map((it, i) => (
+              <li class="sv-card" data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
+                <span class="sv-card__rule" aria-hidden="true"></span>
+                <span class="sv-card__tag">{it.tag}</span>
+                <h3 class="sv-card__name sv-card__name--wide">{it.name}</h3>
+                <p class="sv-card__body">{it.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    )}
+
+    {/* ── Receipts, 1440x760 on black ──────────────────────── */}
+    {d.receipts && (
+      <Section ground="dark" rings>
+        <div class="sv-rec">
+          <span class="sv-rec__tick" aria-hidden="true"></span>
+          <div class="sv-rec__head" data-reveal>
+            <span class="sv-eyebrow sv-eyebrow--dark">{d.receipts.label}</span>
+            <h2 class="sv-rec__h">{d.receipts.heading}</h2>
+          </div>
+          {d.receipts.intro && <p class="sv-rec__intro" data-reveal>{d.receipts.intro}</p>}
+          <span class="sv-rec__rule" aria-hidden="true"></span>
+          {d.receipts.note && <p class="sv-rec__note" data-reveal>{d.receipts.note}</p>}
+          <ul class="sv-rec__stats">
+            {d.receipts.stats.map((s, i) => (
+              <li data-reveal style={`transition-delay:${i * 60}ms`}>
+                <span class="sv-rec__rule2" aria-hidden="true"></span>
+                <span class="sv-rec__n">
+                  {s.prefix && s.suffix && <i>{s.suffix}</i>}
+                  <b>{s.n}</b>
+                  {!s.prefix && s.suffix && <i>{s.suffix}</i>}
+                </span>
+                <span class="sv-rec__body">{s.body}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    )}
+
+    {/* ── FAQ, 1440x940 on white ───────────────────────────── */}
+    {d.faq.length > 0 && (
+      <Section ground="light">
+        <div class="sv-faq">
+          <span class="sv-band__rule" aria-hidden="true"></span>
+          <div class="sv-band__head" data-reveal>
+            {d.faqLabel && <span class="sv-eyebrow">{d.faqLabel}</span>}
+            <h2 class:list={['sv-band__h', (d.faqHeading ?? 'The honest answers.').length > 30 && 'sv-band__h--long']}>{d.faqHeading ?? 'The honest answers.'}</h2>
+          </div>
+          {d.faqIntro && <p class="sv-band__intro" data-reveal>{d.faqIntro}</p>}
+          <div class="sv-faq__list" data-reveal>
+            <Accordion items={d.faq} name="service-faq" />
+          </div>
+        </div>
+      </Section>
+    )}
+
+    {/* S8. Internal links that carry a reason. A list of names is navigation;
+        a reason is what makes somebody follow one. */}
+    {d.next && (
+      <Section ground="light">
+        <div class="sv-next">
+          <span class="sv-eyebrow">{d.next.label}</span>
+          <h2 class:list={['sv-next__h', d.next.heading.length > 30 && 'sv-band__h--long']}>
+            {d.next.heading}
+          </h2>
+          <div class="sv-next__cols">
+            {d.next.services.length > 0 && (
+              <div data-reveal>
+                <h3 class="sv-next__col-h">Services</h3>
+                <ul class="sv-next__list">
+                  {d.next.services.map((x) => (
+                    <li><a href={x.href}><b>{x.name}</b><span>{x.why}</span></a></li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {d.next.industries.length > 0 && (
+              <div data-reveal style="transition-delay:80ms">
+                <h3 class="sv-next__col-h">Sectors</h3>
+                <ul class="sv-next__list">
+                  {d.next.industries.map((x) => (
+                    <li><a href={x.href}><b>{x.name}</b><span>{x.why}</span></a></li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </Section>
+    )}
+
+    {/* The export ends on a grey band repeating the offer, and the footer
+        directly under it now carries the same heading and the same paragraph.
+        One scroll apart, twice. The band is gone; its button and contact line
+        moved into the footer, which is where the closing action now lives. */}
+
+    <SiteFooter
+      slot="footer"
+      {/* S9. The specific invitation wins over the migrated CTA when a page
+          has one. "Send us the screen that is not converting" asks for one
+          thing and says what it costs the reader; "Let's get your project
+          started" asks them to do the framing. */}
+      blurbTitle={d.close?.heading ?? d.cta?.footerTitle}
+      blurb={d.close?.body ?? d.cta?.footerBlurb}
+      tagline={d.cta?.footerTagline}
+      ctaLabel={d.close?.ctaLabel}
+      ctaHref={d.close?.ctaHref}
+      contact={d.close?.contact}
+    />
+  </BaseLayout>
+) : (
+  <MarketingPage
+    title={entry?.data.seo.title ?? `${name} | ${site.name}`}
+    description={entry?.data.seo.description}
+    path={path}
+    label="Service"
+    heading={name}
+    schema={schema}
+    pending={!entry}
+    ctaCopy={entry?.data.cta}
+  >
+    {Content && <Content />}
+  </MarketingPage>
+)}
+
+<style>
+  /* ── shared ─────────────────────────────────────────────── */
+  .sv-eyebrow {
+    display: block;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; color: var(--c-ink-label);
+  }
+  .sv-eyebrow--dark { color: rgba(255, 255, 255, 0.55); }
+
+  /* The pill button on dark, 195x42 with the two 8px dots. */
+  .sv-ghost {
+    position: relative; display: inline-flex; align-items: center;
+    width: 195px; height: 42px; padding-left: 21px; border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1.5px var(--c-ring-dark);
+    font-size: var(--fs-micro); line-height: 20px; font-weight: var(--fw-medium);
+    color: var(--c-white);
+    transition: box-shadow var(--dur-fast) ease;
+  }
+  .sv-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--c-accent); color: var(--c-white); }
+  /* In flow, for the reason written out on .c-pill in contact-us.astro: two
+     absolute dots pinned to magic lefts only land on the button while the
+     button is a containing block, and a mobile rule setting `position: static`
+     silently throws them somewhere else on the page. Nothing here does that
+     today; this is the same pattern that has now broken three buttons, so it
+     is removed rather than watched. */
+  .sv-ghost { padding-right: 18px; gap: 3px; }
+  .sv-ghost__dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .sv-ghost__dot--grey { margin-left: auto; background: rgb(153, 152, 149); }
+  .sv-ghost__dot--accent { background: var(--c-accent); }
+
+
+  .sv-chip { display: flex; align-items: flex-start; height: 24px; margin-left: 8px; }
+  .sv-chip > span {
+    font-size: 20px; line-height: 20px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: #fbfbfb; padding-top: 4px;
+  }
+
+  /* ── hero ───────────────────────────────────────────────── */
+  .sv-hero { isolation: isolate; position: relative; }
+  .sv-hero__inner {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 381fr 710fr 271fr;
+    align-content: start;
+    padding-block: 168px 0;
+    min-height: 840px;
+  }
+  .sv-hero__rail { grid-column: 1; grid-row: 1; width: 400px; }
+  .sv-hero__tick { display: block; width: 16px; height: 1.5px; background: var(--c-accent); margin: 19px 0 0; }
+  .sv-hero__statement {
+    margin: 25px 0 0; width: 400px;
+    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.94);
+  }
+  .sv-hero__sub {
+    margin: 12px 0 0; width: 380px;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.62);
+  }
+  .sv-hero__pills {
+    list-style: none; margin: 20px 0 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: 8px; width: 400px;
+  }
+  .sv-hero__pills li {
+    padding: 7px 13px; border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    font-size: 11px; font-weight: var(--fw-medium); letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.88);
+  }
+  .sv-hero__rail .sv-ghost { margin-top: 32px; }
+
+  /* Masthead at 381 in the box, opening at 400 in the section — 232 below the
+     rail's own top, which is where the grid row places it. */
+  .sv-hero__mast { grid-column: 2; grid-row: 1; margin-top: 232px; }
+  .sv-hero__small {
+    display: block; margin: 20px 0 0 2px;
+    font-size: 66px; line-height: 70px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgba(255, 255, 255, 0.62);
+  }
+  .sv-hero__large {
+    margin: 2px 0 0; white-space: nowrap;
+    font-size: clamp(56px, 9.17vw, 132px); line-height: 140px; font-weight: var(--fw-semi);
+    letter-spacing: -0.055em; color: rgb(251, 251, 251);
+  }
+  .sv-hero__standfirst {
+    margin: 4px 0 0 6px; max-width: 520px;
+    font-size: var(--fs-item); line-height: 34px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.72);
+  }
+
+  .sv-console {
+    grid-column: 3; grid-row: 1;
+    width: 272px; margin-top: 14px; padding: 18px;
+    background: rgba(8, 8, 8, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+  .sv-console__head {
+    display: flex; justify-content: space-between;
+    font-size: 11px; font-weight: var(--fw-semi); letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.55);
+    padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .sv-console__ref { font-weight: var(--fw-medium); letter-spacing: 0.06em; }
+  .sv-console__rows { list-style: none; margin: 16px 0 0; padding: 0; }
+  /* The first row is the one being read; the rest are history. The export
+     dims them to .34 and that is the whole effect. */
+  .sv-console__rows li {
+    display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px;
+    font-size: 11px; line-height: 19px; letter-spacing: 0.02em;
+    opacity: 0.34;
+  }
+  .sv-console__rows li:first-child { opacity: 1; }
+  .sv-console__k { color: rgba(255, 255, 255, 0.92); }
+  .sv-console__v { color: rgba(255, 255, 255, 0.3); }
+  .sv-console__rows li:first-child .sv-console__v { color: rgba(255, 255, 255, 0.62); }
+  .sv-console__label {
+    margin: 16px 0 0; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 10px; font-weight: var(--fw-semi); letter-spacing: 0.22em;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .sv-console__status {
+    display: flex; align-items: center; gap: 9px; margin: 14px 0 0;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi); letter-spacing: 0.04em;
+    color: var(--c-white);
+  }
+  .sv-console__led { width: 7px; height: 7px; background: var(--c-accent); }
+  .sv-console__bar { margin-top: 20px; height: 3px; background: rgba(255, 255, 255, 0.14); }
+  .sv-console__bar span { display: block; height: 3px; background: var(--c-accent); }
+  .sv-console__note {
+    margin: 18px 0 0;
+    font-size: 11px; line-height: 18px; letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .sv-console__foot {
+    margin: 18px 0 0;
+    font-size: 10px; font-weight: var(--fw-medium); letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* ── banded card grids ──────────────────────────────────── */
+  /* NO min-height, for the same reason as the other two: the card grid was
+     placed absolutely at top 440 and could not grow its parent, so 1060 (or
+     1120) was a guess at how tall six cards of someone else's copy would be.
+     On four of the twelve it left up to 381px of nothing. The grid is in flow
+     now and the band is as tall as its cards. */
+  /* A TWO-COLUMN GRID, so the intro sits beside the heading instead of being
+     placed absolutely over the section and having the content pushed past it
+     with a hard margin. That margin was the artboard's 440px offset used as
+     flow spacing: it double-counted the heading's own height and left 224px of
+     nothing between a heading and its cards. Now the row is as tall as the
+     taller of the two and the cards simply follow it. */
+  .sv-band { position: relative; padding-block: 64px 80px; }
+  .sv-band, .sv-faq, .sv-proc {
+    display: grid; grid-template-columns: minmax(0, 1fr) 32.305%; column-gap: 40px;
+    align-content: start;
+  }
+  .sv-band__rule, .sv-proc__tick { grid-column: 1 / -1; }
+  .sv-band__head, .sv-proc__head { grid-column: 1; }
+  .sv-band__intro, .sv-proc__intro { grid-column: 2; grid-row: 2; }
+  .sv-cards, .sv-faq__list, .sv-proc__flow { grid-column: 1 / -1; }
+  .sv-band__rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+  .sv-band__head { padding-top: 24px; }
+  /* The heading hangs 7px left of the gutter, which is the optical inset the
+     export draws at this size. */
+  .sv-band__h {
+    margin: 44px 0 0 -7px; max-width: 880px;
+    font-size: clamp(42px, 5.84vw, 84px); line-height: 92px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  /* A long heading comes down a step.
+     Every block in these sections is absolutely placed at a fixed top — the
+     process steps at 310, the track at 380, the intro at 158 — and all of
+     those offsets assume the heading is one line, which the hand-built page's
+     "Ask first. Build second." is. A migrated page's heading is its own
+     section title: "Our User Experience Design Services and Solutions" set at
+     84px is three lines, 276px tall, and it printed straight through the
+     steps beneath it. At 52px the longest of them is two lines and clears
+     310 with room. */
+  .sv-band__h--long {
+    font-size: clamp(34px, 3.8vw, 52px); line-height: 60px;
+  }
+  .sv-band__intro {
+    margin-top: 52px;
+    font-size: 18px; line-height: 27px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.8);
+  }
+  .sv-cards {
+    list-style: none; margin: 92px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 30px;
+  }
+  /* The taller heading pushes the grid down on its own now, so --tall only
+     needs to take the 20px the artboard gave it back. */
+  .sv-cards--tall { margin-top: 92px; }
+  .sv-cards > :nth-child(n + 4) { margin-top: 40px; }
+  .sv-card { width: 100%; max-width: 434px; }
+  .sv-card__rule { display: block; height: 0.5px; background: var(--c-rule-soft); }
+  .sv-card__tag {
+    display: block; margin-top: 22px;
+    font-size: 11px; font-weight: var(--fw-medium); letter-spacing: 0.14em;
+    color: var(--c-ink-label);
+  }
+  .sv-card__name {
+    margin: 18px 0 0; max-width: 400px;
+    font-size: var(--fs-item); line-height: 30px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+  }
+  .sv-card__name--wide { max-width: 410px; line-height: 32px; }
+  .sv-card__body {
+    margin: 24px 0 0; max-width: 420px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.75);
+  }
+
+  /* ── featured work ────────────────────────────────────────
+     A GRID, so the section is as tall as its taller column.
+     It was min-height 620 with the right-hand column placed absolutely, and
+     an absolutely placed child does not grow its parent — so 620 was a guess
+     at how tall the copy would be, and every service's copy is a different
+     length. All twelve ended on 137-201px of nothing. */
+  /* +190px of padding for the same 40%. This band's content height varies with
+     how long the featured body runs — 449px on one service page, 513px on
+     another — so a single padding cannot land on exactly 40% for both. 190
+     splits the difference: +42% on the short one, +37% on the long one. */
+  .sv-feat {
+    position: relative; isolation: isolate; padding-block: 167px 175px;
+    display: grid; grid-template-columns: minmax(0, 67.695%) minmax(0, 32.305%);
+    align-content: start;
+  }
+  /* The featured project's photograph, full bleed across the band. */
+  .sv-feat__bg {
+    position: absolute; left: 50%; top: 0; z-index: -1;
+    width: 100vw; height: 100%; transform: translateX(-50%);
+    overflow: hidden; background: rgb(18, 18, 18);
+  }
+  /* The HERO exposure, not the card one. What sits on this band is an eyebrow,
+     a name at 84px, a short paragraph and a button — sparse, large and white,
+     with contrast to spare. Holding the picture back to 0.62 as well buried
+     the darker shots: The President's Club is a night interior and came out
+     as a black rectangle with a building faintly in it. */
+  .sv-feat__bg img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: var(--sweep-grade);
+  }
+  .sv-feat__bg::after { content: ''; position: absolute; inset: 0; }
+  /* An EVEN ink here, not the left-to-right ramp the anchor and the cases take.
+     This band puts an 84px client name in the left column and the body, the
+     meta list and the CTA in the right one, so there is type at both edges and
+     no quiet side to ramp towards. It lifts a little across the middle, which
+     is the only part of the picture nothing is sitting on. */
+  .sv-feat__bg::after {
+    z-index: 2;
+    background: linear-gradient(90deg,
+      rgba(11, 11, 11, 0.58) 0%,
+      rgba(11, 11, 11, 0.16) 46%,
+      rgba(11, 11, 11, 0.5) 100%);
+  }
+  .sv-feat > .sv-eyebrow { grid-area: 1 / 1; }
+  /* Capped short of the column at 67.695%. The heading is a block, so
+     without a cap its box runs the full 1362 and a client name longer than
+     "GYMBAIT.AI" would set type straight through the body copy beside it. */
+  .sv-feat__client {
+    grid-area: 2 / 1;
+    margin: 40px 0 0 -6px; max-width: 62%;
+    font-size: clamp(46px, 5.84vw, 84px); line-height: 86px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(251, 251, 251);
+  }
+  /* Spans both rows of the left column and starts 58px down, which is the
+     168px the artboard measured from the section top, less its 110 padding. */
+  .sv-feat__col { grid-area: 1 / 2 / span 2 / auto; margin-top: 58px; }
+  .sv-feat__body {
+    font-size: 18px; line-height: 27px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.9);
+  }
+  .sv-feat__meta { margin: 30px 0 0; display: flex; flex-direction: column; gap: 18px; }
+  .sv-feat__meta dt {
+    font-size: 11px; font-weight: var(--fw-medium); letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .sv-feat__meta dd {
+    margin: 4px 0 0;
+    font-size: 18px; line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.9);
+  }
+  .sv-feat__col .sv-ghost { margin-top: 32px; }
+
+  /* ── S1 frame ───────────────────────────────────────────── */
+  /* In the hero rail, in flow. The rail is 400 wide, so the failure state is
+     set at a size that takes three or four lines there rather than one line
+     across the page. It is a sentence to read, not a banner. */
+  .sv-frame__h {
+    margin: 22px 0 0; max-width: 400px;
+    font-size: 30px; line-height: 38px; font-weight: var(--fw-semi);
+    letter-spacing: -0.03em; color: rgb(251, 251, 251);
+  }
+  /* flex-start, NOT baseline. The value is 24/28 and its label is 12/17, so
+     aligning their first baselines dropped the label 9px below the value's
+     cap and the pair read as misaligned. Starting both boxes at the same top
+     puts the two cap heights within a pixel of each other, because the
+     half-leading above each first line is nearly the same at both sizes. */
+  .sv-frame__proof {
+    display: flex; align-items: flex-start; gap: 12px; margin: 26px 0 0;
+    padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  /* The value can be a client name rather than a figure, and some of those
+     are two words, so this wraps rather than being forced onto one line. */
+  .sv-frame__proof b {
+    max-width: 180px;
+    font-size: 24px; line-height: 28px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-accent);
+  }
+  .sv-frame__proof i {
+    font-style: normal; max-width: 260px;
+    font-size: var(--fs-micro); line-height: 17px; font-weight: var(--fw-medium);
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ── S2 cost ────────────────────────────────────────────── */
+  /* SECTION RHYTHM, 64/80. Every band on this page carried 96-130px of its
+     own padding, so a boundary stacked two of them and came to 190-250px of
+     nothing between the last line of one section and the eyebrow of the next.
+     Measured with the reveals forced in, that was the ONLY thing still making
+     the page read as empty — the earlier pass closed the holes INSIDE
+     sections, not the ones between them. */
+  .sv-cost { padding-block: 64px 80px; }
+  .sv-cost__h {
+    margin: 26px 0 0 -4px; max-width: 900px;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-cost__body {
+    margin: 24px 0 0; max-width: 707px;
+    font-size: 20px; line-height: 32px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.78);
+  }
+
+  /* ── S3 engagement ──────────────────────────────────────── */
+  .sv-eng { padding-block: 64px 80px; }
+  .sv-eng__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-eng__list {
+    list-style: none; margin: 56px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px 30px;
+  }
+  .sv-eng__phase { display: flex; flex-direction: column; min-width: 0; }
+  .sv-eng__rule { display: block; height: 2px; background: rgba(153, 152, 149, 0.4); }
+  .sv-eng__phase:first-child .sv-eng__rule { background: var(--c-accent); }
+  .sv-eng__n {
+    margin-top: 18px;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; color: rgb(20, 20, 20);
+  }
+  .sv-eng__dur {
+    margin-top: 8px;
+    font-size: var(--fs-micro); font-weight: var(--fw-medium);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .sv-eng__name {
+    margin: 22px 0 0;
+    font-size: 26px; line-height: 32px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-eng__delivers {
+    margin: 14px 0 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.75);
+  }
+
+  /* ── S4 anchor ──────────────────────────────────────────── */
+  /* No max-width here any more: this box is the positioning ancestor for the
+     full-bleed ground, so it has to span the wrap. The cap moved to __inner. */
+  /* 40% taller, the same way .icz gets there: the padding carries it, so the
+     extra air is split above and below the copy. 373px of content + 351px of
+     padding = 724px, against 517px before. */
+  .sv-anchor { position: relative; isolation: isolate; padding-block: 167px 184px; }
+  .sv-anchor__inner { max-width: 820px; }
+  /* Full bleed. 100vw off the band's own centre, which is the viewport's
+     centre because .wrap is a centred max-width box. Same move as .icz__ground
+     on the industry pages, so a case looks the same wherever it appears. */
+  .sv-anchor__bg {
+    position: absolute; left: 50%; top: 0; z-index: -1;
+    width: 100vw; height: 100%; transform: translateX(-50%);
+    overflow: hidden; background: rgb(18, 18, 18);
+  }
+  .sv-anchor__bg img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: var(--sweep-grade);
+  }
+  .sv-anchor__bg::after { content: ''; position: absolute; inset: 0; }
+  /* Steeper than --dusk-ink, for the same reason as .icz__shot::after: the
+     copy is capped at 820px inside a 100vw band, so the token's ramp would be
+     spent long before it reached the text. */
+  .sv-anchor__bg::after {
+    z-index: 2;
+    background: linear-gradient(90deg,
+      rgba(11, 11, 11, 0.72) 0%,
+      rgba(11, 11, 11, 0.42) 42%,
+      rgba(11, 11, 11, 0.08) 78%,
+      rgba(11, 11, 11, 0) 100%);
+  }
+  .sv-anchor__client {
+    margin: 26px 0 0 -5px;
+    font-size: clamp(40px, 5vw, 72px); line-height: 1.06; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(251, 251, 251);
+  }
+  .sv-anchor__sit {
+    margin: 26px 0 0;
+    font-size: 20px; line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.9);
+  }
+  .sv-anchor__did { list-style: none; margin: 28px 0 0; padding: 0; }
+  .sv-anchor__did li {
+    position: relative; margin-top: 12px; padding-left: 22px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.72);
+  }
+  .sv-anchor__did li::before {
+    content: ''; position: absolute; left: 0; top: 10px;
+    width: 8px; height: 2px; background: var(--c-accent);
+  }
+  /* .sv-anchor__out IS DELIBERATELY ABSENT, same as .icz__out on the industry
+     pages: every service `anchor.outcome` was a "[ NEEDS THE REAL FIGURE ]"
+     placeholder and all of them were removed, so the rule matched nothing.
+     THE MARKUP IS STILL WIRED — a real outcome renders again, unstyled, which
+     is visible enough to catch. Restore this with the first real figure:
+       margin: 30px 0 0; padding-top: 24px;
+       border-top: 1px solid rgba(255, 255, 255, 0.18);
+       font-size: 22px; line-height: 32px; font-weight: var(--fw-semi);
+       letter-spacing: var(--ls-item); color: var(--c-accent); */
+  .sv-anchor__cta { margin-top: 34px; }
+
+  /* ── S5 scope ───────────────────────────────────────────── */
+  .sv-scope { padding-block: 64px 80px; }
+  .sv-scope__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-scope__cols {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 48px 60px; margin-top: 52px;
+  }
+  .sv-scope__col-h {
+    margin: 0 0 20px; padding-bottom: 14px;
+    border-bottom: 2px solid var(--c-accent);
+    font-size: 22px; line-height: 1; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-scope__col-h--out { border-bottom-color: rgba(153, 152, 149, 0.5); }
+  .sv-scope__list { list-style: none; margin: 0; padding: 0; }
+  .sv-scope__list li {
+    padding: 13px 0; border-bottom: 1px solid rgba(153, 152, 149, 0.28);
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.82);
+  }
+  .sv-scope__list--out li { color: rgba(20, 20, 20, 0.52); }
+
+  /* ── S6 shape ───────────────────────────────────────────── */
+  .sv-shape { padding-block: 64px 80px; }
+  .sv-shape__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-shape__grid {
+    margin: 52px 0 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 44px 30px;
+  }
+  .sv-shape__grid dt {
+    padding-bottom: 14px; border-bottom: 1px solid rgba(153, 152, 149, 0.4);
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .sv-shape__grid dd {
+    margin: 18px 0 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.82);
+  }
+  .sv-shape__list { list-style: none; margin: 0; padding: 0; }
+  .sv-shape__list li { margin-top: 12px; }
+  .sv-shape__list li:first-child { margin-top: 0; }
+  .sv-shape__list b { display: block; font-weight: var(--fw-semi); color: var(--c-black); }
+
+  /* ── S8 next ────────────────────────────────────────────── */
+  .sv-next { padding-block: 64px 80px; }
+  .sv-next__h {
+    margin: 26px 0 0 -4px; max-width: 62%;
+    font-size: clamp(32px, 3.6vw, 48px); line-height: 1.16; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-next__cols {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 48px 60px; margin-top: 52px;
+  }
+  .sv-next__col-h {
+    margin: 0 0 10px;
+    font-size: var(--fs-micro); font-weight: var(--fw-semi);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .sv-next__list { list-style: none; margin: 0; padding: 0; }
+  .sv-next__list li { border-bottom: 1px solid rgba(153, 152, 149, 0.28); }
+  .sv-next__list a { display: block; padding: 18px 0; }
+  .sv-next__list b {
+    display: block;
+    font-size: 20px; line-height: 26px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .sv-next__list span {
+    display: block; margin-top: 5px;
+    font-size: var(--fs-body); line-height: 22px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.6);
+  }
+  .sv-next__list a:hover b { color: rgb(90, 90, 90); }
+
+  /* ── process ────────────────────────────────────────────── */
+  /* NO min-height. It was 1000px, the export's artboard, and the artboard
+     assumes a closing line that only ONE of the twelve services actually
+     writes — so the other eleven reserved ~310px for a paragraph that was
+     never going to arrive and ended on a void.
+     The steps and the closing are in flow now, so the section is as tall as
+     what it contains and the hole cannot come back when a field is optional.
+     (The steps were absolute precisely because an absolutely placed child does
+     not grow its parent; min-height was the workaround for that, not a
+     design.) */
+  .sv-proc { position: relative; padding-block: 64px 80px; }
+  .sv-proc__flow { position: relative; margin-top: 72px; }
+  .sv-proc__tick { display: block; width: 16px; height: 1.5px; background: var(--c-rule-strong); }
+  .sv-proc__head { padding-top: 20px; }
+  .sv-proc__intro {
+    margin-top: 48px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.72);
+  }
+  /* 70px below the steps' own top, which is where the label pair ends and the
+     name begins — the same crossing point the artboard drew at 380 against
+     310. Measured from the steps now, so it follows them. */
+  .sv-proc__track {
+    position: absolute; left: 1px; right: 0; top: 70px; height: 2px;
+    background: rgba(153, 152, 149, 0.35);
+  }
+  .sv-proc__track span {
+    display: block; height: 2px; background: var(--c-accent);
+    width: calc(100% / var(--n, 4));
+  }
+  .sv-proc__steps {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); column-gap: 30px;
+  }
+  .sv-proc__when {
+    display: block;
+    font-size: 11px; font-weight: var(--fw-semi); letter-spacing: 0.16em; color: rgb(20, 20, 20);
+  }
+  .sv-proc__phase {
+    display: block; margin-top: 9px;
+    font-size: 11px; font-weight: var(--fw-medium); letter-spacing: 0.16em; color: var(--c-ink-label);
+  }
+  /* The steps' text resumes 102 below their label pair, which is where the
+     accent track crosses. */
+  .sv-proc__name {
+    margin: 102px 0 0;
+    font-size: 32px; line-height: 38px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .sv-proc__body {
+    margin: 16px 0 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: -0.045em; color: rgba(20, 20, 20, 0.75);
+  }
+  .sv-proc__closing {
+    margin: 96px 0 0 -5px; max-width: 1100px;
+    font-size: 38px; line-height: 50px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+
+  /* ── receipts ───────────────────────────────────────────── */
+  .sv-rec { position: relative; padding-block: 90px 0; min-height: 760px; }
+  .sv-rec__tick { display: block; width: 16px; height: 1.5px; background: rgba(180, 174, 174, 0.7); }
+  .sv-rec__head { padding-top: 20px; }
+  .sv-rec__h {
+    margin: 46px 0 0 -6px; max-width: 700px;
+    font-size: clamp(38px, 3.89vw, 56px); line-height: 62px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(251, 251, 251);
+  }
+  .sv-rec__intro {
+    position: absolute; left: 67.695%; top: 166px; width: 32.305%;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.75);
+  }
+  .sv-rec__rule { position: absolute; left: 1px; right: 0; top: 360px; height: 0.5px; background: rgba(255, 255, 255, 0.22); }
+  .sv-rec__note {
+    position: absolute; left: 1px; top: 382px;
+    font-size: 11px; font-weight: var(--fw-medium); letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .sv-rec__stats {
+    list-style: none; margin: 0; padding: 0;
+    position: absolute; left: 1px; right: 0; top: 470px;
+    display: grid; grid-template-columns: repeat(3, 420fr); column-gap: 51px;
+  }
+  .sv-rec__rule2 { display: block; height: 1px; background: rgba(255, 255, 255, 0.28); }
+  .sv-rec__n { display: block; margin-top: 26px; color: rgb(251, 251, 251); }
+  .sv-rec__n b { font-size: 84px; line-height: 86px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); }
+  .sv-rec__n i { font-size: 36px; line-height: 86px; font-weight: var(--fw-medium); font-style: normal; letter-spacing: var(--ls-display); }
+  .sv-rec__body {
+    display: block; margin-top: 18px; max-width: 400px;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ── faq ────────────────────────────────────────────────── */
+  /* min-height 940 was the last artboard height on this page — the same
+     fault as the others, a guess at how tall somebody else's FAQ would be. */
+  .sv-faq { position: relative; padding-block: 64px 80px; }
+  .sv-faq .sv-band__head { padding-top: 24px; }
+  .sv-faq .sv-band__h { line-height: 86px; }
+  .sv-faq__list { margin-top: 92px; }
+
+
+  /* ── below the design grid ──────────────────────────────
+     Only 1440 and the documented mobile stack are drawn. Everything that is
+     absolutely placed against the 1362 box returns to flow here; the three
+     card grids fall to two columns and then one. */
+  @media (max-width: 1360px) {
+    .sv-hero__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 130px 72px; row-gap: 40px; }
+    /* min-width: 0, because a grid item's default `auto` floors its track at
+       its own min-content width. Something in this hero measures 319px at its
+       narrowest, so the 1fr column grew to 319 inside a 280px page and the
+       whole hero -- eyebrow, mast, standfirst, chips -- painted 39px past the
+       right gutter on a 320 phone, inside a section that clips. The track is
+       allowed to shrink and the content wraps instead. */
+    .sv-hero__rail, .sv-hero__mast, .sv-console { grid-column: 1; grid-row: auto; margin-top: 0; width: auto; max-width: 520px; min-width: 0; }
+    .sv-hero__statement, .sv-hero__sub, .sv-hero__pills { width: auto; max-width: 460px; }
+    .sv-hero__large { white-space: normal; line-height: 1.02; }
+    .sv-hero__small { line-height: 1.05; }
+
+    .sv-cost, .sv-eng, .sv-anchor, .sv-scope, .sv-shape, .sv-next { padding-block: 64px; }
+    /* The copy fills the width at this size rather than sitting in the left
+       half, so the ink stops being a left-to-right ramp and just holds it. */
+    .sv-anchor__bg::after {
+      background: linear-gradient(180deg,
+        rgba(11, 11, 11, 0.84) 0%,
+        rgba(11, 11, 11, 0.78) 100%);
+    }
+    .sv-eng__h, .sv-scope__h, .sv-shape__h, .sv-next__h { max-width: 100%; }
+    .sv-frame__h { font-size: 26px; line-height: 33px; }
+    .sv-band, .sv-band--tall, .sv-proc, .sv-rec, .sv-faq, .sv-feat {
+      min-height: 0; padding-block: 64px 72px;
+    }
+    /* ONE COLUMN, WHICH IS WHAT THE HEADINGS WERE MISSING.
+       These sections are a two-column grid, `minmax(0, 1fr) 32.305%`, and the
+       second column was still being reserved at phone widths. At 390 that
+       leaves the heading column 197px of a 350px measure — so while every
+       other heading on the page ran the full width, the three band headings
+       broke one and two words to a line inside a column half the page wide,
+       with the other half empty beside them. Nothing occupies that column
+       here: the intro is released below and stacks. */
+    .sv-band, .sv-faq, .sv-proc { grid-template-columns: minmax(0, 1fr); column-gap: 0; }
+    .sv-band__head, .sv-proc__head, .sv-band__intro, .sv-proc__intro {
+      grid-column: 1 / -1; grid-row: auto;
+    }
+    .sv-band__h { line-height: 1.08; margin-left: 0; }
+    /* The FAQ heading needs saying twice. Its own rule above is
+       `.sv-faq .sv-band__h`, two classes, and it outranks the one-class rule
+       on the line above — so while every other band heading came down to
+       1.08 here, the FAQ kept the design's flat 86px leading against a font
+       that had dropped to 42px. Two lines of "Asked on real calls." sat 86px
+       apart with a hole between them. */
+    .sv-faq .sv-band__h { line-height: 1.08; }
+    .sv-band__intro, .sv-proc__intro, .sv-rec__intro, .sv-feat__col {
+      position: static; width: auto; max-width: 560px; margin-top: 28px; left: auto; top: auto;
+    }
+    /* The featured section's two columns stack here. Its grid areas have to be
+       released with them: left in place they kept the body, the meta and the
+       "View Project" link in a 32%-wide second column, which at 390 is 126px —
+       the link ran off the side of the screen and the client name set straight
+       through the body copy. */
+    .sv-feat { grid-template-columns: minmax(0, 1fr); }
+    .sv-feat > .sv-eyebrow, .sv-feat__client, .sv-feat__col { grid-area: auto; }
+    .sv-feat__client { max-width: 100%; }
+    .sv-cards, .sv-cards--tall, .sv-proc__steps, .sv-rec__stats {
+      position: static; margin-top: 48px; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 30px; row-gap: 40px;
+    }
+    /* The steps carry their own spacing here, and the track is a device for
+       the four-across row — across two columns it just rules through them. */
+    .sv-proc__flow { margin-top: 0; }
+    .sv-proc__track { display: none; }
+    .sv-cards > :nth-child(n + 4) { margin-top: 0; }
+    .sv-card, .sv-card__name, .sv-card__body { width: auto; max-width: none; }
+    .sv-proc__track, .sv-rec__rule { position: static; margin-top: 40px; }
+    .sv-proc__name { margin-top: 20px; }
+    .sv-proc__closing, .sv-rec__note { position: static; margin-top: 40px; max-width: 780px; }
+    .sv-proc__closing { font-size: var(--fs-stat); line-height: 1.2; }
+    .sv-feat__client, .sv-rec__h { line-height: 1.06; margin-left: 0; }
+    .sv-faq__list { margin-top: 48px; }
+  }
+
+  /**
+   * THE MAST'S FLOOR IS TOO BIG FOR A SMALL PHONE.
+   *
+   * font-size is clamp(56px, 9.17vw, 132px), so below about 611px it is pinned
+   * at 56 and stops responding. The masts are single words -- "development",
+   * "transformation" -- which cannot wrap, and at 56px "development" measures
+   * 319px inside a 280px page on a 320 screen. It painted straight off the
+   * right edge of a section that clips, so the word lost its tail.
+   *
+   * 470px, not 760: between 470 and 611 the 56px floor fits, and at 470 12vw
+   * is 56.4 -- so this hands over to the clamp with no step in it. 12vw, not a
+   * second px floor, because the constraint is the width of the screen and the
+   * longest mast on the site is 14 characters.
+   */
+  @media (max-width: 470px) {
+    .sv-hero__large { font-size: 12vw; }
+  }
+
+  @media (max-width: 760px) {
+    /**
+     * THE 62% MEASURE IS A DESKTOP RATIO, AND IT COLLAPSES ON A PHONE.
+     *
+     * Every section heading on this template caps at 62% of its column. On the
+     * 1440 artboard that is 844px and holds a heading on two lines, which is
+     * what it was drawn for. A percentage shrinks with its container though,
+     * and at 390 the same rule gives 217px of a 350px column -- so 38px type
+     * breaks one word per line: "Healthcare / app / development, / end to end"
+     * beside a paragraph using the full width.
+     *
+     * A measure belongs to the text, not to the container, so below the fold
+     * of the artboard it is simply released: on one column there is nothing to
+     * hold the heading away from, and the column is already the measure.
+     * Nothing above 760px changes.
+     */
+    .sv-feat__client,
+    .sv-eng__h,
+    .sv-scope__h,
+    .sv-shape__h,
+    .sv-next__h {
+      max-width: none;
+    }
+    .sv-cards, .sv-cards--tall, .sv-proc__steps, .sv-rec__stats { grid-template-columns: 1fr; }
+
+    /**
+     * BALANCED, NOW THAT THE MEASURE IS RIGHT.
+     *
+     * Once a heading has the full column it wraps where the words happen to
+     * run out, which on a phone is usually a long first line and two words
+     * on the second. `balance` evens the lines instead, without changing how
+     * many there are or the size of anything — the browser picks the break,
+     * we do not hand-tune one per heading.
+     *
+     * HERE AND NOT ABOVE 760: at desktop widths almost every one of these is
+     * a single line, so balancing would be a no-op on most and a change to a
+     * designed break on the rest. The phone is where they all wrap.
+     */
+    .sv-band__h,
+    .sv-cost__h,
+    .sv-eng__h,
+    .sv-scope__h,
+    .sv-shape__h,
+    .sv-next__h,
+    .sv-feat__client {
+      text-wrap: balance;
+    }
+  }
+</style>

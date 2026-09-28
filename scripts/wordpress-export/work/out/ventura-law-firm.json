@@ -1,0 +1,73 @@
+{
+  "slug": "ventura-law-firm",
+  "title": "Ventura Law Firm",
+  "date": "2023-02-28",
+  "pills": [
+    "RESEARCH",
+    "IDEATION",
+    "EXPLORATION"
+  ],
+  "headline": "Ventura Law Firm",
+  "tagline": "A leader in car accident cases in Connecticut & Tri-State Area \u2014 Serving community since 1957.",
+  "about": "Ventura Law has been a preeminent legal resource in Connecticut and the Tri-State Area since 1957. With a long-standing tradition of excellence, their attorneys have provided exemplary guidance to businesses, public entities, and individuals. Boasting a wealth of experience and knowledge, Ventura Law competes at the same level as large national and international firms. Their attorneys are highly respected in their field and have set a standard for the legal profession.",
+  "facts": [
+    {
+      "k": "Expertise",
+      "v": "Design, Interaction and Development"
+    },
+    {
+      "k": "Platform",
+      "v": "Web, IOS, Android"
+    },
+    {
+      "k": "Deliverables",
+      "v": "UI, UX, Strategy, Concept and Development"
+    },
+    {
+      "k": "Technology",
+      "v": "Wordpress, Laravel, React Native"
+    }
+  ],
+  "blocks": [
+    {
+      "heading": "Challenges",
+      "lead": "Ventura Law's old branding and web presence failed to showcase the firm's vibrant, captivating qualities. The website's aesthetic and structure were outdated. Although the logo featured blue, its presence throughout the website created a formal atmosphere that didn't represent the firm's energy and the knowledge of its",
+      "body": ""
+    },
+    {
+      "heading": "Results",
+      "lead": "At Roars, our objective was to create a website that was as efficient and responsive as the firm itself. To accomplish this, we designed an uncomplicated and user-friendly interface with easy to use navigation tools. We featured the essentials and provided a direct path for users to explore the site right away. We also",
+      "body": "At Roars, we are proud to offer our expertise in creating websites for law firms. Our work with Ventura Law exemplifies how our knowledge of the legal landscape allowed us to quickly understand the firm's goals and the needs of their clients. Our design team then crafted Information Architecture and Interface Design Wi"
+    }
+  ],
+  "body": "Ventura Law has benefitted from our expertise in accessibility to ensure their website is compliant with web accessibility laws and policies. Our team has applied the latest accessibility best practices to design a multi lingual website, alongside rigorous accessibility testing.\n\n## Lawyer Photography\n\n## Lawyer's Bio",
+  "hero": "/wp-content/uploads/2023/02/venturalaw-homepage.png",
+  "hero_alt": "",
+  "inner_image": "",
+  "gallery": [
+    {
+      "src": "/wp-content/uploads/2023/02/ventura-submenu.png",
+      "alt": ""
+    },
+    {
+      "src": "/wp-content/uploads/2023/02/lawyer-bio.png",
+      "alt": ""
+    }
+  ],
+  "showcase": [
+    {
+      "src": "/wp-content/uploads/2023/02/lawyer-bio-ventura-law.png",
+      "alt": ""
+    },
+    {
+      "src": "/wp-content/uploads/2023/02/ventura-law-footer.png",
+      "alt": ""
+    }
+  ],
+  "screens": [],
+  "links": [
+    "https://www.venturalaw.com/"
+  ],
+  "seo_title": "Ventura Law \u2014 The Accident Law Firm",
+  "seo_desc": "Ventura Law firm is a leader in car accident cases in Connecticut and the tri-state area. This case study focuses on the design of the firm\u2019s website and the challenges they faced in developing a user-friendly and efficient experience for their clients. Learn how Ventura Law Firm overcame their challenges and developed a website that helped them gain new clients, increase conversions, and grow their business."
+}

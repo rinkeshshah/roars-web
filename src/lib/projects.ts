@@ -1,5 +1,7 @@
+import { HELD_BACK_WORK } from './held-back.mjs'
+
 /**
- * The 23 case studies: inventory slug to client name.
+ * The 24 case studies: inventory slug to client name.
  *
  * Slugs are from docs/URL-INVENTORY.csv. Client names are from the design
  * brief's own list (docs/briefs/work-index-at-real-scale.md), which names them
@@ -13,17 +15,28 @@
 export interface Project {
   slug: string
   client: string
+  /**
+   * Featured work gets the full-height row on /work/. FIVE, because that is
+   * what `Roars v2 - Projects` draws and names — with their dates and their
+   * images. The rest are real projects with no date written anywhere, and a
+   * guessed date on a case study is a lie with a number in it.
+   */
+  featured?: true
+  /** As the export prints it. Only the five it names have one. */
+  date?: string
+  /** Key into WORK in src/lib/media.ts. Nine of the 23 have art. */
+  image?: string
 }
 
 export const PROJECTS: Project[] = [
-  { slug: 'warehouse-compliance-checklist-app', client: 'Snowman Logistics' },
-  { slug: 'parqly-parking-solution', client: 'Parqly' },
-  { slug: 'concierge-loyalty-program', client: 'Concierge Loyalty' },
-  { slug: 'advisee', client: 'Advisee' },
-  { slug: 'companyguru', client: 'Company Guru' },
-  { slug: 'gymbait', client: 'GymBait.AI' },
-  { slug: 'ventura-law-firm', client: 'Ventura Law Firm' },
-  { slug: 'gisaid-health-tech', client: 'GISAID' },
+  { slug: 'warehouse-compliance-checklist-app', client: 'Snowman Logistics', featured: true, date: '18 Feb 2026', image: 'snowman' },
+  { slug: 'parqly-parking-solution', client: 'Parqly', featured: true, date: '15 Oct 2025', image: 'parqly' },
+  { slug: 'concierge-loyalty-program', client: 'Concierge Loyalty', featured: true, date: '09 May 2025', image: 'concierge' },
+  { slug: 'advisee', client: 'Advisee', image: 'advisee' },
+  { slug: 'companyguru', client: 'Company Guru', image: 'companyguru' },
+  { slug: 'gymbait', client: 'GymBait.AI', featured: true, date: '02 Jul 2025', image: 'gymbait' },
+  { slug: 'ventura-law-firm', client: 'Ventura Law Firm', image: 'ventura' },
+  { slug: 'gisaid-health-tech', client: 'GISAID', featured: true, date: '21 Mar 2024', image: 'gisaid' },
   { slug: 'the-presidents-club', client: 'The President’s Club' },
   { slug: '411drives-on-demand-car-loan-app', client: '411Drives' },
   { slug: 'gypsy', client: 'Gypsy' },
@@ -31,7 +44,7 @@ export const PROJECTS: Project[] = [
   { slug: 'flowrow-fitness-app', client: 'Flowrow' },
   { slug: 'super-social', client: 'Super Social' },
   { slug: 'community-social-residential-community-app', client: 'Community Social' },
-  { slug: 'club-social', client: 'Club Social' },
+  { slug: 'club-social', client: 'Club Social', image: 'clubSocial' },
   { slug: 'tanishq-data-analytics', client: 'Tanishq' },
   { slug: 'les-concierges', client: 'Les Concierges' },
   { slug: 'reward-butler', client: 'Reward Butler' },
@@ -39,7 +52,65 @@ export const PROJECTS: Project[] = [
   { slug: 'onus', client: 'Onus' },
   { slug: 'counter-cabinet', client: 'Counter Cabinet' },
   { slug: 'go-champions-go', client: 'Go Champions Go' },
+  /* The twenty-fourth, added 16 Sep. It was never in URL-INVENTORY.csv and
+     never in the WordPress export, but it is live and indexed on production
+     and the live travel page links it, so at cutover it would have 404'd. See
+     the header of its content file for what is and is not known about it. */
+  { slug: 'the-revolver-life-concierge-app', client: 'The Revolver Life' },
 ]
 
 export const clientFor = (slug: string): string | undefined =>
   PROJECTS.find((p) => p.slug === slug)?.client
+
+/**
+ * The five the export names, in its order. Kept because the order is editorial
+ * — Feb 2026, Jul 2025, Oct 2025, May 2025, Mar 2024 is not chronological —
+ * and because those five are the ones with a date and an image.
+ */
+export const FEATURED_ORDER = [
+  'warehouse-compliance-checklist-app',
+  'gymbait',
+  'parqly-parking-solution',
+  'concierge-loyalty-program',
+  'gisaid-health-tech',
+]
+
+/**
+ * NOT LISTED ON /work/, AND noindex ON THEIR OWN URL.
+ *
+ * Eleven case studies are shown; twelve are held back and one is off the grid
+ * but still indexed (see OFF_GRID below). The held-back twelve are still
+ * BUILT — src/lib/held-back.mjs carries the list and the reasoning, and it
+ * lives there rather than here because astro.config.mjs needs the same list to
+ * keep those URLs out of the sitemap and cannot import this module.
+ */
+const HELD_BACK = new Set(HELD_BACK_WORK)
+
+/** True for a case study that is built but not offered. */
+export const isHeldBack = (slug: string): boolean => HELD_BACK.has(slug)
+
+/**
+ * OFF THE GRID, BUT INDEXED. A third state, and a different one from held back.
+ *
+ * Held back means noindex and out of the sitemap: those twelve are deliberately
+ * not offered to anybody. This is the opposite problem. The Revolver Life is a
+ * live, indexed URL with backlinks that we want search engines to keep, so
+ * noindex is exactly the wrong answer for it — but it has no images and no real
+ * date, and /work/ is a grid of photographs with a year on each card. Putting
+ * it there means a card with an empty plate and "2026" on it, where 2026 is the
+ * date it joined this site rather than the date of the work.
+ *
+ * So it keeps its page, its canonical, its place in the sitemap, and the links
+ * from the travel sector page and from prev/next. It just does not take a slot
+ * in a grid it has nothing to show in. When the screens and the real year turn
+ * up, this list goes back to being empty.
+ */
+const OFF_GRID = new Set(['the-revolver-life-concierge-app'])
+
+/** True for a case study that is indexed and linkable but not on /work/. */
+export const isOffGrid = (slug: string): boolean => OFF_GRID.has(slug)
+
+/** The case studies /work/ actually lists, in the same order as PROJECTS. */
+export const LISTED_PROJECTS = PROJECTS.filter(
+  (p) => !HELD_BACK.has(p.slug) && !OFF_GRID.has(p.slug),
+)

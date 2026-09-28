@@ -95,10 +95,99 @@ for want in "${NEEDED[@]}"; do
 done
 
 # ------------------------------------------------------------- taxonomies
+#
+# EVERY registered taxonomy, not just the core three.
+#
+# The core three miss the one that matters. /resource/staff-picks/ and
+# /resource/tools/ are CATEGORY ARCHIVES over the free_stuff type, each with
+# its own child items, and that taxonomy is a custom one. It is not
+# `categories`, so an export that pulls only core terms cannot see either the
+# archives or what is filed under them.
+#
+# This is also why both are missing from docs/URL-INVENTORY.csv. That came
+# from the six Squirrly sitemaps, and those carry the fifteen
+# /resources/<slug>/ items and no taxonomy archives at all.
 
-for tax in categories tags users; do
-  fetch_all "$tax" "$tax" || echo "==> $tax unavailable"
+echo "==> taxonomies.json"
+"${CURL[@]}" "$API/taxonomies" -o "$OUT/taxonomies.json"
+
+mapfile -t TAXONOMIES < <(
+  python3 - "$OUT/taxonomies.json" <<'PY'
+import json, sys
+tax = json.load(open(sys.argv[1]))
+for slug, t in tax.items():
+    types = ",".join(t.get("types") or [])
+    print(f"{slug}\t{t.get('rest_base') or slug}\t{types}")
+PY
+)
+
+echo "Registered taxonomies:"
+printf '  %s\n' "${TAXONOMIES[@]}"
+echo
+
+for row in "${TAXONOMIES[@]}"; do
+  slug="${row%%$'\t'*}"
+  rest="$(printf '%s' "$row" | cut -f2)"
+  fetch_all "$rest" "tax-$slug" || echo "==> $slug unavailable"
 done
+
+fetch_all users users || echo "==> users unavailable"
+
+# --------------------------------------------- items filed under each term
+#
+# The child list for each archive, which is what the migration is actually
+# missing. For every term of every taxonomy attached to free_stuff, pull the
+# items carrying it, one file per term named for the term slug, so the
+# mapping is readable without re-deriving it.
+
+echo
+echo "==> free_stuff items by term"
+mkdir -p "$OUT/free_stuff-by-term"
+
+python3 - "$OUT" "$API" "${BASIC_USER:-}" "${BASIC_PASS:-}" <<'PY'
+import json, os, sys, glob, urllib.request, base64
+
+out, api, user, pw = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+
+tax_file = os.path.join(out, "taxonomies.json")
+if not os.path.exists(tax_file):
+    print("  no taxonomies.json, skipping"); raise SystemExit(0)
+
+taxes = json.load(open(tax_file))
+# Only the taxonomies actually attached to the free_stuff type.
+wanted = {s: t for s, t in taxes.items() if "free_stuff" in (t.get("types") or [])}
+if not wanted:
+    print("  NOTHING is attached to free_stuff. Either the type is named")
+    print("  differently or its taxonomy is not REST-exposed; in that case")
+    print("  the term list needs a database route, like any hidden type.")
+    raise SystemExit(0)
+
+def get(url):
+    req = urllib.request.Request(url)
+    if user:
+        tok = base64.b64encode(f"{user}:{pw}".encode()).decode()
+        req.add_header("Authorization", f"Basic {tok}")
+    with urllib.request.urlopen(req, timeout=60) as r:
+        return json.load(r)
+
+for slug, t in wanted.items():
+    rest = t.get("rest_base") or slug
+    print(f"  taxonomy {slug} (rest_base {rest})")
+    terms = []
+    for f in sorted(glob.glob(os.path.join(out, f"tax-{slug}", "page-*.json"))):
+        terms += json.load(open(f))
+    for term in terms:
+        try:
+            items = get(f"{api}/free_stuff?per_page=100&{rest}={term['id']}&_embed=1")
+        except Exception as e:
+            print(f"    {term['slug']}: FAILED {e}")
+            continue
+        path = os.path.join(out, "free_stuff-by-term", f"{slug}--{term['slug']}.json")
+        json.dump({"taxonomy": slug, "term": term, "items": items}, open(path, "w"), indent=2)
+        print(f"    {term['slug']}: {len(items)} item(s) -> {os.path.basename(path)}")
+        for it in items:
+            print(f"      {it.get('link')}")
+PY
 
 # ---------------------------------------------------------------- report
 

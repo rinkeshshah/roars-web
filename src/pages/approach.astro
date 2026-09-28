@@ -1,41 +1,120 @@
 ---
 /**
- * /approach/ — path matches the spec exactly, no correction needed.
- * Copy verbatim from design/specs/Approach.md.
+ * /approach/ — path matches the export's own name; no correction needed.
+ *
+ * Built against design/prototypes/Roars v2 - Approach.dc.html, measured with
+ * scripts/export-geometry.mjs. Canvas 1440x5545: Header 0-780 (dark, grained),
+ * Process 780-3020 (white), Track record 3020-3660 (#F5F5F5), Practices
+ * 3660-4440 (white), Footer 4440.
+ *
+ * Coordinates in the comments are SECTION-relative as the export authors
+ * them; the content box starts at the 39px gutter, so a child at x503 sits
+ * 464 into the box.
+ *
+ * The header is the same lockup as /about-us/ — something in the rail, a
+ * masthead at 450, a caption at 696, a fourth column on the right — but the
+ * fourth column differs (a trust row at 929 there, a phase list at 1050 here)
+ * and so does the rail. Sharing a component would mean a prop per difference,
+ * so these two share a structure and not code.
  */
-import MarketingPage from '../components/MarketingPage.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import TopBar from '../components/TopBar.astro'
+import NavOverlay from '../components/NavOverlay.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import GrainField from '../components/GrainField.astro'
+import DitherHero from '../components/DitherHero.astro'
+import { PORTRAIT } from '../lib/media'
 import { site } from '../lib/site'
+import quote from '../assets/quote.svg'
 
+/* ------------------------------------------------------------ content */
+
+/**
+ * THE FOUR STAGES, NAMED THE SAME WAY EVERYWHERE.
+ *
+ * This page used to call them Explore, Define, Ideate, Transform while the
+ * Approach panel in the menu called them Discovery, Design, Build, Launch &
+ * scale. Four steps either way, two vocabularies, and nobody noticed because
+ * all four menu rows pointed at the top of this page rather than at a stage.
+ *
+ * The menu's names win, so the copy is redistributed rather than relabelled —
+ * the two sets do not line up one to one. Explore and Define were both
+ * discovery and are now one stage. Ideate was where the prototyping lived and
+ * is now Design, with the UX and UI work that was scattered across Ideate and
+ * Transform. Transform was carrying engineering AND release AND iteration in
+ * one step; it splits into Build and Launch & scale, and nothing about
+ * generating ideas is left under Build.
+ *
+ * The ids below the map are the menu's hrefs and match these names now.
+ */
 const phases = [
   {
     n: '01',
-    name: 'Explore',
-    lead: 'Understanding your customers, business, and where you’re losing opportunity',
-    body: 'Conduct focused interviews to uncover real customer behavior, not assumptions. Analyze how users currently interact with your product or service. Identify gaps, friction points, and missed opportunities in your existing experience. Map where your business can create more value through better journeys or new offerings.',
-    tags: ['PEOPLE', 'STRATEGY', 'INTERACTION', 'TECHNOLOGY'],
+    name: 'Discovery',
+    lead: 'Understanding your customers, your business, and where you are losing opportunity.',
+    body: 'Focused interviews that uncover real customer behaviour rather than assumptions. A read on how people use what you have now, and where the friction is. Then the problems worth solving, ranked by impact and feasibility, so what you leave with is a decision rather than a wish list.',
+    tags: ['PEOPLE', 'MARKET', 'STRATEGY'],
   },
   {
     n: '02',
-    name: 'Define',
-    lead: 'Aligning insights into clear product direction and priorities.',
-    body: 'Translate research into actionable insights that guide decisions. Define the problems worth solving based on impact and feasibility. Align business goals with user needs and product direction. Prioritize features and opportunities to avoid unnecessary complexity.',
-    tags: ['CUSTOMER', 'BUSINESS', 'OBJECTIVES', 'INSIGHT'],
+    name: 'Design',
+    lead: 'Flows, prototypes and an interface that is tested before anything is built.',
+    body: 'The journeys first, then the screens. Clickable prototypes early enough that a wrong turn costs a week rather than a quarter, put in front of real users and changed by what that tells us. The handover is something your engineers can build from directly.',
+    tags: ['UX', 'UI', 'PROTOTYPE', 'TEST'],
   },
   {
     n: '03',
-    name: 'Ideate',
-    lead: 'Exploring solutions and validating ideas before building.',
-    body: 'Generate multiple solution directions based on defined problems. Create quick prototypes to visualize and test concepts early. Gather feedback to refine ideas and remove weak assumptions. Iterate rapidly to arrive at solutions that are both usable and viable.',
-    tags: ['HYPOTHESIS', 'DESIGN', 'TEST', 'EVALUATE'],
+    name: 'Build',
+    lead: 'Engineering in two-week sprints, with something working to look at every Friday.',
+    body: 'Front end, back end, database and hosting, built by the people who designed it rather than handed to a different team. A named project manager who does not change. Test coverage and the integrations go in as the product is built, not bolted on before launch.',
+    tags: ['ENGINEERING', 'SPRINTS', 'QA'],
   },
   {
     n: '04',
-    name: 'Transform',
-    lead: 'Designing, building, and improving products that perform.',
-    body: 'Translate validated ideas into scalable product experiences. Design and develop with a focus on usability, speed, and clarity. Continuously test and optimize based on real user behavior. Evolve the product to improve performance, engagement, and growth.',
-    tags: ['GUIDE', 'IMPLEMENT', 'SUPPORT'],
+    name: 'Launch & scale',
+    lead: 'Release, measure, and keep improving on what real usage tells you.',
+    body: 'Store submission and launch support, then analytics wired in from the first day so the numbers exist to read. A written read of what the first users actually did. After that the product moves on evidence — performance, engagement and growth — rather than on the next idea in the queue.',
+    tags: ['RELEASE', 'MEASURE', 'ITERATE'],
   },
 ]
+
+/* site.statSets.primary, split into the shape this band draws. One source
+   for the figures; see src/lib/site.ts. */
+const record = [
+  { n: '20', suffix: '+', label: 'Years of Excellence' },
+  { n: '1,500', suffix: '+', label: 'Projects Delivered' },
+  { n: '63', suffix: '%', pct: true, label: 'AI-Driven Solutions' },
+]
+
+/** Every href is an existing /s/ route from docs/URL-INVENTORY.csv. */
+/**
+ * All twelve services, not the five the page used to list.
+ *
+ * ORDER IS THE /s/ HUB'S ORDER, which groups by the question that sends you
+ * to a service: before you commit, building the thing, making it work harder,
+ * and when delivery is the constraint. Reusing it means the two pages tell the
+ * same story rather than each having its own arbitrary sequence, and it gives
+ * the list an arc instead of being alphabetical.
+ *
+ * Names are the display names, not the collection titles. Those are migrated
+ * SEO titles ("Top-notch Mobile App Development Company", "Digital Business")
+ * and would read badly as a numbered list.
+ */
+const practices = [
+  { name: 'MVP Development', href: '/s/mvp-development/' },
+  { name: 'Innovation Design', href: '/s/innovation-design-company/' },
+  { name: 'Product Development', href: '/s/product-development-company/' },
+  { name: 'Mobile App Development', href: '/s/mobile-app-development/' },
+  { name: 'Web App Development', href: '/s/web-app-development/' },
+  { name: 'eCommerce Development', href: '/s/ecommerce-development-company/' },
+  { name: 'User Experience Design', href: '/s/user-experience-design-agency/' },
+  { name: 'Growth Hacking', href: '/s/growth-hacking-agency/' },
+  { name: 'AI Automation Services', href: '/s/ai-automation-services/' },
+  { name: 'DevOps', href: '/s/result-oriented-devops-services/' },
+  { name: 'Hire Dedicated Developers', href: '/s/hire-dedicated-developers/' },
+  { name: 'Digital Transformation', href: '/s/digital-business-transformation-services/' },
+].map((p, i) => ({ ...p, n: String(i + 1).padStart(2, '0') }))
 
 const schema = [
   {
@@ -44,6 +123,21 @@ const schema = [
     '@id': `${site.url}/approach/#webpage`,
     name: 'Approach',
     isPartOf: { '@id': `${site.url}/#website` },
+  },
+  /* The page is a four-step method with a named outcome, which is what HowTo
+     describes. Built from the same array the page renders, so the marked-up
+     steps are the visible ones. */
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    '@id': `${site.url}/approach/#howto`,
+    name: 'How a Roars engagement runs',
+    step: phases.map((p, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: p.name,
+      text: p.lead,
+    })),
   },
   {
     '@context': 'https://schema.org',
@@ -56,69 +150,489 @@ const schema = [
 ]
 ---
 
-<MarketingPage
-  title="Our Approach: One Process, Four Phases | Roars"
-  description="At Roars we don't start with screens. We start with what's broken in your business, then design, build and scale products that actually move metrics."
+<BaseLayout
+  title="Our Approach | Problem First, Then Product"
+  description="We do not start with screens. We start with what is broken in your business, then design, build and scale products that move metrics. Four phases, run since 2005."
   path="/approach/"
-  label="Method"
-  heading="Approach"
-  intro="We start with what’s broken in your business."
   schema={schema}
 >
-  <p>
-    At Roars, we don’t start with screens. We start with what’s broken in your
-    business. Then we design, build, and scale products that actually move
-    metrics.
-  </p>
+  <TopBar slot="topbar" cta="meeting" />
+  <NavOverlay />
 
-  <ol class="ph">
-    {phases.map((p) => (
-      <li class="ph__row">
-        <div class="ph__head">
-          <span class="ph__n">{p.n}</span>
-          <h2 class="ph__name">{p.name}</h2>
-          <p class="ph__lead">{p.lead}</p>
+  {/* ── Header, 1440x780 ─────────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="aph">
+      <GrainField tone="dark" second />
+      {/* Design ref 3a — the inner-page half of one system: the homepage's ink
+          on yellow, inverted to graphite, yellow and warm white on near-black. */}
+      <DitherHero variant="carbon-heat" />
+      <div class="wrap aph__inner">
+        {/* Quote block at the gutter, 384 wide, opening at 150. */}
+        <div class="aph__quote" data-reveal>
+          <img class="aph__mark" src={quote.src} alt="" data-decorative width="32" height="27" />
+          <p class="aph__statement">Most products don’t fail because of bad design.</p>
+          <p class="aph__sub">They fail because no one fixed the problem first.</p>
+          <div class="aph__by">
+            <img class="aph__face" src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" />
+            <span class="aph__by-text">
+              <span class="aph__by-name">Rinkesh A Shah</span>
+              <span class="aph__by-role">CEO / Founder</span>
+            </span>
+          </div>
         </div>
-        <p class="ph__body">{p.body}</p>
-        <ul class="ph__tags">
-          {p.tags.map((t) => <li class="ph__tag">{t}</li>)}
+
+        {/* No union.svg under the title — see docs/HANDOFF.md. */}
+        <div class="aph__mast" data-reveal>
+          <span class="aph__chip"><span>roars</span></span>
+          <h1 class="aph__h1">Approach</h1>
+        </div>
+
+        <p class="aph__caption" data-reveal>We start with what’s broken<br />in your business.</p>
+
+        <div class="aph__phases" data-reveal>
+          <span class="aph__phases-label">One process, four phases</span>
+          <ol class="aph__phases-list">
+            {phases.map((p) => (
+              <li><span>{p.n}</span>{p.name}</li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── Process, 1440x2240 ───────────────────────────────────── */}
+  <Section ground="light">
+    <div class="apr">
+      <span class="apr__rule" aria-hidden="true"></span>
+      <span class="apr__label">Method</span>
+      <h2 class="apr__h">problem first</h2>
+      <div class="apr__intro" data-reveal>
+        <p class="apr__intro-a">At Roars, we don’t start with screens. We start with what’s broken in your business.</p>
+        <p class="apr__intro-b">Then we design, build, and scale products that actually move metrics.</p>
+      </div>
+
+      <span class="apr__rule2" aria-hidden="true"></span>
+      <div class="apr__legend">
+        <span>The process, end to end</span>
+        <span class="apr__legend-r">problem ↓ performance</span>
+      </div>
+
+      {/* One 1500px spine with a node per phase, not a border on each row.
+          The accent fills it as the section is read and lights each node as it
+          passes — src/scripts/spine.ts. The first node ships lit so the rule
+          is never a bare hairline, which is also the resting state under
+          reduced motion. */}
+      <div class="apr__spine" data-spine aria-hidden="true">
+        <span class="apr__spine-line"></span>
+        <span class="apr__spine-fill" data-spine-fill></span>
+        {[0, 390, 790, 1190].map((t, i) => (
+          <span
+            class:list={['apr__node', i === 0 && 'is-on']}
+            data-spine-node
+            style={`top:${t}px`}
+          ></span>
+        ))}
+        <span class="apr__node apr__node--end" data-spine-node style="top:1493px"></span>
+      </div>
+
+      {/* The menu's four Approach rows land on these. Same four names on both
+          sides now, so #build is the step headed Build. */}
+      <ol class="apr__steps">
+        {phases.map((p, i) => (
+          <li class="apr__step" id={['discovery', 'design', 'build', 'launch-and-scale'][i]} data-reveal>
+            <span class="apr__step-n">{p.n}</span>
+            {/* A LONG NAME IS SET SMALLER, because this one has nowhere to go.
+                The name is absolutely placed at x=106 and the detail column
+                starts at 580, so it has 474px and no line to wrap onto — the
+                lead sits 156px below it. "Launch & scale" at the display 84px
+                measures 553 and ran 79px into the detail copy. Nine characters
+                is the line: "Discovery" is 369px and keeps full size. */}
+            <h3 class="apr__step-name" data-long={p.name.length > 9 || undefined}>{p.name}</h3>
+            <p class="apr__step-lead">{p.lead}</p>
+            <div class="apr__step-detail">
+              <span class="apr__hair" aria-hidden="true"></span>
+              <p>{p.body}</p>
+            </div>
+            <div class="apr__step-tags">
+              <span class="apr__hair" aria-hidden="true"></span>
+              <ul>{p.tags.map((t) => <li>{t}</li>)}</ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </Section>
+
+  {/* ── Track record, 1440x640 ─────────────────────────────────
+      On the accent ground, with the same gradient-plus-drift-plus-grain the
+      homepage hero and the contact panel use, rather than the flat #F5F5F5
+      the export draws. GrainField is the one component that makes it, so the
+      three cannot drift apart.
+      This is now the page's only yellow, which is what these numbers want:
+      they are the claim the rest of the page is evidence for. */}
+  <Section ground="accent" bleed>
+    <div class="apt">
+      <GrainField tone="yellow" second />
+      {/* .wrap holds the gutter, .apt__in is the positioning ancestor, and
+          they have to be SEPARATE boxes. An absolutely placed child resolves
+          against its container's PADDING box, so putting both on one element
+          made .apt__stats measure from outside .wrap's gutter and the stat
+          row ran to the window edge. */}
+      <div class="wrap">
+        <div class="apt__in">
+        <span class="apt__tick" aria-hidden="true"></span>
+        <span class="apr__label apt__eyebrow">Track record</span>
+        <h2 class="apt__h">Practised since 2005</h2>
+        <p class="apt__intro" data-reveal>The same four phases, run for startups and enterprises across five countries.</p>
+        <ul class="apt__stats">
+          {record.map((r, i) => (
+            <li data-reveal style={`transition-delay:${i * 60}ms`}>
+              <span class="apt__hair" aria-hidden="true"></span>
+              <span class="apt__n">{r.n}<i class:list={[r.pct && 'apt__pct']}>{r.suffix}</i></span>
+              <span class="apt__label">{r.label}</span>
+            </li>
+          ))}
         </ul>
-      </li>
-    ))}
-  </ol>
-</MarketingPage>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── Practices, 1440x780 ──────────────────────────────────── */}
+  <Section ground="light">
+    <div class="aps">
+      <span class="apr__rule" aria-hidden="true"></span>
+      <span class="apr__label">Where we apply it</span>
+      <h2 class="aps__h">what we build</h2>
+      <p class="aps__intro" data-reveal>Twelve practices, one process. Every engagement runs Discovery through Launch &amp; scale.</p>
+      <ul class="aps__rows">
+        {practices.map((p, i) => (
+          <li data-reveal style={`transition-delay:${i * 40}ms`}>
+            <a href={p.href}>
+              <span class="aps__hair" aria-hidden="true"></span>
+              <span class="aps__n">{p.n}</span>
+              <span class="aps__name">{p.name}</span>
+              <span class="aps__arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+        {/* The list closes on a rule, which is why there is one more child
+            than there are rows. */}
+        <li class="aps__end"><span class="aps__hair" aria-hidden="true"></span></li>
+      </ul>
+    </div>
+  </Section>
+
+  <SiteFooter
+    slot="footer"
+    tagline="problem first, always"
+    blurbTitle="Got something that isn’t working?"
+    blurb="Tell us what is broken. We will tell you whether it is a design problem, a product problem, or neither."
+  />
+</BaseLayout>
 
 <style>
-  .ph { list-style: none; margin: var(--sp-6) 0 0; padding: 0; counter-reset: none; }
-  .ph__row {
-    display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 400px) minmax(0, 340px);
-    gap: var(--sp-5);
-    padding: var(--sp-6) 0;
-    border-top: 0.5px solid var(--c-rule-soft);
+  /* ── Header ─────────────────────────────────────────────────
+     Four tracks on the 1362 box: the rail, the masthead at 450, the caption
+     at 696, the phase list at 1050. align-content:start, or the 780
+     min-height is handed to the auto rows and everything in row two drops —
+     the same trap as /about-us/. */
+  .aph { position: relative; isolation: isolate; }
+
+  .aph__inner {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 450fr 246fr 354fr 312fr;
+    align-content: start;
+    padding-block: 150px 0;
+    min-height: 780px;
   }
-  .ph__n { font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: var(--c-ink-label); }
-  .ph__name {
-    margin: var(--sp-3) 0 0 !important;
-    font-size: clamp(46px, 5.8vw, var(--fs-display)) !important;
-    font-weight: var(--fw-semi); line-height: 1.02;
+
+  .aph__quote { position: relative; grid-column: 1; grid-row: 1; width: 384px; min-height: 300px; }
+  .aph__mark { position: absolute; left: 0; top: 0; width: 32px; height: 27px; opacity: 0.55; filter: invert(1); }
+  /* The glyph sits in the first line's indent rather than above the
+     paragraph, which is why line one is short and the rest run full measure.
+     Same construction as /about-us/. */
+  .aph__statement {
+    margin: 34px 0 0; width: 384px; text-indent: 46px;
+    font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.94);
+  }
+  .aph__sub {
+    margin: 18px 0 0; width: 384px;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.62);
+  }
+  .aph__by { display: flex; align-items: flex-start; gap: 14px; margin-top: 32px; height: 42px; }
+  .aph__face { width: 42px; height: 42px; border-radius: var(--r-circle); object-fit: cover; background: rgba(255, 255, 255, 0.14); }
+  .aph__by-text { display: flex; flex-direction: column; padding-top: 3px; }
+  .aph__by-name { font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-semi); letter-spacing: -0.05em; color: rgba(255, 255, 255, 0.95); }
+  .aph__by-role { font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium); letter-spacing: -0.05em; color: rgba(255, 255, 255, 0.6); }
+
+  /* Row one closes at 450 (150 + the 300-tall quote block); these three
+     margins are the export's 463 / 653 / 454 measured from there. */
+  .aph__mast { grid-column: 2 / 4; grid-row: 2; margin-top: 13px; }
+  .aph__chip { display: flex; align-items: flex-start; height: 24px; margin-left: 13px; }
+  .aph__chip > span { font-size: 20px; line-height: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: #fbfbfb; padding-top: 4px; }
+  .aph__h1 {
+    margin: 28px 0 0 6px; white-space: nowrap;
+    font-size: clamp(var(--fs-heading-m), 8.62vw, var(--fs-heading));
+    line-height: 86px; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: rgb(251, 251, 251);
+  }
+  .aph__caption {
+    grid-column: 3; grid-row: 2; margin-top: 203px; align-self: start;
+    font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-body); color: var(--c-white); opacity: 0.89;
+  }
+  .aph__phases { grid-column: 4; grid-row: 2; margin-top: 4px; align-self: start; }
+  .aph__phases-label {
+    display: block;
+    font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body); color: rgba(255, 255, 255, 0.5);
+  }
+  .aph__phases-list { list-style: none; margin: 11px 0 0; padding: 0; }
+  /* The number LEADS the row. Right-aligned against a 233px row it sat 215px
+     out, and the list read as a price list rather than a numbered sequence. */
+  .aph__phases-list li {
+    display: flex; gap: 14px; width: 300px;
+    font-size: var(--fs-label); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.8);
+  }
+  .aph__phases-list li span { color: rgba(255, 255, 255, 0.45); }
+
+  /* ── Process ────────────────────────────────────────────── */
+  .apr { position: relative; padding-block: 80px 160px; min-height: 2240px; }
+  .apr__rule { display: block; height: 1.5px; background: var(--c-rule-strong); }
+  .apr__label {
+    display: block; margin-top: 24px;
+    font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body); color: var(--c-ink-label);
+  }
+  /* 110px leading on a 124px face — the words stack tighter than the glyphs,
+     which is why this is not --lh-display. */
+  .apr__h {
+    margin: 27px 0 0 -7px; max-width: 900px;
+    font-size: clamp(var(--fs-heading-m), 8.62vw, var(--fs-heading));
+    line-height: 110px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
   }
-  .ph__lead {
-    margin-top: var(--sp-4) !important;
-    font-size: var(--fs-lead, 20px) !important;
-    line-height: 1.4; letter-spacing: var(--ls-item);
-    color: rgba(20, 20, 20, 0.78) !important;
+  .apr__intro { position: absolute; left: 67.695%; top: 158px; width: 32.305%; }
+  /* The export gives this a 130px box and puts the line under it at 150, so
+     the gap is to the BLOCK, not to the last line of copy. */
+  .apr__intro-a {
+    min-height: 130px;
+    font-size: var(--fs-intro); line-height: 32px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
   }
-  .ph__body { font-size: var(--fs-body) !important; line-height: 1.56; color: rgba(20, 20, 20, 0.8) !important; }
-  .ph__tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); list-style: none; margin: 0 !important; padding: 0; }
-  .ph__tag {
-    font-size: 13px; font-weight: var(--fw-semi); letter-spacing: -0.02em;
-    color: var(--c-ink-body); border-radius: var(--r-pill);
-    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.16);
-    padding: 8px 14px; margin: 0 !important;
-    transition: box-shadow var(--dur-fast) ease, background var(--dur-fast) ease;
+  .apr__intro-b {
+    margin-top: 20px;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
   }
-  .ph__tag:hover { box-shadow: inset 0 0 0 1px var(--c-accent); background: rgba(255, 212, 0, 0.14); }
+  .apr__rule2 { position: absolute; left: 1px; right: 0; top: 396px; height: 0.5px; background: var(--c-rule-soft); }
+  .apr__legend {
+    position: absolute; left: 1px; right: 0; top: 500px;
+    /* The right label is placed at 1080, not pushed to the gutter — with
+       space-between it landed 87px out. */
+    display: grid; grid-template-columns: 1079fr 283fr;
+    font-size: 18px; line-height: 24px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(107, 107, 107);
+  }
+  .apr__legend-r { font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62); }
 
-  @media (max-width: 1040px) { .ph__row { grid-template-columns: 1fr; } }
+  .apr__spine { position: absolute; left: 81px; top: 570px; width: 20px; height: 1500px; }
+  .apr__spine-line { position: absolute; left: 0; top: 0; width: 1px; height: 100%; background: rgba(153, 152, 149, 0.45); }
+  /* A height rather than a scaled transform: the rule is 1px wide and scaling
+     a hairline blurs it. */
+  .apr__spine-fill { position: absolute; left: 0; top: 0; width: 2px; height: 0; background: var(--c-accent); }
+  .apr__node {
+    position: absolute; left: -9.5px; width: 19px; height: 19px; border-radius: 50%;
+    background: var(--c-white); box-shadow: inset 0 0 0 1px rgba(153, 152, 149, 0.45);
+  }
+  /* Lit by src/scripts/spine.ts as the fill reaches each one. .is-* classes
+     are runtime-only and exempt from assert-styles by its own rule. */
+  .apr__node.is-on { background: var(--c-accent); box-shadow: none; }
+  .apr__node--end { left: -6.5px; width: 13px; height: 13px; }
+
+  .apr__steps { list-style: none; margin: 0; padding: 0; }
+  /* 550, then every 400. The first sits 20px ABOVE the spine's own top, so
+     these are not four equal rows hung under the legend. */
+  .apr__step { position: absolute; left: 1px; right: 0; height: 330px; }
+  .apr__step:nth-child(1) { top: 550px; }
+  .apr__step:nth-child(2) { top: 950px; }
+  .apr__step:nth-child(3) { top: 1350px; }
+  .apr__step:nth-child(4) { top: 1750px; }
+  .apr__step-n {
+    position: absolute; left: 110px; top: 2px;
+    font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body); color: var(--c-ink-label);
+  }
+  /* CLEAR OF THE SPINE. The rule sits at x=81 and its nodes are 19px wide
+     centred on it, so they reach x=90.5. The name opened at 75 and the lead at
+     78, which put both of them UNDER the spine: the rule ran straight through
+     the stem of the step names.
+     The number is at 110, so the lead joins it there and the three share a
+     left edge. The name is pulled 4px back from that, because a display "T" or
+     "I" carries almost no side bearing and sitting it on the same metric edge
+     as 14px type makes it look indented. */
+  .apr__step-name {
+    position: absolute; left: 106px; top: 42px; margin: 0;
+    font-size: var(--fs-display); line-height: 86px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  /* Same line, same baseline, smaller type. See the note on the markup. */
+  .apr__step-name[data-long] { font-size: 58px; }
+  .apr__step-lead {
+    position: absolute; left: 110px; top: 156px; width: 420px;
+    font-size: 20px; line-height: 28px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.78);
+  }
+  .apr__hair { display: block; height: 0.5px; background: var(--c-rule-soft); }
+  .apr__step-detail { position: absolute; left: 580px; top: 14px; width: 400px; }
+  .apr__step-detail p {
+    margin-top: 24px;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.8);
+  }
+  .apr__step-tags { position: absolute; left: 75.037%; top: 14px; width: 24.963%; }
+  .apr__step-tags ul { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .apr__step-tags li {
+    padding: 6px 14px; border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px rgba(20, 20, 20, 0.16);
+    font-size: 13px; line-height: normal; font-weight: var(--fw-semi); letter-spacing: -0.02em; color: rgb(20, 20, 20);
+  }
+
+  /* ── Track record ─────────────────────────────────────────
+     .apt is the bled band and carries the GrainField; .apt__in is the content
+     box AND the positioning ancestor. That split matters: the intro and the
+     stat row are absolutely placed, and against the bled .apt their
+     percentages would be measured across the full viewport instead of the
+     1362 content column. */
+  .apt { position: relative; }
+  .apt__in { position: relative; z-index: 1; padding-block: 90px 160px; min-height: 640px; }
+  /* Ink for a yellow ground. The greys this used — --c-rule-strong,
+     --c-ink-label, --c-ink-heading — are mixed for white and go muddy on
+     accent, so everything here is black at an opacity instead, the same way
+     the contact panel and the thank-you band set their type. */
+  .apt__tick { display: block; width: 16px; height: 1.5px; background: rgba(11, 11, 11, 0.4); }
+  .apt .apr__label { margin-top: 20px; }
+  .apt__eyebrow { color: rgba(11, 11, 11, 0.7); }
+  .apt__h {
+    margin: 13px 0 0 -4px; max-width: 700px;
+    font-size: var(--fs-stat); line-height: 50px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: #0B0B0B;
+  }
+  .apt__intro {
+    position: absolute; left: 67.695%; top: 150px; width: 32.305%;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(11, 11, 11, 0.78);
+  }
+  /* 420 / 420 / 440 at 0, 461 and 922. The third block is wider and the two
+     gaps are not equal. Drawn that way. */
+  .apt__stats {
+    list-style: none; margin: 0; padding: 0;
+    position: absolute; left: 1px; right: 0; top: 320px;
+    display: grid; grid-template-columns: 420fr 41fr 420fr 41fr 440fr;
+  }
+  .apt__stats > :nth-child(2) { grid-column: 3; }
+  .apt__stats > :nth-child(3) { grid-column: 5; }
+  .apt__hair { display: block; height: 1px; background: rgba(11, 11, 11, 0.28); }
+  .apt__n {
+    display: block; height: 86px; margin: 34px 0 0 -3px;
+    font-size: var(--fs-display); line-height: 86px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: #0B0B0B;
+  }
+  .apt__n i {
+    font-size: 36px; line-height: 86px; font-weight: var(--fw-medium); font-style: normal;
+    letter-spacing: var(--ls-display);
+  }
+  .apt__n i.apt__pct { font-size: 26px; font-weight: 700; }
+  .apt__label {
+    display: block; margin-top: 14px;
+    font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-body); color: rgba(11, 11, 11, 0.7);
+  }
+
+  /* ── Practices ──────────────────────────────────────────── */
+  /* No min-height, and the rows are in flow. The export draws this section
+     780 tall with the list absolutely positioned at 348, which works for the
+     five rows it was drawn with. Twelve rows are 744px, so the list ran out
+     of the bottom of the section and over the footer. In flow the section
+     grows to whatever the list needs. */
+  .aps { position: relative; padding-block: 80px 122px; }
+  .aps__h {
+    margin: 26px 0 0 -7px; max-width: 900px;
+    font-size: clamp(42px, 5.84vw, var(--fs-display)); line-height: 86px;
+    font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .aps__intro {
+    position: absolute; left: 67.695%; top: 160px; width: 32.305%;
+    font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62);
+  }
+  .aps__rows { list-style: none; margin: 96px 0 0; padding: 0; position: relative; left: 1px; }
+  .aps__rows a { position: relative; display: block; height: 62px; }
+  .aps__hair { display: block; height: 0.5px; background: var(--c-rule-soft); }
+  .aps__n {
+    position: absolute; left: 14px; top: 26px;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: var(--c-ink-label);
+  }
+  .aps__name {
+    position: absolute; left: 70px; top: 16px;
+    font-size: 32px; line-height: 40px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+    transition: color var(--dur-fast) ease;
+  }
+  .aps__arrow {
+    position: absolute; left: 94.714%; top: 20px;
+    font-size: var(--fs-item); line-height: 32px; color: rgba(20, 20, 20, 0.45);
+    transition: transform var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+  .aps__rows a:hover .aps__name { color: var(--c-black); }
+  .aps__rows a:hover .aps__arrow { color: var(--c-black); transform: translateX(8px); }
+
+  /* ── Below the design grid ──────────────────────────────────
+     Only 1440 and the documented mobile stack are drawn. Everything placed
+     against the 1362 box returns to flow, and the spine goes with it: a
+     1500px rule beside four absolutely placed rows cannot follow those rows
+     once their heights come from their content. */
+  @media (max-width: 1360px) {
+    .aph__inner { grid-template-columns: 1fr; min-height: 0; padding-block: 130px 72px; row-gap: 36px; }
+    .aph__quote, .aph__mast, .aph__caption, .aph__phases { grid-column: 1; grid-row: auto; margin-top: 0; width: auto; min-height: 0; }
+    .aph__statement, .aph__sub { width: auto; max-width: 460px; }
+    .aph__h1 { white-space: normal; line-height: 1.02; margin-left: 0; }
+    .aph__phases-list li { width: 100%; max-width: 300px; }
+
+    .apr, .aps { min-height: 0; padding-block: 64px 72px; }
+    /* The track record's padding lives on its inner box now, not the band. */
+    .apt__in { min-height: 0; padding-block: 64px 72px; }
+    .apr__h, .apt__h, .aps__h { line-height: 1.06; margin-left: 0; }
+    .apr__intro, .apt__intro, .aps__intro { position: static; width: auto; max-width: 560px; margin-top: 28px; }
+    .apr__rule2, .apr__legend { position: static; margin-top: 40px; }
+    .apr__spine { display: none; }
+    .apr__steps { margin-top: 56px; display: flex; flex-direction: column; gap: 56px; }
+    .apr__step { position: static; height: auto; }
+    .apr__step-n, .apr__step-name, .apr__step-lead, .apr__step-detail, .apr__step-tags {
+      position: static; left: auto; top: auto; width: auto; max-width: 620px;
+    }
+    .apr__step-name { font-size: var(--fs-stat); line-height: 1.1; margin-top: 8px; }
+    .apr__step-lead { margin-top: 14px; }
+    .apr__step-detail, .apr__step-tags { margin-top: 28px; }
+    .apt__stats { position: static; margin-top: 48px; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 30px; }
+    .apt__stats > :nth-child(2) { grid-column: 2; }
+    .apt__stats > :nth-child(3) { grid-column: 3; }
+    .aps__rows { position: static; margin-top: 48px; }
+    .aps__rows a { height: auto; padding-bottom: 18px; }
+    .aps__n { position: static; display: block; padding-top: 14px; }
+    .aps__name { position: static; display: block; padding-top: 6px; font-size: var(--fs-item); line-height: 1.3; }
+    .aps__arrow { left: auto; right: 0; top: 50%; }
+  }
+
+  @media (max-width: 760px) {
+    .apt__stats { grid-template-columns: 1fr; row-gap: 40px; }
+    .apt__stats > :nth-child(2), .apt__stats > :nth-child(3) { grid-column: 1; }
+  }
 </style>

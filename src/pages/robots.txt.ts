@@ -31,7 +31,15 @@ Disallow: /search/
 Disallow: /*?s=
 
 # AI crawlers allowed on purpose. Citations are distribution.
+#
+# GPTBot trains, OAI-SearchBot builds the index ChatGPT search reads from, and
+# ChatGPT-User is a live fetch someone asked for. They are three separate
+# agents and blocking one does not imply the others: leaving OAI-SearchBot out
+# is how a site stays out of ChatGPT search while still being trained on.
 User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ChatGPT-User

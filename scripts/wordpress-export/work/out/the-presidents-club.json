@@ -1,0 +1,94 @@
+{
+  "slug": "the-presidents-club",
+  "title": "The President\u2019s Club",
+  "date": "2022-09-01",
+  "pills": [
+    "RESEARCH",
+    "IDEATION",
+    "EXPLORATION"
+  ],
+  "headline": "The President's Club",
+  "tagline": "Experience an innovative customer loyalty program app with President's Club's mobile app.",
+  "about": "A concept created by Samsung, to honor its loyal partners and distributors. It wanted to extend the service through a mobile app interface with smooth UI/UX for easy use and navigation for customer loyalty program app.",
+  "facts": [
+    {
+      "k": "Expertise",
+      "v": "Design, Interaction and Development"
+    },
+    {
+      "k": "Platform",
+      "v": "IOS, Android, Web and API"
+    },
+    {
+      "k": "Deliverables",
+      "v": "UI, UX, Strategy, Concept and Development"
+    },
+    {
+      "k": "Technology",
+      "v": "Laravel, MongoDB, React Native, AWS"
+    },
+    {
+      "k": "Typography",
+      "v": "Wireframe"
+    }
+  ],
+  "blocks": [
+    {
+      "heading": "Challenges",
+      "lead": "It is this idea of sustaining and strengthening the client-vendor relationship that companies come up with special memberships. Customer loyalty program app are created to reward loyal clients for their dedication to a brand and for always being a returning customer.",
+      "body": "Samsung thought on the same lines and decided to do something special for them, to thank them for their patronage. Samsung introduced The President\u2019s Club membership for its loyal partners. This Customer loyalty program app provides customers bespoke benefits, exclusive member access to premium services like airport lo"
+    },
+    {
+      "heading": "Core Features",
+      "lead": "is a members-only app, which can be accessed only by Samsung partners who have been loyal patrons of the tech-giant.",
+      "body": "Confident, modern, and usually very busy. Hence, an app designed optimally to provide simple\u00a0yet delightful user interface and great user experience. By keeping every tab and every heading pretty self-explanatory, we have tried to make the app as user-friendly as possible."
+    }
+  ],
+  "body": "## Color Therapy\n\nWe are elated that Samsung chose us to deliver the app interface for The President\u2019s Club, that will be used by their clients on their phones.\n\nWe have designed customer loyalty program app interface to give it an elegant and sophisticated look by using the colors black, gold, and white.\n\nUnder each tab, opens up a new page to select further and narrow down to the item the user is searching for. Everything can be found no more than 2 levels down. By choosing their location, users can find an array of all President Club powered services and offerings in their vicinity.\n\nIf anyone understood my maverick dreams and was able to translate it into technology and neat processes it was the team at Roars. More important to me as a complete techno moron was to be able to explain what I envisage, the business outcomes I wanted, and from an understanding to an execution, Team Roars did it marvelously. I wish them all the very best and hope they reach roaring heights always.",
+  "hero": "/wp-content/uploads/2022/08/president-colo-color-therpy.png",
+  "hero_alt": "",
+  "inner_image": "",
+  "gallery": [
+    {
+      "src": "/wp-content/uploads/elementor/thumbs/411-fonts-therapy-pu2jdmebqhjwc651w0tdr3bpor11bc0g1yhkxo2cwe.png",
+      "alt": "411-fonts-therapy"
+    },
+    {
+      "src": "/wp-content/uploads/2022/08/wireframe.png",
+      "alt": ""
+    }
+  ],
+  "showcase": [
+    {
+      "src": "/wp-content/uploads/2022/08/presidentclub-mobileapp-4.png",
+      "alt": "presidentclub-mobileapp-4"
+    },
+    {
+      "src": "/wp-content/uploads/2022/08/presidentclub-mobileapp1.png",
+      "alt": "presidentclub-mobileapp1"
+    },
+    {
+      "src": "/wp-content/uploads/2022/08/presidentclub-mobileapp2.png",
+      "alt": "presidentclub-mobileapp2"
+    },
+    {
+      "src": "/wp-content/uploads/2022/08/presidentclub-mobileapp5.png",
+      "alt": "presidentclub-mobileapp5"
+    }
+  ],
+  "screens": [
+    {
+      "src": "/wp-content/uploads/2022/08/presidentclub-mobileapp3.png",
+      "alt": "presidentclub-mobileapp3"
+    },
+    {
+      "src": "/wp-content/uploads/2022/08/167f4859cd0ce0a10c9c.jpeg",
+      "alt": ""
+    }
+  ],
+  "links": [
+    "https://play.google.com/store/apps/details?id=com.thepresidentsclub"
+  ],
+  "seo_title": "President''s Club - Customer loyalty program app Development ",
+  "seo_desc": "Experience an innovative Loyalty Program with President's Club's mobile app. Our UI/UX design team creates high-end mobile app solutions to help you engage your customers and build long lasting relationships. Get the latest in customer loyalty program app development with President's Club."
+}

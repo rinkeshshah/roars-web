@@ -42,6 +42,38 @@ const TITLE_MIN = 30, TITLE_MAX = 65
 const DESC_MIN = 120, DESC_MAX = 165
 
 const errors = []
+/**
+ * THE UNIQUE-ASSET RULE IS WAIVED FOR EXACTLY THESE SIX PAGES.
+ *
+ * A DELIBERATE LAUNCH DECISION, 18 Sep 2026, taken with the trade-off stated
+ * on both sides. All six rank on WordPress today. The gate's judgement stands
+ * — none of them carries anything that could not appear on another page — but
+ * shipping them `noindex` would have asked Google to drop six pages that
+ * already earn impressions, and losing rankings you hold is a worse and much
+ * slower-to-reverse outcome than publishing a page that is thinner than the
+ * house standard. The owner made that call knowing it.
+ *
+ * WHY A LIST AND NOT A FLAG. `needsReview: true` would have done the same job
+ * in one character, and that is the problem: it reads as "a human has not
+ * looked at this yet", which is the opposite of what happened here. It also
+ * silently suppresses every other check that consults it. This says what it
+ * is, names the six, and cannot grow by accident — a seventh thin page fails
+ * the build exactly as before, which is the thing being protected.
+ *
+ * THIS IS A DEBT, NOT AN EXEMPTION FROM CARING. Each entry warns on every run
+ * until somebody gives the page one real asset: a named client and what
+ * changed for them, or a figure with its unit and timeframe. Then delete the
+ * line. An empty list is the goal.
+ */
+const LAUNCH_ASSET_EXEMPTIONS = [
+  'concierge-app-development',
+  'education-mobile-app-development',
+  'food-restaurant-app-development',
+  'logistics-transportation-app-development',
+  'on-demand-fitness-app-development',
+  'retail-ecommerce-development',
+]
+
 const warnings = []
 const fail = (file, rule, msg) => errors.push({ file, rule, msg })
 const warn = (file, rule, msg) => warnings.push({ file, rule, msg })
@@ -114,6 +146,68 @@ function prose(body) {
 }
 
 /** Trigram overlap. Template boilerplate counts, which is the point. */
+/**
+ * Everything the page actually says, not just its markdown body.
+ *
+ * The industry and service templates carry most of their copy in structured
+ * front matter — the hero statement, the six journey moments, the surfaces
+ * tabs, the featured project, the closing CTA. All of it is rendered. Counting
+ * only the markdown body measured a fraction of the page and called four real
+ * pages thin while their word count was double the floor.
+ *
+ * Machinery is excluded: URLs, labels, tag lists and the sector navigation,
+ * which is identical on every page and would flatter the uniqueness ratio.
+ */
+const SKIP_KEYS = new Set([
+  'href', 'ctaHref', 'ctaLabel', 'label', 'footerTagline', 'n', 'suffix',
+  'primaryIntent', 'schemaType', 'eyebrow', 'sectors', 'tags', 'time',
+  'statuses', 'statusLabel', 'totalLabel', 'footnote', 'paid', 'meta',
+])
+function frontMatterProse(data) {
+  const out = []
+  const walk = (v, key) => {
+    if (SKIP_KEYS.has(key)) return
+    if (typeof v === 'string') {
+      // A word with a space in it is copy; a slug or a token is not.
+      if (v.includes(' ')) out.push(v)
+      return
+    }
+    if (Array.isArray(v)) return v.forEach((x) => walk(x, key))
+    if (v && typeof v === 'object') {
+      for (const [k, x] of Object.entries(v)) walk(x, k)
+    }
+  }
+  /* Industry keys and service keys. The service template carries its copy in
+     bands, process, featured, receipts and close — none of which were in this
+     list, so eight real service pages counted about 150 words when they carry
+     four times that. */
+  /* Resource keys. A guide's designed page renders `summary` in the hero and
+     `sections` in the long read, and never mounts <Content />, so the markdown
+     body of a designed guide is not on the page at all. Counting only the body
+     measured the one part of a guide nobody sees, and would have passed a page
+     with nine hundred words of front matter and an empty section list. */
+  for (const k of [
+    'headline', 'standfirst', 'hero', 'journey', 'surfaces', 'proof', 'cta',
+    'bands', 'process', 'featured', 'receipts', 'close', 'faq',
+    'summary', 'sections',
+    /* Case study keys. /work/[slug]/ renders the about line, the fact table
+       and the headed blocks, and its markdown body is the intro alone, so
+       counting the body called twenty-two real pages 42-word stubs. */
+    'about', 'facts', 'blocks',
+    /* Location-page keys. /[city]/ renders its whole page from front matter —
+       the lead, the intro paragraph, six services, a four-step process, the
+       case studies and the reasons — and mounts no <Content /> at all, so the
+       markdown body is empty by design. Counting only the body called seven
+       full pages 102-word stubs. `desk` stays out: it is a data strip, not
+       prose. */
+    'intro', 'lead', 'services', 'why', 'work',
+  ]) {
+    if (data[k] !== undefined) walk(data[k], k)
+  }
+  return out.join(' ')
+}
+const pageText = (data, body) => `${frontMatterProse(data)} ${prose(body)}`.trim()
+
 function uniqueRatio(text, siblings) {
   const shingles = (s) => {
     const w = meaningful(s)
@@ -180,15 +274,24 @@ for (const e of entries) {
   const s = data.seo || {}
   if (data.draft === true) continue
 
+  /**
+   * MIGRATED entries carry the metadata WordPress actually served. Nine of
+   * the twenty journal titles and eleven descriptions are over the SERP
+   * limits on live URLs today; rewriting them would be inventing content,
+   * which the migration brief forbids. They WARN so the debt is printed on
+   * every run, and still FAIL for anything authored here.
+   */
+  const soft = data.migrated === true ? warn : fail
+
   // --- SEO fields ---
   if (!s.title) fail(file, 'seo.title', 'missing')
   else if (s.title.length < TITLE_MIN || s.title.length > TITLE_MAX) {
-    fail(file, 'seo.title', `${s.title.length} chars, needs ${TITLE_MIN}-${TITLE_MAX}. Aim for 50-60.`)
+    soft(file, 'seo.title', `${s.title.length} chars, needs ${TITLE_MIN}-${TITLE_MAX}. Aim for 50-60.`)
   }
 
   if (!s.description) fail(file, 'seo.description', 'missing')
   else if (s.description.length < DESC_MIN || s.description.length > DESC_MAX) {
-    fail(file, 'seo.description', `${s.description.length} chars, needs ${DESC_MIN}-${DESC_MAX}. Aim for 140-160.`)
+    soft(file, 'seo.description', `${s.description.length} chars, needs ${DESC_MIN}-${DESC_MAX}. Aim for 140-160.`)
   }
 
   if (!s.primaryIntent) fail(file, 'seo.primaryIntent', 'missing. One page owns one intent.')
@@ -203,11 +306,81 @@ for (const e of entries) {
     } else descriptions.set(s.description, file)
   }
 
+  /* --- The unique-asset rule ---
+   *
+   * "Every page must carry at least one asset that cannot exist on any other
+   * page." A named client and what changed for them, a real number with its
+   * unit and timeframe, a constraint only this service deals with, or a real
+   * artefact. A page with none of those is a holding page in a costume, and
+   * twelve of them teach a search engine that the site is generic.
+   *
+   * The check is deliberately crude: it looks for a case study link, a figure
+   * with a unit, or an exclusion list, because those are the three shapes the
+   * rule takes in this schema. It is a floor, not a judgement about quality.
+   */
+  if (e.collection === 'services' || e.collection === 'industries') {
+    const asset =
+      Boolean(data.anchor?.href) ||
+      Boolean(data.featured?.href) ||
+      Boolean(data.proof?.featured?.href) ||
+      Boolean(data.frame?.proof?.value) ||
+      (data.scope?.excludes?.length ?? 0) > 0 ||
+      /\b\d+([.,]\d+)?\s*(%|x|weeks?|days?|hours?|months?)\b/i.test(
+        `${data.frame?.h1 ?? ''} ${data.cost?.body ?? ''} ${data.hero?.statement ?? ''}`,
+      )
+    const exempt = LAUNCH_ASSET_EXEMPTIONS.find((slug) => file.endsWith(`/${slug}.md`))
+    if (!asset && data.needsReview !== true && exempt) {
+      /* WARNS, NEVER SILENT. The exemption removes the block, not the debt,
+         and this line is the only place the debt is still visible now that
+         the pages are indexed. Fix the page and the warning goes with it. */
+      warn(
+        file, 'no unique asset (launch exemption)',
+        'indexed by an explicit launch decision, 18 Sep 2026. Still has nothing on it ' +
+          'that could not appear on another page. Add a named client and what changed, ' +
+          'or a number with its unit and timeframe, and remove it from ' +
+          'LAUNCH_ASSET_EXEMPTIONS.',
+      )
+    } else if (!asset && data.needsReview !== true) {
+      fail(
+        file, 'no unique asset',
+        'nothing on this page could not appear on another one. Add a named client and ' +
+          'what changed, a number with its unit and timeframe, a constraint only this ' +
+          'page has, or a real artefact. Or leave the page as a holding page.',
+      )
+    }
+  }
+
+  /* --- House style ---
+   *
+   * No em dashes and no en dashes used as punctuation. They are the surest
+   * tell that a machine wrote the sentence, and this site's copy is meant to
+   * sound like a person. A hyphen inside a word is fine.
+   */
+  /* Prose only. The design uses a dash as a GLYPH in two places: the section
+     counter, "INDUSTRIES / 04 — 09", and a tracked label like
+     "3-6 WEEKS TO PILOT". Those are typography, not sentences, and rewriting
+     them to "04, 09" would be nonsense. */
+  const prosey = { ...data }
+  delete prosey.eyebrow
+  const dashes = [...`${JSON.stringify(prosey)} ${body}`.matchAll(/\S*[\u2014\u2013]\S*/g)]
+    .map((m) => m[0])
+    .filter((x) => !/^[a-z]+\u2013[a-z]+$/i.test(x))
+    // a tracked uppercase label, e.g. "3-6 WEEKS TO PILOT"
+    .filter((x) => !/^[\d\u2013\u2014]+$/.test(x.replace(/[",]/g, '')))
+  if (dashes.length) {
+    warn(file, 'em dash', `${dashes.length} found, e.g. ${dashes.slice(0, 2).join(' , ')}. Use a comma, a full stop or a colon.`)
+  }
+
   // --- Body ---
-  const text = prose(body)
+  const text = pageText(data, body)
   const count = words(text).length
   if (count < MIN_WORDS) {
-    fail(file, 'thin content', `${count} words, needs at least ${MIN_WORDS}.`)
+    /* needsRewrite is the flag for exactly this: high impressions, near-zero
+       clicks, copy that is known to be too thin. It is tracked rather than
+       hidden — every run prints it. */
+    ;(data.needsRewrite === true ? warn : fail)(
+      file, 'thin content', `${count} words, needs at least ${MIN_WORDS}.`,
+    )
   }
 
   // --- Headings ---
@@ -228,14 +401,21 @@ for (const e of entries) {
   // --- Images ---
   for (const m of body.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) {
     if (!m[1].trim()) {
-      fail(file, 'image without alt', `${m[2]}. Use alt="" only for decorative images.`)
+      /* The migration brief: preserve real alt text, and where it is missing
+         leave it empty and LIST it. Inventing alt from a filename is worse
+         than none — "874700.jpeg" describes nothing. */
+      soft(file, 'image without alt', `${m[2]}. Use alt="" only for decorative images.`)
     }
   }
 
   // --- Internal links ---
-  for (const m of body.matchAll(/\[[^\]]*\]\((\/[^)]*)\)/g)) {
-    let href = m[1].split('#')[0].split('?')[0]
+  for (const m of body.matchAll(/(!?)\[[^\]]*\]\((\/[^)]*)\)/g)) {
+    if (m[1] === '!') continue // an image, not a link
+    let href = m[2].split('#')[0].split('?')[0]
     if (!href) continue
+    /* Assets are files, not pages. /wp-content/uploads/x.jpg has no trailing
+       slash and never will, and it is not in the URL inventory either. */
+    if (href.startsWith('/wp-content/') || href.startsWith('/tools/') || /\.[a-z0-9]{2,5}$/i.test(href)) continue
     if (!href.endsWith('/')) {
       fail(file, 'internal link without trailing slash', `${href} would 301. Link the final URL.`)
       continue
@@ -250,12 +430,224 @@ for (const e of entries) {
 for (const [collection, group] of byCollection) {
   if (group.length < 2) continue
   for (const e of group) {
-    const siblings = group.filter((o) => o !== e).map((o) => prose(o.body))
-    const ratio = uniqueRatio(prose(e.body), siblings)
+    const siblings = group.filter((o) => o !== e).map((o) => pageText(o.data, o.body))
+    const ratio = uniqueRatio(pageText(e.data, e.body), siblings)
+
+    /* The prose on its own, as well as the whole page.
+     *
+     * Counting the structured front matter is right for the page as a crawler
+     * sees it, but it also lifts two pages whose PROSE is nearly identical
+     * over the line, because their journey and surfaces blocks differ. That is
+     * how /travel-and-hospitality/ and /retail-ecommerce/ — 29% and 34% unique
+     * against each other in body copy alone — stopped being reported the
+     * moment the measurement got more generous. Both numbers stay visible. */
+    const bodyRatio = uniqueRatio(
+      prose(e.body),
+      group.filter((o) => o !== e).map((o) => prose(o.body)),
+    )
+    if (bodyRatio < UNIQUE_WARN && e.body.trim()) {
+      warn(
+        e.file,
+        'near-duplicate prose',
+        `body copy is ${Math.round(bodyRatio * 100)}% unique versus other ${collection} ` +
+          `(whole page ${Math.round(ratio * 100)}%). Two pages that say the same thing ` +
+          'in different slots are still two pages that say the same thing.',
+      )
+    }
     if (ratio < UNIQUE_BLOCK) {
       fail(e.file, 'not unique enough', `${Math.round(ratio * 100)}% unique versus other ${collection}. Needs over ${UNIQUE_BLOCK * 100}%. If the only difference is a noun swap, it should be one page.`)
     } else if (ratio < UNIQUE_WARN) {
       warn(e.file, 'thin uniqueness', `${Math.round(ratio * 100)}% unique versus other ${collection}.`)
+    }
+  }
+}
+
+/* -------------------------------------------- the guide allowlist in PHP */
+
+/**
+ * The keys of public/api/guides.php are the guide allowlist: the only thing
+ * standing between a POSTed string and a filename. It is GENERATED from
+ * src/content/resources/*.md by scripts/build-email-manifest.mjs, which removes
+ * the drift a hand-kept literal had — but generated is not the same as correct,
+ * and a guide that falls out of it is a download that silently stops working.
+ *
+ * So it is still checked against the inventory here, in both directions. Same
+ * reasoning as assert-styles: the failure mode is silence, so something has to
+ * fail loudly instead.
+ */
+const MANIFEST = join(ROOT, 'public/api/guides.php')
+if (existsSync(MANIFEST)) {
+  const php = readFileSync(MANIFEST, 'utf8')
+  const inPhp = new Set([...php.matchAll(/^ {4}'([a-z0-9-]+)' => \[$/gm)].map((m) => m[1]))
+  if (inPhp.size === 0) {
+    errors.push({
+      file: 'public/api/guides.php',
+      rule: 'guide-allowlist',
+      msg: 'No guides. The download resolves a filename from a POSTed slug and these keys are what make it safe.',
+    })
+  }
+  const inCsv = new Set(
+    [...inventoryPaths]
+      .filter((p) => /^\/resources\/[^/]+\/$/.test(p))
+      .map((p) => p.split('/')[2]),
+  )
+  for (const slug of inCsv) {
+    if (!inPhp.has(slug)) {
+      errors.push({
+        file: 'public/api/guides.php',
+        rule: 'guide-allowlist',
+        msg: `/resources/${slug}/ is in the inventory but not in guides.php, so its download would be refused. Re-run scripts/build-email-manifest.mjs.`,
+      })
+    }
+  }
+  for (const slug of inPhp) {
+    if (!inCsv.has(slug)) {
+      errors.push({
+        file: 'public/api/guides.php',
+        rule: 'guide-allowlist',
+        msg: `guides.php carries "${slug}", which is not a /resources/ row in the inventory.`,
+      })
+    }
+  }
+} else {
+  errors.push({
+    file: 'public/api/guides.php',
+    rule: 'guide-allowlist',
+    msg: 'Missing. Run scripts/build-email-manifest.mjs — contact.php requires this file and will fatal without it.',
+  })
+}
+
+/**
+ * RETIRED FIGURES.
+ *
+ * The migration carried a set of headline numbers off the old site — 250+
+ * projects, 96% returning customers, 23 projects. The owner replaced all of
+ * them, and src/lib/site.ts is now the only place a headline figure is
+ * written down. Two of the retired ones survived the replacement anyway,
+ * sitting in hand-written copy where nothing was looking for them.
+ *
+ * This looks. Prose only: the .astro files are skipped because "96%" is also
+ * a gradient stop in about forty of them, and a gate that cries wolf gets
+ * switched off. If a figure belongs on a page, it comes from site.ts.
+ */
+const RETIRED = [
+  [/\b250\+/, '250+ (retired; site.ts stats.projectsDelivered is 1,500+)'],
+  [/\b96\s*%\s*(returning|repeat)/i, '96% returning customers (retired, no replacement)'],
+  [/\b23\s+projects\b/i, '23 projects (retired; site.ts stats.projectsDelivered is 1,500+)'],
+  /* 4,000+ was the figure until Sep 2026. It is not a rounding of 1,500+, it is
+     a different claim, so a page still carrying it is stating something the
+     company no longer stands behind. */
+  [/\b4,?000\+?/, '4,000+ (retired Sep 2026; site.ts stats.projectsDelivered is 1,500+)'],
+  [/\b2,?500\+?/, '2,500+ (retired Sep 2026; site.ts stats.happyCustomers is 1,000+)'],
+]
+const walk = (dir, test, out = []) => {
+  if (!existsSync(dir)) return out
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name)
+    if (statSync(p).isDirectory()) walk(p, test, out)
+    else if (test(name)) out.push(p)
+  }
+  return out
+}
+const proseFiles = [
+  ...walk(join(ROOT, 'src/content'), (n) => n.endsWith('.md') || n.endsWith('.mdx')),
+  ...walk(join(ROOT, 'public/api'), (n) => n.endsWith('.html')),
+]
+for (const abs of proseFiles) {
+  const rel = relative(ROOT, abs)
+  const text = readFileSync(abs, 'utf8')
+  for (const [re, what] of RETIRED) {
+    if (re.test(text)) {
+      errors.push({
+        file: rel,
+        rule: 'retired figure',
+        msg: `carries ${what}. Headline numbers live in src/lib/site.ts.`,
+      })
+    }
+  }
+
+  /**
+   * TRUNCATED COPY.
+   *
+   * The two migration extractors clip long text to a character cap and mark
+   * the cut with an ellipsis. On a sentence that fits, nothing happens; on one
+   * that does not, the page ships a half-sentence: "we help you build fitness
+   * apps that allow users to stay fit and reach their…". Ninety of those were
+   * live across the service, industry, project and journal pages before
+   * anybody counted them, because each one looks like a deliberate trailing
+   * ellipsis until you read it.
+   *
+   * FATAL NOW. It was a warning with a count while the ninety were being
+   * worked through, because the copy to restore them from lived outside this
+   * repository. All ninety are done, so it stops counting and starts refusing.
+   *
+   * TERMINAL VERSUS QUOTED, NOT AN ALLOWLIST. A truncation is always at the
+   * END of the string, because that is what a character cap does, and the only
+   * thing after it is the YAML quote that closes the value. Two shapes are
+   * deliberate and neither needs naming:
+   *
+   *   mid-sentence   "The other 80% just… happens."   words follow it
+   *   inside a quote  like “You see this because…”    a CURLY quote closes it,
+   *                                                   which means the ellipsis
+   *                                                   is part of the thing
+   *                                                   being quoted
+   *
+   * So the test is where the ellipsis sits and what closes it, not a list of
+   * blessed lines. An allowlist of permitted ellipses is exactly the kind of
+   * thing that goes stale in silence, and this rule exists because of
+   * something that went stale in silence.
+   */
+  const TRUNCATED = /…\s*"?\s*$/
+  const lines = text.split('\n')
+  for (let i = 0; i < lines.length; i++) {
+    if (!TRUNCATED.test(lines[i])) continue
+    errors.push({
+      file: `${rel}:${i + 1}`,
+      rule: 'truncated copy',
+      msg: `sentence cut by the migration's character cap: ...${lines[i].split('…').slice(-2)[0].slice(-52).trim()}[...]`,
+    })
+  }
+}
+
+/**
+ * AN UPLOADS PATH MUST BE ONE THE OLD SITE ACTUALLY HAD.
+ *
+ * CLAUDE.md rule 1 is never invent a URL, and an image src is a URL. The
+ * failure is silent in a way a page URL is not: /wp-content/uploads/ is
+ * aliased to the WordPress uploads directory on the server, so nothing in
+ * this repository can tell a real path from a plausible one. It builds, it
+ * passes every gate, and it is a broken picture on a live page.
+ *
+ * This was written the same afternoon it happened. Adding two of Advisee's
+ * brand assets, both real files from the client, both given an upload path
+ * that matched the pattern of their siblings, and neither path existed.
+ *
+ * The WordPress export IS the record of what the old site had, one JSON per
+ * case study, so it is the thing to check against. A picture with no upload
+ * path goes in public/work/<slug>/ instead, where it resolves in the build
+ * and assert-assets can see it.
+ */
+const EXPORTS = join(ROOT, 'scripts/wordpress-export/work/out')
+if (existsSync(EXPORTS)) {
+  for (const abs of walk(join(ROOT, 'src/content/projects'), (n) => n.endsWith('.md'))) {
+    const slug = relative(join(ROOT, 'src/content/projects'), abs).replace(/\.md$/, '')
+    const dump = join(EXPORTS, `${slug}.json`)
+    if (!existsSync(dump)) continue
+    const known = new Set(
+      (readFileSync(dump, 'utf8').match(/\/wp-content\/uploads\/[^"\\\s]+/g) ?? []),
+    )
+    const used = readFileSync(abs, 'utf8').match(/^\s*(?:-\s*)?src:\s*"(\/wp-content\/uploads\/[^"]+)"/gm) ?? []
+    for (const line of used) {
+      const src = line.match(/"([^"]+)"/)[1]
+      if (known.has(src)) continue
+      errors.push({
+        file: `src/content/projects/${slug}.md`,
+        rule: 'invented uploads path',
+        msg:
+          `"${src}" is not in scripts/wordpress-export/work/out/${slug}.json, so the old site ` +
+          'never served it and nothing here can prove it exists. Put the file in ' +
+          `public/work/${slug}/ and reference it from there.`,
+      })
     }
   }
 }

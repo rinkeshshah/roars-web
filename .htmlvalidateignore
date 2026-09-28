@@ -1,0 +1,5 @@
+# The two transactional email templates. Table layout, cellpadding, border,
+# <table role="presentation"> and MSO conditional comments are not mistakes
+# there — they are what makes a message survive Outlook and Gmail, and every
+# rule that flags them is advice for a web page. See public/api/email-*.html.
+dist/api/

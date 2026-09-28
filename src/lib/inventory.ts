@@ -25,6 +25,15 @@ export interface InventoryRow {
   path: string
   slug: string
   wpType: string
+  /**
+   * The WordPress `modified` value, verbatim. TRUST IT ONLY WHERE
+   * `staleness === 'revised'`: 37 never-touched rows share 2022-08-31, which
+   * is the import date, and the bulk-edit rows cluster 14 and 10 deep on a
+   * single value. See CLAUDE.md, known landmines.
+   */
+  lastmod: string
+  /** 'revised' | 'bulk-edit-only' | 'never-touched' | '' */
+  staleness: string
 }
 
 /** Minimal RFC4180 read. The notes column carries quoted commas. */
@@ -52,6 +61,8 @@ const raw = parse(readFileSync(CSV, 'utf8'))
 const head = raw[0].map((h) => h.trim())
 const iUrl = head.indexOf('url')
 const iType = head.indexOf('wp_type')
+const iMod = head.indexOf('lastmod')
+const iStale = head.indexOf('staleness')
 
 export const inventory: InventoryRow[] = raw.slice(1).map((r) => {
   const url = r[iUrl]
@@ -59,7 +70,10 @@ export const inventory: InventoryRow[] = raw.slice(1).map((r) => {
   if (!path.startsWith('/')) path = '/' + path
   if (!path.endsWith('/')) path += '/'
   const parts = path.split('/').filter(Boolean)
-  return { url, path, slug: parts[parts.length - 1] ?? '', wpType: r[iType] }
+  return {
+    url, path, slug: parts[parts.length - 1] ?? '', wpType: r[iType],
+    lastmod: r[iMod] ?? '', staleness: r[iStale] ?? '',
+  }
 })
 
 /** Every slug of one wp_type, in inventory order. */

@@ -1,0 +1,424 @@
+---
+/**
+ * Journal posts. 115 live URLs at /our-journal/[slug]/.
+ *
+ * Two renderings. A migrated post gets the article page below, built against
+ * design/specs/Insight-details.md. The other 96 keep the pending state: 200,
+ * a correct canonical, noindex, and a plain statement that the piece is being
+ * moved. That is what stops 96 indexed URLs 404ing at cutover.
+ *
+ * Routes come from docs/URL-INVENTORY.csv rather than the collection, so the
+ * set is right whether or not a body exists. When a post migrates, its entry
+ * wins and the page becomes real without the URL changing.
+ *
+ * MASTHEAD, per the spec: a 196px dark band carrying nothing, then the title
+ * on white. Left rail holds "See all Insights" and, below the hero, the
+ * byline. Right column holds the title at 58px, the standfirst, and the date
+ * as a large day with a small month. Section-relative coordinates from the
+ * spec, against the 1362 content box:
+ *
+ *   right column   l:419 (30.76%)   title w:673   body w:707
+ *   title          t:128            58/600/62/-0.04
+ *   standfirst     t:277            18/500/28/-0.03  rgb(71,71,71) .9
+ *   date           t:375            42/600/43/-0.05 + 18/500/43
+ *   hero           t:514  h:654     radius 12, bg rgb(30,30,30)
+ *   byline (rail)  t:1278
+ *
+ * THE BYLINE IS THE ORGANISATION, not a person. The spec draws the founder's
+ * portrait there, but the export credits all nineteen posts to a different
+ * author account, and the page's own BlogPosting schema names the
+ * Organization as author. Putting a face on it would contradict both. A
+ * personal byline needs that person's confirmed display name and a portrait
+ * in src/lib/media.ts; neither exists yet.
+ */
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import MarketingPage from '../../components/MarketingPage.astro'
+import Section from '../../components/Section.astro'
+import TopBar from '../../components/TopBar.astro'
+import NavOverlay from '../../components/NavOverlay.astro'
+import SiteFooter from '../../components/SiteFooter.astro'
+import GrainField from '../../components/GrainField.astro'
+import DitherHero from '../../components/DitherHero.astro'
+import { slugsOf, nameFromSlug } from '../../lib/inventory'
+import { site, abs } from '../../lib/site'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('posts')
+  const byId = new Map(entries.map((e) => [e.id, e]))
+
+  /* Reading order for prev/next: newest first, the same order the index
+     pages in. A reader who follows "next" from the top walks the journal in
+     the order the index presents it, which is the only ordering they have
+     seen. Only migrated posts are in the chain — a next link into a
+     "content pending migration" page is a dead end with extra steps. */
+  const chain = entries
+    .slice()
+    .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+
+  return slugsOf('post').map((slug) => {
+    const i = chain.findIndex((e) => e.id === slug)
+    const link = (e?: (typeof chain)[number]) =>
+      e ? { href: `/our-journal/${e.id}/`, title: e.data.title } : undefined
+    return {
+      params: { slug },
+      props: {
+        entry: byId.get(slug),
+        prev: i > 0 ? link(chain[i - 1]) : undefined,
+        next: i >= 0 && i < chain.length - 1 ? link(chain[i + 1]) : undefined,
+      },
+    }
+  })
+}
+
+const { slug } = Astro.params
+const { entry, prev, next } = Astro.props
+const path = `/our-journal/${slug}/`
+const name = entry?.data.title ?? nameFromSlug(slug)
+
+const d = entry?.data
+/* Migrated posts get the real article page. The rest keep the pending state
+   until their bodies arrive. */
+const migrated = Boolean(d?.migrated)
+const heroAbs = d?.heroImage ? abs(d.heroImage) : undefined
+
+const schema = entry
+  ? [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        '@id': `${site.url}${path}#post`,
+        headline: name,
+        description: entry.data.seo.description,
+        datePublished: entry.data.publishedAt.toISOString(),
+        /* No updatedAt on a migrated post means it has not been touched since
+           it was published. Claiming otherwise is manufactured freshness. */
+        dateModified: (entry.data.updatedAt ?? entry.data.publishedAt).toISOString(),
+        ...(heroAbs ? { image: [heroAbs] } : {}),
+        articleSection: entry.data.categories[0],
+        author: {
+          '@type': 'Organization',
+          name: site.name,
+          '@id': `${site.url}/#organization`,
+        },
+        publisher: { '@id': `${site.url}/#organization` },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': `${site.url}${path}` },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+          { '@type': 'ListItem', position: 2, name: 'Insights', item: `${site.url}/our-journal/` },
+          { '@type': 'ListItem', position: 3, name },
+        ],
+      },
+    ]
+  : []
+
+const { Content } = entry ? await render(entry) : { Content: null }
+
+/* "15 May 2026" for the reader, the ISO value for the machine. */
+const shown = entry
+  ? entry.data.publishedAt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+  : ''
+const iso = entry ? entry.data.publishedAt.toISOString().slice(0, 10) : ''
+
+/* The spec's date: a big day, a small month beside it. The year is not in the
+   design, so it lives in the <time> value the machine reads. */
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const day = iso ? iso.slice(8, 10) : ''
+const month = iso ? MONTHS[Number(iso.slice(5, 7)) - 1] : ''
+---
+
+{migrated && d ? (
+  <BaseLayout
+    title={d.seo.title}
+    description={d.seo.description}
+    path={path}
+    ogType="article"
+    ogImage={d.heroImage}
+    imageAlt={d.heroAlt || name}
+    siteName="Roars"
+    schema={schema}
+  >
+    <TopBar slot="topbar" cta="contact" />
+    <NavOverlay />
+
+    {/* Greppable in the built HTML: `grep -rl NEEDS-REWRITE dist/`. High
+        impressions, near-zero clicks — the copy needs work. */}
+    {d.needsRewrite && <Fragment set:html={'<!-- NEEDS-REWRITE -->'} />}
+
+    {/* The spec's 196px band. It carries no text: the title sits on white
+        below it, and this exists to give the page a dark edge for the top
+        bar to invert against. */}
+    <Section ground="dark" bleed>
+      <div class="jp__band">
+        <GrainField tone="dark" second />
+        {/* Design ref 3a. Background only — nothing in this band moves. */}
+        <DitherHero variant="carbon-heat" />
+      </div>
+    </Section>
+
+    <Section ground="light">
+      <div class="jp__top">
+        <div class="jp__rail">
+          <a class="jp__all" href="/our-journal/">
+            See all Insights
+            <span class="jp__dots" data-dots aria-hidden="true"><i></i><i></i></span>
+          </a>
+        </div>
+        <div class="jp__lede">
+          {/* The only h1 on the page. */}
+          <h1 class="jp__h">{d.title}</h1>
+          <p class="jp__stand">{d.seo.description}</p>
+          <p class="jp__date">
+            <time datetime={iso}><b>{day}</b><i>{month}</i></time>
+            <span class="jp__cat">{d.categories[0]}</span>
+          </p>
+        </div>
+      </div>
+
+      {d.heroImage && (
+        <div class="jp__hero" data-reveal>
+          {/* The journal heroes are all built at one size, 1000x425. These
+              attributes reserve the RATIO only — the CSS sets height:auto, so
+              the file's own dimensions decide the rendered size. Declaring the
+              true ratio means the space reserved matches what arrives and the
+              hero does not resettle once it loads. They were 1358x654, which
+              is a different shape and was the reservation the old fixed box
+              cropped to. */}
+          <img
+            src={d.heroImage}
+            /* Falls back to the post's name, not to silence. Line 140 already does
+               exactly this for og:image — the same picture was being named for
+               a social card and left unnamed for a screen reader. */
+            alt={d.heroAlt || name}
+            width="1000"
+            height="425"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      )}
+
+      <div class="jp__read">
+        <div class="jp__rail">
+          <p class="jp__by">
+            <b>{d.author}</b>
+            <i>Published <time datetime={iso}>{shown}</time></i>
+          </p>
+        </div>
+        <div class="jp__body">
+          {Content && <Content />}
+        </div>
+      </div>
+
+      {(prev || next) && (
+        <nav class="jp__pn" aria-label="More insights">
+          {prev ? (
+            <a class="jp__pn-a" href={prev.href} rel="prev">
+              <span class="jp__pn-k">← Previous</span>
+              <span class="jp__pn-t">{prev.title}</span>
+            </a>
+          ) : <span></span>}
+          {next ? (
+            <a class="jp__pn-a jp__pn-a--next" href={next.href} rel="next">
+              <span class="jp__pn-k">Next →</span>
+              <span class="jp__pn-t">{next.title}</span>
+            </a>
+          ) : <span></span>}
+        </nav>
+      )}
+    </Section>
+
+    <SiteFooter
+      slot="footer"
+      blurbTitle="Want the version with your numbers in it?"
+      blurb="Most of what is here we worked out the expensive way. If it is the problem in front of you, we can go deeper than a post does."
+      tagline="twenty years, written down"
+      ctaLabel="Shall we chat?"
+    />
+  </BaseLayout>
+) : (
+<MarketingPage
+  topCta="contact"
+  title={entry?.data.seo.title ?? `${name} | ${site.name}`}
+  description={entry?.data.seo.description}
+  path={path}
+  label="Insight"
+  heading={name}
+  schema={schema}
+  pending={!entry}
+>
+  {Content && <Content />}
+</MarketingPage>
+)}
+
+<style>
+  /* ── the band ───────────────────────────────────────────── */
+  /* Spec: Header, 196px, nothing in it. */
+  .jp__band { isolation: isolate; position: relative; height: 196px; }
+
+  /* ── the masthead ───────────────────────────────────────── */
+  /* One grid for the whole page: 419 rail + 943 column, which sums to the
+     1362 content box. Percentages rather than pixels so nothing crosses the
+     content edge between 1361 and 1440. */
+  .jp__top, .jp__read {
+    display: grid; grid-template-columns: 30.76% 1fr; column-gap: 0;
+  }
+  .jp__top { padding-top: 128px; }
+  /* Spec puts the rail link at t:18, 18px below the title's cap line. */
+  .jp__rail { padding-top: 18px; }
+  .jp__all {
+    display: inline-flex; align-items: center; gap: 15px;
+    font-size: 18px; line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: -0.06em; color: var(--c-black); white-space: nowrap;
+  }
+  .jp__dots { display: inline-flex; gap: 3px; }
+  .jp__dots i { width: 8px; height: 8px; border-radius: 50%; background: rgb(20, 20, 20); }
+  .jp__dots i:first-child { background: rgba(153, 152, 149, 0.6); }
+  .jp__all:hover .jp__dots i:first-child { background: var(--c-accent); }
+
+  /* 58px is the spec. Titles here run from 38 to 92 characters, so it wraps
+     rather than fits; the clamp only gives way below the design grid. */
+  .jp__h {
+    margin: 0; max-width: 673px;
+    font-size: clamp(38px, 4vw, 58px); line-height: 1.069; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: rgb(20, 20, 20);
+  }
+  .jp__stand {
+    margin: 25px 0 0; max-width: 689px;
+    font-size: 18px; line-height: 28px; font-weight: var(--fw-medium);
+    letter-spacing: -0.03em; color: rgba(71, 71, 71, 0.9);
+  }
+  .jp__date {
+    display: flex; align-items: baseline; gap: 22px; margin: 42px 0 0;
+    color: rgb(36, 36, 36);
+  }
+  .jp__date time { display: flex; align-items: baseline; gap: 6px; }
+  .jp__date b {
+    font-size: 42px; line-height: 43px; font-weight: var(--fw-semi);
+    letter-spacing: -0.05em;
+  }
+  .jp__date i {
+    font-style: normal;
+    font-size: 18px; line-height: 43px; font-weight: var(--fw-medium);
+    letter-spacing: -0.05em;
+  }
+  .jp__cat {
+    font-size: var(--fs-label); line-height: 43px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgb(145, 144, 142);
+  }
+
+  /* ── hero ───────────────────────────────────────────────── */
+  .jp__hero { margin-top: 78px; overflow: hidden; border-radius: 12px; background: rgb(30, 30, 30); }
+  /* THE IMAGE KEEPS ITS OWN SHAPE.
+     This was `height: 654px; object-fit: cover`, a fixed 1358x654 box at
+     2.08:1. Cover fills that box and throws away whatever hangs over, so any
+     hero that is not 2.08:1 lost its edges — and several of these are designed
+     composites with a title panel down one side, so what got cut was the
+     wording. `height: auto` uses the file's own ratio: nothing cropped,
+     nothing stretched, whatever shape it turns out to be.
+     The width/height ATTRIBUTES on the tag are a reservation only, and they
+     are a guess — see the comment beside them. */
+  .jp__hero img { display: block; width: 100%; height: auto; }
+
+  /* ── byline ─────────────────────────────────────────────── */
+  /* Spec draws the founder's portrait here. See the page header for why this
+     is the organisation instead. */
+  .jp__by { display: flex; flex-direction: column; gap: 2px; margin: 0; }
+  .jp__by b {
+    font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-semi);
+    letter-spacing: -0.06em; color: rgb(22, 22, 22);
+  }
+  .jp__by i {
+    font-style: normal;
+    font-size: var(--fs-label); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: -0.06em; color: rgb(145, 144, 142);
+  }
+
+  /* ── the article ────────────────────────────────────────── */
+  .jp__read { padding-block: 110px 0; }
+  .jp__body { max-width: 707px; }
+  /* Headings sit above their paragraph, per the spec's blocks: 26/600/37 with
+     62px between the heading and its text.
+     They used to float into the left rail. That worked when the rail was
+     empty; the rail now carries the byline, and a floated h2 would land on
+     top of it. Inline is also what the spec draws. */
+  .jp__body :global(h2), .jp__body :global(h3) {
+    margin: 0;
+    font-size: 26px; line-height: 37px; font-weight: var(--fw-semi);
+    letter-spacing: -0.04em; color: var(--c-black);
+  }
+  .jp__body :global(h3) { font-size: 21px; line-height: 30px; }
+  .jp__body :global(h2:not(:first-child)), .jp__body :global(h3:not(:first-child)) { margin-top: 64px; }
+  .jp__body :global(p), .jp__body :global(ul), .jp__body :global(ol) {
+    margin: 0;
+    font-size: 18px; line-height: 30px; font-weight: var(--fw-medium);
+    letter-spacing: -0.03em; color: rgba(71, 71, 71, 0.9);
+  }
+  .jp__body :global(p + p),
+  .jp__body :global(ul), .jp__body :global(ol) { margin-top: 22px; }
+  /* Spec: heading cap at 0, body text at 62, so 25px of gap under a 37px
+     line. The heading carries the space above it, the paragraph the space
+     below the heading. */
+  .jp__body :global(h2 + p), .jp__body :global(h3 + p),
+  .jp__body :global(h2 + ul), .jp__body :global(h3 + ul),
+  .jp__body :global(h2 + ol), .jp__body :global(h3 + ol) { margin-top: 25px; }
+  .jp__body :global(li) { margin-top: 8px; }
+  .jp__body :global(strong) { font-weight: var(--fw-semi); color: var(--c-black); }
+  .jp__body :global(a) { color: var(--c-black); text-decoration: underline; text-underline-offset: 3px; }
+  .jp__body :global(img) {
+    display: block; width: 100%; height: auto; margin: 40px 0;
+    border-radius: 12px; background: rgb(237, 237, 235);
+  }
+
+  /* ── previous / next ────────────────────────────────────── */
+  /* Not in the spec — the desktop prototype ends at the article and only the
+     mobile layout offers a way onward, a single "More Insights" button. With
+     nineteen posts in one chain, a reader who finishes one should be able to
+     take the next without going back to the index. Same dot pair and same
+     black pill as the rest of the page's language. */
+  .jp__pn {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    margin-top: 110px; padding-block: 44px 110px;
+    border-top: 1px solid rgba(153, 152, 149, 0.38);
+  }
+  .jp__pn-a {
+    display: flex; flex-direction: column; gap: 12px; min-width: 0;
+    padding-top: 4px;
+  }
+  .jp__pn-a--next { text-align: right; }
+  .jp__pn-k {
+    font-size: var(--fs-micro); line-height: 17px; font-weight: var(--fw-medium);
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgb(145, 144, 142);
+    transition: color var(--dur-fast) ease;
+  }
+  .jp__pn-t {
+    font-size: 24px; line-height: 32px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+    /* Titles reach 92 characters. Two lines, then stop. */
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  .jp__pn-a:hover .jp__pn-k { color: var(--c-black); }
+  .jp__pn-a:hover .jp__pn-t { text-decoration: underline; text-underline-offset: 4px; }
+
+  /* ── below the design grid ──────────────────────────────── */
+  @media (max-width: 1360px) {
+    .jp__top { padding-top: 96px; grid-template-columns: 1fr; }
+    .jp__read { padding-top: 72px; grid-template-columns: 1fr; }
+    .jp__rail { padding-top: 0; }
+    .jp__top .jp__rail { margin-bottom: 34px; }
+    .jp__read .jp__rail { margin-bottom: 34px; }
+    .jp__hero { margin-top: 48px; }
+    .jp__body { max-width: 680px; }
+    .jp__pn { margin-top: 72px; padding-bottom: 80px; }
+  }
+  @media (max-width: 760px) {
+    .jp__pn { grid-template-columns: 1fr; }
+    .jp__pn-a--next { text-align: left; }
+    .jp__pn-t { font-size: 20px; line-height: 28px; }
+  }
+</style>

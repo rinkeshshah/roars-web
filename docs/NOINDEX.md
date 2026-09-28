@@ -51,17 +51,56 @@ add_header X-Robots-Tag "noindex, nofollow" always;
 If the staging site is reachable at a public hostname, HTTP basic auth in
 Plesk is stronger than any of this and worth having as well.
 
+## dev.roarsinc.com keeps the header permanently
+
+The directive above is the pre-launch one and it comes off www at cutover.
+**The same directive on `dev.roarsinc.com` does not come off, ever.**
+
+dev serves the same build from the same repository. Once
+`PUBLIC_ALLOW_INDEXING=true`, every page on dev says `index,follow` and
+carries a canonical pointing at `www`, which is correct for www and wrong for
+dev: dev is then a fully indexable copy of the whole site that is also
+answering Google's crawler. A canonical is a hint, not a rule, and the way
+this goes wrong is dev URLs sitting in the index for weeks before anybody
+notices them.
+
+So on the dev subscription's nginx directives, permanently:
+
+```nginx
+# dev.roarsinc.com ONLY. Never remove. This host must not be indexable
+# whatever PUBLIC_ALLOW_INDEXING was set to in the build it is serving.
+add_header X-Robots-Tag "noindex, nofollow" always;
+```
+
+Basic auth on dev does the same job more bluntly and is worth having too. The
+header is the one that still works on the afternoon somebody turns auth off
+to show a client.
+
+Verify after cutover, from outside, on both hosts:
+
+```bash
+curl -sI https://www.roarsinc.com/ | grep -i x-robots-tag   # expect nothing
+curl -sI https://dev.roarsinc.com/ | grep -i x-robots-tag   # expect noindex
+```
+
 ## Going live
 
 This is a launch-checklist step, not a code change:
 
 1. Set `PUBLIC_ALLOW_INDEXING=true` in the deploy workflow environment.
+1a. Set `PUBLIC_ENABLE_TRACKING=true` in the same place, at the same time.
+   Analytics and the Gleap widget are off by default for the same fail-safe
+   reason as indexing: until then every build, preview and local run would
+   post pageviews into the client's real property. See
+   `src/components/ThirdParty.astro`, which also records what is wrong with
+   the tags that were supplied.
 2. Remove the `X-Robots-Tag` nginx directive above.
 3. Remove basic auth, if it was set.
 4. Deploy, then **verify from outside** with curl, not DevTools:
    ```bash
    curl -s https://www.roarsinc.com/ | grep -E 'name="robots"|rel="canonical"'
    curl -s https://www.roarsinc.com/robots.txt
+   curl -s https://www.roarsinc.com/ | grep -c 'google-analytics.com'
    ```
    Expect `index,follow,max-snippet:-1,...` and a `Sitemap:` line.
 5. Only then submit the sitemap in Search Console.

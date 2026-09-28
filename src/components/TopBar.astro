@@ -23,15 +23,27 @@ import { PORTRAIT } from '../lib/media'
  */
 interface Props {
   cta?: 'contact' | 'meeting'
+  /**
+   * The logo's section-change flash — pink as a section boundary reaches the
+   * top of the screen, yellow either side of it, the ground ink elsewhere.
+   * See initLogoFlash in src/scripts/topbar.ts.
+   *
+   * ON EVERYWHERE, so this is an opt-OUT. It shipped opt-in while the effect
+   * was being judged and every page wanted it in the end; a default of true
+   * is one line here rather than the same word repeated across twenty-two
+   * call sites, where the twenty-third would have been forgotten. Pass
+   * pulse={false} for a page that should not have it.
+   */
+  pulse?: boolean
 }
-const { cta = 'contact' } = Astro.props
+const { cta = 'contact', pulse = true } = Astro.props
 const CTA = {
   contact: { label: 'Contact Now', note: 'Reach out to start your project' },
   meeting: { label: 'Setup a Meeting', note: 'We reply within 24 hours' },
 }[cta]
 ---
 
-<header class="topbar" data-topbar>
+<header class="topbar" data-topbar data-topbar-pulse={pulse ? '' : undefined}>
   <div class="wrap topbar__inner">
     <LogoChip />
 
@@ -43,7 +55,7 @@ const CTA = {
               draws it. It is the only thing in the bar that says a person is
               on the other end of "Contact Now". */}
           <span class="topbar__face" aria-hidden="true">
-            <img src={PORTRAIT.founder} alt="" width="32" height="32" loading="eager" decoding="async" />
+            <img src={PORTRAIT.founder} alt="" data-decorative width="32" height="32" loading="eager" decoding="async" />
           </span>
           <GhostButton
             href={site.booking}
@@ -77,7 +89,95 @@ const CTA = {
     z-index: 50;
     pointer-events: none;
   }
+
+  /**
+   * THE BAR NEEDS A GROUND ONCE THE PAGE IS MOVING.
+   *
+   * It is transparent on purpose at the top, where it composes with the hero.
+   * Scrolled, that same transparency put the page's own copy straight through
+   * the mark and the burger: "Awarded" reading as the logo with an A behind
+   * it on /about-us/, the "AI automation" paragraph running through both on an
+   * industry page, the client logos colliding with the mark on /work/. Every
+   * page, every width, for as long as the bar has existed -- it never showed
+   * up in a gate because assert-overlap measures the page at rest and nothing
+   * overlaps at scroll zero.
+   *
+   * ON is-scrolled, which already existed and already fades the pill's note at
+   * exactly this point: the author was thinking about this state and gave it
+   * no ground. Same trigger, so the bar simplifies and becomes opaque in one
+   * movement rather than two.
+   *
+   * SOLID, NOT FROSTED, and that was a decision rather than the first idea.
+   * A translucent ground with a blur is the prettier answer -- it takes the
+   * colour of whatever is behind it and leaves no seam against the greys and
+   * photographs this bar crosses. It was built that way first and measured at
+   * 0.82 alpha: the about page's grey plate read straight through it and took
+   * the burger's contrast with it, which is the reported bug at a lower
+   * opacity rather than a fix for it. backdrop-filter compositing cannot be
+   * verified in the environment these gates run in, so the legibility of the
+   * only navigation on the page is not going to depend on it. Opaque, with a
+   * hairline under it so the edge reads as an edge and not as a mistake.
+   *
+   * inset: 0 covers it -- measured, the bar's box encloses both controls at
+   * every width (390: bar 0-68, mark 24-60, burger 21-63).
+   */
+  /* FROSTED AND SHORTER, BY REQUEST — and the note above says this was tried
+     and rejected once, so here is what is different. That attempt sat at 0.82
+     alpha with the about page's grey plate reading through it and taking the
+     burger's contrast with it. This one runs higher (0.88 light, 0.82 dark on
+     a near-black that is already close to the page) and, more to the point,
+     falls back to the solid colour wherever backdrop-filter is unavailable,
+     via @supports. The old note's real worry was a blur that silently does
+     not composite; that case now keeps the opaque plate.
+
+     THE HEIGHT IS THE PLATE'S, NOT THE BAR'S. Nothing in the bar moves — the
+     mark, the pill and the burger keep their positions and only the ground
+     behind them is shorter. It can be, because is-scrolled already hides the
+     pill's note, which was the lowest thing in the box; with that gone the
+     tallest content is the 52px mark sitting at 32, so 96 clears it where the
+     full box was 123. Measured at 1440. Below 760 the bar is 68 tall already
+     and --tb-plate-h drops to match it. */
+  .topbar::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--tb-plate-h, 96px);
+    background: var(--c-footer);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    opacity: 0;
+    transition: opacity var(--dur-med) var(--ease-out);
+    pointer-events: none;
+  }
+  .topbar.is-scrolled::before { opacity: 1; }
+  /* is-light means the bar is NOT over a dark section, so the ground is pale. */
+  .topbar.is-light::before {
+    background: var(--c-white);
+    border-bottom-color: rgba(20, 20, 20, 0.1);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .topbar::before {
+      background: rgba(11, 11, 11, 0.82);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      backdrop-filter: blur(16px) saturate(140%);
+    }
+    .topbar.is-light::before {
+      background: rgba(255, 255, 255, 0.88);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .topbar::before { transition: none; }
+  }
+  /* POSITIONED, AND THAT IS NOT DECORATION. The plate above is an absolutely
+     positioned ::before, and a positioned descendant paints above every
+     non-positioned in-flow one however early it appears in the tree. With
+     this row left static the plate covered the mark and the burger the moment
+     the bar scrolled — a solid band with nothing on it, which is exactly what
+     "the hamburger is missing" looked like. */
   .topbar__inner {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -116,6 +216,56 @@ const CTA = {
   /* The note retires once the page has moved. */
   .topbar.is-scrolled .topbar__note { opacity: 0; translate: 0 -12px; pointer-events: none; }
 
+  /* THE PILL RETIRES WHILE YOU READ DOWNWARDS, and comes back the moment you
+     scroll up. src/scripts/topbar.ts sets the class; the mark and the burger
+     are deliberately not in here.
+
+     It lifts out through the top of the bar rather than fading on the spot,
+     so the movement says "parked above" rather than "gone". pointer-events
+     off while it is away, or an invisible 285px target still swallows clicks
+     over the page it is covering.
+
+     The transition is on .topbar__meet permanently, not only in this rule,
+     so returning is animated too. --dur-fast, because a control coming back
+     because you asked for it should already be there when you look. */
+  .topbar__meet {
+    transition: opacity var(--dur-fast) var(--ease-out), translate var(--dur-fast) var(--ease-out);
+  }
+  .topbar.is-pill-away .topbar__meet {
+    opacity: 0;
+    translate: 0 -28px;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .topbar__meet { transition: opacity var(--dur-fast) linear; }
+    .topbar.is-pill-away .topbar__meet { translate: none; }
+  }
+
+  /* THE CALL TO ACTION ARRIVES. The mark does its quarter turn at 300ms and
+     this follows it in: the pill drops in at 380, the founder's face pops
+     just behind it, and the line underneath settles last. Three beats over
+     about half a second, then the block is still — the trailing dot's
+     four-second pulse in GhostButton is what keeps it alive after that, and
+     two things competing for the same corner would be one too many.
+
+     from-ONLY KEYFRAMES, with `backwards` rather than `both`. The missing
+     `to` is synthesised from the element's own computed style, so each one
+     animates to whatever it would otherwise be and stops mattering after
+     that. It has to work this way for the note: its resting opacity is 0.75
+     and it drops to 0 on scroll, and a forwards fill would have pinned it at
+     1 and killed both. */
+  .topbar__meet-row { animation: meetIn 700ms var(--ease-spring) 380ms backwards; }
+  .topbar__face     { animation: faceIn 620ms var(--ease-spring) 520ms backwards; }
+  .topbar__note     { animation: noteIn 700ms var(--ease-out) 640ms backwards; }
+
+  @keyframes meetIn { from { opacity: 0; transform: translateY(-12px); } }
+  @keyframes faceIn { from { opacity: 0; transform: scale(0.55); } }
+  @keyframes noteIn { from { opacity: 0; transform: translateY(-8px); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .topbar__meet-row, .topbar__face, .topbar__note { animation: none; }
+  }
+
   .topbar__burger {
     display: flex;
     flex-direction: column;
@@ -145,6 +295,9 @@ const CTA = {
 
   @media (max-width: 1040px) { .topbar__right { gap: var(--sp-5); } }
   @media (max-width: 760px) {
+    /* The bar is 68 tall here — mark at 24-60 — so the plate matches the box
+       and there is nothing to trim. */
+    .topbar { --tb-plate-h: 68px; }
     .topbar__inner { padding-top: var(--sp-3); align-items: center; }
     .topbar__meet { display: none; }
   }

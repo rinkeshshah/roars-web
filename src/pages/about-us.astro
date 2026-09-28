@@ -1,25 +1,133 @@
 ---
 /**
- * /about-us/ — inventory path. The design spec calls this page "Agency" and
- * proposes /agency/; the CSV wins and the nav label stays "Agency".
- * Copy verbatim from design/specs/Agency.md.
+ * /about-us/ — inventory path. The design calls this page "Agency" and
+ * proposes /agency/; docs/URL-INVENTORY.csv wins and the nav label stays
+ * "Agency". Copy is the export's, verbatim.
+ *
+ * Built against design/prototypes/Roars v2 - Agency.dc.html, measured with
+ * scripts/export-geometry.mjs. Canvas 1440x6179: Header 0-802 (dark, grained),
+ * About 802-5096 (white), Footer 5074. Coordinates in the comments below are
+ * SECTION-relative, as the export authors them; the content box starts at the
+ * 39px gutter, so a child at x503 sits 464 into the box.
+ *
+ * This page previously rendered the generic MarketingPage shell — a rail
+ * header and a prose slot — which is why its table was 196 rows of MISSING:
+ * the team grid, the client grid, the awards list, the 37 counter and the
+ * masthead were simply not built.
  */
-import MarketingPage from '../components/MarketingPage.astro'
-import StatBlock from '../components/StatBlock.astro'
-import AvatarStack from '../components/AvatarStack.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import TopBar from '../components/TopBar.astro'
+import NavOverlay from '../components/NavOverlay.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import GrainField from '../components/GrainField.astro'
+import DitherHero from '../components/DitherHero.astro'
+import Button from '../components/Button.astro'
+import { PORTRAIT, AGENCY_IMG, CLIENT_LOGOS } from '../lib/media'
 import { site } from '../lib/site'
+import star3 from '../assets/star-3.svg'
+import star5 from '../assets/star-5.svg'
+import quote from '../assets/quote.svg'
 
-/** Real names from the brand guidelines content facts. No portraits in the
- *  repo yet, so AvatarStack falls back to initials rather than a stock face. */
+/* ------------------------------------------------------------ content */
+
+/** The export's three, with the suffix metrics it sets per figure: the "+"
+ *  is 39px/400 and the "%" 26px/700, and they sit at different offsets
+ *  because the numerals they follow are different widths. */
+/* site.statSets.alt, in the shape this band draws. The ALT trio, not the
+   primary one: the homepage and /approach/ both show 20 / 1,500 / 63, and a
+   third page repeating them reads as a template. See src/lib/site.ts.
+   The offsets are per figure because the numerals they follow are different
+   widths: the '+' after a five-character "1,000" sits at 168 where the one
+   after "20" sits at 83. Change a figure's digit count and its sx moves. */
+const stats = [
+  { n: '1,000', suffix: '+', sx: 168, sy: 20, ss: 39, sw: 400, label: 'Happy Customers' },
+  { n: '20', suffix: '+', sx: 83, sy: 20, ss: 39, sw: 400, label: 'Years of Excellence' },
+  { n: '7', suffix: '+', sx: 46, sy: 20, ss: 39, sw: 400, label: 'Global Awards' },
+]
+
+/** Five named people and a counter for the rest. The export's own roster and
+ *  its own file mapping — Avinash carries Nitin.webp and Kevin carries
+ *  Abhishek.webp, which is the export's choice, not a substitution made here.
+ *  The name spelling is corrected per docs/HANDOFF.md: "Rinkesh A Shah" is
+ *  permanent, the export ships it scrambled. */
 const team = [
-  { name: 'Rinkesh A Shah' },
-  { name: 'Suzanne Martin' },
-  { name: 'Avinash Kumar' },
-  { name: 'Kevin Jacob' },
-  { name: 'Shiva Kumar' },
-  { name: 'Chetna Shah' },
-  { name: 'Khusboo Panchal' },
-  { name: 'Ankush A Shah' },
+  { name: 'Rinkesh A Shah', role: 'CEO / Founder', img: PORTRAIT.founder },
+  { name: 'Suzanne Martin', role: 'Global Sales', img: PORTRAIT.suzanne },
+  { name: 'Avinash Kumar', role: 'Project Manager', img: PORTRAIT.nitin },
+  { name: 'Kevin Jacob', role: 'Web Team Leader', img: PORTRAIT.abhishek },
+  { name: 'Chetna Shah', role: 'UI/UX Lead', img: PORTRAIT.chetna },
+]
+
+/* THE REST, AND IT HAS TO BE A SUBTRACTION.
+   The disc used to be a typed 25 sitting beside five named portraits, so the
+   page added up to thirty while the homepage said twenty-five. "The rest of
+   the Roars Fam" means the ones not already pictured, so it is the team
+   figure minus the people in the grid — and it stays right if either the
+   token or the list changes. */
+const restOfTeam = site.stats.teamSize - team.length
+
+/** The client marks, drawn as discs rather than as the strip on the homepage. */
+/* All fifteen, from the one registry, so the about grid and the homepage
+   strip cannot drift apart. The year is gone: every client carried "2021",
+   which is not a fact about any of them. */
+const clients = CLIENT_LOGOS
+
+/* THE COUNTER'S FIGURE, FROM THE TOKEN, IN BOTH PLACES.
+   The design spec sets "250" in the disc AND "More than 250 Clients" beside
+   it. The label was later moved to the owner's own figure and the disc was
+   not, so the tile read "250" next to "More than 2,500 Clients" (the figure
+   at the time) — two different numbers about the same thing, nine inches
+   apart. Both now come off site.stats.happyCustomers, so a change to the
+   token moves both, which is what happened when it went to '1,000+'. The '+' is dropped because "More
+   than" and "+" say the same thing twice. */
+const clientCount = site.stats.happyCustomers.replace('+', '')
+
+/**
+ * Read off the award badges on the live site, so the years are the ones the
+ * badges actually carry.
+ *
+ * The list this replaces ran 2026, 2025, 2025, 2024, 2024, which is not what
+ * any of the plaques say: the Clutch marks are 2022 and 2020, and the CIO
+ * Review one is 2018. Where a badge names a region it is kept, because "Top
+ * B2B Companies, Global" and "Top IT Services, India" are different awards.
+ *
+ * The two GoodFirms badges carry no year on the plaque, so none is written
+ * here. An invented year on an award is the kind of small false detail that
+ * costs more than the empty column does.
+ *
+ * "Top 15th User Experience Company" is not in this list: it is the headline
+ * above it, and repeating it would have it read twice.
+ */
+
+const awards = [
+  { year: '2022', title: 'Top IT Services, India', body: 'Clutch', no: '/01' },
+  { year: '2020', title: 'Top Mobile App Developers', body: 'Clutch', no: '/02' },
+  { year: '2020', title: 'Top B2B Companies, Global', body: 'Clutch', no: '/03' },
+  { year: '', title: 'Top Software Developer', body: 'GoodFirms', no: '/04' },
+  { year: '', title: 'Top App Designer', body: 'GoodFirms', no: '/05' },
+  { year: '2018', title: '20 Most Promising UI/UX Solution Providers', body: 'CIO Review', no: '/06' },
+]
+
+/**
+ * The five ventures Roars runs for itself.
+ *
+ * Names and domains are the owner's, given verbatim. Each card carries the
+ * mark and the domain and NOTHING ELSE — no one-line description of what the
+ * product does, because nobody has written one and inferring it from a name
+ * would put a claim about a live business on a public page. The slot is there
+ * in the markup's shape if a line ever arrives.
+ *
+ * Widths and heights are the real output of scripts/build-venture-logos.mjs,
+ * which normalises all five to a common 60px height. They are declared so the
+ * row reserves its space before the images load.
+ */
+const VENTURES = [
+  { name: 'Produit', domain: 'produit.co', url: 'https://www.produit.co/', logo: '/ventures/produit.png', w: 253, h: 60 },
+  { name: 'Hostwala', domain: 'hostwala.co', url: 'https://www.hostwala.co/', logo: '/ventures/hostwala.png', w: 250, h: 60 },
+  { name: 'UX Audit Pro', domain: 'uxauditpro.com', url: 'https://www.uxauditpro.com/', logo: '/ventures/uxauditpro.png', w: 280, h: 59 },
+  { name: 'MicroKopy', domain: 'microkopy.com', logo: '/ventures/microkopy.png', w: 280, h: 58 },
+  { name: 'GetAutomation', domain: 'getautomation.ai', logo: '/ventures/getautomation.png', w: 280, h: 60 },
 ]
 
 const schema = [
@@ -42,49 +150,666 @@ const schema = [
 ]
 ---
 
-<MarketingPage
-  topCta="contact"
-  title="About Roars | 250+ Products Since 2005"
+<BaseLayout
+  title="About Roars | 1,500+ Products Since 2005"
   description="We work alongside entrepreneurs and visionaries, using agile methodologies to produce brilliant, scalable, technology-based products and services."
   path="/about-us/"
-  label="Agency"
-  heading="Agency"
-  intro="We work alongside entrepreneurs and visionaries, using agile methodologies to produce brilliant, scalable, technology-based products and services."
   schema={schema}
 >
-  <p>
-    <strong>Roars</strong> helps founders stand out with bold product design and
-    smart digital solutions. We mix strategy, creativity and technology to craft
-    work that’s clean, purposeful and built to last.
-  </p>
+  <TopBar slot="topbar" cta="contact" />
+  <NavOverlay />
 
-  <p class="about__creed">
-    Driven by ideas. Focused on results. Built for the future. Simple ideas.
-    Strong products. Real impact.
-  </p>
+  {/* ── Header ──────────────────────────────────────────────── */}
+  <Section ground="dark" bleed>
+    <div class="agh">
+      <GrainField tone="dark" second />
+      {/* Design ref 3a. Background only — nothing in this band moves. */}
+      <DitherHero variant="carbon-heat" />
 
-  <div class="about__stats">
-    <StatBlock value="20" suffix="+" label="Years in product development" />
-    <StatBlock value="250" suffix="+" label="Projects delivered" />
-    <StatBlock value="96" suffix="%" suffixStyle="percent" label="Returning customers" />
-  </div>
+      <div class="wrap agh__inner">
+        {/* Founder block at 39,96, width 384. */}
+        <div class="agh__founder" data-reveal>
+          <img class="agh__face" src={PORTRAIT.founder} alt="" data-decorative width="42" height="42" />
+          <span class="agh__name">Rinkesh A Shah</span>
+          <span class="agh__role">CEO</span>
+          <img class="agh__quote" src={quote.src} alt="" data-decorative width="32" height="27" />
+          <p class="agh__intro">
+            We work alongside entrepreneurs and visionaries, using agile
+            methodologies to produce brilliant, scalable, technology-based
+            products and services.
+          </p>
+        </div>
 
-  <h2>Team of Roars</h2>
-  <AvatarStack people={team} size={60} count="59" />
+        {/* Masthead at 450 in the content box: chip at +15, title at +6,
+            underline at +1. Those three offsets are the export's and they do
+            not align — the lockup is deliberately ragged on its left edge. */}
+        <div class="agh__mast" data-reveal>
+          <span class="agh__chip">
+            <span>roars</span>
+            <span class="starmark" style={`--m:url(${star5.src});width:10px;height:10px`}></span>
+          </span>
+          <h1 class="agh__h1">Agency</h1>
+          {/* NO union.svg under the title. The export draws its hand-drawn
+              dashed rule here and on Projects and Insights; it was asked for
+              twice and removed, so it does not ship on any inner page. Do not
+              restore it from the export. */}
+        </div>
 
-  <p>If you want to become one of our happy clients, get in touch with us right now.</p>
-</MarketingPage>
+        {/* Trust row at 929 in the box, 26 below the masthead's top. */}
+        <div class="agh__trust" data-reveal>
+          <img class="agh__trust-face" src={PORTRAIT.suzanne} alt="" data-decorative width="42" height="42" />
+          <img class="agh__trust-face" src={PORTRAIT.chetna} alt="" data-decorative width="42" height="42" />
+          <span class="agh__count"><span>{site.stats.teamSize}</span>
+            <span class="starmark" style={`--m:url(${star3.src});width:9px;height:9px`}></span>
+          </span>
+          {/* WAS "37", LABELLED "Trusted by our Clients", BESIDE TWO TEAM FACES.
+              Three things disagreed at once: the figure had no source, the
+              label said clients while the portraits were staff, and 37 is not
+              the client count either — that is 1,000+ and is stated as such
+              four sections down. The faces decide what this badge is about,
+              so it is the team, with the team's own figure and a label that
+              matches. */}
+          <span class="agh__trust-label">The Roars team</span>
+        </div>
+
+        <span class="agh__caption" data-reveal>About Our<br />Product Company</span>
+      </div>
+    </div>
+  </Section>
+
+  {/* ── About ───────────────────────────────────────────────── */}
+  <Section ground="light">
+    <div class="agb">
+      {/* Intro row at 168, then the stat row 303 below it.
+
+          `id="agency"` is the menu's target for "The agency". The About panel
+          had two rows both pointing at /about-us/, so picking either one did
+          the same thing. Set on the intro rather than the Section, so the
+          heading lands under the fixed top bar rather than behind it. */}
+      <div class="agb__intro" id="agency" data-reveal>
+        <span class="agb__stars" aria-hidden="true">
+          <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
+          <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
+        </span>
+        <p class="agb__lede"><strong>Roars</strong> helps founders stand out with bold
+          product design and smart digital solutions. We mix strategy, creativity
+          and technology to craft work that’s clean, purposeful and built to last.</p>
+        <p class="agb__creed">Driven by ideas. Focused on results. Built for the future.
+          Simple ideas. Strong products. Real impact.</p>
+      </div>
+
+      <ul class="agb__stats" data-reveal>
+        {stats.map((s) => (
+          <li class="agb__stat">
+            <span class="agb__stat-rule" aria-hidden="true"></span>
+            <span class="agb__stat-n"><span>{s.n}</span></span>
+            <span
+              class="agb__stat-suffix"
+              style={`left:${s.sx}px;top:${s.sy}px;font-size:${s.ss}px;font-weight:${s.sw}`}
+            >{s.suffix}</span>
+            <span class="agb__stat-label">{s.label}</span>
+          </li>
+        ))}
+      </ul>
+
+      {/* Team. Four across, then ONE card under the second column and the
+          counter under the fourth — the second row is not a row, and that
+          gap is drawn. */}
+      <ul class="agb__grid agb__grid--team" id="team" data-reveal>
+        {team.map((m) => (
+          <li class="agb__person">
+            <span class="agb__disc"><img src={m.img} alt={`${m.name}, ${m.role}`} width="198" height="198" loading="lazy" /></span>
+            <span class="agb__person-name">{m.name}</span>
+            <span class="agb__person-role">{m.role}</span>
+          </li>
+        ))}
+        <li class="agb__rest">
+          <span class="agb__rest-disc" aria-hidden="true">
+            <span class="agb__rest-n">{restOfTeam}<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
+          </span>
+          <span class="agb__rest-label">The rest of the<br />Roars Fam</span>
+        </li>
+      </ul>
+
+      <div class="agb__plate" data-reveal>
+        <img src={AGENCY_IMG.office} alt="The Roars studio" width="1361" height="764" loading="lazy" />
+      </div>
+
+      <h2 class="agb__h2 agb__h2--clients">Clients:</h2>
+      <ul class="agb__grid agb__grid--clients" data-reveal>
+        {clients.map((c) => (
+          <li class="agb__person">
+            <span class="agb__cell"><img src={c.src} alt={`${c.alt} logo`} width="160" height="64" loading="lazy" decoding="async" /></span>
+            <span class="agb__person-name">{c.alt}</span>
+          </li>
+        ))}
+        <li class="agb__rest">
+          <span class="agb__rest-disc" aria-hidden="true">
+            <span class="agb__rest-n">{clientCount}<span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span></span>
+          </span>
+          <span class="agb__rest-label">More than {clientCount}<br />Clients</span>
+        </li>
+      </ul>
+
+      <div class="agb__cta" data-reveal>
+        <span class="agb__stars" aria-hidden="true">
+          <span class="starmark" style={`--m:url(${star3.src});width:17px;height:17px`}></span>
+          <span class="starmark" style={`--m:url(${star5.src});width:17px;height:17px`}></span>
+        </span>
+        <p class="agb__cta-text">If you want to become one of our happy clients,
+          get in touch with us right now.</p>
+        <Button href="/contact-us/" label="Get Started" />
+      </div>
+
+
+      <h2 class="agb__h2 agb__h2--awards">Awarded</h2>
+      {/* The lead the awards block was missing: what the recognition is for,
+          rather than a bare list of plaques. Copy supplied by the client. */}
+      <div class="agb__lead-award" data-reveal>
+        <h3 class="agb__lead-award-title">Top 15th User Experience Company</h3>
+        <p class="agb__lead-award-body">Our team is dedicated to delivering outstanding
+          experiences. We go above and beyond simply producing technology-based
+          solutions; we are focused on creating positive experiences for our users.</p>
+      </div>
+      <ul class="agb__awards" data-reveal>
+        {awards.map((a) => (
+          <li class="agb__award">
+            <span class="agb__award-stub" aria-hidden="true"></span>
+            <span class="agb__award-year">{a.year}</span>
+            <span class="agb__award-rule" aria-hidden="true"></span>
+            <span class="agb__award-title"><span>{a.title}</span></span>
+            <span class="agb__award-body"><span class="agb__award-dot" aria-hidden="true"></span><span>{a.body}</span></span>
+            <span class="agb__award-no"><span>{a.no}</span></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* ── Our ventures ─────────────────────────────────────────
+      The five products Roars runs for itself, immediately before the footer.
+      It earns that position: everything above it is work done for other
+      people, and this answers "do they only do it for hire".
+
+      THE MARKS ARE GREY UNTIL THE CURSOR REACHES THEM, which is the ask, and
+      it also does a job — five logos in five house palettes shouting at once
+      would pull rank on this page's own yellow. Grey holds them as one set and
+      colour is the reward for pointing at one. It is a CSS filter, so a single
+      colour file serves both states. */}
+  <Section ground="surface">
+    <div class="agv">
+      <span class="agv__tick" aria-hidden="true"></span>
+      <div class="agv__head">
+        <div class="agv__rail">
+          <span class="agv__eyebrow">Our ventures</span>
+          <h2 class="agv__h">We build for ourselves too.</h2>
+        </div>
+        <p class="agv__lede">
+          Five products of our own, run on the same process we sell. They are where we
+          find out what a decision costs before we recommend it to anybody else.
+        </p>
+      </div>
+
+      <ul class="agv__grid">
+        {VENTURES.map((v, i) => (
+          <li data-reveal style={`transition-delay:${i * 60}ms`}>
+            <a class="agv__card" href={v.url ?? `https://${v.domain}`} target="_blank" rel="noopener">
+              <span class="agv__shot">
+                <img src={v.logo} alt={v.name} width={v.w} height={v.h} loading="lazy" decoding="async" />
+              </span>
+              <span class="agv__go">
+                <span>{v.domain}</span>
+                <span class="agv__arrow" aria-hidden="true">↗</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Section>
+
+  {/* This page's own close. The default is a real sentence, but a visitor who
+      has just read twenty years of history should be answered in those terms
+      rather than with the generic line. */}
+  <SiteFooter
+    slot="footer"
+    tagline="1,500+ products since 2005"
+    blurbTitle="Want the team behind 1,500+ products?"
+    blurb="Tell us what you are building. We will tell you honestly whether we are the right fit, and what it would take."
+  />
+</BaseLayout>
 
 <style>
-  .about__creed {
-    font-size: var(--fs-intro) !important;
-    font-weight: var(--fw-semi);
-    letter-spacing: var(--ls-item);
-    color: var(--c-ink-heading) !important;
+  /* ── Header, section 1440x802 ───────────────────────────────
+     Four tracks summing to the 1362 content box: the masthead opens at 450,
+     the caption at 696, the trust row at 929. */
+  .agh { isolation: isolate; position: relative; }
+  .agh__inner {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 450fr 246fr 233fr 433fr;
+    /* align-content:start, or the 802 min-height is distributed INTO the auto
+       rows: row one stretched past the founder block's 232 and carried the
+       masthead, the trust row and the caption 53px down with it. */
+    align-content: start;
+    padding-block: 96px 0;
+    min-height: 802px;
   }
-  .about__stats {
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--sp-5); margin: var(--sp-6) 0;
+
+  /* One composed block, 384x232, with five items the export places against
+     its own corner: avatar 0,0 · name 56,6 · role 56,25 · quote 0,64 ·
+     intro 0,74. The quote and the intro OVERLAP by design — the glyph sits in
+     the first line's indent rather than above the paragraph, which is why the
+     first line is short and the rest run full measure. Stacking them in flow
+     made the block taller and pushed the masthead, the trust row and the
+     caption down with it. min-height, so real copy can still grow it. */
+  .agh__founder { grid-column: 1; grid-row: 1; position: relative; width: 384px; min-height: 232px; }
+  .agh__face { position: absolute; left: 0; top: 0; width: 42px; height: 42px; border-radius: var(--r-circle); object-fit: cover; background: rgba(255, 255, 255, 0.14); }
+  .agh__name { position: absolute; left: 56px; top: 6px; font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-semi); letter-spacing: -0.05em; color: rgba(255, 255, 255, 0.95); }
+  .agh__role { position: absolute; left: 56px; top: 25px; font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium); letter-spacing: -0.05em; color: rgba(255, 255, 255, 0.6); }
+  .agh__quote { position: absolute; left: 0; top: 64px; width: 32px; height: 27px; opacity: 0.55; filter: invert(1); }
+  .agh__intro { position: absolute; left: 0; top: 74px; width: 384px; margin: 0; text-indent: 46px; font-size: var(--fs-intro); line-height: 30px; font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: rgba(255, 255, 255, 0.92); }
+
+  /* Row 1 closes at 328 (96 + the 232-tall founder block), so these three
+     margins are the export's 414 / 440 / 653 measured from there. */
+  /* 86 to the group's top at 414, then 51 more to the chip, which is the
+     first thing drawn in it. */
+  .agh__mast { grid-column: 2 / 4; grid-row: 2; margin-top: 86px; padding-top: 51px; }
+  .agh__chip { display: flex; align-items: flex-start; gap: 8px; margin-left: 15px; height: 24px; }
+  .agh__chip > span:first-child { font-size: 20px; line-height: 20px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: #fbfbfb; padding-top: 4px; }
+  .agh__h1 { margin: 26px 0 0 6px; font-size: clamp(var(--fs-heading-m), 8.62vw, var(--fs-heading)); line-height: 86px; font-weight: var(--fw-semi); letter-spacing: -0.04em; color: rgb(251, 251, 251); }
+
+  .agh__trust { grid-column: 4; grid-row: 2; margin-top: 112px; display: flex; align-items: flex-start; height: 43px; }
+  .agh__trust-face { width: 42px; height: 42px; border-radius: var(--r-circle); object-fit: cover; background: rgba(255, 255, 255, 0.14); }
+  .agh__trust-face + .agh__trust-face { margin-left: 9px; }
+  .agh__count {
+    position: relative; margin-left: 10px; margin-top: 1px;
+    width: 42px; height: 42px; border-radius: var(--r-circle);
+    background: var(--c-white); flex: 0 0 auto;
   }
-  @media (max-width: 760px) { .about__stats { grid-template-columns: 1fr; } }
+  .agh__count > span:first-child { position: absolute; left: 10px; top: 8px; font-size: 18px; line-height: 24px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-black); }
+  .agh__count .starmark { position: absolute; left: 30px; top: 6px; color: var(--c-black); }
+  .agh__trust-label { margin-left: 27px; padding-top: 2px; width: 127px; font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium); letter-spacing: -0.04em; color: var(--c-white); opacity: 0.75; }
+
+  .agh__caption { grid-column: 3; grid-row: 2; margin-top: 325px; align-self: start; font-size: var(--fs-label); line-height: 20px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: var(--c-white); opacity: 0.89; }
+
+  /* ── Body, section 1440x4294 ────────────────────────────────
+     Every block below carries the export's own top offset. They are not a
+     rhythm — 168, 471, 682, 1340, 2226, 2959, 3200, 3719 — so each gap is
+     set once rather than derived. */
+  .agb { padding-block: 168px 163px; }
+
+  .agb__intro { display: grid; grid-template-columns: 468fr 462fr 432fr; }
+  .agb__stars { display: flex; gap: 4px; padding-top: 7px; }
+  .starmark { display: inline-block; background: currentColor; -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; }
+  .agb__lede { width: 351px; margin: 0; font-size: var(--fs-intro); line-height: 32px; font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: var(--c-black); }
+  /* 700 in the export, and the only bold weight on the page. */
+  .agb__lede strong { font-weight: 700; }
+  .agb__creed { width: 293px; margin: 0; font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: rgb(71, 71, 71); opacity: 0.8; }
+
+  /* Three 435-wide blocks on a 1362 box: 0, 462, 925. */
+  .agb__stats { list-style: none; margin: 111px 0 0; padding: 0; display: grid; grid-template-columns: 435fr 27fr 435fr 28fr 435fr; }
+  .agb__stats > :nth-child(2) { grid-column: 3; }
+  .agb__stats > :nth-child(3) { grid-column: 5; }
+  .agb__stat { position: relative; height: 76px; }
+  .agb__stat-rule { position: absolute; left: 0; top: 0; width: 433px; height: 1.5px; background: var(--c-rule-strong); }
+  /* The figure and the title carry an inner span because their leading is
+     SHORTER than their size (64 on 65, 19 on 24), so the glyphs overhang the
+     box and the export measures the run, not the box. */
+  .agb__stat-n { position: absolute; left: 0; top: 11px; font-size: 65px; line-height: 64px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-black); }
+  /* Placed, not run on: the two suffixes sit at different offsets because the
+     numerals they follow are different widths, and letter-spacing inherits as
+     a computed px so it is re-declared at their own size. */
+  .agb__stat-suffix { position: absolute; line-height: 40px; letter-spacing: var(--ls-display); color: var(--c-black); }
+  .agb__stat-label { position: absolute; left: 235px; top: 28px; width: 137px; font-size: 18px; line-height: 24px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(71, 71, 71); opacity: 0.78; }
+
+  /* The grids open at 238 and 234 in the box, not at the rail. */
+  .agb__grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, 198px); column-gap: 30px; row-gap: 38px; }
+  .agb__grid--team { margin: 135px 0 0 238px; }
+  /* 74, not the export's authored 117: that offset is measured from the top
+     of the CLIENTS BLOCK, and the heading above already occupies its first 43.
+     Same trap on the awards list below. */
+  .agb__grid--clients { margin: 74px 0 0 234px; }
+  /* SCOPED TO THE TEAM GRID. Row two is one card under column two and the
+     counter under column four, with columns 1 and 3 empty by design. That is
+     an arrangement for exactly five people plus a counter, and it was applying
+     to the clients grid as well: with fifteen marks it pushed the fifth into
+     column two on its own and dropped the counter into the middle of the
+     wall. The clients grid flows, and its counter is simply last. */
+  .agb__grid--team > :nth-child(5) { grid-column: 2; }
+  /* Spans the last two columns, not the fourth.
+     The block is 437px in the export — a 198px disc with the label set beside
+     it — but pinned to one 198px column the label's 54.691% offset landed at
+     108px, inside the disc, and "The rest of the Roars Fam" typed straight
+     over the 25. Column 3 is empty on this row, so the block takes both. */
+  .agb__grid--team > .agb__rest { grid-column: 3 / -1; grid-row: 2; justify-self: end; }
+  /* The clients counter closes the wall: its own row under the last one, and
+     CENTRED across it. Spanning 1 / -1 gave it the full width but its content
+     still started at the left edge, so with fifteen marks — three rows of four
+     and a row of three — it sat alone under the first column looking like a
+     sixteenth client that had lost its logo. Centred, it reads as the line
+     that closes the grid rather than a member of it.
+     width:auto is what makes justify-self do anything: .agb__rest is width
+     100%, which against a full-width grid area is the whole row, and a item
+     already filling its area has nowhere to be centred. */
+  .agb__grid--clients > .agb__rest {
+    grid-column: 1 / -1; margin-top: 10px;
+    width: auto; justify-self: center;
+  }
+
+  .agb__person { width: 198px; }
+  .agb__disc { display: block; width: 198px; height: 198px; border-radius: 50%; overflow: hidden; background: rgb(217, 217, 217); }
+  .agb__disc img { width: 100%; height: 100%; object-fit: cover; }
+  /* CLIENT MARKS SIT IN A DISC, like the team portraits. Same shape, same
+     footprint, so the two grids read as one system.
+     THE LOGO IS SIZED TO THE INSCRIBED SQUARE, not to the cell. A circle of
+     diameter D only has D x 0.707 of usable width across its centre, so a
+     wide lockup measured against the full 198px would run its ends out
+     through the curve. 132px is that safe width with a little air; the
+     padding is belt and braces for the marks that are nearly square. */
+  .agb__cell {
+    display: flex; align-items: center; justify-content: center;
+    width: 198px; height: 198px; padding: 26px; border-radius: 50%;
+    background: rgb(244, 244, 242);
+  }
+  /* Contained rather than sized, so a tall mark and a wide one both fit and
+     neither is stretched. Desaturated so a colour file dropped in later
+     still reads as part of one wall. */
+  .agb__cell img {
+    max-width: 132px; max-height: 62px;
+    width: auto; height: auto; object-fit: contain;
+    filter: grayscale(1); opacity: 0.62;
+    transition: opacity var(--dur-fast) ease;
+  }
+  .agb__grid--clients li:hover .agb__cell img { opacity: 0.9; }
+  .agb__person-name { display: block; margin-top: 20px; font-size: var(--fs-body); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(22, 22, 22); }
+  .agb__person-role { display: block; margin-top: 2px; font-size: var(--fs-body); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
+
+  /* A row: the disc with its numeral, then the label beside it.
+     It was four absolutely placed boxes inside a 437px block — a 198px disc
+     at 0, the numeral at 63,66 and the label at 54.691%. None of those
+     offsets survive a narrower box. At 1440 the block sat in one 198px grid
+     column, so 54.691% was 108px and the label printed over the numeral; at
+     768 the same thing; at 390 the block collapsed to zero width and its
+     absolute children painted 200px off the page.
+     In a flex row the disc keeps its size, the numeral centres in it, and
+     the label takes what is left — at any width, with no offsets to keep in
+     step with a box width that changes. */
+  .agb__rest {
+    display: flex; align-items: center; gap: 28px;
+    width: 100%; max-width: 437px; min-height: 198px;
+  }
+  .agb__rest-disc {
+    position: relative; flex: none;
+    width: 198px; height: 198px; border-radius: 50%;
+    background: rgb(208, 208, 208); opacity: 0.34;
+  }
+  /* Centred in the disc, which is what the export's 63,66 offset amounts to
+     for a two-digit figure. The three-digit "250" used its own nudge to stay
+     centred; centring properly makes that unnecessary. */
+  .agb__rest-n {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    font-size: 65px; line-height: 64px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-black);
+  }
+  /* THE CLIENTS FIGURE ONLY. This rule is shared with the team counter, which
+     shows "25" and keeps the export's 65px. The clients one is "1,000": five
+     characters at 65px plus the 9px gap and the 17px star measure about 206px
+     against a disc 198px across, and a circle has less than its diameter to
+     give at any line off its centre, so it was over the curve well before
+     that. 46px brings the group to roughly 154px. */
+  .agb__grid--clients .agb__rest-n { font-size: 46px; line-height: 46px; }
+  .agb__rest-n .starmark { align-self: flex-start; margin-top: 4px; }
+  .agb__rest-label {
+    min-width: 0;
+    font-size: 20px; line-height: 28px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: rgb(22, 22, 22);
+  }
+
+  .agb__plate { margin-top: 104px; height: 764px; border-radius: 10px; overflow: hidden; background: var(--c-black); }
+  .agb__plate img { width: 100%; height: 100%; object-fit: cover; }
+
+  .agb__h2 { margin: 0; font-size: 58px; line-height: 43px; font-weight: var(--fw-semi); letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
+  .agb__h2--clients { margin: 122px 0 0 465px; }
+  .agb__h2--awards { margin: 99px 0 0 460px; }
+  /* Sits under the heading in the same column, so the block reads as one
+     statement rather than a title floating above a list. */
+  .agb__lead-award { margin: 30px 0 0 460px; max-width: 420px; }
+  .agb__lead-award-title {
+    margin: 0;
+    font-size: var(--fs-item); line-height: 22px; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-item); color: var(--c-black);
+  }
+  .agb__lead-award-body {
+    margin: 12px 0 0;
+    font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.7);
+  }
+
+  .agb__cta { margin-top: 62px; display: grid; grid-template-columns: 462fr 464fr 436fr; align-items: start; }
+  .agb__cta .agb__stars { padding-top: 26px; }
+  .agb__cta-text { width: 356px; margin: 0; font-size: var(--fs-intro); line-height: 32px; font-weight: var(--fw-medium); letter-spacing: var(--ls-item); color: var(--c-black); }
+  /* justify-self, or the button stretches to fill its 436px grid track: a
+     grid item defaults to stretch, and .btn only sets a MIN width, so nothing
+     stopped it. It was three times the width of its own label. */
+  .agb__cta :global(.btn) { margin-top: 22px; justify-self: start; }
+
+  /* The export authors this block 420 tall and lets the year line overhang it
+     by 5; without the explicit height the overhang pushed the awards down. */
+
+  /* 17, not the authored 60, for the same reason as the client grid. */
+  .agb__awards { list-style: none; margin: 17px 0 0; padding: 0; }
+  /* 72, not the export's 48. The children are absolutely positioned, so the
+     row cannot grow to fit a title that wraps, and "20 Most Promising UI/UX
+     Solution Providers" is two lines at any sensible width. 72 holds two
+     lines from the title's 27px offset; the single-line rows keep the same
+     rhythm rather than each row being its own height. */
+  .agb__award { position: relative; height: 72px; margin-bottom: 28px; }
+  .agb__award:last-child { margin-bottom: 0; }
+  .agb__award-stub { position: absolute; left: 0; top: 0; width: 16px; height: 1.5px; background: var(--c-rule); opacity: 0.9; }
+  .agb__award-year { position: absolute; left: 0; top: 27px; font-size: var(--fs-body); line-height: 19px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-black); }
+  .agb__award-rule { position: absolute; left: 34.068%; top: 0; width: 65.859%; height: 0.5px; background: var(--c-rule); opacity: 0.7; }
+  /* Capped so it wraps instead of running under the source column, which
+     starts at 68.209%. Without a width the longest award title printed
+     straight through "CIO Review". */
+  .agb__award-title { position: absolute; left: 466px; top: 27px; width: 30%; line-height: 1.22; font-size: var(--fs-item); font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-black); }
+  .agb__award-body { position: absolute; left: 68.209%; top: 24px; display: flex; align-items: center; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(2, 2, 2); }
+  .agb__award-dot { width: 24px; height: 24px; margin-right: 21px; border-radius: 50%; background: rgb(242, 242, 242); }
+  .agb__award-no { position: absolute; left: 94.2%; top: 24px; width: 5.727%; text-align: right; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: rgb(145, 144, 142); }
+
+  /* ── Below the design grid ──────────────────────────────────
+     Only 1440 and the documented mobile stack are drawn. The grids fall to
+     two columns and then one; the absolutely placed award columns become a
+     flow row, which is the one block that cannot hold its geometry. */
+  @media (max-width: 1040px) {
+    .agh__inner { grid-template-columns: 1fr; padding-block: 120px 64px; min-height: 0; row-gap: 40px; }
+    .agh__founder, .agh__mast, .agh__trust, .agh__caption { grid-column: 1; grid-row: auto; margin-top: 0; }
+    .agh__h1 { line-height: 1; margin-left: 0; }
+    .agb { padding-block: 88px 88px; }
+    .agb__intro, .agb__cta { grid-template-columns: 1fr; row-gap: 24px; }
+    .agb__lede, .agb__creed, .agb__cta-text { width: auto; max-width: 520px; }
+    .agb__stats { grid-template-columns: 1fr; row-gap: 40px; margin-top: 56px; }
+    .agb__stats > :nth-child(2), .agb__stats > :nth-child(3) { grid-column: 1; }
+    .agb__grid { grid-template-columns: repeat(2, 198px); }
+    .agb__grid--team, .agb__grid--clients { margin-left: 0; margin-top: 64px; }
+    .agb__grid--team > :nth-child(5), .agb__grid--team > .agb__rest { grid-column: auto; grid-row: auto; }
+    .agb__h2--clients, .agb__h2--awards { margin-left: 0; }
+    .agb__lead-award { margin-left: 0; max-width: 560px; }
+    .agb__h2 { font-size: var(--fs-stat); line-height: 1.1; }
+    .agb__plate { height: 380px; margin-top: 64px; }
+    .agb__award { height: auto; margin-bottom: 32px; padding-top: 18px; }
+    .agb__award-stub { width: 100%; }
+    .agb__award-year, .agb__award-title, .agb__award-body, .agb__award-no { position: static; display: block; }
+    /* THE 30% WIDTH IS A DESKTOP COLUMN, and it followed the title into the
+       flow. On the 1440 grid the titles are absolutely placed and 30% is
+       409px, which holds every one of them on a single line. The rule above
+       makes them static blocks on a phone and the width came with them: 105px
+       of a 350px column, so 24px type broke one word per line -- "Top /
+       Mobile / App / Developers" down four rows.
+       Released, the column is the measure: the longest award on the site,
+       "20 Most Promising UI/UX Solution Providers" at 42 characters, sets on
+       two lines at 390 and the other five set on one. */
+    .agb__award-title { margin-top: 6px; width: auto; }
+    .agb__award-body { margin-top: 6px; }
+    .agb__award-no { margin-top: 4px; }
+  }
+
+  @media (max-width: 760px) {
+    .agh__intro, .agh__quote { margin-left: 0; }
+    .agh__founder { width: auto; }
+    /* Both measured off the 1362 canvas: a 384px intro and a 433px rule in a
+       350px page. The sections clip, so neither scrolled — they just painted
+       past the edge and lost their last words. */
+    .agh__intro { width: 100%; }
+    .agb__stat-rule { width: 100%; }
+
+    /* THE STAT LABEL SITS UNDER THE FIGURE, not beside it.
+       The rule above was widened for this band and the label was not: it is
+       still absolute at left 235 with a 137px width, which needs 372px of
+       room. There is 712 at 768, so it fitted and looked deliberate, and 280
+       at 320 -- where it painted 92px past the edge and lost its last words
+       inside a clipping section. Found by widening this gate past /work/.
+       The figure stays where it is and the label goes below it. The suffix
+       keeps its absolute offsets, which are measured from this box rather
+       than from the figure, so the '+' stays on the numeral. */
+    .agb__stat { height: auto; min-height: 76px; padding-top: 11px; }
+    .agb__stat-n { position: static; display: block; }
+    .agb__stat-label {
+      position: static;
+      width: auto;
+      max-width: 30ch;
+      margin-top: 8px;
+    }
+
+    /* ── Team and clients: TWO PER ROW, not one ──────────────
+       These were one per row at a fixed 198px disc, which on a 390 phone is
+       half the viewport per face and eight scroll-screens of portraits. The
+       disc is sized by its column now instead of by a number measured off the
+       1362 canvas, so it fits any width. */
+    .agb__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 18px; row-gap: 26px;
+    }
+    .agb__person { width: auto; min-width: 0; }
+    .agb__disc { width: 100%; height: auto; aspect-ratio: 1; }
+    .agb__cell { width: 100%; height: auto; aspect-ratio: 1; padding: 14px; }
+    /* Same inscribed-square rule, in percentages because the disc is fluid
+       here rather than a fixed 198. */
+    .agb__cell img { max-width: 66%; max-height: 32%; }
+    .agb__person-name { margin-top: 12px; font-size: var(--fs-label); line-height: 17px; }
+    .agb__person-role { font-size: var(--fs-label); line-height: 17px; }
+
+    /* The counter takes the full row. Its 210px top padding was standing in
+       for a grid position that does not exist at this width, and it read as a
+       screen of empty space above the number. */
+    /* `.agb__grid > .agb__rest` at the tablet breakpoint sets grid-column to
+       auto and outranks a bare `.agb__rest`, so the counter kept sitting in
+       column two beside the last portrait and its label wrapped to one word a
+       line. Matched specificity, not !important. */
+    .agb__grid > .agb__rest {
+      grid-column: 1 / -1;
+      width: auto; min-height: 0; padding-top: 0; margin-top: 6px; gap: 18px;
+    }
+    .agb__rest-disc { width: 128px; height: 128px; }
+    .agb__rest-n { font-size: 42px; line-height: 42px; gap: 6px; }
+    /* Same story as the desktop rule above, one disc size down, and it needs
+       the same two-class selector to land: a bare `.agb__rest-n` here loses to
+       `.agb__grid--clients .agb__rest-n`, so the clients figure was still
+       drawing at 46px — "1000" plus the gap and the star came to 135px inside
+       a 128px disc and sat over the curve on both sides. The team's "25" is
+       two characters and keeps the 42px. */
+    .agb__grid--clients .agb__rest-n { font-size: 31px; line-height: 31px; }
+    .agb__rest-label { font-size: 17px; line-height: 23px; }
+
+
+    /* ── Gaps ───────────────────────────────────────────────
+       Every one of these was measured for a 1362 canvas, where 145px between
+       blocks reads as composure. At 390 it reads as the page having ended. */
+    .agb { padding-block: 56px; }
+    .agb__stats { margin-top: 40px; row-gap: 30px; }
+    .agb__grid--team, .agb__grid--clients { margin-top: 36px; }
+    .agb__plate { height: 220px; margin-top: 48px; }
+    .agb__h2 { font-size: 34px; line-height: 1.08; }
+    .agb__h2--clients { margin-top: 56px; }
+    .agb__h2--awards { margin-top: 52px; }
+    .agb__cta { margin-top: 44px; }
+    .agb__awards { margin-top: 22px; }
+    .agb__award { margin-bottom: 24px; }
+    /* The title is set 19/19 for a single line on the wide canvas. Wrapped to
+       two or three lines at this width that is solid type with no leading. */
+    .agb__award-title { line-height: 1.22; }
+    /* A 24px grey disc with 21px of margin, in front of one word. On the wide
+       canvas it is a column marker; stacked under the title it just pushes
+       "Clutch" into the middle of nowhere. */
+    .agb__award-dot { display: none; }
+  }
+  /* ── Our ventures ───────────────────────────────────────── */
+  .agv { padding-block: 96px 112px; }
+  .agv__tick { display: block; width: 16px; height: 1.5px; background: var(--c-accent); }
+  .agv__head {
+    display: grid; grid-template-columns: minmax(0, 1fr) 440px;
+    column-gap: 60px; align-items: end; margin-top: 22px;
+  }
+  .agv__rail { display: flex; flex-direction: column; gap: 14px; }
+  .agv__eyebrow {
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-ink-label);
+  }
+  .agv__h {
+    margin: 0; max-width: 700px;
+    font-size: clamp(38px, 3.9vw, 56px); line-height: 1.07; font-weight: var(--fw-semi);
+    letter-spacing: var(--ls-display); color: var(--c-ink-heading);
+  }
+  .agv__lede {
+    margin: 0;
+    font-size: var(--fs-body); line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.62); text-wrap: pretty;
+  }
+
+  .agv__grid {
+    list-style: none; margin: 64px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 26px;
+  }
+  /* One rule across the row, drawn per card so it survives wrapping. */
+  .agv__card {
+    display: flex; flex-direction: column; align-items: flex-start;
+    padding-top: 26px; border-top: 1px solid var(--c-rule-strong);
+    transition: border-color var(--dur-fast) ease;
+  }
+  .agv__card:hover { border-top-color: var(--c-black); }
+  .agv__shot { display: flex; align-items: center; height: 34px; }
+  /* GREY AT REST, COLOUR ON HOVER. One colour file, two states.
+     The opacity comes down with the saturation because a fully opaque grey
+     logo still reads as loud next to four others; together they settle into
+     the page and lift out of it as a pair. */
+  .agv__shot img {
+    display: block; width: auto; max-width: 100%; max-height: 30px;
+    filter: grayscale(1); opacity: 0.55;
+    transition: filter var(--dur-slow) ease, opacity var(--dur-slow) ease;
+  }
+  .agv__card:hover .agv__shot img { filter: grayscale(0); opacity: 1; }
+
+  .agv__go {
+    display: flex; align-items: baseline; gap: 6px; margin-top: 22px;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgba(20, 20, 20, 0.5);
+    transition: color var(--dur-fast) ease;
+  }
+  .agv__card:hover .agv__go { color: var(--c-black); }
+  /* The arrow is the only thing that moves. */
+  .agv__arrow { transition: transform var(--dur-fast) ease; }
+  .agv__card:hover .agv__arrow { transform: translate(2px, -2px); }
+
+  @media (max-width: 1100px) {
+    .agv { padding-block: 72px 84px; }
+    .agv__head { grid-template-columns: 1fr; row-gap: 22px; align-items: start; }
+    .agv__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 40px; margin-top: 48px; }
+  }
+  @media (max-width: 680px) {
+    .agv__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 20px; }
+    /* Touch has no hover, so the marks are simply shown in colour there —
+       a grey logo that never resolves is just a faded logo. */
+    .agv__shot img { filter: grayscale(0); opacity: 1; }
+  }
 </style>
