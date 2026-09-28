@@ -1,0 +1,8 @@
+# Pre-launch. Every page carries "noindex, nofollow".
+# Crawling is deliberately allowed so that directive can be read.
+# See docs/NOINDEX.md.
+
+User-agent: *
+Allow: /
+
+# No sitemap while the site is noindexed.
