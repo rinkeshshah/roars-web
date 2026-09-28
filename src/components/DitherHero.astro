@@ -31,15 +31,21 @@ interface Props {
   variant?: DitherVariant
   /** CSS pixels per buffer pixel. Omit for the design's 1.5. */
   pixelScale?: number
+  /** Mark contrast, 0-1. 1 is the design. Lower softens the dots. */
+  inkStrength?: number
+  /** false drops the cursor-following ring source. Default on. */
+  interactive?: boolean
 }
-const { variant = 'roar-wave', pixelScale } = Astro.props
+const { variant = 'roar-wave', pixelScale, inkStrength, interactive } = Astro.props
 ---
 
 <canvas
   class="dh"
   aria-hidden="true"
   data-dither-hero={variant}
-  data-pixel-scale={pixelScale ? String(pixelScale) : undefined}></canvas>
+  data-pixel-scale={pixelScale ? String(pixelScale) : undefined}
+  data-ink-strength={inkStrength !== undefined ? String(inkStrength) : undefined}
+  data-interactive={interactive === false ? 'false' : undefined}></canvas>
 
 <style>
   .dh {

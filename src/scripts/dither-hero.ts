@@ -69,6 +69,19 @@ export const VARIANTS: Record<DitherVariant, Variant> = {
 
 export interface DitherOptions {
   variant?: DitherVariant
+  /**
+   * How far the mark colour goes toward its full strength, 0-1. 1 is the
+   * design: ink #0B0B0B on yellow for roar-wave. Lower values lerp the mark
+   * toward the ground, so the dots soften instead of thinning out — the
+   * dither pattern, its density and its motion are all unchanged, only the
+   * contrast of each cell drops.
+   *
+   * Done in the colour uniform rather than with CSS opacity on the canvas,
+   * because the canvas is opaque and sits over GrainField: fading the element
+   * would blend the shader with a different yellow underneath and lighten the
+   * ground as well as the ink.
+   */
+  inkStrength?: number
   /** Whose pointer drives the cursor rings. Defaults to the canvas's parent. */
   hoverTarget?: HTMLElement
   /** Animation multiplier. 1 is the design. */
@@ -92,6 +105,7 @@ export function mountDitherHero(canvas: HTMLCanvasElement, opts: DitherOptions =
   if (!v) throw new Error('Unknown dither variant ' + opts.variant)
 
   const PIXEL_SCALE = opts.pixelScale ?? 1.5
+  const inkStrength = Math.min(1, Math.max(0, opts.inkStrength ?? 1))
   let speed = opts.speed ?? 1
   const interactive = opts.interactive ?? true
   const reduced = opts.static ?? matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -129,7 +143,17 @@ export function mountDitherHero(canvas: HTMLCanvasElement, opts: DitherOptions =
     gl.enableVertexAttribArray(loc)
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
     U = (n) => gl.getUniformLocation(prog, n)
-    for (const k of ['C1', 'C2', 'C3', 'BG'] as const) gl.uniform3fv(U(k), v.colors[k])
+    /* The mark colours ease toward the ground; BG is the ground and stays put. */
+    const toward = (c: [number, number, number]): [number, number, number] =>
+      inkStrength >= 1
+        ? c
+        : [
+            v.colors.BG[0] + (c[0] - v.colors.BG[0]) * inkStrength,
+            v.colors.BG[1] + (c[1] - v.colors.BG[1]) * inkStrength,
+            v.colors.BG[2] + (c[2] - v.colors.BG[2]) * inkStrength,
+          ]
+    for (const k of ['C1', 'C2', 'C3'] as const) gl.uniform3fv(U(k), toward(v.colors[k]))
+    gl.uniform3fv(U('BG'), v.colors.BG)
   }
   build()
 
@@ -253,6 +277,8 @@ export function initDitherHero(): DitherHandle | null {
   const canvas = nodes[0]
   const variant = (canvas.dataset.ditherHero || 'roar-wave') as DitherVariant
   const scale = Number(canvas.dataset.pixelScale)
+  const ink = Number(canvas.dataset.inkStrength)
+  const noHover = canvas.dataset.interactive === 'false'
 
   /* STILL FRAME BELOW 1040, ANIMATED ABOVE IT.
    *
@@ -277,6 +303,8 @@ export function initDitherHero(): DitherHandle | null {
   const handle = mountDitherHero(canvas, {
     variant,
     pixelScale: Number.isFinite(scale) && scale > 0 ? scale : undefined,
+    inkStrength: Number.isFinite(ink) ? ink : undefined,
+    interactive: noHover ? false : undefined,
     static: stillFrame || undefined,
   })
   return handle

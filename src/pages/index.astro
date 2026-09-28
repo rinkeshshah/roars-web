@@ -394,9 +394,19 @@ const schema = [
         services rail — is gone with it, and space.jpg with that. */}
     <div class="hero">
       <GrainField tone="yellow" second />
-      {/* Design ref 5d. hoverTarget defaults to this .hero, so the cursor's
-          ring source follows the pointer over the headline too. */}
-      <DitherHero variant="roar-wave" />
+      {/* Design ref 5d, with two departures from the handoff, both asked for
+          after seeing it on the live hero and both reversible in one line.
+
+          inkStrength 0.7: the ink at full #0B0B0B against #FFD400 is a 13.9:1
+          edge on every dot, and across a field this size it reads as glare
+          rather than texture. This eases each mark toward the ground, so the
+          pattern, its density and its motion are untouched and only the
+          contrast of a cell drops. Remove the prop for the design as drawn.
+
+          interactive={false}: the second ring source that followed the cursor
+          is off. It was the liveliest part of the piece, so this is worth a
+          second look before it sticks. */}
+      <DitherHero variant="roar-wave" inkStrength={0.7} interactive={false} />
 
       <div class="wrap hero__inner">
         <h1 class="hero__h1">
