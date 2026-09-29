@@ -523,6 +523,12 @@ const nextLine = nextEntry?.data.presentation?.line ?? nextEntry?.data.about
 <style>
   /* ── banner ─────────────────────────────────────────────── */
   .pb { isolation: isolate; position: relative; height: 196px; overflow: hidden; background: var(--c-black); }
+  /* Below 1040 the dither canvas is masked, so this band's own ground shows
+     through it. --c-black is #000000 and 3a writes #070706 — close, but a
+     near-miss is exactly what reads as a band. Match it. */
+  @media (max-width: 1040px) {
+    .pb { background: #070706; }
+  }
 
   /* ── the case study ─────────────────────────────────────── */
   .pd { position: relative; padding-block: 102px 120px; }
