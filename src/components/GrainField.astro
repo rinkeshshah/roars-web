@@ -75,17 +75,36 @@ const { tone, second = false, grainOpacity = tone === 'yellow' ? 0.3 : 0.34 } = 
 
      `will-change` goes with them: it pins a compositor layer for the life of
      the page, and there is nothing left to composite. */
+  /* ONE BACKGROUND ON MOBILE, NOT TWO.
+     On a phone this component and the dither canvas were both visible at
+     once: the canvas is masked below 1040, so GrainField's gradient and its
+     two radial drifts showed through it as a second, unrelated wash. Reported
+     from a phone — a pale diagonal streak crossing the hero with the dither
+     dots on top of it.
+
+     So below 1040 the gradient and the drifts go and the ground becomes the
+     flat colour the shader itself writes: #FFD400 for roar-wave, #070706 for
+     carbon-heat. Matching them exactly is what makes the canvas edge
+     invisible; a near-miss would read as a band, which is the bug this is
+     fixing rather than a second version of it.
+
+     The grain stays. It is a static tile, it is the texture the design asks
+     for, and it costs nothing.
+
+     Drifts are display:none rather than animation:none now — they were
+     stopped for motion, and they are gone for overlap. The selectors are
+     matched one for one against the four rules above: a bare `.gf__drift`
+     loses to `.gf--dark .gf__drift--a` on specificity, which is exactly what
+     happened on the first attempt at stopping them, and the page still
+     reported them running. */
   @media (max-width: 1040px) {
-    /* Matched selector for selector against the four rules above. A bare
-       `.gf__drift` loses to `.gf--dark .gf__drift--a` on specificity and the
-       drifts carry on animating — which is exactly what happened on the first
-       attempt, and the page still reported them running. */
+    .gf--yellow { background: #FFD400; }
+    .gf--dark { background: #070706; }
     .gf--yellow .gf__drift--a,
     .gf--yellow .gf__drift--b,
     .gf--dark .gf__drift--a,
     .gf--dark .gf__drift--b {
-      animation: none;
-      will-change: auto;
+      display: none;
     }
   }
 
