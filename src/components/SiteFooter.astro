@@ -270,6 +270,13 @@ const year = new Date().getFullYear()
     background: #0A0A09;
     color: var(--c-on-dark);
     padding-block: 61px 35px;
+    /* A curved top, 12px — the radius the project pages use on .pd__hero and
+       their plates, so the footer reads as the same family rather than a hard
+       edge across the page. Top corners only: the bottom is the end of the
+       document and has nothing to curve against.
+       overflow: hidden below is what makes it bite — the signal canvas is a
+       child at inset:0 and would otherwise paint square into the corners. */
+    border-radius: 12px 12px 0 0;
     overflow: hidden;
     /* The footer itself listens for pointermove — the canvas is
        pointer-events:none — so a finger dragging to scroll must still scroll.
