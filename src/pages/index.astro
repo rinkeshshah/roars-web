@@ -25,7 +25,7 @@ import { site } from '../lib/site'
 import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL_IMG, workAltFor } from '../lib/media'
 import { JOURNAL } from '../lib/journal'
 import GrainField from '../components/GrainField.astro'
-import RingField from '../components/RingField.astro'
+import DitherHeat from '../components/DitherHeat.astro'
 import DitherHero from '../components/DitherHero.astro'
 /* Decorative furniture still used by About and Insights. The hero's own
    set — planet, starbelt, slash mark — went with the export 2 redesign. */
@@ -627,12 +627,10 @@ const schema = [
   {/* ── 4. Projects ─────────────────────────────────────────── */}
   <Section ground="dark" bleed pin>
     <div class="proj">
-    <GrainField tone="dark" />
-    {/* Turn 8a, on the band the export drew it on. AFTER GrainField, not
-        before: both fill the band at z-index 0, and at equal z-index the later
-        sibling paints on top — put the ring first and the grain gradient
-        covers it outright. */}
-    <RingField />
+    {/* Turn 9a, which replaces 8a's hairline rings here. The rings and the
+        GrainField gradient under them are both gone: the handoff gives this
+        band one ground, written on .proj below. */}
+    <DitherHeat mode="bg" />
 
     <div class="wrap proj__inner">
       <div class="proj__head" data-reveal>
@@ -1441,7 +1439,17 @@ const schema = [
   .svc__foot :global(a) { justify-self: start; }
 
   /* 4. projects -------------------------------------------------------- */
-  .proj { position: relative; background: var(--c-black); }
+  .proj {
+    position: relative;
+    /* 9a's section ground, exactly as specified. It replaces both the flat
+       fill and GrainField's gradient: the handoff gives this band one ground,
+       and stacking a second under the dither is the overlap bug that keeps
+       coming back on phones. */
+    background:
+      radial-gradient(900px 520px at 94% 0%, rgba(92, 82, 36, 0.3), rgba(92, 82, 36, 0) 70%),
+      radial-gradient(820px 620px at 0% 100%, rgba(120, 98, 28, 0.16), rgba(120, 98, 28, 0) 70%),
+      linear-gradient(150deg, #0C0C0B 0%, #0B0B0A 55%, #090908 100%);
+  }
   /* Section 1340 tall, the all-line ending at 1195: 145 below it. 68 left
      the section 77 short once the all-line moved up to its measured y. */
   .proj__inner { position: relative; z-index: 1; padding-block: 142px 145px; }

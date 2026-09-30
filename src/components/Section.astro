@@ -25,7 +25,7 @@
  * how .hero lost its 900px min-height. Style your own element inside the
  * slot instead. scripts/assert-styles.mjs fails the build on a recurrence.
  */
-import RingField from './RingField.astro'
+import DitherHeat from './DitherHeat.astro'
 
 interface Props {
   ground?: 'light' | 'surface' | 'dark' | 'accent'
@@ -54,7 +54,7 @@ const { ground = 'light', as: Tag = 'section', bleed = false, id, rings = false,
 ---
 
 <Tag class="sec" data-ground={ground} data-rings={rings ? '' : undefined} data-pin={pin ? '' : undefined} id={id}>
-  {rings && <RingField />}
+  {rings && <DitherHeat mode="bg" sx={1.1} sy={0.42} />}
   <slot name="bleed" />
   {bleed ? <slot /> : <div class="wrap"><slot /></div>}
 </Tag>
@@ -69,7 +69,17 @@ const { ground = 'light', as: Tag = 'section', bleed = false, id, rings = false,
   /* A child at z-index 0 still paints under .sec's own background unless .sec
      is a stacking context of its own. Only where the rings are on, so every
      other section keeps painting exactly as it did. */
-  .sec[data-rings] { isolation: isolate; }
+  .sec[data-rings] {
+    isolation: isolate;
+    /* 9a's section ground, exactly as specified. It replaces both the flat
+       fill and GrainField's gradient: the handoff gives this band one ground,
+       and stacking a second under the dither is the overlap bug that keeps
+       coming back on phones. */
+    background:
+      radial-gradient(900px 520px at 94% 0%, rgba(92, 82, 36, 0.3), rgba(92, 82, 36, 0) 70%),
+      radial-gradient(820px 620px at 0% 100%, rgba(120, 98, 28, 0.16), rgba(120, 98, 28, 0) 70%),
+      linear-gradient(150deg, #0C0C0B 0%, #0B0B0A 55%, #090908 100%);
+  }
   /* Same clipping, no scroll container — see the `pin` note above. */
   .sec[data-pin] { overflow: clip; }
   .sec > .wrap { position: relative; z-index: 1; }

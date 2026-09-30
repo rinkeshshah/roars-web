@@ -1,0 +1,105 @@
+---
+/**
+ * The graphic element "9a · Dither heat", from the 30 Sep handoff.
+ *
+ * It replaces two things, and the handoff names both:
+ *   8a  the hairline rings behind the Projects cards, on every dark section
+ *       ground that carried them.
+ *   7b  the "Sweep" rings over photographs, on every photo hero and banner.
+ * `RingField` drew both. Where this goes in, those come out — the handoff says
+ * to remove the ring layers and their masks rather than stack 9a over them.
+ *
+ * Same effect in both modes: a graphite 8x8 Bayer dither heat field rising
+ * from a source that is always OFF-FRAME, on the side away from the subject or
+ * the headline, turning Roars yellow only at its hottest edge. It comes from
+ * the 3a header and sits on the same warm near-black as the 2e footer, so
+ * headers, sections, photos and the footer read as one system.
+ *
+ * MODE `photo` BRINGS ITS OWN LAYERS, because 9a over an ungraded photograph
+ * is not the design: the dots are #5E5A4B and are tuned to read over a photo
+ * darkened to 42% brightness. So the component emits the shade and the warm
+ * tint itself, and the page grades the image — all four layers share one
+ * source position, which is what makes them line up.
+ *
+ * NOT ON PRODUCT SCREENSHOTS OR UI IMAGES. The handoff is explicit, and it is
+ * a judgement each caller makes: on a listing the effect belongs on the
+ * section ground behind the cards, not on the cards' own pictures.
+ *
+ * The paint itself is in src/scripts/dither-heat.ts. It is static — one draw,
+ * no loop, nothing for reduced motion to switch off.
+ */
+interface Props {
+  /** bg = section ground (was 8a). photo = over a graded photograph (was 7b). */
+  mode?: 'bg' | 'photo'
+  /**
+   * Source position as a fraction of the box, off-frame on purpose.
+   * Defaults are the handoff's table: bg -0.06/1.08, photo 0.86/1.12.
+   * A photo whose subject sits on the RIGHT mirrors it: sx 0.14.
+   */
+  sx?: number
+  sy?: number
+  /** Dither cell in CSS px. 4 for sections and heroes, 3 under 400px wide. */
+  px?: number
+}
+
+const { mode = 'bg', sx, sy, px = 4 } = Astro.props
+const SX = sx ?? (mode === 'photo' ? 0.86 : -0.06)
+const SY = sy ?? (mode === 'photo' ? 1.12 : 1.08)
+/* The CSS layers take the same source as the canvas, as percentages. */
+const at = `${(SX * 100).toFixed(1)}% ${(SY * 100).toFixed(1)}%`
+---
+
+{
+  mode === 'photo' && (
+    <>
+      <span class="dhx__shade" style={`--at:${at}`} aria-hidden="true" />
+      <span class="dhx__warm" style={`--at:${at}`} aria-hidden="true" />
+    </>
+  )
+}
+<canvas
+  class="dhx"
+  aria-hidden="true"
+  data-dither-heat
+  data-mode={mode}
+  data-sx={String(SX)}
+  data-sy={String(SY)}
+  data-px={String(px)}></canvas>
+
+<style>
+  .dhx,
+  .dhx__shade,
+  .dhx__warm {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+  }
+  /* Above the band's own ground and below its content, which sits at 1.
+     Same reasoning as RingField, which this replaces. */
+  .dhx {
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+  }
+  /* Under the canvas, over the photograph. Both are the handoff's values. */
+  .dhx__shade {
+    z-index: 0;
+    background: radial-gradient(
+      120% 130% at var(--at),
+      rgba(11, 11, 11, 0) 0%,
+      rgba(11, 11, 11, 0.6) 52%,
+      rgba(11, 11, 11, 0.94) 100%
+    );
+  }
+  .dhx__warm {
+    z-index: 0;
+    background: radial-gradient(70% 90% at var(--at), rgba(120, 98, 28, 0.35), rgba(120, 98, 28, 0) 70%);
+    mix-blend-mode: color;
+  }
+</style>
+
+<script>
+  import { initDitherHeat } from '../scripts/dither-heat'
+  initDitherHeat()
+</script>

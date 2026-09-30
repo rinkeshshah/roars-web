@@ -37,7 +37,7 @@ import Button from '../components/Button.astro'
 import CtaBand from '../components/CtaBand.astro'
 import { site } from '../lib/site'
 import { workHeroFor } from '../lib/media'
-import RingField from '../components/RingField.astro'
+import DitherHeat from '../components/DitherHeat.astro'
 
 export async function getStaticPaths() {
   const entries = await getCollection('cities')
@@ -190,10 +190,10 @@ const schema = [{
   {/* ── Selected work ──────────────────────────────────────── */}
   <Section ground="dark">
     <div class="cw">
-      {/* Turn 8a. The centre sits off the bottom-left corner so the widest
-          arcs cross the gutters between cards rather than sitting behind one
-          of them. */}
-      <RingField />
+      {/* Turn 9a, replacing 8a's rings. The source sits off the bottom-left
+          corner, away from the heading, so the heat fades before it reaches
+          the type. */}
+      <DitherHeat mode="bg" sx={1.06} sy={1.08} />
       <span class="i-eyebrow i-eyebrow--dark">SELECTED WORK</span>
       <h2 class="cw__h" data-reveal>Work we have shipped, and what it had to solve</h2>
       <ul class="cw__grid">

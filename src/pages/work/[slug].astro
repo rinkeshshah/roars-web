@@ -16,7 +16,7 @@ import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
 import DitherHero from '../../components/DitherHero.astro'
-import RingField from '../../components/RingField.astro'
+import DitherHeat from '../../components/DitherHeat.astro'
 import { PORTRAIT, workHeroFor, workAltFor } from '../../lib/media'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { clientFor, isHeldBack, isOffGrid, PROJECTS } from '../../lib/projects'
@@ -317,7 +317,7 @@ const nextLine = nextEntry?.data.presentation?.line ?? nextEntry?.data.about
               alt={d.heroAlt || workAltFor(client)}
               width="2400" height="1200" loading="lazy" decoding="async"
             />
-            <RingField variant="sweep" />
+            <DitherHeat mode="photo" />
           </div>
         )}
 

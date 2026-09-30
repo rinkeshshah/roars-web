@@ -28,7 +28,7 @@ import NavOverlay from '../../components/NavOverlay.astro'
 import SiteFooter from '../../components/SiteFooter.astro'
 import GrainField from '../../components/GrainField.astro'
 import DitherHero from '../../components/DitherHero.astro'
-import RingField from '../../components/RingField.astro'
+import DitherHeat from '../../components/DitherHeat.astro'
 import { slugsOf, nameFromSlug } from '../../lib/inventory'
 import { site } from '../../lib/site'
 import { workHeroFor } from '../../lib/media'
@@ -281,7 +281,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
                 {workHeroFor(c.href) && (
                   <Fragment>
                     <img src={workHeroFor(c.href)} alt="" data-decorative width="2400" height="1200" loading="lazy" decoding="async" />
-                    {d.cases.items.length === 1 && <RingField variant="sweep" />}
+                    {d.cases.items.length === 1 && <DitherHeat mode="photo" sx={0.65} sy={1.15} />}
                   </Fragment>
                 )}
               </span>
@@ -486,7 +486,7 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
           {featuredShot && (
             <div class="ip__bg" aria-hidden="true">
               <img src={featuredShot} alt="" data-decorative width="1440" height="1000" loading="lazy" decoding="async" />
-              <RingField variant="sweep" />
+              <DitherHeat mode="photo" sx={1.1} sy={0.5} />
             </div>
           )}
           <span class="ip__tick" aria-hidden="true"></span>

@@ -32,7 +32,7 @@
  */
 import type { CollectionEntry } from 'astro:content'
 import { workAltFor } from '../lib/media'
-import RingField from './RingField.astro'
+import DitherHeat from './DitherHeat.astro'
 import GrainField from './GrainField.astro'
 import DitherHero from './DitherHero.astro'
 
@@ -289,7 +289,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
 {/* ── What shipped ─────────────────────────────────────────── */}
 {p.screens.length > 0 && (
   <section class="wp-act wp-act--dark wp-reel" id="screens">
-    <RingField />
+    <DitherHeat mode="bg" sx={1.06} sy={1.1} />
     <div class="wp-act__head" data-reveal>
       <div>
         <span class="wp-label wp-label--dark">{screensIndex} &mdash; What shipped</span>
@@ -363,7 +363,7 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
         very long band with a seam through it — Parqly and Snowman have no
         tall plate between them and showed exactly that. Where a white act
         does separate them, the rings stay on both. */}
-    {!(p.screens.length > 0 && !p.tall) && <RingField />}
+    {!(p.screens.length > 0 && !p.tall) && <DitherHeat mode="bg" sx={1.06} sy={-0.1} />}
     <div class="wp-hand__head" data-reveal>
       <span class="wp-label wp-label--dark">In the hand</span>
       <h2 class="wp-h2 wp-h2--dark wp-h2--sm">{p.mobileTitle ?? 'Built for the phone first'}</h2>
@@ -766,7 +766,17 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
     display: flex; flex-direction: column; gap: clamp(30px, 5vh, 58px);
   }
   .wp-act--grey { background: #f5f5f5; }
-  .wp-act--dark { background: var(--wp-dark); }
+  /* 9a's section ground, replacing 8a's rings and the flat --wp-dark fill.
+     One ground per band: stacking the old fill under the heat field is the
+     overlap this site keeps rediscovering on phones. */
+  .wp-act--dark {
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(900px 520px at 94% 0%, rgba(92, 82, 36, 0.3), rgba(92, 82, 36, 0) 70%),
+      radial-gradient(820px 620px at 0% 100%, rgba(120, 98, 28, 0.16), rgba(120, 98, 28, 0) 70%),
+      linear-gradient(150deg, #0C0C0B 0%, #0B0B0A 55%, #090908 100%);
+  }
   .wp-act__head {
     position: relative; display: flex; flex-wrap: wrap;
     align-items: flex-end; justify-content: space-between; gap: 22px;
