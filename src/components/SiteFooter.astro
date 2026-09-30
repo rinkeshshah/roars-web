@@ -22,31 +22,26 @@
  * form is live and carries data-contact-form like the other three. On success
  * it lands on /thankyou/ with the rest of them.
  *
- * THE GROUND IS A WAVE OVER THE GRAIN. The design's footer ground is a
- * dot-matrix ring wave expanding out of a point under the wordmark, so the
- * wave reads as radiating from the logo. Under it the handoff draws a radial
- * pool at the bottom centre; this footer draws the shared GrainField instead —
- * the warm linear gradient with two slow radial drifts that every dark band on
- * this site carries, which the design was drawn without knowledge of.
+ * THE GROUND IS ONE CANVAS, design ref 2e "Signal line", replacing everything
+ * that used to be here. The old ground was a dot-matrix ring wave over
+ * GrainField's warm gradient and grain, and the notes that used to sit in this
+ * block weighed the grain against the design's radial pool at length. That
+ * argument is closed: the 30 Sep handoff supersedes both and says so plainly —
+ * "delete the old footer background treatments: the previous dot-grid canvas,
+ * the olive radial haze, and the grain". All three are gone rather than
+ * layered under the new one.
  *
- * That was decided by looking rather than arguing: both grounds shipped for a
- * day, the homepage on the grain and every other route on the pool. The pool
- * is cleaner and the dots pop harder on it, but it leaves the top third of the
- * footer flat black — four hundred pixels of nothing above the contact rule on
- * desktop — and the drifts put a soft glow behind the closing blurb there. The
- * warmth was worth the dots. Its cost is a second motion on the ground, thirty
- * seconds a cycle against the wave's seven.
+ * What replaces them is a warm near-black ground with a single dotted waveform
+ * running between the wordmark and the legal row, humming under the wordmark
+ * and turning Roars yellow there. It is the quiet companion to the two header
+ * fields: same dither, same graphite-to-yellow ladder, deliberately subtler.
  *
- * THE GRAIN GOES UNDER THE CANVAS, not over it. An overlay blend on near-black
- * darkens what it covers, and over the dots it took about a third of their
- * brightness — and they are the one thing on this ground meant to be bright.
- *
- * The wave's own numbers are the design's to the decimal, bar the three
- * departures written down beside the loop at the foot of this file.
+ * The shader, the Canvas-2D fallback and every constant are in
+ * src/scripts/footer-signal.ts, verbatim from the handoff. Nothing in this
+ * footer's content, layout, copy or type changed.
  */
 import { site } from '../lib/site'
 import { FOOTER_NAV, SOCIAL, LEGAL } from '../lib/nav'
-import GrainField from './GrainField.astro'
 import { PORTRAIT } from '../lib/media'
 import mark from '../assets/roars-mark.png'
 
@@ -97,14 +92,17 @@ const ctaExternal = ctaHref ? /^https?:\/\//.test(ctaHref) : false
 const year = new Date().getFullYear()
 ---
 
-<footer class="ft" data-ground="dark">
-  {/* The ground, then the wave over it. The canvas is sized and driven by the
-      script at the foot of this file and paints nothing without it, so the
-      ground under it has to stand on its own. */}
-  <div class="ft__wave" data-footer-wave aria-hidden="true">
-    <GrainField tone="dark" second />
-    <canvas></canvas>
-  </div>
+{/* Design ref 2e, "Signal line". The ground is one canvas, prepended by
+    src/scripts/footer-signal.ts, and the handoff is explicit that it REPLACES
+    what was here: the dot-matrix wave, GrainField's olive haze and its grain
+    are all gone rather than layered under it.
+
+    The two data attributes are not decoration. The line's height is the
+    midpoint between the wordmark's bottom and the legal row's top, and the
+    wave is centred on the wordmark — both measured live, which is what makes
+    it land correctly at every width. Rename either and the line loses its
+    anchors. */}
+<footer class="ft" data-ground="dark" data-footer-signal>
   <div class="wrap">
     <div class="ft__grid ft__top">
       {/* The real mark, masked so it reads white on the dark ground. */}
@@ -239,10 +237,10 @@ const year = new Date().getFullYear()
       {/* Export 2 dropped the registered badge and the asteroid slash from
           the footer wordmark. Keeping the badge read as a second logo
           stacked under the mark at the top of the column. */}
-      <p class="ft__wordmark">roars</p>
+      <p class="ft__wordmark" data-footer-wordmark>roars</p>
     </div>
 
-    <div class="ft__grid ft__legal">
+    <div class="ft__grid ft__legal" data-footer-legal>
       <div class="ft__col">
         <span>&copy; {year}</span>
         <span>{site.name}</span>
@@ -265,25 +263,20 @@ const year = new Date().getFullYear()
 <style>
   .ft {
     position: relative;
-    background: var(--c-footer);
+    /* #0A0A09, the handoff's token, not --c-footer's #0B0B0B. The shader's
+       own base is rgb(.036,.035,.032) and the 2D path fills #0A0A09; the
+       root has to match so there is no flash of a different black before the
+       canvas paints, and no seam if it never does. */
+    background: #0A0A09;
     color: var(--c-on-dark);
     padding-block: 61px 35px;
     overflow: hidden;
+    /* The footer itself listens for pointermove — the canvas is
+       pointer-events:none — so a finger dragging to scroll must still scroll.
+       pan-y keeps vertical scrolling out of the effect's hands. */
+    touch-action: pan-y;
   }
   .ft > .wrap { position: relative; z-index: 1; }
-
-  /* isolate, so the layer is one group: the grain's overlay blend mixes with
-     the ground under it and nothing else, and the canvas's z-index stays
-     inside here instead of climbing out and racing .wrap for the top. */
-  .ft__wave {
-    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
-    isolation: isolate;
-  }
-  /* Over the ground, including GrainField's grain and its own stacking. */
-  .ft__wave canvas {
-    position: absolute; inset: 0; display: block; width: 100%; height: 100%;
-    z-index: 1;
-  }
   .ft__grid {
     display: grid;
     grid-template-columns: 459fr 233fr 234fr 436fr;
@@ -524,167 +517,6 @@ const year = new Date().getFullYear()
 </style>
 
 <script>
-  /**
-   * THE DOT-MATRIX WAVE, transcribed from the design's own reference loop.
-   *
-   * A grid of dots over the whole footer. Each one swells and warms from white
-   * to brand yellow as a ring passes through it, the ring expanding out of a
-   * point under the wordmark at a constant 0.9 rad/s. Per dot, per frame:
-   *
-   *   d      = distance(dot, origin) / SCALE
-   *   wave   = sin(t * 0.9 - d) * 0.5 + 0.5
-   *   near   = max(0, 1 - d / REACH)
-   *   alpha  = 0.05 + wave * 0.5 * near
-   *   radius = R0 + wave * near * RMAX
-   *   colour = near > 0.12 ? accent at alpha : white at alpha / 2
-   *
-   * WHAT IS NOT THE DESIGN'S. Three things, all of them consequences of this
-   * footer being a fluid block rather than a 1440x1105 artboard:
-   *
-   *   THE ORIGIN is measured off the wordmark rather than typed as (720, 900).
-   *   The handoff says what those coordinates are for — "the origin sits under
-   *   the wordmark on purpose; the wave looks like it radiates from the logo"
-   *   — and on a fixed artboard a number and a landmark are the same thing.
-   *   They stop being the same thing here: this footer is fluid, its height is
-   *   whatever the content makes it, and on a phone that is twice the design's
-   *   1100. So the rule is taken instead of the number: horizontal centre of
-   *   the box, vertical centre of the wordmark. On the 1440 artboard that
-   *   lands at (720, 882) against the design's (720, 900) — well inside the
-   *   spread between its own two breakpoints, which put the origin 73px below
-   *   the desktop wordmark's centre and 36px above the mobile one's.
-   *
-   *   THE DPR CEILING. The reference draws at 1x. Production needs HiDPI or
-   *   the dots are soft, so the canvas is backed at devicePixelRatio — capped
-   *   at 2, because a 3x phone would ask for nine times the fill for a
-   *   difference no one can see on a sub-pixel dot.
-   *
-   *   THE PAUSES. Off-screen the loop stops (this is below the fold on every
-   *   route), and under prefers-reduced-motion it draws the single frame at
-   *   t = 0 and never asks for another. Both are the handoff's instructions.
-   */
-  const host = document.querySelector<HTMLElement>('[data-footer-wave]')
-  const canvas = host?.querySelector('canvas')
-  const ctx = canvas?.getContext('2d')
-  const wordmark = document.querySelector<HTMLElement>('.ft__wordmark')
-
-  if (host && canvas && ctx) {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
-
-    let w = 0
-    let h = 0
-    let gap = 26
-    let ox = 0
-    let oy = 0
-    let scale = 170
-    let reach = 5.2
-    let r0 = 0.7
-    let rmax = 2.1
-
-    let raf = 0
-    let onScreen = true
-
-    /** Re-reads the box and re-picks the constants. False if the box is not laid out yet. */
-    const measure = () => {
-      const cw = host.clientWidth
-      const ch = host.clientHeight
-      if (!cw || !ch) return false
-      if (cw === w && ch === h) return true
-
-      w = cw
-      h = ch
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas.width = Math.round(w * dpr)
-      canvas.height = Math.round(h * dpr)
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-
-      /* The reference's own breakpoint, and the one the ground gradient above
-         turns over on. */
-      const mobile = w < 700
-      gap = mobile ? 20 : 26
-      scale = mobile ? 120 : 170
-      reach = mobile ? 4.4 : 5.2
-      r0 = mobile ? 0.6 : 0.7
-      rmax = mobile ? 1.8 : 2.1
-      ox = w / 2
-      /* The wordmark, if it is on the page. The fallback reproduces the
-         design's two bottom offsets, which is where the wordmark sits on the
-         artboards it was drawn on. */
-      const wm = wordmark?.getBoundingClientRect()
-      oy = wm ? wm.top - host.getBoundingClientRect().top + wm.height / 2 : h - (mobile ? 190 : 205)
-      return true
-    }
-
-    const draw = (t: number) => {
-      ctx.clearRect(0, 0, w, h)
-      for (let x = gap / 2; x < w; x += gap) {
-        for (let y = gap / 2; y < h; y += gap) {
-          const dx = x - ox
-          const dy = y - oy
-          const d = Math.sqrt(dx * dx + dy * dy) / scale
-          const wave = Math.sin(t * 0.9 - d) * 0.5 + 0.5
-          const near = Math.max(0, 1 - d / reach)
-          const a = 0.05 + wave * 0.5 * near
-          ctx.beginPath()
-          ctx.arc(x, y, r0 + wave * near * rmax, 0, 6.2832)
-          ctx.fillStyle =
-            near > 0.12
-              ? `rgba(255,212,0,${a.toFixed(3)})`
-              : `rgba(255,255,255,${(a * 0.5).toFixed(3)})`
-          ctx.fill()
-        }
-      }
-    }
-
-    const frame = (now: number) => {
-      draw(now / 1000)
-      raf = requestAnimationFrame(frame)
-    }
-
-    const stop = () => {
-      if (raf) cancelAnimationFrame(raf)
-      raf = 0
-    }
-
-    const start = () => {
-      if (raf || !w) return
-      if (reduced.matches) {
-        draw(0)
-        return
-      }
-      raf = requestAnimationFrame(frame)
-    }
-
-    const sync = () => {
-      const ready = measure()
-      if (!ready) return
-      if (onScreen) {
-        /* Re-measuring mid-flight leaves the running loop to pick the new
-           numbers up on its next frame. A stopped one has to be redrawn by
-           hand or the canvas keeps the old box's last frame. */
-        if (raf) return
-        start()
-      } else {
-        stop()
-      }
-    }
-
-    new ResizeObserver(sync).observe(host)
-
-    new IntersectionObserver(
-      (entries) => {
-        onScreen = entries.some((e) => e.isIntersecting)
-        sync()
-      },
-      { rootMargin: '120px' },
-    ).observe(host)
-
-    /* A change of preference mid-session: a reader who turns motion off gets
-       the static frame, one who turns it on gets the loop. */
-    reduced.addEventListener('change', () => {
-      stop()
-      start()
-    })
-
-    sync()
-  }
+  import { initFooterSignal } from '../scripts/footer-signal'
+  initFooterSignal()
 </script>
