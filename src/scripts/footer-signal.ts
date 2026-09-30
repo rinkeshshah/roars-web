@@ -34,25 +34,22 @@
 const MOBILE_BP = 768
 
 /**
- * THE DOTTED WAVEFORM IS OFF. `SIGNAL_MARKS = false` below, and that is a
- * deliberate departure from the handoff, asked for repeatedly and in those
- * words: the dots in the footer should not be there.
+ * THE DOTTED WAVEFORM IS ON, and it stays on. This flag exists because it was
+ * briefly off, and the story is worth keeping so it is not turned off again.
  *
- * It is worth writing down WHY it was argued about, so nobody re-adds them
- * reading the design ref. Our render was faithful — the handoff's own
- * `footer-2e-reference.html` puts the same band of dots under the wordmark,
- * spreading most of the page width, because the glow term below
- * (`f = max(f, .3 * exp(-dd * 55 / K) * ...)`) keeps firing dither cells far
- * from the line itself. So this is not a bug being fixed. The design was seen
- * and rejected.
+ * "Dots in the footer" was reported several times and read here as the signal
+ * line. It was not. The line lives between the wordmark and the legal row, low
+ * in the footer; what was being pointed at was a band of dots along the footer's
+ * TOP edge, which is a different thing with a different cause. Switching this
+ * off removed the design and left the reported dots exactly where they were —
+ * which is how the mistake was finally caught.
  *
- * THE GROUND IS UNTOUCHED. Everything that makes the footer's warm near-black
- * and its two radial pools is in `bg`, and `bg` still paints exactly as
- * delivered. Only the two `col = mix(...)` lines that lay graphite and yellow
- * marks over it are gated. Flip SIGNAL_MARKS back to true to restore the
- * handoff's footer verbatim — nothing else has to change.
+ * So: SIG gates the two `col = mix(...)` lines that lay graphite and yellow
+ * over the ground, and it is 1. Setting SIGNAL_MARKS to false removes the
+ * design the handoff signed off, on both renderers. Do not reach for it to fix
+ * something at the top of the footer.
  */
-const SIGNAL_MARKS = false
+const SIGNAL_MARKS = true
 
 /* eslint-disable -- shader source, kept byte-for-byte as delivered but for SIG */
 const FS = `precision highp float;
