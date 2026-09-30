@@ -484,7 +484,8 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
       {nextImg && (
         <div class="wp-next__shot">
           <img src={nextImg} alt={workAltFor(next.name)} width="2400" height="1200" loading="lazy" />
-          <span class="wp-next__rings" aria-hidden="true"></span>
+          {/* 9a, replacing the hand-rolled 7b sweep that used to sit here. */}
+          <DitherHeat mode="photo" sx={0.14} sy={1.12} />
         </div>
       )}
     </a>
@@ -1090,23 +1091,11 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
   .wp-next__shot img {
     display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
   }
-  /* The photo-graphic treatment, ON the photograph — which is the design's own
-     rule for a photograph as opposed to a screenshot. Two masked layers centred
-     off the bottom-left: white hairlines at 42px pitch, yellow at 214. Without
-     it this plate is the one picture on the page wearing nothing. */
-  .wp-next__rings {
-    position: absolute; inset: 0; pointer-events: none;
-    background:
-      repeating-radial-gradient(
-        circle at -6% 112%, rgba(255, 255, 255, 0.3) 0 1px, rgba(255, 255, 255, 0) 1px 42px
-      ),
-      repeating-radial-gradient(
-        circle at -6% 112%, rgba(255, 212, 0, 0.9) 0 1.5px, rgba(255, 212, 0, 0) 1.5px 214px
-      );
-    mask-image: radial-gradient(
-      circle at -6% 112%, rgba(0, 0, 0, 0.2) 0%, #000 26%, rgba(0, 0, 0, 0.4) 58%, rgba(0, 0, 0, 0) 94%
-    );
-  }
+  /* The 7b sweep that used to be drawn here by hand — two masked
+     repeating-radial-gradient ring layers — is gone. It was not RingField, so
+     the sweep replacement missed it and this plate kept its rings while every
+     other photo moved to 9a. Reported, and it is the reason to grep for the
+     effect rather than for the component next time. */
 
   /* ── phone ───────────────────────────────────────────────────
      The artboard is fluid — every size in it is a clamp against vw — so most

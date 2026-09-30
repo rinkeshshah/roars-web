@@ -114,22 +114,7 @@ function paintOne(c: HTMLCanvasElement): void {
          breakpoint rather than stretching with the box. */
       const n = fbm(cx / 170, cy / 170)
       const heat = e * (1.15 + (n - 0.5) * 1.1) - 0.06
-      /* AN AMBIENT GRAPHITE FLOOR, and it is the one addition to the handoff's
-         maths. Read the reference at full size and the graphite is present
-         right across the band — sparse and faint, densest at the source — while
-         only the YELLOW gathers in one corner. The published falloff drops
-         graphite to nothing a third of the way out, so on our bands the whole
-         effect sat in one corner and the rest was bare ground. That is what
-         did not match.
-         An earlier attempt widened R instead. That was wrong twice over: it
-         flattened the gradient into a uniform blanket AND it dragged the yellow
-         out with it, from 7k cells to 129k. This term touches graphite only —
-         `y` below still reads `heat`, so the yellow stays exactly where and how
-         the design puts it.
-         Noise-modulated rather than flat, so the scatter is textured instead of
-         a regular grid. */
-      const ambient = (photo ? 0.15 : 0.2) * (0.6 + 0.8 * n)
-      const g = heat * (photo ? 0.7 : 0.85) + ambient
+      const g = heat * (photo ? 0.7 : 0.85)
       /* Yellow only at the hottest edge, and it wins over graphite. */
       const y = photo ? (heat - 0.95) * 2.2 : (heat - 0.72) * 2.4
       const th = B[((j / px) % 8) * 8 + ((i / px) % 8)]
