@@ -127,6 +127,27 @@ if [ "$MODE" = production ]; then
   chk /industry/on-demand-fitness-app 301 "$H/industries/on-demand-fitness-app-development/" roarsinc.com
   chk /wp-admin/ 410 "" www.roarsinc.com
   chk /feed/ 200 "" www.roarsinc.com
+
+  # A STATIC FILE ON THE APEX, in a directory this build does not manage.
+  #
+  # /email/ is a legacy folder that lives in the docroot beside the built site
+  # -- mail signatures point at it -- and it was reported as opening on www and
+  # not on the apex. It takes a different path through the file than a page
+  # does: rule 2a is skipped because the URL ends in an extension, so 2b is the
+  # only thing that can answer, and 2b is the rule with no conditions on the
+  # path at all. Worth pinning precisely because nothing else here covers a
+  # request that carries a file extension AND arrives on the wrong host.
+  #
+  # Checked twice over, because the two cases run different conditions:
+  # once where the file exists (REQUEST_FILENAME -f) and once where it does
+  # not. Both must be one hop to the same path on www.
+  mkdir -p "$ROOT/email"
+  printf 'x' > "$ROOT/email/redirect-probe.png"
+  chk /email/redirect-probe.png 301 "$H/email/redirect-probe.png" roarsinc.com
+  chk /email/not-here.png 301 "$H/email/not-here.png" roarsinc.com
+  # And it must still be served, not redirected, on the canonical host.
+  chk /email/redirect-probe.png 200 "" www.roarsinc.com
+  rm -f "$ROOT/email/redirect-probe.png"; rmdir "$ROOT/email" 2>/dev/null || true
 fi
 
 # --- 6. dev-only: EVERYTHING leaves dev, on purpose ------------------------

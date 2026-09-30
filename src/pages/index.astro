@@ -1844,7 +1844,21 @@ const schema = [
 
   /* responsive --------------------------------------------------------- */
   @media (max-width: 1040px) {
-    .hero__inner { grid-template-columns: 1fr; padding-block: 180px 80px; row-gap: var(--sp-6); }
+    /* EVERY GAP IN THE MOBILE HERO WAS BEING APPLIED TWICE. This rule set
+       `grid-template-columns: 1fr; row-gap: var(--sp-6)`, which is a leftover
+       from when .hero__inner was a grid. It is a flex column now: the
+       template-columns does nothing, but the 64px row-gap still applies and
+       lands ON TOP of each child's own margin-top, so the spacing the hero
+       actually shipped was
+         h1 -> lede    64 + 32 =  96px
+         lede -> CTA   64 + 24 =  88px
+         CTA -> rule   64 + 44 = 108px
+         rule -> labels 64 + 20 =  84px
+       against the 32 / 24 / 44 / 20 the declarations ask for. That is 256px of
+       dead space in a 390x844 viewport, and it is why the block read as four
+       things drifting apart rather than one. The margins are the intended
+       rhythm, so the gap goes and they are left to do their job. */
+    .hero__inner { padding-block: 180px 80px; }
     /* minmax(0, 1fr): see the ≤760 block. `1fr` floors at the widest child's
        min-content, which the logo marquee sets to 914px. */
     .about { grid-template-columns: minmax(0, 1fr); }

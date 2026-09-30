@@ -173,6 +173,16 @@ function rings(c: HTMLCanvasElement, kind: 'd' | 'm'): Field | null {
           R: 920,
           p: 7,
           dot: 1.9,
+          /* A SHORTER HARD PAD AND A MUCH LONGER RAMP than the handoff's
+             36 / 90, because the ramp does a different job here. In the
+             handoff it is the distance over which dots stop existing, so a
+             long one would widen the rectangular hole. Here it is the distance
+             over which they go transparent, so a long one is exactly what
+             stops the boxes reading as blocks — and dots that have faded
+             almost to nothing can come much closer to the type than dots that
+             are still solid, which is why the hard pad comes down. */
+          pad: 22,
+          ramp: 150,
           env: (x: number, _y: number, r: number): number =>
             sm(W * 0.55 - 80, W * 0.55 + 160, x) * Math.pow(Math.max(0, 1 - r / 920), 0.7),
         }
@@ -183,6 +193,18 @@ function rings(c: HTMLCanvasElement, kind: 'd' | 'm'): Field | null {
           R: 420,
           p: 6,
           dot: 1.5,
+          /* SCALED DOWN FROM THE HANDOFF'S 36 / 90, and it has to be.
+             36 + 90 is 126px of exclusion around every safe box. On a 1440
+             hero that is a tenth of the width; on a 390 column it is a third,
+             and our hero has something the reference's does not — a full-width
+             row of service labels across the bottom, right where the mobile
+             ring source sits. At 36 / 90 that one box masked the entire bottom
+             half of the frame and the field came out as three or four stray
+             dots. 20 / 48 keeps the same proportion of a 390 column that
+             36 / 90 keeps of 1440, so the rule the handoff is actually stating
+             — no dot touches the copy — holds at both sizes. */
+          pad: 12,
+          ramp: 84,
           env: (_x: number, _y: number, r: number): number => Math.pow(Math.max(0, 1 - r / 420), 0.7),
         }
 
@@ -194,7 +216,7 @@ function rings(c: HTMLCanvasElement, kind: 'd' | 'm'): Field | null {
       const r = Math.hypot(x - P.cx, y - P.cy)
       const env = P.env(x, y, r)
       if (env <= 0.002) continue
-      const m = S.length ? mask(x, y, S, 36, 90) : 1
+      const m = S.length ? mask(x, y, S, P.pad, P.ramp) : 1
       if (m <= 0) continue
       cells.push([x, y, r, env, m, (BAY[(iy & 7) * 8 + (ix & 7)] + 0.5) / 64])
     }
@@ -243,8 +265,24 @@ function rings(c: HTMLCanvasElement, kind: 'd' | 'm'): Field | null {
           boost = amp * Math.exp(-z * z) * b
           val += boost
         }
-        if (val * q[4] > q[5]) {
-          const tone = Math.min(1, (q[3] * q[4]) / 0.82 + boost * 0.8)
+        /* THE SAFE MASK FADES A DOT, IT DOES NOT DELETE IT.
+           The handoff multiplies the mask into the value BEFORE the dither
+           threshold — `val * m > th` — so a dot near the copy simply stops
+           existing. The safe boxes are rectangles, so what that carves out of
+           the field is a rectangle: straight edges cutting across the rings,
+           which read as blocks sitting in the wave rather than as waves.
+           Deciding existence from the UNMASKED wave keeps the ring geometry
+           continuous across the whole frame, and the mask is applied to the
+           tone instead, so the dots approach the copy and go transparent.
+           Same rule — nothing legible sits over a dot — reached by fading
+           rather than by cutting a hole. */
+        if (val > q[5]) {
+          /* The mask covers the ripple boost too. It did not before, so a
+             pulse crossing the headline lit up at full strength inside the
+             zone the rest of the frame was keeping clear. */
+          const tone = Math.min(1, (q[3] / 0.82 + boost * 0.8) * q[4])
+          /* Below the faintest bucket there is nothing to draw. */
+          if (tone < 0.02) continue
           const pth = paths[Math.min(N - 1, Math.floor(tone * N))]
           /* moveTo FIRST, every time. arc() continues the current subpath, so
              without it each circle is joined to the previous one by a straight
