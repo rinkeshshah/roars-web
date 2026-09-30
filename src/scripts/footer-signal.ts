@@ -33,9 +33,30 @@
 
 const MOBILE_BP = 768
 
-/* eslint-disable -- shader source, kept byte-for-byte as delivered */
+/**
+ * THE DOTTED WAVEFORM IS OFF. `SIGNAL_MARKS = false` below, and that is a
+ * deliberate departure from the handoff, asked for repeatedly and in those
+ * words: the dots in the footer should not be there.
+ *
+ * It is worth writing down WHY it was argued about, so nobody re-adds them
+ * reading the design ref. Our render was faithful — the handoff's own
+ * `footer-2e-reference.html` puts the same band of dots under the wordmark,
+ * spreading most of the page width, because the glow term below
+ * (`f = max(f, .3 * exp(-dd * 55 / K) * ...)`) keeps firing dither cells far
+ * from the line itself. So this is not a bug being fixed. The design was seen
+ * and rejected.
+ *
+ * THE GROUND IS UNTOUCHED. Everything that makes the footer's warm near-black
+ * and its two radial pools is in `bg`, and `bg` still paints exactly as
+ * delivered. Only the two `col = mix(...)` lines that lay graphite and yellow
+ * marks over it are gated. Flip SIGNAL_MARKS back to true to restore the
+ * handoff's footer verbatim — nothing else has to change.
+ */
+const SIGNAL_MARKS = false
+
+/* eslint-disable -- shader source, kept byte-for-byte as delivered but for SIG */
 const FS = `precision highp float;
-uniform vec2 R; uniform float T; uniform vec2 M; uniform float MA; uniform float Y0; uniform float WX; uniform float K;
+uniform vec2 R; uniform float T; uniform vec2 M; uniform float MA; uniform float Y0; uniform float WX; uniform float K; uniform float SIG;
 float h1(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float b2(vec2 a){a=floor(a);return fract(dot(a,vec2(.5,a.y*.75)));}
 float b4(vec2 a){return b2(.5*a)*.25+b2(a);}
@@ -59,6 +80,7 @@ void main(){
  float f=.95*smoothstep(.006*K,0.,dd)*(.35+.65*env+MA*exp(-pow((x-M.x)/.08,2.)));
  f=max(f,.3*exp(-dd*55./K)*(.4+.6*env));
  f*=smoothstep(0.,.12,x)*smoothstep(1.,.88,x);
+ f*=SIG;
  vec3 col=bg;
  col=mix(col,vec3(.19,.185,.16),step(th,f));
  col=mix(col,vec3(1.,.831,0.),step(th,f-.5));
@@ -119,10 +141,15 @@ export function mountFooterSignal(
       P.at = 0
     }, 600)
   }
-  footerEl.addEventListener('pointermove', onMove)
-  footerEl.addEventListener('pointerdown', onMove)
-  footerEl.addEventListener('pointerleave', onLeave)
-  footerEl.addEventListener('pointerup', onUp)
+  /* Only the marks react to the pointer, so with them off there is nothing for
+     these to drive. Left wired up, they would run a listener on every mouse
+     move across the footer to change a picture that cannot change. */
+  if (SIGNAL_MARKS) {
+    footerEl.addEventListener('pointermove', onMove)
+    footerEl.addEventListener('pointerdown', onMove)
+    footerEl.addEventListener('pointerleave', onLeave)
+    footerEl.addEventListener('pointerup', onUp)
+  }
 
   /* The footer is below the fold on every route, so it draws nothing until it
      is near the viewport. */
@@ -176,7 +203,7 @@ export function mountFooterSignal(
     gl.enableVertexAttribArray(loc)
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
     const U = (n: string): WebGLUniformLocation | null => gl!.getUniformLocation(pr, n)
-    u = { R: U('R'), T: U('T'), M: U('M'), MA: U('MA'), Y0: U('Y0'), WX: U('WX'), K: U('K') }
+    u = { R: U('R'), T: U('T'), M: U('M'), MA: U('MA'), Y0: U('Y0'), WX: U('WX'), K: U('K'), SIG: U('SIG') }
     return true
   }
 
@@ -225,6 +252,7 @@ export function mountFooterSignal(
     /* Tuned at 1440x720. K keeps the line's amplitude constant in pixels
        however tall the footer actually is. */
     gl.uniform1f(u.K, 720 / m.h)
+    gl.uniform1f(u.SIG, SIGNAL_MARKS ? 1 : 0)
     gl.drawArrays(gl.TRIANGLES, 0, 3)
   }
 
@@ -259,6 +287,11 @@ export function mountFooterSignal(
     g.addColorStop(1, 'rgba(0,0,0,.35)')
     ctx.fillStyle = g
     ctx.fillRect(0, 0, W, H)
+
+    /* The gradient ground above is the whole of the 2D path now. See
+       SIGNAL_MARKS at the top: the dotted waveform below is switched off on
+       both renderers, not just on WebGL, or phones would still show it. */
+    if (!SIGNAL_MARKS) return
 
     const px = 3
     for (let x = 0; x < W; x += px) {
@@ -305,7 +338,13 @@ export function mountFooterSignal(
      height, so it has to be measured again once the face has landed. */
   if (document.fonts?.ready) void document.fonts.ready.then(() => resize())
   resize()
-  raf = requestAnimationFrame(frame)
+  /* NOTHING IN THE GROUND MOVES. `bg` in the shader reads R, Y0, WX and K and
+     never T, and the 2D path's gradients are the same — only the marks were
+     animated. With them off, `resize()` above has already drawn the finished
+     picture, and starting a rAF loop would repaint that identical frame sixty
+     times a second on every page of the site for as long as the footer is in
+     view. So the loop only starts when there is something to animate. */
+  if (SIGNAL_MARKS) raf = requestAnimationFrame(frame)
 
   return {
     destroy() {

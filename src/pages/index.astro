@@ -1512,7 +1512,12 @@ const schema = [
   .proj__slide:first-child { position: relative; }
   .proj__day { font-size: var(--fs-item); line-height: var(--lh-item); font-weight: var(--fw-medium); letter-spacing: var(--ls-body); color: #fbfbfb; }
   .proj__date .rule { margin-block: var(--sp-3); width: 85px; }
-  .proj__card { position: relative; display: block; border-radius: var(--r-card, 12px); overflow: hidden; }
+  /* 12px, the same as every other photograph on the site. This read
+     var(--r-card, 12px), and --r-card was 0px site-wide, so the fallback
+     never fired: the card clipped square straight over .proj__ph's own 12px
+     below and won. That is why the homepage shots looked hard-edged next to
+     the ones on /work/. The token is gone now — see src/styles/tokens.css. */
+  .proj__card { position: relative; display: block; border-radius: 12px; overflow: hidden; }
   .proj__ph { display: block; width: 100%; height: 100%; object-fit: cover; background: rgb(30, 30, 30); }
   /* Two ringed faces at the card's top right, as the export draws them. */
   .proj__faces { position: absolute; right: var(--sp-4); top: var(--sp-4); z-index: 3; display: flex; flex-direction: column; gap: 6px; }

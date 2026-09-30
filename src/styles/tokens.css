@@ -114,9 +114,16 @@
   --sp-8: 168px;
 
   /* ---------- Radii ---------- */
-  --r-pill:   60px;   /* buttons, chips. The only non-zero radius. */
+  --r-pill:   60px;   /* buttons, chips. */
   --r-circle: 999px;
-  --r-card:    0px;   /* cards are square. Do not change. */
+  /* --r-card was 0px, carrying the note "cards are square. Do not change."
+     It is gone. Nothing read it any longer, and the instruction on it had
+     stopped being true: photographs and photo cards round at 12px everywhere
+     — .pd__hero, the /work/ cards, the city cards, the journal heroes, the
+     homepage Projects cards and the project-page shots. What stays square is
+     whatever runs to a page edge, and that is a fact about the layout rather
+     than about a token, so it is written where it happens: the footer and
+     .wp-plate, each with the reason beside it. */
 
   /* ---------- Components ---------- */
   --btn-w:        204px;
