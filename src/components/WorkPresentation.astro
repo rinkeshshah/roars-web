@@ -790,6 +790,17 @@ const coverIsPhoto = p.coverPlate ? p.coverIsPhoto : true
       radial-gradient(820px 620px at 0% 100%, rgba(120, 98, 28, 0.16), rgba(120, 98, 28, 0) 70%),
       linear-gradient(150deg, #0C0C0B 0%, #0B0B0A 55%, #090908 100%);
   }
+  /* THE BAND'S OWN CONTENT SITS ABOVE THE HEAT FIELD.
+     9a's canvas is `position: absolute; z-index: 0`, and a POSITIONED element
+     at z-index 0 paints above STATIC content in the same stacking context —
+     static content is painted before it, not after. So every text node and
+     card in here that was left static had the dither drawn over the top of it:
+     dots and the yellow hot edge across the screenshots, the copy and the
+     photographs both. It is the same mistake `.proj__inner`, `.ch__in` and
+     `.sec > .wrap` each already guard against with exactly this line.
+     Not the canvas, which must stay where it is. */
+  .wp-act > :not(canvas) { position: relative; z-index: 1; }
+
   .wp-act__head {
     position: relative; display: flex; flex-wrap: wrap;
     align-items: flex-end; justify-content: space-between; gap: 22px;

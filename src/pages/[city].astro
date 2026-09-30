@@ -377,6 +377,17 @@ const schema = [{
 
   /* ── Selected work ───────────────────────────────────────── */
   .cw { position: relative; isolation: isolate; padding-block: 104px 96px; }
+  /* THE BAND'S OWN CONTENT SITS ABOVE THE HEAT FIELD.
+     9a's canvas is `position: absolute; z-index: 0`, and a POSITIONED element
+     at z-index 0 paints above STATIC content in the same stacking context —
+     static content is painted before it, not after. Everything in this band
+     was static, so the dither was drawn over the heading and over all three
+     project cards: dots and the yellow hot edge straight across the
+     photographs and the copy. Every location page carried it.
+     `.proj__inner` on the homepage, `.ch__in` in this file's own hero and
+     `.sec > .wrap` in Section.astro all already carry exactly this line; this
+     band was the one that did not. Not the canvas, which must stay put. */
+  .cw > :not(canvas) { position: relative; z-index: 1; }
   .cw__grid {
     list-style: none; margin: 56px 0 0; padding: 0;
     display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
