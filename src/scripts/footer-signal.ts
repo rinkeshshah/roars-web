@@ -51,11 +51,35 @@ const MOBILE_BP = 768
  */
 const SIGNAL_MARKS = true
 
-/* eslint-disable -- shader source, kept byte-for-byte as delivered but for SIG */
+/**
+ * ONE DELIBERATE CHANGE TO THE DELIVERED SHADER, in `b2`: `mod(floor(a), 8.)`
+ * where the handoff has `floor(a)`. It is the fix for a lattice of dots that
+ * appeared across the WHOLE footer on real hardware.
+ *
+ * b2 computes `fract(0.5*a.x + 0.75*a.y*a.y)`. On a 700px-tall canvas a.y
+ * reaches ~234, so that square reaches ~41,000 — and a 32-bit float near
+ * 41,000 has a spacing of about 1/256, while a GPU that quietly evaluates
+ * this at lower precision cannot represent it at all. Either way `fract` of
+ * it stops being a fine dither threshold and collapses into coarse blocks,
+ * which is what was showing: a regular grid at the Bayer tile's period,
+ * 8 cells x 4.5 CSS px = 36 CSS px, measured at exactly that in the report.
+ *
+ * It does not reproduce under software rendering, which computes the whole
+ * thing at full precision — which is why several rounds of screenshots here
+ * came back clean while the site plainly was not.
+ *
+ * The wrap is not a tweak to the design. b2 is exactly periodic with period 2
+ * in each axis, and b4/b8 sample it at half and quarter scale, so the pattern
+ * repeats every 8 cells; taking the coordinate modulo 8 first therefore gives
+ * the SAME value in exact arithmetic, for every caller. All it changes is that
+ * nothing inside ever exceeds 8, so the square is at most 49 and every GPU
+ * evaluates it exactly.
+ */
+/* eslint-disable -- shader source, kept byte-for-byte as delivered but for SIG and the b2 wrap */
 const FS = `precision highp float;
 uniform vec2 R; uniform float T; uniform vec2 M; uniform float MA; uniform float Y0; uniform float WX; uniform float K; uniform float SIG;
 float h1(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
-float b2(vec2 a){a=floor(a);return fract(dot(a,vec2(.5,a.y*.75)));}
+float b2(vec2 a){a=mod(floor(a),8.);return fract(dot(a,vec2(.5,a.y*.75)));}
 float b4(vec2 a){return b2(.5*a)*.25+b2(a);}
 float b8(vec2 a){return b4(.5*a)*.25+b2(a);}
 void main(){
