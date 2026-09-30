@@ -26,7 +26,7 @@ import { PORTRAIT, CLIENT_LOGOS, workHeroFor, JOURNAL_IMG, workAltFor } from '..
 import { JOURNAL } from '../lib/journal'
 import GrainField from '../components/GrainField.astro'
 import DitherHeat from '../components/DitherHeat.astro'
-import DitherHero from '../components/DitherHero.astro'
+import HeroPulse from '../components/HeroPulse.astro'
 /* Decorative furniture still used by About and Insights. The hero's own
    set — planet, starbelt, slash mark — went with the export 2 redesign. */
 import star3 from '../assets/star-3.svg'
@@ -394,34 +394,41 @@ const schema = [
         services rail — is gone with it, and space.jpg with that. */}
     <div class="hero">
       <GrainField tone="yellow" second />
-      {/* Design ref 5d, with two departures from the handoff, both asked for
-          after seeing it on the live hero and both reversible in one line.
+      {/* Design ref 1a "Calm Pulse", from the Final-Roars_4 handoff. It
+          replaces 5d's WebGL field here and nowhere else — the inner pages keep
+          their 3a carbon-heat header, which this handoff does not cover.
 
-          inkStrength 0.7: the ink at full #0B0B0B against #FFD400 is a 13.9:1
-          edge on every dot, and across a field this size it reads as glare
-          rather than texture. This eases each mark toward the ground, so the
-          pattern, its density and its motion are untouched and only the
-          contrast of a cell drops. Remove the prop for the design as drawn.
+          It also retires the two departures that were on 5d. `inkStrength 0.7`
+          eased every mark toward the ground because the field ran under the
+          headline and a #0B0B0B dot on #FFD400 is a 13.9:1 edge, which read as
+          glare. 1a does not need it: the rings are confined to the right ~45%
+          and every [data-safe] box below holds a 36px dot-free pad, so the
+          marks that were causing the glare are not drawn at all. `interactive`
+          has no counterpart either — 1a's only pointer response is on the CTA.
 
-          interactive={false}: the second ring source that followed the cursor
-          is off. It was the liveliest part of the piece, so this is worth a
-          second look before it sticks. */}
-      <DitherHero variant="roar-wave" inkStrength={0.7} interactive={false} />
+          Nothing about the copy, the layout or the order of this block
+          changes. The canvas is transparent and paints dots only, so the yellow
+          and GrainField's grain are exactly as they were. */}
+      <HeroPulse />
 
       <div class="wrap hero__inner">
-        <h1 class="hero__h1">
+        {/* data-safe: the boxes the ring field keeps its dots out of. They are
+            measured from the rendered layout on load, after fonts and on
+            resize, so they follow the headline as it clamps from 56px to
+            144px. Marking only, no styling and no change to what is here. */}
+        <h1 class="hero__h1" data-safe>
           Ship product<br />that{' '}
           <span class="hero__rotate" data-rotate data-words="works|matters|thinks">works</span>
         </h1>
-        <p class="hero__lede">
+        <p class="hero__lede" data-safe>
           Product design and engineering studio in India, the UK and the USA.
           1,500+ products shipped in 20 years, now including AI.
         </p>
-        <a class="hero__cta" href="/contact-us/">
+        <a class="hero__cta" href="/contact-us/" data-safe>
           Start a project<span class="hero__dot" aria-hidden="true"></span>
         </a>
         <div class="hero__rule" aria-hidden="true"></div>
-        <ul class="hero__labels">
+        <ul class="hero__labels" data-safe>
           <li>Product development</li>
           <li>UI/UX &amp; product design</li>
           <li>Mobile apps</li>

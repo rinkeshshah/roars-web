@@ -30,6 +30,13 @@ function rotateWords(): void {
       setTimeout(() => {
         el.textContent = words[i]
         el.style.opacity = '1'
+        /* The hero's ring field ripples on the word, and design ref 1a is
+           specific that it is the SAME event rather than a second timer on a
+           similar period: two intervals started milliseconds apart drift until
+           the pulse and the swap no longer coincide, which is the whole idea.
+           Announced rather than called, so this file keeps knowing nothing
+           about the canvas and the journal's rotation is unaffected. */
+        document.dispatchEvent(new CustomEvent('roars:word', { detail: { word: words[i] } }))
       }, 260)
     }, 2600)
   }

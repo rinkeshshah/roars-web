@@ -483,10 +483,38 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
               nothing left of it to see.
               aria-hidden with an empty alt: it is a ground, and the credit
               beside it is the content. */}
-          {featuredShot && (
+          {featuredShot ? (
             <div class="ip__bg" aria-hidden="true">
               <img src={featuredShot} alt="" data-decorative width="1440" height="1000" loading="lazy" decoding="async" />
               <DitherHeat mode="photo" sx={1.1} sy={0.5} />
+            </div>
+          ) : (
+            <div class="ip__bg ip__bg--flat" aria-hidden="true">
+              {/* NO FEATURED PROJECT, SO NO PHOTOGRAPH — AND THE BAND STILL
+                  NEEDS A GROUND. Six of the nine industry pages carry no
+                  featured work, and on those this was flat black: a heading,
+                  three numbers, then nothing for the rest of 680px. It read as
+                  a section that had failed to load, and was reported as blank.
+                  9a in `bg` mode is what every other dark band on the site puts
+                  there — the Projects band, the city pages — so this is the
+                  system's own ground rather than a new invention, and it is
+                  background only: no project is named that the content does not
+                  already name.
+                  The source sits off the TOP-RIGHT corner, the one quarter of
+                  the flat band with nothing in it: the heading is top left and
+                  the stats run across the middle. It also puts the yellow
+                  somewhere no other page puts it.
+                  1.18 / -0.1 is further out than the handoff's table, and it
+                  has to be. This band is wide and short -- 1362x680 -- so the
+                  distance to the far corner, which is what sets the falloff
+                  radius, is dominated by the width. At the table's own offsets
+                  the hot core landed INSIDE the frame and the corner went a
+                  solid yellow mass, nothing like the field on the pages that
+                  carry a photograph. Pushed to 1.32 / -0.22 the yellow vanished
+                  altogether. This is the position where the dots read across
+                  the right half and the yellow stays a patch at the edge,
+                  matching the weight of the featured variant. */}
+              <DitherHeat mode="bg" sx={1.18} sy={-0.1} />
             </div>
           )}
           <span class="ip__tick" aria-hidden="true"></span>
@@ -1213,6 +1241,10 @@ const featuredShot = d?.proof?.featured ? workHeroFor(d.proof.featured.href) : u
     content: ''; position: absolute; inset: 0; z-index: 1;
     background: linear-gradient(rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.12) 44%, rgba(0, 0, 0, 0.6) 100%);
   }
+  /* The wash exists to hold a PHOTOGRAPH back behind the 84px numerals. With
+     no photograph there is nothing to hold back, and laying it over the dither
+     ground would only mute the dots it was added to show. */
+  .ip__bg--flat::after { content: none; }
   .ip__tick { display: block; width: 16px; height: 1.5px; background: rgba(180, 174, 174, 0.7); }
   .ip .i-eyebrow { margin-top: 20px; }
   .ip__h {

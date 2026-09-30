@@ -10,11 +10,18 @@
  * `init*()` that returns early when its markup is absent, and a component
  * script rather than a `<script src>` in `public/`.
  *
- * TWO VARIANTS, ONE SYSTEM. `roar-wave` is ink #0B0B0B on Roars yellow for the
- * homepage; `carbon-heat` is graphite to yellow to warm white on #070706 for
- * inner heroes. Same Bayer dither, colours inverted. Only roar-wave is mounted
- * today — carbon-heat is here because deleting half a system and re-deriving it
- * later is how the two halves stop matching.
+ * TWO VARIANTS, ONE SYSTEM. `roar-wave` is ink #0B0B0B on Roars yellow;
+ * `carbon-heat` is graphite to yellow to warm white on #070706. Same Bayer
+ * dither, colours inverted.
+ *
+ * ONLY `carbon-heat` IS MOUNTED TODAY. It carries every inner hero. `roar-wave`
+ * was the homepage, and the homepage now runs design ref 1a "Calm Pulse"
+ * instead — src/scripts/hero-pulse.ts — after the feedback that this field read
+ * as loud. The variant stays here rather than being deleted: it is half of a
+ * system, it is what 1a is measured against, and putting the homepage back on
+ * it is a one-line change in src/pages/index.astro. If it is still unmounted
+ * when the dust settles, drop it and take its shader string out of the inner
+ * pages' bundle with it.
  *
  * WHAT IS NOT VERBATIM, and why:
  *  - `speed` is a mutable local. In the handoff `setSpeed` assigned to

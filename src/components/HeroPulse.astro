@@ -1,0 +1,54 @@
+---
+/**
+ * The homepage hero's motion, design ref "1a · Calm Pulse" from the
+ * "Final-Roars_4" handoff.
+ *
+ * It replaces the 5d WebGL field (`DitherHero variant="roar-wave"`) on the
+ * HOMEPAGE ONLY. The inner pages keep their 3a `carbon-heat` header, which this
+ * handoff says nothing about and which is not in its scope.
+ *
+ * The redesign answers one piece of feedback — the hero read as loud — and it
+ * answers it by construction rather than by turning anything down. The rings
+ * live in the right-hand ~45% of the frame, and every box marked `data-safe`
+ * keeps a 36px dot-free pad with a 90px ramp out of it, so no mark is ever
+ * behind the headline, the lead, the button or the labels. That is why the old
+ * `inkStrength` easing has no equivalent here: the marks that were causing the
+ * glare are not drawn at all now.
+ *
+ * NO GROUND AND NO GRAIN OF ITS OWN. The canvas is transparent and paints only
+ * dots. The hero's yellow and GrainField's grain are untouched underneath —
+ * the handoff generates a grain tile because its reference page has none, and
+ * this hero already has one. Two grain layers would darken the ground, and a
+ * second flat ground under a field is what produced the tonal seam on this site
+ * three times before.
+ *
+ * The paint is in src/scripts/hero-pulse.ts, verbatim from the handoff.
+ */
+---
+
+<canvas
+  class="hp"
+  aria-hidden="true"
+  data-hero-pulse-canvas></canvas>
+
+<style>
+  /* Above the hero's ground, below its content, which sits at z-index 1.
+     `.hero` is `isolation: isolate`, so these sort against each other rather
+     than against the section. */
+  .hp {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* The hero listens for nothing here and the copy under it must stay
+       clickable: the CTA sits inside this box. */
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  import { initHeroPulse } from '../scripts/hero-pulse'
+  initHeroPulse()
+</script>

@@ -47,7 +47,14 @@ const CTA = {
   <div class="wrap topbar__inner">
     <LogoChip />
 
-    <div class="topbar__right">
+    {/* data-safe: read by the homepage hero's ring field (1a Calm Pulse),
+        which keeps its dots out of every marked box. The handoff lists the nav
+        controls alongside the headline and the CTA, and this bar is
+        transparent over the hero until the page scrolls, so without this the
+        rings run straight under the pill and the burger.
+        Inert everywhere else: the attribute is only ever read by the hero
+        canvas, and no other page has one. */}
+    <div class="topbar__right" data-safe>
       <div class="topbar__meet">
         <div class="topbar__meet-row">
           {/* The founder's face, attached to the pill's left edge — 42px
