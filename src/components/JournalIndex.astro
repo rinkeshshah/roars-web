@@ -367,7 +367,7 @@ const schema = [
     list-style: none; margin: 80px 0 0; padding: 0;
     display: grid; grid-template-columns: repeat(3, 435fr); column-gap: 26px; row-gap: 60px;
   }
-  .jl__grid a { position: relative; display: block; min-height: 300px; }
+  .jl__grid a { position: relative; display: block; min-height: 362px; }
   /* `display: block` IS LOAD-BEARING, not tidiness. This is a <span>, and it
      is only block-level here because it is absolutely positioned. Below the
      design grid the responsive rule returns it to `position: static`, which
@@ -381,18 +381,25 @@ const schema = [
      most of these heroes carry was sliced off at both edges and what survived
      was an unreadable fragment. Asked for as a rectangle, and it is the right
      shape for the content.
-     The HEIGHT IS UNCHANGED at 138px, so the hairline, the date and the title
-     below it do not move and the card still occupies exactly the grid cell it
-     did. Only the width grows — out to the card's right edge, which is where
-     the hairline already ends — so the picture reads as the post's picture
-     rather than as an icon beside the title.
+     FULL CARD WIDTH, 433x200. It went circle -> 199x138 -> this, and the last
+     step is the one that makes it a banner rather than a thumbnail beside a
+     title. 433 is where the hairline already ends, so the picture is now as
+     wide as the widest thing on the card and the empty 234px to its left is
+     gone. 200 rather than keeping 138: at full width 138 would be 3.14:1, and
+     these heroes are 16:9, so it would have cropped 44% off the top and bottom
+     — harsher than the circle was, in the other direction. 2.17:1 crops
+     lightly and still reads as a listing.
+     Everything under it moves down by the 62px it grew. The card is
+     absolutely laid out, so none of it follows on its own: the hairline,
+     the date, the title and the card's own min-height are all stepped by hand
+     below, and they have to stay in step.
      12px is the radius every photograph on the site takes. The class keeps
      its name: renaming it would touch the markup, the responsive block and
      the hover rule for no gain.
      `display: block` IS STILL LOAD-BEARING — see the note below the grid. */
   .jl__disc {
-    position: absolute; left: 234px; top: 0; display: block;
-    width: 199px; height: 138px; border-radius: 12px;
+    position: absolute; left: 0; top: 0; display: block;
+    width: 433px; height: 200px; border-radius: 12px;
     overflow: hidden;
     background: rgb(241, 241, 239);
     transition: background var(--dur-fast) ease;
@@ -400,9 +407,9 @@ const schema = [
   .jl__grid a:hover .jl__disc { background: var(--c-accent); }
   /* Same reason as the disc above: a static <span> is inline, and an inline
      box has no height, so this rule drew nothing at all below 1360. */
-  .jl__hair { position: absolute; left: 2px; top: 174px; display: block; width: 433px; height: 1px; background: rgba(153, 152, 149, 0.7); }
+  .jl__hair { position: absolute; left: 2px; top: 236px; display: block; width: 433px; height: 1px; background: rgba(153, 152, 149, 0.7); }
   .jl__date {
-    position: absolute; left: 0; top: 190px;
+    position: absolute; left: 0; top: 252px;
     font-size: var(--fs-stat); line-height: 43px; font-weight: var(--fw-semi);
     letter-spacing: var(--ls-display); color: var(--c-ink-heading);
   }
@@ -419,7 +426,7 @@ const schema = [
      six lines and pushed straight through the disc of the card below. Clamping
      holds every card to the same height, which is what the grid assumes. */
   .jl__title {
-    position: absolute; left: 234px; top: 198px; width: 200px;
+    position: absolute; left: 234px; top: 260px; width: 200px;
     display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
     overflow: hidden;
     font-size: 18px; line-height: 27px; font-weight: var(--fw-medium);
@@ -427,7 +434,7 @@ const schema = [
     transition: color var(--dur-fast) ease;
   }
   .jl__grid a:hover .jl__title { color: var(--c-black); }
-  .jl__grid a:not(:has(.jl__date)) .jl__title { left: 0; top: 196px; width: 400px; }
+  .jl__grid a:not(:has(.jl__date)) .jl__title { left: 0; top: 258px; width: 400px; }
   /* The radius lives on .jl__disc, which clips. Repeating it here would round
      the image inside an already-rounded box and leave a hairline of the grey
      placeholder showing at each corner. */
@@ -478,7 +485,7 @@ const schema = [
        breakpoint already used, and the reason still holds: at the 88px this
        started at the thumbnail read as an icon beside a two-line title rather
        than as the post's picture. */
-    .jl__disc { width: 100%; height: 132px; }
+    .jl__disc { width: 100%; height: auto; aspect-ratio: 433 / 200; }
     .jl__hair { width: 100%; margin: 18px 0; }
     .jl__title { width: auto; }
     .jl__pager { flex-wrap: wrap; gap: 16px; margin-top: 56px; }

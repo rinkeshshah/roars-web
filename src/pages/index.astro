@@ -841,7 +841,11 @@ const schema = [
         {insights.map((post, i) => (
           <li data-reveal style={`transition-delay:${i * 70}ms`}>
             <a class="ins__card" href={post.href}>
-              <img class="ins__ph" src={post.img} alt={`${post.title}, article illustration`} width="138" height="138" loading="lazy" decoding="async" />
+              {/* 202x138 is the box this fills at three across, and these
+                  attributes are the ratio the browser reserves space with
+                  before the CSS lands — square would cost a layout shift on
+                  every card. */}
+              <img class="ins__ph" src={post.img} alt={`${post.title}, article illustration`} width="433" height="200" loading="lazy" decoding="async" />
               <span class="ins__rule"></span>
               <span class="ins__day">{post.day}</span>
               <span class="ins__month">{post.month}</span>
@@ -1817,8 +1821,18 @@ const schema = [
     align-items: start;
     row-gap: 0;
   }
-  /* A 138px disc, offset into the second column, matching the services row. */
-  .ins__ph { grid-column: 2; width: 138px; height: 138px; border-radius: var(--r-circle); object-fit: cover; background: rgb(217, 217, 217); }
+  /* A ROUNDED RECTANGLE, NOT A DISC, matching the journal listing — the two
+     are the same thing in two places and they have to agree.
+     It was a 138px circle, and a circle crops a landscape article image to its
+     middle third: most of these heroes carry a headline panel, which was being
+     sliced off at both edges.
+     THE HEIGHT IS UNCHANGED at 138, so the rule, the date and the title below
+     it do not move and the card still occupies the same grid rows. The width
+     goes to 100% of the second column, which at three across is about 202px —
+     within a few pixels of the 199 the journal cards use, so the two listings
+     read as one component. 12px is the radius every photograph on the site
+     takes. */
+  .ins__ph { grid-column: 1 / -1; width: 100%; height: 200px; border-radius: 12px; object-fit: cover; background: rgb(217, 217, 217); }
   .ins__rule { grid-column: 1 / -1; height: 1px; margin-top: 36px; background: var(--c-rule-strong); }
   .ins__day { grid-column: 1; grid-row: 3; justify-self: start; margin-top: 13px; font-size: var(--fs-stat); font-weight: var(--fw-semi); line-height: 43px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
   .ins__month { grid-column: 1; grid-row: 3; justify-self: start; margin: 13px 0 0 55px; font-size: var(--fs-body); font-weight: var(--fw-medium); line-height: 43px; letter-spacing: var(--ls-display); color: var(--c-ink-heading); }
@@ -2136,7 +2150,11 @@ const schema = [
        the columns and all three land on top of each other. Day and month get
        a track each; the disc, the rule and the title span both. */
     .ins__card { grid-template-columns: auto minmax(0, 1fr); }
+    /* Hold the SHAPE, not a height, once the column is fluid — the same
+       433/200 the journal cards keep, so the two listings stay the same
+       picture at every width rather than only at the design grid. */
     .ins__ph, .ins__rule { grid-column: 1 / -1; }
+    .ins__ph { height: auto; aspect-ratio: 433 / 200; }
     .ins__day { grid-column: 1; margin-top: 10px; }
     .ins__month { grid-column: 2; margin: 10px 0 0 8px; justify-self: start; }
     .ins__title { grid-column: 1 / -1; grid-row: 4; margin-top: 4px; }
