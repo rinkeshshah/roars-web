@@ -190,10 +190,21 @@ const schema = [{
   {/* ── Selected work ──────────────────────────────────────── */}
   <Section ground="dark">
     <div class="cw">
-      {/* Turn 9a, replacing 8a's rings. The source sits off the bottom-left
-          corner, away from the heading, so the heat fades before it reaches
-          the type. */}
-      <DitherHeat mode="bg" sx={1.06} sy={1.08} />
+      {/* Turn 9a, replacing 8a's rings.
+          THE SOURCE IS OFF THE TOP-RIGHT, and it was off the BOTTOM-right —
+          1.06 / 1.08 — which is the one corner of this band that is full. The
+          three project cards run the full width along the bottom, so the
+          hottest part of the field, the yellow, was landing directly behind the
+          third card's eyebrow and body copy. Grey dots on a dark ground are a
+          texture; the yellow edge over 11px caps is not, and that card was the
+          hardest thing on the page to read.
+          The only quarter with nothing in it is the top right: the heading is
+          top left and the cards start below both. So the heat rises there and
+          has faded out well before it reaches any of the copy. It also puts the
+          yellow somewhere no other band on the site puts it. */}
+      <div class="cw__bg" aria-hidden="true">
+        <DitherHeat mode="bg" sx={1.16} sy={-0.06} />
+      </div>
       <span class="i-eyebrow i-eyebrow--dark">SELECTED WORK</span>
       <h2 class="cw__h" data-reveal>Work we have shipped, and what it had to solve</h2>
       <ul class="cw__grid">
@@ -377,17 +388,35 @@ const schema = [{
 
   /* ── Selected work ───────────────────────────────────────── */
   .cw { position: relative; isolation: isolate; padding-block: 104px 96px; }
-  /* THE BAND'S OWN CONTENT SITS ABOVE THE HEAT FIELD.
-     9a's canvas is `position: absolute; z-index: 0`, and a POSITIONED element
-     at z-index 0 paints above STATIC content in the same stacking context —
-     static content is painted before it, not after. Everything in this band
-     was static, so the dither was drawn over the heading and over all three
-     project cards: dots and the yellow hot edge straight across the
-     photographs and the copy. Every location page carried it.
-     `.proj__inner` on the homepage, `.ch__in` in this file's own hero and
-     `.sec > .wrap` in Section.astro all already carry exactly this line; this
-     band was the one that did not. Not the canvas, which must stay put. */
-  .cw > :not(canvas) { position: relative; z-index: 1; }
+  /* THE GROUND BLEEDS THE FULL PAGE, AND SITS UNDER THE CONTENT.
+     Two faults, one wrapper, because they had the same cause: the canvas was a
+     bare child of .cw, and .cw lives inside Section's .wrap.
+
+     IT WAS ONLY AS WIDE AS THE CONTAINER. .wrap is 1362px of content centred
+     in the page, so the heat field stopped at the content edge and the rest of
+     the band was flat black. Past about 1400px of viewport that reads as a
+     panel dropped into the section rather than as its ground, with a visible
+     vertical edge down each side. Every other 9a ground on the site bleeds —
+     .ip__bg on the industries pages does exactly this, and .wp-act is a
+     full-width section so it never had the problem.
+
+     AND IT PAINTED OVER THE CARDS. 9a's canvas is `position: absolute;
+     z-index: 0`, and a positioned element at z-index 0 paints above STATIC
+     content in the same stacking context. Everything in this band is static,
+     so the dots and the yellow hot edge landed on the heading, the copy and
+     all three photographs.
+
+     z-index: -1 settles the second; .cw is `isolation: isolate`, so negative
+     stays inside the band instead of falling through the section's own
+     background. 100vw and the centring settle the first. `.sec` clips, so the
+     overshoot past the content box is clipped at the section edges rather than
+     scrolling the page. */
+  .cw__bg {
+    position: absolute; left: 50%; top: 0; z-index: -1;
+    width: 100vw; height: 100%;
+    transform: translateX(-50%);
+    overflow: hidden; pointer-events: none;
+  }
   .cw__grid {
     list-style: none; margin: 56px 0 0; padding: 0;
     display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
