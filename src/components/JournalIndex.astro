@@ -183,14 +183,19 @@ const schema = [
         {posts.map((p, i) => (
           <li data-reveal style={`transition-delay:${(i % 3) * 60}ms`}>
             <a href={p.href}>
-              {/* The export's circular thumbnail. Every migrated post brought
-                  its WordPress hero across, so this is the post's own image.
-                  The guard stays for the day one arrives without one: a circle
-                  of flat colour is honest where a stand-in photo would not
-                  be. */}
+              {/* The post's thumbnail. Every migrated post brought its
+                  WordPress hero across, so this is the post's own image. The
+                  guard stays for the day one arrives without one: an empty
+                  panel of flat colour is honest where a stand-in photo would
+                  not be.
+                  199x138 on the img, matching the box it fills. Those
+                  attributes are the intrinsic ratio the browser reserves space
+                  with before the CSS arrives, so leaving them square after the
+                  shape changed would hand it the wrong aspect and cost a
+                  layout shift on every card. */}
               <span class="jl__disc" aria-hidden="true">
                 {(p.hero ?? JOURNAL_IMG[p.slug]) && (
-                  <img src={p.hero ?? JOURNAL_IMG[p.slug]} alt="" data-decorative width="138" height="138" loading="lazy" decoding="async" />
+                  <img src={p.hero ?? JOURNAL_IMG[p.slug]} alt="" data-decorative width="199" height="138" loading="lazy" decoding="async" />
                 )}
               </span>
               <span class="jl__hair" aria-hidden="true"></span>
@@ -371,9 +376,24 @@ const schema = [
      height, and `border-radius: 50%` turned that rectangle into an ellipse.
      Declaring the display here means the shape no longer depends on how the
      element happens to be positioned. */
+  /* A ROUNDED RECTANGLE, NOT A DISC. It was a 138px circle, and a circle
+     crops a landscape article image to its middle third: the headline panel
+     most of these heroes carry was sliced off at both edges and what survived
+     was an unreadable fragment. Asked for as a rectangle, and it is the right
+     shape for the content.
+     The HEIGHT IS UNCHANGED at 138px, so the hairline, the date and the title
+     below it do not move and the card still occupies exactly the grid cell it
+     did. Only the width grows — out to the card's right edge, which is where
+     the hairline already ends — so the picture reads as the post's picture
+     rather than as an icon beside the title.
+     12px is the radius every photograph on the site takes. The class keeps
+     its name: renaming it would touch the markup, the responsive block and
+     the hover rule for no gain.
+     `display: block` IS STILL LOAD-BEARING — see the note below the grid. */
   .jl__disc {
     position: absolute; left: 234px; top: 0; display: block;
-    width: 138px; height: 138px; border-radius: 50%;
+    width: 199px; height: 138px; border-radius: 12px;
+    overflow: hidden;
     background: rgb(241, 241, 239);
     transition: background var(--dur-fast) ease;
   }
@@ -408,7 +428,10 @@ const schema = [
   }
   .jl__grid a:hover .jl__title { color: var(--c-black); }
   .jl__grid a:not(:has(.jl__date)) .jl__title { left: 0; top: 196px; width: 400px; }
-  .jl__disc img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  /* The radius lives on .jl__disc, which clips. Repeating it here would round
+     the image inside an already-rounded box and leave a hairline of the grey
+     placeholder showing at each corner. */
+  .jl__disc img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
   /* ── pager ──────────────────────────────────────────────── */
   .jl__pager {
@@ -450,10 +473,12 @@ const schema = [
     .jl__disc, .jl__hair, .jl__date, .jl__title { position: static; }
     .jl__grid a:not(:has(.jl__date)) .jl__title { width: auto; }
     .jl__date { display: block; margin-top: 14px; }
-    /* 132, not the 88 this started at. At 88 the thumbnail read as an icon
-       beside a two-line title rather than as the post's picture, and these
-       heroes carry their own headline panel, which at 88px was unreadable. */
-    .jl__disc { width: 132px; height: 132px; }
+    /* Below the design grid the card stacks, so the picture takes the full
+       column rather than a fixed width. The height stays 132 — the figure this
+       breakpoint already used, and the reason still holds: at the 88px this
+       started at the thumbnail read as an icon beside a two-line title rather
+       than as the post's picture. */
+    .jl__disc { width: 100%; height: 132px; }
     .jl__hair { width: 100%; margin: 18px 0; }
     .jl__title { width: auto; }
     .jl__pager { flex-wrap: wrap; gap: 16px; margin-top: 56px; }

@@ -320,8 +320,18 @@ const schema = [{
     /* EXPLICIT COLUMN COUNTS, not auto-fit, so the rules below can know which
        cells start a row. See the hairline note under .cd__item. */
     display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 1px; background: rgba(255, 255, 255, 0.14);
+    /* NO GAP AND NO GROUND OF ITS OWN, and that second part is a bug fix.
+       The hairlines used to be a 1px gap with `background: rgba(255,255,255,
+       .14)` on this element showing through it. Every cell carries
+       `data-reveal`, which starts at `opacity: 0` — so until the reveal fires,
+       the cells are invisible and that 14% white painted across the WHOLE row:
+       a pale grey block the width of the container, sitting in the black
+       section, on every load before the fade-in caught up.
+       The lines are painted on the cells now, so this element needs neither
+       the gap nor a ground, and there is nothing left to flash. */
+    gap: 0;
     padding-block: 0;
+    --cd-line: rgba(255, 255, 255, 0.14);
   }
   /* THE HAIRLINE IS PAINTED ON THE CELL, NOT LEFT TO THE GRID GAP.
      The gap still provides the row lines and the ground behind everything, but
@@ -336,7 +346,7 @@ const schema = [{
      starts a row: there is no neighbour to its left, and a line there would
      sit against the page gutter. */
   .cd__item:not(:nth-child(4n + 1)) {
-    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.14);
+    box-shadow: inset 1px 0 0 var(--cd-line);
   }
   /* The hairlines between cells are the grid gap showing through, so each cell
      needs its own ground rather than the row having one. */
@@ -529,8 +539,13 @@ const schema = [{
        which cells start a row. */
     .cd { grid-template-columns: repeat(2, 1fr); }
     .cd__item:not(:nth-child(4n + 1)) { box-shadow: none; }
-    .cd__item:not(:nth-child(2n + 1)) {
-      box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.14);
+    /* Two columns: the line is on every cell that is not first in its row,
+       and the second row also takes a line along its top — which the grid gap
+       used to draw and no longer does. */
+    .cd__item:not(:nth-child(2n + 1)) { box-shadow: inset 1px 0 0 var(--cd-line); }
+    .cd__item:nth-child(n + 3) { box-shadow: inset 0 1px 0 var(--cd-line); }
+    .cd__item:nth-child(n + 3):not(:nth-child(2n + 1)) {
+      box-shadow: inset 1px 0 0 var(--cd-line), inset 0 1px 0 var(--cd-line);
     }
   }
 
@@ -542,8 +557,10 @@ const schema = [{
        not sit against the gutter. */
     .cd { grid-template-columns: 1fr; margin-left: 0; }
     .cd__item { padding: 22px 0 24px; }
-    /* One column: every cell starts its row, so no cell takes a left line. */
+    /* One column: nothing is beside anything, so the lines are all horizontal
+       and the first cell takes none. */
     .cd__item { box-shadow: none; }
+    .cd__item:nth-child(n + 2) { box-shadow: inset 0 1px 0 var(--cd-line); }
     .cn__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .cs__grid, .cy__grid { grid-template-columns: minmax(0, 1fr); }
   }
