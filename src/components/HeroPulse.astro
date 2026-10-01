@@ -46,6 +46,19 @@
        clickable: the CTA sits inside this box. */
     pointer-events: none;
   }
+
+  /* GONE BELOW 768. Asked for, and measured: on a 390px column the field
+     painted 0.55% of the hero — a handful of dots nobody can resolve, which
+     reads worse than a clean yellow ground. The hero is short and the safe
+     boxes take a third of the width, so there is no room for the pattern to
+     be a pattern.
+     `display: none` as well as the script's own guard, so the canvas is out
+     of the layout from the first paint rather than from whenever the module
+     runs. src/scripts/hero-pulse.ts builds nothing and starts no animation
+     frame at this width either. */
+  @media (max-width: 767px) {
+    .hp { display: none; }
+  }
 </style>
 
 <script>

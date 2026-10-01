@@ -154,59 +154,37 @@ interface Field {
   markDirty(): void
 }
 
-function rings(c: HTMLCanvasElement, kind: 'd' | 'm'): Field | null {
+function rings(c: HTMLCanvasElement): Field | null {
   const s = setup(c)
   if (!s) return null
   const { W, H, ctx } = s
   const S = safeRects(c)
 
-  /* Source, wavelength, reach, pitch, dot radius and envelope — the handoff's
-     two tables. Desktop puts the source off the right edge at 0.58H and keeps
-     the rings in the right ~45%; mobile moves it to the bottom-right corner
-     and drops the horizontal envelope, because there is no room for one. */
-  const P =
-    kind === 'd'
-      ? {
-          cx: W + 140,
-          cy: H * 0.58,
-          lam: 46,
-          R: 920,
-          p: 7,
-          dot: 1.9,
-          /* A SHORTER HARD PAD AND A MUCH LONGER RAMP than the handoff's
-             36 / 90, because the ramp does a different job here. In the
-             handoff it is the distance over which dots stop existing, so a
-             long one would widen the rectangular hole. Here it is the distance
-             over which they go transparent, so a long one is exactly what
-             stops the boxes reading as blocks — and dots that have faded
-             almost to nothing can come much closer to the type than dots that
-             are still solid, which is why the hard pad comes down. */
-          pad: 22,
-          ramp: 150,
-          env: (x: number, _y: number, r: number): number =>
-            sm(W * 0.55 - 80, W * 0.55 + 160, x) * Math.pow(Math.max(0, 1 - r / 920), 0.7),
-        }
-      : {
-          cx: W + 30,
-          cy: H + 10,
-          lam: 26,
-          R: 420,
-          p: 6,
-          dot: 1.5,
-          /* SCALED DOWN FROM THE HANDOFF'S 36 / 90, and it has to be.
-             36 + 90 is 126px of exclusion around every safe box. On a 1440
-             hero that is a tenth of the width; on a 390 column it is a third,
-             and our hero has something the reference's does not — a full-width
-             row of service labels across the bottom, right where the mobile
-             ring source sits. At 36 / 90 that one box masked the entire bottom
-             half of the frame and the field came out as three or four stray
-             dots. 20 / 48 keeps the same proportion of a 390 column that
-             36 / 90 keeps of 1440, so the rule the handoff is actually stating
-             — no dot touches the copy — holds at both sizes. */
-          pad: 12,
-          ramp: 84,
-          env: (_x: number, _y: number, r: number): number => Math.pow(Math.max(0, 1 - r / 420), 0.7),
-        }
+  /* Source, wavelength, reach, pitch and dot radius — the handoff's DESKTOP
+     table. Its mobile table is gone with the mobile field; it is in
+     `hero-1a.js` in the Final-Roars_4 bundle if the phone ever wants one back.
+     The source sits off the right edge at 0.58H and the envelope's horizontal
+     smoothstep keeps the rings in the right ~45%, which is what leaves the
+     whole left side — where every piece of copy is — empty by construction. */
+  const P = {
+    cx: W + 140,
+    cy: H * 0.58,
+    lam: 46,
+    R: 920,
+    p: 7,
+    dot: 1.9,
+    /* A SHORTER HARD PAD AND A MUCH LONGER RAMP than the handoff's 36 / 90,
+       because the ramp does a different job here. In the handoff it is the
+       distance over which dots stop existing, so a long one would widen the
+       rectangular hole it cuts. Here it is the distance over which they go
+       transparent, so a long one is exactly what stops the safe boxes reading
+       as blocks — and dots faded almost to nothing can sit far closer to the
+       type than solid ones, which is why the hard pad comes down too. */
+    pad: 22,
+    ramp: 150,
+    env: (x: number, _y: number, r: number): number =>
+      sm(W * 0.55 - 80, W * 0.55 + 160, x) * Math.pow(Math.max(0, 1 - r / 920), 0.7),
+  }
 
   /* Built once per size, as the performance note requires: the per-cell work
      below is the expensive half and none of it changes between frames. */
@@ -323,11 +301,21 @@ export function initHeroPulse(): HeroPulseHandle | null {
   const frame = canvas.parentElement
   if (!frame) return null
 
-  /* 768 is where the hero's own layout turns over, so the two tables change at
-     the same width the copy does. */
-  const kindFor = (): 'd' | 'm' => (innerWidth >= 768 ? 'd' : 'm')
-  let kind = kindFor()
-  let field = rings(canvas, kind)
+  /* NO RING FIELD ON A PHONE. Asked for, and the measurements agree with the
+     ask: on a 390px column the field painted 0.55% of the hero. The hero is
+     short, and the safe boxes — a full-width labels row among them — take a
+     third of the width, so what was left read as a few stray dots rather than
+     as the design. A dozen dots nobody can resolve is worse than a clean
+     yellow ground, and the handoff's mobile table cannot fix it because the
+     problem is the room, not the numbers.
+     This is a REMOVAL, not a hide: below the breakpoint no cells are built, no
+     rAF loop starts, and the canvas is cleared and left blank. The component's
+     stylesheet also takes it out of the layout, so nothing shows in the gap
+     before this script runs. */
+  const MOBILE_BP = 768
+  const wantField = (): boolean => innerWidth >= MOBILE_BP
+
+  let field = wantField() ? rings(canvas) : null
 
   let visible = true
   const io = new IntersectionObserver((es) => es.forEach((en) => (visible = en.isIntersecting)), {
@@ -340,12 +328,28 @@ export function initHeroPulse(): HeroPulseHandle | null {
     if (visible) field?.draw(now)
     raf = requestAnimationFrame(loop)
   }
-  raf = requestAnimationFrame(loop)
+  const startLoop = (): void => {
+    if (!raf && field) raf = requestAnimationFrame(loop)
+  }
+  const stopLoop = (): void => {
+    if (raf) cancelAnimationFrame(raf)
+    raf = 0
+  }
+  startLoop()
 
   const rebuild = (): void => {
-    kind = kindFor()
-    field = rings(canvas, kind)
+    /* Crossing the breakpoint either way — a rotation, a resized window —
+       has to build or tear down, not just repaint. */
+    if (!wantField()) {
+      field = null
+      stopLoop()
+      const ctx = canvas.getContext('2d')
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height)
+      return
+    }
+    field = rings(canvas)
     field?.markDirty()
+    startLoop()
   }
 
   let t = 0
@@ -369,7 +373,7 @@ export function initHeroPulse(): HeroPulseHandle | null {
   return {
     trigger: onWord,
     destroy() {
-      cancelAnimationFrame(raf)
+      stopLoop()
       io.disconnect()
       window.removeEventListener('resize', onResize)
       document.removeEventListener('roars:word', onWord)
