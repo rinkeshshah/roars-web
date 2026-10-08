@@ -553,6 +553,16 @@ const featuredShot = d?.featured?.href ? workHeroFor(d.featured.href) : undefine
                 </ul>
               </div>
             )}
+            {d.next.places.length > 0 && (
+              <div data-reveal style="transition-delay:160ms">
+                <h3 class="sv-next__col-h">Locations</h3>
+                <ul class="sv-next__list">
+                  {d.next.places.map((x) => (
+                    <li><a href={x.href}><b>{x.name}</b><span>{x.why}</span></a></li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </Section>

@@ -164,6 +164,10 @@ next:
     - name: "SaaS"
       href: "/industries/saas-application-development-services/"
       why: "Where the internal tool and the product tend to be the same codebase."
+  places:
+    - name: "Dallas-Fort Worth"
+      href: "/software-development-company-dallas/"
+      why: "If the web app is replacing a system that came with a relocated headquarters."
 close:
   heading: "Send us the spreadsheet."
   body: "Genuinely. It tells us more in five minutes than a requirements document does in a week. We will come back in two working days with what we would build first and what we would leave in the spreadsheet."

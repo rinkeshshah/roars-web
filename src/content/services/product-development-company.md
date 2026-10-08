@@ -156,6 +156,10 @@ next:
     - name: "Concierge"
       href: "/industries/concierge-app-development/"
       why: "Requests, members and loyalty held in one model rather than three tools."
+  places:
+    - name: "Dallas-Fort Worth"
+      href: "/software-development-company-dallas/"
+      why: "For DFW teams building the product rather than the internal tooling around it."
 close:
   heading: "Tell us what has not shipped this quarter, and why."
   body: "One paragraph. We will come back in two working days with where we think the blockage is. Often it is not where people expect, and you keep that read whether or not you engage us."

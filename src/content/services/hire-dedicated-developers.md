@@ -153,6 +153,10 @@ next:
     - name: "Concierge"
       href: "/industries/concierge-app-development/"
       why: "Member products where the surface keeps growing after launch."
+  places:
+    - name: "Dallas-Fort Worth"
+      href: "/software-development-company-dallas/"
+      why: "When a senior hire in the DFW market is taking a quarter you do not have."
 close:
   heading: "Send us your backlog, or the part of it you can share."
   body: "We will come back in two working days with what shape of team we think it needs, including when the answer is fewer people than you asked for."
