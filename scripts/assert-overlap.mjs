@@ -281,9 +281,10 @@ for (const [name, url] of PAGES) for (const width of WIDTHS) {
    * question the other two are each asking half of.
    *
    * WHAT IS NOT A FINDING. Text that is deliberately there for something other
-   * than eyes, and text inside a box the reader can drag sideways. Four
-   * idioms, all of them already in use on this site and each excluded by the
-   * property that makes it deliberate rather than by a class name:
+   * than eyes, text inside a box the reader can drag sideways, and text the
+   * browser paints somewhere other than the document. Six idioms, all of them
+   * already in use on this site and each excluded by the property that makes
+   * it deliberate rather than by a class name:
    *
    *   aria-hidden="true"        the contact and guide honeypots. A field that
    *                             is hidden from people AND from screen readers
@@ -295,6 +296,14 @@ for (const [name, url] of PAGES) for (const width of WIDTHS) {
    *   clip / clip-path          the classic screen-reader-only pattern.
    *   <noscript>                its contents are markup, not rendered text,
    *                             whenever scripting is on, which it is here.
+   *   <option>                  the contact form's country-code select. A
+   *                             closed select's options are painted by the
+   *                             browser's own dropdown, which is not in the
+   *                             document and has no client rects, so every
+   *                             option in every select reads as text that
+   *                             landed nowhere. The one case here where the
+   *                             text really does paint and the DOM is simply
+   *                             not where it happens.
    */
   const unpainted = await p.evaluate((bleed) => {
     const re = new RegExp(bleed)
@@ -302,7 +311,7 @@ for (const [name, url] of PAGES) for (const width of WIDTHS) {
     const range = document.createRange()
     const transparent = (v) => /rgba?\([^)]*,\s*0(\.0+)?\s*\)$/.test(v)
     document.querySelectorAll('main *').forEach((el) => {
-      if (el.closest('noscript')) return
+      if (el.closest('noscript, option, optgroup')) return
       const own = [...el.childNodes]
         .filter((n) => n.nodeType === 3)
         .map((n) => n.textContent)

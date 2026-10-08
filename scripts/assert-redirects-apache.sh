@@ -72,16 +72,16 @@ echo "=== $MODE build, docroot $ROOT ==="
 H=https://www.roarsinc.com
 # WHICH HOST EXERCISES THE LEGACY RULES.
 #
-# Production names www. A dev build used to be tested on dev.roarsinc.com,
-# because its rules keep the requesting host — but dev now 301s EVERYTHING to
-# www before any legacy rule is reached, by request, so dev is the one host on
-# which none of them can be observed.
+# Production names www. A dev build is measured on dev.roarsinc.com, whose
+# rules keep the requesting host.
 #
-# The Plesk preview host is allowlisted, is not redirected, and takes the same
-# host-relative rules, so it is what the dev build is measured on. The rules
-# under test are identical; only the host asking is different.
+# For a while this was the Plesk preview host instead, because dev 301d
+# EVERYTHING to www and no legacy rule could be observed on it. That redirect
+# has been removed — see rule 1a in scripts/generate-htaccess.mjs — so dev is
+# testable again and is the host people actually open. The preview host is
+# still exercised, in section 4, where it is the allowlist case.
 PREVIEW=roarsinc.com.abc123.plesk.page
-if [ "$MODE" = dev ]; then LEG=https://$PREVIEW; LH=$PREVIEW
+if [ "$MODE" = dev ]; then LEG=https://dev.roarsinc.com; LH=dev.roarsinc.com
 else LEG=$H; LH=www.roarsinc.com; fi
 
 # --- 1. slashless -> slashed, one hop, on the site's own host --------------
@@ -150,22 +150,36 @@ if [ "$MODE" = production ]; then
   rm -f "$ROOT/email/redirect-probe.png"; rmdir "$ROOT/email" 2>/dev/null || true
 fi
 
-# --- 6. dev-only: EVERYTHING leaves dev, on purpose ------------------------
+# --- 6. dev-only: NOTHING leaves dev ---------------------------------------
 #
-# This assertion used to say the opposite — nothing may leave dev — and it was
-# what caught rule 7 hardcoding www and dragging every host to production.
-# That leak was accidental. This one is asked for: the staging copy should not
-# be a second crawlable version of the site on another hostname, so dev sends
-# every path to the same path on www.
+# This assertion has been inverted twice and both readings were right at the
+# time, so the history is worth keeping.
 #
-# The check is still worth having, because the failure modes are real: a
-# redirect that drops the path, one that loops, or one that swallows the ACME
-# challenge and quietly breaks certificate renewal a month later.
+# It first said "nothing may leave dev", and in that form it caught rule 7
+# hardcoding www and dragging every host to production. Then dev was asked to
+# 301 everything to www, so the staging copy could not be crawled as a second
+# version of the site, and the assertion was turned round to match. That
+# redirect has now been removed — dev is a preview again and has to be usable
+# as one — so this is back to the original reading.
+#
+# The failure it guards is the accidental leak, not the deliberate one: a rule
+# that puts www in its destination instead of the requesting host sends a
+# tester to production mid-test, and on a page that looks identical it is very
+# easy not to notice. Every path below must stay on dev.
 if [ "$MODE" = dev ]; then
-  for p in / /work/ /s/mvp-development /our-journal/the-presidents-club-2/ /industry/on-demand-fitness-app/ /tools/business-plan.pdf; do
-    chk "$p" 301 "$H$p" dev.roarsinc.com
-  done
-  # ACME is the exemption that matters. It must answer on dev, not redirect.
+  # A page is served, not redirected.
+  chk / 200 "" dev.roarsinc.com
+  chk /work/ 200 "" dev.roarsinc.com
+  chk /contact-us/ 200 "" dev.roarsinc.com
+  # The rules that do redirect keep dev's own host. Covered above through
+  # $LH, repeated here with the host written out so this section reads on
+  # its own and fails loudly if $LH is ever pointed somewhere else.
+  chk /s/mvp-development 301 "https://dev.roarsinc.com/s/mvp-development/" dev.roarsinc.com
+  chk /our-journal/the-presidents-club-2/ 301 "https://dev.roarsinc.com/work/the-presidents-club/" dev.roarsinc.com
+  chk /industry/on-demand-fitness-app/ 301 "https://dev.roarsinc.com/industries/on-demand-fitness-app-development/" dev.roarsinc.com
+  chk /tools/business-plan.pdf 301 "https://dev.roarsinc.com/tools/Business-plans.pdf" dev.roarsinc.com
+  # ACME still answers on dev. It did while the redirect existed, as its one
+  # exemption, and it must not have been collateral when the redirect went.
   mkdir -p "$ROOT/.well-known/acme-challenge"
   echo probe > "$ROOT/.well-known/acme-challenge/probe"
   chk /.well-known/acme-challenge/probe 200 "" dev.roarsinc.com

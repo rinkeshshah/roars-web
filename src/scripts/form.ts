@@ -10,6 +10,8 @@
  * worked, because a click is not a conversion.
  */
 
+import { preparePhone } from './phone-field'
+
 const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
 
 /** How long to wait for Cloudflare's script before telling the visitor. */
@@ -164,6 +166,16 @@ export function initForms(): void {
       if (submit?.disabled) return
       if (!ready) {
         say('Please complete the check above first.', 'error')
+        return
+      }
+      /* The WhatsApp number, checked and composed into the hidden `phone`
+         input before the FormData below reads it. Called from here rather
+         than from its own submit listener so the order is not a question of
+         which one was registered first. An empty field passes and sends an
+         empty `phone`; a number of the wrong length stops the submit and the
+         field says so. */
+      if (!preparePhone(form)) {
+        say('Check the WhatsApp number and try again.', 'error')
         return
       }
       if (submit) submit.disabled = true

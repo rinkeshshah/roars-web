@@ -30,8 +30,14 @@ import DitherHero from '../components/DitherHero.astro'
 import { PORTRAIT } from '../lib/media'
 import { site } from '../lib/site'
 import star5 from '../assets/star-5.svg'
+import { DIAL_CODES } from '../lib/dial-codes'
 
 const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? ''
+
+/* The WhatsApp field's country-code select. Rendered at build time so the
+   options are in the HTML a crawler and a no-JS visitor both get, rather than
+   injected by the script that wires the field up. */
+const dialCodes = DIAL_CODES
 
 const socials = [
   { label: 'Facebook', href: 'https://www.facebook.com/roarstech/' },
@@ -246,9 +252,56 @@ const schema = [
             <label for="c-company">Company</label>
             <input id="c-company" name="company" type="text" autocomplete="organization" />
           </div>
-          <div class="cf__row">
-            <label for="c-phone">Phone</label>
-            <input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+          {/* THE WHATSAPP NUMBER, AND WHY IT IS THREE ELEMENTS.
+              n8n reads `phone` off the webhook and messages the lead on
+              WhatsApp after we have replied by email, so it needs E.164 —
+              "+", country code, national number — and not whatever shape a
+              person types. The hidden input below is the only thing named
+              `phone`; the select and the box a visitor actually uses carry no
+              name at all, so there is exactly one `phone` in the payload and
+              the two halves can never arrive as separate keys.
+              src/scripts/phone-field.ts composes it on every keystroke, not
+              just on submit, because form.ts falls back to a native browser
+              post when its fetch is refused and a native post sends whatever
+              is in the DOM at that moment. */}
+          <div class="cf__row cf__row--phone">
+            <label for="c-phone-number">WhatsApp number (optional)</label>
+            <div class="cf__tel">
+              {/* The Country field below is free text, so the code cannot be
+                  bound to a value — phone-field.ts matches what was typed
+                  against a name or alias and sets this, until the visitor
+                  changes it themselves, after which it leaves it alone. */}
+              <label class="visually-hidden" for="c-phone-code">Country code</label>
+              <select id="c-phone-code" data-phone-code>
+                {/* The VALUE is the ISO code, not the dial code: two countries
+                    can share a dial code (+1 is both the US and Canada) and a
+                    value that is not unique cannot be set reliably. The dial
+                    code rides along in data-dial, which is what gets composed
+                    into the number. */}
+                {dialCodes.map((c) => (
+                  <option value={c.iso} data-dial={c.code}>{c.name} +{c.code}</option>
+                ))}
+              </select>
+              {/* NO autocomplete, deliberately. `tel-national` is the token
+                  that describes this box, and the spec puts it in the Text
+                  control group, so it is not allowed on an input of
+                  type="tel" — npm run assert:html rejects it, correctly.
+                  `tel` is allowed and means the whole international number,
+                  which a browser would fill in here on top of the country
+                  code the select already carries, giving +44+447700900123.
+                  Nothing left describes "the national part next to a code
+                  I chose", so the field asks for no autofill at all. */}
+              <input
+                id="c-phone-number"
+                type="tel"
+                inputmode="tel"
+                aria-describedby="c-phone-help"
+                data-phone-number
+              />
+            </div>
+            <p class="cf__help" id="c-phone-help">We'll only use this to follow up on your project.</p>
+            <p class="cf__error" id="c-phone-error" data-phone-error role="alert" hidden></p>
+            <input type="hidden" name="phone" value="" data-phone-value />
           </div>
           <div class="cf__row">
             <label for="c-country">Country</label>
@@ -569,6 +622,39 @@ const schema = [
   .cf__row input:focus-visible, .cf__row textarea:focus-visible {
     outline: none; border-bottom-color: rgb(20, 20, 20);
   }
+
+  /* ── the WhatsApp number ─────────────────────────────────────
+     Code select and number box on ONE ROW at every width, phones included —
+     stacking them reads as two separate questions, and the number means
+     nothing without the code in front of it.
+     The select is sized to its content rather than given a share of the row:
+     "United Arab Emirates +971" is three times the width of "India +91", and
+     a fixed column either clips the long ones or leaves a gap after the short
+     ones. min-width: 0 on the input is what lets it take the rest instead of
+     refusing to shrink below its intrinsic size. */
+  .cf__tel { display: flex; align-items: flex-end; gap: 12px; }
+  .cf__tel select {
+    flex: 0 1 auto; max-width: 48%;
+    height: 44px; margin-top: 6px; padding: 0 0 10px;
+    background: transparent; border: 0; border-bottom: 1px solid rgba(20, 20, 20, 0.22);
+    border-radius: 0;
+    font-family: inherit; font-size: 17px; line-height: 25px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item); color: rgb(20, 20, 20);
+  }
+  .cf__tel select:focus-visible { outline: none; border-bottom-color: rgb(20, 20, 20); }
+  .cf__tel input { flex: 1 1 auto; min-width: 0; }
+
+  /* Same type as the labels: this is the field's own quiet note, not content. */
+  .cf__help, .cf__error {
+    margin: 8px 0 0;
+    font-size: var(--fs-micro); line-height: 19px; font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-item);
+  }
+  .cf__help { color: rgba(20, 20, 20, 0.62); }
+  /* The one place this form goes red. It is also the only state that moves a
+     border, so the error is legible without colour alone carrying it. */
+  .cf__error { color: rgb(176, 32, 32); }
+  .cf__row--phone input[aria-invalid='true'] { border-bottom-color: rgb(176, 32, 32); }
 
   /* The consent tick. 20px box in a 44px row so the whole line is a tap
      target on a phone, not just the square. */

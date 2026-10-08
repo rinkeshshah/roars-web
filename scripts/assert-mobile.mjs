@@ -212,7 +212,12 @@ for (const path of paths) {
           if (fs > 0 && fs < MIN_TYPE) tiny.push(`${name(el)} ${cs.fontSize}`)
           if (fs < 1 || cs.color.endsWith(', 0)')) return
           if (cs.clipPath !== 'none' || cs.clip !== 'auto') return
-          if (el.closest('[aria-hidden="true"]') || el.closest('noscript')) return
+          /* `option` and `optgroup` for the same reason scripts/assert-overlap.mjs
+             excludes them, where the reasoning is written out: a closed select's
+             options are painted by the browser's own dropdown, which is not in
+             the document and has no client rects, so every one of them reads as
+             text that landed nowhere. */
+          if (el.closest('[aria-hidden="true"]') || el.closest('noscript, option, optgroup')) return
           let painted = false
           for (const n of el.childNodes) {
             if (n.nodeType !== 3 || !n.textContent.trim()) continue
