@@ -1156,24 +1156,6 @@ const cities = defineCollection({
       .min(2)
       .max(3),
     why: z.array(z.object({ name: z.string().max(34), body: z.string().max(180) })).min(4).max(6),
-    /**
-     * OPTIONAL, AND ONLY DALLAS HAS ONE. The seven UK pages are a single
-     * design export with no FAQ in it, and bolting five questions onto all of
-     * them for consistency would be seven pages of filler written to fill a
-     * slot. Absent means the section does not render at all, so their built
-     * HTML is byte-identical to before this field existed — which is the
-     * thing the owner asked to be checked when the Dallas page landed.
-     *
-     * ANSWERS RENDER AS HTML AND CARRY NO FAQPage SCHEMA, per the standing
-     * decision in the launch brief. Google stopped showing FAQ rich results
-     * for most sites, so the markup buys nothing and still has to be kept
-     * true to the copy beside it.
-     */
-    faq: z
-      .array(z.object({ q: z.string().max(110), a: z.string().max(520) }))
-      .min(3)
-      .max(6)
-      .optional(),
   }),
 })
 

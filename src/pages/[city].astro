@@ -253,28 +253,6 @@ const schema = [{
     </div>
   </Section>
 
-  {/* ── Questions ──────────────────────────────────────────────
-       Only where the page carries them, which today is Dallas alone. The
-       seven UK pages have no `faq` and render nothing here, so their HTML is
-       unchanged by this block existing. No FAQPage schema: see the note on
-       the field in src/content.config.ts. */}
-  {d.faq && (
-    <Section ground="light">
-      <div class="cq">
-        <span class="i-eyebrow">QUESTIONS</span>
-        <h2 class="cq__h" data-reveal>Questions we get from {d.city} teams</h2>
-        <dl class="cq__list">
-          {d.faq.map((f, i) => (
-            <div class="cq__item" data-reveal style={`transition-delay:${Math.min(i, 3) * 60}ms`}>
-              <dt class="cq__q">{f.q}</dt>
-              <dd class="cq__a">{f.a}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </Section>
-  )}
-
   {/* ── Words from clients ─────────────────────────────────── */}
   <Section ground="surface">
     <div class="cv">
@@ -439,7 +417,7 @@ const schema = [{
 
   /* ── What we do ──────────────────────────────────────────── */
   .cs { padding-block: 104px 96px; }
-  .cs__h, .cp__h, .cw__h, .cy__h, .cq__h {
+  .cs__h, .cp__h, .cw__h, .cy__h {
     margin: 14px 0 0 -3px; max-width: 22ch;
     font-size: clamp(28px, 3vw, 44px); line-height: 1.12;
     font-weight: var(--fw-semi); letter-spacing: var(--ls-display);
@@ -546,22 +524,6 @@ const schema = [{
   .cy__name { margin: 0; font-size: var(--fs-item); line-height: 26px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-ink-heading); }
   .cy__body { margin: 10px 0 0; font-size: var(--fs-body); line-height: 23px; font-weight: var(--fw-medium); letter-spacing: -0.045em; color: rgb(90, 90, 88); }
 
-  /* ── Questions ───────────────────────────────────────────────
-     TWO COLUMNS, NOT THREE. The answers run to four or five lines where a
-     .cy__body runs to two, and three columns of that is a wall. A <dl> rather
-     than a list of headings because that is what a question and its answer
-     are, and the div wrapper is the one way to group a dt with its dd that
-     the HTML spec allows. */
-  .cq { padding-block: 104px 96px; }
-  .cq__list {
-    margin: 56px 0 0; padding: 0;
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 44px 56px;
-  }
-  .cq__item { position: relative; padding-top: 24px; border-top: 1.5px solid var(--c-rule-strong); }
-  .cq__q { margin: 0; font-size: var(--fs-item); line-height: 30px; font-weight: var(--fw-semi); letter-spacing: var(--ls-item); color: var(--c-ink-heading); }
-  .cq__a { margin: 12px 0 0; font-size: var(--fs-body); line-height: 24px; font-weight: var(--fw-medium); letter-spacing: -0.045em; color: rgb(90, 90, 88); }
-
   /* ── Voices ──────────────────────────────────────────────── */
   .cv { padding-block: 96px; }
   .cv__grid {
@@ -585,7 +547,7 @@ const schema = [{
 
   @media (max-width: 1360px) {
     .ch__in { padding-block: 116px 88px; }
-    .cn, .cs, .cp, .cw, .cy, .cq { padding-block: 72px 64px; }
+    .cn, .cs, .cp, .cw, .cy { padding-block: 72px 64px; }
     .cs__grid, .cy__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .cv { padding-block: 64px; }
     /* Two columns rather than four: at this width four cells are about 185px
@@ -606,7 +568,7 @@ const schema = [{
 
   @media (max-width: 760px) {
     .ch__in { padding-block: 96px 68px; }
-    .cn, .cs, .cp, .cw, .cy, .cq { padding-block: 56px 52px; }
+    .cn, .cs, .cp, .cw, .cy { padding-block: 56px 52px; }
     .cv { padding-block: 52px; }
     /* One column, and the cell padding loses its right inset so the values do
        not sit against the gutter. */
@@ -617,6 +579,6 @@ const schema = [{
     .cd__item { box-shadow: none; }
     .cd__item:nth-child(n + 2) { box-shadow: inset 0 1px 0 var(--cd-line); }
     .cn__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .cs__grid, .cy__grid, .cq__list { grid-template-columns: minmax(0, 1fr); }
+    .cs__grid, .cy__grid { grid-template-columns: minmax(0, 1fr); }
   }
 </style>

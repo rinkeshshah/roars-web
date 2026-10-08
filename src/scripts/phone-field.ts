@@ -174,14 +174,31 @@ export function initPhoneField(): void {
        that point, and having it overwrite their answer a moment later is the
        kind of thing that looks like a bug and is impossible to argue with. */
     let codeIsTheirs = false
-    let countryIsTheirs = false
 
-    /* The other direction: the code fills in Country, so picking "India +91"
-       saves typing it out. ONLY INTO AN EMPTY BOX, and never for a shared
-       code. Writing .value programmatically fires no `input` event, so this
-       cannot bounce back through the listener below and start a loop. */
+    /**
+     * The other direction: picking a code writes the country, so choosing
+     * "India +91" saves typing it out.
+     *
+     * IT OVERWRITES WHATEVER IS IN THE BOX. The first version only wrote into
+     * an EMPTY box, on the reasoning that clobbering what somebody typed is
+     * rude. In practice the box is rarely empty -- browsers autofill it, and
+     * our own guess() may have put a name there a moment earlier -- so the
+     * common case was picking India and watching Country go on saying
+     * Iceland. Reported as a bug on the day it shipped, and it was one.
+     *
+     * Choosing from a dropdown OF COUNTRIES is an unambiguous statement of
+     * country; the free-text box is the weaker, derived field. So the pick
+     * wins, and anybody who disagrees retypes the box, which is one action
+     * and visible. A silent mismatch between the two is not.
+     *
+     * NEVER FOR A SHARED CODE: +1 cannot say whether it meant the United
+     * States or Canada, so it leaves the box alone rather than guessing.
+     *
+     * Writing .value programmatically fires no `input` event, so this cannot
+     * bounce back through the Country listener and start a loop.
+     */
     const fillCountry = (): void => {
-      if (!country || countryIsTheirs || country.value.trim()) return
+      if (!country) return
       const picked = DIAL_CODES.find((c) => c.iso === f.code.value)
       if (!picked || AMBIGUOUS.has(picked.code)) return
       country.value = picked.name
@@ -226,18 +243,11 @@ export function initPhoneField(): void {
           f.hidden.value = compose(f)
         }
       }
-      /* Typing in the box is the claim, not matching a country in the table.
-         Someone part-way through "Ind" has already decided the box is theirs,
-         and a code picked afterwards must not overwrite what they are mid-way
-         through writing. */
-      country.addEventListener('input', () => {
-        countryIsTheirs = true
-        guess()
-      })
+      country.addEventListener('input', guess)
       country.addEventListener('change', guess)
-      /* A browser autofilling the country on load never fires `input`. It also
-         does not make the value theirs, so the latch stays down: they have not
-         touched it yet. */
+      /* A browser autofilling the country on load never fires `input`, so the
+         code would otherwise stay on the placeholder beside a filled-in
+         country. */
       guess()
     }
   }

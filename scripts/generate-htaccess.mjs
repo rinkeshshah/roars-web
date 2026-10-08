@@ -268,8 +268,14 @@ say(
   '#    the kind of breakage that arrives with no deploy to blame.',
   'RewriteRule ^\\.well-known/ - [L]',
   '',
+  /* THE DEV HOSTNAME IS NOT SPELLED OUT IN THIS COMMENT, and that is not
+     squeamishness. scripts/deploy-production.sh refuses to publish a build
+     with that string anywhere outside dist/api/ — the guard that stops dev's
+     secrets and dev's hostname reaching production — and this block is
+     emitted on EVERY build, indexed or not. Writing it here once blocked the
+     production deploy, which is the guard working. Say "the dev subdomain". */
   '# 1a. NO DEV-TO-PRODUCTION REDIRECT. There was one here: every path on',
-  '#     dev.roarsinc.com 301d to the same path on www, so the staging copy',
+  '#     the dev subdomain 301d to the same path on www, so the staging copy',
   '#     could not be crawled as a second version of the site. It is gone,',
   '#     by request, because it also meant dev could not be used to test',
   '#     anything: the first request left for production.',

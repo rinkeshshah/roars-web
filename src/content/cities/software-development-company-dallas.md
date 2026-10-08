@@ -70,15 +70,6 @@ why:
     body: "Strategy, design and engineering under one project manager, from discovery through cutover."
   - name: "1,500+ products since 2005"
     body: "Twenty years under the same leadership, across nine sectors."
-faq:
-  - q: "Do you have an office in Dallas?"
-    a: "Our US address is in Frisco. Meetings are by appointment. The engineering team is in India and your project manager works Central hours, so there is somebody to call during your own working day. We would rather say that plainly than imply a floor of developers forty minutes up the Dallas North Tollway."
-  - q: "Which time zone does the team work in?"
-    a: "Your project manager and the account side work Central hours. The engineering team works the India day. Standups sit inside your working day, and where a release needs both teams awake at once, that window is scheduled rather than left to chance."
-  - q: "How much does custom software development cost for a Dallas company?"
-    a: "We work three ways: a fixed-scope MVP, a sprint-based product team, or dedicated developers on your board. Which one fits depends on whether the thing you are building is defined, still being argued about, or already running and short of hands. Cost follows scope, so we quote after a discovery call rather than publishing a range that would be wrong for most of the people reading it."
-  - q: "Can you take over software another agency built?"
-    a: "Yes, and it is a large share of what we do. It starts with a read of the codebase and the infrastructure before anybody promises a date: what is tested, what is documented, what is holding together because one person remembers it. You get that assessment as a document whether or not you continue with us, because a handover you can show your board is worth more than a quote."
 seo:
   title: "Software Development Company in Dallas | Roars Technologies"
   description: "Software and web app development for Dallas-Fort Worth teams, from Frisco to Fort Worth. Strategy, UX and engineering in one team since 2005."
