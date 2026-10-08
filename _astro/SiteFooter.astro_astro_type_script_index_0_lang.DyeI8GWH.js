@@ -1,0 +1,31 @@
+var e=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];function t(t,n,r){let i=matchMedia(`(prefers-reduced-motion: reduce)`).matches,a=document.createElement(`canvas`);a.setAttribute(`aria-hidden`,`true`),Object.assign(a.style,{position:`absolute`,inset:`0`,width:`100%`,height:`100%`,display:`block`,pointerEvents:`none`,zIndex:`0`}),t.prepend(a);let o={mx:.5,my:.5,tx:.5,ty:.5,a:0,at:0},s=e=>{let n=t.getBoundingClientRect();o.tx=(e.clientX-n.left)/n.width,o.ty=1-(e.clientY-n.top)/n.height,o.at=1},c=()=>{o.at=0},l=()=>{setTimeout(()=>{o.at=0},600)};t.addEventListener(`pointermove`,s),t.addEventListener(`pointerdown`,s),t.addEventListener(`pointerleave`,c),t.addEventListener(`pointerup`,l);let u=!0,d=new IntersectionObserver(e=>e.forEach(e=>u=e.isIntersecting),{rootMargin:`100px`});d.observe(t);let f=a,p=null,m=null,h=null,g=null,_=null,v=0,y=3,b=performance.now(),x=()=>{let e=t.getBoundingClientRect(),i=n.getBoundingClientRect(),a=r.getBoundingClientRect();return{yCss:(i.bottom+a.top)/2-e.top,xCss:i.left+i.width/2-e.left,w:e.width,h:e.height}},S=()=>{if(m=f.getContext(`webgl`,{antialias:!1}),!m)return!1;let e=(e,t)=>{let n=m.createShader(e);return m.shaderSource(n,t),m.compileShader(n),m.getShaderParameter(n,m.COMPILE_STATUS)||console.error(m.getShaderInfoLog(n)),n},t=m.createProgram();m.attachShader(t,e(m.VERTEX_SHADER,`attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}`)),m.attachShader(t,e(m.FRAGMENT_SHADER,`precision highp float;
+uniform vec2 R; uniform float T; uniform vec2 M; uniform float MA; uniform float Y0; uniform float WX; uniform float K; uniform float SIG;
+float h1(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float b2(vec2 a){a=mod(floor(a),8.);return fract(dot(a,vec2(.5,a.y*.75)));}
+float b4(vec2 a){return b2(.5*a)*.25+b2(a);}
+float b8(vec2 a){return b4(.5*a)*.25+b2(a);}
+void main(){
+ float ar=R.x/R.y; float px=3.;
+ vec2 g=floor(gl_FragCoord.xy/px)*px/R; float th=b8(gl_FragCoord.xy/px)+.001;
+ vec2 u0=gl_FragCoord.xy/R; vec2 p0=vec2(u0.x*ar,u0.y);
+ vec3 bg=vec3(.036,.035,.032);
+ bg+=vec3(.05,.044,.022)*exp(-pow(length(p0-vec2(ar*.1,1.05))/.75,2.));
+ bg+=vec3(.038,.032,.014)*exp(-pow(length(p0-vec2(ar*(WX+.02),.38))/.55,2.));
+ bg*=1.-.28*smoothstep(.45,1.1,length((u0-vec2(.5,.55))*vec2(1.,1.3)));
+ bg+=vec3(.06,.052,.024)*exp(-pow(length(p0-vec2(ar*.08,1.1))/.9,2.));
+ bg+=vec3(.07,.058,.018)*exp(-pow((u0.y-Y0)/(.16*K),2.))*exp(-pow((u0.x-WX)/.34,2.));
+ bg+=vec3(.03,.026,.012)*smoothstep(.6,1.,u0.x)*smoothstep(.3,1.,u0.y);
+ bg+=(h1(gl_FragCoord.xy)-.5)*.006;
+ float x=g.x; float env=exp(-pow((x-WX)/.2,2.));
+ float y=Y0+K*(.018*env*sin(x*60.-T*2.2)*(.6+.4*sin(T*.7))+.006*sin(x*23.+T*.9));
+ y+=K*MA*.05*exp(-pow((x-M.x)/.05,2.))*sin(x*140.-T*6.);
+ float dd=abs(g.y-y);
+ float f=.95*smoothstep(.006*K,0.,dd)*(.35+.65*env+MA*exp(-pow((x-M.x)/.08,2.)));
+ f=max(f,.3*exp(-dd*55./K)*(.4+.6*env));
+ f*=smoothstep(0.,.12,x)*smoothstep(1.,.88,x);
+ f*=SIG;
+ vec3 col=bg;
+ col=mix(col,vec3(.19,.185,.16),step(th,f));
+ col=mix(col,vec3(1.,.831,0.),step(th,f-.5));
+ gl_FragColor=vec4(col,1.);
+}`)),m.linkProgram(t),m.useProgram(t);let n=m.createBuffer();m.bindBuffer(m.ARRAY_BUFFER,n),m.bufferData(m.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),m.STATIC_DRAW);let r=m.getAttribLocation(t,`a`);m.enableVertexAttribArray(r),m.vertexAttribPointer(r,2,m.FLOAT,!1,0,0);let i=e=>m.getUniformLocation(t,e);return h={R:i(`R`),T:i(`T`),M:i(`M`),MA:i(`MA`),Y0:i(`Y0`),WX:i(`WX`),K:i(`K`),SIG:i(`SIG`)},!0},C=()=>{_=x();let e=_.w>=768?`gl`:`2d`;if(e!==p){let t=f.cloneNode();if(f.replaceWith(t),f=t,p=e,m=null,g=null,p===`gl`&&!S()){p=`2d`;let e=f.cloneNode();f.replaceWith(e),f=e}p===`2d`&&(g=f.getContext(`2d`))}if(p===`gl`&&m)f.width=Math.round(_.w*2/3),f.height=Math.round(_.h*2/3),m.viewport(0,0,f.width,f.height);else{let e=Math.min(2,window.devicePixelRatio||1);f.width=Math.round(_.w*e),f.height=Math.round(_.h*e)}E(performance.now(),!0)},w=()=>{if(!m||!h||!_)return;let e=f.width,t=f.height;m.uniform2f(h.R,e,t),m.uniform1f(h.T,y),m.uniform2f(h.M,o.mx,o.my),m.uniform1f(h.MA,o.a),m.uniform1f(h.Y0,1-_.yCss/_.h),m.uniform1f(h.WX,_.xCss/_.w),m.uniform1f(h.K,720/_.h),m.uniform1f(h.SIG,1),m.drawArrays(m.TRIANGLES,0,3)},T=()=>{if(!g||!_)return;let t=f.width/_.w,n=_.w,r=_.h,i=_.yCss;g.setTransform(t,0,0,t,0,0),g.fillStyle=`#0A0A09`,g.fillRect(0,0,n,r);let a=g.createRadialGradient(0,0,0,0,0,n*1.3);a.addColorStop(0,`rgba(92,82,36,.42)`),a.addColorStop(1,`rgba(92,82,36,0)`),g.fillStyle=a,g.fillRect(0,0,n,r),g.save(),g.translate(n*.5,i),g.scale(1,.35),a=g.createRadialGradient(0,0,0,0,0,n*.75),a.addColorStop(0,`rgba(120,98,28,.38)`),a.addColorStop(1,`rgba(120,98,28,0)`),g.fillStyle=a,g.fillRect(-n,-n*2,n*2,n*4),g.restore(),a=g.createLinearGradient(0,0,0,r),a.addColorStop(.55,`rgba(0,0,0,0)`),a.addColorStop(1,`rgba(0,0,0,.35)`),g.fillStyle=a,g.fillRect(0,0,n,r);for(let t=0;t<n;t+=3){let r=t/n,a=Math.exp(-(((r-.5)/.28)**2)),s=i+9*a*Math.sin(r*26-y*2.2)*(.6+.4*Math.sin(y*.7))+2.5*Math.sin(r*11+y*.9),c=Math.exp(-(((r-o.mx)/.06)**2))*o.a;s+=22*c*Math.sin(r*70-y*6);let l=Math.min(1,r/.08,(1-r)/.08),u=(.35+.65*a+c)*l,d=Math.floor(t/3),f=Math.floor(s/3),p=(e[d%4+f%4*4]+.5)/16,m=u*.95-.5>p;g.fillStyle=m?`#FFD400`:u*.95>p*.6?`#30302A`:`rgba(48,48,42,.5)`,g.fillRect(t,Math.round(s/3)*3-1,2,2),u>.5&&p<.5&&(g.fillStyle=`rgba(48,48,42,.8)`,g.fillRect(t,Math.round(s/3)*3+3-1,2,2))}};function E(e,t){let n=Math.min(.05,(e-b)/1e3);b=e,(u&&!i||t)&&(i||(y+=t?0:n),o.mx+=(o.tx-o.mx)*.08,o.my+=(o.ty-o.my)*.08,o.a+=(o.at-o.a)*(p===`gl`?.05:.06),p===`gl`?w():g&&T()),t||(v=requestAnimationFrame(E))}let D=new ResizeObserver(()=>C());return D.observe(t),document.fonts?.ready&&document.fonts.ready.then(()=>C()),C(),v=requestAnimationFrame(E),{destroy(){cancelAnimationFrame(v),D.disconnect(),d.disconnect(),t.removeEventListener(`pointermove`,s),t.removeEventListener(`pointerdown`,s),t.removeEventListener(`pointerleave`,c),t.removeEventListener(`pointerup`,l),f.remove()}}}function n(){let e=document.querySelector(`[data-footer-signal]`);if(!e)return null;let n=e.querySelector(`[data-footer-wordmark]`),r=e.querySelector(`[data-footer-legal]`);return!n||!r?(console.warn(`footer-signal: no wordmark or legal row to place the line against.`),null):t(e,n,r)}n();
