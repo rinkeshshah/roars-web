@@ -13,7 +13,7 @@ desk:
     v: "Within 24 hours"
   - k: "KICK-OFF"
     v: "Remote, on-site by arrangement"
-intro: "DFW is home to 24 Fortune 500 headquarters, and much of its growth is companies moving in. A relocated headquarters brings a hiring plan, a migration and systems built for a different office. The work that follows is rarely a new idea. It is making four inherited systems agree, and building the internal tools nobody had time for during the move."
+intro: "DFW has 24 Fortune 500 headquarters and keeps pulling in more. Every relocation lands the same problem: four inherited systems, none of them talking, and a team working around all of it. Roars has spent 20 years fixing exactly that. We connect what you brought, replace what you have outgrown, and build the tools your team needed on day one."
 services:
   - n: "01"
     name: "Web App Development"
