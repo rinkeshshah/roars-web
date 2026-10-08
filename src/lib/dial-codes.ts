@@ -4,7 +4,7 @@
  * WHY A LIST AND NOT A LIBRARY. The field needs two things: a select of
  * country codes, and a way to guess one from whatever the visitor typed in the
  * Country box. libphonenumber does both and weighs several hundred kilobytes;
- * this page would be paying that for one optional field. A table is enough,
+ * this page would be paying that for one field. A table is enough,
  * because nothing here needs to know that a number is valid FOR its country,
  * only that a country has a code and a number has a plausible length.
  *

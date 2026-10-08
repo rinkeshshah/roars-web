@@ -252,9 +252,9 @@ const schema = [
             <label for="c-company">Company</label>
             <input id="c-company" name="company" type="text" autocomplete="organization" />
           </div>
-          {/* THE WHATSAPP NUMBER, AND WHY IT IS THREE ELEMENTS.
-              n8n reads `phone` off the webhook and messages the lead on
-              WhatsApp after we have replied by email, so it needs E.164 —
+          {/* THE PHONE NUMBER, AND WHY IT IS THREE ELEMENTS.
+              n8n reads `phone` off the webhook and messages the lead after we
+              have replied by email, so it needs E.164 —
               "+", country code, national number — and not whatever shape a
               person types. The hidden input below is the only thing named
               `phone`; the select and the box a visitor actually uses carry no
@@ -265,14 +265,39 @@ const schema = [
               post when its fetch is refused and a native post sends whatever
               is in the DOM at that moment. */}
           <div class="cf__row cf__row--phone">
-            <label for="c-phone-number">WhatsApp number (optional)</label>
+            {/* "Phone or WhatsApp", not "WhatsApp". The field is required, and
+                a required field named after one app asks a US visitor for an
+                account plenty of them do not have — and Meta blocks Marketing
+                templates to US numbers anyway, so it would be insisting on a
+                number we could not message. Naming both makes an ordinary
+                mobile the obvious thing to type. The value is handled the
+                same either way. */}
+            <label for="c-phone-number">Phone or WhatsApp number</label>
             <div class="cf__tel">
               {/* The Country field below is free text, so the code cannot be
                   bound to a value — phone-field.ts matches what was typed
                   against a name or alias and sets this, until the visitor
-                  changes it themselves, after which it leaves it alone. */}
+                  changes it themselves, after which it leaves it alone.
+                  It runs the other way too: picking a code writes the country
+                  into an empty Country box, so "India +91" saves typing it
+                  out. Not for +1, which is the US and Canada both and would
+                  have to guess. The lead sheet stores country and timezone and
+                  the follow-up timing reads them, so a guess there is worse
+                  than a blank. */}
               <label class="visually-hidden" for="c-phone-code">Country code</label>
-              <select id="c-phone-code" data-phone-code>
+              <select id="c-phone-code" required data-phone-code>
+                {/* AN EMPTY FIRST OPTION, AND IT IS NOT A STYLE CHOICE. A
+                    select with no placeholder starts on its first option, and
+                    this list is alphabetical, so the default was Afghanistan
+                    +93. Anyone who typed a number and left Country alone --
+                    which is allowed, Country is optional -- would have had
+                    +93 silently welded to the front of it and posted. That was
+                    survivable while the number was optional and is not now
+                    that it is required: it would be the common path for
+                    anybody in a hurry.
+                    `required` on the select makes the browser refuse an
+                    unpicked code the same way it refuses an empty number. */}
+                <option value="" data-dial="" selected>Country code</option>
                 {/* The VALUE is the ISO code, not the dial code: two countries
                     can share a dial code (+1 is both the US and Canada) and a
                     value that is not unique cannot be set reliably. The dial
@@ -291,10 +316,20 @@ const schema = [
                   code the select already carries, giving +44+447700900123.
                   Nothing left describes "the national part next to a code
                   I chose", so the field asks for no autofill at all. */}
+              {/* `required`, the same native attribute Name and Email use. The
+                  form has no novalidate, so for a genuinely empty box the
+                  browser's own message appears and phone-field.ts is never
+                  reached — which is exactly how the other two required fields
+                  already behave, and consistency beats a nicer sentence shown
+                  in only one of the three places.
+                  phone-field.ts still carries its own empty message, because
+                  `required` is satisfied by any character at all: type "()"
+                  and the browser is happy while the digits strip to nothing. */}
               <input
                 id="c-phone-number"
                 type="tel"
                 inputmode="tel"
+                required
                 aria-describedby="c-phone-help"
                 data-phone-number
               />

@@ -171,11 +171,10 @@ export function initForms(): void {
       /* The WhatsApp number, checked and composed into the hidden `phone`
          input before the FormData below reads it. Called from here rather
          than from its own submit listener so the order is not a question of
-         which one was registered first. An empty field passes and sends an
-         empty `phone`; a number of the wrong length stops the submit and the
-         field says so. */
+         which one was registered first. The number is required, so a missing
+         or wrong-length one stops the submit and the field says which. */
       if (!preparePhone(form)) {
-        say('Check the WhatsApp number and try again.', 'error')
+        say('Check the phone number and try again.', 'error')
         return
       }
       if (submit) submit.disabled = true
