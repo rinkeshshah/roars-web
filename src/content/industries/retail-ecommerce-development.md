@@ -12,7 +12,7 @@ hero:
   statement: "Reach your customers with top-notch digital store experiences!"
   sub: "Engaging shopping experiences, innovative and built around your business."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "eCommerce app development, end to end"
@@ -143,7 +143,7 @@ cta:
   footerTitle: "Build next-gen, feature-rich and scalable eCommerce solutions."
   footerBlurb: "Fill up form and schedule a free consultation"
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   heading: "Build next-gen, feature-rich and scalable eCommerce solutions."
 seo:
   title: "eCommerce Development For Web And Mobile App Development"

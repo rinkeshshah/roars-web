@@ -11,7 +11,7 @@ hero:
   statement: "Looking for expert MVP development services to validate your idea and its market potential?"
   sub: "We help you develop innovative, secure, and high-quality solutions for a successful minimum viable product."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 process:
   label: "HOW WE WORK"
   heading: "Our MVP Development Service Process"
@@ -54,7 +54,7 @@ cta:
   heading: "Need help from an expert MVP development team?"
   body: "Fill up form and schedule free consultation"
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 seo:
   title: "MVP Development Company | MVP Development Services in USA"
   description: "Looking to validate your MVP Development idea and its viability? We help you develop innovative, secure, and high-quality solutions that will help in optimizing your path to a successful minimum viable product. Having offices in UK, USA, India, Belgium & Germany, we have vast talent according to your project requirement."
@@ -168,7 +168,7 @@ close:
   heading: "Send us the one sentence your product has to prove."
   body: "We will come back within two working days with what we would put in the first version and, more usefully, what we would leave out. No deck, no discovery fee."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
 needsReview: false
 ---

@@ -321,7 +321,7 @@ def build(path):
         fm.append(f'  sub: {yq(clip(sub, 120))}')
     fm += [
         '  ctaLabel: "Shall we chat?"',
-        '  ctaHref: "https://meet.roarsinc.com/sales"',
+        '  ctaHref: "https://meet.roarsinc.com/suzanne/sales"',
     ]
 
     # The capability blocks, split between the two designed devices. Six
@@ -415,7 +415,7 @@ def build(path):
            f'  footerTitle: {yq(clip(foot_title, 80))}',
            f'  footerBlurb: {yq(foot_blurb)}',
            '  ctaLabel: "Shall we chat?"',
-           '  ctaHref: "https://meet.roarsinc.com/sales"',
+           '  ctaHref: "https://meet.roarsinc.com/suzanne/sales"',
            f'  heading: {yq(clip(foot_title, 80))}']
 
     fm += ['seo:',

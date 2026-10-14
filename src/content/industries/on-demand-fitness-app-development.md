@@ -12,7 +12,7 @@ hero:
   statement: "Design and develop fitness apps that users, trainers, dietitians, and admins like!"
   sub: "From out of shape to race ready, apps that help people reach their fitness goals."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Fitness app development, end to end"
@@ -142,7 +142,7 @@ cta:
   footerTitle: "Build your own tech-oriented fitness application!"
   footerBlurb: "Fill up form and schedule a free consultation"
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   heading: "Build your own tech-oriented fitness application!"
 seo:
   title: "Fitness App Development Company | Health & Fitness App Developer"

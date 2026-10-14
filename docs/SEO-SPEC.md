@@ -690,7 +690,7 @@ Define these once and use them everywhere. Names are GA4 recommended-event names
 | `scroll_depth` | 25 / 50 / 75 / 90 percent | `percent_scrolled`, `page_path` |
 | `video_start` / `video_complete` | if video lands in the hero | `video_title` |
 | `newsletter_subscribe` | footer subscribe success | `location` |
-| `booking_click` | `meet.roarsinc.com/sales` click | `cta_location` |
+| `booking_click` | `meet.roarsinc.com/suzanne/sales` click | `cta_location` |
 
 Mark `generate_lead`, `booking_click`, `file_download` and `newsletter_subscribe` as GA4 key events.
 

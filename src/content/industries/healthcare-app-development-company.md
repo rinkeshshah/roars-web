@@ -12,7 +12,7 @@ hero:
   statement: "Bring Healthcare to Your Fingertips with our well-built solutions!"
   sub: "Years of experience building integrated healthcare apps, physician platforms and more."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Healthcare app development, end to end"
@@ -160,7 +160,7 @@ cta:
   footerTitle: "Making Healthcare technology, easier for you!"
   footerBlurb: "Our love for innovation design and technology, hospital mobile app development, and healthcare mobile app development is evident in all our works. No details are too small."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   heading: "Making Healthcare technology, easier for you!"
 seo:
   title: "Healthcare App Development Company | Healthcare App Developer"

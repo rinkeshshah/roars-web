@@ -233,7 +233,7 @@ def build(path):
     ]
     if sub:
         fm.append(f'  sub: {yq(sub)}')
-    fm += ['  ctaLabel: "Shall we chat?"', '  ctaHref: "https://meet.roarsinc.com/sales"']
+    fm += ['  ctaLabel: "Shall we chat?"', '  ctaHref: "https://meet.roarsinc.com/suzanne/sales"']
 
     if proc:
         fm += ['process:', '  label: "HOW WE WORK"',
@@ -283,7 +283,7 @@ def build(path):
            f'  heading: {yq(clip(foot_title, 80))}',
            f'  body: {yq(clip(foot_sub or foot_title, 200))}',
            '  ctaLabel: "Shall we chat?"',
-           '  ctaHref: "https://meet.roarsinc.com/sales"']
+           '  ctaHref: "https://meet.roarsinc.com/suzanne/sales"']
 
     fm += ['seo:',
            f'  title: {yq(text(m.get("rank_math_title", ""))[:120])}',

@@ -105,7 +105,7 @@ Two things to carry into that session:
     the detail. They are live, indexed URLs, so the slugs are not ours to
     tidy.
   - `/schedule-ux-ui-meeting/` is a booking page. The site already sends
-    booking traffic to site.booking (meet.roarsinc.com/sales), so the question
+    booking traffic to site.booking (meet.roarsinc.com/suzanne/sales), so the question
     is whether this URL becomes a real page or a 301 to that. Either resolves
     the gate; they are not the same for search.
 

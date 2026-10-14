@@ -12,7 +12,7 @@ hero:
   statement: "Improve your business productivity using our concierge app development solutions!"
   sub: "We build extra-ordinary concierge applications, having exemplary features to provide a pleasant guest experience."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Concierge app development, end to end"
@@ -180,7 +180,7 @@ cta:
   footerTitle: "Bring comfort and convenience to users with developed concierge apps!"
   footerBlurb: "Fill up form and schedule free consultation"
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   heading: "Bring comfort and convenience to users with developed concierge apps!"
 seo:
   title: "On Demand Mobile Concierge App Development Company"

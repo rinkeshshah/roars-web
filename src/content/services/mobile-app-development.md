@@ -11,7 +11,7 @@ hero:
   statement: "We build advanced mobile app solutions for startups, SMEs, and large-scale enterprises."
   sub: "Hire professional mobile app developers from a trusted mobile app development company."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 process:
   label: "HOW WE WORK"
   heading: "Our Mobile App Development Process"
@@ -27,7 +27,7 @@ cta:
   heading: "Let’s talk about your mobile app idea and get started on your project today!"
   body: "Fill up form and schedule free consultation"
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 seo:
   title: "Hire Mobile App Development Company In USA | Roars Technologies"
   description: "Hire iOS and Android mobile application developer from USA, India, Germany, UK. Expert professional and experienced mobile app development company, serving clients across the globe for last 15+ Years."
@@ -141,7 +141,7 @@ close:
   heading: "Tell us what your app is for and where it loses people."
   body: "Two paragraphs is plenty. We will come back in two working days with whether we would build it, rebuild it, or leave it alone, and why."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
 needsReview: false
 ---

@@ -1069,7 +1069,7 @@ function render(slug, c) {
   push(2, `heading: ${yq(c.close.heading)}`)
   push(2, `body: ${yq(c.close.body)}`)
   push(2, 'ctaLabel: "Shall we chat?"')
-  push(2, 'ctaHref: "https://meet.roarsinc.com/sales"')
+  push(2, 'ctaHref: "https://meet.roarsinc.com/suzanne/sales"')
   push(2, 'contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"')
   push(0, 'needsReview: true')
   return lines.join('\n') + '\n'

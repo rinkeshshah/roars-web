@@ -12,7 +12,7 @@ hero:
   statement: "We build the best-in-class solutions that help you serve your diners better!"
   sub: "Four surfaces, one kitchen, one order that never loses its place."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   receipt:
     title: "ROARS POS"
     time: "19:42:07"
@@ -202,7 +202,7 @@ cta:
   footerTitle: "Bring your food & restaurant ideas to life."
   footerBlurb: "Fill up the form and schedule a free consultation. We will tell you which of the six moments is costing you most."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   heading: "Bring unique food & restaurant app ideas to life."
 seo:
   title: "Restaurant App Development: Six Moments, One System"

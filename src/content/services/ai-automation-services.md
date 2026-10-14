@@ -16,7 +16,7 @@ hero:
     - "HUMANS IN CONTROL"
     - "ZERO RETAINER"
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   console:
     label: "EVAL RUN"
     ref: "#0094"
@@ -157,7 +157,7 @@ close:
   body: "A 30-minute call. We listen, ask questions, and tell you whether AI automation is the right answer or whether you’d be better off fixing a process first. Either way, you leave with a clearer head and zero pressure to engage."
   aside: "You get honest answers and a clear next step. No sales theater."
   ctaLabel: "Book a 30-Min Audit"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   contact: "USA +1 (302) 505-1200  /  SALES@ROARSINC.COM"
 subServices:
   - "Goal-driven assistants"
@@ -174,7 +174,7 @@ cta:
   heading: "Bring us your least favourite part of the week."
   body: "A 30-minute call. We listen, ask questions, and tell you whether AI automation is the right answer or whether you'd be better off fixing a process first."
   ctaLabel: "Book a call"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   footerTagline: "automation that earns its place"
   footerTitle: "Bring us your least favourite part of the week."
   footerBlurb: "A 30-minute call. We tell you honestly whether AI is the right answer, or whether you would be better off fixing a process first."

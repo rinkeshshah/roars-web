@@ -12,7 +12,7 @@ hero:
   statement: "We leverage innovative technology advancement to transform travel and hospitality."
   sub: "Overcome your software challenges and take your travel business further."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Hospitality app development, end to end"
@@ -149,7 +149,7 @@ cta:
   footerTitle: "Design picture-perfect travel and hospitality solutions."
   footerBlurb: "Fill up form and schedule free consultation"
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   heading: "Design picture-perfect travel and hospitality solutions."
 seo:
   title: "Travel & Hospitality App Development Company in USA"

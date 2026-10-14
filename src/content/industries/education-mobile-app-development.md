@@ -12,7 +12,7 @@ hero:
   statement: "Enhancing academic experience with our education app development solutions!"
   sub: "We address the education industry's critical challenges and reinvent teaching methods."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Education app development, end to end"
@@ -176,7 +176,7 @@ cta:
   footerTitle: "Making Edutech, easier for you!"
   footerBlurb: "Fill up form and schedule a free consultation"
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   heading: "Making Edutech, easier for you!"
 seo:
   title: "Education Mobile App Development Company | Roarsinc"

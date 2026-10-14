@@ -12,7 +12,7 @@ hero:
   statement: "Transform your business with our mobility solutions for transportation and logistics!"
   sub: "Next-generation logistics software that raises productivity and keeps up with demand."
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
 journey:
   label: "WHAT WE BUILD"
   heading: "Logistics app development, end to end"
@@ -168,7 +168,7 @@ cta:
   footerTitle: "Automate your fleet, and reach a greater extent soon in the market!"
   footerBlurb: "Fill up the form and schedule a free consultation!"
   ctaLabel: "Shall we chat?"
-  ctaHref: "https://meet.roarsinc.com/sales"
+  ctaHref: "https://meet.roarsinc.com/suzanne/sales"
   heading: "Automate your fleet, and reach a greater extent soon in the market!"
 seo:
   title: "Logistics and Transportation App Development Company"
