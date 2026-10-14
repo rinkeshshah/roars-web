@@ -397,7 +397,7 @@ $cfgFallback = [
     'from'           => 'noreply@roarsinc.com',
     'site_url'       => 'https://www.roarsinc.com',
     'postal_address' => '4th Block, Jayanagar, Bengaluru, India 560041',
-    'booking_url'    => 'https://meet.roarsinc.com/sales',
+    'booking_url'    => 'https://meet.roarsinc.com/suzanne/sales',
     /* No tools_dir means no attachment; the guide email links the PDF
        instead, which is the path a missing file already took. */
     'tools_dir'      => '',
@@ -835,7 +835,7 @@ $site  = rtrim((string) ($cfg['site_url'] ?? 'https://www.roarsinc.com'), '/');
 $postal = (string) ($cfg['postal_address'] ?? '4th Block, Jayanagar, Bengaluru, India 560041');
 /* One booking link for the whole site, and the same one n8n uses in its
    follow-ups. Overridable from config so it can be changed without a deploy. */
-$booking = rtrim((string) ($cfg['booking_url'] ?? 'https://meet.roarsinc.com/sales'), '/');
+$booking = rtrim((string) ($cfg['booking_url'] ?? 'https://meet.roarsinc.com/suzanne/sales'), '/');
 
 /* WHERE THE EMAIL'S IMAGES LIVE. The Roars lockup used to be a 53KB base64
    data URI inside both templates -- 76% of the acknowledgement's bytes, for a
